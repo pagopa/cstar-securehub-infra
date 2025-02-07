@@ -7,7 +7,7 @@ locals {
   project_core = "${var.prefix}-${var.env_short}-${var.location_short}-core"
 
   tenant_id                     = data.azurerm_client_config.current.tenant_id
-  azdo_iac_managed_identities   = toset(["azdo-${var.env}-p4pa-iac-deploy", "azdo-${var.env}-p4pa-iac-plan"])
+  azdo_iac_managed_identities   = toset(["azdo-${var.env}-cstar-iac-deploy", "azdo-${var.env}-cstar-iac-plan"])
   azdo_managed_identity_rg_name = "${local.project_core}-identity-rg"
   azdo_managed_identity_name    = upper("${var.env}-${var.prefix}-AZURE")
 }
@@ -49,8 +49,8 @@ locals {
 #
 
 locals {
-  app_gateway_api_certificate_name        = var.env_short == "p" ? "api-p4pa-pagopa-it" : "api-${var.env}-p4pa-pagopa-it"
-  app_gateway_api_mtls_certificate_name   = var.env_short == "p" ? "api-mtls-p4pa-pagopa-it" : "api-mtls-${var.env}-p4pa-pagopa-it"
-  app_gateway_portal_certificate_name     = var.env_short == "p" ? "portal-p4pa-pagopa-it" : "portal-${var.env}-p4pa-pagopa-it"
-  app_gateway_management_certificate_name = var.env_short == "p" ? "management-p4pa-pagopa-it" : "management-${var.env}-p4pa-pagopa-it"
+  app_gateway_api_certificate_name        = var.env_short == "p" ? "api-cstar-pagopa-it" : "api-${var.env}-cstar-pagopa-it"
+  app_gateway_api_mtls_certificate_name   = var.env_short == "p" ? "api-mtls-cstar-pagopa-it" : "api-mtls-${var.env}-cstar-pagopa-it"
+  app_gateway_portal_certificate_name     = var.env_short == "p" ? "portal-cstar-pagopa-it" : "portal-${var.env}-cstar-pagopa-it"
+  app_gateway_management_certificate_name = var.env_short == "p" ? "management-cstar-pagopa-it" : "management-${var.env}-cstar-pagopa-it"
 }

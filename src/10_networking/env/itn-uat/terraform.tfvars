@@ -1,4 +1,4 @@
-prefix         = "p4pa"
+prefix         = "cstar"
 env_short      = "u"
 env            = "uat"
 location       = "italynorth"
@@ -8,8 +8,8 @@ domain         = "core"
 tags = {
   CreatedBy   = "Terraform"
   Environment = "UAT"
-  Owner       = "P4PA"
-  Source      = "https://github.com/pagopa-p4pa/p4pa-infra"
+  Owner       = "CSTAR"
+  Source      = "https://github.com/pagopa-cstar/cstar-infra"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
 
@@ -36,5 +36,5 @@ dns_forwarder_vm_image_version = "v1"
 #
 
 external_domain          = "pagopa.it"
-dns_zone_prefix          = "uat.p4pa"
-dns_zone_internal_prefix = "internal.uat.p4pa"
+dns_zone_prefix          = "uat.cstar"
+dns_zone_internal_prefix = "internal.uat.cstar"

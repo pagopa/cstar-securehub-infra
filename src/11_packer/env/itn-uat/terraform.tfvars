@@ -1,4 +1,4 @@
-prefix         = "p4pa"
+prefix         = "cstar"
 env_short      = "u"
 env            = "uat"
 location       = "italynorth"
@@ -8,8 +8,8 @@ domain         = "packer"
 tags = {
   CreatedBy   = "Terraform"
   Environment = "UAT"
-  Owner       = "P4PA"
-  Source      = "https://github.com/pagopa/p4pa-infra"
+  Owner       = "CSTAR"
+  Source      = "https://github.com/pagopa/cstar-securehub-infra"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
 

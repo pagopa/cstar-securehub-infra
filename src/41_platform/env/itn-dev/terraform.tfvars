@@ -1,4 +1,4 @@
-prefix         = "p4pa"
+prefix         = "cstar"
 env_short      = "d"
 env            = "dev"
 location       = "italynorth"
@@ -8,8 +8,8 @@ domain         = "platform"
 tags = {
   CreatedBy   = "Terraform"
   Environment = "DEV"
-  Owner       = "P4PA"
-  Source      = "https://github.com/pagopa/p4pa-infra"
+  Owner       = "CSTAR"
+  Source      = "https://github.com/pagopa/cstar-securehub-infra"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
 
@@ -22,7 +22,7 @@ cidr_postgres_subnet = ["10.1.131.0/27"] # 10.1.131.0 --> 10.1.130.31
 # Dns
 #
 external_domain          = "pagopa.it"
-dns_zone_internal_prefix = "internal.dev.p4pa"
+dns_zone_internal_prefix = "internal.dev.cstar"
 
 #
 # CosmosDB
