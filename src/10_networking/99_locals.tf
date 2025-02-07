@@ -5,6 +5,6 @@ locals {
 
   tags_for_private_dns = { "PrivateDns" = "true" }
 
-  # Dns Forwarder
-  dns_forwarder_vm_image_name = "${local.product_nodomain}-packer-dns-forwarder-ubuntu2204-image-${var.dns_forwarder_vm_image_version}"
+  # # Dns Forwarder
+  # dns_forwarder_vm_image_name = "${local.product_nodomain}-packer-dns-forwarder-ubuntu2204-image-${var.dns_forwarder_vm_image_version}"
 }
