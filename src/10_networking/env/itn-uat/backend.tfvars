@@ -1,4 +1,4 @@
 resource_group_name  = "terraform-state-rg"
-storage_account_name = "tfinfuatp4pa"
+storage_account_name = "tfinfuatcstar"
 container_name       = "terraform-state"
-key                  = "p4pa-infra-networking-uat.tfstate"
+key                  = "cstar-infra-networking-uat.tfstate"

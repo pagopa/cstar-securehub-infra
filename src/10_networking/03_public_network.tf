@@ -33,7 +33,7 @@ resource "azurerm_dns_a_record" "dns_a_apim_mtls" {
 }
 
 
-resource "azurerm_dns_caa_record" "p4pa_pagopa_it_ns_caa" {
+resource "azurerm_dns_caa_record" "cstar_pagopa_it_ns_caa" {
   name                = "@"
   zone_name           = azurerm_dns_zone.public[0].name
   resource_group_name = azurerm_resource_group.rg_vnet.name
@@ -81,7 +81,7 @@ resource "azurerm_public_ip" "apim_public_ip" {
   resource_group_name = azurerm_resource_group.rg_vnet.name
   location            = azurerm_resource_group.rg_vnet.location
   sku                 = "Standard"
-  domain_name_label   = "apimp4pa${var.env}"
+  domain_name_label   = "apimcstar${var.env}"
   allocation_method   = "Static"
   zones               = var.zones
 
@@ -93,7 +93,7 @@ resource "azurerm_public_ip" "apim_public_ip" {
 #
 
 # Prod ONLY record to DEV public DNS delegation
-resource "azurerm_dns_ns_record" "dev_p4pa_pagopa_it_ns" {
+resource "azurerm_dns_ns_record" "dev_cstar_pagopa_it_ns" {
   count = var.env_short == "p" ? 1 : 0
 
   name                = "dev"
@@ -110,7 +110,7 @@ resource "azurerm_dns_ns_record" "dev_p4pa_pagopa_it_ns" {
 }
 
 # Prod ONLY record to UAT public DNS delegation
-resource "azurerm_dns_ns_record" "uat_p4pa_pagopa_it_ns" {
+resource "azurerm_dns_ns_record" "uat_cstar_pagopa_it_ns" {
   count = var.env_short == "p" ? 1 : 0
 
   name                = "uat"

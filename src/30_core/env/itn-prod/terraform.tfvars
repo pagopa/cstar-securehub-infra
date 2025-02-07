@@ -1,4 +1,4 @@
-prefix                = "p4pa"
+prefix                = "cstar"
 env_short             = "p"
 env                   = "prod"
 location              = "italynorth"
@@ -9,8 +9,8 @@ pagopa_location_short = "weu"
 tags = {
   CreatedBy   = "Terraform"
   Environment = "PROD"
-  Owner       = "P4PA"
-  Source      = "https://github.com/pagopa/p4pa-infra"
+  Owner       = "CSTAR"
+  Source      = "https://github.com/pagopa/cstar-securehub-infra"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
 
@@ -18,13 +18,13 @@ tags = {
 law_daily_quota_gb = 10
 
 # Apim
-apim_publisher_name = "P4PA PROD"
+apim_publisher_name = "CSTAR PROD"
 apim_sku            = "Developer_1"
 apim_alerts_enabled = false
 
 # Domains
 external_domain = "pagopa.it"
-dns_zone_prefix = "p4pa"
+dns_zone_prefix = "cstar"
 
 # Application Gateway
 app_gateway_sku_name              = "Standard_v2"

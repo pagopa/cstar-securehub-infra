@@ -2,7 +2,7 @@
 
 Repository dedicated to the multi-tenancy project under CSTAR
 
-[![Static Analysis](https://github.com/pagopa-p4pa/p4pa-infra/actions/workflows/static_analysis.yml/badge.svg?branch=main&event=push)](https://github.com/pagopa-p4pa/p4pa-infra/actions/workflows/static_analysis.yml)
+[![Static Analysis](https://github.com/pagopa-cstar/cstar-infra/actions/workflows/static_analysis.yml/badge.svg?branch=main&event=push)](https://github.com/pagopa-cstar/cstar-infra/actions/workflows/static_analysis.yml)
 
 
 ## Requirements

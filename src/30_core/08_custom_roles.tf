@@ -1,7 +1,7 @@
 resource "azurerm_role_definition" "iac_reader" {
-  name        = "P4pa Platform ${title(var.env)} IaC Reader"
+  name        = "CSTAR Platform ${title(var.env)} IaC Reader"
   scope       = data.azurerm_subscription.current.id
-  description = "Custom role for p4pa platform team. Infrastructure as Code read-only role"
+  description = "Custom role for cstar platform team. Infrastructure as Code read-only role"
 
   permissions {
 

@@ -2,9 +2,9 @@
 # Private DNS Zone
 #
 
-# ->> DNS private: internal.dev.p4pa.pagopa.it
+# ->> DNS private: internal.dev.cstar.pagopa.it
 
-resource "azurerm_private_dns_zone" "internal_p4pa_pagopa_it" {
+resource "azurerm_private_dns_zone" "internal_cstar_pagopa_it" {
   name                = "${var.dns_zone_internal_prefix}.${var.external_domain}"
   resource_group_name = azurerm_resource_group.rg_vnet.name
 
