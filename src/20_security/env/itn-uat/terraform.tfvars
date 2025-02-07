@@ -10,7 +10,7 @@ tags = {
   CreatedBy   = "Terraform"
   Environment = "UAT"
   Owner       = "CSTAR"
-  Source      = "https://github.com/pagopa-cstar/cstar-infra"
+  Source      = "https://github.com/pagopa/cstar-securehub-infra"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
 

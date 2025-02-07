@@ -55,107 +55,96 @@ variable "domain" {
 # Vnet & Subnets CIDR
 #
 
-variable "cidr_core_vnet" {
+variable "cidr_core_hub_vnet" {
   type        = list(string)
   description = "Address prefixes vnet core"
 }
 
-variable "cidr_subnet_apim" {
-  type        = list(string)
-  description = "Address prefixes subnet api management."
-  default     = null
-}
 
-variable "cidr_subnet_appgateway" {
-  type        = list(string)
-  description = "Address prefixes subnet appgateway."
-  default     = null
-}
+# variable "cidr_vpn_subnet" {
+#   type        = list(string)
+#   description = "Address prefixes subnet vpn"
+#   default     = null
+# }
 
-variable "cidr_vpn_subnet" {
-  type        = list(string)
-  description = "Address prefixes subnet vpn"
-  default     = null
-}
-
-variable "cidr_subnet_azdoa" {
-  type        = list(string)
-  description = "Azure DevOps agent network address space."
-}
-
-variable "cidr_subnet_prv_endpoint" {
-  type        = list(string)
-  description = "Address prefixes subnet private endpoint."
-}
-
+# variable "cidr_subnet_azdoa" {
+#   type        = list(string)
+#   description = "Azure DevOps agent network address space."
+# }
 #
-# DNS Forwarder
+# variable "cidr_subnet_prv_endpoint" {
+#   type        = list(string)
+#   description = "Address prefixes subnet private endpoint."
+# }
+
+# #
+# # DNS Forwarder
+# #
+# variable "dns_forwarder_vm_image_version" {
+#   type        = string
+#   description = "Version of dns forwarder image created in 03_packer"
+# }
 #
-variable "dns_forwarder_vm_image_version" {
-  type        = string
-  description = "Version of dns forwarder image created in 03_packer"
-}
-
+# #
+# # VPN
+# #
 #
-# VPN
+# variable "vpn_sku" {
+#   type        = string
+#   default     = "VpnGw1"
+#   description = "VPN Gateway SKU"
+# }
 #
-
-variable "vpn_sku" {
-  type        = string
-  default     = "VpnGw1"
-  description = "VPN Gateway SKU"
-}
-
-variable "vpn_pip_sku" {
-  type        = string
-  default     = "Basic"
-  description = "VPN GW PIP SKU"
-}
-
+# variable "vpn_pip_sku" {
+#   type        = string
+#   default     = "Basic"
+#   description = "VPN GW PIP SKU"
+# }
 #
-# DNS
+# #
+# # DNS
+# #
 #
-
-variable "dns_zone_prefix" {
-  type        = string
-  default     = null
-  description = "The dns subdomain."
-}
-
-variable "external_domain" {
-  type        = string
-  default     = null
-  description = "Domain for delegation"
-}
-
-variable "dns_zone_internal_prefix" {
-  type        = string
-  default     = null
-  description = "The dns subdomain."
-}
-
-variable "dns_default_ttl_sec" {
-  type        = number
-  description = "value"
-  default     = 3600
-}
-
+# variable "dns_zone_prefix" {
+#   type        = string
+#   default     = null
+#   description = "The dns subdomain."
+# }
 #
-# General Common
+# variable "external_domain" {
+#   type        = string
+#   default     = null
+#   description = "Domain for delegation"
+# }
 #
-
-variable "zones" {
-  type        = list(number)
-  default     = []
-  description = "(Optional) List of availability zones on which the API management and appgateway will be deployed"
-}
-
+# variable "dns_zone_internal_prefix" {
+#   type        = string
+#   default     = null
+#   description = "The dns subdomain."
+# }
 #
-# Azure DevOps Agent
+# variable "dns_default_ttl_sec" {
+#   type        = number
+#   description = "value"
+#   default     = 3600
+# }
 #
-
-variable "enable_azdoa" {
-  type        = bool
-  default     = true
-  description = "Enable Azure DevOps agent."
-}
+# #
+# # General Common
+# #
+#
+# variable "zones" {
+#   type        = list(number)
+#   default     = []
+#   description = "(Optional) List of availability zones on which the API management and appgateway will be deployed"
+# }
+#
+# #
+# # Azure DevOps Agent
+# #
+#
+# variable "enable_azdoa" {
+#   type        = bool
+#   default     = true
+#   description = "Enable Azure DevOps agent."
+# }
