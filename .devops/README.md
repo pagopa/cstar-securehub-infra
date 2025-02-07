@@ -140,5 +140,5 @@ This example is based on the `base-code-review-pipelines` file, for `base-deploy
 
 ### I need to add variables from the pipeline definition
 
-No worries, once you've added the additional variables for your domain in the pipeline definition (check the `README.md` on p4pa-azure-devops project for the how-to)
+No worries, once you've added the additional variables for your domain in the pipeline definition (check the `README.md` on cstar-azure-devops project for the how-to)
 you can add them in the `base-*` pipelines. If other domains don't use those variables is ok, it will do no harm to their pipeline execution

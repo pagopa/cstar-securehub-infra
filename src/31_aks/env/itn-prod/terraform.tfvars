@@ -1,5 +1,5 @@
 # general
-prefix         = "p4pa"
+prefix         = "cstar"
 env_short      = "p"
 env            = "prod"
 domain         = "prod"
@@ -9,8 +9,8 @@ location_short = "itn"
 tags = {
   CreatedBy   = "Terraform"
   Environment = "PROD"
-  Owner       = "P4PA"
-  Source      = "https://github.com/pagopa/p4pa-infra"
+  Owner       = "CSTAR"
+  Source      = "https://github.com/pagopa/cstar-securehub-infra"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
 
@@ -32,7 +32,7 @@ aks_sku_tier       = "Standard"
 aks_alerts_enabled = true
 
 aks_system_node_pool = {
-  name                         = "p4papsys"
+  name                         = "cstarpsys"
   vm_size                      = "Standard_D2ds_v5"
   os_disk_type                 = "Ephemeral"
   os_disk_size_gb              = "75"
@@ -45,7 +45,7 @@ aks_system_node_pool = {
 
 aks_user_node_pool_standalone = {
   enabled         = true,
-  name            = "p4papuser01",
+  name            = "cstarpuser01",
   vm_size         = "Standard_B8ms",
   os_disk_type    = "Managed",
   os_disk_size_gb = 75,

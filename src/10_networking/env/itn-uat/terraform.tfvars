@@ -8,7 +8,7 @@ domain         = "core"
 tags = {
   CreatedBy   = "Terraform"
   Environment = "UAT"
-  Owner       = "cstar"
+  Owner       = "CSTAR"
   Source      = "https://github.com/pagopa-cstar/cstar-infra"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }

@@ -1,4 +1,4 @@
 resource_group_name  = "terraform-state-rg"
-storage_account_name = "tfinfdevp4pa"
+storage_account_name = "tfinfdevcstar"
 container_name       = "terraform-state"
-key                  = "p4pa-infra-monitoring-dev.tfstate"
+key                  = "cstar-infra-monitoring-dev.tfstate"

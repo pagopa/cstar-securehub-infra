@@ -1,5 +1,5 @@
 # general
-prefix         = "p4pa"
+prefix         = "cstar"
 env_short      = "u"
 env            = "uat"
 domain         = "uat"
@@ -9,8 +9,8 @@ location_short = "itn"
 tags = {
   CreatedBy   = "Terraform"
   Environment = "UAT"
-  Owner       = "P4PA"
-  Source      = "https://github.com/pagopa/p4pa-infra"
+  Owner       = "CSTAR"
+  Source      = "https://github.com/pagopa/cstar-securehub-infra"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
 
@@ -31,7 +31,7 @@ aks_kubernetes_version = "1.29.7"
 aks_sku_tier = "Free"
 
 aks_system_node_pool = {
-  name                         = "p4pausys"
+  name                         = "cstarusys"
   vm_size                      = "Standard_D2ds_v5"
   os_disk_type                 = "Ephemeral"
   os_disk_size_gb              = "75"
@@ -44,7 +44,7 @@ aks_system_node_pool = {
 
 aks_user_node_pool_standalone = {
   enabled         = true,
-  name            = "p4pauuser01",
+  name            = "cstaruuser01",
   vm_size         = "Standard_B8ms",
   os_disk_type    = "Managed",
   os_disk_size_gb = 75,

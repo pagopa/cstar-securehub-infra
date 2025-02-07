@@ -8,7 +8,7 @@ domain         = "core"
 tags = {
   CreatedBy   = "Terraform"
   Environment = "DEV"
-  Owner       = "cstar"
+  Owner       = "CSTAR"
   Source      = "https://github.com/pagopa/cstar-securehub-infra"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }

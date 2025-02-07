@@ -5,7 +5,7 @@
 # 📝 Local execution example:
 # ./setup_schema.sh << EOF
 # {
-#   "endpoint": "p4pa-d-platform-temporal-cassandra-account.cassandra.cosmos.azure.com",
+#   "endpoint": "cstar-d-platform-temporal-cassandra-account.cassandra.cosmos.azure.com",
 #   "port": "10350",
 #   "username": "your-username",
 #   "password": "your-password",
