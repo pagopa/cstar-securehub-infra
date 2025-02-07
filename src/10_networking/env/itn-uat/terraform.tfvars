@@ -9,7 +9,7 @@ tags = {
   CreatedBy   = "Terraform"
   Environment = "UAT"
   Owner       = "CSTAR"
-  Source      = "https://github.com/pagopa-cstar/cstar-infra"
+  Source      = "https://github.com/pagopa/cstar-securehub-infra"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
 
@@ -17,7 +17,7 @@ tags = {
 # VNET
 #
 
-cidr_core_vnet                   = ["10.1.0.0/16"]     # 10.1.0.0 --> 10.1.255.255
+cidr_core_hub_vnet                   = ["10.1.0.0/16"]     # 10.1.0.0 --> 10.1.255.255
 cidr_vpn_subnet                  = ["10.1.128.0/24"]   # 10.1.128.0 --> 10.1.128.255
 cidr_subnet_apim                 = ["10.1.129.0/26"]   # 10.1.129.0 --> 10.1.129.63
 cidr_subnet_azdoa                = ["10.1.129.64/26"]  # 10.1.129.64 --> 10.1.129.127
