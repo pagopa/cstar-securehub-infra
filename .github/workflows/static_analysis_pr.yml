@@ -1,0 +1,16 @@
+name: Static Analysis PR
+
+on:
+  push:
+    branches-ignore:
+      - main
+
+jobs:
+  static_analysis:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Static Analysis
+        uses: pagopa/eng-github-actions-iac-template/azure/terraform-static-analysis@1e65ac158f5f60d3e46d3621dd4321f7b6e2d80d # v1.8.0
+        with:
+          precommit_version: 'v1.97.3@sha256:cab76405fc6d068e20ca7c5a6f8d17c527356eed31dbc54151aec9fac65da128'
