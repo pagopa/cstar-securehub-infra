@@ -18,48 +18,18 @@
 |------|---------|
 | <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 2.53.1 |
 | <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 3.114.0 |
-| <a name="provider_external"></a> [external](#provider\_external) | 2.3.4 |
-| <a name="provider_helm"></a> [helm](#provider\_helm) | 2.16.1 |
-| <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | 2.33.0 |
-| <a name="provider_null"></a> [null](#provider\_null) | 3.2.2 |
-| <a name="provider_random"></a> [random](#provider\_random) | 3.6.2 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module___v3__"></a> [\_\_v3\_\_](#module\_\_\_v3\_\_) | git::https://github.com/pagopa/terraform-azurerm-v3.git | 61c6484f85d6b260e9d01769ace7efc21d357a10 |
-| <a name="module_cert_mounter_api_temporal"></a> [cert\_mounter\_api\_temporal](#module\_cert\_mounter\_api\_temporal) | ./.terraform/modules/__v3__/cert_mounter | n/a |
-| <a name="module_cert_mounter_artemis"></a> [cert\_mounter\_artemis](#module\_cert\_mounter\_artemis) | ./.terraform/modules/__v3__/cert_mounter | n/a |
-| <a name="module_cert_mounter_web_temporal"></a> [cert\_mounter\_web\_temporal](#module\_cert\_mounter\_web\_temporal) | ./.terraform/modules/__v3__/cert_mounter | n/a |
 | <a name="module_postgres_flexible_snet"></a> [postgres\_flexible\_snet](#module\_postgres\_flexible\_snet) | ./.terraform/modules/__v3__/subnet | n/a |
-| <a name="module_temporal_pgflex"></a> [temporal\_pgflex](#module\_temporal\_pgflex) | ./.terraform/modules/__v3__/postgres_flexible_server | n/a |
-| <a name="module_temporal_workload_identity_configuration"></a> [temporal\_workload\_identity\_configuration](#module\_temporal\_workload\_identity\_configuration) | ./.terraform/modules/__v3__/kubernetes_workload_identity_configuration | n/a |
-| <a name="module_temporal_workload_identity_init"></a> [temporal\_workload\_identity\_init](#module\_temporal\_workload\_identity\_init) | ./.terraform/modules/__v3__/kubernetes_workload_identity_init | n/a |
-| <a name="module_workload_identity_artemis"></a> [workload\_identity\_artemis](#module\_workload\_identity\_artemis) | ./.terraform/modules/__v3__/kubernetes_workload_identity_init | n/a |
-| <a name="module_workload_identity_config_artemis"></a> [workload\_identity\_config\_artemis](#module\_workload\_identity\_config\_artemis) | ./.terraform/modules/__v3__/kubernetes_workload_identity_configuration | n/a |
 
 ## Resources
 
 | Name | Type |
 |------|------|
-| [azurerm_key_vault_secret.temporal_admin_password](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
-| [azurerm_key_vault_secret.temporal_admin_user](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
-| [azurerm_postgresql_flexible_server_database.temporal](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/postgresql_flexible_server_database) | resource |
-| [azurerm_private_dns_a_record.ingress_api_temporal_internal](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_a_record) | resource |
-| [azurerm_private_dns_a_record.ingress_artemis](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_a_record) | resource |
-| [azurerm_private_dns_a_record.ingress_web_temporal_internal](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_a_record) | resource |
-| [azurerm_resource_group.temporal_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
-| [helm_release.artemis](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
-| [helm_release.reloader_artemis](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
-| [helm_release.reloader_temporal](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
-| [helm_release.temporal](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
-| [kubernetes_ingress_v1.ingress_artemis](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/ingress_v1) | resource |
-| [kubernetes_namespace.artemis](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/namespace) | resource |
-| [kubernetes_namespace.temporal](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/namespace) | resource |
-| [kubernetes_secret.temporal_postgres](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/secret) | resource |
-| [null_resource.trigger](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
-| [random_password.temporal_admin_password](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password) | resource |
 | [azuread_group.adgroup_admin](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 | [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) | data source |
 | [azurerm_key_vault.key_vault_core](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault) | data source |
@@ -69,7 +39,6 @@
 | [azurerm_private_dns_zone.postgres](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/private_dns_zone) | data source |
 | [azurerm_subscription.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subscription) | data source |
 | [azurerm_virtual_network.vnet_core](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/virtual_network) | data source |
-| [external_external.temporal_postgres_schema_setup](https://registry.terraform.io/providers/hashicorp/external/latest/docs/data-sources/external) | data source |
 
 ## Inputs
 
