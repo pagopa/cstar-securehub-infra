@@ -1,0 +1,82 @@
+#
+# This is a template on how to use cassandra
+#
+
+resource "azurerm_resource_group" "temporal_rg" {
+  name     = "${local.project}-temporal"
+  location = var.location
+}
+
+
+#
+# CODE
+#
+
+# module "cosmosdb_account_cassandra" {
+#   source = "./.terraform/modules/__v3__/cosmosdb_account"
+#   count  = local.enable_temporal_io
+#
+#   name                = "${local.product}-${var.domain}-temporal-cassandra-account"
+#   domain              = var.domain
+#   location            = var.location
+#   resource_group_name = azurerm_resource_group.temporal_rg.name
+#   offer_type          = var.cosmos_cassandra_account_params.offer_type
+#   enable_free_tier    = var.cosmos_cassandra_account_params.enable_free_tier
+#   kind                = "GlobalDocumentDB"
+#   capabilities        = var.cosmos_cassandra_account_params.capabilities
+#   # mongo_server_version = null # https://github.com/hashicorp/terraform-provider-azurerm/issues/25889#issuecomment-2122799769
+#   public_network_access_enabled     = var.cosmos_cassandra_account_params.public_network_access_enabled
+#   private_endpoint_enabled          = var.cosmos_cassandra_account_params.private_endpoint_enabled
+#   private_dns_zone_cassandra_ids    = [data.azurerm_private_dns_zone.cassandra[0].id]
+#   subnet_id                         = data.azurerm_subnet.prv_temporal_cassandrea_snet[0].id
+#   is_virtual_network_filter_enabled = var.cosmos_cassandra_account_params.is_virtual_network_filter_enabled
+#
+#   # allowed_virtual_network_subnet_ids = [
+#   #   data.azurerm_subnet.aks_usr_subnet.id
+#   # ]
+#
+#   consistency_policy               = var.cosmos_cassandra_account_params.consistency_policy
+#   main_geo_location_location       = var.location
+#   main_geo_location_zone_redundant = var.cosmos_cassandra_account_params.main_geo_location_zone_redundant
+#   additional_geo_locations         = var.cosmos_cassandra_account_params.additional_geo_locations
+#
+#   backup_continuous_enabled = var.cosmos_cassandra_account_params.backup_continuous_enabled
+#
+#   tags = var.tags
+#
+# }
+#
+#
+# resource "azurerm_cosmosdb_cassandra_keyspace" "temporal" {
+#   name                = "temporal"
+#   resource_group_name = azurerm_resource_group.temporal_rg.name
+#   account_name        = module.cosmosdb_account_cassandra[0].name
+#
+#   autoscale_settings {
+#     max_throughput = 1000
+#   }
+#
+#   lifecycle {
+#     ignore_changes = [autoscale_settings[0].max_throughput]
+#   }
+# }
+#
+# #
+# #
+# #
+# data "external" "cassandra_temporal_schema_setup" {
+#   program = ["${path.module}/scripts/temporal_cassandra_schema_setup.sh"]
+#
+#   query = {
+#     endpoint       = "${module.cosmosdb_account_cassandra[0].name}.cassandra.cosmos.azure.com"
+#     port           = "10350"
+#     username       = module.cosmosdb_account_cassandra[0].name
+#     password       = module.cosmosdb_account_cassandra[0].primary_key
+#     schema_version = var.temporal_io_cassandra_schema_version
+#     docker_image   = var.temporal_io_docker_admin_tools_version
+#   }
+#
+#   depends_on = [
+#     azurerm_cosmosdb_cassandra_keyspace.temporal
+#   ]
+# }
