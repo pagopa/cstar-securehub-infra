@@ -1,5 +1,5 @@
 resource "azurerm_resource_group" "sec_rg" {
-  name     = "${local.product_nodomain}-core-sec-rg"
+  name     = "${local.project_nodomain}-core-sec-rg"
   location = var.location
 
   tags = var.tags
@@ -14,7 +14,7 @@ module "key_vault" {
 
   for_each = toset(local.core_key_vaults)
 
-  name                          = "${local.product_nodomain}-${each.key}-kv"
+  name                          = "${local.project_nodomain}-${each.key}-kv"
   location                      = azurerm_resource_group.sec_rg.location
   resource_group_name           = azurerm_resource_group.sec_rg.name
   tenant_id                     = data.azurerm_client_config.current.tenant_id
