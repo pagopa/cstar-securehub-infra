@@ -12,7 +12,7 @@ resource "azurerm_resource_group" "sec_rg" {
 module "key_vault" {
   source = "./.terraform/modules/__v4__/key_vault"
 
-  for_each = toset(local.core_key_vaults)
+  for_each = toset(local.prefix_key_vaults)
 
   name                          = "${local.project_nodomain}-${each.key}-kv"
   location                      = azurerm_resource_group.sec_rg.location
@@ -26,7 +26,7 @@ module "key_vault" {
 
 ## ad group policy ##
 resource "azurerm_key_vault_access_policy" "ad_group_policy" {
-  for_each = toset(local.core_key_vaults)
+  for_each = toset(local.prefix_key_vaults)
 
   key_vault_id = module.key_vault[each.key].id
 
@@ -41,7 +41,7 @@ resource "azurerm_key_vault_access_policy" "ad_group_policy" {
 
 ## ad group policy ##
 resource "azurerm_key_vault_access_policy" "adgroup_developers_policy" {
-  for_each = var.env == "dev" ? toset(local.core_key_vaults) : []
+  for_each = var.env == "dev" ? toset(local.prefix_key_vaults) : []
 
   key_vault_id = module.key_vault[each.key].id
 
@@ -58,7 +58,7 @@ resource "azurerm_key_vault_access_policy" "adgroup_developers_policy" {
 }
 
 resource "azurerm_key_vault_access_policy" "adgroup_externals_policy" {
-  for_each = var.env == "dev" ? toset(local.core_key_vaults) : []
+  for_each = var.env == "dev" ? toset(local.prefix_key_vaults) : []
 
   key_vault_id = module.key_vault[each.key].id
 

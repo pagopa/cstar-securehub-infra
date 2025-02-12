@@ -1,5 +1,5 @@
 resource "azurerm_key_vault_key" "sops_key" {
-  for_each = toset(local.core_key_vaults)
+  for_each = toset(local.prefix_key_vaults)
 
   name         = "${local.project_nodomain}-${each.key}-sops-key"
   key_vault_id = module.key_vault[each.key].id
