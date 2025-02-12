@@ -12,7 +12,7 @@ resource "azurerm_resource_group" "sec_rg" {
 module "key_vault" {
   source = "./.terraform/modules/__v4__/key_vault"
 
-  for_each = set(local.core_key_vaults)
+  for_each = toset(local.core_key_vaults)
 
   name                          = "${local.product_nodomain}-${each.key}-kv"
   location                      = azurerm_resource_group.sec_rg.location
