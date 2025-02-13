@@ -36,8 +36,6 @@ locals {
     ] : []
   }
 
-  all_secrets_value = local.all_enc_secrets_value
-
   # Create a flattened list of secrets adding the key vault name.
   # Example output:
   # [
@@ -55,7 +53,7 @@ locals {
 ## SOPS secrets
 
 ## Upload all encrypted secrets
-resource "azurerm_key_vault_secret" "secret" {
+resource "azurerm_key_vault_secret" "sops_local_secrets" {
   # Iterate over the flat list with a unique key "vault-secret"
   # Example: { for_each = {
   #   "core-secret1" = { sec_key = "secret1", sec_val = "encValue1", key_vault = "core" },
