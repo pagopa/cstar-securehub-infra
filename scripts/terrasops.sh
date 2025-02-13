@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail   # Enable strict mode
 
 # =================================================================
 # Terraform SOPS Secrets Decryption Script
@@ -8,7 +9,7 @@
 # -----------
 # This script is used by Terraform to decrypt SOPS secrets and export them to JSON.
 # It's designed to work with Azure Key Vault and handles the decryption of secrets
-# stored in environment-specific files.
+# stored in environment-specific directories.
 #
 # PREREQUISITES
 # ------------
@@ -16,66 +17,66 @@
 # - SOPS installed
 # - Azure CLI configured
 # - Proper access to Azure Key Vault
-# - Encrypted files in ./secret/<env>/ directory
+# - Encrypted files in provided "path" directory (e.g., secrets/cicd/itn-dev)
 #
 # DIRECTORY STRUCTURE
 # -----------------
 # ./
 # ├── secret/
-# │   ├── weu-dev/
-# │   │   ├── secret.ini
-# │   │   └── noedit_secret_enc.json
-# │   ├── weu-prod/
-# │   │   ├── secret.ini
-# │   │   └── noedit_secret_enc.json
-# │   └── ...
+# │   ├── cicd/
+# │   │   ├── itn-dev/
+# │   │   │   ├── secret.ini
+# │   │   │   └── noedit_secret_enc.json
+# │   │   └── ... (other environments)
 #
 # TERRAFORM USAGE
 # -------------
 # data "external" "terrasops_sh" {
 #   program = ["bash", "terrasops.sh"]
 #   query = {
-#     env = "${var.location_short}-${var.env}"
+#     path = "secrets/cicd/itn-dev"
 #   }
 # }
 #
 # LOCAL USAGE EXAMPLES
 # ------------------
 # 1. Basic usage:
-#    echo '{"env": "weu-dev"}' | ./terrasops.sh
+#    echo '{"path": "secrets/cicd/itn-dev"}' | ./terrasops.sh
 #
 # 2. With debug mode (shows detailed execution steps):
-#    echo '{"env": "weu-dev"}' | ./terrasops.sh debug
+#    echo '{"path": "secrets/cicd/itn-dev"}' | ./terrasops.sh debug
 #
 # 3. Pretty print output (useful for debugging):
-#    echo '{"env": "weu-dev"}' | ./terrasops.sh | jq '.'
+#    echo '{"path": "secrets/cicd/itn-dev"}' | ./terrasops.sh | jq '.'
 #
 # 4. Save output to file:
-#    echo '{"env": "weu-dev"}' | ./terrasops.sh > output.json
+#    echo '{"path": "secrets/cicd/itn-dev"}' | ./terrasops.sh > output.json
 #
 # 5. Debug mode with output redirection (shows process but saves clean JSON):
-#    echo '{"env": "weu-dev"}' | ./terrasops.sh debug 2>debug.log >output.json
-#
-# 6. Different environments examples:
-#    echo '{"env": "weu-prod"}' | ./terrasops.sh
-#    echo '{"env": "neu-dev"}' | ./terrasops.sh
-#    echo '{"env": "neu-prod"}' | ./terrasops.sh
+#    echo '{"path": "secrets/cicd/itn-dev"}' | ./terrasops.sh debug 2>debug.log >output.json
 #
 # ERROR HANDLING
 # -------------
-# The script will exit with status code 1 and error message if:
-# - Environment is not specified in input JSON
+# The script will exit with status code 1 and an error message if:
+# - "path" is not specified in the input JSON
 # - Configuration files are missing
 # - Azure Key Vault parameters are missing/invalid
 # - SOPS decryption fails
 #
-#
 # NOTE
 # ----
-# ⚠️  Do not add additional echoes to the script in case of golden path,
-#     as the script only needs to return a json for Terraform
+# ⚠️  Do not add additional echoes to the script in case of the golden path,
+#     as the script only needs to return JSON for Terraform
 #
 # =================================================================
+
+# Check required dependencies
+for cmd in jq sops; do
+    if ! command -v "${cmd}" >/dev/null 2>&1; then
+        echo "❌ ERROR: ${cmd} is not installed or not in PATH" >&2
+        exit 1
+    fi
+done
 
 # Function for debug messages
 debug_log() {
@@ -96,19 +97,22 @@ if [[ "$1" == "debug" ]]; then
 fi
 
 debug_log "📝 Parsing JSON input from Terraform"
-eval "$(jq -r '@sh "export terrasops_env=\(.env)"')"
+eval "$(jq -r '@sh "export secret_ini_path=\(.path)"')"
 
-if [[ -z "$terrasops_env" ]]; then
-    error_log "🚫 Environment not specified in Terraform JSON input"
+if [[ -z "$secret_ini_path" ]]; then
+    error_log "🚫 Path not specified in Terraform JSON input"
     exit 1
 fi
-debug_log "🌍 Environment set to: $terrasops_env"
+debug_log "🌍 Path set to: $secret_ini_path"
 
 # Load configuration
 debug_log "📂 Loading configuration file"
-# shellcheck disable=SC1090
-source "./secret/$terrasops_env/secret.ini"
-encrypted_file_path="./secret/$terrasops_env/$file_crypted"
+
+file_crypted="PLACEHOLDER_SECRET_INI"
+# shellcheck source=/dev/null
+source "$secret_ini_path/secret.ini"
+# shellcheck source=/dev/null
+encrypted_file_path="$secret_ini_path/$file_crypted"
 
 debug_log "🔒 Checking file existence: $encrypted_file_path"
 if [ -f "$encrypted_file_path" ]; then
