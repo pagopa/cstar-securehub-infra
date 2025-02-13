@@ -1,5 +1,5 @@
 data "external" "terrasops" {
-  for_each = local.prefix_key_vaults
+  for_each = toset(local.prefix_key_vaults)
 
   program = [
     "bash", "terrasops.sh"

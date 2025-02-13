@@ -90,8 +90,8 @@ error_log() {
     echo "❌ ERROR: $1" >&2
 }
 
-# Enable debug mode if passed as parameter
-if [[ "$1" == "debug" ]]; then
+# Enable debug mode if the first parameter is "debug"
+if [[ "${1:-}" == "debug" ]]; then
     export DEBUG=true
     debug_log "🐛 Debug mode enabled"
 fi
