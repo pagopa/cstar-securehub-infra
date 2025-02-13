@@ -35,4 +35,3 @@ module "__v4__" {
   # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v1.4.0
   source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=80b6cf16e70fd176ad7de10c4027f9ad791d7c6a"
 }
-

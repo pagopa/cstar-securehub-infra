@@ -1,10 +1,10 @@
 locals {
   project          = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}" // e.g. "cstar-dev-ny-app.com"
-  project_nodomain = "${var.prefix}-${var.env_short}-${var.location_short}"                   // e.g. "cstar-dev-ny"
-  product          = "${var.prefix}-${var.env_short}"                                       // e.g. "cstar-dev"
+  project_nodomain = "${var.prefix}-${var.env_short}-${var.location_short}"               // e.g. "cstar-dev-ny"
+  product          = "${var.prefix}-${var.env_short}"                                     // e.g. "cstar-dev"
 
-  azdo_managed_identity_rg_name = "${local.project_nodomain}-core-identity-rg"                 // e.g. "cstar-dev-ny-core-identity-rg"
+  azdo_managed_identity_rg_name = "${local.project_nodomain}-core-identity-rg"                                  // e.g. "cstar-dev-ny-core-identity-rg"
   azdo_iac_managed_identities   = toset(["azdo-${var.env}-cstar-iac-deploy", "azdo-${var.env}-cstar-iac-plan"]) // e.g. ["azdo-dev-cstar-iac-deploy", "azdo-dev-cstar-iac-plan"]
 
-  prefix_key_vaults = ["core", "cicd"]                                                       // e.g. ["core", "cicd"]
+  prefix_key_vaults = ["core", "cicd"] // e.g. ["core", "cicd"]
 }

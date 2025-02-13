@@ -3,13 +3,13 @@
 # set -x  # Uncomment this line to enable debug mode
 
 #
-# This script allows you to perform a whole series of CRUD operations on the sops encrypted file, 
+# This script allows you to perform a whole series of CRUD operations on the sops encrypted file,
 # allowing for example to generate the new file or to modify the values ​​of the encrypted file.
-# To do this, the script uses an ini file called secrets.ini that contains the name of the kv 
-# and the key dedicated to sops that takes care of crypting and uncrypting the file. 
+# To do this, the script uses an ini file called secrets.ini that contains the name of the kv
+# and the key dedicated to sops that takes care of crypting and uncrypting the file.
 # This file in saved under a folder structure like this
 #    ./secrets/<kvname>/<env>/secret.ini
-# kvname is the suffix of the key vault 
+# kvname is the suffix of the key vault
 #
 
 #
