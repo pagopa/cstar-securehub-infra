@@ -35,6 +35,6 @@ data "azurerm_user_assigned_identity" "iac_federated_azdo" {
 #
 # Packer
 #
-data azurerm_resource_group "packer_rg" {
+data "azurerm_resource_group" "packer_rg" {
   name = local.packer_rg_name
 }
