@@ -6,7 +6,7 @@
 # }
 #
 # module "container_registry" {
-#   source = "./.terraform/modules/__v3__/container_registry"
+#   source = "./.terraform/modules/__v4__/container_registry"
 #
 #   name                          = replace("${local.project}-common-acr", "-", "")
 #   sku                           = var.env_short != "d" ? "Premium" : "Basic"
