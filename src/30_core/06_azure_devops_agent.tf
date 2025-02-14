@@ -3,7 +3,7 @@ module "azdoa_linux_app" {
   count  = var.enable_azdoa ? 1 : 0
 
   name                = "${local.project}-azdoa-vmss-ubuntu-app"
-  resource_group_name = data.azurerm_resource_group.azdo_rg.name
+  resource_group_name = data.azurerm_resource_group.packer_rg.name
   subnet_id           = data.azurerm_subnet.azdoa_snet.id
   subscription_id     = data.azurerm_subscription.current.subscription_id
   location            = var.location
@@ -22,7 +22,7 @@ module "azdoa_linux_infra" {
   count  = var.enable_azdoa ? 1 : 0
 
   name                = "${local.project}-azdoa-vmss-ubuntu-infra"
-  resource_group_name = data.azurerm_resource_group.azdo_rg.name
+  resource_group_name = data.azurerm_resource_group.packer_rg.name
   subnet_id           = data.azurerm_subnet.azdoa_snet.id
   #   subscription_name   = data.azurerm_subscription.current.display_name
   subscription_id   = data.azurerm_subscription.current.subscription_id
