@@ -60,6 +60,10 @@ variable "cidr_core_hub_vnet" {
   description = "Address prefixes vnet core"
 }
 
+variable "cidr_subnet_azdoa" {
+  type        = list(string)
+  description = "Azure DevOps agent network address space."
+}
 
 # variable "cidr_vpn_subnet" {
 #   type        = list(string)
@@ -67,10 +71,6 @@ variable "cidr_core_hub_vnet" {
 #   default     = null
 # }
 
-# variable "cidr_subnet_azdoa" {
-#   type        = list(string)
-#   description = "Azure DevOps agent network address space."
-# }
 #
 # variable "cidr_subnet_prv_endpoint" {
 #   type        = list(string)
