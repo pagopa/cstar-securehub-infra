@@ -5,7 +5,7 @@ location                  = "italynorth"
 location_short            = "itn"
 location_westeurope       = "westeurope"
 location_short_westeurope = "weu"
-domain                    = "monitoring"
+domain                    = "platform-core"
 
 tags = {
   CreatedBy   = "Terraform"
@@ -14,7 +14,3 @@ tags = {
   Source      = "https://github.com/pagopa/cstar-securehub-infra"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
-
-### Grafana
-grafana_zone_redundancy_enabled = false
-grafana_major_version           = 10

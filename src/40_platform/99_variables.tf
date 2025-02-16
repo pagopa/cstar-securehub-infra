@@ -57,16 +57,3 @@ variable "domain" {
     error_message = "Max length is 12 chars."
   }
 }
-
-#
-# Grafana
-#
-variable "grafana_zone_redundancy_enabled" {
-  type        = bool
-  description = "(Required) Whether to enable the zone redundancy setting of the Grafana instance. Changing this forces a new Dashboard Grafana to be created."
-}
-
-variable "grafana_major_version" {
-  type        = number
-  description = "(Required) Which major version of Grafana to deploy. Possible values are 9, 10. Changing this forces a new resource to be created."
-}
