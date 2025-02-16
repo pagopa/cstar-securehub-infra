@@ -19,3 +19,17 @@ module "vnet_core_hub" {
 
   tags = var.tags
 }
+
+#
+# SPOKES
+#
+module "vnet_spoke_platform_core" {
+  source = "./.terraform/modules/__v4__/virtual_network"
+
+  name                = "${local.project}-spoke-platform-vnet"
+  location            = azurerm_resource_group.rg_network.location
+  resource_group_name = azurerm_resource_group.rg_network.name
+  address_space       = var.cidr_spoke_platform_core_vnet
+
+  tags = var.tags
+}

@@ -52,7 +52,7 @@ variable "domain" {
 }
 
 #
-# Vnet & Subnets CIDR
+# Vnet HUB & Subnets CIDR
 #
 
 variable "cidr_core_hub_vnet" {
@@ -64,6 +64,16 @@ variable "cidr_subnet_azdoa" {
   type        = list(string)
   description = "Azure DevOps agent network address space."
 }
+
+#
+# Vnet Spokes & Subnets CIDR
+#
+
+variable "cidr_spoke_platform_core_vnet" {
+  type        = list(string)
+  description = "Address prefixes vnet platform core"
+}
+
 
 # variable "cidr_vpn_subnet" {
 #   type        = list(string)
