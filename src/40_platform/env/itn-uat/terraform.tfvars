@@ -5,7 +5,7 @@ location                  = "italynorth"
 location_short            = "itn"
 location_westeurope       = "westeurope"
 location_short_westeurope = "weu"
-domain                    = "platform-core"
+domain                    = "platform"
 
 tags = {
   CreatedBy   = "Terraform"
