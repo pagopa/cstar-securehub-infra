@@ -13,6 +13,9 @@ tags = {
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
 
+default_zones = [1, 2, 3]
+nat_idle_timeout_in_minutes = 4
+
 #
 # VNET HUB + SUBNETS
 #

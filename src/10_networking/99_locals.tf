@@ -5,6 +5,10 @@ locals {
 
   tags_for_private_dns = { "PrivateDns" = "true" }
 
+  tags_for_mc = merge(var.tags, {
+    "domain" = "mc"
+  })
+
   # # Dns Forwarder
   # dns_forwarder_vm_image_name = "${local.product_nodomain}-packer-dns-forwarder-ubuntu2204-image-${var.dns_forwarder_vm_image_version}"
 }
