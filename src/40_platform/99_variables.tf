@@ -77,11 +77,6 @@ variable "monitoring_law_daily_quota_gb" {
 
 ## Synthetic Monitoring
 
-variable "synthetic_use_private_endpoint" {
-  type        = bool
-  description = "(Required) if true enables the usage of private endpoint"
-}
-
 variable "synthetic_storage_account_replication_type" {
   type        = string
   description = "(Required) table storage replication type"

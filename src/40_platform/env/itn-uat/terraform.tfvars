@@ -27,4 +27,3 @@ monitoring_law_daily_quota_gb         = 10
 
 ### Synthetic
 synthetic_storage_account_replication_type = "ZRS"
-synthetic_use_private_endpoint             = true
