@@ -5,6 +5,7 @@ locals {
 
   tags_for_private_dns = { "PrivateDns" = "true" }
 
+  ### 🏷️ Tags
   tags_for_mc = merge(var.tags, {
     "domain" = "mc"
   })
