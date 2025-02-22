@@ -1,4 +1,4 @@
-# Azure AD
+# Azure Entra
 data "azuread_group" "adgroup_admin" {
   display_name = "${local.product}-adgroup-admin"
 }
@@ -16,9 +16,20 @@ data "azurerm_private_dns_zone" "storage_account_table" {
   resource_group_name = local.legacy_vnet_core_rg_name
 }
 
+#
+# KV
+#
+data "azurerm_key_vault" "cicd_kv" {
+  name                = local.kv_cicd_name
+  resource_group_name = local.kv_cicd_resource_group_name
+}
 
-# ### Log Analytics
-# data "azurerm_log_analytics_workspace" "log_analytics" {
-#   name                = local.log_analytics_workspace_name
-#   resource_group_name = local.monitor_resource_group_name
-# }
+data "azurerm_key_vault_secret" "email_google_cstar_status" {
+  name         = "email-google-group-cstar-status"
+  key_vault_id = data.azurerm_key_vault.cicd_kv.id
+}
+
+data "azurerm_key_vault_secret" "email_slack_cstar_status" {
+  name         = "email-slack-cstar-status"
+  key_vault_id = data.azurerm_key_vault.cicd_kv.id
+}
