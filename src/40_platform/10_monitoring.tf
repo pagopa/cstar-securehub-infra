@@ -34,14 +34,20 @@ resource "azurerm_application_insights" "monitoring_application_insights" {
   tags = var.tags
 }
 
-resource "azurerm_monitor_action_group" "email" {
-  name                = "PagoPA"
-  resource_group_name = azurerm_resource_group.monitor_rg.name
-  short_name          = "PagoPA"
+resource "azurerm_monitor_action_group" "cstar_status" {
+  name                = "cstar_status"
+  short_name          = "cstar_status"
+  resource_group_name = azurerm_resource_group.monitoring_rg.name
 
   email_receiver {
-    name                    = "sendtooperations"
-    email_address           = data.azurerm_key_vault_secret.monitor_notification_email.value
+    name                    = data.azurerm_key_vault_secret.email_google_cstar_status.name
+    email_address           = data.azurerm_key_vault_secret.email_google_cstar_status.value
+    use_common_alert_schema = true
+  }
+
+  email_receiver {
+    name                    = data.azurerm_key_vault_secret.email_slack_cstar_status.name
+    email_address           = data.azurerm_key_vault_secret.email_slack_cstar_status.value
     use_common_alert_schema = true
   }
 
