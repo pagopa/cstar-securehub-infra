@@ -16,7 +16,6 @@ module "synthetic_snet" {
       name = "Microsoft.App/environments"
       actions = [
         "Microsoft.Network/virtualNetworks/subnets/join/action",
-        "Microsoft.Network/virtualNetworks/subnets/prepareNetworkPolicies/action"
       ]
     }
   }
@@ -46,12 +45,17 @@ resource "azurerm_container_app_environment" "synthetic_cae" {
     name                  = "Consumption"
     workload_profile_type = "Consumption"
     minimum_count = 0
-    maximum_count = 10
+    maximum_count = 0
   }
 
   depends_on = [
     module.synthetic_snet
   ]
+  lifecycle {
+    ignore_changes = [
+      infrastructure_resource_group_name
+    ]
+  }
 }
 
 module "synthetic_monitoring_jobs" {
@@ -66,7 +70,7 @@ module "synthetic_monitoring_jobs" {
 
   application_insight_name              = azurerm_application_insights.monitoring_application_insights.name
   application_insight_rg_name           = azurerm_application_insights.monitoring_application_insights.resource_group_name
-  # application_insights_action_group_ids = [data.azurerm_monitor_action_group.slack.id]
+  application_insights_action_group_ids = [azurerm_monitor_action_group.cstar_status.id]
 
   docker_settings = {
     image_tag = "v1.10.0@sha256:1686c4a719dc1a3c270f98f527ebc34179764ddf53ee3089febcb26df7a2d71d"
@@ -95,5 +99,7 @@ module "synthetic_monitoring_jobs" {
   monitoring_configuration_encoded = templatefile("${path.module}/synthetic_endpoints/monitoring_configuration.json.tpl", {
     env_name               = var.env,
     alert_enabled          = var.synthetic_alerts_enabled
+    public_domain_suffix = local.public_domain_suffix
+    internal_private_domain_suffix = local.internal_private_domain_suffix
   })
 }

@@ -1,8 +1,8 @@
 [
   {
-    "apiName" : "api-mcshared",
-    "appName" : "mcshared",
-    "url" : "https://api-mcshared.dev.cstar.pagopa.it",
+    "apiName" : "api_mcshared",
+    "appName" : "mcshared_appgw",
+    "url" : "https://api-mcshared.${public_domain_suffix}",
     "type" : "appgw",
     "checkCertificate" : true,
     "method" : "GET",

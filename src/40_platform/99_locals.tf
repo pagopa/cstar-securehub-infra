@@ -14,4 +14,17 @@ locals {
 
   monitor_resource_group_name  = "${local.product_nodomain}-core-monitor-rg"
   log_analytics_workspace_name = "${local.product_nodomain}-core-law"
+
+  #
+  # KV
+  #
+  kv_cicd_name = "${local.product_nodomain}-cicd-kv"
+  kv_cicd_resource_group_name = "${local.product_nodomain}-core-sec-rg"
+
+  #
+  # Domain urls
+  #
+  public_domain_suffix = var.env == "prod" ? "cstar.pagopa.it" : "${var.env}.cstar.pagopa.it"
+  internal_private_domain_suffix = var.env == "prod" ? "internal.cstar.pagopa.it" : "internal.${var.env}.cstar.pagopa.it"
+
 }
