@@ -63,7 +63,7 @@ variable "nat_idle_timeout_in_minutes" {
 }
 
 #
-# Vnet HUB & Subnets CIDR
+# HUB Vnet & Subnets CIDR
 #
 
 variable "cidr_core_hub_vnet" {
@@ -77,7 +77,7 @@ variable "cidr_subnet_azdoa" {
 }
 
 #
-# Vnet Spokes & Subnets CIDR
+# SPOKE Vnet & Subnets CIDR
 #
 
 variable "cidr_spoke_platform_core_vnet" {
@@ -85,6 +85,20 @@ variable "cidr_spoke_platform_core_vnet" {
   description = "Address prefixes vnet platform core"
 }
 
+variable "cidr_spoke_data_vnet" {
+  type        = list(string)
+  description = "Address prefixes vnet data"
+}
+
+variable "cidr_spoke_compute_vnet" {
+  type        = list(string)
+  description = "Address prefixes vnet compute"
+}
+
+variable "cidr_spoke_security_vnet" {
+  type        = list(string)
+  description = "Address prefixes vnet security"
+}
 
 # variable "cidr_vpn_subnet" {
 #   type        = list(string)
@@ -154,6 +168,11 @@ variable "cidr_spoke_platform_core_vnet" {
 # # General Common
 # #
 #
+# variable "zones" {
+#   type        = list(number)
+#   default     = []
+#   description = "(Optional) List of availability zones on which the API management and appgateway will be deployed"
+# }
 #
 # #
 # # Azure DevOps Agent
