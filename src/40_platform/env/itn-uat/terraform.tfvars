@@ -16,7 +16,7 @@ tags = {
 #
 # Networking
 #
-cidr_subnet_synthetic         = ["10.90.0.0/24"]
+cidr_subnet_synthetic_cae         = ["10.90.0.0/24"]
 
 #
 # Monitoring
