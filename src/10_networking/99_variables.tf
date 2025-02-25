@@ -74,6 +74,21 @@ variable "cidr_spoke_platform_core_vnet" {
   description = "Address prefixes vnet platform core"
 }
 
+variable "cidr_spoke_data_vnet" {
+  type        = list(string)
+  description = "Address prefixes vnet data"
+}
+
+variable "cidr_spoke_compute_vnet" {
+  type        = list(string)
+  description = "Address prefixes vnet compute"
+}
+
+variable "cidr_spoke_security_vnet" {
+  type        = list(string)
+  description = "Address prefixes vnet security"
+}
+
 # variable "cidr_vpn_subnet" {
 #   type        = list(string)
 #   description = "Address prefixes subnet vpn"
