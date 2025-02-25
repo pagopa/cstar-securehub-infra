@@ -52,9 +52,14 @@ variable "domain" {
 #
 # Networking
 #
-variable "cidr_subnet_synthetic" {
+variable "cidr_subnet_synthetic_cae" {
   type        = list(string)
   description = "Address prefixes subnet synthetic"
+}
+
+variable "cidr_subnet_storage_private_endpoints" {
+  type        = list(string)
+  description = "Address prefixes subnet for storage private endpoints"
 }
 
 #

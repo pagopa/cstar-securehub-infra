@@ -1,26 +1,4 @@
-#
-# Network
-#
-module "synthetic_snet" {
-  # source = "./.terraform/modules/__v4__/subnet"
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v4.git//subnet?ref=synthetic-improvements"
 
-  name                 = "${local.project}-synthetic-snet"
-  resource_group_name  = data.azurerm_virtual_network.vnet_platform.resource_group_name
-  virtual_network_name = data.azurerm_virtual_network.vnet_platform.name
-  address_prefixes     = var.cidr_subnet_synthetic
-
-  delegation = {
-    name = "Microsoft.App/environments"
-    service_delegation = {
-      name = "Microsoft.App/environments"
-      actions = [
-        "Microsoft.Network/virtualNetworks/subnets/join/action",
-      ]
-    }
-  }
-
-}
 
 #
 # synthetic
@@ -59,10 +37,10 @@ resource "azurerm_container_app_environment" "synthetic_cae" {
 }
 
 module "synthetic_monitoring_jobs" {
-  source     = "./.terraform/modules/__v4__/monitoring_function"
-  depends_on = [azurerm_application_insights.monitoring_application_insights]
+  # source     = "./.terraform/modules/__v4__/monitoring_function"
+  source               = "git::https://github.com/pagopa/terraform-azurerm-v4.git//monitoring_function?ref=synthetic-improvements"
 
-  legacy = false
+  depends_on = [azurerm_application_insights.monitoring_application_insights]
 
   location            = var.location
   prefix              = "${local.product}-${var.location_short}"
@@ -88,7 +66,7 @@ module "synthetic_monitoring_jobs" {
     replication_type          = var.synthetic_storage_account_replication_type
   }
 
-  private_endpoint_subnet_id = module.synthetic_snet.id
+  storage_private_endpoint_subnet_id = module.storage_private_endpoint_snet.id
 
   tags = var.tags
 
