@@ -50,14 +50,9 @@ module "synthetic_monitoring_jobs" {
   application_insight_rg_name           = azurerm_application_insights.monitoring_application_insights.resource_group_name
   application_insights_action_group_ids = [azurerm_monitor_action_group.cstar_status.id]
 
-  docker_settings = {
-    image_tag = "v1.10.0@sha256:1686c4a719dc1a3c270f98f527ebc34179764ddf53ee3089febcb26df7a2d71d"
-  }
 
   job_settings = {
-    cron_scheduling              = "*/5 * * * *"
     container_app_environment_id = azurerm_container_app_environment.synthetic_cae.id
-    http_client_timeout          = 30000
   }
 
   storage_account_settings = {
