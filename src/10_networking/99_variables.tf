@@ -51,6 +51,17 @@ variable "domain" {
   }
 }
 
+variable "default_zones" {
+  type        = list(number)
+  default     = []
+  description = "(Optional) List of availability zones"
+}
+
+variable "nat_idle_timeout_in_minutes" {
+  type        = number
+  description = "The idle timeout which should be used in minutes."
+}
+
 #
 # HUB Vnet & Subnets CIDR
 #
