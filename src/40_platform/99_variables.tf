@@ -62,6 +62,11 @@ variable "cidr_subnet_storage_private_endpoints" {
   description = "Address prefixes subnet for storage private endpoints"
 }
 
+variable "cidr_subnet_container_app_private_endpoints" {
+  type        = list(string)
+  description = "Address prefixes subnet for container app private endpoints"
+}
+
 #
 # Monitoring
 #

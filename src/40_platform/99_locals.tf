@@ -6,10 +6,10 @@ locals {
   #
   # Network
   #
-  vnet_rg_name                = "${local.product_nodomain}-core-network-rg"
-  vnet_core_platform_name                = "${local.product_nodomain}-core-spoke-platform-vnet"
+  vnet_rg_name            = "${local.product_nodomain}-core-network-rg"
+  vnet_core_platform_name = "${local.product_nodomain}-core-spoke-platform-vnet"
 
-  legacy_vnet_core_rg_name = "${local.product}-vnet-rg"
+  legacy_vnet_core_rg_name      = "${local.product}-vnet-rg"
   dns_privatelink_storage_table = "privatelink.table.core.windows.net"
 
   monitor_resource_group_name  = "${local.product_nodomain}-core-monitor-rg"
@@ -18,13 +18,13 @@ locals {
   #
   # KV
   #
-  kv_cicd_name = "${local.product_nodomain}-cicd-kv"
+  kv_cicd_name                = "${local.product_nodomain}-cicd-kv"
   kv_cicd_resource_group_name = "${local.product_nodomain}-core-sec-rg"
 
   #
   # Domain urls
   #
-  public_domain_suffix = var.env == "prod" ? "cstar.pagopa.it" : "${var.env}.cstar.pagopa.it"
+  public_domain_suffix           = var.env == "prod" ? "cstar.pagopa.it" : "${var.env}.cstar.pagopa.it"
   internal_private_domain_suffix = var.env == "prod" ? "internal.cstar.pagopa.it" : "internal.${var.env}.cstar.pagopa.it"
 
 }
