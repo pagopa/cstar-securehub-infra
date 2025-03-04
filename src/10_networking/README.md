@@ -45,11 +45,13 @@
 | <a name="input_cidr_spoke_platform_core_vnet"></a> [cidr\_spoke\_platform\_core\_vnet](#input\_cidr\_spoke\_platform\_core\_vnet) | Address prefixes vnet platform core | `list(string)` | n/a | yes |
 | <a name="input_cidr_spoke_security_vnet"></a> [cidr\_spoke\_security\_vnet](#input\_cidr\_spoke\_security\_vnet) | Address prefixes vnet security | `list(string)` | n/a | yes |
 | <a name="input_cidr_subnet_azdoa"></a> [cidr\_subnet\_azdoa](#input\_cidr\_subnet\_azdoa) | Azure DevOps agent network address space. | `list(string)` | n/a | yes |
+| <a name="input_default_zones"></a> [default\_zones](#input\_default\_zones) | (Optional) List of availability zones | `list(number)` | `[]` | no |
 | <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | n/a | yes |
 | <a name="input_env"></a> [env](#input\_env) | Environment | `string` | n/a | yes |
 | <a name="input_env_short"></a> [env\_short](#input\_env\_short) | n/a | `string` | n/a | yes |
 | <a name="input_location"></a> [location](#input\_location) | n/a | `string` | n/a | yes |
 | <a name="input_location_short"></a> [location\_short](#input\_location\_short) | Location short like eg: neu, weu.. | `string` | n/a | yes |
+| <a name="input_nat_idle_timeout_in_minutes"></a> [nat\_idle\_timeout\_in\_minutes](#input\_nat\_idle\_timeout\_in\_minutes) | The idle timeout which should be used in minutes. | `number` | n/a | yes |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br/>  "CreatedBy": "Terraform"<br/>}</pre> | no |
 
