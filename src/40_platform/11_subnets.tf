@@ -3,7 +3,7 @@
 #
 module "synthetic_snet" {
   # source = "./.terraform/modules/__v4__/subnet"
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//subnet?ref=synthetic-improvements"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//subnet?ref=v1.20.0"
 
   name                 = "${local.project}-synthetic-snet"
   resource_group_name  = data.azurerm_virtual_network.vnet_platform.resource_group_name
@@ -26,7 +26,7 @@ module "synthetic_snet" {
 #
 module "storage_private_endpoint_snet" {
   # source = "./.terraform/modules/__v3__/subnet"
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//subnet?ref=synthetic-improvements"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//subnet?ref=v1.20.0"
 
   resource_group_name  = data.azurerm_virtual_network.vnet_platform.resource_group_name
   virtual_network_name = data.azurerm_virtual_network.vnet_platform.name
@@ -41,7 +41,7 @@ module "storage_private_endpoint_snet" {
 
 module "container_app_private_endpoint_snet" {
   # source = "./.terraform/modules/__v3__/subnet"
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//subnet?ref=synthetic-improvements"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//subnet?ref=v1.20.0"
 
   resource_group_name  = data.azurerm_virtual_network.vnet_platform.resource_group_name
   virtual_network_name = data.azurerm_virtual_network.vnet_platform.name
