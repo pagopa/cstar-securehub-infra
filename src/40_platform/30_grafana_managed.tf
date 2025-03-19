@@ -1,4 +1,6 @@
-
+#
+# 📊Grafana Managed
+#
 resource "azurerm_dashboard_grafana" "grafana_dashboard" {
   name                              = "${local.product}-${var.location_short}-grafana"
   resource_group_name               = azurerm_resource_group.monitoring_rg.name
