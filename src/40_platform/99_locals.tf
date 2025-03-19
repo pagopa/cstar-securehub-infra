@@ -21,6 +21,9 @@ locals {
   kv_cicd_name                = "${local.product_nodomain}-cicd-kv"
   kv_cicd_resource_group_name = "${local.product_nodomain}-core-sec-rg"
 
+  kv_core_name                = "${local.product_nodomain}-core-kv"
+  kv_core_resource_group_name = "${local.product_nodomain}-core-sec-rg"
+
   #
   # Domain urls
   #
