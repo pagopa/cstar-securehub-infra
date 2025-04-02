@@ -13,6 +13,8 @@ tags = {
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
 
+nat_idle_timeout_in_minutes = 4
+
 #
 # VNET
 #

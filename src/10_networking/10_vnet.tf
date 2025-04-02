@@ -8,6 +8,10 @@ resource "azurerm_resource_group" "rg_network" {
 #
 # Vnet
 #
+# NOTE: DDoS protection in prod is automatically enforced via organization policy.
+# This module does not manage ddos_protection_plan to avoid conflicts.
+# Expect Terraform to try removing it, but the policy will re-apply it.
+# No action needed unless the module is updated to support ignore_changes.
 
 module "vnet_core_hub" {
   source = "./.terraform/modules/__v4__/virtual_network"

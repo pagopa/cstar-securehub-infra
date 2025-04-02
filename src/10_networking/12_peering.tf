@@ -32,7 +32,7 @@ locals {
 # ⛓️ Peering to cstar-infrastructure
 #
 # SECURE-HUB TO CSTAR WEU CORE
-module "vnet_spoke_to_core_peering" {
+module "vnet_secure_hub_to_core_peering" {
   source = "./.terraform/modules/__v4__/virtual_network_peering"
 
   for_each = local.secure_hub_vnets_peered
@@ -42,17 +42,17 @@ module "vnet_spoke_to_core_peering" {
   source_resource_group_name       = each.value.resource_group_name
   source_virtual_network_name      = each.value.name
   source_remote_virtual_network_id = each.value.id
-  source_allow_gateway_transit     = true
+  source_use_remote_gateways       = true
 
   # Define target virtual network peering details
   target_resource_group_name       = data.azurerm_virtual_network.vnet_weu_core.resource_group_name
   target_virtual_network_name      = data.azurerm_virtual_network.vnet_weu_core.name
   target_remote_virtual_network_id = data.azurerm_virtual_network.vnet_weu_core.id
-  target_use_remote_gateways       = true
+  target_allow_gateway_transit     = true
 }
 
 # SECURE-HUB TO CSTAR WEU AKS
-module "vnet_spoke_to_aks_peering" {
+module "vnet_secure_hub_to_aks_peering" {
   source = "./.terraform/modules/__v4__/virtual_network_peering"
 
   for_each = local.secure_hub_vnets_peered
@@ -61,11 +61,9 @@ module "vnet_spoke_to_aks_peering" {
   source_resource_group_name       = each.value.resource_group_name
   source_virtual_network_name      = each.value.name
   source_remote_virtual_network_id = each.value.id
-  source_allow_gateway_transit     = true
 
   # Define target virtual network peering details
   target_resource_group_name       = data.azurerm_virtual_network.vnet_weu_aks.resource_group_name
   target_virtual_network_name      = data.azurerm_virtual_network.vnet_weu_aks.name
   target_remote_virtual_network_id = data.azurerm_virtual_network.vnet_weu_aks.id
-  target_use_remote_gateways       = true
 }
