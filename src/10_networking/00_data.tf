@@ -11,3 +11,13 @@
 #   type          = "Microsoft.Network/privateDnsZones"
 #   required_tags = local.tags_for_private_dns
 # }
+
+data "azurerm_virtual_network" "vnet_weu_core" {
+  name                = local.vnet_weu_core.name
+  resource_group_name = local.vnet_weu_core.resource_group
+}
+
+data "azurerm_virtual_network" "vnet_weu_aks" {
+  name                = local.vnet_weu_aks.name
+  resource_group_name = local.vnet_weu_aks.resource_group
+}
