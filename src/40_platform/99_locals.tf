@@ -36,13 +36,13 @@ locals {
   domains_setup = {
     "idpay" = {
       tags = {
-        "CostCenter" = "TS310 - PAGAMENTI & SERVIZI"
+        "CostCenter"   = "TS310 - PAGAMENTI & SERVIZI"
         "BusinessUnit" = "CStar"
-        "Owner" = "CStar"
-        "Environment" = var.env
-        "CreatedBy" = "Terraform"
-        "Source" = "https://github.com/pagopa/cstar-securehub-infra"
-        "domain" = "idpay"
+        "Owner"        = "CStar"
+        "Environment"  = var.env
+        "CreatedBy"    = "Terraform"
+        "Source"       = "https://github.com/pagopa/cstar-securehub-infra"
+        "domain"       = "idpay"
       }
       additional_resource_groups = [
         #"${local.product_nodomain}-idpay-azdo-rg"
