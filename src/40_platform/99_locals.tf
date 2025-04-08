@@ -30,4 +30,24 @@ locals {
   public_domain_suffix           = var.env == "prod" ? "cstar.pagopa.it" : "${var.env}.cstar.pagopa.it"
   internal_private_domain_suffix = var.env == "prod" ? "internal.cstar.pagopa.it" : "internal.${var.env}.cstar.pagopa.it"
 
+  #
+  # Domains to setup
+  #
+  domains_setup = {
+    "idpay" = {
+      tags = {
+        "CostCenter" = "TS310 - PAGAMENTI & SERVIZI"
+        "BusinessUnit" = "CStar"
+        "Owner" = "CStar"
+        "Environment" = var.env
+        "CreatedBy" = "Terraform"
+        "Source" = "https://github.com/pagopa/cstar-securehub-infra"
+        "domain" = "idpay"
+      }
+      additional_resource_groups = [
+        #"${local.product_nodomain}-idpay-azdo-rg"
+      ]
+    }
+  }
+
 }
