@@ -10,3 +10,7 @@ data "azuread_group" "adgroup_developers" {
 data "azuread_group" "adgroup_externals" {
   display_name = "${local.product}-adgroup-externals"
 }
+
+data "azurerm_resource_group" "idpay_security_rg" {
+  name = "${local.project}-security-rg"
+}

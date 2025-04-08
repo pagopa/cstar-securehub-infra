@@ -1,10 +1,3 @@
-resource "azurerm_resource_group" "sec_rg" {
-  name     = "${local.project_nodomain}-core-sec-rg"
-  location = var.location
-
-  tags = var.tags
-}
-
 #
 # Kv + Policy
 #
