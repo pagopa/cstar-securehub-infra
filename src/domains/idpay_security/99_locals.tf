@@ -10,4 +10,3 @@ locals {
   secrets_folders_kv = ["idpay"] // e.g. ["core", "cicd"]
 
 }
-
