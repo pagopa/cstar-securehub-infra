@@ -1,6 +1,20 @@
 locals {
   project = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
+  project_no_domain = "${var.prefix}-${var.env_short}-${var.location_short}"
   product = "${var.prefix}-${var.env_short}"
+
+  #
+  # 🌐 Network
+  #
+  vnet_core_rg_name = "${local.product}-vnet-rg"
+  vnet_spoke_data_name = "${local.project_no_domain}-core-spoke-data-vnet"
+  vnet_spoke_data_rg_name = "${local.project_no_domain}-core-network-rg"
+
+  #
+  # 🔑 KeyVault
+  #
+  idpay_kv_name = "${local.project}-kv"
+  idpay_kv_rg_name = "${local.project}-security-rg"
 
   # monitor_action_group_slack_name = "SlackPagoPA"
   # monitor_action_group_email_name = "PagoPA"

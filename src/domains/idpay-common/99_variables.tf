@@ -62,6 +62,26 @@ variable "tags" {
   }
 }
 
+#
+# 🛜 Network
+#
+variable "cidr_idpay_data_cosmos" {
+  type        = list(string)
+  description = "Cosmos subnet network address space."
+  default     = []
+}
+
+variable "cidr_idpay_data_redis" {
+  type        = list(string)
+  description = "Redis subnet network address space."
+  default     = []
+}
+
+
+
+#
+#
+#
 variable "rtd_keyvault" {
   type = object({
     name           = string
@@ -249,26 +269,18 @@ EOD
 }
 
 #Redis
-
-variable "redis_capacity" {
-  type    = number
-  default = 1
-}
-
-variable "redis_sku_name" {
-  type    = string
-  default = "Basic"
-}
-
-variable "redis_family" {
-  type    = string
-  default = "C"
-}
-
-variable "cidr_idpay_subnet_redis" {
-  type        = list(string)
-  description = "Redis network address space."
-  default     = []
+variable "redis_params" {
+  type = object({
+    capacity                      = number
+    family                        = string
+    sku_name                      = string
+  })
+  description = "Redis configuration parameters"
+  default = {
+    capacity                      = 1
+    family                        = "C"
+    sku_name                      = "Basic"
+  }
 }
 
 variable "service_bus_namespace" {
@@ -331,12 +343,6 @@ variable "selfcare_welfare_cdn_storage_account_replication_type" {
   description = "Which replication must use the blob storage under cdn"
 }
 
-
-variable "redis_public_network_access_enabled" {
-  type    = bool
-  default = false
-}
-
 #
 # AKS
 #
@@ -348,15 +354,6 @@ variable "aks_resource_group_name" {
 variable "aks_name" {
   type        = string
   description = "(Required) Name of the Kubernetes cluster."
-}
-
-variable "terraform_remote_state_core" {
-  type = object({
-    resource_group_name  = string,
-    storage_account_name = string,
-    container_name       = string,
-    key                  = string
-  })
 }
 
 variable "k8s_kube_config_path_prefix" {
