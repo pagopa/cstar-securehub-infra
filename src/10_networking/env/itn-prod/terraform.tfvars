@@ -30,7 +30,7 @@ cidr_spoke_compute_vnet       = ["10.10.0.0/16"] # 10.10.0.0 --> 10.10.255.255
 
 ### Data
 cidr_spoke_data_vnet          = ["10.20.0.0/16"] # 10.20.0.0 --> 10.20.255.255
-cidr_spoke_data_idpay         = ["10.20.1.0/24"] # placeholder 10.20.1.0 --> 10.20.1.255
+cidr_spoke_data_idpay_domain         = ["10.20.10.0/24"] # placeholder 10.20.10.0 --> 10.20.10.255
 
 cidr_spoke_security_vnet      = ["10.30.0.0/16"] # 10.30.0.0 --> 10.30.255.255
 cidr_spoke_platform_core_vnet = ["10.90.0.0/16"] # 10.90.0.0 --> 10.90.255.255
