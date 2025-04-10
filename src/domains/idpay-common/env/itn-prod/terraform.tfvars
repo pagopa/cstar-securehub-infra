@@ -17,17 +17,11 @@ tags = {
   Application = "IdPay"
 }
 
-terraform_remote_state_core = {
-  resource_group_name  = "io-infra-rg"
-  storage_account_name = "cstarinfrastterraform"
-  container_name       = "azurermstate"
-  key                  = "prod.terraform.tfstate"
-}
-
 #
 # CIDRs
 #
-cidr_idpay_subnet_redis = ["10.1.139.0/24"]
+cidr_idpay_data_cosmos = ["10.20.10.0/27"] # 10.20.10.0 -> 10.20.10.31
+cidr_idpay_data_redis  = ["10.20.10.32/27"] # 10.20.10.0 -> 10.20.10.32
 
 rtd_keyvault = {
   name           = "cstar-p-rtd-kv"
@@ -44,21 +38,18 @@ cosmos_mongo_account_params = {
     max_staleness_prefix    = 100000
   }
   server_version                   = "7.0"
-  main_geo_location_zone_redundant = false
+  main_geo_location_zone_redundant = true
   enable_free_tier                 = false
 
   additional_geo_locations = [{
     failover_priority = 1
-    location          = "northeurope"
+    location          = "germanywestcentral"
     zone_redundant    = false
     }
   ]
   private_endpoint_enabled          = true
-  public_network_access_enabled     = true
-  is_virtual_network_filter_enabled = true
 
   backup_continuous_enabled = true
-
 }
 
 cosmos_mongo_db_idpay_params = {

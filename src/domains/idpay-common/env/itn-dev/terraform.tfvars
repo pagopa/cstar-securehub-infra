@@ -20,8 +20,8 @@ tags = {
 #
 # CIDRs
 #
-cidr_idpay_data_cosmos = ["10.20.1.0/27"] # 10.20.1.0 -> 10.20.1.31
-cidr_idpay_data_redis  = ["10.20.1.32/27"] # 10.20.1.0 -> 10.20.1.32
+cidr_idpay_data_cosmos = ["10.20.10.0/27"] # 10.20.10.0 -> 10.20.10.31
+cidr_idpay_data_redis  = ["10.20.10.32/27"] # 10.20.10.0 -> 10.20.10.32
 
 rtd_keyvault = {
   name           = "cstar-d-rtd-kv"
@@ -43,8 +43,8 @@ cosmos_mongo_account_params = {
 
   additional_geo_locations          = []
   private_endpoint_enabled          = true
-  public_network_access_enabled     = true
-  is_virtual_network_filter_enabled = true
+  public_network_access_enabled     = false
+  is_virtual_network_filter_enabled = false
 
   backup_continuous_enabled = false
 }
