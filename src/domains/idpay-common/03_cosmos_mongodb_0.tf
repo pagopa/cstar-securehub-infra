@@ -1,9 +1,7 @@
 module "idpay_cosmos_mongodb_account" {
-
   source = "./.terraform/modules/__v4__/cosmosdb_account"
 
-
-  name                = "${local.product}-${var.domain}-mongodb-account"
+  name                = "${local.project}-mongodb-account"
   domain              = var.domain
   location            = data.azurerm_resource_group.idpay_data_rg.location
   resource_group_name = data.azurerm_resource_group.idpay_data_rg.name
@@ -14,14 +12,12 @@ module "idpay_cosmos_mongodb_account" {
 
   #mongo_server_version = var.cosmos_mongo_account_params.server_version
 
-  public_network_access_enabled = var.cosmos_mongo_account_params.public_network_access_enabled
-  private_endpoint_enabled      = var.cosmos_mongo_account_params.private_endpoint_enabled
   subnet_id                     = module.idpay_cosmosdb_snet.id
 
   private_dns_zone_mongo_ids            = [data.azurerm_private_dns_zone.cosmos_mongo.id]
   private_endpoint_mongo_name           = "${local.project}-mongodb-account-private-endpoint"
   private_service_connection_mongo_name = "${var.env_short}-mongodb-account-private-endpoint"
-  is_virtual_network_filter_enabled     = var.cosmos_mongo_account_params.is_virtual_network_filter_enabled
+  # is_virtual_network_filter_enabled     = var.cosmos_mongo_account_params.is_virtual_network_filter_enabled
 
   allowed_virtual_network_subnet_ids = [
     # data.azurerm_subnet.aks_domain_subnet.id
@@ -37,6 +33,9 @@ module "idpay_cosmos_mongodb_account" {
   tags = var.tags
 }
 
+#
+# 🔑 Secrets
+#
 resource "azurerm_key_vault_secret" "cosmosdb_account_mongodb_primary_connection_strings" {
   name         = "mongodb-primary-connection-string"
   value        = module.idpay_cosmos_mongodb_account.primary_connection_strings
