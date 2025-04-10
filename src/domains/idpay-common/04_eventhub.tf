@@ -4,7 +4,7 @@ locals {
 
 module "eventhub_namespace_idpay" {
 
-  count = var.enable.idpay.eventhub_idpay_00 ? 1 : 0
+  count = var.env == "dev" ? 1 : 0
 
   # source = "./.terraform/modules/__v4__/eventhub"
   source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//eventhub?ref=PAYMCLOUD-344-v-4-event-hub-revisione-modulo-v-4"
@@ -69,31 +69,19 @@ module "eventhub_namespace_idpay" {
   tags = var.tags
 }
 
-# resource "azurerm_private_endpoint" "event_hub_idpay_00_private_endpoint" {
-#   # disabled in PROD
-#   count               = var.enable.idpay.eventhub_idpay_00 && var.env_short != "p" ? 1 : 0
-#   name                = "${local.project}-evh-00-private-endpoint"
-#   location            = var.location
-#   resource_group_name = local.vnet_core_resource_group_name
-#   subnet_id           = data.azurerm_subnet.private_endpoint_snet.id
-#
-#   private_dns_zone_group {
-#     name = data.azurerm_private_dns_zone.ehub.name
-#     private_dns_zone_ids = [
-#       data.azurerm_private_dns_zone.ehub.id
-#     ]
-#   }
-#
-#   private_service_connection {
-#     name                           = "${local.project}-evh-00-private-service-connection"
-#     is_manual_connection           = false
-#     private_connection_resource_id = module.event_hub_idpay_00[count.index].namespace_id
-#     subresource_names              = ["namespace"]
-#   }
-# }
+module "event_hub_idpay_configuration" {
+
+  # source = "../../eventhub_configuration"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//eventhub_configuration?ref=PAYMCLOUD-344-v-4-event-hub-revisione-modulo-v-4"
+
+  event_hub_namespace_name                = module.eventhub_namespace_idpay[0].name
+  event_hub_namespace_resource_group_name = module.eventhub_namespace_idpay[0].resource_group_name
+
+  eventhubs = var.eventhubs_idpay_00
+
+}
 
 
-#
 # #tfsec:ignore:AZU023
 # resource "azurerm_key_vault_secret" "event_hub_keys_idpay_00" {
 #   for_each = module.event_hub_idpay_00[0].key_ids
