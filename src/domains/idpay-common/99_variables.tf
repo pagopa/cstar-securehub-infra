@@ -271,15 +271,15 @@ EOD
 #Redis
 variable "redis_params" {
   type = object({
-    capacity                      = number
-    family                        = string
-    sku_name                      = string
+    capacity = number
+    family   = string
+    sku_name = string
   })
   description = "Redis configuration parameters"
   default = {
-    capacity                      = 1
-    family                        = "C"
-    sku_name                      = "Basic"
+    capacity = 1
+    family   = "C"
+    sku_name = "Basic"
   }
 }
 

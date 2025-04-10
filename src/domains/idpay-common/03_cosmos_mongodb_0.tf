@@ -12,7 +12,7 @@ module "idpay_cosmos_mongodb_account" {
 
   #mongo_server_version = var.cosmos_mongo_account_params.server_version
 
-  subnet_id                     = module.idpay_cosmosdb_snet.id
+  subnet_id = module.idpay_cosmosdb_snet.id
 
   private_dns_zone_mongo_ids            = [data.azurerm_private_dns_zone.cosmos_mongo.id]
   private_endpoint_mongo_name           = "${local.project}-mongodb-account-private-endpoint"

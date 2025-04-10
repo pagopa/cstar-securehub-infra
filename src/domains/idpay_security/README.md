@@ -11,7 +11,7 @@
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >=1.3.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >=1.10.0 |
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | ~> 2.53 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 4 |
 | <a name="requirement_external"></a> [external](#requirement\_external) | ~> 2.3 |

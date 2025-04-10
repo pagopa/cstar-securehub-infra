@@ -20,7 +20,7 @@ tags = {
 #
 # CIDRs
 #
-cidr_idpay_data_cosmos = ["10.20.10.0/27"] # 10.20.10.0 -> 10.20.10.31
+cidr_idpay_data_cosmos = ["10.20.10.0/27"]  # 10.20.10.0 -> 10.20.10.31
 cidr_idpay_data_redis  = ["10.20.10.32/27"] # 10.20.10.0 -> 10.20.10.32
 
 rtd_keyvault = {
