@@ -11,9 +11,6 @@ data "azuread_group" "adgroup_externals" {
   display_name = "${local.product}-adgroup-externals"
 }
 
-#
-# Azure Resource Groups
-#
-data "azurerm_resource_group" "idpay_security_rg" {
-  name = "${local.project}-security-rg"
+data "azuread_group" "adgroup_security" {
+  display_name = "${local.product}-adgroup-security"
 }
