@@ -20,8 +20,9 @@ tags = {
 #
 # CIDRs
 #
-cidr_idpay_data_cosmos = ["10.20.10.0/27"]  # 10.20.10.0 -> 10.20.10.31
-cidr_idpay_data_redis  = ["10.20.10.32/27"] # 10.20.10.0 -> 10.20.10.32
+cidr_idpay_data_cosmos   = ["10.20.10.0/27"]  # 10.20.10.0 -> 10.20.10.31
+cidr_idpay_data_eventhub = ["10.20.10.32/27"] # 10.20.10.32 -> 10.20.10.63
+cidr_idpay_data_redis    = ["10.20.10.64/27"] # 10.20.10.64 -> 10.20.10.77
 
 rtd_keyvault = {
   name           = "cstar-p-rtd-kv"
@@ -70,7 +71,7 @@ log_analytics_workspace_resource_group_name = "cstar-p-monitor-rg"
 ##Eventhub
 ehns_sku_name = "Standard"
 
-eventhubs_idpay_00 = [
+eventhubs_idpay = [
   {
     name              = "idpay-onboarding-outcome"
     partitions        = 3

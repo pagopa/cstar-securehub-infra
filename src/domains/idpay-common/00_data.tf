@@ -19,6 +19,12 @@ data "azurerm_private_dns_zone" "cosmos_mongo" {
   resource_group_name = local.vnet_core_rg_name
 }
 
+# Eventhub private dns zone
+data "azurerm_private_dns_zone" "eventhub" {
+  name                = "privatelink.servicebus.windows.net"
+  resource_group_name = local.vnet_core_rg_name
+}
+
 #
 # KeyVault
 #

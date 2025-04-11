@@ -71,6 +71,12 @@ variable "cidr_idpay_data_cosmos" {
   default     = []
 }
 
+variable "cidr_idpay_data_eventhub" {
+  type        = list(string)
+  description = "Eventhub subnet network address space."
+  default     = []
+}
+
 variable "cidr_idpay_data_redis" {
   type        = list(string)
   description = "Redis subnet network address space."
@@ -199,7 +205,7 @@ variable "ehns_zone_redundant" {
 }
 
 
-variable "eventhubs_idpay_00" {
+variable "eventhubs_idpay" {
   description = "A list of event hubs to add to namespace for IDPAY application."
   type = list(object({
     name              = string
