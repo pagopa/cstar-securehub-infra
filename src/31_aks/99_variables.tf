@@ -61,69 +61,6 @@ variable "default_zones" {
   default     = [1, 2, 3]
 }
 
-# ## Monitor
-# variable "law_sku" {
-#   type        = string
-#   description = "Sku of the Log Analytics Workspace"
-#   default     = "PerGB2018"
-# }
-#
-# variable "law_retention_in_days" {
-#   type        = number
-#   description = "The workspace data retention in days"
-#   default     = 30
-# }
-#
-# variable "law_daily_quota_gb" {
-#   type        = number
-#   description = "The workspace daily quota for ingestion in GB."
-#   default     = -1
-# }
-
-#
-# Azure DevOps Agent
-#
-
-# variable "enable_azdoa" {
-#   type        = bool
-#   description = "Enable Azure DevOps agent."
-# }
-#
-# variable "devops_agent_zones" {
-#   type        = list(number)
-#   default     = null
-#   description = "(Optional) List of zones in which the scale set for azdo agent will be deployed"
-# }
-
-
-# variable "devops_agent_balance_zones" {
-#   type        = bool
-#   default     = false
-#   description = "(Optional) True if the devops agent instances must be evenly balanced between the configured zones"
-# }
-#
-# variable "azdo_agent_image_version" {
-#   type        = string
-#   description = "Version as suffix to define the image related to azdo agent"
-# }
-
-### External resources
-
-# variable "monitor_resource_group_name" {
-#   type        = string
-#   description = "Monitor resource group name"
-# }
-
-# variable "log_analytics_workspace_name" {
-#   type        = string
-#   description = "Specifies the name of the Log Analytics Workspace."
-# }
-#
-# variable "log_analytics_workspace_resource_group_name" {
-#   type        = string
-#   description = "The name of the resource group in which the Log Analytics workspace is located in."
-# }
-
 ### Aks
 
 variable "aks_private_cluster_is_enabled" {
