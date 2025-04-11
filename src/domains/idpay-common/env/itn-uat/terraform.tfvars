@@ -69,7 +69,7 @@ log_analytics_workspace_resource_group_name = "cstar-u-monitor-rg"
 ##Eventhub
 ehns_sku_name = "Standard"
 
-eventhubs_idpay_00 = [
+eventhubs_idpay = [
   {
     name              = "idpay-onboarding-outcome"
     partitions        = 3
