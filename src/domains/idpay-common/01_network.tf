@@ -9,6 +9,7 @@ module "idpay_cosmosdb_snet" {
 
 module "idpay_eventhub_snet" {
   source = "./.terraform/modules/__v4__/subnet"
+  # source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//subnet?ref=PAYMCLOUD-344-v-4-event-hub-revisione-modulo-v-4"
 
   name                 = "${local.project}-eventhub-snet"
   virtual_network_name = local.vnet_spoke_data_name

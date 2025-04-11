@@ -205,7 +205,7 @@ variable "ehns_zone_redundant" {
 }
 
 
-variable "eventhubs_idpay_00" {
+variable "eventhubs_idpay" {
   description = "A list of event hubs to add to namespace for IDPAY application."
   type = list(object({
     name              = string
