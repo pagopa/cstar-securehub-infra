@@ -26,6 +26,29 @@ locals {
       resource_group_name = azurerm_resource_group.rg_network.name
     }
   }
+  # Collect vnet spoke
+  secure_hub_vnets_spoke = { for k, v in local.secure_hub_vnets_peered : k => v if !contains(values(v), module.vnet_core_hub.name) }
+}
+
+#
+# ⛓️ Peering to HUB cstar-securehub-infra
+#
+# SPOKE to HUB cstar-securehub
+module "vnet_secure_hub_to_spoke_peering" {
+  source = "./.terraform/modules/__v4__/virtual_network_peering"
+
+  for_each = local.secure_hub_vnets_spoke
+
+
+  # Define source virtual network peering details
+  source_resource_group_name       = each.value.resource_group_name
+  source_virtual_network_name      = each.value.name
+  source_remote_virtual_network_id = each.value.id
+
+  # Define target virtual network peering details
+  target_resource_group_name       = azurerm_resource_group.rg_network.name
+  target_virtual_network_name      = module.vnet_core_hub.name
+  target_remote_virtual_network_id = module.vnet_core_hub.id
 }
 
 #

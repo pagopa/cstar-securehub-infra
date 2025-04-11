@@ -57,9 +57,18 @@ variable "default_zones" {
   description = "(Optional) List of availability zones"
 }
 
+#
+# NAT Configs
+#
 variable "nat_idle_timeout_in_minutes" {
   type        = number
   description = "The idle timeout which should be used in minutes."
+}
+
+variable "nat_sku" {
+  type        = string
+  default     = "Standard"
+  description = "(Optional) The SKU which should be used. At this time the only supported value is Standard. Defaults to Standard."
 }
 
 #
@@ -88,6 +97,11 @@ variable "cidr_spoke_platform_core_vnet" {
 variable "cidr_spoke_data_vnet" {
   type        = list(string)
   description = "Address prefixes vnet data"
+}
+
+variable "cidr_subnet_data_monitor_workspace" {
+  type        = list(string)
+  description = "Address prefixes vnet data monitor workspace"
 }
 
 variable "cidr_spoke_compute_vnet" {

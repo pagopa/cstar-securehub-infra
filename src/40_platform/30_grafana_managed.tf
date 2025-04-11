@@ -1,5 +1,5 @@
 #
-# 📊Grafana Managed
+# 📊 Grafana Managed
 #
 resource "azurerm_dashboard_grafana" "grafana_dashboard" {
   name                              = "${local.product}-${var.location_short}-grafana"
@@ -13,6 +13,12 @@ resource "azurerm_dashboard_grafana" "grafana_dashboard" {
 
   identity {
     type = "SystemAssigned"
+  }
+
+  lifecycle {
+    ignore_changes = [
+      azure_monitor_workspace_integrations
+    ]
   }
 
   tags = var.tags
