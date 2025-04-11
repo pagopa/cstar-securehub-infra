@@ -13,6 +13,7 @@ tags = {
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
 
+default_zones               = [1, 2, 3]
 nat_idle_timeout_in_minutes = 4
 
 #
@@ -33,6 +34,7 @@ cidr_spoke_platform_core_vnet = ["10.90.0.0/16"] # 10.90.0.0 --> 10.90.255.255
 cidr_subnet_platform_synthetic_cae     = ["10.90.0.0/24"] # 10.99.0.0 --> 10.99.0.255 #placeholder for container app
 cidr_subnet_platform_private_endpoints = ["10.90.1.0/24"] # 10.99.1.0 --> 10.99.1.255 #placeholder
 
+cidr_subnet_data_monitor_workspace = ["10.20.1.0/24"] # 10.20.1.0 --> 10.20.1.255
 
 #
 # VPN

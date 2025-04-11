@@ -9,7 +9,7 @@ data "azurerm_nat_gateway" "compute_nat_gateway" {
 }
 
 resource "azurerm_subnet_nat_gateway_association" "nat_gateway_association" {
-  for_each = local.node_pool_subnet_list
+  for_each = local.nat_node_pool_subnet_list
 
   subnet_id      = each.value
   nat_gateway_id = data.azurerm_nat_gateway.compute_nat_gateway.id

@@ -57,8 +57,4 @@ module "prometheus_managed_addon" {
   ])
 
   tags = var.tags
-
-  depends_on = [
-    module.aks
-  ]
 }

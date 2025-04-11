@@ -3,7 +3,7 @@ locals {
   #    The subnet ID must be added below. This list will be included in the NAT gateway for AKS.
   #    If this step is skipped, the new nodes will never come up.
   #    ref: src/31_aks/01_natgateway.tf:22
-  node_pool_subnet_list = toset([
+  nat_node_pool_subnet_list = toset([
     module.aks_snet.id,
     module.aks_user_snet.id
   ])

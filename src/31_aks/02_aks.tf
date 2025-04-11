@@ -19,6 +19,7 @@ module "aks" {
 
   workload_identity_enabled = var.aks_enable_workload_identity
   oidc_issuer_enabled       = var.aks_enable_workload_identity
+  force_upgrade_enabled     = var.force_upgrade_enabled
 
   ## Prometheus managed
   # ffppa: ⚠️ Installed on all ENV please do not change
@@ -43,33 +44,14 @@ module "aks" {
   system_node_pool_tags                         = var.aks_system_node_pool.node_tags
 
   #
-  # 👤 User node pool
-  #
-  user_node_pool_enabled = var.aks_user_node_pool.enabled
-  user_node_pool_name    = var.aks_user_node_pool.name
-  ### vm configuration
-  user_node_pool_vm_size         = var.aks_user_node_pool.vm_size
-  user_node_pool_os_disk_type    = var.aks_user_node_pool.os_disk_type
-  user_node_pool_os_disk_size_gb = var.aks_user_node_pool.os_disk_size_gb
-  user_node_pool_node_count_min  = var.aks_user_node_pool.node_count_min
-  user_node_pool_node_count_max  = var.aks_user_node_pool.node_count_max
-  ### K8s node configuration
-  user_node_pool_node_labels = var.aks_user_node_pool.node_labels
-  user_node_pool_node_taints = var.aks_user_node_pool.node_taints
-  user_node_pool_tags        = var.aks_user_node_pool.node_tags
-  # end user node pool
-
-  #
   # ☁️ Network
   #
-  vnet_id             = data.azurerm_virtual_network.vnet_compute_spoke.id
-  vnet_subnet_id      = module.aks_snet.id
-  vnet_user_subnet_id = module.aks_user_snet.id
+  vnet_id        = data.azurerm_virtual_network.vnet_compute_spoke.id
+  vnet_subnet_id = module.aks_snet.id
 
   # outbound_ip_address_ids = azurerm_public_ip.aks_outbound.*.id
   private_cluster_enabled = var.aks_private_cluster_is_enabled
   network_profile = {
-    # docker_bridge_cidr  = "172.17.0.1/16"
     dns_service_ip      = "172.20.0.10"
     network_plugin      = "azure"
     network_plugin_mode = "overlay"
@@ -112,11 +94,6 @@ module "aks" {
   microsoft_defender_log_analytics_workspace_id = var.env == "prod" ? data.azurerm_log_analytics_workspace.log_analytics.id : null
 
   tags = var.tags
-
-  depends_on = [
-    module.aks_snet,
-    module.aks_user_snet
-  ]
 }
 
 # TODO: ACR Needs to be created firts

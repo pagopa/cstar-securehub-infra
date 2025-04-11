@@ -14,7 +14,7 @@ tags = {
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
 
-default_zones = [1]
+default_zones = [1, 2, 3]
 
 ### Aks
 # https://pagopa.atlassian.net/wiki/spaces/DEVOPS/pages/482967553/AKS#sku-(dimensionamento)
@@ -24,11 +24,16 @@ aks_private_cluster_is_enabled = false
 aks_alerts_enabled             = false
 aks_enable_workload_identity   = true
 
+# Standard is recommended tier Standard_B2ms
+# B – Economical burstable
+# 2 – The number of vCPUs
+# m – The most amount of memory in a particular size
+# s – Premium Storage capable
 aks_system_node_pool = {
   name                         = "system"
-  vm_size                      = "Standard_D2ds_v5"
-  os_disk_type                 = "Ephemeral"
-  os_disk_size_gb              = "75"
+  vm_size                      = "Standard_B2ms"
+  os_disk_type                 = "Managed"
+  os_disk_size_gb              = "64"
   node_count_min               = "1"
   node_count_max               = "3"
   only_critical_addons_enabled = true
@@ -36,23 +41,28 @@ aks_system_node_pool = {
   node_tags                    = { node_tag_1 : "1" },
 }
 
+# Standard is recommended tier Standard_B8ms
+# B – Economical burstable
+# 8 – The number of vCPUs
+# m – The most amount of memory in a particular size
+# s – Premium Storage capable
 aks_user_node_pool = {
   enabled         = true
   name            = "userdefault"
   vm_size         = "Standard_B8ms"
   os_disk_type    = "Managed"
-  os_disk_size_gb = "300"
+  os_disk_size_gb = "64"
   node_count_min  = "1"
   node_count_max  = "3"
   node_labels     = { node_name : "aks-user-01", node_type : "user" },
   node_taints     = [],
-  node_tags       = { node_tag_1 : "1" },
+  node_tags       = { node_tag_2 : "2" },
 }
 
 aks_cidr_subnet      = ["10.10.1.0/24"] # 10.10.1.0 -> 10.10.1.255
 aks_cidr_subnet_user = ["10.10.2.0/24"] # 10.10.2.0 -> 10.10.2.255
 
-aks_kubernetes_version = "1.31.6"
+aks_kubernetes_version = "1.32.0"
 
 ingress_min_replica_count = "1"
 ingress_max_replica_count = "3"
