@@ -2,13 +2,13 @@ module "idpay_redis" {
   source = "./.terraform/modules/__v4__/redis_cache"
   # source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//redis_cache?ref=PAYMCLOUD-348-v-4-redis-update"
 
-  name                  = "${local.project}-redis"
-  location              = data.azurerm_resource_group.idpay_data_rg.location
-  resource_group_name   = data.azurerm_resource_group.idpay_data_rg.name
-  capacity              = var.redis_params.capacity
-  family                = var.redis_params.family
-  sku_name              = var.redis_params.sku_name
-  redis_version         = "6"
+  name                = "${local.project}-redis"
+  location            = data.azurerm_resource_group.idpay_data_rg.location
+  resource_group_name = data.azurerm_resource_group.idpay_data_rg.name
+  capacity            = var.redis_params.capacity
+  family              = var.redis_params.family
+  sku_name            = var.redis_params.sku_name
+  redis_version       = "6"
 
   private_endpoint = {
     enabled              = true
@@ -25,10 +25,10 @@ module "idpay_redis" {
 #
 locals {
   redis_kv_values = {
-    "idpay-redis-primary-connection-string" = module.idpay_redis.primary_connection_string
-    "idpay-redis-primary-connection-url" = module.idpay_redis.primary_connection_url
+    "idpay-redis-primary-connection-string"   = module.idpay_redis.primary_connection_string
+    "idpay-redis-primary-connection-url"      = module.idpay_redis.primary_connection_url
     "idpay-redis-secondary-connection-string" = module.idpay_redis.secondary_connection_string
-    "idpay-redis-secondary-connection-url" = module.idpay_redis.secondary_connection_url
+    "idpay-redis-secondary-connection-url"    = module.idpay_redis.secondary_connection_url
   }
 }
 
