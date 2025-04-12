@@ -282,11 +282,6 @@ variable "redis_params" {
     sku_name = string
   })
   description = "Redis configuration parameters"
-  default = {
-    capacity = 1
-    family   = "C"
-    sku_name = "Basic"
-  }
 }
 
 variable "service_bus_namespace" {

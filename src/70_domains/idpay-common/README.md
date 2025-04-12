@@ -20,12 +20,13 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | 3324a457c4e3a8d16a82ac0a17afc4bfa788b163 |
+| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | 1941550ab6ae175d5638721234d4a6eb68efe54b |
 | <a name="module_event_hub_idpay_configuration"></a> [event\_hub\_idpay\_configuration](#module\_event\_hub\_idpay\_configuration) | ./.terraform/modules/__v4__/eventhub_configuration | n/a |
 | <a name="module_eventhub_namespace_idpay"></a> [eventhub\_namespace\_idpay](#module\_eventhub\_namespace\_idpay) | ./.terraform/modules/__v4__/eventhub | n/a |
 | <a name="module_idpay_cosmos_mongodb_account"></a> [idpay\_cosmos\_mongodb\_account](#module\_idpay\_cosmos\_mongodb\_account) | ./.terraform/modules/__v4__/cosmosdb_account | n/a |
 | <a name="module_idpay_cosmosdb_snet"></a> [idpay\_cosmosdb\_snet](#module\_idpay\_cosmosdb\_snet) | ./.terraform/modules/__v4__/subnet | n/a |
 | <a name="module_idpay_eventhub_snet"></a> [idpay\_eventhub\_snet](#module\_idpay\_eventhub\_snet) | ./.terraform/modules/__v4__/subnet | n/a |
+| <a name="module_idpay_redis"></a> [idpay\_redis](#module\_idpay\_redis) | ./.terraform/modules/__v4__/redis_cache | n/a |
 | <a name="module_idpay_redis_snet"></a> [idpay\_redis\_snet](#module\_idpay\_redis\_snet) | ./.terraform/modules/__v4__/subnet | n/a |
 
 ## Resources
@@ -37,6 +38,7 @@
 | [azurerm_key_vault_secret.cosmosdb_account_mongodb_primary_connection_strings](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.cosmosdb_account_mongodb_secondary_connection_strings](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.event_hub_idpay_primary_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.secrets_redis](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azuread_group.adgroup_admin](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_developers](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_externals](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
@@ -45,6 +47,7 @@
 | [azurerm_key_vault.idpay_kv](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault) | data source |
 | [azurerm_private_dns_zone.cosmos_mongo](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/private_dns_zone) | data source |
 | [azurerm_private_dns_zone.eventhub](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/private_dns_zone) | data source |
+| [azurerm_private_dns_zone.redis](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/private_dns_zone) | data source |
 | [azurerm_resource_group.idpay_data_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
 | [azurerm_subscription.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subscription) | data source |
 | [azurerm_virtual_network.vnet_spoke_data](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/virtual_network) | data source |
@@ -88,7 +91,7 @@
 | <a name="input_monitor_resource_group_name"></a> [monitor\_resource\_group\_name](#input\_monitor\_resource\_group\_name) | Monitor resource group name | `string` | n/a | yes |
 | <a name="input_ns_dns_records_welfare"></a> [ns\_dns\_records\_welfare](#input\_ns\_dns\_records\_welfare) | ns records to delegate the dns zone into the subscription/env. | <pre>list(object({<br/>    name    = string<br/>    records = list(string)<br/>  }))</pre> | `[]` | no |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | n/a | yes |
-| <a name="input_redis_params"></a> [redis\_params](#input\_redis\_params) | Redis configuration parameters | <pre>object({<br/>    capacity = number<br/>    family   = string<br/>    sku_name = string<br/>  })</pre> | <pre>{<br/>  "capacity": 1,<br/>  "family": "C",<br/>  "sku_name": "Basic"<br/>}</pre> | no |
+| <a name="input_redis_params"></a> [redis\_params](#input\_redis\_params) | Redis configuration parameters | <pre>object({<br/>    capacity = number<br/>    family   = string<br/>    sku_name = string<br/>  })</pre> | n/a | yes |
 | <a name="input_robots_indexed_paths"></a> [robots\_indexed\_paths](#input\_robots\_indexed\_paths) | List of cdn paths to allow robots index | `list(string)` | `[]` | no |
 | <a name="input_rtd_keyvault"></a> [rtd\_keyvault](#input\_rtd\_keyvault) |  | <pre>object({<br/>    name           = string<br/>    resource_group = string<br/>  })</pre> | n/a | yes |
 | <a name="input_selfcare_welfare_cdn_storage_account_replication_type"></a> [selfcare\_welfare\_cdn\_storage\_account\_replication\_type](#input\_selfcare\_welfare\_cdn\_storage\_account\_replication\_type) | Which replication must use the blob storage under cdn | `string` | n/a | yes |

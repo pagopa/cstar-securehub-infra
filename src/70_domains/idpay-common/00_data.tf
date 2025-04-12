@@ -6,7 +6,7 @@ data "azurerm_resource_group" "idpay_data_rg" {
 }
 
 #
-# Network
+# 🌐 Network
 #
 data "azurerm_virtual_network" "vnet_spoke_data" {
   name                = local.vnet_spoke_data_name
@@ -22,6 +22,12 @@ data "azurerm_private_dns_zone" "cosmos_mongo" {
 # Eventhub private dns zone
 data "azurerm_private_dns_zone" "eventhub" {
   name                = "privatelink.servicebus.windows.net"
+  resource_group_name = local.vnet_core_rg_name
+}
+
+# Redis private dns zone
+data "azurerm_private_dns_zone" "redis" {
+  name                = "privatelink.redis.cache.windows.net"
   resource_group_name = local.vnet_core_rg_name
 }
 
