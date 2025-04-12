@@ -2,10 +2,10 @@ prefix          = "cstar"
 env_short       = "d"
 env             = "dev"
 domain          = "idpay"
-location        = "westeurope"
-location_string = "West Europe"
-location_short  = "weu"
-instance        = "dev01"
+location        = "italynorth"
+location_string = "Italy North"
+location_short  = "itn"
+instance        = "dev"
 
 tags = {
   CreatedBy   = "Terraform"
@@ -23,8 +23,8 @@ log_analytics_workspace_resource_group_name = "cstar-d-monitor-rg"
 
 ### Aks
 
-aks_name                = "cstar-d-weu-dev01-aks"
-aks_resource_group_name = "cstar-d-weu-dev01-aks-rg"
+aks_name                = "cstar-d-itn-dev01-aks"
+aks_resource_group_name = "cstar-d-itn-dev01-aks-rg"
 aks_vmss_name           = "aks-cstdev01usr-34190646-vmss"
 aks_cluster_domain_name = "dev01"
 

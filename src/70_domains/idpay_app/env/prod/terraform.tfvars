@@ -2,9 +2,9 @@ prefix          = "cstar"
 env_short       = "p"
 env             = "prod"
 domain          = "idpay"
-location        = "westeurope"
-location_string = "West Europe"
-location_short  = "weu"
+location        = "italynorth"
+location_string = "Italy North"
+location_short  = "itn"
 instance        = "prod01"
 
 tags = {
@@ -23,8 +23,8 @@ log_analytics_workspace_resource_group_name = "cstar-p-monitor-rg"
 
 ### Aks
 
-aks_name                = "cstar-p-weu-prod01-aks"
-aks_resource_group_name = "cstar-p-weu-prod01-aks-rg"
+aks_name                = "cstar-p-itn-prod01-aks"
+aks_resource_group_name = "cstar-p-itn-prod01-aks-rg"
 aks_vmss_name           = "aks-cstprod01usr-18685956-vmss"
 aks_cluster_domain_name = "prod01"
 

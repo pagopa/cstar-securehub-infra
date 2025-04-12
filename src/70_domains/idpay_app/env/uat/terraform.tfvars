@@ -2,9 +2,9 @@ prefix          = "cstar"
 env_short       = "u"
 env             = "uat"
 domain          = "idpay"
-location        = "westeurope"
-location_string = "West Europe"
-location_short  = "weu"
+location        = "italynorth"
+location_string = "Italy North"
+location_short  = "itn"
 instance        = "uat01"
 
 tags = {
@@ -23,8 +23,8 @@ log_analytics_workspace_resource_group_name = "cstar-u-monitor-rg"
 
 ### Aks
 
-aks_name                = "cstar-u-weu-uat01-aks"
-aks_resource_group_name = "cstar-u-weu-uat01-aks-rg"
+aks_name                = "cstar-u-itn-uat01-aks"
+aks_resource_group_name = "cstar-u-itn-uat01-aks-rg"
 aks_vmss_name           = "aks-cstuat01usr-39999986-vmss"
 aks_cluster_domain_name = "uat01"
 

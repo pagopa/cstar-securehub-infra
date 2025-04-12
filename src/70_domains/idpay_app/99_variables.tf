@@ -41,12 +41,12 @@ variable "idpay_alert_enabled" {
 
 variable "location" {
   type        = string
-  description = "One of westeurope, northeurope"
+  description = "One of italynorth, northeurope"
 }
 
 variable "location_string" {
   type        = string
-  description = "One of West Europe, North Europe"
+  description = "One of Italy North, North Europe"
 }
 
 variable "location_short" {

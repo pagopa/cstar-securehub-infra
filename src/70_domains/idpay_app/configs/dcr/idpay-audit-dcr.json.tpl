@@ -1,6 +1,6 @@
 {
   "name": "${audit_dcr_name}",
-  "location" :"westeurope",
+  "location" :"italynorth",
   "properties" : {
     "dataCollectionEndpointId": "${audit_dce_id}",
     "streamDeclarations" : {
