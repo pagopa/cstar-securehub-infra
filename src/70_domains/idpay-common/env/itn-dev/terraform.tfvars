@@ -55,6 +55,18 @@ cosmos_mongo_db_idpay_params = {
   max_throughput = null
 }
 
+#
+# Redis
+#
+redis_params = {
+  sku_name = "Basic"
+  family   = "C"
+  capacity = 1
+}
+
+#
+# Service bus
+#
 service_bus_namespace = {
   sku = "Standard"
 }
@@ -426,9 +438,6 @@ aks_vnet = {
   resource_group = "cstar-d-weu-dev01-vnet-rg"
   subnet         = "cstar-d-weu-dev01-aks-snet"
 }
-
-
-redis_public_network_access_enabled = false
 
 aks_name                = "cstar-d-weu-dev01-aks"
 aks_resource_group_name = "cstar-d-weu-dev01-aks-rg"

@@ -58,6 +58,18 @@ cosmos_mongo_db_idpay_params = {
   max_throughput = 1000
 }
 
+#
+# Redis
+#
+redis_params = {
+  sku_name = "Basic"
+  family   = "C"
+  capacity = 1
+}
+
+#
+# Service bus
+#
 service_bus_namespace = {
   sku = "Standard"
 }
@@ -434,8 +446,6 @@ aks_vnet = {
 
 
 idpay_cdn_sa_advanced_threat_protection_enabled = true
-redis_public_network_access_enabled             = false
-redis_sku_name                                  = "Standard"
 
 aks_name                = "cstar-p-weu-prod01-aks"
 aks_resource_group_name = "cstar-p-weu-prod01-aks-rg"
