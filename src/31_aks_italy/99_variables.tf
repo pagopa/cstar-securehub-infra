@@ -192,21 +192,6 @@ variable "nginx_helm" {
   description = "nginx ingress helm chart configuration"
 }
 
-variable "keda_helm" {
-  type = object({
-    chart_version = string,
-    keda = object({
-      image_name = string,
-      image_tag  = string,
-    }),
-    metrics_api_server = object({
-      image_name = string,
-      image_tag  = string,
-    }),
-  })
-  description = "keda helm chart configuration"
-}
-
 variable "reloader_helm" {
   type = object({
     chart_version = string,
