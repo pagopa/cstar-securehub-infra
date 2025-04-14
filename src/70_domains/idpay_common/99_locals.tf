@@ -16,6 +16,12 @@ locals {
   idpay_kv_name    = "${local.project}-kv"
   idpay_kv_rg_name = "${local.project}-security-rg"
 
+  #
+  # AKS
+  #
+  aks_name                = "${local.project_no_domain}-${var.env}-aks"
+  aks_resource_group_name = "${local.project_no_domain}-core-aks-rg"
+
   # monitor_action_group_slack_name = "SlackPagoPA"
   # monitor_action_group_email_name = "PagoPA"
   #
