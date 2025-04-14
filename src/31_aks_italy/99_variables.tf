@@ -192,21 +192,6 @@ variable "nginx_helm" {
   description = "nginx ingress helm chart configuration"
 }
 
-variable "keda_helm" {
-  type = object({
-    chart_version = string,
-    keda = object({
-      image_name = string,
-      image_tag  = string,
-    }),
-    metrics_api_server = object({
-      image_name = string,
-      image_tag  = string,
-    }),
-  })
-  description = "keda helm chart configuration"
-}
-
 variable "reloader_helm" {
   type = object({
     chart_version = string,
@@ -225,4 +210,10 @@ variable "skip_metric_validation" {
   type        = bool
   description = "(Optional) Skip the metric validation to allow creating an alert rule on a custom metric that isn't yet emitted? Defaults to false."
   default     = false
+}
+
+# Keda
+variable "keda_helm_chart_version" {
+  type        = string
+  description = "keda helm chart version"
 }

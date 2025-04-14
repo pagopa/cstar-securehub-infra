@@ -5,6 +5,11 @@ data "azurerm_resource_group" "idpay_data_rg" {
   name = "${local.project}-data-rg"
 }
 
+data "azurerm_resource_group" "idpay_identity_rg" {
+  name = "${local.project}-identity-rg"
+}
+
+
 #
 # 🌐 Network
 #
@@ -37,4 +42,12 @@ data "azurerm_private_dns_zone" "redis" {
 data "azurerm_key_vault" "idpay_kv" {
   name                = local.idpay_kv_name
   resource_group_name = local.idpay_kv_rg_name
+}
+
+#
+# Azure Kubernetes Service
+#
+data "azurerm_kubernetes_cluster" "aks" {
+  name                = local.aks_name
+  resource_group_name = local.aks_resource_group_name
 }
