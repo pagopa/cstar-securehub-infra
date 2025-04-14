@@ -226,3 +226,9 @@ variable "skip_metric_validation" {
   description = "(Optional) Skip the metric validation to allow creating an alert rule on a custom metric that isn't yet emitted? Defaults to false."
   default     = false
 }
+
+# Keda
+variable "keda_helm_chart_version" {
+  type        = string
+  description = "keda helm chart version"
+}
