@@ -94,17 +94,7 @@ nginx_helm = {
 # chart releases: https://github.com/kedacore/charts/releases
 # keda image tags: https://github.com/kedacore/keda/pkgs/container/keda/versions
 # keda-metrics-apiserver image tags: https://github.com/kedacore/keda/pkgs/container/keda-metrics-apiserver/versions
-keda_helm = {
-  chart_version = "2.16.1"
-  keda = {
-    image_name = "ghcr.io/kedacore/keda"
-    image_tag  = "2.17.0@sha256:112fc427d933f8dd11f51e081bb5b96303951419de9573ea952b1648fc342bd3"
-  }
-  metrics_api_server = {
-    image_name = "ghcr.io/kedacore/keda-metrics-apiserver"
-    image_tag  = "2.17.0@sha256:167fd532bd432334ad27f082689a4d7d2edca7eae707e895e767d303cb8fc9a5"
-  }
-}
+keda_helm_chart_version = "2.16.1"
 
 # chart releases: https://github.com/stakater/Reloader/releases
 # image tags: https://hub.docker.com/r/stakater/reloader/tags
