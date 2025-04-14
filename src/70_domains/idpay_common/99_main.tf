@@ -14,6 +14,14 @@ terraform {
       source  = "hashicorp/external"
       version = "~> 2.3"
     }
+    kubernetes = {
+      source  = "hashicorp/kubernetes"
+      version = "~> 2.36.0"
+    }
+    helm = {
+      source  = "hashicorp/helm"
+      version = "~> 2.17.0"
+    }
   }
 
   backend "azurerm" {}
@@ -27,11 +35,21 @@ provider "azurerm" {
   }
 }
 
+module "__v4__" {
+  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v5.0.0
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=512dac6703a72cb0e96542ae0ec59197f9925a93"
+}
+
 data "azurerm_subscription" "current" {}
 
 data "azurerm_client_config" "current" {}
 
-module "__v4__" {
-  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v4.0.0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=1941550ab6ae175d5638721234d4a6eb68efe54b"
+provider "kubernetes" {
+  config_path = "${var.k8s_kube_config_path_prefix}/config-${local.aks_name}"
+}
+
+provider "helm" {
+  kubernetes {
+    config_path = "${var.k8s_kube_config_path_prefix}/config-${local.aks_name}"
+  }
 }
