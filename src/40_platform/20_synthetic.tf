@@ -1,5 +1,3 @@
-
-
 #
 # synthetic
 #
@@ -27,8 +25,11 @@ resource "azurerm_container_app_environment" "synthetic_cae" {
   }
 
   depends_on = [
-    module.synthetic_snet
+    module.synthetic_snet,
+    azurerm_resource_group.synthetic_rg,
+    azurerm_application_insights.monitoring_application_insights
   ]
+
   lifecycle {
     ignore_changes = [
       infrastructure_resource_group_name
@@ -48,12 +49,16 @@ resource "azurerm_private_endpoint" "private_endpoint_container_app" {
     is_manual_connection           = false
     subresource_names              = ["managedEnvironments"]
   }
+
+  depends_on = [
+    azurerm_container_app_environment.synthetic_cae
+  ]
 }
 
 
 module "synthetic_monitoring_jobs" {
   # source     = "./.terraform/modules/__v4__/monitoring_function"
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//monitoring_function?ref=v1.20.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//monitoring_function?ref=fix-monitor-function"
 
   location            = var.location
   prefix              = "${local.product}-${var.location_short}"
@@ -62,7 +67,6 @@ module "synthetic_monitoring_jobs" {
   application_insight_name              = azurerm_application_insights.monitoring_application_insights.name
   application_insight_rg_name           = azurerm_application_insights.monitoring_application_insights.resource_group_name
   application_insights_action_group_ids = [azurerm_monitor_action_group.cstar_status.id]
-
 
   job_settings = {
     container_app_environment_id = azurerm_container_app_environment.synthetic_cae.id
@@ -88,4 +92,9 @@ module "synthetic_monitoring_jobs" {
     public_domain_suffix           = local.public_domain_suffix
     internal_private_domain_suffix = local.internal_private_domain_suffix
   })
+
+  depends_on = [
+    azurerm_application_insights.monitoring_application_insights,
+    azurerm_resource_group.synthetic_rg
+  ]
 }
