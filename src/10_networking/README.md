@@ -18,7 +18,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | 77d05f98b95c544b4997f02cb94fd53bd4c57eee |
+| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | fd59bd8c4eac7b0b6c96de4c41611952a53767b0 |
 | <a name="module_azdoa_snet"></a> [azdoa\_snet](#module\_azdoa\_snet) | ./.terraform/modules/__v4__/subnet | n/a |
 | <a name="module_monitor_workspace_snet"></a> [monitor\_workspace\_snet](#module\_monitor\_workspace\_snet) | ./.terraform/modules/__v4__/subnet | n/a |
 | <a name="module_vnet_core_hub"></a> [vnet\_core\_hub](#module\_vnet\_core\_hub) | ./.terraform/modules/__v4__/virtual_network | n/a |
