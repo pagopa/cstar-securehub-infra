@@ -1,5 +1,6 @@
 module "default_resource_groups" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//payments_default_resource_groups?ref=v1.28.0"
+  source = "./.terraform/modules/__v4__/payments_default_resource_groups"
+  # source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//payments_default_resource_groups?ref=updated-default-branches"
 
   for_each = local.domains_setup
 

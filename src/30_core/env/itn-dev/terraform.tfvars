@@ -18,5 +18,5 @@ tags = {
 law_daily_quota_gb = 10
 
 ### AZDO
-azdo_agent_image_version = "v20250212"
+azdo_agent_image_version = "v20250414"
 enable_azdoa             = true

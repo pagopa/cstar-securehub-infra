@@ -1,3 +1,4 @@
+### RG for monitoring
 resource "azurerm_resource_group" "monitoring_rg" {
   name     = "${local.project}-monitoring-rg"
   location = var.location
@@ -5,6 +6,7 @@ resource "azurerm_resource_group" "monitoring_rg" {
   tags = var.tags
 }
 
+### 📝 log analytics workspace
 resource "azurerm_log_analytics_workspace" "monitoring_log_analytics_workspace" {
   name                = "${local.project}-monitoring-law"
   location            = azurerm_resource_group.monitoring_rg.location
@@ -22,7 +24,7 @@ resource "azurerm_log_analytics_workspace" "monitoring_log_analytics_workspace" 
   }
 }
 
-# Application insights
+### 🔍 Application insights
 resource "azurerm_application_insights" "monitoring_application_insights" {
   name                = "${local.project}-monitoring-appinsights"
   location            = azurerm_resource_group.monitoring_rg.location
