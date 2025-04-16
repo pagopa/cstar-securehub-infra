@@ -7,6 +7,7 @@
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >=1.10.0 |
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | ~> 2.53 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 4 |
+| <a name="requirement_grafana"></a> [grafana](#requirement\_grafana) | ~> 2.0 |
 
 ## Providers
 
@@ -19,11 +20,11 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | 80b6cf16e70fd176ad7de10c4027f9ad791d7c6a |
+| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | 1be5cc06f1cc006bc606a88966a0b4979a280c17 |
 | <a name="module_container_app_private_endpoint_snet"></a> [container\_app\_private\_endpoint\_snet](#module\_container\_app\_private\_endpoint\_snet) | git::https://github.com/pagopa/terraform-azurerm-v4.git//subnet | v1.20.0 |
-| <a name="module_default_resource_groups"></a> [default\_resource\_groups](#module\_default\_resource\_groups) | git::https://github.com/pagopa/terraform-azurerm-v4.git//payments_default_resource_groups | v1.28.0 |
+| <a name="module_default_resource_groups"></a> [default\_resource\_groups](#module\_default\_resource\_groups) | ./.terraform/modules/__v4__/payments_default_resource_groups | n/a |
 | <a name="module_storage_private_endpoint_snet"></a> [storage\_private\_endpoint\_snet](#module\_storage\_private\_endpoint\_snet) | git::https://github.com/pagopa/terraform-azurerm-v4.git//subnet | v1.20.0 |
-| <a name="module_synthetic_monitoring_jobs"></a> [synthetic\_monitoring\_jobs](#module\_synthetic\_monitoring\_jobs) | git::https://github.com/pagopa/terraform-azurerm-v4.git//monitoring_function | v1.20.0 |
+| <a name="module_synthetic_monitoring_jobs"></a> [synthetic\_monitoring\_jobs](#module\_synthetic\_monitoring\_jobs) | git::https://github.com/pagopa/terraform-azurerm-v4.git//monitoring_function | fix-monitor-function |
 | <a name="module_synthetic_snet"></a> [synthetic\_snet](#module\_synthetic\_snet) | git::https://github.com/pagopa/terraform-azurerm-v4.git//subnet | v1.20.0 |
 
 ## Resources
