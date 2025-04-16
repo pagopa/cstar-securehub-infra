@@ -10,6 +10,10 @@ terraform {
       source  = "hashicorp/azurerm"
       version = "~> 4"
     }
+    grafana = {
+      source  = "grafana/grafana"
+      version = "~> 2.0"
+    }
   }
 
   backend "azurerm" {}
@@ -28,6 +32,6 @@ data "azurerm_subscription" "current" {}
 data "azurerm_client_config" "current" {}
 
 module "__v4__" {
-  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v1.4.0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=80b6cf16e70fd176ad7de10c4027f9ad791d7c6a"
+  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v5.2.0
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=1be5cc06f1cc006bc606a88966a0b4979a280c17"
 }
