@@ -14,5 +14,197 @@
     "alertConfiguration" : {
       "enabled" : ${alert_enabled}
     }
+  },
+  {
+    "apiName" : "actuator",
+    "appName" : "emdtpp",
+    "url" : "https://mil.weu.${internal_private_domain_suffix}/emdtpp/actuator/health",
+    "type" : "aks",
+    "checkCertificate" : true,
+    "method" : "GET",
+    "expectedCodes" : ["200"],
+    "tags" : {
+      "description" : "cstar MIL emdtpp ${env_name} status endpoint"
+    },
+    "durationLimit" : 10000,
+    "alertConfiguration" : {
+      "enabled" : ${alert_enabled}
+    }
+  },
+  {
+    "apiName" : "actuator",
+    "appName" : "emdcitizen",
+    "url" : "https://mil.weu.${internal_private_domain_suffix}/emdcitizen/actuator/health",
+    "type" : "aks",
+    "checkCertificate" : true,
+    "method" : "GET",
+    "expectedCodes" : ["200"],
+    "tags" : {
+      "description" : "cstar MIL emdcitizen ${env_name} status endpoint"
+    },
+    "durationLimit" : 10000,
+    "alertConfiguration" : {
+      "enabled" : ${alert_enabled}
+    }
+  },
+  {
+    "apiName" : "actuator",
+    "appName" : "emdmessagecore",
+    "url" : "https://mil.weu.${internal_private_domain_suffix}/emdmessagecore/actuator/health",
+    "type" : "aks",
+    "checkCertificate" : true,
+    "method" : "GET",
+    "expectedCodes" : ["200"],
+    "tags" : {
+      "description" : "cstar MIL emdmessagecore ${env_name} status endpoint"
+    },
+    "durationLimit" : 10000,
+    "alertConfiguration" : {
+      "enabled" : ${alert_enabled}
+    }
+  },
+  {
+    "apiName" : "actuator",
+    "appName" : "emdnotifiersender",
+    "url" : "https://mil.weu.${internal_private_domain_suffix}/emdnotifiersender/actuator/health",
+    "type" : "aks",
+    "checkCertificate" : true,
+    "method" : "GET",
+    "expectedCodes" : ["200"],
+    "tags" : {
+      "description" : "cstar MIL emdnotifiersender ${env_name} status endpoint"
+    },
+    "durationLimit" : 10000,
+    "alertConfiguration" : {
+      "enabled" : ${alert_enabled}
+    }
+  },
+  {
+    "apiName" : "actuator",
+    "appName" : "emdpaymentcore",
+    "url" : "https://mil.weu.${internal_private_domain_suffix}/emdpaymentcore/actuator/health",
+    "type" : "aks",
+    "checkCertificate" : true,
+    "method" : "GET",
+    "expectedCodes" : ["200"],
+    "tags" : {
+      "description" : "cstar MIL emdpaymentcore ${env_name} status endpoint"
+    },
+    "durationLimit" : 10000,
+    "alertConfiguration" : {
+      "enabled" : ${alert_enabled}
+    }
+  },
+  {
+    "apiName" : "actuator",
+    "appName" : "idpaypayment",
+    "url" : "https://dev01.idpay.${internal_private_domain_suffix}/idpaypayment/actuator/health",
+    "type" : "aks",
+    "checkCertificate" : true,
+    "method" : "GET",
+    "expectedCodes" : ["200"],
+    "tags" : {
+      "description" : "cstar IDPAY idpaypayment ${env_name} status endpoint"
+    },
+    "durationLimit" : 10000,
+    "alertConfiguration" : {
+      "enabled" : ${alert_enabled}
+    }
+  },
+  {
+    "apiName" : "actuator",
+    "appName" : "idpaywallet",
+    "url" : "https://dev01.idpay.${internal_private_domain_suffix}/idpaywallet/actuator/health",
+    "type" : "aks",
+    "checkCertificate" : true,
+    "method" : "GET",
+    "expectedCodes" : ["200"],
+    "tags" : {
+      "description" : "cstar IDPAY idpaywallet ${env_name} status endpoint"
+    },
+    "durationLimit" : 10000,
+    "alertConfiguration" : {
+      "enabled" : ${alert_enabled}
+    }
+  },
+  {
+    "apiName" : "actuator",
+    "appName" : "idpayportalwelfarebackendinitiative",
+    "url" : "https://dev01.idpay.${internal_private_domain_suffix}/idpayportalwelfarebackendinitiative/actuator/health",
+    "type" : "aks",
+    "checkCertificate" : true,
+    "method" : "GET",
+    "expectedCodes" : ["200"],
+    "tags" : {
+      "description" : "cstar IDPAY idpayportalwelfarebackendinitiative ${env_name} status endpoint"
+    },
+    "durationLimit" : 10000,
+    "alertConfiguration" : {
+      "enabled" : ${alert_enabled}
+    }
+  },
+  {
+    "apiName" : "actuator",
+    "appName" : "idpayreward",
+    "url" : "https://dev01.idpay.${internal_private_domain_suffix}/idpay/reward/actuator/health",
+    "type" : "aks",
+    "checkCertificate" : true,
+    "method" : "GET",
+    "expectedCodes" : ["200"],
+    "tags" : {
+      "description" : "cstar IDPAY idpayreward ${env_name} status endpoint"
+    },
+    "durationLimit" : 10000,
+    "alertConfiguration" : {
+      "enabled" : ${alert_enabled}
+    }
+  },
+  {
+    "apiName" : "actuator",
+    "appName" : "paymentinstruments",
+    "url" : "https://dev01.rtd.${internal_private_domain_suffix}/paymentinstruments/actuator/health",
+    "type" : "aks",
+    "checkCertificate" : true,
+    "method" : "GET",
+    "expectedCodes" : ["200"],
+    "tags" : {
+      "description" : "cstar RTD paymentinstruments ${env_name} status endpoint"
+    },
+    "durationLimit" : 10000,
+    "alertConfiguration" : {
+      "enabled" : ${alert_enabled}
+    }
+  },
+  {
+    "apiName" : "actuator",
+    "appName" : "rtdmspieventprocessor",
+    "url" : "https://dev01.rtd.${internal_private_domain_suffix}/rtdmspieventprocessor/actuator/health",
+    "type" : "aks",
+    "checkCertificate" : true,
+    "method" : "GET",
+    "expectedCodes" : ["200"],
+    "tags" : {
+      "description" : "cstar RTD rtdmspieventprocessor ${env_name} status endpoint"
+    },
+    "durationLimit" : 10000,
+    "alertConfiguration" : {
+      "enabled" : ${alert_enabled}
+    }
+  },
+  {
+    "apiName" : "actuator",
+    "appName" : "enrolledpaymentinstrumentmanager",
+    "url" : "https://dev01.rtd.${internal_private_domain_suffix}/enrolledpaymentinstrumentmanager/actuator/health",
+    "type" : "aks",
+    "checkCertificate" : true,
+    "method" : "GET",
+    "expectedCodes" : ["200"],
+    "tags" : {
+      "description" : "cstar RTD enrolledpaymentinstrumentmanager ${env_name} status endpoint"
+    },
+    "durationLimit" : 10000,
+    "alertConfiguration" : {
+      "enabled" : ${alert_enabled}
+    }
   }
 ]
