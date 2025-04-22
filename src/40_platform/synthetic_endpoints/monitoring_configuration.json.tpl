@@ -161,14 +161,14 @@
   },
   {
     "apiName" : "actuator",
-    "appName" : "paymentinstruments",
-    "url" : "https://${env_name}01.rtd.${internal_private_domain_suffix}/paymentinstruments/actuator/health",
+    "appName" : "rtdmsfileregister",
+    "url" : "https://${env_name}01.rtd.${internal_private_domain_suffix}/rtdmsfileregister/actuator/health/liveness",
     "type" : "aks",
     "checkCertificate" : true,
     "method" : "GET",
     "expectedCodes" : ["200"],
     "tags" : {
-      "description" : "cstar RTD paymentinstruments ${env_name} status endpoint"
+      "description" : "cstar RTD rtdmsfileregister ${env_name} status endpoint"
     },
     "durationLimit" : 10000,
     "alertConfiguration" : {
@@ -177,30 +177,30 @@
   },
   {
     "apiName" : "actuator",
-    "appName" : "rtdmspieventprocessor",
-    "url" : "https://${env_name}01.rtd.${internal_private_domain_suffix}/rtdmspieventprocessor/actuator/health",
+    "appName" : "rtdmsfilereporter",
+    "url" : "https://${env_name}01.rtd.${internal_private_domain_suffix}/rtdmsfilereporter/actuator/health/liveness",
     "type" : "aks",
     "checkCertificate" : true,
     "method" : "GET",
     "expectedCodes" : ["200"],
     "tags" : {
-      "description" : "cstar RTD rtdmspieventprocessor ${env_name} status endpoint"
+      "description" : "cstar RTD rtdmsfilereporter ${env_name} status endpoint"
     },
     "durationLimit" : 10000,
     "alertConfiguration" : {
-      "enabled" : ${alert_enabled}
+      "enabled" :${alert_enabled}
     }
   },
   {
     "apiName" : "actuator",
-    "appName" : "enrolledpaymentinstrumentmanager",
-    "url" : "https://${env_name}01.rtd.${internal_private_domain_suffix}/enrolledpaymentinstrumentmanager/actuator/health",
+    "appName" : "rtdmssenderauth",
+    "url" : "https://${env_name}01.rtd.${internal_private_domain_suffix}/rtdmssenderauth/actuator/health/liveness",
     "type" : "aks",
     "checkCertificate" : true,
     "method" : "GET",
     "expectedCodes" : ["200"],
     "tags" : {
-      "description" : "cstar RTD enrolledpaymentinstrumentmanager ${env_name} status endpoint"
+      "description" : "cstar RTD rtdmssenderauth ${env_name} status endpoint"
     },
     "durationLimit" : 10000,
     "alertConfiguration" : {
