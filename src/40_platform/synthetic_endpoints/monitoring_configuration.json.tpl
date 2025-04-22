@@ -98,7 +98,7 @@
   {
     "apiName" : "actuator",
     "appName" : "idpaypayment",
-    "url" : "https://dev01.idpay.${internal_private_domain_suffix}/idpaypayment/actuator/health",
+    "url" : "https://${env_name}01.idpay.${internal_private_domain_suffix}/idpaypayment/actuator/health",
     "type" : "aks",
     "checkCertificate" : true,
     "method" : "GET",
@@ -114,7 +114,7 @@
   {
     "apiName" : "actuator",
     "appName" : "idpaywallet",
-    "url" : "https://dev01.idpay.${internal_private_domain_suffix}/idpaywallet/actuator/health",
+    "url" : "https://${env_name}01.idpay.${internal_private_domain_suffix}/idpaywallet/actuator/health",
     "type" : "aks",
     "checkCertificate" : true,
     "method" : "GET",
@@ -130,7 +130,7 @@
   {
     "apiName" : "actuator",
     "appName" : "idpayportalwelfarebackendinitiative",
-    "url" : "https://dev01.idpay.${internal_private_domain_suffix}/idpayportalwelfarebackendinitiative/actuator/health",
+    "url" : "https://${env_name}01.idpay.${internal_private_domain_suffix}/idpayportalwelfarebackendinitiative/actuator/health",
     "type" : "aks",
     "checkCertificate" : true,
     "method" : "GET",
@@ -146,7 +146,7 @@
   {
     "apiName" : "actuator",
     "appName" : "idpayreward",
-    "url" : "https://dev01.idpay.${internal_private_domain_suffix}/idpay/reward/actuator/health",
+    "url" : "https://${env_name}01.idpay.${internal_private_domain_suffix}/idpay/reward/actuator/health",
     "type" : "aks",
     "checkCertificate" : true,
     "method" : "GET",
@@ -162,7 +162,7 @@
   {
     "apiName" : "actuator",
     "appName" : "paymentinstruments",
-    "url" : "https://dev01.rtd.${internal_private_domain_suffix}/paymentinstruments/actuator/health",
+    "url" : "https://${env_name}01.rtd.${internal_private_domain_suffix}/paymentinstruments/actuator/health",
     "type" : "aks",
     "checkCertificate" : true,
     "method" : "GET",
@@ -178,7 +178,7 @@
   {
     "apiName" : "actuator",
     "appName" : "rtdmspieventprocessor",
-    "url" : "https://dev01.rtd.${internal_private_domain_suffix}/rtdmspieventprocessor/actuator/health",
+    "url" : "https://${env_name}01.rtd.${internal_private_domain_suffix}/rtdmspieventprocessor/actuator/health",
     "type" : "aks",
     "checkCertificate" : true,
     "method" : "GET",
@@ -194,7 +194,7 @@
   {
     "apiName" : "actuator",
     "appName" : "enrolledpaymentinstrumentmanager",
-    "url" : "https://dev01.rtd.${internal_private_domain_suffix}/enrolledpaymentinstrumentmanager/actuator/health",
+    "url" : "https://${env_name}01.rtd.${internal_private_domain_suffix}/enrolledpaymentinstrumentmanager/actuator/health",
     "type" : "aks",
     "checkCertificate" : true,
     "method" : "GET",
