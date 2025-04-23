@@ -336,18 +336,6 @@ variable "mail_server_protocol" {
   description = "mail protocol"
 }
 
-# p7m self-signed certificate
-variable "enable_p7m_self_sign" {
-  type    = bool
-  default = true
-}
-
-variable "p7m_cert_validity_hours" {
-  type    = number
-  default = 87600 # 10 year
-
-}
-
 variable "idpay_mocked_merchant_enable" {
   type        = bool
   description = "Enable mocked merchant APIs"

@@ -53,3 +53,8 @@ variable "input_file" {
   type        = string
   description = "secret json file"
 }
+
+variable "p7m_cert_validity_hours" {
+  type    = number
+  default = 87600 # 10 year
+}
