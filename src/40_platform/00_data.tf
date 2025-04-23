@@ -46,3 +46,9 @@ data "azurerm_key_vault_secret" "email_slack_cstar_status" {
   name         = "email-slack-cstar-status"
   key_vault_id = data.azurerm_key_vault.cicd_kv.id
 }
+
+data "azurerm_monitor_action_group" "infra_opsgenie" {
+  count               = var.env_short == "p" ? 1 : 0
+  resource_group_name = "${local.product}-monitor-rg"
+  name                = "CstarInfraOpsgenie"
+}
