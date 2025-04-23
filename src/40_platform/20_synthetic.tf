@@ -66,7 +66,7 @@ module "synthetic_monitoring_jobs" {
 
   application_insight_name              = azurerm_application_insights.monitoring_application_insights.name
   application_insight_rg_name           = azurerm_application_insights.monitoring_application_insights.resource_group_name
-  application_insights_action_group_ids = [azurerm_monitor_action_group.cstar_status.id]
+  application_insights_action_group_ids = var.env_short == "p" ? [data.azurerm_monitor_action_group.infra_opsgenie[0].id] : [azurerm_monitor_action_group.cstar_status.id]
 
   job_settings = {
     container_app_environment_id = azurerm_container_app_environment.synthetic_cae.id
