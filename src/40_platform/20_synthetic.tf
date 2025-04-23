@@ -64,9 +64,17 @@ module "synthetic_monitoring_jobs" {
   prefix              = "${local.product}-${var.location_short}"
   resource_group_name = azurerm_resource_group.synthetic_rg.name
 
-  application_insight_name              = azurerm_application_insights.monitoring_application_insights.name
-  application_insight_rg_name           = azurerm_application_insights.monitoring_application_insights.resource_group_name
-  application_insights_action_group_ids = var.env_short == "p" ? [data.azurerm_monitor_action_group.infra_opsgenie[0].id] : [azurerm_monitor_action_group.cstar_status.id]
+  application_insight_name    = azurerm_application_insights.monitoring_application_insights.name
+  application_insight_rg_name = azurerm_application_insights.monitoring_application_insights.resource_group_name
+  application_insights_action_group_ids = flatten([
+    [
+      azurerm_monitor_action_group.cstar_status.id,
+    ],
+    (var.env == "prod" ? [
+      azurerm_monitor_action_group.cstar_status.id,
+      data.azurerm_monitor_action_group.infra_opsgenie[0].id
+    ] : [])
+  ])
 
   job_settings = {
     container_app_environment_id = azurerm_container_app_environment.synthetic_cae.id

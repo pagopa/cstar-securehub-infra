@@ -55,3 +55,9 @@ resource "azurerm_monitor_action_group" "cstar_status" {
 
   tags = var.tags
 }
+
+data "azurerm_monitor_action_group" "infra_opsgenie" {
+  count               = var.env_short == "p" ? 1 : 0
+  resource_group_name = "${local.product}-monitor-rg"
+  name                = "CstarInfraOpsgenie"
+}
