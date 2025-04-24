@@ -83,7 +83,10 @@ variable "cidr_idpay_data_redis" {
   default     = []
 }
 
-
+variable "dns_zone_internal_prefix" {
+  type        = string
+  description = "The dns subdomain."
+}
 
 #
 #

@@ -6,7 +6,11 @@ location       = "italynorth"
 location_short = "itn"
 instance       = "prod"
 
-dns_zone_prefix = "cstar"
+#
+# Dns
+#
+dns_zone_internal_prefix = "internal.cstar"
+external_domain          = "pagopa.it"
 
 tags = {
   CreatedBy   = "Terraform"

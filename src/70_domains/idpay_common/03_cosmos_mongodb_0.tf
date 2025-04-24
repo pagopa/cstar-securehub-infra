@@ -41,7 +41,7 @@ resource "azurerm_key_vault_secret" "cosmosdb_account_mongodb_primary_connection
   value        = module.idpay_cosmos_mongodb_account.primary_connection_strings
   content_type = "text/plain"
 
-  key_vault_id = data.azurerm_key_vault.idpay_kv.id
+  key_vault_id = data.azurerm_key_vault.domain_kv.id
 }
 
 resource "azurerm_key_vault_secret" "cosmosdb_account_mongodb_secondary_connection_strings" {
@@ -49,5 +49,5 @@ resource "azurerm_key_vault_secret" "cosmosdb_account_mongodb_secondary_connecti
   value        = module.idpay_cosmos_mongodb_account.secondary_connection_strings
   content_type = "text/plain"
 
-  key_vault_id = data.azurerm_key_vault.idpay_kv.id
+  key_vault_id = data.azurerm_key_vault.domain_kv.id
 }
