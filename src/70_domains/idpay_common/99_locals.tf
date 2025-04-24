@@ -23,7 +23,7 @@ locals {
   aks_resource_group_name = "${local.project_no_domain}-core-aks-rg"
 
   ### ARGOCD
-  argocd_namespace = "argocd"
+  argocd_namespace    = "argocd"
   argocd_internal_url = "argocd.${var.location_short}.${var.dns_zone_internal_prefix}.${var.external_domain}"
 
   # monitor_action_group_slack_name = "SlackPagoPA"

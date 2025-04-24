@@ -18,7 +18,7 @@ locals {
   internal_dns_zone_resource_group_name = "${local.product}-vnet-rg"
 
   ### ARGOCD
-  argocd_internal_url = "argocd.${var.location_short}.${var.dns_zone_internal_prefix}.${var.external_domain}"
+  argocd_internal_url        = "argocd.${var.location_short}.${var.dns_zone_internal_prefix}.${var.external_domain}"
   argocd_domain_project_name = "${var.domain}-project"
 
   #
@@ -33,13 +33,13 @@ locals {
   aks_name                = "${local.product}-${var.location_short}-${var.env}-aks"
   aks_resource_group_name = "${local.product}-${var.location_short}-core-aks-rg"
   # DOMAINS
-  domain_namespace        = var.domain
-  argocd_namespace       = "argocd"
+  domain_namespace = var.domain
+  argocd_namespace = "argocd"
 
 
 
-  apim_rg_name                  = "cstar-${var.env_short}-api-rg"
-  apim_name                     = "cstar-${var.env_short}-apim"
+  apim_rg_name = "cstar-${var.env_short}-api-rg"
+  apim_name    = "cstar-${var.env_short}-apim"
   # apim_logger_id                = "${data.azurerm_api_management.apim_core.id}/loggers/${local.apim_name}-logger"
   vnet_core_name                = "${local.product}-vnet"
   vnet_core_resource_group_name = "${local.product}-vnet-rg"
