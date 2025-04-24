@@ -38,6 +38,6 @@ resource "azurerm_key_vault_secret" "secrets_redis" {
   name         = each.key
   value        = each.value
   content_type = "text/plain"
-  key_vault_id = data.azurerm_key_vault.idpay_kv.id
+  key_vault_id = data.azurerm_key_vault.domain_kv.id
 
 }
