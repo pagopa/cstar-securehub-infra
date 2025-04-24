@@ -8,13 +8,17 @@ resource "kubernetes_namespace" "namespace_argocd" {
   ]
 }
 
+locals{
+  argocd_namespace = kubernetes_namespace.namespace_argocd.metadata[0].name
+}
+
 #
 # Setup ArgoCD
 #
 resource "helm_release" "argocd" {
   name      = "argo"
   chart     = "https://github.com/argoproj/argo-helm/releases/download/argo-cd-${var.argocd_helm_release_version}/argo-cd-${var.argocd_helm_release_version}.tgz"
-  namespace = kubernetes_namespace.namespace_argocd.metadata[0].name
+  namespace = local.argocd_namespace
   wait      = false
 
   values = [
@@ -42,13 +46,12 @@ resource "null_resource" "argocd_change_admin_password" {
 }
 
 #
-# tools
+# 🛠️ Tools
 #
 module "argocd_workload_identity_init" {
   source = "./.terraform/modules/__v4__/kubernetes_workload_identity_init"
 
-
-  workload_identity_name_prefix         = "argocd"
+  workload_identity_name_prefix         = local.argocd_namespace
   workload_identity_resource_group_name = azurerm_resource_group.aks_rg.name
   workload_identity_location            = var.location
 }
@@ -56,12 +59,12 @@ module "argocd_workload_identity_init" {
 module "argocd_workload_identity_configuration" {
   source = "./.terraform/modules/__v4__/kubernetes_workload_identity_configuration"
 
-
-  workload_identity_name_prefix         = "argocd"
+  workload_identity_name_prefix         = local.argocd_namespace
   workload_identity_resource_group_name = azurerm_resource_group.aks_rg.name
+
   aks_name                              = module.aks.name
   aks_resource_group_name               = azurerm_resource_group.aks_rg.name
-  namespace                             = kubernetes_namespace.namespace_argocd.metadata[0].name
+  namespace                             = local.argocd_namespace
 
   key_vault_id                      = data.azurerm_key_vault.kv_core.id
   key_vault_certificate_permissions = ["Get"]
@@ -74,7 +77,7 @@ module "argocd_workload_identity_configuration" {
 module "cert_mounter_argocd_internal" {
   source = "./.terraform/modules/__v4__/cert_mounter"
 
-  namespace        = "argocd"
+  namespace        = local.argocd_namespace
   certificate_name = replace(local.argocd_internal_url, ".", "-")
   kv_name          = data.azurerm_key_vault.kv_core.name
   tenant_id        = data.azurerm_subscription.current.tenant_id
@@ -92,7 +95,7 @@ resource "helm_release" "reloader_argocd" {
   repository = "https://stakater.github.io/stakater-charts"
   chart      = "reloader"
   version    = "v1.0.30"
-  namespace  = kubernetes_namespace.namespace_argocd.metadata[0].name
+  namespace  = local.argocd_namespace
 
   set {
     name  = "reloader.watchGlobally"
@@ -101,13 +104,13 @@ resource "helm_release" "reloader_argocd" {
 }
 
 #
-# DNS private - Records
+# 🌐 DNS private - Records
 #
 
 # resource "azurerm_private_dns_a_record" "argocd" {
-#   name                = "argocd"
+#   name                = "${local.argocd_namespace}.${var.location_short}"
 #   zone_name           = data.azurerm_private_dns_zone.internal.name
-#   resource_group_name = local.internal_dns_zone_resource_group_name
+#   resource_group_name = data.azurerm_private_dns_zone.internal.resource_group_name
 #   ttl                 = 3600
-#   records             = [local.ingress_load_balancer_ip]
+#   records             = [var.ingress_load_balancer_ip]
 # }
