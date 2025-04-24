@@ -107,10 +107,10 @@ resource "helm_release" "reloader_argocd" {
 # 🌐 DNS private - Records
 #
 
-# resource "azurerm_private_dns_a_record" "argocd" {
-#   name                = "${local.argocd_namespace}.${var.location_short}"
-#   zone_name           = data.azurerm_private_dns_zone.internal.name
-#   resource_group_name = data.azurerm_private_dns_zone.internal.resource_group_name
-#   ttl                 = 3600
-#   records             = [var.ingress_load_balancer_ip]
-# }
+resource "azurerm_private_dns_a_record" "argocd" {
+  name                = "${local.argocd_namespace}.${var.location_short}"
+  zone_name           = data.azurerm_private_dns_zone.internal.name
+  resource_group_name = data.azurerm_private_dns_zone.internal.resource_group_name
+  ttl                 = 3600
+  records             = [var.ingress_load_balancer_ip]
+}

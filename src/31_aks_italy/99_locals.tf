@@ -21,6 +21,12 @@ locals {
   kv_rg_name_core_security = "${local.product}-core-sec-rg"
 
   #
+  # 🌐 Network
+  #
+  dns_private_internal_name = "${var.dns_zone_internal_prefix}.${var.prefix}.${var.external_domain}"
+  dns_private_internal_rg_name = "${var.prefix}-${var.env_short}-vnet-rg"
+
+  #
   # 🖥️ Monitor
   #
   monitor_rg_name                      = "${local.project}-monitor-rg"
