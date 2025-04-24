@@ -1,7 +1,7 @@
 locals {
   jaas_config_template_idpay = "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"$ConnectionString\" password=\"%s\";"
-  eventhub_castore_name        = "${local.project}-evh-castore-ns"
-  eventhub_polluce_name        = "${local.project}-evh-polluce-ns"
+  eventhub_castore_name      = "${local.project}-evh-castore-ns"
+  eventhub_polluce_name      = "${local.project}-evh-polluce-ns"
 }
 
 #
