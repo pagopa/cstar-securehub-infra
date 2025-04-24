@@ -34,7 +34,7 @@ data "azurerm_virtual_network" "vnet_compute_spoke" {
   resource_group_name = data.azurerm_resource_group.vnet_compute_spoke_rg.name
 }
 
-data azurerm_private_dns_zone "internal" {
+data "azurerm_private_dns_zone" "internal" {
   name                = local.dns_private_internal_name
   resource_group_name = local.dns_private_internal_rg_name
 }

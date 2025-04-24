@@ -8,7 +8,7 @@ resource "kubernetes_namespace" "namespace_argocd" {
   ]
 }
 
-locals{
+locals {
   argocd_namespace = kubernetes_namespace.namespace_argocd.metadata[0].name
 }
 
@@ -62,9 +62,9 @@ module "argocd_workload_identity_configuration" {
   workload_identity_name_prefix         = local.argocd_namespace
   workload_identity_resource_group_name = azurerm_resource_group.aks_rg.name
 
-  aks_name                              = module.aks.name
-  aks_resource_group_name               = azurerm_resource_group.aks_rg.name
-  namespace                             = local.argocd_namespace
+  aks_name                = module.aks.name
+  aks_resource_group_name = azurerm_resource_group.aks_rg.name
+  namespace               = local.argocd_namespace
 
   key_vault_id                      = data.azurerm_key_vault.kv_core.id
   key_vault_certificate_permissions = ["Get"]

@@ -1,9 +1,9 @@
-prefix                = "cstar"
-env_short             = "u"
-env                   = "uat"
-location              = "italynorth"
-location_short        = "itn"
-domain                = "core"
+prefix         = "cstar"
+env_short      = "u"
+env            = "uat"
+location       = "italynorth"
+location_short = "itn"
+domain         = "core"
 
 tags = {
   CreatedBy   = "Terraform"
