@@ -16,8 +16,15 @@ locals {
   #
   # 🔐 KV
   #
-  kv_name_core_security    = "${local.project}-kv"
-  kv_rg_name_core_security = "${local.project}-sec-rg"
+  kv_name_cicd_security    = "${local.product}-cicd-kv"
+  kv_name_core_security    = "${local.product}-core-kv"
+  kv_rg_name_core_security = "${local.product}-core-sec-rg"
+
+  #
+  # 🌐 Network
+  #
+  dns_private_internal_name    = "${var.dns_zone_internal_prefix}.${var.prefix}.${var.external_domain}"
+  dns_private_internal_rg_name = "${var.prefix}-${var.env_short}-vnet-rg"
 
   #
   # 🖥️ Monitor
@@ -33,4 +40,8 @@ locals {
   monitor_action_group_opsgenie_name = "CstarInfraOpsgenie"
   monitor_action_group_slack_name    = "SlackPagoPA"
   monitor_action_group_email_name    = "PagoPA"
+
+  ### ARGOCD
+  argocd_internal_url = "argocd.${var.location_short}.${var.dns_zone_internal_prefix}.${var.prefix}.${var.external_domain}"
+
 }

@@ -55,6 +55,20 @@ variable "domain" {
   }
 }
 
+#
+# DNS
+#
+variable "dns_zone_internal_prefix" {
+  type        = string
+  default     = null
+  description = "The dns subdomain."
+}
+
+variable "external_domain" {
+  type        = string
+  description = "Domain for delegation"
+}
+
 variable "default_zones" {
   type        = list(number)
   description = "List of zones in which the scale set will be deployed"
@@ -216,4 +230,10 @@ variable "skip_metric_validation" {
 variable "keda_helm_chart_version" {
   type        = string
   description = "keda helm chart version"
+}
+
+### ARGO
+variable "argocd_helm_release_version" {
+  type        = string
+  description = "ArgoCD helm chart release version"
 }
