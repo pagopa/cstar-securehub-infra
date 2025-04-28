@@ -127,28 +127,19 @@ variable "ingress_load_balancer_hostname" {
 # DNS
 variable "external_domain" {
   type        = string
-  default     = "pagopa.it"
   description = "Domain for delegation"
-}
-
-variable "dns_zone_prefix" {
-  type        = string
-  default     = "cstar"
-  description = "The dns subdomain."
 }
 
 variable "dns_zone_internal_prefix" {
   type        = string
-  default     = null
   description = "The dns subdomain."
 }
 
-#APP IO
-variable "appio_timeout_sec" {
-  type        = number
-  description = "AppIo timeout (sec)"
-  default     = 5
-}
+# #APP IO
+# variable "appio_timeout_sec" {
+#   type        = number
+#   description = "AppIo timeout (sec)"
+# }
 
 variable "reverse_proxy_be_io" {
   type        = string
@@ -334,18 +325,6 @@ variable "mail_server_protocol" {
   type        = string
   default     = "smtp"
   description = "mail protocol"
-}
-
-# p7m self-signed certificate
-variable "enable_p7m_self_sign" {
-  type    = bool
-  default = true
-}
-
-variable "p7m_cert_validity_hours" {
-  type    = number
-  default = 87600 # 10 year
-
 }
 
 variable "idpay_mocked_merchant_enable" {

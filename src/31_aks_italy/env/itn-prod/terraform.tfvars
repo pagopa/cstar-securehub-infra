@@ -1,10 +1,9 @@
-prefix                = "cstar"
-env_short             = "p"
-env                   = "prod"
-location              = "italynorth"
-location_short        = "itn"
-domain                = "core"
-pagopa_location_short = "weu"
+prefix         = "cstar"
+env_short      = "p"
+env            = "prod"
+location       = "italynorth"
+location_short = "itn"
+domain         = "core"
 
 tags = {
   CreatedBy   = "Terraform"
@@ -13,6 +12,13 @@ tags = {
   Source      = "https://github.com/pagopa/cstar-securehub-infra"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
+
+#
+# Dns
+#
+dns_zone_internal_prefix = "internal"
+external_domain          = "pagopa.it"
+
 
 default_zones = [1]
 
@@ -108,3 +114,7 @@ reloader_helm = {
   image_name    = "stakater/reloader"
   image_tag     = "v1.4.0@sha256:40e379c2b20350235aca2f0a43cc6f8a89397cef6869cb3a95db03390684390a"
 }
+
+### ARGOCD
+#https://github.com/argoproj/argo-helm/releases/tag/argo-cd-7.7.7
+argocd_helm_release_version = "7.7.7" #2.13.1

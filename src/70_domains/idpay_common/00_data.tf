@@ -5,11 +5,6 @@ data "azurerm_resource_group" "idpay_data_rg" {
   name = "${local.project}-data-rg"
 }
 
-data "azurerm_resource_group" "idpay_identity_rg" {
-  name = "${local.project}-identity-rg"
-}
-
-
 #
 # 🌐 Network
 #
@@ -39,9 +34,20 @@ data "azurerm_private_dns_zone" "redis" {
 #
 # KeyVault
 #
-data "azurerm_key_vault" "idpay_kv" {
+data "azurerm_key_vault" "domain_kv" {
   name                = local.idpay_kv_name
   resource_group_name = local.idpay_kv_rg_name
+}
+
+### ARGO
+data "azurerm_key_vault_secret" "argocd_admin_username" {
+  name         = "argocd-admin-username"
+  key_vault_id = data.azurerm_key_vault.domain_kv.id
+}
+
+data "azurerm_key_vault_secret" "argocd_admin_password" {
+  name         = "argocd-admin-password"
+  key_vault_id = data.azurerm_key_vault.domain_kv.id
 }
 
 #
