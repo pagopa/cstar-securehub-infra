@@ -3,9 +3,9 @@ locals {
 
   servicebus_queues = {
     idpay-onboarding-request = {
-      requires_duplicate_detection        = true
+      requires_duplicate_detection            = true
       duplicate_detection_history_time_window = "P1D"
-      dead_lettering_on_message_expiration = true
+      dead_lettering_on_message_expiration    = true
       authorization_rules = [
         {
           name   = "idpay-onboarding-request-producer"
@@ -22,9 +22,9 @@ locals {
       ]
     }
     idpay-payment-timeout = {
-      requires_duplicate_detection        = true
+      requires_duplicate_detection            = true
       duplicate_detection_history_time_window = "P1D"
-      dead_lettering_on_message_expiration = true
+      dead_lettering_on_message_expiration    = true
       authorization_rules = [
         {
           name   = "idpay-payment-timeout-consumer"
@@ -54,7 +54,7 @@ locals {
           rule       = rule
         }
       ]
-    ]) : item.key => {
+      ]) : item.key => {
       queue_name = item.queue_name
       rule       = item.rule
     }
@@ -62,13 +62,13 @@ locals {
 }
 
 resource "azurerm_servicebus_namespace" "idpay_service_bus_ns" {
-  name                = "${local.project}-sb-ns"
-  location            = var.location
-  resource_group_name = data.azurerm_resource_group.idpay_data_rg.name
-  sku                 = var.service_bus_namespace.sku
-  minimum_tls_version = "1.2"
+  name                          = "${local.project}-sb-ns"
+  location                      = var.location
+  resource_group_name           = data.azurerm_resource_group.idpay_data_rg.name
+  sku                           = var.service_bus_namespace.sku
+  minimum_tls_version           = "1.2"
   public_network_access_enabled = true #Mandatory because only the premium SKU supports private endpoints
-  tags = var.tags
+  tags                          = var.tags
 }
 
 resource "azurerm_servicebus_namespace_authorization_rule" "namespace_rules" {
