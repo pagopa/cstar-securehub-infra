@@ -1,107 +1,122 @@
-# resource "azurerm_servicebus_namespace" "idpay-service-bus-ns" {
-#   name                = "${local.product}-${var.domain}-sb-ns"
-#   location            = var.location
-#   resource_group_name = azurerm_resource_group.msg_rg.name
-#   sku                 = var.service_bus_namespace.sku
-#   minimum_tls_version = "1.2"
-#
-#   tags = var.tags
-# }
-#
-# resource "azurerm_servicebus_namespace_authorization_rule" "idpay-service-bus-ns-manager" {
-#   name         = "idpay-service-bus-ns-manager"
-#   namespace_id = azurerm_servicebus_namespace.idpay-service-bus-ns.id
-#
-#   listen = true
-#   send   = true
-#   manage = true
-# }
-#
-# resource "azurerm_key_vault_secret" "idpay-service-bus-ns-manager-sas-key" {
-#
-#   name         = "idpay-service-bus-ns-manager-sas-key"
-#   value        = azurerm_servicebus_namespace_authorization_rule.idpay-service-bus-ns-manager.primary_connection_string
-#   content_type = "text/plain"
-#
-#   key_vault_id = module.key_vault_idpay.id
-# }
-#
-# #QUEUE Onboarding Request
-# resource "azurerm_servicebus_queue" "idpay-onboarding-request" {
-#   name                                    = "idpay-onboarding-request"
-#   namespace_id                            = azurerm_servicebus_namespace.idpay-service-bus-ns.id
-#   requires_duplicate_detection            = true
-#   duplicate_detection_history_time_window = "P1D"
-#   dead_lettering_on_message_expiration    = true
-#   #  enable_partitioning = true # default false
-# }
-#
-# resource "azurerm_servicebus_queue_authorization_rule" "idpay-onboarding-request-producer" {
-#   name     = "idpay-onboarding-request-producer"
-#   queue_id = azurerm_servicebus_queue.idpay-onboarding-request.id
-#
-#   listen = false
-#   send   = true
-#   manage = false
-# }
-#
-# #processor have to read and send bck the data with a delay if there is the need to reprocess
-# resource "azurerm_servicebus_queue_authorization_rule" "idpay-onboarding-request-processor" {
-#   name     = "idpay-onboarding-request-processor"
-#   queue_id = azurerm_servicebus_queue.idpay-onboarding-request.id
-#
-#   listen = true
-#   send   = true
-#   manage = false
-# }
-#
-# #KEY-VAULT Secret
-#
-# resource "azurerm_key_vault_secret" "idpay-onboarding-request-producer-sas-key" {
-#
-#   name         = "idpay-onboarding-request-producer-sas-key"
-#   value        = azurerm_servicebus_queue_authorization_rule.idpay-onboarding-request-producer.primary_connection_string
-#   content_type = "text/plain"
-#
-#   key_vault_id = module.key_vault_idpay.id
-# }
-#
-# resource "azurerm_key_vault_secret" "idpay-onboarding-request-processor-sas-key" {
-#
-#   name         = "idpay-onboarding-request-processor-sas-key"
-#   value        = azurerm_servicebus_queue_authorization_rule.idpay-onboarding-request-processor.primary_connection_string
-#   content_type = "text/plain"
-#
-#   key_vault_id = module.key_vault_idpay.id
-# }
-#
-#
-# #QUEUE Payment Timeout
-#
-# resource "azurerm_servicebus_queue" "idpay-payment-timeout" {
-#   name                                    = "idpay-payment-timeout"
-#   namespace_id                            = azurerm_servicebus_namespace.idpay-service-bus-ns.id
-#   requires_duplicate_detection            = true
-#   duplicate_detection_history_time_window = "P1D"
-#   dead_lettering_on_message_expiration    = true
-#   #  enable_partitioning = true # default false
-# }
-#
-#
-# resource "azurerm_servicebus_queue_authorization_rule" "idpay-payment-timeout-consumer" {
-#   name     = "idpay-payment-timeout-consumer"
-#   queue_id = azurerm_servicebus_queue.idpay-payment-timeout.id
-#
-#   listen = true
-#   send   = false
-#   manage = false
-# }
-#
-# resource "azurerm_key_vault_secret" "idpay-payment-timeout-consumer-sas-key" {
-#
-#   name         = "idpay-payment-timeout-consumer-sas-key"
-#   value        = azurerm_servicebus_queue_authorization_rule.idpay-payment-timeout-consumer.primary_connection_string
-#   content_type = "text/plain"
-#
-#   key_vault_id = module.key_vault_idpay.id
-# }
+locals {
+  servicebus_namespace_name = "${local.project}-sb-ns"
+
+  servicebus_queues = {
+    idpay-onboarding-request = {
+      requires_duplicate_detection            = true
+      duplicate_detection_history_time_window = "P1D"
+      dead_lettering_on_message_expiration    = true
+      authorization_rules = [
+        {
+          name   = "idpay-onboarding-request-producer"
+          listen = false
+          send   = true
+          manage = false
+        },
+        {
+          name   = "idpay-onboarding-request-processor"
+          listen = true
+          send   = true
+          manage = false
+        }
+      ]
+    }
+    idpay-payment-timeout = {
+      requires_duplicate_detection            = true
+      duplicate_detection_history_time_window = "P1D"
+      dead_lettering_on_message_expiration    = true
+      authorization_rules = [
+        {
+          name   = "idpay-payment-timeout-consumer"
+          listen = true
+          send   = false
+          manage = false
+        }
+      ]
+    }
+  }
+
+  servicebus_namespace_auth_rules = [
+    {
+      name   = "idpay-service-bus-ns-manager"
+      listen = true
+      send   = true
+      manage = true
+    }
+  ]
+
+  servicebus_queue_auth_rules_map = {
+    for item in flatten([
+      for queue_name, queue in local.servicebus_queues : [
+        for rule in queue.authorization_rules : {
+          key        = "${queue_name}-${rule.name}"
+          queue_name = queue_name
+          rule       = rule
+        }
+      ]
+      ]) : item.key => {
+      queue_name = item.queue_name
+      rule       = item.rule
+    }
+  }
+}
+
+resource "azurerm_servicebus_namespace" "idpay_service_bus_ns" {
+  name                          = "${local.project}-sb-ns"
+  location                      = var.location
+  resource_group_name           = data.azurerm_resource_group.idpay_data_rg.name
+  sku                           = var.service_bus_namespace.sku
+  minimum_tls_version           = "1.2"
+  public_network_access_enabled = true #Mandatory because only the premium SKU supports private endpoints
+  tags                          = var.tags
+}
+
+resource "azurerm_servicebus_namespace_authorization_rule" "namespace_rules" {
+  for_each = { for rule in local.servicebus_namespace_auth_rules : rule.name => rule }
+
+  name         = each.value.name
+  namespace_id = azurerm_servicebus_namespace.idpay_service_bus_ns.id
+
+  listen = each.value.listen
+  send   = each.value.send
+  manage = each.value.manage
+}
+
+resource "azurerm_servicebus_queue" "queues" {
+  for_each = local.servicebus_queues
+
+  name                                    = each.key
+  namespace_id                            = azurerm_servicebus_namespace.idpay_service_bus_ns.id
+  requires_duplicate_detection            = each.value.requires_duplicate_detection
+  duplicate_detection_history_time_window = each.value.duplicate_detection_history_time_window
+  dead_lettering_on_message_expiration    = each.value.dead_lettering_on_message_expiration
+}
+
+resource "azurerm_servicebus_queue_authorization_rule" "queue_auth_rules" {
+  for_each = local.servicebus_queue_auth_rules_map
+
+  name     = each.value.rule.name
+  queue_id = azurerm_servicebus_queue.queues[each.value.queue_name].id
+
+  listen = each.value.rule.listen
+  send   = each.value.rule.send
+  manage = each.value.rule.manage
+}
+
+resource "azurerm_key_vault_secret" "namespace_auth_secrets" {
+  for_each = azurerm_servicebus_namespace_authorization_rule.namespace_rules
+
+  name         = each.value.name
+  value        = each.value.primary_connection_string
+  content_type = "text/plain"
+  key_vault_id = data.azurerm_key_vault.domain_kv.id
+}
+
+resource "azurerm_key_vault_secret" "queue_auth_secrets" {
+  for_each = azurerm_servicebus_queue_authorization_rule.queue_auth_rules
+
+  name         = each.value.name
+  value        = each.value.primary_connection_string
+  content_type = "text/plain"
+  key_vault_id = data.azurerm_key_vault.domain_kv.id
+}

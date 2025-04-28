@@ -24,9 +24,10 @@ tags = {
 #
 # CIDRs
 #
-cidr_idpay_data_cosmos   = ["10.20.10.0/27"]  # 10.20.10.0 -> 10.20.10.31
-cidr_idpay_data_eventhub = ["10.20.10.32/27"] # 10.20.10.32 -> 10.20.10.63
-cidr_idpay_data_redis    = ["10.20.10.64/27"] # 10.20.10.64 -> 10.20.10.77
+cidr_idpay_data_cosmos     = ["10.20.10.0/27"]  # 10.20.10.0 -> 10.20.10.31
+cidr_idpay_data_eventhub   = ["10.20.10.32/27"] # 10.20.10.32 -> 10.20.10.63
+cidr_idpay_data_redis      = ["10.20.10.64/27"] # 10.20.10.64 -> 10.20.10.95
+cidr_idpay_data_servicebus = ["10.20.10.96/27"] # 10.20.10.96 -> 10.20.10.127
 
 rtd_keyvault = {
   name           = "cstar-d-rtd-kv"
