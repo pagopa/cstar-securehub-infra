@@ -57,12 +57,16 @@ resource "azurerm_private_endpoint" "private_endpoint_container_app" {
 
 
 module "synthetic_monitoring_jobs" {
-  # source     = "./.terraform/modules/__v4__/monitoring_function"
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//monitoring_function?ref=fix-monitor-function"
+  source = "./.terraform/modules/__v4__/monitoring_function"
 
   location            = var.location
   prefix              = "${local.product}-${var.location_short}"
   resource_group_name = azurerm_resource_group.synthetic_rg.name
+
+  enabled_sythetic_dashboard = true
+  subscription_id            = data.azurerm_subscription.current.subscription_id
+  grafana_api_key            = data.azurerm_key_vault_secret.grafana_dashboard_bot_api_key.value
+  grafana_url                = azurerm_dashboard_grafana.grafana_dashboard.endpoint
 
   application_insight_name    = azurerm_application_insights.monitoring_application_insights.name
   application_insight_rg_name = azurerm_application_insights.monitoring_application_insights.resource_group_name
@@ -100,9 +104,4 @@ module "synthetic_monitoring_jobs" {
     public_domain_suffix           = local.public_domain_suffix
     internal_private_domain_suffix = local.internal_private_domain_suffix
   })
-
-  depends_on = [
-    azurerm_application_insights.monitoring_application_insights,
-    azurerm_resource_group.synthetic_rg
-  ]
 }
