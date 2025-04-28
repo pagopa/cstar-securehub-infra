@@ -1,5 +1,5 @@
 #
-# 📊 Grafana Managed
+# 📊  Managed
 #
 resource "azurerm_dashboard_grafana" "grafana_dashboard" {
   name                              = "${local.product}-${var.location_short}-grafana"
@@ -58,7 +58,7 @@ data "azurerm_key_vault_secret" "grafana_dashboard_bot_api_key" {
 }
 
 module "auto_dashboard" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4//grafana_dashboard"
+  source = "./.terraform/modules/__v4__/grafana_dashboard"
 
   grafana_api_key      = data.azurerm_key_vault_secret.grafana_dashboard_bot_api_key.value
   grafana_url          = azurerm_dashboard_grafana.grafana_dashboard.endpoint
