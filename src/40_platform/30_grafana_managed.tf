@@ -47,3 +47,21 @@ resource "azurerm_role_assignment" "grafana_dashboard_monitoring_admins" {
   role_definition_name = "Grafana Admin"
   principal_id         = data.azuread_group.adgroup_admin.id
 }
+
+#
+# 📦 Grafana dashboard modules
+#
+
+data "azurerm_key_vault_secret" "grafana_dashboard_bot_api_key" {
+  name         = "cstar-itn-grafana-dashboard-bot-api-key"
+  key_vault_id = data.azurerm_key_vault.core_kv.id
+}
+
+module "auto_dashboard" {
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4//grafana_dashboard"
+
+  grafana_api_key      = data.azurerm_key_vault_secret.grafana_dashboard_bot_api_key.value
+  grafana_url          = azurerm_dashboard_grafana.grafana_dashboard.endpoint
+  monitor_workspace_id = azurerm_log_analytics_workspace.monitoring_log_analytics_workspace.id
+  prefix               = "cstar"
+}
