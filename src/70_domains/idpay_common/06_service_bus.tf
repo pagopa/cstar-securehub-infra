@@ -1,4 +1,6 @@
 locals {
+  servicebus_namespace_name = "${local.project}-sb-ns"
+
   servicebus_queues = {
     idpay-onboarding-request = {
       requires_duplicate_detection        = true
@@ -43,51 +45,29 @@ locals {
     }
   ]
 
-  servicebus_queue_auth_rules_map = merge(
-    {
-      for queue_name, queue in local.servicebus_queues :
-      for rule in queue.authorization_rules :
-      "${queue_name}-${rule.name}" => {
-        queue_name = queue_name
-        rule       = rule
-      }
+  servicebus_queue_auth_rules_map = {
+    for item in flatten([
+      for queue_name, queue in local.servicebus_queues : [
+        for rule in queue.authorization_rules : {
+          key        = "${queue_name}-${rule.name}"
+          queue_name = queue_name
+          rule       = rule
+        }
+      ]
+    ]) : item.key => {
+      queue_name = item.queue_name
+      rule       = item.rule
     }
-  )
+  }
 }
 
 resource "azurerm_servicebus_namespace" "idpay_service_bus_ns" {
-  name                = "${local.product}-${var.domain}-sb-ns"
+  name                = "${local.project}-sb-ns"
   location            = var.location
   resource_group_name = data.azurerm_resource_group.idpay_data_rg.name
   sku                 = var.service_bus_namespace.sku
   minimum_tls_version = "1.2"
-  public_network_access_enabled = false
-  tags = var.tags
-}
-
-resource "azurerm_private_endpoint" "idpay_service_bus_pe" {
-  count               = var.private_endpoint_enabled && length(var.private_dns_zone_servicebus_ids) > 0 ? 1 : 0
-
-  name                = coalesce(var.private_endpoint_servicebus_name, format("%s-private-endpoint-sb", var.name))
-  location            = var.location
-  resource_group_name = var.resource_group_name
-  subnet_id           = var.subnet_id
-
-  private_service_connection {
-    name                           = coalesce(var.private_service_connection_servicebus_name, format("%s-private-endpoint-sb", var.name))
-    private_connection_resource_id = azurerm_servicebus_namespace.idpay_service_bus_ns.id
-    is_manual_connection           = false
-    subresource_names              = ["namespace"]
-  }
-
-  dynamic "private_dns_zone_group" {
-    for_each = var.private_dns_zone_servicebus_ids != null ? ["dummy"] : []
-    content {
-      name                 = "private-dns-zone-group"
-      private_dns_zone_ids = var.private_dns_zone_servicebus_ids
-    }
-  }
-
+  public_network_access_enabled = true #Mandatory because only the premium SKU supports private endpoints
   tags = var.tags
 }
 

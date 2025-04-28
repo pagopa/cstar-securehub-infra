@@ -83,6 +83,12 @@ variable "cidr_idpay_data_redis" {
   default     = []
 }
 
+variable "cidr_idpay_data_servicebus" {
+  type        = list(string)
+  description = "Servicebus subnet network address space."
+  default     = []
+}
+
 variable "dns_zone_internal_prefix" {
   type        = string
   description = "The dns subdomain."
