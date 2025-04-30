@@ -87,7 +87,7 @@ module "vnet_secure_hub_to_core_peering" {
 # # ALL SECURE-HUB TO CSTAR WEU AKS
 # module "vnet_secure_hub_to_aks_peering" {
 #   source = "./.terraform/modules/__v4__/virtual_network_peering"
-# 
+#
 #   for_each = local.secure_hub_vnets
 #
 #   # Define source virtual network peering details

@@ -5,7 +5,7 @@ resource "kubernetes_config_map" "idpay-common" {
   }
 
   data = {
-    TZ                = "Europe/Rome",
+    TZ = "Europe/Rome",
   }
 }
 

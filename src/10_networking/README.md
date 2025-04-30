@@ -22,10 +22,10 @@
 | <a name="module_azdoa_snet"></a> [azdoa\_snet](#module\_azdoa\_snet) | ./.terraform/modules/__v4__/subnet | n/a |
 | <a name="module_monitor_workspace_snet"></a> [monitor\_workspace\_snet](#module\_monitor\_workspace\_snet) | ./.terraform/modules/__v4__/subnet | n/a |
 | <a name="module_vnet_core_hub"></a> [vnet\_core\_hub](#module\_vnet\_core\_hub) | ./.terraform/modules/__v4__/virtual_network | n/a |
-| <a name="module_vnet_secure_hub_to_aks_peering"></a> [vnet\_secure\_hub\_to\_aks\_peering](#module\_vnet\_secure\_hub\_to\_aks\_peering) | ./.terraform/modules/__v4__/virtual_network_peering | n/a |
 | <a name="module_vnet_secure_hub_to_core_peering"></a> [vnet\_secure\_hub\_to\_core\_peering](#module\_vnet\_secure\_hub\_to\_core\_peering) | ./.terraform/modules/__v4__/virtual_network_peering | n/a |
 | <a name="module_vnet_secure_hub_to_spoke_peering"></a> [vnet\_secure\_hub\_to\_spoke\_peering](#module\_vnet\_secure\_hub\_to\_spoke\_peering) | ./.terraform/modules/__v4__/virtual_network_peering | n/a |
 | <a name="module_vnet_spoke_compute"></a> [vnet\_spoke\_compute](#module\_vnet\_spoke\_compute) | ./.terraform/modules/__v4__/virtual_network | n/a |
+| <a name="module_vnet_spoke_compute_peerings"></a> [vnet\_spoke\_compute\_peerings](#module\_vnet\_spoke\_compute\_peerings) | ./.terraform/modules/__v4__/virtual_network_peering | n/a |
 | <a name="module_vnet_spoke_data"></a> [vnet\_spoke\_data](#module\_vnet\_spoke\_data) | ./.terraform/modules/__v4__/virtual_network | n/a |
 | <a name="module_vnet_spoke_platform_core"></a> [vnet\_spoke\_platform\_core](#module\_vnet\_spoke\_platform\_core) | ./.terraform/modules/__v4__/virtual_network | n/a |
 | <a name="module_vnet_spoke_security"></a> [vnet\_spoke\_security](#module\_vnet\_spoke\_security) | ./.terraform/modules/__v4__/virtual_network | n/a |

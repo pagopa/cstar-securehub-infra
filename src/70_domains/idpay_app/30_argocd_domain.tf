@@ -2,7 +2,7 @@ locals {
   argocd_applications = {
     "top" = {
       "idpay-onboarding-workflow" = {
-        name = "idpay-onboarding-workflow"
+        name          = "idpay-onboarding-workflow"
         target_branch = "main"
       },
     }

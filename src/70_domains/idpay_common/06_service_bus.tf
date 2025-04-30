@@ -120,4 +120,3 @@ resource "azurerm_key_vault_secret" "queue_auth_secrets" {
   content_type = "text/plain"
   key_vault_id = data.azurerm_key_vault.domain_kv.id
 }
-

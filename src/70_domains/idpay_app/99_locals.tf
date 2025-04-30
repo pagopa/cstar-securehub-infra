@@ -19,7 +19,7 @@ locals {
   ### ARGOCD
   argocd_internal_url        = "argocd.${var.location_short}.${var.dns_zone_internal_prefix}.${var.external_domain}"
   argocd_domain_project_name = "${var.domain}-project"
-  argocd_namespace = "argocd"
+  argocd_namespace           = "argocd"
 
   #
   # 🔑 KeyVault
@@ -38,7 +38,7 @@ locals {
   #
   # IDPAY
   #
-  idpay_ingress_url =  "${var.dns_zone_internal_prefix}.${var.external_domain}"
+  idpay_ingress_url = "${var.dns_zone_internal_prefix}.${var.external_domain}"
 
   #
   # Eventhub
