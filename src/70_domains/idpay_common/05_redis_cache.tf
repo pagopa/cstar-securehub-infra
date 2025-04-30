@@ -28,7 +28,7 @@ locals {
     "idpay-redis-primary-connection-string"   = module.idpay_redis.primary_connection_string
     "idpay-redis-primary-connection-url"      = module.idpay_redis.primary_connection_url
     "idpay-redis-secondary-connection-string" = module.idpay_redis.secondary_connection_string
-    "idpay-redis-secondary-connection-url"    = module.idpay_redis.secondary_connection_url
+    "idpay-redis-secondary-connection-url"    = "rediss://${module.idpay_redis.secondary_connection_url}"
   }
 }
 

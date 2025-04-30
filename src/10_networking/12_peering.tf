@@ -1,5 +1,5 @@
 locals {
-  secure_hub_vnets_peered = {
+  secure_hub_vnets = {
     hub = {
       name                = module.vnet_core_hub.name
       id                  = module.vnet_core_hub.id
@@ -27,17 +27,27 @@ locals {
     }
   }
   # Collect vnet spoke
-  secure_hub_vnets_spoke = { for k, v in local.secure_hub_vnets_peered : k => v if !contains(values(v), module.vnet_core_hub.name) }
+  all_vnets_peering_to_hub = {
+    for k, v in local.secure_hub_vnets :
+    k => v if k != "hub"
+  }
+
+  # vnet core hub is not included in the peering map because already setup
+  all_vnets_peering_to_spoke_compute = {
+    for k, v in local.secure_hub_vnets :
+    k => v if k != "hub" && k != "compute"
+  }
+
 }
 
 #
 # ⛓️ Peering to HUB cstar-securehub-infra
 #
-# SPOKE to HUB cstar-securehub
+# HUB cstar-securehub vs ALL SPOKEs
 module "vnet_secure_hub_to_spoke_peering" {
   source = "./.terraform/modules/__v4__/virtual_network_peering"
 
-  for_each = local.secure_hub_vnets_spoke
+  for_each = local.all_vnets_peering_to_hub
 
 
   # Define source virtual network peering details
@@ -54,11 +64,11 @@ module "vnet_secure_hub_to_spoke_peering" {
 #
 # ⛓️ Peering to cstar-infrastructure
 #
-# SECURE-HUB TO CSTAR WEU CORE
+# ALL SECURE-HUB Vnets TO CSTAR WEU CORE
 module "vnet_secure_hub_to_core_peering" {
   source = "./.terraform/modules/__v4__/virtual_network_peering"
 
-  for_each = local.secure_hub_vnets_peered
+  for_each = local.secure_hub_vnets
 
 
   # Define source virtual network peering details
@@ -74,11 +84,30 @@ module "vnet_secure_hub_to_core_peering" {
   target_allow_gateway_transit     = true
 }
 
-# SECURE-HUB TO CSTAR WEU AKS
-module "vnet_secure_hub_to_aks_peering" {
+# # ALL SECURE-HUB TO CSTAR WEU AKS
+# module "vnet_secure_hub_to_aks_peering" {
+#   source = "./.terraform/modules/__v4__/virtual_network_peering"
+#
+#   for_each = local.secure_hub_vnets
+#
+#   # Define source virtual network peering details
+#   source_resource_group_name       = each.value.resource_group_name
+#   source_virtual_network_name      = each.value.name
+#   source_remote_virtual_network_id = each.value.id
+#
+#   # Define target virtual network peering details
+#   target_resource_group_name       = data.azurerm_virtual_network.vnet_weu_aks.resource_group_name
+#   target_virtual_network_name      = data.azurerm_virtual_network.vnet_weu_aks.name
+#   target_remote_virtual_network_id = data.azurerm_virtual_network.vnet_weu_aks.id
+# }
+
+#
+# Spoke COMPUTE Peerings
+#
+module "vnet_spoke_compute_peerings" {
   source = "./.terraform/modules/__v4__/virtual_network_peering"
 
-  for_each = local.secure_hub_vnets_peered
+  for_each = local.all_vnets_peering_to_spoke_compute
 
   # Define source virtual network peering details
   source_resource_group_name       = each.value.resource_group_name
@@ -86,7 +115,7 @@ module "vnet_secure_hub_to_aks_peering" {
   source_remote_virtual_network_id = each.value.id
 
   # Define target virtual network peering details
-  target_resource_group_name       = data.azurerm_virtual_network.vnet_weu_aks.resource_group_name
-  target_virtual_network_name      = data.azurerm_virtual_network.vnet_weu_aks.name
-  target_remote_virtual_network_id = data.azurerm_virtual_network.vnet_weu_aks.id
+  target_resource_group_name       = module.vnet_spoke_compute.resource_group_name
+  target_virtual_network_name      = module.vnet_spoke_compute.name
+  target_remote_virtual_network_id = module.vnet_spoke_compute.id
 }

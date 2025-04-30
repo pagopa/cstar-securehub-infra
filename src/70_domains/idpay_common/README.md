@@ -26,16 +26,15 @@
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | 8265f125b07251a5efe7b9ff57707109de8b46ba |
-| <a name="module_event_hub_idpay_castore_configuration"></a> [event\_hub\_idpay\_castore\_configuration](#module\_event\_hub\_idpay\_castore\_configuration) | ./.terraform/modules/__v4__/eventhub_configuration | n/a |
-| <a name="module_event_hub_idpay_polluce_configuration"></a> [event\_hub\_idpay\_polluce\_configuration](#module\_event\_hub\_idpay\_polluce\_configuration) | ./.terraform/modules/__v4__/eventhub_configuration | n/a |
-| <a name="module_eventhub_namespace_idpay_castore"></a> [eventhub\_namespace\_idpay\_castore](#module\_eventhub\_namespace\_idpay\_castore) | ./.terraform/modules/__v4__/eventhub | n/a |
-| <a name="module_eventhub_namespace_idpay_polluce"></a> [eventhub\_namespace\_idpay\_polluce](#module\_eventhub\_namespace\_idpay\_polluce) | ./.terraform/modules/__v4__/eventhub | n/a |
+| <a name="module_event_hub_idpay_00_configuration"></a> [event\_hub\_idpay\_00\_configuration](#module\_event\_hub\_idpay\_00\_configuration) | ./.terraform/modules/__v4__/eventhub_configuration | n/a |
+| <a name="module_event_hub_idpay_01_configuration"></a> [event\_hub\_idpay\_01\_configuration](#module\_event\_hub\_idpay\_01\_configuration) | ./.terraform/modules/__v4__/eventhub_configuration | n/a |
+| <a name="module_eventhub_namespace_idpay_00"></a> [eventhub\_namespace\_idpay\_00](#module\_eventhub\_namespace\_idpay\_00) | ./.terraform/modules/__v4__/eventhub | n/a |
+| <a name="module_eventhub_namespace_idpay_01"></a> [eventhub\_namespace\_idpay\_01](#module\_eventhub\_namespace\_idpay\_01) | ./.terraform/modules/__v4__/eventhub | n/a |
 | <a name="module_idpay_cosmos_mongodb_account"></a> [idpay\_cosmos\_mongodb\_account](#module\_idpay\_cosmos\_mongodb\_account) | ./.terraform/modules/__v4__/cosmosdb_account | n/a |
 | <a name="module_idpay_cosmosdb_snet"></a> [idpay\_cosmosdb\_snet](#module\_idpay\_cosmosdb\_snet) | ./.terraform/modules/__v4__/subnet | n/a |
 | <a name="module_idpay_eventhub_snet"></a> [idpay\_eventhub\_snet](#module\_idpay\_eventhub\_snet) | ./.terraform/modules/__v4__/subnet | n/a |
 | <a name="module_idpay_redis"></a> [idpay\_redis](#module\_idpay\_redis) | ./.terraform/modules/__v4__/redis_cache | n/a |
 | <a name="module_idpay_redis_snet"></a> [idpay\_redis\_snet](#module\_idpay\_redis\_snet) | ./.terraform/modules/__v4__/subnet | n/a |
-| <a name="module_idpay_servicebus_snet"></a> [idpay\_servicebus\_snet](#module\_idpay\_servicebus\_snet) | ./.terraform/modules/__v4__/subnet | n/a |
 | <a name="module_workload_identity"></a> [workload\_identity](#module\_workload\_identity) | ./.terraform/modules/__v4__/kubernetes_workload_identity_init | n/a |
 | <a name="module_workload_identity_configuration"></a> [workload\_identity\_configuration](#module\_workload\_identity\_configuration) | ./.terraform/modules/__v4__/kubernetes_workload_identity_configuration | n/a |
 
@@ -49,8 +48,8 @@
 | [azurerm_key_vault_secret.argocd_server_url](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.cosmosdb_account_mongodb_primary_connection_strings](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.cosmosdb_account_mongodb_secondary_connection_strings](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
-| [azurerm_key_vault_secret.event_hub_idpay_castore_primary_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
-| [azurerm_key_vault_secret.event_hub_idpay_polluce_primary_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.event_hub_idpay_00_primary_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.event_hub_idpay_01_primary_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.namespace_auth_secrets](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.queue_auth_secrets](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.secrets_redis](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |

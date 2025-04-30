@@ -120,7 +120,7 @@ variable "ingress_load_balancer_ip" {
   type = string
 }
 
-variable "ingress_load_balancer_hostname" {
+variable "ingress_domain_hostname" {
   type = string
 }
 
