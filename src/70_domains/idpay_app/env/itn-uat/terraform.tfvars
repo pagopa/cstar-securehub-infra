@@ -29,7 +29,7 @@ aks_vmss_name           = "aks-cstuat01usr-39999986-vmss"
 aks_cluster_domain_name = "uat01"
 
 ingress_load_balancer_ip       = "10.11.100.250"
-ingress_load_balancer_hostname = "uat01.idpay.internal.uat.cstar.pagopa.it"
+ingress_domain_hostname = "uat01.idpay.internal.uat.cstar.pagopa.it"
 reverse_proxy_be_io            = "10.1.0.250"
 
 #

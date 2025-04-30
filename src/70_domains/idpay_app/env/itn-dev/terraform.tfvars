@@ -29,7 +29,7 @@ aks_vmss_name           = "aks-cstdev01usr-34190646-vmss"
 aks_cluster_domain_name = "dev01"
 
 ingress_load_balancer_ip       = "10.11.100.250"
-ingress_load_balancer_hostname = "dev01.idpay.internal.dev.cstar.pagopa.it"
+ingress_domain_hostname = "idpay.itn.internal.dev.cstar.pagopa.it"
 reverse_proxy_be_io            = "10.1.0.250"
 
 #

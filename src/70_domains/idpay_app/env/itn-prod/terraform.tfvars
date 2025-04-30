@@ -29,7 +29,7 @@ aks_vmss_name           = "aks-cstprod01usr-18685956-vmss"
 aks_cluster_domain_name = "prod01"
 
 ingress_load_balancer_ip       = "10.11.100.250"
-ingress_load_balancer_hostname = "prod01.idpay.internal.cstar.pagopa.it"
+ingress_domain_hostname = "prod01.idpay.internal.cstar.pagopa.it"
 reverse_proxy_be_io            = "10.1.0.250"
 
 #
