@@ -13,13 +13,13 @@ locals {
   dns_private_internal_name    = "${var.dns_zone_internal_prefix}.${var.external_domain}"
   dns_private_internal_rg_name = "${var.prefix}-${var.env_short}-vnet-rg"
 
-  ingress_hostname_prefix               = "${var.instance}.${var.domain}"
   internal_dns_zone_name                = "${var.dns_zone_internal_prefix}.${var.external_domain}"
   internal_dns_zone_resource_group_name = "${local.product}-vnet-rg"
 
   ### ARGOCD
   argocd_internal_url        = "argocd.${var.location_short}.${var.dns_zone_internal_prefix}.${var.external_domain}"
   argocd_domain_project_name = "${var.domain}-project"
+  argocd_namespace = "argocd"
 
   #
   # 🔑 KeyVault
@@ -34,8 +34,17 @@ locals {
   aks_resource_group_name = "${local.product}-${var.location_short}-core-aks-rg"
   # DOMAINS
   domain_namespace = var.domain
-  argocd_namespace = "argocd"
 
+  #
+  # IDPAY
+  #
+  idpay_ingress_url =  "${var.dns_zone_internal_prefix}.${var.external_domain}"
+
+  #
+  # Eventhub
+  #
+  eventhub_00_url = "${local.project}-evh-00-ns.servicebus.windows.net:${var.event_hub_port}"
+  eventhub_01_url = "${local.project}-evh-01-ns.servicebus.windows.net:${var.event_hub_port}"
 
 
   apim_rg_name = "cstar-${var.env_short}-api-rg"
