@@ -106,7 +106,7 @@ resource "azurerm_servicebus_queue_authorization_rule" "queue_auth_rules" {
 resource "azurerm_key_vault_secret" "namespace_auth_secrets" {
   for_each = azurerm_servicebus_namespace_authorization_rule.namespace_rules
 
-  name         = each.value.name
+  name         = "${each.value.name}-sas-key"
   value        = each.value.primary_connection_string
   content_type = "text/plain"
   key_vault_id = data.azurerm_key_vault.domain_kv.id
@@ -115,8 +115,9 @@ resource "azurerm_key_vault_secret" "namespace_auth_secrets" {
 resource "azurerm_key_vault_secret" "queue_auth_secrets" {
   for_each = azurerm_servicebus_queue_authorization_rule.queue_auth_rules
 
-  name         = each.value.name
+  name         = "${each.value.name}-sas-key"
   value        = each.value.primary_connection_string
   content_type = "text/plain"
   key_vault_id = data.azurerm_key_vault.domain_kv.id
 }
+
