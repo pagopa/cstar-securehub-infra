@@ -320,12 +320,14 @@ variable "enable" {
   type = object({
     idpay = object({
       eventhub_idpay_00 = bool
+      eventhub_idpay_01 = bool
     })
   })
   description = "Feature flags"
   default = {
     idpay = {
       eventhub_idpay_00 = false
+      eventhub_idpay_01 = false
     }
   }
 }
@@ -369,4 +371,15 @@ variable "aks_name" {
 variable "k8s_kube_config_path_prefix" {
   type    = string
   default = "~/.kube"
+}
+
+variable "storage_account_settings" {
+  type = object({
+    replication_type                   = optional(string, "LRS")
+    delete_retention_days              = optional(number, 5)
+    enable_versioning                  = optional(bool, false)
+    advanced_threat_protection_enabled = optional(bool, false)
+    public_network_access_enabled      = optional(bool, false)
+    private_endpoint_enabled           = optional(bool, true)
+  })
 }

@@ -82,7 +82,7 @@ service_bus_namespace = {
 
 ### External resources
 
-monitor_resource_group_name                 = "cstar-p-monitor-rg"
+monitor_resource_group_name                 = "cstar-p-itn-platform-monitoring-rg"
 log_analytics_workspace_name                = "cstar-p-law"
 log_analytics_workspace_resource_group_name = "cstar-p-monitor-rg"
 
@@ -419,6 +419,7 @@ eventhubs_idpay_01 = [
 enable = {
   idpay = {
     eventhub_idpay_00 = true
+    eventhub_idpay_01 = false
   }
 }
 
@@ -459,3 +460,12 @@ aks_resource_group_name = "cstar-p-weu-prod01-aks-rg"
 ### CDN
 idpay_cdn_storage_account_replication_type            = "RAGZRS"
 selfcare_welfare_cdn_storage_account_replication_type = "RAGZRS"
+
+# Storage
+storage_account_settings = {
+  replication_type                   = "RAGZRS"
+  delete_retention_days              = 90
+  enable_versioning                  = true
+  advanced_threat_protection_enabled = true
+  public_network_access_enabled      = false
+}

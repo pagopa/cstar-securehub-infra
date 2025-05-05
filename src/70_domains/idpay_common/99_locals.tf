@@ -2,14 +2,16 @@ locals {
   project           = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
   project_no_domain = "${var.prefix}-${var.env_short}-${var.location_short}"
   product           = "${var.prefix}-${var.env_short}"
+  product_no_domain = "${var.prefix}-${var.env_short}-${var.location_short}"
 
   #
   # 🌐 Network
   #
-  vnet_core_rg_name       = "${local.product}-vnet-rg"
-  vnet_spoke_data_name    = "${local.project_no_domain}-core-spoke-data-vnet"
-  vnet_spoke_data_rg_name = "${local.project_no_domain}-core-network-rg"
-
+  vnet_core_rg_name           = "${local.product}-vnet-rg"
+  vnet_spoke_data_name        = "${local.project_no_domain}-core-spoke-data-vnet"
+  vnet_spoke_data_rg_name     = "${local.project_no_domain}-core-network-rg"
+  vnet_spoke_platform_rg_name = "${local.product_no_domain}-core-network-rg"
+  vnet_spoke_platform_name    = "${local.product_no_domain}-core-spoke-platform-vnet"
   #
   # 🔑 KeyVault
   #
@@ -26,6 +28,11 @@ locals {
   argocd_namespace    = "argocd"
   argocd_internal_url = "argocd.${var.location_short}.${var.dns_zone_internal_prefix}.${var.external_domain}"
 
+
+  monitor_appinsights_name = "${local.project_no_domain}-platform-monitoring-appinsights"
+
+  apim_name    = "cstar-${var.env_short}-apim"
+  apim_rg_name = "cstar-${var.env_short}-api-rg"
   # monitor_action_group_slack_name = "SlackPagoPA"
   # monitor_action_group_email_name = "PagoPA"
   #
