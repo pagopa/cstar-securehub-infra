@@ -2,8 +2,8 @@
 # Local Variables
 #
 locals {
-  log_analytics_workspace_id   = data.azurerm_log_analytics_workspace.log_analytics.id
-  log_analytics_workspace_name = data.azurerm_log_analytics_workspace.log_analytics.name
+  # log_analytics_workspace_id   = data.azurerm_log_analytics_workspace.log_analytics.id
+  # log_analytics_workspace_name = data.azurerm_log_analytics_workspace.log_analytics.name
   audit_dce_name               = "${var.domain}${var.env_short}-audit-dce"
   audit_dcr_name               = "${var.domain}${var.env_short}-audit-dcr"
   audit_dcra_name              = "${var.domain}${var.env_short}-audit-dcra"
@@ -21,21 +21,22 @@ module "idpay_audit_storage" {
   source = "./.terraform/modules/__v4__/storage_account"
 
   name                            = replace("${var.domain}${var.env_short}-audit-storage", "-", "")
+  resource_group_name             = data.azurerm_log_analytics_workspace.log_analytics.resource_group_name
+  location                        = var.location
   account_kind                    = "StorageV2"
   account_tier                    = "Standard"
+
   account_replication_type        = var.storage_account_settings.replication_type
   access_tier                     = "Hot"
   blob_versioning_enabled         = var.storage_account_settings.enable_versioning
-  resource_group_name             = data.azurerm_log_analytics_workspace.log_analytics.resource_group_name
-  location                        = var.location
   advanced_threat_protection      = var.storage_account_settings.advanced_threat_protection_enabled
   allow_nested_items_to_be_public = false
 
   blob_delete_retention_days    = var.storage_account_settings.delete_retention_days
   public_network_access_enabled = var.storage_account_settings.public_network_access_enabled
 
-  private_endpoint_enabled  = var.storage_account_settings.private_endpoint_enabled
-  private_dns_zone_blob_ids = [data.azurerm_private_dns_zone.storage_account.id]
+  private_endpoint_enabled  = true
+  private_dns_zone_blob_ids = [data.azurerm_private_dns_zone.storage_account_blob.id]
   subnet_id                 = data.azurerm_subnet.private_endpoint_subnet.id
 
   tags = var.tags

@@ -22,7 +22,7 @@ module "idpay_initiative_storage" {
   public_network_access_enabled = var.storage_account_settings.public_network_access_enabled
 
   private_endpoint_enabled  = var.storage_account_settings.private_endpoint_enabled
-  private_dns_zone_blob_ids = [data.azurerm_private_dns_zone.storage_account.id]
+  private_dns_zone_blob_ids = [data.azurerm_private_dns_zone.storage_account_blob.id]
   subnet_id                 = data.azurerm_subnet.private_endpoint_subnet.id
 
 

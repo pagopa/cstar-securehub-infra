@@ -375,11 +375,10 @@ variable "k8s_kube_config_path_prefix" {
 
 variable "storage_account_settings" {
   type = object({
-    replication_type                   = optional(string, "LRS")
+    replication_type                   = optional(string, "ZRS")
     delete_retention_days              = optional(number, 5)
-    enable_versioning                  = optional(bool, false)
+    enable_versioning                  = optional(bool, true)
     advanced_threat_protection_enabled = optional(bool, false)
     public_network_access_enabled      = optional(bool, false)
-    private_endpoint_enabled           = optional(bool, true)
   })
 }

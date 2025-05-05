@@ -17,7 +17,7 @@ module "idpay_webview_storage" {
   blob_delete_retention_days = var.storage_account_settings.delete_retention_days
 
   private_endpoint_enabled  = var.storage_account_settings.private_endpoint_enabled
-  private_dns_zone_blob_ids = [data.azurerm_private_dns_zone.storage_account.id]
+  private_dns_zone_blob_ids = [data.azurerm_private_dns_zone.storage_account_blob.id]
   subnet_id                 = data.azurerm_subnet.private_endpoint_subnet.id
 
   tags = var.tags
