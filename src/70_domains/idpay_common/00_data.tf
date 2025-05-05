@@ -36,7 +36,7 @@ data "azurerm_private_dns_zone" "servicebus" {
   resource_group_name = local.vnet_core_rg_name
 }
 
-data "azurerm_private_dns_zone" "storage_account" {
+data "azurerm_private_dns_zone" "storage_account_blob" {
   name                = "privatelink.blob.core.windows.net"
   resource_group_name = local.vnet_core_rg_name
 }
