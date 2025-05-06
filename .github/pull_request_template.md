@@ -18,7 +18,7 @@
 - [ ] Remove existing resources
 - [ ] Chore: change that does not affect functionality
 
-### Env to apply 
+### Env to apply
 
 - [ ] DEV
 - [ ] UAT

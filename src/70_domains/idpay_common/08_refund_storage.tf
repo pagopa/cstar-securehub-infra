@@ -5,11 +5,11 @@
 module "idpay_refund_storage" {
   source = "./.terraform/modules/__v4__/storage_account"
 
-  name                            = replace("${local.project}-refund-sa", "-", "")
-  resource_group_name             = data.azurerm_resource_group.idpay_data_rg.name
-  location                        = var.location
-  account_kind                    = "StorageV2"
-  account_tier                    = "Standard"
+  name                = replace("${local.project}-refund-sa", "-", "")
+  resource_group_name = data.azurerm_resource_group.idpay_data_rg.name
+  location            = var.location
+  account_kind        = "StorageV2"
+  account_tier        = "Standard"
 
   account_replication_type        = var.storage_account_settings.replication_type
   access_tier                     = "Hot"
@@ -50,14 +50,14 @@ resource "azurerm_storage_container" "idpay" {
 #
 locals {
   refund_secrets = {
-    "refund-storage-access-key"            = module.idpay_refund_storage.primary_access_key
-    "refund-storage-connection-string"     = module.idpay_refund_storage.primary_connection_string
+    "refund-storage-access-key"             = module.idpay_refund_storage.primary_access_key
+    "refund-storage-connection-string"      = module.idpay_refund_storage.primary_connection_string
     "refund-storage-blob-connection-string" = module.idpay_refund_storage.primary_blob_connection_string
   }
 }
 
 resource "azurerm_key_vault_secret" "refund" {
-  for_each     = local.refund_secrets
+  for_each = local.refund_secrets
 
   name         = each.key
   value        = each.value

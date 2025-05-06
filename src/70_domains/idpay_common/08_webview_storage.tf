@@ -2,9 +2,9 @@
 module "idpay_webview_storage" {
   source = "./.terraform/modules/__v4__/storage_account"
 
-  name                            = replace("${local.project}-webview-sa", "-", "")
-  resource_group_name             = data.azurerm_resource_group.idpay_data_rg.name
-  location                        = var.location
+  name                = replace("${local.project}-webview-sa", "-", "")
+  resource_group_name = data.azurerm_resource_group.idpay_data_rg.name
+  location            = var.location
 
   account_kind                    = "StorageV2"
   account_tier                    = "Standard"
@@ -57,7 +57,7 @@ locals {
 }
 
 resource "azurerm_key_vault_secret" "webview" {
-  for_each     = local.webview_secrets
+  for_each = local.webview_secrets
 
   name         = each.key
   value        = each.value

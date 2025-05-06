@@ -431,8 +431,8 @@ selfcare_welfare_cdn_storage_account_replication_type = "GRS"
 
 # Storage
 storage_account_settings = {
-  delete_retention_days = 5
-  enable_versioning     = true
-  replication_type = "ZRS"
+  delete_retention_days              = 5
+  enable_versioning                  = true
+  replication_type                   = "ZRS"
   advanced_threat_protection_enabled = false
 }
