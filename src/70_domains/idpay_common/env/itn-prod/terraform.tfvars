@@ -80,12 +80,6 @@ service_bus_namespace = {
   sku = "Standard"
 }
 
-### External resources
-
-monitor_resource_group_name                 = "cstar-p-itn-platform-monitoring-rg"
-log_analytics_workspace_name                = "cstar-p-law"
-log_analytics_workspace_resource_group_name = "cstar-p-monitor-rg"
-
 ##Eventhub
 ehns_sku_name = "Standard"
 
@@ -463,9 +457,8 @@ selfcare_welfare_cdn_storage_account_replication_type = "RAGZRS"
 
 # Storage
 storage_account_settings = {
-  replication_type                   = "RAGZRS"
+  replication_type                   = "ZRS"
   delete_retention_days              = 90
   enable_versioning                  = true
   advanced_threat_protection_enabled = true
-  public_network_access_enabled      = false
 }

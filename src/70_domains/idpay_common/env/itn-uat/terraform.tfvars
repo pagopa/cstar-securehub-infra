@@ -78,12 +78,6 @@ service_bus_namespace = {
   sku = "Standard"
 }
 
-### External resources
-
-monitor_resource_group_name                 = "cstar-u-itn-platform-monitoring-rg"
-log_analytics_workspace_name                = "cstar-u-law"
-log_analytics_workspace_resource_group_name = "cstar-u-monitor-rg"
-
 ##Eventhub
 ehns_sku_name = "Standard"
 
@@ -439,4 +433,6 @@ selfcare_welfare_cdn_storage_account_replication_type = "GRS"
 storage_account_settings = {
   delete_retention_days = 5
   enable_versioning     = true
+  replication_type = "ZRS"
+  advanced_threat_protection_enabled = false
 }

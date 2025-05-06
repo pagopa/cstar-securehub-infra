@@ -29,8 +29,21 @@ locals {
   argocd_internal_url = "argocd.${var.location_short}.${var.dns_zone_internal_prefix}.${var.external_domain}"
 
 
-  monitor_appinsights_name = "${local.project_no_domain}-platform-monitoring-appinsights"
+  #
+  # Monitoring
+  #
 
+  monitor_resource_group_name                 = "cstar-${var.env_short}-itn-core-monitor-rg"
+  log_analytics_workspace_name                = "cstar-${var.env_short}-itn-core-law"
+  application_insights_name = "cstar-${var.env_short}-itn-core-appinsights"
+
+  platform_monitor_resource_group_name                 = "cstar-${var.env_short}-itn-platform-monitoring-rg"
+  platform_log_analytics_workspace_name                = "cstar-${var.env_short}-itn-platform-monitoring-law"
+  platform_application_insights_name = "cstar-${var.env_short}-itn-platform-monitoring-appinsights"
+
+  #
+  # APIM
+  #
   apim_name    = "cstar-${var.env_short}-apim"
   apim_rg_name = "cstar-${var.env_short}-api-rg"
   # monitor_action_group_slack_name = "SlackPagoPA"
