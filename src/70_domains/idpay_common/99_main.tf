@@ -26,6 +26,10 @@ terraform {
       source  = "argoproj-labs/argocd"
       version = "~> 7.0"
     }
+    azapi = {
+      source  = "Azure/azapi"
+      version = "~> 2.3.0"
+    }
   }
 
   backend "azurerm" {}
