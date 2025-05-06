@@ -41,6 +41,11 @@ data "azurerm_private_dns_zone" "storage_account_blob" {
   resource_group_name = local.vnet_core_rg_name
 }
 
+data "azurerm_private_dns_zone" "storage_account_table" {
+  name                = "privatelink.table.core.windows.net"
+  resource_group_name = local.vnet_core_rg_name
+}
+
 #
 # KeyVault
 #
@@ -79,16 +84,16 @@ data "azurerm_subnet" "private_endpoint_subnet" {
 # Azure Monitor
 #
 data "azurerm_log_analytics_workspace" "log_analytics" {
-  name                = var.log_analytics_workspace_name
-  resource_group_name = var.log_analytics_workspace_resource_group_name
+  name                = local.log_analytics_workspace_name
+  resource_group_name = local.monitor_resource_group_name
 }
 
 data "azurerm_resource_group" "monitor_rg" {
-  name = var.monitor_resource_group_name
+  name = local.monitor_resource_group_name
 }
 
 data "azurerm_application_insights" "application_insights" {
-  name                = local.monitor_appinsights_name
+  name                = local.application_insights_name
   resource_group_name = data.azurerm_resource_group.monitor_rg.name
 }
 
