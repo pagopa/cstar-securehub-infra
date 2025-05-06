@@ -107,7 +107,7 @@ resource "azurerm_key_vault_secret" "event_hub_idpay_00_primary_connection_strin
 #
 module "eventhub_namespace_idpay_01" {
 
-  count = var.env == "dev" ? 1 : 0
+  count = var.enable.idpay.eventhub_idpay_01 ? 1 : 0
 
   source = "./.terraform/modules/__v4__/eventhub"
   # source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//eventhub?ref=PAYMCLOUD-344-v-4-event-hub-revisione-modulo-v-4"
@@ -173,7 +173,7 @@ module "eventhub_namespace_idpay_01" {
 }
 
 module "event_hub_idpay_01_configuration" {
-  count = var.env == "dev" ? 1 : 0
+  count = var.enable.idpay.eventhub_idpay_01 ? 1 : 0
 
   source = "./.terraform/modules/__v4__/eventhub_configuration"
   # source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//eventhub_configuration?ref=PAYMCLOUD-344-v-4-event-hub-revisione-modulo-v-4"
