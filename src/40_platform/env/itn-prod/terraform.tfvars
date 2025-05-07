@@ -32,4 +32,4 @@ monitoring_law_daily_quota_gb    = 10
 # Synthetic
 #
 synthetic_storage_account_replication_type = "ZRS"
-synthetic_alerts_enabled                   = false
+synthetic_alerts_enabled                   = true
