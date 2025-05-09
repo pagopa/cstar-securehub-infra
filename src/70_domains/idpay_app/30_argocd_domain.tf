@@ -5,10 +5,90 @@ locals {
         name          = "idpay-onboarding-workflow"
         target_branch = "main"
       },
+      "idpay-payment" = {
+        name          = "idpay-payment"
+        target_branch = "IDP-2666-idpay-migrazione-a-workload-identity"
+      },
+      "idpay-wallet" = {
+        name          = "idpay-wallet"
+        target_branch = "IDP-2666-idpay-migrazione-a-workload-identity"
+      },
+      "idpay-reward-calculator" = {
+        name          = "idpay-reward-calculator"
+        target_branch = "IDP-2666-idpay-migrazione-a-workload-identity"
+      },
+      "idpay-merchant" = {
+        name          = "idpay-merchant"
+        target_branch = "IDP-2666-idpay-migrazione-a-workload-identity"
+      },
+      "idpay-admissibility-assessor" = {
+        name          = "idpay-admissibility-assessor"
+        target_branch = "IDP-2666-idpay-migrazione-a-workload-identity"
+      },
+      "idpay-transactions" = {
+        name          = "idpay-transactions"
+        target_branch = "IDP-2666-idpay-migrazione-a-workload-identity"
+      },
+      "idpay-portal-welfare-backend-initiative" = {
+        name          = "idpay-portal-welfare-backend-initiative"
+        target_branch = "IDP-2666-idpay-migrazione-a-workload-identity"
+      }
     }
     "mid" = {
+      "idpay-group" = {
+        name          = "idpay-group"
+        target_branch = "IDP-2666-idpay-migrazione-a-workload-identity"
+      },
+      "idpay-initiative-statistics" = {
+        name          = "idpay-initiative-statistics"
+        target_branch = "IDP-2666-idpay-migrazione-a-workload-identity"
+      },
+      "idpay-payment-instrument" = {
+        name          = "idpay-payment-instrument"
+        target_branch = "IDP-2666-idpay-migrazione-a-workload-identity"
+      },
+      "idpay-portal-welfare-backend-role-permission" = {
+        name          = "idpay-portal-welfare-backend-role-permission"
+        target_branch = "IDP-2666-idpay-migrazione-a-workload-identity"
+      },
+      "idpay-ranking" = {
+        name          = "idpay-ranking"
+        target_branch = "IDP-2666-idpay-migrazione-a-workload-identity"
+      },
+      "idpay-recovery-error-topic" = {
+        name          = "idpay-recovery-error-topic"
+        target_branch = "IDP-2666-idpay-migrazione-a-workload-identity"
+      },
+      " idpay-reward-notification" = {
+        name          = "idpay-reward-notification"
+        target_branch = "IDP-2666-idpay-migrazione-a-workload-identity"
+      },
+      "idpay-reward-user-id-splitter" = {
+        name          = "idpay-reward-user-id-splitter"
+        target_branch = "IDP-2666-idpay-migrazione-a-workload-identity"
+      },
+      "idpay-timeline" = {
+        name          = "idpay-timeline"
+        target_branch = "IDP-2666-idpay-migrazione-a-workload-identity"
+      },
     }
     "ext" = {
+      "idpay-iban" = {
+        name          = "idpay-iban"
+        target_branch = "IDP-2666-idpay-migrazione-a-workload-identity"
+      },
+      "idpay-notification-email" = {
+        name          = "idpay-notification-email"
+        target_branch = "IDP-2666-idpay-migrazione-a-workload-identity"
+      },
+      "idpay-notification-manager" = {
+        name          = "idpay-notification-manager"
+        target_branch = "IDP-2666-idpay-migrazione-a-workload-identity"
+      },
+      "idpay-self-expense-backend" = {
+        name          = "idpay-self-expense-backend"
+        target_branch = "IDP-2666-idpay-migrazione-a-workload-identity"
+      }
     }
   }
   flattened_applications = merge([
