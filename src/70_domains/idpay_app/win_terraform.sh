@@ -1,1 +1,1 @@
-../../../scripts/win_terraform.sh
+../../../scripts/win_terraform.sh "$@"
