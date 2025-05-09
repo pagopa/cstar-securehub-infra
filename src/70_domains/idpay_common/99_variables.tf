@@ -300,32 +300,18 @@ variable "service_bus_namespace" {
 }
 
 ### External resources
-
-variable "monitor_resource_group_name" {
-  type        = string
-  description = "Monitor resource group name"
-}
-
-variable "log_analytics_workspace_name" {
-  type        = string
-  description = "Specifies the name of the Log Analytics Workspace."
-}
-
-variable "log_analytics_workspace_resource_group_name" {
-  type        = string
-  description = "The name of the resource group in which the Log Analytics workspace is located in."
-}
-
 variable "enable" {
   type = object({
     idpay = object({
       eventhub_idpay_00 = bool
+      eventhub_idpay_01 = bool
     })
   })
   description = "Feature flags"
   default = {
     idpay = {
       eventhub_idpay_00 = false
+      eventhub_idpay_01 = false
     }
   }
 }
@@ -369,4 +355,13 @@ variable "aks_name" {
 variable "k8s_kube_config_path_prefix" {
   type    = string
   default = "~/.kube"
+}
+
+variable "storage_account_settings" {
+  type = object({
+    replication_type                   = string
+    delete_retention_days              = number
+    enable_versioning                  = bool
+    advanced_threat_protection_enabled = bool
+  })
 }

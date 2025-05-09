@@ -26,6 +26,10 @@ terraform {
       source  = "argoproj-labs/argocd"
       version = "~> 7.0"
     }
+    azapi = {
+      source  = "Azure/azapi"
+      version = "~> 2.3.0"
+    }
   }
 
   backend "azurerm" {}
@@ -40,8 +44,8 @@ provider "azurerm" {
 }
 
 module "__v4__" {
-  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v5.3.0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=8265f125b07251a5efe7b9ff57707109de8b46ba"
+  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v5.4.0
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=704c2bf399a3e3e8d1e7c61d2e8db51623836dc7"
 }
 
 data "azurerm_subscription" "current" {}

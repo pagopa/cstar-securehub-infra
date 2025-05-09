@@ -80,12 +80,6 @@ service_bus_namespace = {
   sku = "Standard"
 }
 
-### External resources
-
-monitor_resource_group_name                 = "cstar-p-monitor-rg"
-log_analytics_workspace_name                = "cstar-p-law"
-log_analytics_workspace_resource_group_name = "cstar-p-monitor-rg"
-
 ##Eventhub
 ehns_sku_name = "Standard"
 
@@ -419,6 +413,7 @@ eventhubs_idpay_01 = [
 enable = {
   idpay = {
     eventhub_idpay_00 = true
+    eventhub_idpay_01 = false
   }
 }
 
@@ -459,3 +454,11 @@ aks_resource_group_name = "cstar-p-weu-prod01-aks-rg"
 ### CDN
 idpay_cdn_storage_account_replication_type            = "RAGZRS"
 selfcare_welfare_cdn_storage_account_replication_type = "RAGZRS"
+
+# Storage
+storage_account_settings = {
+  replication_type                   = "ZRS"
+  delete_retention_days              = 90
+  enable_versioning                  = true
+  advanced_threat_protection_enabled = true
+}
