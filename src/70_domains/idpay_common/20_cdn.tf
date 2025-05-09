@@ -323,3 +323,23 @@
 #
 #   tags = var.tags
 # }
+
+# locals {
+#   idpay_cdn_storage_account_name = replace("${local.project}-idpaycdn-sa", "-", "") #"cstardweuidpayidpaycdnsa"
+#   idpay-portal-hostname          = "welfare.${data.azurerm_dns_zone.public.name}"
+#   idpay-oidc-config_url          = "https://${local.idpay-portal-hostname}/selfcare/openid-configuration.json"
+#   selfcare-issuer                = "https://${var.env != "prod" ? "${var.env}." : ""}selfcare.pagopa.it"
+# }
+#
+# resource "azurerm_storage_blob" "oidc_configuration" {
+#   name                   = "selfcare/openid-configuration.json"
+#   storage_account_name   = replace("${local.project}-idpaycdn-sa", "-", "")
+#   storage_container_name = "$web"
+#   type                   = "Block"
+#   content_type           = "application/json"
+#   access_tier            = "Hot"
+#
+#   source_content = templatefile("./cdn/openid-configuration.json.tpl", {
+#     selfcare-issuer = local.selfcare-issuer
+#   })
+# }
