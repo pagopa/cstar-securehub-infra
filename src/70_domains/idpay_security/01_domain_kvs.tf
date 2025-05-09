@@ -18,7 +18,7 @@ module "key_vault" {
 }
 
 ## ad group policy ##
-resource "azurerm_key_vault_access_policy" "ad_group_policy" {
+resource "azurerm_key_vault_access_policy" "admins_group_policy" {
   for_each = toset(local.secrets_folders_kv)
 
   key_vault_id = module.key_vault[each.key].id
@@ -26,14 +26,14 @@ resource "azurerm_key_vault_access_policy" "ad_group_policy" {
   tenant_id = data.azurerm_client_config.current.tenant_id
   object_id = data.azuread_group.adgroup_admin.object_id
 
-  key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", "GetRotationPolicy", "Encrypt", "Decrypt"]
-  secret_permissions      = ["Get", "List", "Set", "Delete", "Recover", "Restore"]
+  key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt", "Backup", "Purge", "Recover", "Restore", "Sign", "UnwrapKey", "Update", "Verify", "WrapKey", "Release", "Rotate", "GetRotationPolicy", "SetRotationPolicy"]
+  secret_permissions      = ["Get", "List", "Set", "Delete", "Backup", "Purge", "Recover", "Restore"]
   storage_permissions     = []
-  certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Purge", "Recover"]
+  certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Purge", "Recover", "Backup", "ManageContacts", "ManageIssuers", "GetIssuers", "ListIssuers", "SetIssuers", "DeleteIssuers"]
 }
 
 ## ad group policy ##
-resource "azurerm_key_vault_access_policy" "adgroup_developers_policy" {
+resource "azurerm_key_vault_access_policy" "developers_policy" {
   for_each = var.env == "dev" ? toset(local.secrets_folders_kv) : []
 
   key_vault_id = module.key_vault[each.key].id
@@ -41,16 +41,14 @@ resource "azurerm_key_vault_access_policy" "adgroup_developers_policy" {
   tenant_id = data.azurerm_client_config.current.tenant_id
   object_id = data.azuread_group.adgroup_developers.object_id
 
-  key_permissions     = ["Get", "List", "Update", "Create", "Import", "Delete", ]
-  secret_permissions  = ["Get", "List", "Set", "Delete", ]
-  storage_permissions = []
-  certificate_permissions = [
-    "Get", "List", "Update", "Create", "Import",
-    "Delete", "Restore", "Purge", "Recover"
-  ]
+  key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt", "Rotate", "GetRotationPolicy"]
+  secret_permissions      = ["Get", "List", "Set", "Delete", ]
+  storage_permissions     = []
+  certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Purge", "Recover"]
+
 }
 
-resource "azurerm_key_vault_access_policy" "adgroup_externals_policy" {
+resource "azurerm_key_vault_access_policy" "externals_policy" {
   for_each = var.env == "dev" ? toset(local.secrets_folders_kv) : []
 
   key_vault_id = module.key_vault[each.key].id
@@ -58,8 +56,8 @@ resource "azurerm_key_vault_access_policy" "adgroup_externals_policy" {
   tenant_id = data.azurerm_client_config.current.tenant_id
   object_id = data.azuread_group.adgroup_externals.object_id
 
-  key_permissions         = ["Get", "List"]
-  secret_permissions      = ["Get", "List", "Set", "Delete"]
+  key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt", "Rotate", "GetRotationPolicy"]
+  secret_permissions      = ["Get", "List", "Set", "Delete", ]
   storage_permissions     = []
-  certificate_permissions = ["Get", "List"]
+  certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Purge", "Recover"]
 }

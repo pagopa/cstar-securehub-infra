@@ -12,7 +12,7 @@ resource "azurerm_key_vault_key" "sops_key" {
   ]
 
   depends_on = [
-    azurerm_key_vault_access_policy.adgroup_developers_policy,
-    azurerm_key_vault_access_policy.ad_group_policy,
+    azurerm_key_vault_access_policy.admins_group_policy,
+    azurerm_key_vault_access_policy.developers_policy,
   ]
 }
