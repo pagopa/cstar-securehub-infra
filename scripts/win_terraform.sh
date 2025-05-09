@@ -1,2 +1,2 @@
 #!/bin/bash
-./terraform.sh "$@"
+./terraform.sh $@
