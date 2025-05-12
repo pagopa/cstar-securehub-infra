@@ -159,15 +159,9 @@ variable "robots_indexed_paths" {
 }
 
 # Single Page Applications
-variable "spa" {
+variable "single_page_applications_roots_dirs" {
   type        = list(string)
   description = "spa root dirs"
-  default = [
-    "portale-enti",
-    "portale-esercenti",
-    "mocks/merchant",
-    "ricevute"
-  ]
 }
 ## Event hub
 variable "ehns_sku_name" {

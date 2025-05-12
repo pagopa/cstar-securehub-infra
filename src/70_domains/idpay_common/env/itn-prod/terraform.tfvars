@@ -462,7 +462,12 @@ aks_resource_group_name = "cstar-p-weu-prod01-aks-rg"
 idpay_cdn_storage_account_replication_type            = "ZRS"
 selfcare_welfare_cdn_storage_account_replication_type = "ZRS"
 idpay_cdn_sa_advanced_threat_protection_enabled = true
-
+single_page_applications_roots_dirs = [
+    "portale-enti",
+    "portale-esercenti",
+    "mocks/merchant",
+    "ricevute"
+  ]
 
 # Storage
 storage_account_settings = {
