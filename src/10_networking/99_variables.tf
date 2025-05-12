@@ -114,41 +114,51 @@ variable "cidr_spoke_security_vnet" {
   description = "Address prefixes vnet security"
 }
 
-# variable "cidr_vpn_subnet" {
-#   type        = list(string)
-#   description = "Address prefixes subnet vpn"
-#   default     = null
-# }
+variable "cidr_subnet_vpn" {
+  type        = list(string)
+  description = "VPN network address space."
+}
+
+variable "cidr_subnet_packer_dns_forwarder" {
+  type        = list(string)
+  description = "VPN network address space."
+}
+
+variable "cidr_subnet_dnsforwarder_vmss" {
+  type        = list(string)
+  description = "DNS Forwarder network address space for VMSS."
+}
+
+variable "cidr_subnet_dnsforwarder_lb" {
+  type        = list(string)
+  description = "DNS Forwarder network address space for LB."
+}
+
+variable "cidr_subnet_packer_azdo" {
+  type        = list(string)
+  description = "packer azdo network address space."
+}
+
+## VPN ##
+variable "vpn_sku" {
+  type        = string
+  description = "VPN Gateway SKU"
+}
+
+variable "vpn_pip_sku" {
+  type        = string
+  description = "VPN GW PIP SKU"
+}
+
 
 #
-# variable "cidr_subnet_prv_endpoint" {
-#   type        = list(string)
-#   description = "Address prefixes subnet private endpoint."
-# }
+# dns forwarder
+#
+variable "dns_forwarder_vmss_image_version" {
+  type        = string
+  description = "vpn dns forwarder image version"
+}
 
-# #
-# # DNS Forwarder
-# #
-# variable "dns_forwarder_vm_image_version" {
-#   type        = string
-#   description = "Version of dns forwarder image created in 03_packer"
-# }
-#
-# #
-# # VPN
-# #
-#
-# variable "vpn_sku" {
-#   type        = string
-#   default     = "VpnGw1"
-#   description = "VPN Gateway SKU"
-# }
-#
-# variable "vpn_pip_sku" {
-#   type        = string
-#   default     = "Basic"
-#   description = "VPN GW PIP SKU"
-# }
 #
 # #
 # # DNS
