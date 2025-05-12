@@ -2,10 +2,10 @@ module "cdn_idpay_selfcare" {
 
   source = "./.terraform/modules/__v4__/cdn"
 
-  name                             = "welfare-selfcare-${var.env_short}"
-  prefix                           = var.prefix
+  name                             = "selfcare"
+  prefix                           = local.project_weu
   resource_group_name              = data.azurerm_resource_group.idpay_data_rg.name
-  location                         = var.location
+  location                         = var.location_weu
 
   hostname              = "selfcare-italy.${data.azurerm_dns_zone.public_cstar.name}"
   https_rewrite_enabled = true
@@ -66,12 +66,12 @@ module "cdn_idpay_selfcare" {
 }
 
 locals {
-  selfcare-issuer                = "https://${var.env != "prod" ? "${var.env}." : ""}selfcare.pagopa.it"
+  selfcare-issuer                = "https://${var.env != "prod" ? "${var.env}." : ""}selfcare-italy.pagopa.it"
 }
 
 resource "azurerm_storage_blob" "oidc_configuration" {
   name                   = "selfcare/openid-configuration.json"
-  storage_account_name   = replace("${local.project}-idpaycdn-sa", "-", "")
+  # storage_account_name   = module.cdn_idpay_selfcare.storage_account_name
   storage_container_name = "$web"
   type                   = "Block"
   content_type           = "application/json"
@@ -80,4 +80,8 @@ resource "azurerm_storage_blob" "oidc_configuration" {
   source_content = templatefile("./cdn/openid-configuration.json.tpl", {
     selfcare-issuer = local.selfcare-issuer
   })
+
+  depends_on = [
+    module.cdn_idpay_selfcare
+  ]
 }

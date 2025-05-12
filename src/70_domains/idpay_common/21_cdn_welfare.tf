@@ -38,9 +38,9 @@ module "cdn_idpay_welfare" {
   source = "./.terraform/modules/__v4__/cdn"
 
   name                             = "welfare"
-  prefix                           = local.project
+  prefix                           = local.project_weu
   resource_group_name              = data.azurerm_resource_group.idpay_data_rg.name
-  location                         = var.location
+  location                         = var.location_weu
 
   hostname                         = "welfare-italy.${data.azurerm_dns_zone.public_cstar.name}"
   https_rewrite_enabled            = true

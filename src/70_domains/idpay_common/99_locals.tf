@@ -2,6 +2,7 @@ locals {
   product           = "${var.prefix}-${var.env_short}"
   product_no_domain = "${var.prefix}-${var.env_short}-${var.location_short}"
   project           = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
+  project_weu           = "${var.prefix}-${var.env_short}-${var.location_short_weu}-${var.domain}"
 
   #
   # 🌐 Network

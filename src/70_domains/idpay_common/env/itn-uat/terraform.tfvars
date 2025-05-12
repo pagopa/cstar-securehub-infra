@@ -4,6 +4,8 @@ env            = "uat"
 domain         = "idpay"
 location       = "italynorth"
 location_short = "itn"
+location_weu      = "westeurope"
+location_short_weu = "weu"
 
 #
 # Dns
@@ -432,8 +434,8 @@ aks_name                = "cstar-u-weu-uat01-aks"
 aks_resource_group_name = "cstar-u-weu-uat01-aks-rg"
 
 ### CDN
-idpay_cdn_storage_account_replication_type            = "GRS"
-selfcare_welfare_cdn_storage_account_replication_type = "GRS"
+idpay_cdn_storage_account_replication_type            = "ZRS"
+selfcare_welfare_cdn_storage_account_replication_type = "ZRS"
 idpay_cdn_sa_advanced_threat_protection_enabled = false
 single_page_applications_roots_dirs = [
     "portale-enti",

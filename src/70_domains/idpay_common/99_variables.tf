@@ -50,6 +50,22 @@ variable "location_short" {
   description = "One of wue, neu"
 }
 
+variable "location_weu" {
+  type        = string
+  description = "One of westeurope, northeurope"
+}
+
+variable "location_short_weu" {
+  type = string
+  validation {
+    condition = (
+      length(var.location_short_weu) == 3
+    )
+    error_message = "Length must be 3 chars."
+  }
+  description = "One of wue, neu"
+}
+
 variable "tags" {
   type = map(any)
   default = {

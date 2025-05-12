@@ -4,6 +4,8 @@ env            = "prod"
 domain         = "idpay"
 location       = "italynorth"
 location_short = "itn"
+location_weu      = "westeurope"
+location_short_weu = "weu"
 
 #
 # Dns
