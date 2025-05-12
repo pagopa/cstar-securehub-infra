@@ -14,8 +14,8 @@ data "azuread_application" "vpn_app" {
 }
 
 module "vpn" {
-  # source = "./.terraform/modules/__v4__/vpn_gateway"
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//vpn_gateway?ref=fix-vpn-pip-allocation-method"
+  source = "./.terraform/modules/__v4__/vpn_gateway"
+  # source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//vpn_gateway?ref=fix-vpn-pip-allocation-method"
 
   name                  = "${local.project}-vpn"
   location              = var.location
@@ -65,7 +65,6 @@ module "subnet_dns_forwarder_vmss" {
 module "dns_forwarder_lb_vmss" {
   source = "./.terraform/modules/__v4__/dns_forwarder_lb_vmss"
   # source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//dns_forwarder_lb_vmss?ref=PAYMCLOUD-399-v-4-vpn-update"
-
 
   name                 = local.project
   virtual_network_name = module.vnet_core_hub.name
