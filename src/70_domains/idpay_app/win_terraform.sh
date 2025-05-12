@@ -1,1 +1,2 @@
-../../../scripts/win_terraform.sh
+#!/bin/bash
+../../../scripts/win_terraform.sh "$@"

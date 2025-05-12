@@ -5,10 +5,90 @@ locals {
         name          = "idpay-onboarding-workflow"
         target_branch = "main"
       },
+      "idpay-payment" = {
+        name          = "idpay-payment"
+        target_branch = "main"
+      },
+      "idpay-wallet" = {
+        name          = "idpay-wallet"
+        target_branch = "main"
+      },
+      "idpay-reward-calculator" = {
+        name          = "idpay-reward-calculator"
+        target_branch = "main"
+      },
+      "idpay-merchant" = {
+        name          = "idpay-merchant"
+        target_branch = "main"
+      },
+      "idpay-admissibility-assessor" = {
+        name          = "idpay-admissibility-assessor"
+        target_branch = "main"
+      },
+      "idpay-transactions" = {
+        name          = "idpay-transactions"
+        target_branch = "main"
+      },
+      "idpay-portal-welfare-backend-initiative" = {
+        name          = "idpay-portal-welfare-backend-initiative"
+        target_branch = "main"
+      }
     }
     "mid" = {
+      "idpay-group" = {
+        name          = "idpay-group"
+        target_branch = "main"
+      },
+      "idpay-initiative-statistics" = {
+        name          = "idpay-initiative-statistics"
+        target_branch = "main"
+      },
+      "idpay-payment-instrument" = {
+        name          = "idpay-payment-instrument"
+        target_branch = "main"
+      },
+      "idpay-portal-welfare-backend-role-permission" = {
+        name          = "idpay-portal-welfare-backend-role-permission"
+        target_branch = "main"
+      },
+      "idpay-ranking" = {
+        name          = "idpay-ranking"
+        target_branch = "main"
+      },
+      "idpay-recovery-error-topic" = {
+        name          = "idpay-recovery-error-topic"
+        target_branch = "main"
+      },
+      " idpay-reward-notification" = {
+        name          = "idpay-reward-notification"
+        target_branch = "main"
+      },
+      "idpay-reward-user-id-splitter" = {
+        name          = "idpay-reward-user-id-splitter"
+        target_branch = "main"
+      },
+      "idpay-timeline" = {
+        name          = "idpay-timeline"
+        target_branch = "main"
+      },
     }
     "ext" = {
+      "idpay-iban" = {
+        name          = "idpay-iban"
+        target_branch = "main"
+      },
+      "idpay-notification-email" = {
+        name          = "idpay-notification-email"
+        target_branch = "main"
+      },
+      "idpay-notification-manager" = {
+        name          = "idpay-notification-manager"
+        target_branch = "main"
+      },
+      "idpay-self-expense-backend" = {
+        name          = "idpay-self-expense-backend"
+        target_branch = "main"
+      }
     }
   }
   flattened_applications = merge([
