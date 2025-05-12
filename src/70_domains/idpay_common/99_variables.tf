@@ -50,11 +50,6 @@ variable "location_short" {
   description = "One of wue, neu"
 }
 
-variable "instance" {
-  type        = string
-  description = "One of beta, prod01, prod02"
-}
-
 variable "tags" {
   type = map(any)
   default = {
@@ -68,25 +63,25 @@ variable "tags" {
 variable "cidr_idpay_data_cosmos" {
   type        = list(string)
   description = "Cosmos subnet network address space."
-  default     = []
+  # default     = []
 }
 
 variable "cidr_idpay_data_eventhub" {
   type        = list(string)
   description = "Eventhub subnet network address space."
-  default     = []
+  # default     = []
 }
 
 variable "cidr_idpay_data_redis" {
   type        = list(string)
   description = "Redis subnet network address space."
-  default     = []
+  # default     = []
 }
 
 variable "cidr_idpay_data_servicebus" {
   type        = list(string)
   description = "Servicebus subnet network address space."
-  default     = []
+  # default     = []
 }
 
 variable "dns_zone_internal_prefix" {
@@ -139,13 +134,11 @@ variable "cosmos_mongo_db_idpay_params" {
 # DNS
 variable "external_domain" {
   type        = string
-  default     = "pagopa.it"
   description = "Domain for delegation"
 }
 
 variable "dns_zone_prefix" {
   type        = string
-  default     = "cstar"
   description = "The dns subdomain."
 }
 
@@ -155,20 +148,14 @@ variable "ns_dns_records_welfare" {
     records = list(string)
   }))
   description = "ns records to delegate the dns zone into the subscription/env."
-  default     = []
-}
-
-variable "dns_default_ttl_sec" {
-  type        = number
-  description = "Dns records ttl value."
-  default     = 3600
+  # default     = []
 }
 
 #CDN
 variable "robots_indexed_paths" {
   type        = list(string)
   description = "List of cdn paths to allow robots index"
-  default     = []
+  # default     = []
 }
 
 # Single Page Applications
@@ -186,31 +173,31 @@ variable "spa" {
 variable "ehns_sku_name" {
   type        = string
   description = "Defines which tier to use."
-  default     = "Basic"
+  # default     = "Basic"
 }
 
 variable "ehns_capacity" {
   type        = number
   description = "Specifies the Capacity / Throughput Units for a Standard SKU namespace."
-  default     = null
+  # default     = null
 }
 
 variable "ehns_maximum_throughput_units" {
   type        = number
   description = "Specifies the maximum number of throughput units when Auto Inflate is Enabled"
-  default     = null
+  # default     = null
 }
 
 variable "ehns_auto_inflate_enabled" {
   type        = bool
   description = "Is Auto Inflate enabled for the EventHub Namespace?"
-  default     = false
+  # default     = false
 }
 
 variable "ehns_zone_redundant" {
   type        = bool
   description = "Specifies if the EventHub Namespace should be Zone Redundant (created across Availability Zones)."
-  default     = false
+  # default     = false
 }
 
 
@@ -228,7 +215,7 @@ variable "eventhubs_idpay" {
       manage = bool
     }))
   }))
-  default = []
+  # default = []
 }
 
 variable "eventhubs_idpay_01" {
@@ -245,12 +232,12 @@ variable "eventhubs_idpay_01" {
       manage = bool
     }))
   }))
-  default = []
+  # default = []
 }
 
 variable "ehns_alerts_enabled" {
   type        = bool
-  default     = true
+  # default     = true
   description = "Event hub alerts enabled?"
 }
 variable "ehns_metric_alerts" {
@@ -326,7 +313,7 @@ variable "aks_vnet" {
 
 variable "idpay_cdn_sa_advanced_threat_protection_enabled" {
   type    = bool
-  default = false
+  # default = false
 }
 
 variable "idpay_cdn_storage_account_replication_type" {
