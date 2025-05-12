@@ -4,12 +4,12 @@ env            = "dev"
 domain         = "idpay"
 location       = "italynorth"
 location_short = "itn"
-instance       = "dev"
 
 #
 # Dns
 #
 dns_zone_internal_prefix = "internal.dev.cstar"
+dns_zone_prefix = "dev.cstar"
 external_domain          = "pagopa.it"
 
 tags = {

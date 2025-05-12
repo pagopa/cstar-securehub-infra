@@ -4,11 +4,11 @@ env            = "uat"
 domain         = "idpay"
 location       = "italynorth"
 location_short = "itn"
-instance       = "uat"
 
 #
 # Dns
 #
+dns_zone_prefix = "uat.cstar"
 dns_zone_internal_prefix = "internal.uat.cstar"
 external_domain          = "pagopa.it"
 

@@ -4,12 +4,13 @@ env            = "prod"
 domain         = "idpay"
 location       = "italynorth"
 location_short = "itn"
-instance       = "prod"
 
 #
 # Dns
 #
+dns_zone_prefix = "cstar"
 dns_zone_internal_prefix = "internal.cstar"
+
 external_domain          = "pagopa.it"
 
 tags = {
@@ -426,7 +427,8 @@ ns_dns_records_welfare = [
       "ns1-01.azure-dns.com",
       "ns2-01.azure-dns.net",
       "ns3-01.azure-dns.org",
-    "ns4-01.azure-dns.info", ]
+      "ns4-01.azure-dns.info",
+    ]
   },
   {
     name = "uat"

@@ -13,6 +13,14 @@ data "azurerm_virtual_network" "vnet_spoke_data" {
   resource_group_name = local.vnet_spoke_data_rg_name
 }
 
+data azurerm_dns_zone "public_cstar" {
+  name                = local.public_dns_zone_name
+  resource_group_name = local.vnet_core_rg_name
+}
+
+#
+# Private DNS Zones
+#
 # Cosmos MongoDB private dns zone
 data "azurerm_private_dns_zone" "cosmos_mongo" {
   name                = "privatelink.mongo.cosmos.azure.com"

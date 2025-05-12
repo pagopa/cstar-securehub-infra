@@ -1,17 +1,19 @@
 locals {
-  project           = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
-  project_no_domain = "${var.prefix}-${var.env_short}-${var.location_short}"
   product           = "${var.prefix}-${var.env_short}"
   product_no_domain = "${var.prefix}-${var.env_short}-${var.location_short}"
+  project           = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
 
   #
   # 🌐 Network
   #
   vnet_core_rg_name           = "${local.product}-vnet-rg"
-  vnet_spoke_data_name        = "${local.project_no_domain}-core-spoke-data-vnet"
-  vnet_spoke_data_rg_name     = "${local.project_no_domain}-core-network-rg"
+  vnet_spoke_data_name        = "${local.product_no_domain}-core-spoke-data-vnet"
+  vnet_spoke_data_rg_name     = "${local.product_no_domain}-core-network-rg"
   vnet_spoke_platform_rg_name = "${local.product_no_domain}-core-network-rg"
   vnet_spoke_platform_name    = "${local.product_no_domain}-core-spoke-platform-vnet"
+
+  public_dns_zone_name = "${var.dns_zone_prefix}.${var.external_domain}"
+
   #
   # 🔑 KeyVault
   #
@@ -21,8 +23,8 @@ locals {
   #
   # AKS
   #
-  aks_name                = "${local.project_no_domain}-${var.env}-aks"
-  aks_resource_group_name = "${local.project_no_domain}-core-aks-rg"
+  aks_name                = "${local.product_no_domain}-${var.env}-aks"
+  aks_resource_group_name = "${local.product_no_domain}-core-aks-rg"
 
   ### ARGOCD
   argocd_namespace    = "argocd"
