@@ -52,13 +52,13 @@ module "vnet_secure_hub_to_spoke_peering" {
   source_resource_group_name       = azurerm_resource_group.rg_network.name
   source_virtual_network_name      = module.vnet_core_hub.name
   source_remote_virtual_network_id = module.vnet_core_hub.id
-  source_allow_gateway_transit = true
+  source_allow_gateway_transit     = true
 
   # Define source virtual network peering details
   target_resource_group_name       = each.value.resource_group_name
   target_virtual_network_name      = each.value.name
   target_remote_virtual_network_id = each.value.id
-  target_use_remote_gateways = true
+  target_use_remote_gateways       = true
 }
 
 #

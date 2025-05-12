@@ -17,13 +17,13 @@ module "vpn" {
   source = "./.terraform/modules/__v4__/vpn_gateway"
   # source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//vpn_gateway?ref=fix-vpn-pip-allocation-method"
 
-  name                  = "${local.project}-vpn"
-  location              = var.location
-  resource_group_name   = module.vnet_core_hub.resource_group_name
+  name                = "${local.project}-vpn"
+  location            = var.location
+  resource_group_name = module.vnet_core_hub.resource_group_name
 
-  sku                   = var.vpn_sku
-  pip_sku               = var.vpn_pip_sku
-  subnet_id             = module.vpn_snet.id
+  sku       = var.vpn_sku
+  pip_sku   = var.vpn_pip_sku
+  subnet_id = module.vpn_snet.id
 
   vpn_client_configuration = [
     {

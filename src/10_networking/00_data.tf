@@ -28,5 +28,5 @@ data "azurerm_virtual_network" "vnet_weu_aks" {
 # Packer
 #
 data "azurerm_resource_group" "rg_packer" {
-  name     = local.packer_rg_name
+  name = local.packer_rg_name
 }
