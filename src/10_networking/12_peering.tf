@@ -69,13 +69,13 @@ module "vnet_spoke_compute_peerings" {
 
   for_each = local.all_vnets_peering_to_spoke_compute
 
-  # Define source virtual network peering details
-  source_resource_group_name       = each.value.resource_group_name
-  source_virtual_network_name      = each.value.name
-  source_remote_virtual_network_id = each.value.id
-
   # Define target virtual network peering details
-  target_resource_group_name       = module.vnet_spoke_compute.resource_group_name
-  target_virtual_network_name      = module.vnet_spoke_compute.name
-  target_remote_virtual_network_id = module.vnet_spoke_compute.id
+  source_resource_group_name       = module.vnet_spoke_compute.resource_group_name
+  source_virtual_network_name      = module.vnet_spoke_compute.name
+  source_remote_virtual_network_id = module.vnet_spoke_compute.id
+
+  # Define source virtual network peering details
+  target_resource_group_name       = each.value.resource_group_name
+  target_virtual_network_name      = each.value.name
+  target_remote_virtual_network_id = each.value.id
 }
