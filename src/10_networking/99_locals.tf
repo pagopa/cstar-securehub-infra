@@ -11,11 +11,13 @@ locals {
   })
 
   # VNET
-  vnet_name                = "${local.project}-vnet"
-  vnet_resource_group_name = "${local.project}-vnet-rg"
-
   vnet_weu_core = {
     name           = "${var.prefix}-${var.env_short}-vnet"
+    resource_group = "${var.prefix}-${var.env_short}-vnet-rg"
+  }
+
+  vnet_weu_integration = {
+    name           = "${var.prefix}-${var.env_short}-integration-vnet"
     resource_group = "${var.prefix}-${var.env_short}-vnet-rg"
   }
 
