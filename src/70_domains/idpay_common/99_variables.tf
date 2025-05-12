@@ -148,7 +148,7 @@ variable "ns_dns_records_welfare" {
     records = list(string)
   }))
   description = "ns records to delegate the dns zone into the subscription/env."
-  # default     = []
+  default     = []
 }
 
 #CDN
@@ -193,13 +193,6 @@ variable "ehns_auto_inflate_enabled" {
   description = "Is Auto Inflate enabled for the EventHub Namespace?"
   # default     = false
 }
-
-variable "ehns_zone_redundant" {
-  type        = bool
-  description = "Specifies if the EventHub Namespace should be Zone Redundant (created across Availability Zones)."
-  # default     = false
-}
-
 
 variable "eventhubs_idpay" {
   description = "A list of event hubs to add to namespace for IDPAY application."

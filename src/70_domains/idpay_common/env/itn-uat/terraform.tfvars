@@ -80,6 +80,12 @@ service_bus_namespace = {
 
 ##Eventhub
 ehns_sku_name = "Standard"
+ehns_capacity                 = 1
+ehns_maximum_throughput_units = 5
+ehns_auto_inflate_enabled     = true
+ehns_alerts_enabled = false
+
+
 
 eventhubs_idpay = [
   {
@@ -428,6 +434,8 @@ aks_resource_group_name = "cstar-u-weu-uat01-aks-rg"
 ### CDN
 idpay_cdn_storage_account_replication_type            = "GRS"
 selfcare_welfare_cdn_storage_account_replication_type = "GRS"
+idpay_cdn_sa_advanced_threat_protection_enabled = false
+
 
 # Storage
 storage_account_settings = {

@@ -83,7 +83,7 @@ data "azurerm_kubernetes_cluster" "aks" {
 
 
 data "azurerm_subnet" "private_endpoint_subnet" {
-  name                 = "${local.project_no_domain}-platform-storage-private-endpoint-snet"
+  name                 = "${local.product_no_domain}-platform-storage-private-endpoint-snet"
   virtual_network_name = local.vnet_spoke_platform_name
   resource_group_name  = local.vnet_spoke_platform_rg_name
 }
