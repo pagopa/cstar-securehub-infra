@@ -1,6 +1,7 @@
 locals {
+  selfare_temp_suffix = "-italy"
   spa = [
-    for i, spa in var.spa :
+    for i, spa in var.single_page_applications_roots_dirs :
     {
       name  = replace(replace("SPA-${spa}", "-", ""), "/", "0")
       order = i + 3 // +3 required because the order start from 1: 1 is reserved for default application redirect; 2 is reserved for the https rewrite;
@@ -36,7 +37,7 @@ locals {
 module "cdn_idpay_welfare" {
   source = "./.terraform/modules/__v4__/cdn"
 
-  name                             = "idpaycdn"
+  name                             = "welfare"
   prefix                           = local.project
   resource_group_name              = data.azurerm_resource_group.idpay_data_rg.name
   location                         = var.location
@@ -79,12 +80,12 @@ module "cdn_idpay_welfare" {
       {
         action = "Append"
         name   = "Content-Security-Policy-Report-Only"
-        value  = "script-src 'self'; style-src 'self' 'unsafe-inline' https://selfcare.pagopa.it/assets/font/selfhostedfonts.css; worker-src 'none'; font-src 'self' https://selfcare.pagopa.it/assets/font/; "
+        value  = "script-src 'self'; style-src 'self' 'unsafe-inline' https://selfcare${local.selfare_temp_suffix}.pagopa.it/assets/font/selfhostedfonts.css; worker-src 'none'; font-src 'self' https://selfcare${local.selfare_temp_suffix}.pagopa.it/assets/font/; "
       },
       {
         action = "Append"
         name   = "Content-Security-Policy-Report-Only"
-        value  = "img-src 'self' https://assets.cdn.io.italia.it https://${module.cdn_idpay_welfare.storage_primary_web_host} https://${var.env != "prod" ? "${var.env}." : ""}selfcare.pagopa.it https://selc${var.env_short}checkoutsa.z6.web.core.windows.net/institutions/ data:; "
+        value  = "img-src 'self' https://assets.cdn.io.italia.it https://${module.cdn_idpay_welfare.storage_primary_web_host} https://${var.env != "prod" ? "${var.env}." : ""}selfcare${local.selfare_temp_suffix}.pagopa.it https://selc${var.env_short}checkoutsa.z6.web.core.windows.net/institutions/ data:; "
       },
       {
         action = "Append"

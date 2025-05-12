@@ -7,7 +7,7 @@ module "cdn_idpay_selfcare" {
   resource_group_name              = data.azurerm_resource_group.idpay_data_rg.name
   location                         = var.location
 
-  hostname              = "selfcare.${data.azurerm_dns_zone.public_cstar.name}"
+  hostname              = "selfcare-italy.${data.azurerm_dns_zone.public_cstar.name}"
   https_rewrite_enabled = true
 
   storage_account_replication_type = var.selfcare_welfare_cdn_storage_account_replication_type
