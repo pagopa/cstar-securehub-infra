@@ -18,3 +18,10 @@ data "azurerm_virtual_network" "vnet_weu_aks" {
   name                = local.vnet_weu_aks.name
   resource_group_name = local.vnet_weu_aks.resource_group
 }
+
+#
+# Packer
+#
+data "azurerm_resource_group" "rg_packer" {
+  name     = local.packer_rg_name
+}

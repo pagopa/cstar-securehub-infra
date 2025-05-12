@@ -30,6 +30,8 @@ locals {
   kv_core_name                = "${local.project}-kv"
   kv_core_resource_group_name = "${local.project}-sec-rg"
 
-  # # Dns Forwarder
-  # dns_forwarder_vm_image_name = "${local.product_nodomain}-packer-dns-forwarder-ubuntu2204-image-${var.dns_forwarder_vm_image_version}"
+  #
+  # Packer
+  #
+  packer_rg_name = "${local.product}-${var.location_short}-packer-rg"
 }

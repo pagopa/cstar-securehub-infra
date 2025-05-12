@@ -14,8 +14,8 @@ data "azuread_application" "vpn_app" {
 }
 
 module "vpn" {
-  source = "./.terraform/modules/__v4__/vpn_gateway"
-  # source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//vpn_gateway?ref=PAYMCLOUD-399-v-4-vpn-update"
+  # source = "./.terraform/modules/__v4__/vpn_gateway"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//vpn_gateway?ref=fix-vpn-pip-allocation-method"
 
   name                  = "${local.project}-vpn"
   location              = var.location
@@ -69,7 +69,7 @@ module "dns_forwarder_lb_vmss" {
 
   name                 = local.project
   virtual_network_name = module.vnet_core_hub.name
-  resource_group_name  = module.vnet_core_hub.resource_group_name
+  resource_group_name  = data.azurerm_resource_group.rg_packer.name
 
   static_address_lb = cidrhost(var.cidr_subnet_dnsforwarder_lb[0], 4)
   subnet_lb_id      = module.subnet_dns_forwarder_lb.id
@@ -80,5 +80,5 @@ module "dns_forwarder_lb_vmss" {
   key_vault_id      = data.azurerm_key_vault.kv_core.id
   tenant_id         = data.azurerm_client_config.current.id
   tags              = var.tags
-  source_image_name = "dvopla-d-itn-dns-forwarder-ubuntu2204-image-${var.dns_forwarder_vmss_image_version}"
+  source_image_name = "cstar-d-itn-packer-dns-forwarder-ubuntu2204-image-${var.dns_forwarder_vmss_image_version}"
 }

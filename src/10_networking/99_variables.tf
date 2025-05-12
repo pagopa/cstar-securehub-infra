@@ -85,6 +85,32 @@ variable "cidr_subnet_azdoa" {
   description = "Azure DevOps agent network address space."
 }
 
+
+variable "cidr_subnet_vpn" {
+  type        = list(string)
+  description = "VPN network address space."
+}
+
+# variable "cidr_subnet_packer_dns_forwarder" {
+#   type        = list(string)
+#   description = "VPN network address space."
+# }
+
+variable "cidr_subnet_dnsforwarder_vmss" {
+  type        = list(string)
+  description = "DNS Forwarder network address space for VMSS."
+}
+
+variable "cidr_subnet_dnsforwarder_lb" {
+  type        = list(string)
+  description = "DNS Forwarder network address space for LB."
+}
+
+# variable "cidr_subnet_packer_azdo" {
+#   type        = list(string)
+#   description = "packer azdo network address space."
+# }
+
 #
 # SPOKE Vnet & Subnets CIDR
 #
@@ -114,32 +140,9 @@ variable "cidr_spoke_security_vnet" {
   description = "Address prefixes vnet security"
 }
 
-variable "cidr_subnet_vpn" {
-  type        = list(string)
-  description = "VPN network address space."
-}
-
-variable "cidr_subnet_packer_dns_forwarder" {
-  type        = list(string)
-  description = "VPN network address space."
-}
-
-variable "cidr_subnet_dnsforwarder_vmss" {
-  type        = list(string)
-  description = "DNS Forwarder network address space for VMSS."
-}
-
-variable "cidr_subnet_dnsforwarder_lb" {
-  type        = list(string)
-  description = "DNS Forwarder network address space for LB."
-}
-
-variable "cidr_subnet_packer_azdo" {
-  type        = list(string)
-  description = "packer azdo network address space."
-}
-
-## VPN ##
+#
+# VPN
+#
 variable "vpn_sku" {
   type        = string
   description = "VPN Gateway SKU"
@@ -150,60 +153,9 @@ variable "vpn_pip_sku" {
   description = "VPN GW PIP SKU"
 }
 
+### DNS Forwarder
 
-#
-# dns forwarder
-#
 variable "dns_forwarder_vmss_image_version" {
   type        = string
   description = "vpn dns forwarder image version"
 }
-
-#
-# #
-# # DNS
-# #
-#
-# variable "dns_zone_prefix" {
-#   type        = string
-#   default     = null
-#   description = "The dns subdomain."
-# }
-#
-# variable "external_domain" {
-#   type        = string
-#   default     = null
-#   description = "Domain for delegation"
-# }
-#
-# variable "dns_zone_internal_prefix" {
-#   type        = string
-#   default     = null
-#   description = "The dns subdomain."
-# }
-#
-# variable "dns_default_ttl_sec" {
-#   type        = number
-#   description = "value"
-#   default     = 3600
-# }
-#
-# #
-# # General Common
-# #
-#
-# variable "zones" {
-#   type        = list(number)
-#   default     = []
-#   description = "(Optional) List of availability zones on which the API management and appgateway will be deployed"
-# }
-#
-# #
-# # Azure DevOps Agent
-# #
-#
-# variable "enable_azdoa" {
-#   type        = bool
-#   default     = true
-#   description = "Enable Azure DevOps agent."
-# }
