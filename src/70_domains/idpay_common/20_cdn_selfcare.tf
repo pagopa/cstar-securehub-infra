@@ -1,20 +1,20 @@
 module "cdn_idpay_selfcare" {
 
   # source = "./.terraform/modules/__v4__/cdn"
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//cdn?ref=cdn-added-outputs"
-  name                             = "selfcare"
-  prefix                           = local.project_weu
-  resource_group_name              = data.azurerm_resource_group.idpay_data_rg.name
-  location                         = var.location
-  cdn_location                    = var.location_weu
+  source              = "git::https://github.com/pagopa/terraform-azurerm-v4.git//cdn?ref=cdn-added-outputs"
+  name                = "selfcare"
+  prefix              = local.project_weu
+  resource_group_name = data.azurerm_resource_group.idpay_data_rg.name
+  location            = var.location
+  cdn_location        = var.location_weu
 
   hostname              = "selfcare-italy.${data.azurerm_dns_zone.public_cstar.name}"
   https_rewrite_enabled = true
 
-  storage_account_name = "${local.project}selcdnsa"
+  storage_account_name             = "${local.project}selcdnsa"
   storage_account_replication_type = var.selfcare_welfare_cdn_storage_account_replication_type
-  index_document     = "index.html"
-  error_404_document = "not_found.html"
+  index_document                   = "index.html"
+  error_404_document               = "not_found.html"
 
   dns_zone_name                = data.azurerm_dns_zone.public_cstar.name
   dns_zone_resource_group_name = data.azurerm_dns_zone.public_cstar.resource_group_name
@@ -68,7 +68,7 @@ module "cdn_idpay_selfcare" {
 }
 
 locals {
-  selfcare-issuer                = "https://${var.env != "prod" ? "${var.env}." : ""}selfcare-italy.pagopa.it"
+  selfcare-issuer = "https://${var.env != "prod" ? "${var.env}." : ""}selfcare-italy.pagopa.it"
 }
 
 resource "azurerm_storage_blob" "oidc_configuration" {

@@ -239,7 +239,7 @@ variable "eventhubs_idpay_01" {
 }
 
 variable "ehns_alerts_enabled" {
-  type        = bool
+  type = bool
   # default     = true
   description = "Event hub alerts enabled?"
 }
@@ -315,7 +315,7 @@ variable "aks_vnet" {
 }
 
 variable "idpay_cdn_sa_advanced_threat_protection_enabled" {
-  type    = bool
+  type = bool
   # default = false
 }
 

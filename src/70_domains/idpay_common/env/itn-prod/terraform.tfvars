@@ -1,19 +1,19 @@
-prefix         = "cstar"
-env_short      = "p"
-env            = "prod"
-domain         = "idpay"
-location       = "italynorth"
-location_short = "itn"
-location_weu      = "westeurope"
+prefix             = "cstar"
+env_short          = "p"
+env                = "prod"
+domain             = "idpay"
+location           = "italynorth"
+location_short     = "itn"
+location_weu       = "westeurope"
 location_short_weu = "weu"
 
 #
 # Dns
 #
-dns_zone_prefix = "cstar"
+dns_zone_prefix          = "cstar"
 dns_zone_internal_prefix = "internal.cstar"
 
-external_domain          = "pagopa.it"
+external_domain = "pagopa.it"
 
 tags = {
   CreatedBy   = "Terraform"
@@ -84,11 +84,11 @@ service_bus_namespace = {
 }
 
 ##Eventhub
-ehns_sku_name = "Standard"
+ehns_sku_name                 = "Standard"
 ehns_capacity                 = 5
 ehns_maximum_throughput_units = 5
 ehns_auto_inflate_enabled     = true
-ehns_alerts_enabled = true
+ehns_alerts_enabled           = true
 
 
 eventhubs_idpay = [
@@ -454,22 +454,19 @@ aks_vnet = {
   subnet         = "cstar-p-weu-prod01-aks-snet"
 }
 
-
-idpay_cdn_sa_advanced_threat_protection_enabled = true
-
 aks_name                = "cstar-p-weu-prod01-aks"
 aks_resource_group_name = "cstar-p-weu-prod01-aks-rg"
 
 ### CDN
 idpay_cdn_storage_account_replication_type            = "ZRS"
 selfcare_welfare_cdn_storage_account_replication_type = "ZRS"
-idpay_cdn_sa_advanced_threat_protection_enabled = true
+idpay_cdn_sa_advanced_threat_protection_enabled       = true
 single_page_applications_roots_dirs = [
-    "portale-enti",
-    "portale-esercenti",
-    "mocks/merchant",
-    "ricevute"
-  ]
+  "portale-enti",
+  "portale-esercenti",
+  "mocks/merchant",
+  "ricevute"
+]
 
 # Storage
 storage_account_settings = {
