@@ -1,15 +1,17 @@
 module "cdn_idpay_selfcare" {
 
-  source = "./.terraform/modules/__v4__/cdn"
-
+  # source = "./.terraform/modules/__v4__/cdn"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//cdn?ref=cdn-added-outputs"
   name                             = "selfcare"
   prefix                           = local.project_weu
   resource_group_name              = data.azurerm_resource_group.idpay_data_rg.name
-  location                         = var.location_weu
+  location                         = var.location
+  cdn_location                    = var.location_weu
 
   hostname              = "selfcare-italy.${data.azurerm_dns_zone.public_cstar.name}"
   https_rewrite_enabled = true
 
+  storage_account_name = "${local.project}selcdnsa"
   storage_account_replication_type = var.selfcare_welfare_cdn_storage_account_replication_type
   index_document     = "index.html"
   error_404_document = "not_found.html"
@@ -71,7 +73,7 @@ locals {
 
 resource "azurerm_storage_blob" "oidc_configuration" {
   name                   = "selfcare/openid-configuration.json"
-  # storage_account_name   = module.cdn_idpay_selfcare.storage_account_name
+  storage_account_name   = module.cdn_idpay_selfcare.storage_name
   storage_container_name = "$web"
   type                   = "Block"
   content_type           = "application/json"
