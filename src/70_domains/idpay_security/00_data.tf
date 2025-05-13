@@ -17,3 +17,8 @@ data "azuread_group" "adgroup_externals" {
 data "azurerm_resource_group" "idpay_security_rg" {
   name = "${local.project}-security-rg"
 }
+
+data "azurerm_api_management" "apim" {
+  name                = local.apim_name
+  resource_group_name = local.apim_resource_group_name
+}

@@ -1,15 +1,17 @@
-prefix         = "cstar"
-env_short      = "d"
-env            = "dev"
-domain         = "idpay"
-location       = "italynorth"
-location_short = "itn"
-instance       = "dev"
+prefix             = "cstar"
+env_short          = "d"
+env                = "dev"
+domain             = "idpay"
+location           = "italynorth"
+location_short     = "itn"
+location_weu       = "westeurope"
+location_short_weu = "weu"
 
 #
 # Dns
 #
 dns_zone_internal_prefix = "internal.dev.cstar"
+dns_zone_prefix          = "dev.cstar"
 external_domain          = "pagopa.it"
 
 tags = {
@@ -77,7 +79,12 @@ service_bus_namespace = {
 }
 
 ##Eventhub
-ehns_sku_name = "Standard"
+ehns_sku_name                 = "Standard"
+ehns_capacity                 = 1
+ehns_maximum_throughput_units = 5
+ehns_auto_inflate_enabled     = false
+ehns_alerts_enabled           = false
+
 
 eventhubs_idpay = [
   {
@@ -443,8 +450,16 @@ aks_name                = "cstar-d-weu-dev01-aks"
 aks_resource_group_name = "cstar-d-weu-dev01-aks-rg"
 
 ### CDN
-idpay_cdn_storage_account_replication_type            = "GRS"
-selfcare_welfare_cdn_storage_account_replication_type = "GRS"
+idpay_cdn_storage_account_replication_type            = "LRS"
+selfcare_welfare_cdn_storage_account_replication_type = "LRS"
+robots_indexed_paths                                  = []
+idpay_cdn_sa_advanced_threat_protection_enabled       = false
+single_page_applications_roots_dirs = [
+  "portale-enti",
+  "portale-esercenti",
+  "mocks/merchant",
+  "ricevute"
+]
 
 # Storage
 storage_account_settings = {
