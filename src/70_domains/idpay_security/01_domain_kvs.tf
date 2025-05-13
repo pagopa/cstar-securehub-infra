@@ -79,5 +79,5 @@ resource "azurerm_key_vault_access_policy" "apim_managed_identity" {
   key_permissions         = ["Get", "List"]
   secret_permissions      = ["Get", "List", ]
   storage_permissions     = []
-  certificate_permissions = ["Get", "List",]
+  certificate_permissions = ["Get", "List", ]
 }
