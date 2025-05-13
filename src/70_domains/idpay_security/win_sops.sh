@@ -1,1 +1,1 @@
-../../../scripts/win_sops.sh
+../../../scripts/sops.sh
