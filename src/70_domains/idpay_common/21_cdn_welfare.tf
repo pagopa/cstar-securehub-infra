@@ -35,16 +35,19 @@ locals {
  */
 // public_cstar storage used to serve FE
 module "cdn_idpay_welfare" {
-  source = "./.terraform/modules/__v4__/cdn"
+  # source = "./.terraform/modules/__v4__/cdn"
+    source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//cdn?ref=cdn-added-outputs"
 
   name                             = "welfare"
   prefix                           = local.project_weu
   resource_group_name              = data.azurerm_resource_group.idpay_data_rg.name
-  location                         = var.location_weu
+  location                         = var.location
+  cdn_location                    = var.location_weu
 
   hostname                         = "welfare-italy.${data.azurerm_dns_zone.public_cstar.name}"
   https_rewrite_enabled            = true
 
+  storage_account_name = "${local.project}welcdnsa"
   storage_account_replication_type = var.idpay_cdn_storage_account_replication_type
   index_document     = "index.html"
   error_404_document = "error.html"
@@ -203,27 +206,28 @@ module "cdn_idpay_welfare" {
   log_analytics_workspace_id = data.azurerm_log_analytics_workspace.log_analytics.id
 }
 
-locals {
-  secrets = [
-    {
-      name  = "web-storage-access-key"
-      value = module.cdn_idpay_welfare.storage_primary_access_key
-    },
-    {
-      name  = "web-storage-connection-string"
-      value = module.cdn_idpay_welfare.storage_primary_connection_string
-    },
-    {
-      name  = "web-storage-blob-connection-string"
-      value = module.cdn_idpay_welfare.storage_primary_blob_connection_string
-    }
-  ]
+#
+# 🔑 Cannot be merged in local values, because contains sensitive data
+#
+resource "azurerm_key_vault_secret" "idpay_welfare_cdn_storage_primary_access_key" {
+  name        = "web-storage-access-key"
+  value       = module.cdn_idpay_welfare.storage_primary_access_key
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.domain_kv.id
 }
 
-resource "azurerm_key_vault_secret" "idpay_web_storage_secrets" {
-  for_each    = toset(local.secrets)
-  name        = each.value.name
-  value       = each.value.value
+resource "azurerm_key_vault_secret" "idpay_welfare_cdn_storage_primary_connection_string" {
+  name        = "web-storage-connection-string"
+  value       = module.cdn_idpay_welfare.storage_primary_connection_string
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.domain_kv.id
+}
+
+resource "azurerm_key_vault_secret" "idpay_welfare_cdn_storage_blob_connection_string" {
+  name        = "web-storage-blob-connection-string"
+  value       = module.cdn_idpay_welfare.storage_primary_blob_connection_string
   content_type = "text/plain"
 
   key_vault_id = data.azurerm_key_vault.domain_kv.id
