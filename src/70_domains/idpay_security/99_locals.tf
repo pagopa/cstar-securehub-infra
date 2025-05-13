@@ -9,4 +9,6 @@ locals {
   # this are the folder names inside the secrets folder in idpay_security
   secrets_folders_kv = ["idpay"] // e.g. ["core", "cicd"]
 
+  apim_name                = "${local.product}-apim"
+  apim_resource_group_name = "${local.product}-api-rg"
 }
