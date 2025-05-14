@@ -31,6 +31,13 @@ provider "azurerm" {
   }
 }
 
+provider "grafana" {
+  alias = "cloud"
+
+  url  = azurerm_dashboard_grafana.grafana_dashboard.endpoint
+  auth = data.azurerm_key_vault_secret.grafana_dashboard_bot_api_key.value
+}
+
 data "azurerm_subscription" "current" {}
 
 data "azurerm_client_config" "current" {}
