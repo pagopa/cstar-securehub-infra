@@ -3,8 +3,9 @@
 #
 - apiName: actuator
   appName: rtdmsfileregister
-  url: "https://${env_name}01.rtd.${internal_private_domain_suffix}/rtdmsfileregister/actuator/health/liveness"
+  url: "https://${env_name}01.rtd.${internal_private_hostname}/rtdmsfileregister/actuator/health/liveness"
   type: aks
+  domain: tae
   checkCertificate: true
   method: GET
   expectedCodes:
@@ -18,8 +19,9 @@
 
 - apiName: actuator
   appName: rtdmsfilereporter
-  url: "https://${env_name}01.rtd.${internal_private_domain_suffix}/rtdmsfilereporter/actuator/health/liveness"
+  url: "https://${env_name}01.rtd.${internal_private_hostname}/rtdmsfilereporter/actuator/health/liveness"
   type: aks
+  domain: tae
   checkCertificate: true
   method: GET
   expectedCodes:
@@ -33,8 +35,9 @@
 
 - apiName: actuator
   appName: rtdmssenderauth
-  url: "https://${env_name}01.rtd.${internal_private_domain_suffix}/rtdmssenderauth/actuator/health/liveness"
+  url: "https://${env_name}01.rtd.${internal_private_hostname}/rtdmssenderauth/actuator/health/liveness"
   type: aks
+  domain: tae
   checkCertificate: true
   method: GET
   expectedCodes:

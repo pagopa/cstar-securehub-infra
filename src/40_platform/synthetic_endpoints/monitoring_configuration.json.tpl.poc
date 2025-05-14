@@ -2,7 +2,7 @@
   {
     "apiName" : "api_mcshared",
     "appName" : "mcshared_appgw",
-    "url" : "https://api-mcshared.${public_domain_suffix}",
+    "url" : "https://api-mcshared.${public_hostname}",
     "type" : "appgw",
     "checkCertificate" : true,
     "method" : "GET",
@@ -18,7 +18,7 @@
   {
     "apiName" : "actuator",
     "appName" : "emdtpp",
-    "url" : "https://mil.weu.${internal_private_domain_suffix}/emdtpp/actuator/health",
+    "url" : "https://mil.weu.${internal_private_hostname}/emdtpp/actuator/health",
     "type" : "aks",
     "checkCertificate" : true,
     "method" : "GET",
@@ -34,7 +34,7 @@
   {
     "apiName" : "actuator",
     "appName" : "emdcitizen",
-    "url" : "https://mil.weu.${internal_private_domain_suffix}/emdcitizen/actuator/health",
+    "url" : "https://mil.weu.${internal_private_hostname}/emdcitizen/actuator/health",
     "type" : "aks",
     "checkCertificate" : true,
     "method" : "GET",
@@ -50,7 +50,7 @@
   {
     "apiName" : "actuator",
     "appName" : "emdmessagecore",
-    "url" : "https://mil.weu.${internal_private_domain_suffix}/emdmessagecore/actuator/health",
+    "url" : "https://mil.weu.${internal_private_hostname}/emdmessagecore/actuator/health",
     "type" : "aks",
     "checkCertificate" : true,
     "method" : "GET",
@@ -66,7 +66,7 @@
   {
     "apiName" : "actuator",
     "appName" : "emdnotifiersender",
-    "url" : "https://mil.weu.${internal_private_domain_suffix}/emdnotifiersender/actuator/health",
+    "url" : "https://mil.weu.${internal_private_hostname}/emdnotifiersender/actuator/health",
     "type" : "aks",
     "checkCertificate" : true,
     "method" : "GET",
@@ -82,7 +82,7 @@
   {
     "apiName" : "actuator",
     "appName" : "emdpaymentcore",
-    "url" : "https://mil.weu.${internal_private_domain_suffix}/emdpaymentcore/actuator/health",
+    "url" : "https://mil.weu.${internal_private_hostname}/emdpaymentcore/actuator/health",
     "type" : "aks",
     "checkCertificate" : true,
     "method" : "GET",
@@ -98,7 +98,7 @@
   {
     "apiName" : "actuator",
     "appName" : "idpaypayment",
-    "url" : "https://${env_name}01.idpay.${internal_private_domain_suffix}/idpaypayment/actuator/health",
+    "url" : "https://${env_name}01.idpay.${internal_private_hostname}/idpaypayment/actuator/health",
     "type" : "aks",
     "checkCertificate" : true,
     "method" : "GET",
@@ -114,7 +114,7 @@
   {
     "apiName" : "actuator",
     "appName" : "idpaywallet",
-    "url" : "https://${env_name}01.idpay.${internal_private_domain_suffix}/idpaywallet/actuator/health",
+    "url" : "https://${env_name}01.idpay.${internal_private_hostname}/idpaywallet/actuator/health",
     "type" : "aks",
     "checkCertificate" : true,
     "method" : "GET",
@@ -130,7 +130,7 @@
   {
     "apiName" : "actuator",
     "appName" : "idpayportalwelfarebackendinitiative",
-    "url" : "https://${env_name}01.idpay.${internal_private_domain_suffix}/idpayportalwelfarebackendinitiative/actuator/health",
+    "url" : "https://${env_name}01.idpay.${internal_private_hostname}/idpayportalwelfarebackendinitiative/actuator/health",
     "type" : "aks",
     "checkCertificate" : true,
     "method" : "GET",
@@ -146,7 +146,7 @@
   {
     "apiName" : "actuator",
     "appName" : "idpayreward",
-    "url" : "https://${env_name}01.idpay.${internal_private_domain_suffix}/idpay/reward/actuator/health",
+    "url" : "https://${env_name}01.idpay.${internal_private_hostname}/idpay/reward/actuator/health",
     "type" : "aks",
     "checkCertificate" : true,
     "method" : "GET",
@@ -162,7 +162,7 @@
   {
     "apiName" : "actuator",
     "appName" : "rtdmsfileregister",
-    "url" : "https://${env_name}01.rtd.${internal_private_domain_suffix}/rtdmsfileregister/actuator/health/liveness",
+    "url" : "https://${env_name}01.rtd.${internal_private_hostname}/rtdmsfileregister/actuator/health/liveness",
     "type" : "aks",
     "checkCertificate" : true,
     "method" : "GET",
@@ -178,7 +178,7 @@
   {
     "apiName" : "actuator",
     "appName" : "rtdmsfilereporter",
-    "url" : "https://${env_name}01.rtd.${internal_private_domain_suffix}/rtdmsfilereporter/actuator/health/liveness",
+    "url" : "https://${env_name}01.rtd.${internal_private_hostname}/rtdmsfilereporter/actuator/health/liveness",
     "type" : "aks",
     "checkCertificate" : true,
     "method" : "GET",
@@ -194,7 +194,7 @@
   {
     "apiName" : "actuator",
     "appName" : "rtdmssenderauth",
-    "url" : "https://${env_name}01.rtd.${internal_private_domain_suffix}/rtdmssenderauth/actuator/health/liveness",
+    "url" : "https://${env_name}01.rtd.${internal_private_hostname}/rtdmssenderauth/actuator/health/liveness",
     "type" : "aks",
     "checkCertificate" : true,
     "method" : "GET",
