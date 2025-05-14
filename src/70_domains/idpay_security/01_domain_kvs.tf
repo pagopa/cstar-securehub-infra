@@ -37,7 +37,7 @@ resource "azurerm_key_vault_access_policy" "admins_group_policy" {
 
 ## ad group policy ##
 resource "azurerm_key_vault_access_policy" "developers_policy" {
-  for_each = var.env == "dev" ? toset(local.secrets_folders_kv) : []
+  for_each = toset(local.secrets_folders_kv)
 
   key_vault_id = module.key_vault[each.key].id
 
