@@ -1,7 +1,6 @@
 module "cdn_idpay_selfcare" {
 
-  # source = "./.terraform/modules/__v4__/cdn"
-  source              = "git::https://github.com/pagopa/terraform-azurerm-v4.git//cdn?ref=cdn-added-outputs"
+  source = "./.terraform/modules/__v4__/cdn"
   name                = "selfcare"
   prefix              = local.project_weu
   resource_group_name = data.azurerm_resource_group.idpay_data_rg.name
