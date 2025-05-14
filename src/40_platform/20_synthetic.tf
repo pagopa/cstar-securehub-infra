@@ -98,10 +98,21 @@ module "synthetic_monitoring_jobs" {
     enabled = var.synthetic_self_alert_enabled
   }
 
-  monitoring_configuration_encoded = templatefile("${path.module}/synthetic_endpoints/monitoring_configuration.json.tpl", {
-    env_name                       = var.env,
-    alert_enabled                  = var.synthetic_alerts_enabled
-    public_domain_suffix           = local.public_domain_suffix
-    internal_private_domain_suffix = local.internal_private_domain_suffix
-  })
+  monitoring_configuration_encoded = jsonencode(local.monitoring_config_raw)
+}
+
+locals {
+  monitoring_config_raw = concat(
+    yamldecode(templatefile("tae.yaml.tpl", local.synthetic_variables)),
+    yamldecode(templatefile("idpay.yaml.tpl", local.synthetic_variables)),
+    yamldecode(templatefile("shared.yaml.tpl", local.synthetic_variables)),
+    yamldecode(templatefile("mc.yaml.tpl", local.synthetic_variables)),
+  )
+
+  synthetic_variables = {
+    tae_enabled = var.synthetic_domain_tae_enabled
+    idpay_enabled = var.synthetic_domain_tae_enabled
+    shared_enabled = var.synthetic_domain_tae_enabled
+    mc_enabled = var.synthetic_domain_tae_enabled
+  }
 }
