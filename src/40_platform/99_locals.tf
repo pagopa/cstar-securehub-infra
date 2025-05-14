@@ -27,8 +27,8 @@ locals {
   #
   # Domain urls
   #
-  public_domain_suffix           = var.env == "prod" ? "cstar.pagopa.it" : "${var.env}.cstar.pagopa.it"
-  internal_private_domain_suffix = var.env == "prod" ? "internal.cstar.pagopa.it" : "internal.${var.env}.cstar.pagopa.it"
+  public_hostname           = var.env == "prod" ? "cstar.pagopa.it" : "${var.env}.cstar.pagopa.it"
+  internal_private_hostname = var.env == "prod" ? "internal.cstar.pagopa.it" : "internal.${var.env}.cstar.pagopa.it"
 
   #
   # Domains to setup
