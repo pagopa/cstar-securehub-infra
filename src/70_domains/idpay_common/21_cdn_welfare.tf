@@ -35,8 +35,8 @@ locals {
  */
 // public_cstar storage used to serve FE
 module "cdn_idpay_welfare" {
-  # source = "./.terraform/modules/__v4__/cdn"
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//cdn?ref=cdn-added-outputs"
+  source = "./.terraform/modules/__v4__/cdn"
+  # source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//cdn?ref=cdn-added-outputs"
 
   name                = "welfare"
   prefix              = local.project_weu

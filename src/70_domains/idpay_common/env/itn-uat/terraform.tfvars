@@ -23,7 +23,6 @@ tags = {
   Application = "IdPay"
 }
 
-
 #
 # CIDRs
 #
@@ -31,7 +30,6 @@ cidr_idpay_data_cosmos     = ["10.20.10.0/27"]  # 10.20.10.0 -> 10.20.10.31
 cidr_idpay_data_eventhub   = ["10.20.10.32/27"] # 10.20.10.32 -> 10.20.10.63
 cidr_idpay_data_redis      = ["10.20.10.64/27"] # 10.20.10.64 -> 10.20.10.95
 cidr_idpay_data_servicebus = ["10.20.10.96/27"] # 10.20.10.96 -> 10.20.10.127
-
 
 rtd_keyvault = {
   name           = "cstar-u-rtd-kv"
@@ -53,8 +51,8 @@ cosmos_mongo_account_params = {
 
   additional_geo_locations          = []
   private_endpoint_enabled          = true
-  public_network_access_enabled     = true
-  is_virtual_network_filter_enabled = true
+  public_network_access_enabled     = false
+  is_virtual_network_filter_enabled = false
 
   backup_continuous_enabled = false
 }
@@ -88,13 +86,15 @@ ehns_auto_inflate_enabled     = true
 ehns_alerts_enabled           = false
 
 
-
 eventhubs_idpay = [
   {
     name              = "idpay-onboarding-outcome"
     partitions        = 3
     message_retention = 1
-    consumers         = ["idpay-onboarding-outcome-consumer-group", "idpay-initiative-onboarding-statistics-group"]
+    consumers = [
+      "idpay-onboarding-outcome-consumer-group",
+      "idpay-initiative-onboarding-statistics-group"
+    ]
     keys = [
       {
         name   = "idpay-onboarding-outcome-producer"
@@ -134,7 +134,10 @@ eventhubs_idpay = [
     name              = "idpay-checkiban-evaluation"
     partitions        = 3
     message_retention = 1
-    consumers         = ["idpay-checkiban-evaluation-consumer-group", "idpay-rewards-notification-checkiban-req-group"]
+    consumers = [
+      "idpay-checkiban-evaluation-consumer-group",
+      "idpay-rewards-notification-checkiban-req-group"
+    ]
     keys = [
       {
         name   = "idpay-checkiban-evaluation-producer"
@@ -154,7 +157,10 @@ eventhubs_idpay = [
     name              = "idpay-checkiban-outcome"
     partitions        = 3
     message_retention = 1
-    consumers         = ["idpay-checkiban-outcome-consumer-group", "idpay-rewards-notification-checkiban-out-group"]
+    consumers = [
+      "idpay-checkiban-outcome-consumer-group",
+      "idpay-rewards-notification-checkiban-out-group"
+    ]
     keys = [
       {
         name   = "idpay-checkiban-outcome-producer"
@@ -214,7 +220,13 @@ eventhubs_idpay = [
     name              = "idpay-transaction"
     partitions        = 16
     message_retention = 1
-    consumers         = ["idpay-transaction-consumer-group", "idpay-transaction-wallet-consumer-group", "idpay-rewards-notification-transaction-group", "idpay-initiative-rewards-statistics-group", "idpay-reward-calculator-consumer-group"]
+    consumers = [
+      "idpay-transaction-consumer-group",
+      "idpay-transaction-wallet-consumer-group",
+      "idpay-rewards-notification-transaction-group",
+      "idpay-initiative-rewards-statistics-group",
+      "idpay-reward-calculator-consumer-group"
+    ]
     keys = [
       {
         name   = "idpay-transaction-producer"
@@ -237,7 +249,11 @@ eventhubs_idpay_01 = [
     name              = "idpay-rule-update"
     partitions        = 3
     message_retention = 1
-    consumers         = ["idpay-beneficiary-rule-update-consumer-group", "idpay-reward-calculator-rule-consumer-group", "idpay-rewards-notification-rule-consumer-group"]
+    consumers = [
+      "idpay-beneficiary-rule-update-consumer-group",
+      "idpay-reward-calculator-rule-consumer-group",
+      "idpay-rewards-notification-rule-consumer-group"
+    ]
     keys = [
       {
         name   = "idpay-rule-update-producer"
@@ -419,7 +435,7 @@ eventhubs_idpay_01 = [
 enable = {
   idpay = {
     eventhub_idpay_00 = true
-    eventhub_idpay_01 = false
+    eventhub_idpay_01 = true
   }
 }
 
@@ -436,6 +452,7 @@ aks_resource_group_name = "cstar-u-weu-uat01-aks-rg"
 ### CDN
 idpay_cdn_storage_account_replication_type            = "ZRS"
 selfcare_welfare_cdn_storage_account_replication_type = "ZRS"
+robots_indexed_paths                                  = []
 idpay_cdn_sa_advanced_threat_protection_enabled       = false
 single_page_applications_roots_dirs = [
   "portale-enti",

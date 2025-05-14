@@ -1,2 +1,1 @@
-#!/bin/bash
-../../../scripts/terraform.sh "$@"
+../../../scripts/terraform.sh
