@@ -7,9 +7,9 @@ locals {
   #
   # 🌐 Network
   #
-  vnet_core_rg_name           = "${local.product}-vnet-rg"
-  vnet_spoke_data_name        = "${local.product_no_domain}-core-spoke-data-vnet"
-  vnet_spoke_data_rg_name     = "${local.product_no_domain}-core-network-rg"
+  vnet_core_rg_name       = "${local.product}-vnet-rg"
+  vnet_spoke_data_name    = "${local.product_no_domain}-core-spoke-data-vnet"
+  vnet_spoke_data_rg_name = "${local.product_no_domain}-core-network-rg"
 
   public_dns_zone_name = "${var.dns_zone_prefix}.${var.external_domain}"
 
