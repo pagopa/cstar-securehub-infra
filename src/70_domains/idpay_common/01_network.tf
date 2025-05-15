@@ -33,3 +33,12 @@ module "idpay_redis_snet" {
   resource_group_name  = local.vnet_spoke_data_rg_name
   address_prefixes     = var.cidr_idpay_data_redis
 }
+
+module "idpay_storage_snet" {
+  source = "./.terraform/modules/__v4__/subnet"
+
+  name                 = "${local.project}-storage-snet"
+  virtual_network_name = local.vnet_spoke_data_name
+  resource_group_name  = local.vnet_spoke_data_rg_name
+  address_prefixes     = var.cidr_idpay_data_storage
+}
