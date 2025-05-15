@@ -22,7 +22,7 @@ module "idpay_refund_storage" {
 
   private_endpoint_enabled  = true
   private_dns_zone_blob_ids = [data.azurerm_private_dns_zone.storage_account_blob.id]
-  subnet_id                 = data.azurerm_subnet.private_endpoint_subnet.id
+  subnet_id                 = module.idpay_storage_snet.id
 
   tags = var.tags
 }
