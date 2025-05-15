@@ -14,4 +14,4 @@ tags = {
 }
 
 azdo_agent_image_version    = "v20250514"
-dns_forwarder_image_version = "v20250514"
+dns_forwarder_image_version = "v20250516"
