@@ -55,7 +55,9 @@ resource "azurerm_private_endpoint" "private_endpoint_container_app" {
   ]
 }
 
-
+#
+# Synthetic
+#
 module "synthetic_monitoring_jobs" {
   # source = "./.terraform/modules/__v4__/monitoring_function"
   source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//monitoring_function?ref=fix-monitor-function"
@@ -85,7 +87,7 @@ module "synthetic_monitoring_jobs" {
 
   job_settings = {
     container_app_environment_id = azurerm_container_app_environment.synthetic_cae.id
-    availability_prefix = "syn"
+    availability_prefix = "synthetic"
   }
 
   storage_account_settings = {
@@ -103,6 +105,12 @@ module "synthetic_monitoring_jobs" {
   }
 
   monitoring_configuration_encoded = jsonencode(local.monitoring_config_raw)
+
+  depends_on = [
+    module.synthetic_snet,
+    azurerm_resource_group.synthetic_rg,
+    azurerm_application_insights.monitoring_application_insights
+  ]
 }
 
 locals {

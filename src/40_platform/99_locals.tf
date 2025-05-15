@@ -7,6 +7,7 @@ locals {
   # Network
   #
   vnet_rg_name            = "${local.product_nodomain}-core-network-rg"
+  vnet_core_hub_name      = "${local.product_nodomain}-core-hub-vnet"
   vnet_core_platform_name = "${local.product_nodomain}-core-spoke-platform-vnet"
 
   legacy_vnet_core_rg_name      = "${local.product}-vnet-rg"

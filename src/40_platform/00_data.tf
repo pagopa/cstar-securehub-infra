@@ -10,8 +10,8 @@ data "azuread_group" "adgroup_developers" {
 #
 # Network
 #
-data "azurerm_virtual_network" "vnet_platform" {
-  name                = local.vnet_core_platform_name
+data "azurerm_virtual_network" "vnet_hub" {
+  name                = local.vnet_core_hub_name
   resource_group_name = local.vnet_rg_name
 }
 

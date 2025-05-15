@@ -16,11 +16,11 @@ tags = {
 #
 # Networking
 #
-### 10.90.0.0
-cidr_subnet_synthetic_cae = ["10.90.0.0/24"]
-### 10.90.1.0/24
-cidr_subnet_storage_private_endpoints       = ["10.90.1.0/27"]
-cidr_subnet_container_app_private_endpoints = ["10.90.1.32/27"]
+### 10.99.4.0/24
+cidr_subnet_synthetic_cae = ["10.99.4.0/24"]
+### 10.99.5.0/24
+cidr_subnet_storage_private_endpoints       = ["10.99.5.0/27"]
+cidr_subnet_container_app_private_endpoints = ["10.99.5.32/27"]
 
 #
 # Monitoring
