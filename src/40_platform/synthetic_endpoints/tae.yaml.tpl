@@ -11,7 +11,7 @@
   expectedCodes:
     - "200"
   tags:
-    description: "cstar RTD rtdmsfileregister ${env_name} status endpoint"
+    description: "cstar TAE rtdmsfileregister ${env_name} status endpoint"
   durationLimit: 10000
   alertConfiguration:
     enabled: ${alert_enabled}
@@ -27,7 +27,7 @@
   expectedCodes:
     - "200"
   tags:
-    description: "cstar RTD rtdmsfilereporter ${env_name} status endpoint"
+    description: "cstar TAE rtdmsfilereporter ${env_name} status endpoint"
   durationLimit: 10000
   alertConfiguration:
     enabled: ${alert_enabled}
@@ -43,7 +43,7 @@
   expectedCodes:
     - "200"
   tags:
-    description: "cstar RTD rtdmssenderauth ${env_name} status endpoint"
+    description: "cstar TAE rtdmssenderauth ${env_name} status endpoint"
   durationLimit: 10000
   alertConfiguration:
     enabled: ${alert_enabled}
