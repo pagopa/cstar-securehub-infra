@@ -108,9 +108,9 @@ module "synthetic_monitoring_jobs" {
 locals {
   monitoring_config_raw = concat(
     yamldecode(templatefile("${path.module}/synthetic_endpoints/tae.yaml.tpl", local.synthetic_variables)),
-    yamldecode(templatefile("${path.module}/synthetic_endpoints/idpay.yaml.tpl", local.synthetic_variables)),
-    yamldecode(templatefile("${path.module}/synthetic_endpoints/shared.yaml.tpl", local.synthetic_variables)),
-    yamldecode(templatefile("${path.module}/synthetic_endpoints/mc.yaml.tpl", local.synthetic_variables)),
+    # yamldecode(templatefile("${path.module}/synthetic_endpoints/idpay.yaml.tpl", local.synthetic_variables)),
+    # yamldecode(templatefile("${path.module}/synthetic_endpoints/shared.yaml.tpl", local.synthetic_variables)),
+    # yamldecode(templatefile("${path.module}/synthetic_endpoints/mc.yaml.tpl", local.synthetic_variables)),
   )
 
   synthetic_variables = {
