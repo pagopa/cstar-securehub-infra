@@ -79,25 +79,21 @@ variable "tags" {
 variable "cidr_idpay_data_cosmos" {
   type        = list(string)
   description = "Cosmos subnet network address space."
-  # default     = []
 }
 
 variable "cidr_idpay_data_eventhub" {
   type        = list(string)
   description = "Eventhub subnet network address space."
-  # default     = []
 }
 
 variable "cidr_idpay_data_redis" {
   type        = list(string)
   description = "Redis subnet network address space."
-  # default     = []
 }
 
-variable "cidr_idpay_data_servicebus" {
+variable "cidr_idpay_data_storage" {
   type        = list(string)
-  description = "Servicebus subnet network address space."
-  # default     = []
+  description = "Storage subnet network address space."
 }
 
 variable "dns_zone_internal_prefix" {

@@ -43,6 +43,7 @@
 | <a name="module_idpay_redis"></a> [idpay\_redis](#module\_idpay\_redis) | ./.terraform/modules/__v4__/redis_cache | n/a |
 | <a name="module_idpay_redis_snet"></a> [idpay\_redis\_snet](#module\_idpay\_redis\_snet) | ./.terraform/modules/__v4__/subnet | n/a |
 | <a name="module_idpay_refund_storage"></a> [idpay\_refund\_storage](#module\_idpay\_refund\_storage) | ./.terraform/modules/__v4__/storage_account | n/a |
+| <a name="module_idpay_storage_snet"></a> [idpay\_storage\_snet](#module\_idpay\_storage\_snet) | ./.terraform/modules/__v4__/subnet | n/a |
 | <a name="module_idpay_webview_storage"></a> [idpay\_webview\_storage](#module\_idpay\_webview\_storage) | ./.terraform/modules/__v4__/storage_account | n/a |
 | <a name="module_workload_identity"></a> [workload\_identity](#module\_workload\_identity) | ./.terraform/modules/__v4__/kubernetes_workload_identity_init | n/a |
 | <a name="module_workload_identity_configuration"></a> [workload\_identity\_configuration](#module\_workload\_identity\_configuration) | ./.terraform/modules/__v4__/kubernetes_workload_identity_configuration | n/a |
@@ -110,7 +111,6 @@
 | [azurerm_resource_group.apim_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
 | [azurerm_resource_group.idpay_data_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
 | [azurerm_resource_group.monitor_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
-| [azurerm_subnet.private_endpoint_subnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subnet) | data source |
 | [azurerm_subscription.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subscription) | data source |
 | [azurerm_virtual_network.vnet_spoke_data](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/virtual_network) | data source |
 
@@ -124,7 +124,7 @@
 | <a name="input_cidr_idpay_data_cosmos"></a> [cidr\_idpay\_data\_cosmos](#input\_cidr\_idpay\_data\_cosmos) | Cosmos subnet network address space. | `list(string)` | n/a | yes |
 | <a name="input_cidr_idpay_data_eventhub"></a> [cidr\_idpay\_data\_eventhub](#input\_cidr\_idpay\_data\_eventhub) | Eventhub subnet network address space. | `list(string)` | n/a | yes |
 | <a name="input_cidr_idpay_data_redis"></a> [cidr\_idpay\_data\_redis](#input\_cidr\_idpay\_data\_redis) | Redis subnet network address space. | `list(string)` | n/a | yes |
-| <a name="input_cidr_idpay_data_servicebus"></a> [cidr\_idpay\_data\_servicebus](#input\_cidr\_idpay\_data\_servicebus) | Servicebus subnet network address space. | `list(string)` | n/a | yes |
+| <a name="input_cidr_idpay_data_storage"></a> [cidr\_idpay\_data\_storage](#input\_cidr\_idpay\_data\_storage) | Storage subnet network address space. | `list(string)` | n/a | yes |
 | <a name="input_cosmos_mongo_account_params"></a> [cosmos\_mongo\_account\_params](#input\_cosmos\_mongo\_account\_params) | n/a | <pre>object({<br/>    enabled        = bool<br/>    capabilities   = list(string)<br/>    offer_type     = string<br/>    server_version = string<br/>    consistency_policy = object({<br/>      consistency_level       = string<br/>      max_interval_in_seconds = number<br/>      max_staleness_prefix    = number<br/>    })<br/>    main_geo_location_zone_redundant = bool<br/>    enable_free_tier                 = bool<br/>    additional_geo_locations = list(object({<br/>      location          = string<br/>      failover_priority = number<br/>      zone_redundant    = bool<br/>    }))<br/>    private_endpoint_enabled          = bool<br/>    public_network_access_enabled     = bool<br/>    is_virtual_network_filter_enabled = bool<br/>    backup_continuous_enabled         = bool<br/>  })</pre> | n/a | yes |
 | <a name="input_cosmos_mongo_db_idpay_params"></a> [cosmos\_mongo\_db\_idpay\_params](#input\_cosmos\_mongo\_db\_idpay\_params) | n/a | <pre>object({<br/>    throughput     = number<br/>    max_throughput = number<br/>  })</pre> | n/a | yes |
 | <a name="input_dns_zone_internal_prefix"></a> [dns\_zone\_internal\_prefix](#input\_dns\_zone\_internal\_prefix) | The dns subdomain. | `string` | n/a | yes |
