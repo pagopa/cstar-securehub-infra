@@ -2,6 +2,7 @@ prefix         = "cstar"
 env_short      = "d"
 env            = "dev"
 location       = "italynorth"
+location_display_name = "Italy North"
 location_short = "itn"
 domain         = "platform"
 

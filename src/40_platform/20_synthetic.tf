@@ -67,6 +67,7 @@ module "synthetic_monitoring_jobs" {
   }
 
   location            = var.location
+  location_display_name = var.location_display_name
   prefix              = "${local.product}-${var.location_short}"
   resource_group_name = azurerm_resource_group.synthetic_rg.name
 
