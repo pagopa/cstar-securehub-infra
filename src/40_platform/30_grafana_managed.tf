@@ -78,10 +78,32 @@ resource "azurerm_role_assignment" "grafana_dashboard_roles" {
 #
 # 📦 Grafana dashboard modules
 #
+data "external" "grafana_api_key" {
+  program = ["bash", "${path.module}/scripts/terragrafana_create_api_key.sh"]
+
+  query = {
+    resource_group = azurerm_resource_group.monitoring_rg.name
+    grafana_name   = azurerm_dashboard_grafana.grafana_managed.name
+    api_key_name   = "grafana-ci-service-account"
+    api_key_role   = "Admin"
+    api_key_ttl    = "2592000"
+  }
+}
+
 data "azurerm_key_vault_secret" "grafana_dashboard_bot_api_key" {
   name         = "cstar-itn-grafana-dashboard-bot-api-key"
   key_vault_id = data.azurerm_key_vault.core_kv.id
 }
+
+resource "azurerm_key_vault_secret" "grafana_itn_dashboard_bot_api_key" {
+    name         = "grafana-itn-dashboard-bot-api-key"
+    key_vault_id = data.azurerm_key_vault.core_kv.id
+    value        = data.external.grafana_api_key.result["api_key"]
+  depends_on = [
+  azurerm_dashboard_grafana.grafana_managed
+  ]
+}
+
 
 module "auto_dashboard" {
   source = "./.terraform/modules/__v4__/grafana_dashboard"
