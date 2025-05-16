@@ -28,6 +28,7 @@
 | <a name="module_vnet_core_hub"></a> [vnet\_core\_hub](#module\_vnet\_core\_hub) | ./.terraform/modules/__v4__/virtual_network | n/a |
 | <a name="module_vnet_secure_hub_to_legacy_peerings"></a> [vnet\_secure\_hub\_to\_legacy\_peerings](#module\_vnet\_secure\_hub\_to\_legacy\_peerings) | ./.terraform/modules/__v4__/virtual_network_peering | n/a |
 | <a name="module_vnet_secure_hub_to_spoke_peering"></a> [vnet\_secure\_hub\_to\_spoke\_peering](#module\_vnet\_secure\_hub\_to\_spoke\_peering) | ./.terraform/modules/__v4__/virtual_network_peering | n/a |
+| <a name="module_vnet_secure_spoke_compute_to_vnet_integration"></a> [vnet\_secure\_spoke\_compute\_to\_vnet\_integration](#module\_vnet\_secure\_spoke\_compute\_to\_vnet\_integration) | ./.terraform/modules/__v4__/virtual_network_peering | n/a |
 | <a name="module_vnet_spoke_compute"></a> [vnet\_spoke\_compute](#module\_vnet\_spoke\_compute) | ./.terraform/modules/__v4__/virtual_network | n/a |
 | <a name="module_vnet_spoke_compute_peerings"></a> [vnet\_spoke\_compute\_peerings](#module\_vnet\_spoke\_compute\_peerings) | ./.terraform/modules/__v4__/virtual_network_peering | n/a |
 | <a name="module_vnet_spoke_data"></a> [vnet\_spoke\_data](#module\_vnet\_spoke\_data) | ./.terraform/modules/__v4__/virtual_network | n/a |
