@@ -25,10 +25,13 @@ locals {
   aks_name                = "${local.product_no_domain}-${var.env}-aks"
   aks_resource_group_name = "${local.product_no_domain}-core-aks-rg"
 
+
   ### ARGOCD
   argocd_namespace    = "argocd"
   argocd_internal_url = "argocd.${var.location_short}.${var.dns_zone_internal_prefix}.${var.external_domain}"
 
+  # 🔎 DNS
+  ingress_private_load_balancer_ip = "10.10.1.250"
 
   #
   # Monitoring

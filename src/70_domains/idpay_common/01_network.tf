@@ -42,3 +42,12 @@ module "idpay_storage_snet" {
   resource_group_name  = local.vnet_spoke_data_rg_name
   address_prefixes     = var.cidr_idpay_data_storage
 }
+
+# 🔎 DNS
+resource "azurerm_private_dns_a_record" "ingress_idpay" {
+  name                = "idpay.itn"
+  zone_name           = "${var.dns_zone_internal_prefix}.${var.external_domain}"
+  resource_group_name = local.vnet_core_rg_name
+  ttl                 = 3600
+  records             = [local.ingress_private_load_balancer_ip]
+}
