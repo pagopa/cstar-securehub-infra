@@ -27,7 +27,7 @@
 | <a name="module_container_app_private_endpoint_snet"></a> [container\_app\_private\_endpoint\_snet](#module\_container\_app\_private\_endpoint\_snet) | ./.terraform/modules/__v4__/subnet | n/a |
 | <a name="module_default_resource_groups"></a> [default\_resource\_groups](#module\_default\_resource\_groups) | ./.terraform/modules/__v4__/payments_default_resource_groups | n/a |
 | <a name="module_storage_private_endpoint_snet"></a> [storage\_private\_endpoint\_snet](#module\_storage\_private\_endpoint\_snet) | ./.terraform/modules/__v4__/subnet | n/a |
-| <a name="module_synthetic_monitoring_jobs"></a> [synthetic\_monitoring\_jobs](#module\_synthetic\_monitoring\_jobs) | git::https://github.com/pagopa/terraform-azurerm-v4.git//monitoring_function | fix-monitor-function |
+| <a name="module_synthetic_monitoring_jobs"></a> [synthetic\_monitoring\_jobs](#module\_synthetic\_monitoring\_jobs) | ./.terraform/modules/__v4__/monitoring_function | n/a |
 | <a name="module_synthetic_snet"></a> [synthetic\_snet](#module\_synthetic\_snet) | ./.terraform/modules/__v4__/subnet | n/a |
 
 ## Resources

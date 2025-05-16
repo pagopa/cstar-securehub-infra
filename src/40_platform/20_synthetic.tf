@@ -59,8 +59,8 @@ resource "azurerm_private_endpoint" "private_endpoint_container_app" {
 # Synthetic
 #
 module "synthetic_monitoring_jobs" {
-  # source = "./.terraform/modules/__v4__/monitoring_function"
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//monitoring_function?ref=fix-monitor-function"
+  source = "./.terraform/modules/__v4__/monitoring_function"
+  # source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//monitoring_function?ref=fix-monitor-function"
 
   providers = {
     grafana = grafana.cloud
