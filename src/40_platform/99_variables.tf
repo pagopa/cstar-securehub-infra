@@ -32,6 +32,11 @@ variable "location_short" {
   description = "Location short like eg: neu, weu.."
 }
 
+variable "location_display_name" {
+  type        = string
+  description = "Location short like eg: neu, weu.."
+}
+
 variable "tags" {
   type = map(any)
   default = {
