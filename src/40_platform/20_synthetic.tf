@@ -55,18 +55,24 @@ resource "azurerm_private_endpoint" "private_endpoint_container_app" {
   ]
 }
 
-
+#
+# Synthetic
+#
 module "synthetic_monitoring_jobs" {
   source = "./.terraform/modules/__v4__/monitoring_function"
+  # source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//monitoring_function?ref=fix-monitor-function"
 
-  location            = var.location
-  prefix              = "${local.product}-${var.location_short}"
-  resource_group_name = azurerm_resource_group.synthetic_rg.name
+  providers = {
+    grafana = grafana.cloud
+  }
+
+  location              = var.location
+  location_display_name = var.location_display_name
+  prefix                = "${local.product}-${var.location_short}"
+  resource_group_name   = azurerm_resource_group.synthetic_rg.name
 
   enabled_sythetic_dashboard = true
   subscription_id            = data.azurerm_subscription.current.subscription_id
-  grafana_api_key            = data.azurerm_key_vault_secret.grafana_dashboard_bot_api_key.value
-  grafana_url                = azurerm_dashboard_grafana.grafana_dashboard.endpoint
 
   application_insight_name    = azurerm_application_insights.monitoring_application_insights.name
   application_insight_rg_name = azurerm_application_insights.monitoring_application_insights.resource_group_name
@@ -82,6 +88,7 @@ module "synthetic_monitoring_jobs" {
 
   job_settings = {
     container_app_environment_id = azurerm_container_app_environment.synthetic_cae.id
+    availability_prefix          = "synthetic"
   }
 
   storage_account_settings = {
@@ -98,10 +105,32 @@ module "synthetic_monitoring_jobs" {
     enabled = var.synthetic_self_alert_enabled
   }
 
-  monitoring_configuration_encoded = templatefile("${path.module}/synthetic_endpoints/monitoring_configuration.json.tpl", {
-    env_name                       = var.env,
-    alert_enabled                  = var.synthetic_alerts_enabled
-    public_domain_suffix           = local.public_domain_suffix
-    internal_private_domain_suffix = local.internal_private_domain_suffix
-  })
+  monitoring_configuration_encoded = jsonencode(local.monitoring_config_raw)
+
+  depends_on = [
+    module.synthetic_snet,
+    azurerm_resource_group.synthetic_rg,
+    azurerm_application_insights.monitoring_application_insights
+  ]
+}
+
+locals {
+  monitoring_config_raw = concat(
+    yamldecode(templatefile("${path.module}/synthetic_endpoints/tae.yaml.tpl", local.synthetic_variables)),
+    # yamldecode(templatefile("${path.module}/synthetic_endpoints/idpay.yaml.tpl", local.synthetic_variables)),
+    # yamldecode(templatefile("${path.module}/synthetic_endpoints/shared.yaml.tpl", local.synthetic_variables)),
+    # yamldecode(templatefile("${path.module}/synthetic_endpoints/mc.yaml.tpl", local.synthetic_variables)),
+  )
+
+  synthetic_variables = {
+    tae_enabled    = var.synthetic_domain_tae_enabled
+    idpay_enabled  = var.synthetic_domain_idpay_enabled
+    shared_enabled = var.synthetic_domain_shared_enabled
+    mc_enabled     = var.synthetic_domain_mc_enabled
+
+    env_name                  = var.env,
+    alert_enabled             = var.synthetic_alerts_enabled
+    public_hostname           = local.public_hostname
+    internal_private_hostname = local.internal_private_hostname
+  }
 }
