@@ -79,31 +79,51 @@ resource "azurerm_role_assignment" "grafana_dashboard_roles" {
 # 📦 Grafana dashboard modules
 #
 data "external" "grafana_generate_service_account" {
-  program = ["bash", "${path.module}/scripts/terragrafana_create_api_key.sh"]
+  program = ["bash", "${path.module}/scripts/terragrafana_generate_service_account.sh"]
 
   query = {
     resource_group = azurerm_resource_group.monitoring_rg.name
     grafana_name   = azurerm_dashboard_grafana.grafana_managed.name
-    grafana_service_account_name   = "grafana-ci-service-account"
+    grafana_service_account_name   = "grafana-service-account"
     grafana_service_account_role   = "Admin"
   }
 }
 
-data "azurerm_key_vault_secret" "grafana_dashboard_bot_api_key" {
-  name         = "cstar-itn-grafana-dashboard-bot-api-key"
+resource "azurerm_key_vault_secret" "grafana_service_account_name" {
+  name         = "grafana-itn-service-account-name"
+  key_vault_id = data.azurerm_key_vault.core_kv.id
+  value        = data.external.grafana_generate_service_account.result["grafana_service_account_name"]
+  depends_on = [
+    data.external.grafana_generate_service_account
+  ]
+}
+
+#
+# Validate Grafana token
+#
+data "azurerm_key_vault_secret" "grafana_service_account_token" {
+  name         = "grafana-itn-service-account-token"
   key_vault_id = data.azurerm_key_vault.core_kv.id
 }
 
-output "grfana" {
-  value = data.external.grafana_generate_service_account.result
-}
+data "external" "validate_grafana_token" {
+  program = ["${path.module}/scripts/terragrafana_validate_token.sh"]
 
+  query = {
+    grafana_endpoint                  = azurerm_dashboard_grafana.grafana_managed.endpoint
+    grafana_service_account_token = data.azurerm_key_vault_secret.grafana_service_account_token.value
+  }
+}
 
 module "auto_dashboard" {
   source = "./.terraform/modules/__v4__/grafana_dashboard"
 
-  grafana_api_key      = data.azurerm_key_vault_secret.grafana_dashboard_bot_api_key.value
+  grafana_api_key      = data.azurerm_key_vault_secret.grafana_service_account_token.value
   grafana_url          = azurerm_dashboard_grafana.grafana_managed.endpoint
   monitor_workspace_id = azurerm_log_analytics_workspace.monitoring_log_analytics_workspace.id
   prefix               = "cstar"
+}
+
+output "grafana_token_validation" {
+  value = data.external.validate_grafana_token.result
 }

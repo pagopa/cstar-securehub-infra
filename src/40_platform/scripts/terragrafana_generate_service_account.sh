@@ -49,4 +49,4 @@ if [[ -z "$SERVICE_ACCOUNT_ID" ]]; then
 fi
 
 # Output compatibile con Terraform
-jq -n --arg status "$GRAFANA_SERVICE_ACCOUNT_STATUS" --arg message "$GRAFANA_SERVICE_ACCOUNT_MESSAGE" --arg name "$SERVICE_ACCOUNT_NAME" '{grafana_service_account_status: $status, grafana_service_account_message: $message, grafana_service_account_name: $name}'
+jq -n --arg status "$GRAFANA_SERVICE_ACCOUNT_STATUS" --arg message "$GRAFANA_SERVICE_ACCOUNT_MESSAGE" --arg name "$SERVICE_ACCOUNT_NAME" '{status: $status, message: $message, grafana_service_account_name: $name}'
