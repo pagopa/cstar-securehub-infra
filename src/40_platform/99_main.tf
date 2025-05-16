@@ -34,7 +34,7 @@ provider "azurerm" {
 provider "grafana" {
   alias = "cloud"
 
-  url  = azurerm_dashboard_grafana.grafana_dashboard.endpoint
+  url  = azurerm_dashboard_grafana.grafana_managed.endpoint
   auth = data.azurerm_key_vault_secret.grafana_dashboard_bot_api_key.value
 }
 

@@ -1,7 +1,7 @@
 #
 # 📊  Managed
 #
-resource "azurerm_dashboard_grafana" "grafana_dashboard" {
+resource "azurerm_dashboard_grafana" "grafana_managed" {
   name                              = "${local.product}-${var.location_short}-grafana"
   resource_group_name               = azurerm_resource_group.monitoring_rg.name
   location                          = var.location
@@ -9,7 +9,7 @@ resource "azurerm_dashboard_grafana" "grafana_dashboard" {
   deterministic_outbound_ip_enabled = true
   public_network_access_enabled     = true
   zone_redundancy_enabled           = false
-  grafana_major_version             = 10
+  grafana_major_version             = 11
 
   identity {
     type = "SystemAssigned"
@@ -27,31 +27,57 @@ resource "azurerm_dashboard_grafana" "grafana_dashboard" {
 #
 # 👤 Users & Groups IAM
 #
-resource "azurerm_role_assignment" "grafana_dashboard_monitoring_reader_identity" {
-  scope                = data.azurerm_subscription.current.id
-  role_definition_name = "Monitoring Reader"
-  principal_id         = azurerm_dashboard_grafana.grafana_dashboard.identity[0].principal_id
-}
+resource "azurerm_role_assignment" "grafana_dashboard_identity_roles" {
 
-resource "azurerm_role_assignment" "grafana_dashboard_monitoring_reader" {
+  for_each = toset([
+    "Monitoring Data Reader",
+    "Monitoring Reader",
+    "Reader" ,
+    "Log Analytics Reader",
+  ])
+
   scope                = data.azurerm_subscription.current.id
-  role_definition_name = "Grafana Viewer"
-  principal_id         = data.azuread_group.adgroup_developers.id
+  role_definition_name = each.key
+  principal_id         = azurerm_dashboard_grafana.grafana_managed.identity[0].principal_id
+
+  depends_on = [
+    azurerm_dashboard_grafana.grafana_managed
+  ]
 }
 
 #
-# 👷🏻‍♂️ Admins IAM
+# 👥 IAM Groups
 #
-resource "azurerm_role_assignment" "grafana_dashboard_monitoring_admins" {
-  scope                = data.azurerm_subscription.current.id
-  role_definition_name = "Grafana Admin"
-  principal_id         = data.azuread_group.adgroup_admin.id
+locals {
+  grafana_role_assignments = [
+    {
+      name            = "developers-viewer"
+      role_definition = "Grafana Viewer"
+      principal_id    = data.azuread_group.adgroup_developers.object_id
+    },
+    {
+      name            = "admins-admin"
+      role_definition = "Grafana Admin"
+      principal_id    = data.azuread_group.adgroup_admin.object_id
+    }
+  ]
 }
+
+resource "azurerm_role_assignment" "grafana_dashboard_roles" {
+  for_each             = { for ra in local.grafana_role_assignments : ra.name => ra }
+  scope                = data.azurerm_subscription.current.id
+  role_definition_name = each.value.role_definition
+  principal_id         = each.value.principal_id
+
+  depends_on = [
+    azurerm_dashboard_grafana.grafana_managed
+  ]
+}
+
 
 #
 # 📦 Grafana dashboard modules
 #
-
 data "azurerm_key_vault_secret" "grafana_dashboard_bot_api_key" {
   name         = "cstar-itn-grafana-dashboard-bot-api-key"
   key_vault_id = data.azurerm_key_vault.core_kv.id
@@ -61,7 +87,7 @@ module "auto_dashboard" {
   source = "./.terraform/modules/__v4__/grafana_dashboard"
 
   grafana_api_key      = data.azurerm_key_vault_secret.grafana_dashboard_bot_api_key.value
-  grafana_url          = azurerm_dashboard_grafana.grafana_dashboard.endpoint
+  grafana_url          = azurerm_dashboard_grafana.grafana_managed.endpoint
   monitor_workspace_id = azurerm_log_analytics_workspace.monitoring_log_analytics_workspace.id
   prefix               = "cstar"
 }
