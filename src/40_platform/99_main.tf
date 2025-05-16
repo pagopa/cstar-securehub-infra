@@ -35,7 +35,7 @@ provider "grafana" {
   alias = "cloud"
 
   url  = azurerm_dashboard_grafana.grafana_managed.endpoint
-  auth = data.azurerm_key_vault_secret.grafana_dashboard_bot_api_key.value
+  auth = data.azurerm_key_vault_secret.grafana_service_account_token.value
 }
 
 data "azurerm_subscription" "current" {}
@@ -43,6 +43,6 @@ data "azurerm_subscription" "current" {}
 data "azurerm_client_config" "current" {}
 
 module "__v4__" {
-  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v5.3.0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=6a7734af88670367b0f77f9845139ae1b37bd082"
+  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v6.0.0
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=1f109174227e5fa2831540821dd6c8d045f0e70e"
 }
