@@ -1,10 +1,10 @@
-prefix         = "cstar"
-env_short      = "u"
-env            = "uat"
-location       = "italynorth"
+prefix                = "cstar"
+env_short             = "u"
+env                   = "uat"
+location              = "italynorth"
 location_display_name = "Italy North"
-location_short = "itn"
-domain         = "platform"
+location_short        = "itn"
+domain                = "platform"
 
 tags = {
   CreatedBy   = "Terraform"
@@ -36,7 +36,7 @@ monitoring_law_daily_quota_gb    = 10
 synthetic_storage_account_replication_type = "ZRS"
 synthetic_alerts_enabled                   = false
 
-synthetic_domain_tae_enabled = true
-synthetic_domain_idpay_enabled = false
+synthetic_domain_tae_enabled    = true
+synthetic_domain_idpay_enabled  = false
 synthetic_domain_shared_enabled = false
-synthetic_domain_mc_enabled = false
+synthetic_domain_mc_enabled     = false

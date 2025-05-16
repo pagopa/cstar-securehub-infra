@@ -32,7 +32,7 @@ resource "azurerm_role_assignment" "grafana_dashboard_identity_roles" {
   for_each = toset([
     "Monitoring Data Reader",
     "Monitoring Reader",
-    "Reader" ,
+    "Reader",
     "Log Analytics Reader",
   ])
 
@@ -82,10 +82,10 @@ data "external" "grafana_generate_service_account" {
   program = ["bash", "${path.module}/scripts/terragrafana_generate_service_account.sh"]
 
   query = {
-    resource_group = azurerm_resource_group.monitoring_rg.name
-    grafana_name   = azurerm_dashboard_grafana.grafana_managed.name
-    grafana_service_account_name   = "grafana-service-account"
-    grafana_service_account_role   = "Admin"
+    resource_group               = azurerm_resource_group.monitoring_rg.name
+    grafana_name                 = azurerm_dashboard_grafana.grafana_managed.name
+    grafana_service_account_name = "grafana-service-account"
+    grafana_service_account_role = "Admin"
   }
 }
 
@@ -110,7 +110,7 @@ data "external" "validate_grafana_token" {
   program = ["${path.module}/scripts/terragrafana_validate_token.sh"]
 
   query = {
-    grafana_endpoint                  = azurerm_dashboard_grafana.grafana_managed.endpoint
+    grafana_endpoint              = azurerm_dashboard_grafana.grafana_managed.endpoint
     grafana_service_account_token = data.azurerm_key_vault_secret.grafana_service_account_token.value
   }
 }

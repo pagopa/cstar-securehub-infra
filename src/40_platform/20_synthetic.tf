@@ -66,10 +66,10 @@ module "synthetic_monitoring_jobs" {
     grafana = grafana.cloud
   }
 
-  location            = var.location
+  location              = var.location
   location_display_name = var.location_display_name
-  prefix              = "${local.product}-${var.location_short}"
-  resource_group_name = azurerm_resource_group.synthetic_rg.name
+  prefix                = "${local.product}-${var.location_short}"
+  resource_group_name   = azurerm_resource_group.synthetic_rg.name
 
   enabled_sythetic_dashboard = true
   subscription_id            = data.azurerm_subscription.current.subscription_id
@@ -88,7 +88,7 @@ module "synthetic_monitoring_jobs" {
 
   job_settings = {
     container_app_environment_id = azurerm_container_app_environment.synthetic_cae.id
-    availability_prefix = "synthetic"
+    availability_prefix          = "synthetic"
   }
 
   storage_account_settings = {
@@ -123,13 +123,13 @@ locals {
   )
 
   synthetic_variables = {
-    tae_enabled = var.synthetic_domain_tae_enabled
-    idpay_enabled = var.synthetic_domain_idpay_enabled
+    tae_enabled    = var.synthetic_domain_tae_enabled
+    idpay_enabled  = var.synthetic_domain_idpay_enabled
     shared_enabled = var.synthetic_domain_shared_enabled
-    mc_enabled = var.synthetic_domain_mc_enabled
+    mc_enabled     = var.synthetic_domain_mc_enabled
 
-    env_name                       = var.env,
-    alert_enabled                  = var.synthetic_alerts_enabled
+    env_name                  = var.env,
+    alert_enabled             = var.synthetic_alerts_enabled
     public_hostname           = local.public_hostname
     internal_private_hostname = local.internal_private_hostname
   }

@@ -109,21 +109,21 @@ variable "synthetic_alerts_enabled" {
 }
 
 variable "synthetic_domain_tae_enabled" {
-    type        = bool
-    description = "(Optional) Enables the synthetic monitoring for the RTD"
+  type        = bool
+  description = "(Optional) Enables the synthetic monitoring for the RTD"
 }
 
 variable "synthetic_domain_idpay_enabled" {
-    type        = bool
-    description = "(Optional) Enables the synthetic monitoring for the Idpay"
+  type        = bool
+  description = "(Optional) Enables the synthetic monitoring for the Idpay"
 }
 
 variable "synthetic_domain_mc_enabled" {
-    type        = bool
-    description = "(Optional) Enables the synthetic monitoring for the Idpay"
+  type        = bool
+  description = "(Optional) Enables the synthetic monitoring for the Idpay"
 }
 
 variable "synthetic_domain_shared_enabled" {
-    type        = bool
-    description = "(Optional) Enables the synthetic monitoring for the Idpay"
+  type        = bool
+  description = "(Optional) Enables the synthetic monitoring for the Idpay"
 }
