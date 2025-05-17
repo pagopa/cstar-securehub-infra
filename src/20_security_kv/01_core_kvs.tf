@@ -24,49 +24,40 @@ module "key_vault" {
   tags = var.tags
 }
 
-## ad group policy ##
-resource "azurerm_key_vault_access_policy" "ad_group_policy" {
+# Admin access for admin group (all environments)
+module "admin_access" {
+  source = "../../modules/keyvault_access_policy"
+  
   for_each = toset(local.prefix_key_vaults)
-
-  key_vault_id = module.key_vault[each.key].id
-
-  tenant_id = data.azurerm_client_config.current.tenant_id
-  object_id = data.azuread_group.adgroup_admin.object_id
-
-  key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", "GetRotationPolicy", "Encrypt", "Decrypt"]
-  secret_permissions      = ["Get", "List", "Set", "Delete", "Recover", "Restore"]
-  storage_permissions     = []
-  certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Purge", "Recover"]
+  
+  key_vault_id        = module.key_vault[each.key].id
+  object_ids          = [data.azuread_group.adgroup_admin.object_id]
+  policies_environment = var.env
+  role                = "admin"
 }
 
-## ad group policy ##
-resource "azurerm_key_vault_access_policy" "adgroup_developers_policy" {
+# Developer access (permissions vary by environment)
+module "developer_access" {
+  source = "../../modules/keyvault_access_policy"
+  
+  for_each = toset(local.prefix_key_vaults)
+  
+  key_vault_id        = module.key_vault[each.key].id
+  object_ids          = [data.azuread_group.adgroup_developers.object_id]
+  policies_environment = var.env
+  role                = "developer"
+}
+
+# External access (development only)
+module "external_access" {
+  source = "../../modules/keyvault_access_policy"
+  
   for_each = var.env == "dev" ? toset(local.prefix_key_vaults) : []
-
-  key_vault_id = module.key_vault[each.key].id
-
-  tenant_id = data.azurerm_client_config.current.tenant_id
-  object_id = data.azuread_group.adgroup_developers.object_id
-
-  key_permissions     = ["Get", "List", "Update", "Create", "Import", "Delete", ]
-  secret_permissions  = ["Get", "List", "Set", "Delete", ]
-  storage_permissions = []
-  certificate_permissions = [
-    "Get", "List", "Update", "Create", "Import",
-    "Delete", "Restore", "Purge", "Recover"
-  ]
+  
+  key_vault_id        = module.key_vault[each.key].id
+  object_ids          = [data.azuread_group.adgroup_externals.object_id]
+  policies_environment = var.env
+  role                = "readonly"
 }
 
-resource "azurerm_key_vault_access_policy" "adgroup_externals_policy" {
-  for_each = var.env == "dev" ? toset(local.prefix_key_vaults) : []
 
-  key_vault_id = module.key_vault[each.key].id
-
-  tenant_id = data.azurerm_client_config.current.tenant_id
-  object_id = data.azuread_group.adgroup_externals.object_id
-
-  key_permissions         = ["Get", "List"]
-  secret_permissions      = ["Get", "List", "Set", "Delete"]
-  storage_permissions     = []
-  certificate_permissions = ["Get", "List"]
-}
