@@ -33,4 +33,4 @@ app_gateway_mtls_endpoint_enabled = true
 
 # AZDOA:
 enable_azdoa             = true
-azdo_agent_image_version = "v20250414"
+azdo_agent_image_version = "v20250518"
