@@ -1,20 +1,14 @@
-resource "azurerm_resource_group" "azdo" {
-  name     = "${local.project}-azdo-rg"
-  location = var.location
-  tags     = var.tags
-}
-
 module "azdoa_linux_app" {
   source = "./.terraform/modules/__v4__/azure_devops_agent"
   count  = var.enable_azdoa ? 1 : 0
 
   name                      = "${local.project}-azdoa-ubuntu-app-vmss"
-  resource_group_name       = azurerm_resource_group.azdo.name
+  resource_group_name       = data.azurerm_resource_group.azdo_rg.name
   subnet_id                 = data.azurerm_subnet.azdoa_snet.id
   subscription_id           = data.azurerm_subscription.current.subscription_id
   location                  = var.location
   image_type                = "custom" # enables usage of "source_image_name"
-  image_resource_group_name = data.azurerm_resource_group.packer_rg.name
+  image_resource_group_name = data.azurerm_resource_group.azdo_rg.name
   source_image_name         = "${local.product}-packer-azdo-agent-ubuntu2204-image-${var.azdo_agent_image_version}"
   vm_sku                    = "Standard_B2ms"
 
@@ -29,13 +23,13 @@ module "azdoa_linux_infra" {
   count  = var.enable_azdoa ? 1 : 0
 
   name                      = "${local.project}-azdoa-ubuntu-infra-vmss"
-  resource_group_name       = azurerm_resource_group.azdo.name
+  resource_group_name       = data.azurerm_resource_group.azdo_rg.name
   subnet_id                 = data.azurerm_subnet.azdoa_snet.id
   subscription_id           = data.azurerm_subscription.current.subscription_id
   location                  = var.location
   image_type                = "custom" # enables usage of "source_image_name"
   source_image_name         = "${local.product}-packer-azdo-agent-ubuntu2204-image-${var.azdo_agent_image_version}"
-  image_resource_group_name = data.azurerm_resource_group.packer_rg.name
+  image_resource_group_name = data.azurerm_resource_group.azdo_rg.name
 
   vm_sku = "Standard_B2ms"
 

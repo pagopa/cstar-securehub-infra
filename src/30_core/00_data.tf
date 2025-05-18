@@ -13,6 +13,9 @@ data "azurerm_key_vault" "core_kvs" {
   resource_group_name = local.rg_name_core_security
 }
 
+#
+# 🔑 KV secrets
+#
 # INFRA OpsGenie Cstar_Azure_infra_prod webhook key
 data "azurerm_key_vault_secret" "opsgenie_cstar_infra_webhook_key" {
   count = var.env_short == "p" ? 1 : 0
@@ -63,6 +66,6 @@ data "azurerm_user_assigned_identity" "iac_federated_azdo" {
 #
 # Packer
 #
-data "azurerm_resource_group" "packer_rg" {
-  name = local.packer_rg_name
+data "azurerm_resource_group" "azdo_rg" {
+  name = local.azdo_rg_name
 }

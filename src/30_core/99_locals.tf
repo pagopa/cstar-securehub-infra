@@ -17,14 +17,11 @@ locals {
   #
   # AZDO
   #
+  azdo_rg_name = "${local.project}-azdo-rg"
   azdo_iac_managed_identities                 = toset(["azdo-${var.env}-cstar-iac-deploy-v2", "azdo-${var.env}-cstar-iac-plan-v2"])
   legacy_managed_identity_resource_group_name = "${var.prefix}-${var.env_short}-identity-rg"
   azdo_managed_identity_rg_name               = "${local.project_core}-identity-rg"
 
-  #
-  # Packer
-  #
-  packer_rg_name = "${local.product}-packer-rg"
 }
 
 
