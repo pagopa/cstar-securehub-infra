@@ -52,7 +52,7 @@ cidr_subnet_data_monitor_workspace = ["10.20.1.0/24"] # 10.20.1.0 --> 10.20.1.25
 vpn_sku     = "VpnGw1"
 vpn_pip_sku = "Standard"
 
-dns_forwarder_vmss_image_version = "v20250514"
+dns_forwarder_vmss_image_version = "v20250519"
 
 #
 # DNS
