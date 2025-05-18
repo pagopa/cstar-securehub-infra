@@ -13,5 +13,5 @@ tags = {
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
 
-azdo_agent_image_version    = "v20250519" #v5.11.0
-dns_forwarder_image_version = "v20250519" #v5.11.0
+azdo_agent_image_version    = "v20250518" #v6.0.1
+dns_forwarder_image_version = "v20250519" #v6.0.1
