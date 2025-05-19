@@ -36,9 +36,9 @@ resource "kubernetes_config_map" "idpay-eventhub-00" {
     idpay-onboarding-ranking-request                   = "idpay-onboarding-ranking-request"
     idpay_transaction_consumer_group                   = "idpay-transaction-consumer-group"
     idpay_transaction_wallet_consumer_group            = "idpay-transaction-wallet-consumer-group"
-
-    idpay_transaction_topic = "idpay-transaction"
-
+    idpay_transaction_topic                            = "idpay-transaction"
+    rtd_pi_to_app_topic                                = "rtd-pi-to-app"
+    rtd_pi_to_app_consumer_group                       = "rtd-pi-to-app-consumer-group"
   }
 
 }
@@ -105,6 +105,7 @@ resource "kubernetes_config_map" "rest-client" {
 
 }
 
+###Da rimuovere?
 resource "kubernetes_config_map" "rtd-eventhub" {
   metadata {
     name      = "rtd-eventhub"

@@ -429,6 +429,76 @@ eventhubs_idpay_01 = [
       }
     ]
   },
+  {
+    name       = "rtd-pi-to-app"
+    retention  = 1
+    partitions = 4
+    consumers = [
+      "rtd-pi-to-app-consumer-group"
+    ]
+    policies = [
+      {
+        name   = "rtd-pi-to-app-consumer-policy"
+        listen = true
+        send   = true
+        manage = false
+      },
+      {
+        name   = "rtd-pi-to-app-producer-policy"
+        listen = false
+        send   = true
+        manage = false
+      }
+    ]
+  },
+  {
+    name       = "rtd-pi-from-app"
+    retention  = 1
+    partitions = 4
+    consumers = [
+      "rtd-pi-from-app-consumer-group"
+    ]
+    policies = [
+      {
+        name   = "rtd-pi-from-app-consumer-policy"
+        listen = true
+        send   = true
+        manage = false
+      },
+      {
+        name   = "rtd-pi-from-app-producer-policy"
+        listen = false
+        send   = true
+        manage = false
+      }
+    ]
+  },
+  {
+    name       = "rtd-trx"
+    partitions = 1
+    retention  = 1
+    consumers  = ["idpay-consumer-group"]
+    policies = [
+      {
+        name   = "rtd-trx-consumer"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "rtd-trx-producer"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "rtd-trx-test-policy"
+        listen = true
+        send   = true
+        manage = false
+      }
+    ]
+  }
 ]
 
 ### handle resource enable
