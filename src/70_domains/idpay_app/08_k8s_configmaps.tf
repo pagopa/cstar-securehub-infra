@@ -37,11 +37,20 @@ resource "kubernetes_config_map" "idpay-eventhub-00" {
     idpay_transaction_consumer_group                   = "idpay-transaction-consumer-group"
     idpay_transaction_wallet_consumer_group            = "idpay-transaction-wallet-consumer-group"
     idpay_transaction_topic                            = "idpay-transaction"
-    rtd_pi_to_app_topic                                = "rtd-pi-to-app"
-    rtd_pi_to_app_consumer_group                       = "rtd-pi-to-app-consumer-group"
+
+    kafka_broker_rtd               = local.eventhub_00_url
+    kafka_broker_rtd_pi            = local.eventhub_00_url
+    kafka_broker_rtd_domain        = local.eventhub_00_url
+    rtd_pi_from_app_topic          = "rtd-pi-from-app"
+    rtd_trx_topic                  = "rtd-trx"
+    kafka_partition_count          = 1
+    kafka_partition_key_expression = "headers.partitionKey"
+    rtd_pi_to_app_topic            = "rtd-pi-to-app"
+    rtd_pi_to_app_consumer_group   = "rtd-pi-to-app-consumer-group"
   }
 
 }
+
 
 resource "kubernetes_config_map" "idpay-eventhub-01" {
   metadata {
@@ -105,7 +114,7 @@ resource "kubernetes_config_map" "rest-client" {
 
 }
 
-###Da rimuovere?
+
 resource "kubernetes_config_map" "rtd-eventhub" {
   metadata {
     name      = "rtd-eventhub"
