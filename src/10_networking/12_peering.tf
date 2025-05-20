@@ -5,11 +5,6 @@ locals {
       id                  = module.vnet_core_hub.id
       resource_group_name = azurerm_resource_group.rg_network.name
     }
-    platform = {
-      name                = module.vnet_spoke_platform_core.name
-      id                  = module.vnet_spoke_platform_core.id
-      resource_group_name = azurerm_resource_group.rg_network.name
-    }
     data = {
       name                = module.vnet_spoke_data.name
       id                  = module.vnet_spoke_data.id
@@ -33,9 +28,9 @@ locals {
   }
 
   # vnet core hub is not included in the peering map because already setup
-  all_vnets_peering_to_spoke_compute = {
+  all_peerings_from_computer = {
     for k, v in local.secure_hub_vnets :
-    k => v if k != "hub" && k != "compute"
+    k => v if k == "security" || k == "data"
   }
 }
 
@@ -67,7 +62,7 @@ module "vnet_secure_hub_to_spoke_peering" {
 module "vnet_spoke_compute_peerings" {
   source = "./.terraform/modules/__v4__/virtual_network_peering"
 
-  for_each = local.all_vnets_peering_to_spoke_compute
+  for_each = local.all_peerings_from_computer
 
   # Define target virtual network peering details
   source_resource_group_name       = module.vnet_spoke_compute.resource_group_name
