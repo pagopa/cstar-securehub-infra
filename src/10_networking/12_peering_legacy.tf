@@ -20,7 +20,7 @@ locals {
   # Collect vnet spoke
   all_hub_to_legacy_peerings = {
     for k, v in local.legacy_vnets :
-    k => v if k != "hub"
+    k => v
   }
 }
 
@@ -46,7 +46,7 @@ module "vnet_secure_hub_to_legacy_peerings" {
 }
 
 #
-# ⛓️ Peering from secure spoke compute to vnet integration
+# ⛓️ Peering from secure spoke compute to vnet integration (apim)
 #
 module "vnet_secure_spoke_compute_to_vnet_integration" {
   source = "./.terraform/modules/__v4__/virtual_network_peering"
