@@ -148,25 +148,12 @@ module "eventhub_namespace_idpay_01" {
   # ]
 
   network_rulesets = [
-    # {
-    #   default_action                 = "Deny"
-    #   trusted_service_access_enabled = true
-    #   virtual_network_rule = [
-    #     # {
-    #     #   subnet_id                                       = data.azurerm_subnet.eventhub_snet.id
-    #     #   ignore_missing_virtual_network_service_endpoint = false
-    #     # },
-    #     # {
-    #     #   subnet_id                                       = data.azurerm_subnet.aks_domain_subnet.id
-    #     #   ignore_missing_virtual_network_service_endpoint = false
-    #     # },
-    #     # {
-    #     #   subnet_id                                       = data.azurerm_subnet.private_endpoint_snet.id
-    #     #   ignore_missing_virtual_network_service_endpoint = false
-    #     # }
-    #   ]
-    #   ip_rule = []
-    # }
+    {
+      default_action                 = "Deny"
+      trusted_service_access_enabled = true
+      virtual_network_rule           = []
+      ip_rule                        = []
+    }
   ]
 
   tags = var.tags
