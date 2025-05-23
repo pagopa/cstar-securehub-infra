@@ -15,7 +15,7 @@ locals {
       },
       "idpay-reward-calculator" = {
         name          = "idpay-reward-calculator"
-        target_branch = "secrets-update"
+        target_branch = "main"
       },
       "idpay-merchant" = {
         name          = "idpay-merchant"
@@ -45,7 +45,7 @@ locals {
       },
       "idpay-payment-instrument" = {
         name          = "idpay-payment-instrument"
-        target_branch = "secrets-update"
+        target_branch = "main"
       },
       "idpay-portal-welfare-backend-role-permission" = {
         name          = "idpay-portal-welfare-backend-role-permission"
@@ -57,7 +57,7 @@ locals {
       },
       "idpay-recovery-error-topic" = {
         name          = "idpay-recovery-error-topic"
-        target_branch = "secrets-update"
+        target_branch = "main"
       },
       " idpay-reward-notification" = {
         name          = "idpay-reward-notification"
@@ -65,7 +65,7 @@ locals {
       },
       "idpay-reward-user-id-splitter" = {
         name          = "idpay-reward-user-id-splitter"
-        target_branch = "secrets-update"
+        target_branch = "main"
       },
       "idpay-timeline" = {
         name          = "idpay-timeline"
@@ -87,7 +87,11 @@ locals {
       },
       "idpay-self-expense-backend" = {
         name          = "idpay-self-expense-backend"
-        target_branch = "secrets-update"
+        target_branch = "main"
+      },
+      "idpay-mock" = {
+        name          = "idpay-mock"
+        target_branch = "main"
       }
     }
   }
