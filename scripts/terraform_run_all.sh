@@ -15,18 +15,15 @@ pids=()
 ACTION="$1"
 
 array=(
-    '.identity::dev'
-    'src/01_networking::itn-dev'
-    'src/02_security::itn-dev'
-    'src/03_packer::itn-dev'
-    'src/04_core::itn-dev'
-    'src/05_aks::itn-dev'
-    'src/05_platform::itn-dev'
-    'src/06_domains/community-common::itn-dev'
-    'src/06_domains/community-secrets::itn-dev'
-    'src/06_domains/payhub-app::itn-dev'
-    'src/06_domains/payhub-common::itn-dev'
-    'src/06_domains/payhub-secrets::itn-dev'
+    'src/10_networking::itn-dev'
+    'src/11_packer::itn-dev'
+    'src/20_security_kv::itn-dev'
+    'src/30_core::itn-dev'
+    'src/31_aks_italy::itn-dev'
+    'src/40_platform::itn-dev'
+    'src/70_domains/idpay_common::itn-dev'
+    'src/06_domains/idpay_secrets::itn-dev'
+    'src/06_domains/idpay_app::itn-dev'
 )
 
 function rm_terraform {
