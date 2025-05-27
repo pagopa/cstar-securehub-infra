@@ -60,7 +60,7 @@ resource "azurerm_private_endpoint" "private_endpoint_container_app" {
 #
 module "synthetic_monitoring_jobs" {
   source = "./.terraform/modules/__v4__/monitoring_function"
-  # source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//monitoring_function?ref=fix-monitor-function"
+  # source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//monitoring_function?ref=PAYMCLOUD-401-v-4-synthetic-aggiornamento-codice"
 
   providers = {
     grafana = grafana.cloud
@@ -115,12 +115,10 @@ module "synthetic_monitoring_jobs" {
 }
 
 locals {
-  monitoring_config_raw = concat(
-    yamldecode(templatefile("${path.module}/synthetic_endpoints/tae.yaml.tpl", local.synthetic_variables)),
-    # yamldecode(templatefile("${path.module}/synthetic_endpoints/idpay.yaml.tpl", local.synthetic_variables)),
-    # yamldecode(templatefile("${path.module}/synthetic_endpoints/shared.yaml.tpl", local.synthetic_variables)),
-    # yamldecode(templatefile("${path.module}/synthetic_endpoints/mc.yaml.tpl", local.synthetic_variables)),
-  )
+  monitoring_config_raw = flatten([
+    for file in fileset("${path.module}/synthetic_endpoints", "*.yaml.tpl") :
+    yamldecode(templatefile("${path.module}/synthetic_endpoints/${file}", local.synthetic_variables))
+  ])
 
   synthetic_variables = {
     tae_enabled    = var.synthetic_domain_tae_enabled
