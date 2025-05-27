@@ -59,8 +59,8 @@ resource "azurerm_private_endpoint" "private_endpoint_container_app" {
 # Synthetic
 #
 module "synthetic_monitoring_jobs" {
-  # source = "./.terraform/modules/__v4__/monitoring_function"
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//monitoring_function?ref=PAYMCLOUD-401-v-4-synthetic-aggiornamento-codice"
+  source = "./.terraform/modules/__v4__/monitoring_function"
+  # source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//monitoring_function?ref=PAYMCLOUD-401-v-4-synthetic-aggiornamento-codice"
 
   providers = {
     grafana = grafana.cloud
@@ -117,7 +117,7 @@ module "synthetic_monitoring_jobs" {
 locals {
   monitoring_config_raw = flatten([
     for file in fileset("${path.module}/synthetic_endpoints", "*.yaml.tpl") :
-      yamldecode(templatefile("${path.module}/synthetic_endpoints/${file}", local.synthetic_variables))
+    yamldecode(templatefile("${path.module}/synthetic_endpoints/${file}", local.synthetic_variables))
   ])
 
   synthetic_variables = {
