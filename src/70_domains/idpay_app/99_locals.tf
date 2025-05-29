@@ -32,27 +32,23 @@ locals {
   #
   aks_name                = "${local.product}-${var.location_short}-${var.env}-aks"
   aks_resource_group_name = "${local.product}-${var.location_short}-core-aks-rg"
+
   # DOMAINS
   domain_namespace = var.domain
+  data_rg_name = "${local.project}-data-rg"
 
   #
   # IDPAY
   #
-  idpay_ingress_url = "${var.dns_zone_internal_prefix}.${var.external_domain}"
+  idpay_ingress_url = "${var.domain}.${var.location_short}.${var.dns_zone_internal_prefix}.${var.external_domain}"
 
   #
   # Eventhub
   #
-  eventhub_00_url = "${local.project}-evh-00-ns.servicebus.windows.net:${var.event_hub_port}"
-  eventhub_01_url = "${local.project}-evh-01-ns.servicebus.windows.net:${var.event_hub_port}"
-
-
-  apim_rg_name = "cstar-${var.env_short}-api-rg"
-  apim_name    = "cstar-${var.env_short}-apim"
-  # apim_logger_id                = "${data.azurerm_api_management.apim_core.id}/loggers/${local.apim_name}-logger"
-  vnet_core_name                = "${local.product}-vnet"
-  vnet_core_resource_group_name = "${local.product}-vnet-rg"
-
+  eventhub_00_namespace_name = "${local.project}-evh-00-ns"
+  eventhub_01_namespace_name = "${local.project}-evh-01-ns"
+  eventhub_00_url = "${local.eventhub_00_namespace_name}.servicebus.windows.net:${var.event_hub_port}"
+  eventhub_01_url = "${local.eventhub_01_namespace_name}.servicebus.windows.net:${var.event_hub_port}"
 
   #ORIGINS (used for CORS on IDPAY Welfare Portal)
   origins = {
@@ -66,23 +62,4 @@ locals {
       var.env_short != "p" ? ["https://localhost:3000", "http://localhost:3000", "https://localhost:3001", "http://localhost:3001"] : []
     )
   }
-
-  idpay_eventhubs = {
-    evh01 = {
-      namespace           = "${local.product}-${var.domain}-evh-ns-01"
-      resource_group_name = "${local.product}-${var.domain}-msg-rg"
-    }
-    evh00 = {
-      namespace           = "${local.product}-${var.domain}-evh-ns-00"
-      resource_group_name = "${local.product}-${var.domain}-msg-rg"
-    }
-  }
-
-  # domain_aks_hostname                      = var.env == "prod" ? "${var.instance}.${var.domain}.internal.cstar.pagopa.it" : "${var.instance}.${var.domain}.internal.${var.env}.cstar.pagopa.it"
-  # rtd_domain_aks_hostname                  = var.env == "prod" ? "${var.instance}.rtd.internal.cstar.pagopa.it" : "${var.instance}.rtd.internal.${var.env}.cstar.pagopa.it"
-  # rtd_ingress_load_balancer_hostname_https = "https://${local.rtd_domain_aks_hostname}"
-  # initiative_storage_fqdn                  = "${module.idpay_initiative_storage.name}.blob.core.windows.net"
-  # reward_storage_fqdn                      = "${module.idpay_refund_storage.name}.blob.core.windows.net"
-
-  # ingress_load_balancer_https = "https://${var.ingress_load_balancer_hostname}"
 }
