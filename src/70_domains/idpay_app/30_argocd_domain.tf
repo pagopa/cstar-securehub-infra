@@ -32,6 +32,10 @@ locals {
       "idpay-portal-welfare-backend-initiative" = {
         name          = "idpay-portal-welfare-backend-initiative"
         target_branch = "main"
+      },
+      "idpay-kafka-connect" = {
+        name          = "idpay-kafka-connect"
+        target_branch = "main"
       }
     }
     "mid" = {
