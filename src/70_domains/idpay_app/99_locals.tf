@@ -35,7 +35,7 @@ locals {
 
   # DOMAINS
   domain_namespace = var.domain
-  data_rg_name = "${local.project}-data-rg"
+  data_rg_name     = "${local.project}-data-rg"
 
   #
   # IDPAY
@@ -47,8 +47,8 @@ locals {
   #
   eventhub_00_namespace_name = "${local.project}-evh-00-ns"
   eventhub_01_namespace_name = "${local.project}-evh-01-ns"
-  eventhub_00_url = "${local.eventhub_00_namespace_name}.servicebus.windows.net:${var.event_hub_port}"
-  eventhub_01_url = "${local.eventhub_01_namespace_name}.servicebus.windows.net:${var.event_hub_port}"
+  eventhub_00_url            = "${local.eventhub_00_namespace_name}.servicebus.windows.net:${var.event_hub_port}"
+  eventhub_01_url            = "${local.eventhub_01_namespace_name}.servicebus.windows.net:${var.event_hub_port}"
 
   #ORIGINS (used for CORS on IDPAY Welfare Portal)
   origins = {
