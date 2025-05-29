@@ -30,6 +30,10 @@ terraform {
       source  = "hashicorp/null"
       version = "~> 3.2"
     }
+    terracurl = {
+      source  = "devops-rob/terracurl"
+      version = "1.2.1"
+    }
   }
 
   backend "azurerm" {}
