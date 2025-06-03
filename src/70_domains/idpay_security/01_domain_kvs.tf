@@ -25,12 +25,12 @@ module "admins_policy" {
 
   for_each = toset(local.secrets_folders_kv)
 
-  prefix         = "cstar"
+  prefix          = "cstar"
   permission_tier = "admin" # or developer, external
-  env            = var.env # or prod, uat, etc.
-  key_vault_id = module.key_vault[each.key].id
-  tenant_id      = data.azurerm_client_config.current.tenant_id
-  object_id      = data.azuread_group.adgroup_admin.object_id
+  env             = var.env # or prod, uat, etc.
+  key_vault_id    = module.key_vault[each.key].id
+  tenant_id       = data.azurerm_client_config.current.tenant_id
+  object_id       = data.azuread_group.adgroup_admin.object_id
 }
 
 module "developers_policy" {
@@ -38,12 +38,12 @@ module "developers_policy" {
 
   for_each = toset(local.secrets_folders_kv)
 
-  prefix         = "cstar"
+  prefix          = "cstar"
   permission_tier = "developer" # or developer, external
-  env            = var.env # or prod, uat, etc.
-  key_vault_id = module.key_vault[each.key].id
-  tenant_id      = data.azurerm_client_config.current.tenant_id
-  object_id      = data.azuread_group.adgroup_developers.object_id
+  env             = var.env     # or prod, uat, etc.
+  key_vault_id    = module.key_vault[each.key].id
+  tenant_id       = data.azurerm_client_config.current.tenant_id
+  object_id       = data.azuread_group.adgroup_developers.object_id
 }
 
 module "externals_policy" {
@@ -51,12 +51,12 @@ module "externals_policy" {
 
   for_each = var.env == "dev" ? toset(local.secrets_folders_kv) : []
 
-  prefix         = "cstar"
+  prefix          = "cstar"
   permission_tier = "external" # or developer, external
-  env            = var.env
-  key_vault_id = module.key_vault[each.key].id
-  tenant_id      = data.azurerm_client_config.current.tenant_id
-  object_id      = data.azuread_group.adgroup_externals.object_id
+  env             = var.env
+  key_vault_id    = module.key_vault[each.key].id
+  tenant_id       = data.azurerm_client_config.current.tenant_id
+  object_id       = data.azuread_group.adgroup_externals.object_id
 }
 
 #
