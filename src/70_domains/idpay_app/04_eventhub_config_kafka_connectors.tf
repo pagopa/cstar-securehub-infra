@@ -40,7 +40,3 @@ resource "null_resource" "transaction_in_progress_connector" {
     command = "bash update_connector.sh https://${local.idpay_ingress_url}/idpaykafkaconnect/connectors/transaction-in-progress-connector/config"
   }
 }
-
-
-
-
