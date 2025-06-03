@@ -24,6 +24,7 @@ provider "registry.terraform.io/devops-rob/terracurl" {
   version     = "1.2.1"
   constraints = "1.2.1"
   hashes = [
+    "h1:9fFvPktJTTsDDa/2XUzt8oECJHDV6PPDKjEXa064Axc=",
     "h1:Rx4OtQPtehsEtr9+k+ai8n1OohX3DYsSbXb0JY2Vpco=",
     "zh:1081272d4a4a2fa7c44189895460445c3fcb1f3da9d95c87bd0f2eb7c632f520",
     "zh:383c80383dac4362fcec19291d4afe2330dcd940e1bf9488d17b6981dfa8a89b",
