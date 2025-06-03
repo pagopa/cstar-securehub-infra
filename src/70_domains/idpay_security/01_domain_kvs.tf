@@ -20,49 +20,43 @@ module "key_vault" {
 #
 # KV Policy
 #
-## ad group policy ##
-resource "azurerm_key_vault_access_policy" "admins_group_policy" {
+module "admins_policy" {
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//IDH/key_vault_access_policy?ref=PAYMCLOUD-422-idh-kv-access-policy-configurator"
+
   for_each = toset(local.secrets_folders_kv)
 
+  prefix         = "cstar"
+  permission_tier = "admin" # or developer, external
+  env            = var.env # or prod, uat, etc.
   key_vault_id = module.key_vault[each.key].id
-
-  tenant_id = data.azurerm_client_config.current.tenant_id
-  object_id = data.azuread_group.adgroup_admin.object_id
-
-  key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt", "Backup", "Purge", "Recover", "Restore", "Sign", "UnwrapKey", "Update", "Verify", "WrapKey", "Release", "Rotate", "GetRotationPolicy", "SetRotationPolicy"]
-  secret_permissions      = ["Get", "List", "Set", "Delete", "Backup", "Purge", "Recover", "Restore"]
-  storage_permissions     = []
-  certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Purge", "Recover", "Backup", "ManageContacts", "ManageIssuers", "GetIssuers", "ListIssuers", "SetIssuers", "DeleteIssuers"]
+  tenant_id      = data.azurerm_client_config.current.tenant_id
+  object_id      = data.azuread_group.adgroup_admin.object_id
 }
 
-## ad group policy ##
-resource "azurerm_key_vault_access_policy" "developers_policy" {
+module "developers_policy" {
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//IDH/key_vault_access_policy?ref=PAYMCLOUD-422-idh-kv-access-policy-configurator"
+
   for_each = toset(local.secrets_folders_kv)
 
+  prefix         = "cstar"
+  permission_tier = "developer" # or developer, external
+  env            = var.env # or prod, uat, etc.
   key_vault_id = module.key_vault[each.key].id
-
-  tenant_id = data.azurerm_client_config.current.tenant_id
-  object_id = data.azuread_group.adgroup_developers.object_id
-
-  key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt", "Rotate", "GetRotationPolicy"]
-  secret_permissions      = ["Get", "List", "Set", "Delete", ]
-  storage_permissions     = []
-  certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Purge", "Recover"]
-
+  tenant_id      = data.azurerm_client_config.current.tenant_id
+  object_id      = data.azuread_group.adgroup_developers.object_id
 }
 
-resource "azurerm_key_vault_access_policy" "externals_policy" {
+module "externals_policy" {
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//IDH/key_vault_access_policy?ref=PAYMCLOUD-422-idh-kv-access-policy-configurator"
+
   for_each = var.env == "dev" ? toset(local.secrets_folders_kv) : []
 
+  prefix         = "cstar"
+  permission_tier = "external" # or developer, external
+  env            = var.env
   key_vault_id = module.key_vault[each.key].id
-
-  tenant_id = data.azurerm_client_config.current.tenant_id
-  object_id = data.azuread_group.adgroup_externals.object_id
-
-  key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt", "Rotate", "GetRotationPolicy"]
-  secret_permissions      = ["Get", "List", "Set", "Delete", ]
-  storage_permissions     = []
-  certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Purge", "Recover"]
+  tenant_id      = data.azurerm_client_config.current.tenant_id
+  object_id      = data.azuread_group.adgroup_externals.object_id
 }
 
 #
