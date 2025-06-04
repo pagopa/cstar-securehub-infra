@@ -62,16 +62,14 @@ module "externals_policy" {
 #
 # Managed identities
 #
-resource "azurerm_key_vault_access_policy" "apim_managed_identity" {
+module "apim_managed_identity_policy" {
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//IDH/key_vault_access_policy?ref=PAYMCLOUD-422-idh-kv-access-policy-configurator"
   for_each = toset(local.secrets_folders_kv)
 
-  key_vault_id = module.key_vault[each.key].id
-
-  tenant_id = data.azurerm_client_config.current.tenant_id
-  object_id = data.azurerm_api_management.apim.identity[0].principal_id
-
-  key_permissions         = ["Get", "List"]
-  secret_permissions      = ["Get", "List", ]
-  storage_permissions     = []
-  certificate_permissions = ["Get", "List", ]
+  prefix          = "cstar"
+  permission_tier = "reader" # or developer, external
+  env             = var.env
+  key_vault_id    = module.key_vault[each.key].id
+  tenant_id       = data.azurerm_client_config.current.tenant_id
+  object_id       = data.azurerm_api_management.apim.identity[0].principal_id
 }
