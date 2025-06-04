@@ -54,7 +54,6 @@ module "vnet_spoke_security" {
   source = "./.terraform/modules/__v4__/virtual_network"
   # source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//virtual_network?ref=vnet-ignore-ddos-protection-plan"
 
-
   name                = "${local.project}-spoke-security-vnet"
   location            = azurerm_resource_group.rg_network.location
   resource_group_name = azurerm_resource_group.rg_network.name
