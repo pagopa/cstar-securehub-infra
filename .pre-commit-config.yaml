@@ -8,7 +8,7 @@ repos:
         exclude_types: [sql]
       - id: trailing-whitespace
         args: [--markdown-linebreak-ext=md]
-        exclude_types: [sql]
+        exclude_types: [sql, bash, shell]
       - id: check-executables-have-shebangs
       # Cross platform
       - id: check-case-conflict
