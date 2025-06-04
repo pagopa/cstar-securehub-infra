@@ -63,7 +63,7 @@ module "externals_policy" {
 # Managed identities
 #
 module "apim_managed_identity_policy" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//IDH/key_vault_access_policy?ref=PAYMCLOUD-422-idh-kv-access-policy-configurator"
+  source   = "git::https://github.com/pagopa/terraform-azurerm-v4.git//IDH/key_vault_access_policy?ref=PAYMCLOUD-422-idh-kv-access-policy-configurator"
   for_each = toset(local.secrets_folders_kv)
 
   prefix          = "cstar"
