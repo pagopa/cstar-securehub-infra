@@ -5,10 +5,10 @@ repos:
     hooks:
       # Common errors
       - id: end-of-file-fixer
-        exclude_types: [sql]
+        exclude_types: [sql, bash]
       - id: trailing-whitespace
         args: [--markdown-linebreak-ext=md]
-        exclude_types: [sql]
+        exclude_types: [sql, bash]
       - id: check-executables-have-shebangs
       # Cross platform
       - id: check-case-conflict
