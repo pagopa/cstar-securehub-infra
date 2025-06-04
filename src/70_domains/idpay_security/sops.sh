@@ -1,1 +1,1 @@
-../../../scripts/sops.
+../../../scripts/sops.sh
