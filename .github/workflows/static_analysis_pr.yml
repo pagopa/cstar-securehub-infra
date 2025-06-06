@@ -10,6 +10,16 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
+      - name: 🔨 Get Modified Paths
+        id: get-paths
+        uses: pagopa/eng-github-actions-iac-template/global/get-modifed-folders@f10814b649ecd6e5d97c489084d2a107e2f1b2ee #v1.22.3
+        with:
+          ignore_patterns: ".github,.devops,.vscode,.terraform-version"
+          start_folder: "src"
+          include_folders: "tag_config"
+          include_patterns: "src,domains"
+          stopper_folders: "env,tests,api,api_product,helm"
+
       - name: Static Analysis
         uses: pagopa/eng-github-actions-iac-template/azure/terraform-static-analysis@v1.14.1
         with:
