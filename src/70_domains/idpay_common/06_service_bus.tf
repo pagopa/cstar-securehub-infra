@@ -1,6 +1,4 @@
 locals {
-  servicebus_namespace_name = "${local.project}-sb-ns"
-
   servicebus_queues = {
     idpay-onboarding-request = {
       requires_duplicate_detection            = true
@@ -68,7 +66,8 @@ resource "azurerm_servicebus_namespace" "idpay_service_bus_ns" {
   sku                           = var.service_bus_namespace.sku
   minimum_tls_version           = "1.2"
   public_network_access_enabled = true #Mandatory because only the premium SKU supports private endpoints
-  tags                          = var.tags
+
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_servicebus_namespace_authorization_rule" "namespace_rules" {
@@ -110,6 +109,8 @@ resource "azurerm_key_vault_secret" "namespace_auth_secrets" {
   value        = each.value.primary_connection_string
   content_type = "text/plain"
   key_vault_id = data.azurerm_key_vault.domain_kv.id
+
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_key_vault_secret" "queue_auth_secrets" {
@@ -119,4 +120,6 @@ resource "azurerm_key_vault_secret" "queue_auth_secrets" {
   value        = each.value.primary_connection_string
   content_type = "text/plain"
   key_vault_id = data.azurerm_key_vault.domain_kv.id
+
+  tags = module.tag_config.tags
 }

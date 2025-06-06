@@ -36,7 +36,6 @@ locals {
 // public_cstar storage used to serve FE
 module "cdn_idpay_assetregister" {
   source = "./.terraform/modules/__v4__/cdn"
-  # source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//cdn?ref=cdn-added-outputs"
 
   name                = "asset-register"
   prefix              = local.project_weu
@@ -60,6 +59,7 @@ module "cdn_idpay_assetregister" {
   keyvault_vault_name          = local.idpay_kv_name
 
   querystring_caching_behaviour = "BypassCaching"
+  log_analytics_workspace_id    = data.azurerm_log_analytics_workspace.log_analytics.id
 
   advanced_threat_protection_enabled = var.idpay_cdn_sa_advanced_threat_protection_enabled
 
@@ -73,23 +73,23 @@ module "cdn_idpay_assetregister" {
       action = "Overwrite"
       name   = "Strict-Transport-Security"
       value  = "max-age=31536000"
-    },
-      # Content-Security-Policy (in Report mode)
-      {
-        action = "Overwrite"
-        name   = "Content-Security-Policy-Report-Only"
-        value  = "default-src 'self'; object-src 'none'; connect-src 'self' https://api-io.${var.dns_zone_prefix}.${var.external_domain}/ https://api-eu.mixpanel.com/track/; "
       },
-      {
-        action = "Append"
-        name   = "Content-Security-Policy-Report-Only"
-        value  = "script-src 'self'; style-src 'self' 'unsafe-inline' https://selfcare${local.selfare_asset_temp_suffix}.pagopa.it/assets/font/selfhostedfonts.css; worker-src 'none'; font-src 'self' https://selfcare${local.selfare_asset_temp_suffix}.pagopa.it/assets/font/; "
-      },
-      {
-        action = "Append"
-        name   = "Content-Security-Policy-Report-Only"
-        value  = "img-src 'self' https://assets.cdn.io.italia.it https://${module.cdn_idpay_assetregister.storage_primary_web_host} https://${var.env != "prod" ? "${var.env}." : ""}selfcare${local.selfare_asset_temp_suffix}.pagopa.it https://selc${var.env_short}checkoutsa.z6.web.core.windows.net/institutions/ data:; "
-      },
+      # # Content-Security-Policy (in Report mode)
+      # {
+      #   action = "Overwrite"
+      #   name   = "Content-Security-Policy-Report-Only"
+      #   value  = "default-src 'self'; object-src 'none'; connect-src 'self' https://api-io.${var.dns_zone_prefix}.${var.external_domain}/ https://api-eu.mixpanel.com/track/; "
+      # },
+      # {
+      #   action = "Append"
+      #   name   = "Content-Security-Policy-Report-Only"
+      #   value  = "script-src 'self'; style-src 'self' 'unsafe-inline' https://selfcare${local.selfare_asset_temp_suffix}.pagopa.it/assets/font/selfhostedfonts.css; worker-src 'none'; font-src 'self' https://selfcare${local.selfare_asset_temp_suffix}.pagopa.it/assets/font/; "
+      # },
+      # {
+      #   action = "Append"
+      #   name   = "Content-Security-Policy-Report-Only"
+      #   value  = "img-src 'self' https://assets.cdn.io.italia.it https://${module.cdn_idpay_assetregister.storage_primary_web_host} https://${var.env != "prod" ? "${var.env}." : ""}selfcare${local.selfare_asset_temp_suffix}.pagopa.it https://selc${var.env_short}checkoutsa.z6.web.core.windows.net/institutions/ data:; "
+      # },
       {
         action = "Append"
         name   = "X-Content-Type-Options"
@@ -120,7 +120,7 @@ module "cdn_idpay_assetregister" {
       destination             = "/portale-beni/index.html"
       preserve_unmatched_path = false
     }
-  }],
+    }],
     local.spa_asset
   )
 
@@ -202,33 +202,5 @@ module "cdn_idpay_assetregister" {
     }
   ]
 
-  tags                       = var.tags
-  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.log_analytics.id
-}
-
-#
-# 🔑 Cannot be merged in local values, because contains sensitive data
-#
-resource "azurerm_key_vault_secret" "idpay_asset_register_cdn_storage_primary_access_key" {
-  name         = "web-storage-asset-register-access-key"
-  value        = module.cdn_idpay_assetregister.storage_primary_access_key
-  content_type = "text/plain"
-
-  key_vault_id = data.azurerm_key_vault.domain_kv.id
-}
-
-resource "azurerm_key_vault_secret" "idpay_asset_register_cdn_storage_primary_connection_string" {
-  name         = "web-storage-asset-register-connection-string"
-  value        = module.cdn_idpay_assetregister.storage_primary_connection_string
-  content_type = "text/plain"
-
-  key_vault_id = data.azurerm_key_vault.domain_kv.id
-}
-
-resource "azurerm_key_vault_secret" "idpay_asset_register_cdn_storage_blob_connection_string" {
-  name         = "web-storage-asset-register-blob-connection-string"
-  value        = module.cdn_idpay_assetregister.storage_primary_blob_connection_string
-  content_type = "text/plain"
-
-  key_vault_id = data.azurerm_key_vault.domain_kv.id
+  tags = module.tag_config.tags
 }
