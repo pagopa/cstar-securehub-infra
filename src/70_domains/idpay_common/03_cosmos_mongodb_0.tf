@@ -30,7 +30,7 @@ module "idpay_cosmos_mongodb_account" {
 
   backup_continuous_enabled = var.cosmos_mongo_account_params.backup_continuous_enabled
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 #
@@ -42,6 +42,8 @@ resource "azurerm_key_vault_secret" "cosmosdb_account_mongodb_primary_connection
   content_type = "text/plain"
 
   key_vault_id = data.azurerm_key_vault.domain_kv.id
+
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_key_vault_secret" "cosmosdb_account_mongodb_secondary_connection_strings" {
@@ -50,4 +52,6 @@ resource "azurerm_key_vault_secret" "cosmosdb_account_mongodb_secondary_connecti
   content_type = "text/plain"
 
   key_vault_id = data.azurerm_key_vault.domain_kv.id
+
+  tags = module.tag_config.tags
 }

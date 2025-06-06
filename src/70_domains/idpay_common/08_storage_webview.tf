@@ -21,7 +21,7 @@ module "idpay_webview_storage" {
   private_dns_zone_blob_ids = [data.azurerm_private_dns_zone.storage_account_blob.id]
   subnet_id                 = module.idpay_storage_snet.id
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 #
@@ -64,5 +64,5 @@ resource "azurerm_key_vault_secret" "webview" {
   content_type = "text/plain"
   key_vault_id = data.azurerm_key_vault.domain_kv.id
 
-  #tfsec:ignore:azure-keyvault-ensure-secret-expiry
+  tags = module.tag_config.tags
 }

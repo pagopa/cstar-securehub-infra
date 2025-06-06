@@ -4,11 +4,11 @@ terraform {
   required_providers {
     azuread = {
       source  = "hashicorp/azuread"
-      version = "~> 3"
+      version = "~> 3.0"
     }
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "<= 4.25"
+      version = "~> 4.25"
     }
     external = {
       source  = "hashicorp/external"
@@ -16,11 +16,11 @@ terraform {
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
-      version = "~> 2.36.0"
+      version = "~> 2.36"
     }
     helm = {
       source  = "hashicorp/helm"
-      version = "~> 2.17.0"
+      version = "~> 2.17"
     }
     argocd = {
       source  = "argoproj-labs/argocd"
@@ -28,7 +28,7 @@ terraform {
     }
     azapi = {
       source  = "Azure/azapi"
-      version = "~> 2.3.0"
+      version = "~> 2.3"
     }
   }
 
@@ -44,13 +44,9 @@ provider "azurerm" {
 }
 
 module "__v4__" {
-  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v5.11.0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=68f5230fe41db0e39d5a31ee804192ee926679d3"
+  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v6.17.0
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=1cb98ae738621c9ab30cd46cea33cdc91e06993f"
 }
-
-data "azurerm_subscription" "current" {}
-
-data "azurerm_client_config" "current" {}
 
 provider "kubernetes" {
   config_path = "${var.k8s_kube_config_path_prefix}/config-${local.aks_name}"

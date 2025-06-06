@@ -757,5 +757,4 @@ resource "azurerm_cosmosdb_mongo_collection" "mongodb_collections_idpay" {
 
   timeouts {
   }
-
 }

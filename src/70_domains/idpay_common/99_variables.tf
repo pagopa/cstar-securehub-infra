@@ -175,6 +175,13 @@ variable "single_page_applications_roots_dirs" {
   type        = list(string)
   description = "spa root dirs"
 }
+
+# Single Page Applications Asset register
+variable "single_page_applications_asset_register_roots_dirs" {
+  type        = list(string)
+  description = "spa root dirs"
+}
+
 ## Event hub
 variable "ehns_sku_name" {
   type        = string
