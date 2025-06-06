@@ -36,6 +36,10 @@ locals {
       "idpay-kafka-connect" = {
         name          = "idpay-kafka-connect"
         target_branch = "main"
+      },
+      "idpay-asset-register-backend" = {
+        name          = "idpay-asset-register-backend"
+        target_branch = "main"
       }
     }
     "mid" = {
