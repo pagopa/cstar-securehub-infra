@@ -36,6 +36,10 @@ locals {
       "idpay-kafka-connect" = {
         name          = "idpay-kafka-connect"
         target_branch = "main"
+      },
+      "idpay-keycloak" = {
+        name          = "idpay-keycloak"
+        target_branch = "main"
       }
     }
     "mid" = {
