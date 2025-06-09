@@ -462,7 +462,7 @@ single_page_applications_roots_dirs = [
 ]
 
 single_page_applications_asset_register_roots_dirs = [
-  "portale-beni"
+  "registro-dei-beni"
 ]
 
 # Storage
