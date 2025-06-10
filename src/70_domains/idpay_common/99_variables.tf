@@ -315,7 +315,7 @@ variable "enable" {
     idpay = object({
       eventhub_idpay_00 = bool
       eventhub_idpay_01 = bool
-      eventhub_rdb = bool
+      eventhub_rdb      = bool
     })
   })
   description = "Feature flags"
