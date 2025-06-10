@@ -100,3 +100,15 @@ variable "azdo_agent_image_version" {
   type        = string
   description = "Version as suffix to define the image related to azdo agent"
 }
+
+variable "enable_ses" {
+  type        = bool
+  description = "Enable SES configuration"
+  default     = false
+}
+
+variable "dkim_records" {
+  type        = map(string)
+  description = "Map of DKIM records for DNS configuration"
+  default     = {}
+}
