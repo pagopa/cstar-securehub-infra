@@ -43,7 +43,7 @@ module "cdn_idpay_assetregister" {
   location            = var.location
   cdn_location        = var.location_weu
 
-  hostname              = "registrobeni.${data.azurerm_dns_zone.public_cstar.name}"
+  hostname              = "registrodeibeni.${data.azurerm_dns_zone.public_cstar.name}"
   https_rewrite_enabled = true
 
   storage_account_name             = "${local.project}regcdnsa"
@@ -117,7 +117,7 @@ module "cdn_idpay_assetregister" {
     ]
     url_rewrite_action = {
       source_pattern          = "/"
-      destination             = "/portale-beni/index.html"
+      destination             = "/registro-dei-beni/index.html"
       preserve_unmatched_path = false
     }
     }],
