@@ -17,7 +17,7 @@ module "idpay_redis" {
     private_dns_zone_ids = [data.azurerm_private_dns_zone.redis.id]
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 #
@@ -40,4 +40,5 @@ resource "azurerm_key_vault_secret" "secrets_redis" {
   content_type = "text/plain"
   key_vault_id = data.azurerm_key_vault.domain_kv.id
 
+  tags = module.tag_config.tags
 }

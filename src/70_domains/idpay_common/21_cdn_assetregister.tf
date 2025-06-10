@@ -1,15 +1,15 @@
 locals {
-  selfare_temp_suffix = "-italy"
-  spa = [
-    for i, spa in var.single_page_applications_roots_dirs :
+  selfare_asset_temp_suffix = "-italy"
+  spa_asset = [
+    for i, spa_asset in var.single_page_applications_asset_register_roots_dirs :
     {
-      name  = replace(replace("SPA-${spa}", "-", ""), "/", "0")
+      name  = replace(replace("SPA-${spa_asset}", "-", ""), "/", "0")
       order = i + 3 // +3 required because the order start from 1: 1 is reserved for default application redirect; 2 is reserved for the https rewrite;
       conditions = [
         {
           condition_type   = "url_path_condition"
           operator         = "BeginsWith"
-          match_values     = ["/${spa}/"]
+          match_values     = ["/${spa_asset}/"]
           negate_condition = false
           transforms       = null
         },
@@ -22,8 +22,8 @@ locals {
         },
       ]
       url_rewrite_action = {
-        source_pattern          = "/${spa}/"
-        destination             = "/${spa}/index.html"
+        source_pattern          = "/${spa_asset}/"
+        destination             = "/${spa_asset}/index.html"
         preserve_unmatched_path = false
       }
     }
@@ -34,19 +34,19 @@ locals {
  * CDN
  */
 // public_cstar storage used to serve FE
-module "cdn_idpay_welfare" {
+module "cdn_idpay_assetregister" {
   source = "./.terraform/modules/__v4__/cdn"
 
-  name                = "welfare"
+  name                = "asset-register"
   prefix              = local.project_weu
   resource_group_name = data.azurerm_resource_group.idpay_data_rg.name
   location            = var.location
   cdn_location        = var.location_weu
 
-  hostname              = "welfare-italy.${data.azurerm_dns_zone.public_cstar.name}"
+  hostname              = "registrodeibeni.${data.azurerm_dns_zone.public_cstar.name}"
   https_rewrite_enabled = true
 
-  storage_account_name             = "${local.project}welcdnsa"
+  storage_account_name             = "${local.project}regcdnsa"
   storage_account_replication_type = var.idpay_cdn_storage_account_replication_type
   index_document                   = "index.html"
   error_404_document               = "error.html"
@@ -59,6 +59,7 @@ module "cdn_idpay_welfare" {
   keyvault_vault_name          = local.idpay_kv_name
 
   querystring_caching_behaviour = "BypassCaching"
+  log_analytics_workspace_id    = data.azurerm_log_analytics_workspace.log_analytics.id
 
   advanced_threat_protection_enabled = var.idpay_cdn_sa_advanced_threat_protection_enabled
 
@@ -73,22 +74,22 @@ module "cdn_idpay_welfare" {
       name   = "Strict-Transport-Security"
       value  = "max-age=31536000"
       },
-      # Content-Security-Policy (in Report mode)
-      {
-        action = "Overwrite"
-        name   = "Content-Security-Policy-Report-Only"
-        value  = "default-src 'self'; object-src 'none'; connect-src 'self' https://api-io.${var.dns_zone_prefix}.${var.external_domain}/ https://api-eu.mixpanel.com/track/; "
-      },
-      {
-        action = "Append"
-        name   = "Content-Security-Policy-Report-Only"
-        value  = "script-src 'self'; style-src 'self' 'unsafe-inline' https://selfcare${local.selfare_temp_suffix}.pagopa.it/assets/font/selfhostedfonts.css; worker-src 'none'; font-src 'self' https://selfcare${local.selfare_temp_suffix}.pagopa.it/assets/font/; "
-      },
-      {
-        action = "Append"
-        name   = "Content-Security-Policy-Report-Only"
-        value  = "img-src 'self' https://assets.cdn.io.italia.it https://${module.cdn_idpay_welfare.storage_primary_web_host} https://${var.env != "prod" ? "${var.env}." : ""}selfcare${local.selfare_temp_suffix}.pagopa.it https://selc${var.env_short}checkoutsa.z6.web.core.windows.net/institutions/ data:; "
-      },
+      # # Content-Security-Policy (in Report mode)
+      # {
+      #   action = "Overwrite"
+      #   name   = "Content-Security-Policy-Report-Only"
+      #   value  = "default-src 'self'; object-src 'none'; connect-src 'self' https://api-io.${var.dns_zone_prefix}.${var.external_domain}/ https://api-eu.mixpanel.com/track/; "
+      # },
+      # {
+      #   action = "Append"
+      #   name   = "Content-Security-Policy-Report-Only"
+      #   value  = "script-src 'self'; style-src 'self' 'unsafe-inline' https://selfcare${local.selfare_asset_temp_suffix}.pagopa.it/assets/font/selfhostedfonts.css; worker-src 'none'; font-src 'self' https://selfcare${local.selfare_asset_temp_suffix}.pagopa.it/assets/font/; "
+      # },
+      # {
+      #   action = "Append"
+      #   name   = "Content-Security-Policy-Report-Only"
+      #   value  = "img-src 'self' https://assets.cdn.io.italia.it https://${module.cdn_idpay_assetregister.storage_primary_web_host} https://${var.env != "prod" ? "${var.env}." : ""}selfcare${local.selfare_asset_temp_suffix}.pagopa.it https://selc${var.env_short}checkoutsa.z6.web.core.windows.net/institutions/ data:; "
+      # },
       {
         action = "Append"
         name   = "X-Content-Type-Options"
@@ -116,17 +117,17 @@ module "cdn_idpay_welfare" {
     ]
     url_rewrite_action = {
       source_pattern          = "/"
-      destination             = "/portale-enti/index.html"
+      destination             = "/registro-dei-beni/index.html"
       preserve_unmatched_path = false
     }
     }],
-    local.spa
+    local.spa_asset
   )
 
   delivery_rule = [
     {
       name  = "robotsNoIndex"
-      order = 3 + length(local.spa)
+      order = 3 + length(local.spa_asset)
 
       // conditions
       url_path_conditions = [{
@@ -163,7 +164,7 @@ module "cdn_idpay_welfare" {
     },
     {
       name  = "microcomponentsNoCache"
-      order = 4 + length(local.spa)
+      order = 4 + length(local.spa_asset)
 
       // conditions
       url_path_conditions           = []
@@ -201,33 +202,5 @@ module "cdn_idpay_welfare" {
     }
   ]
 
-  tags                       = module.tag_config.tags
-  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.log_analytics.id
+  tags = module.tag_config.tags
 }
-
-# #
-# # 🔑 Cannot be merged in local values, because contains sensitive data
-# #
-# resource "azurerm_key_vault_secret" "idpay_welfare_cdn_storage_primary_access_key" {
-#   name         = "web-storage-access-key"
-#   value        = module.cdn_idpay_welfare.storage_primary_access_key
-#   content_type = "text/plain"
-#
-#   key_vault_id = data.azurerm_key_vault.domain_kv.id
-# }
-#
-# resource "azurerm_key_vault_secret" "idpay_welfare_cdn_storage_primary_connection_string" {
-#   name         = "web-storage-connection-string"
-#   value        = module.cdn_idpay_welfare.storage_primary_connection_string
-#   content_type = "text/plain"
-#
-#   key_vault_id = data.azurerm_key_vault.domain_kv.id
-# }
-#
-# resource "azurerm_key_vault_secret" "idpay_welfare_cdn_storage_blob_connection_string" {
-#   name         = "web-storage-blob-connection-string"
-#   value        = module.cdn_idpay_welfare.storage_primary_blob_connection_string
-#   content_type = "text/plain"
-#
-#   key_vault_id = data.azurerm_key_vault.domain_kv.id
-# }

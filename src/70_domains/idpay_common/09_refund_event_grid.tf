@@ -12,6 +12,7 @@ resource "azurerm_eventgrid_system_topic" "idpay_refund_storage_topic" {
   identity {
     type = "SystemAssigned"
   }
+  tags = module.tag_config.tags
 }
 
 # Assign role to event grid topic to publish over refund_storage_topic

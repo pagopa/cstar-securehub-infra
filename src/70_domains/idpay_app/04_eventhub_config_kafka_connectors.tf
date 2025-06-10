@@ -16,22 +16,6 @@ resource "azurerm_key_vault_secret" "event_hub_root_key_idpay_00" {
   key_vault_id = data.azurerm_key_vault.key_vault_domain.id
 }
 
-#resource "terracurl_request" "transaction_in_progress_connector" {
-#   name         = "transaction_in_progress_connector"
-#   url          = "https://${local.idpay_ingress_url}/idpaykafkaconnect/connectors/transaction-in-progress-connector/config"
-#   method       = "PUT"
-#   request_body = file("configs/kafka-connectors/transaction_in_progress_connector.json")
-#   response_codes = [
-#     200,
-#     201,
-#     204
-#   ]
-#
-#   headers = {
-#     Content-Type = "application/json"
-#   }
-# }
-
 resource "null_resource" "transaction_in_progress_connector" {
   triggers = {
     checksum = filesha256("configs/kafka-connectors/transaction_in_progress_connector.json")

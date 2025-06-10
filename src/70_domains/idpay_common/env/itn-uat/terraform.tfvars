@@ -461,6 +461,10 @@ single_page_applications_roots_dirs = [
   "ricevute"
 ]
 
+single_page_applications_asset_register_roots_dirs = [
+  "registro-dei-beni"
+]
+
 # Storage
 storage_account_settings = {
   delete_retention_days              = 5
