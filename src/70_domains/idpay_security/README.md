@@ -29,17 +29,17 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | 3324a457c4e3a8d16a82ac0a17afc4bfa788b163 |
+| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | 11f8fb0ab31cef690eaba900562564962d95dca3 |
+| <a name="module_admins_policy"></a> [admins\_policy](#module\_admins\_policy) | ./.terraform/modules/__v4__/IDH/key_vault_access_policy | n/a |
+| <a name="module_apim_managed_identity_policy"></a> [apim\_managed\_identity\_policy](#module\_apim\_managed\_identity\_policy) | ./.terraform/modules/__v4__/IDH/key_vault_access_policy | n/a |
+| <a name="module_developers_policy"></a> [developers\_policy](#module\_developers\_policy) | ./.terraform/modules/__v4__//IDH/key_vault_access_policy | n/a |
+| <a name="module_externals_policy"></a> [externals\_policy](#module\_externals\_policy) | ./.terraform/modules/__v4__/IDH/key_vault_access_policy | n/a |
 | <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | ./.terraform/modules/__v4__/key_vault | n/a |
 
 ## Resources
 
 | Name | Type |
 |------|------|
-| [azurerm_key_vault_access_policy.admins_group_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
-| [azurerm_key_vault_access_policy.apim_managed_identity](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
-| [azurerm_key_vault_access_policy.developers_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
-| [azurerm_key_vault_access_policy.externals_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
 | [azurerm_key_vault_certificate.idpay_jwt_signing_cert](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_certificate) | resource |
 | [azurerm_key_vault_certificate.idpay_merchants_jwt_signing_cert](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_certificate) | resource |
 | [azurerm_key_vault_key.idpay_mil_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_key) | resource |
