@@ -21,12 +21,12 @@ module "key_vault" {
 # KV Policy
 #
 module "admins_policy" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//IDH/key_vault_access_policy?ref=PAYMCLOUD-422-idh-kv-access-policy-configurator"
+  source = "./.terraform/modules/__v4__/IDH/key_vault_access_policy"
 
   for_each = toset(local.secrets_folders_kv)
 
-  prefix          = "cstar"
-  permission_tier = "admin" # or developer, external
+  product_name          = "cstar"
+  idh_resource_tier     = "admin" # or developer, external
   env             = var.env # or prod, uat, etc.
   key_vault_id    = module.key_vault[each.key].id
   tenant_id       = data.azurerm_client_config.current.tenant_id
@@ -34,12 +34,12 @@ module "admins_policy" {
 }
 
 module "developers_policy" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//IDH/key_vault_access_policy?ref=PAYMCLOUD-422-idh-kv-access-policy-configurator"
+  source = "./.terraform/modules/__v4__//IDH/key_vault_access_policy"
 
   for_each = toset(local.secrets_folders_kv)
 
-  prefix          = "cstar"
-  permission_tier = "developer" # or developer, external
+  product_name          = "cstar"
+  idh_resource_tier     = "developer" # or developer, external
   env             = var.env     # or prod, uat, etc.
   key_vault_id    = module.key_vault[each.key].id
   tenant_id       = data.azurerm_client_config.current.tenant_id
@@ -47,12 +47,12 @@ module "developers_policy" {
 }
 
 module "externals_policy" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//IDH/key_vault_access_policy?ref=PAYMCLOUD-422-idh-kv-access-policy-configurator"
+  source = "./.terraform/modules/__v4__/IDH/key_vault_access_policy"
 
   for_each = var.env == "dev" ? toset(local.secrets_folders_kv) : []
 
-  prefix          = "cstar"
-  permission_tier = "external" # or developer, external
+  product_name          = "cstar"
+  idh_resource_tier     = "external" # or developer, external
   env             = var.env
   key_vault_id    = module.key_vault[each.key].id
   tenant_id       = data.azurerm_client_config.current.tenant_id
@@ -63,11 +63,11 @@ module "externals_policy" {
 # Managed identities
 #
 module "apim_managed_identity_policy" {
-  source   = "git::https://github.com/pagopa/terraform-azurerm-v4.git//IDH/key_vault_access_policy?ref=PAYMCLOUD-422-idh-kv-access-policy-configurator"
+  source = "./.terraform/modules/__v4__/IDH/key_vault_access_policy"
   for_each = toset(local.secrets_folders_kv)
 
-  prefix          = "cstar"
-  permission_tier = "reader" # or developer, external
+  product_name          = "cstar"
+  idh_resource_tier     = "reader" # or developer, external
   env             = var.env
   key_vault_id    = module.key_vault[each.key].id
   tenant_id       = data.azurerm_client_config.current.tenant_id
