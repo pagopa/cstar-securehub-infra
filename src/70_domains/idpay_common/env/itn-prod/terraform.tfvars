@@ -417,11 +417,35 @@ eventhubs_idpay_01 = [
   },
 ]
 
+eventhubs_rdb = [
+  {
+    name              = "idpay-asset-register"
+    partitions        = 3
+    message_retention = 1
+    consumers         = ["idpay-asset-register-consumer-group"]
+    keys = [
+      {
+        name   = "idpay-asset-register-producer"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "idpay-asset-register-consumer"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  }
+]
+
 ### handle resource enable
 enable = {
   idpay = {
     eventhub_idpay_00 = true
     eventhub_idpay_01 = false
+    eventhub_rdb =true
   }
 }
 

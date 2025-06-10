@@ -224,6 +224,23 @@ variable "eventhubs_idpay" {
   # default = []
 }
 
+variable "eventhubs_rdb" {
+  description = "A list of event hubs to add to namespace for IDPAY Asset register application."
+  type = list(object({
+    name              = string
+    partitions        = number
+    message_retention = number
+    consumers         = list(string)
+    keys = list(object({
+      name   = string
+      listen = bool
+      send   = bool
+      manage = bool
+    }))
+  }))
+  # default = []
+}
+
 variable "eventhubs_idpay_01" {
   description = "A list of event hubs to add to namespace for IDPAY application."
   type = list(object({
@@ -298,6 +315,7 @@ variable "enable" {
     idpay = object({
       eventhub_idpay_00 = bool
       eventhub_idpay_01 = bool
+      eventhub_rdb = bool
     })
   })
   description = "Feature flags"
@@ -305,6 +323,7 @@ variable "enable" {
     idpay = {
       eventhub_idpay_00 = false
       eventhub_idpay_01 = false
+      eventhub_rdb      = false
     }
   }
 }
