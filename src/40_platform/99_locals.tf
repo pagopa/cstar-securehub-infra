@@ -49,6 +49,20 @@ locals {
         #"${local.product_nodomain}-idpay-azdo-rg"
       ]
     }
+    "srtp" = {
+      tags = {
+        "CostCenter"   = "TS310 - PAGAMENTI & SERVIZI"
+        "BusinessUnit" = "CStar"
+        "Owner"        = "CStar"
+        "Environment"  = var.env
+        "CreatedBy"    = "Terraform"
+        "Source"       = "https://github.com/pagopa/cstar-securehub-infra"
+        "domain"       = "srtp"
+      }
+      additional_resource_groups = [
+        #"${local.product_nodomain}-idpay-azdo-rg"
+      ]
+    }
   }
 
 }
