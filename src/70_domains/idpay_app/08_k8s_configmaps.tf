@@ -81,6 +81,26 @@ resource "kubernetes_config_map" "idpay-eventhub-01" {
 
 }
 
+#K8S RDB eventhub
+resource "kubernetes_config_map" "idpay-eventhub-rdb" {
+  metadata {
+    name      = "idpay-eventhub-rdb"
+    namespace = var.domain
+  }
+
+  data = {
+    kafka_broker            = local.eventhub_rdb_url
+    kafka_sasl_mechanism    = "PLAIN"
+    kafka_security_protocol = "SASL_SSL"
+
+    idpay-asset-register-consumer-group = "idpay-asset-register-consumer-group"
+
+    idpay-asset-register_topic = "idpay-asset-register"
+
+  }
+
+}
+
 resource "kubernetes_config_map" "rest-client" {
   metadata {
     name      = "rest-client"
