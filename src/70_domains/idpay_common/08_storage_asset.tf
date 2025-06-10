@@ -1,18 +1,15 @@
-#
-# Storage for Initiative Data (i.e. Logo)
-#
-
-module "idpay_initiative_storage" {
+#tfsec:ignore:azure-storage-default-action-deny
+module "idpay_asset_storage" {
   source = "./.terraform/modules/__v4__/storage_account"
 
-  name                = replace("${local.project}-initatv-sa", "-", "")
+  name                = replace("${local.project}-asset-sa", "-", "")
   resource_group_name = data.azurerm_resource_group.idpay_data_rg.name
   location            = var.location
 
   account_kind                    = "StorageV2"
   account_tier                    = "Standard"
-  account_replication_type        = var.storage_account_settings.replication_type
   access_tier                     = "Hot"
+  account_replication_type        = var.storage_account_settings.replication_type
   blob_versioning_enabled         = var.storage_account_settings.enable_versioning
   advanced_threat_protection      = var.storage_account_settings.advanced_threat_protection_enabled
   allow_nested_items_to_be_public = false
@@ -30,30 +27,22 @@ module "idpay_initiative_storage" {
 #
 # Containers
 #
-locals {
-  idpay_initiative_containers = {
-    logo    = "private"
-    ranking = "private"
-  }
-}
-
-resource "azurerm_storage_container" "idpay_initiative" {
-  for_each              = local.idpay_initiative_containers
-  name                  = each.key
-  container_access_type = each.value
-  storage_account_id    = module.idpay_initiative_storage.id
+resource "azurerm_storage_container" "idpay_asset_container" {
+  name                  = "asset"
+  storage_account_id    = module.idpay_asset_storage.id
+  container_access_type = "private"
 }
 
 #
-# Policies
+# Roles
 #
-resource "azurerm_role_assignment" "initiative_storage_data_contributor" {
-  scope                = module.idpay_initiative_storage.id
+resource "azurerm_role_assignment" "asset_storage_data_contributor" {
+  scope                = module.idpay_asset_storage.id
   role_definition_name = "Storage Blob Data Contributor"
   principal_id         = data.azurerm_api_management.apim_core.identity[0].principal_id
 
   depends_on = [
-    module.idpay_initiative_storage
+    module.idpay_asset_storage
   ]
 }
 
@@ -61,15 +50,14 @@ resource "azurerm_role_assignment" "initiative_storage_data_contributor" {
 # 🔑 Secrets
 #
 locals {
-  initiative_secrets = {
-    "initiative-storage-access-key"             = module.idpay_initiative_storage.primary_access_key
-    "initiative-storage-connection-string"      = module.idpay_initiative_storage.primary_connection_string
-    "initiative-storage-blob-connection-string" = module.idpay_initiative_storage.primary_blob_connection_string
+  asset_secrets = {
+    "asset-storage-access-key"        = module.idpay_asset_storage.primary_access_key
+    "asset-storage-connection-string" = module.idpay_asset_storage.primary_connection_string
   }
 }
 
-resource "azurerm_key_vault_secret" "initiative_secrets" {
-  for_each = local.initiative_secrets
+resource "azurerm_key_vault_secret" "asset" {
+  for_each = local.asset_secrets
 
   name         = each.key
   value        = each.value

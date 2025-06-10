@@ -24,7 +24,7 @@ module "idpay_audit_storage" {
   private_dns_zone_table_ids = [data.azurerm_private_dns_zone.storage_account_table.id]
   subnet_id                  = module.idpay_storage_snet.id
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 #

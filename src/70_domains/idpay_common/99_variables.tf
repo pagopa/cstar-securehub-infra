@@ -175,6 +175,13 @@ variable "single_page_applications_roots_dirs" {
   type        = list(string)
   description = "spa root dirs"
 }
+
+# Single Page Applications Asset register
+variable "single_page_applications_asset_register_roots_dirs" {
+  type        = list(string)
+  description = "spa root dirs"
+}
+
 ## Event hub
 variable "ehns_sku_name" {
   type        = string
@@ -202,6 +209,23 @@ variable "ehns_auto_inflate_enabled" {
 
 variable "eventhubs_idpay" {
   description = "A list of event hubs to add to namespace for IDPAY application."
+  type = list(object({
+    name              = string
+    partitions        = number
+    message_retention = number
+    consumers         = list(string)
+    keys = list(object({
+      name   = string
+      listen = bool
+      send   = bool
+      manage = bool
+    }))
+  }))
+  # default = []
+}
+
+variable "eventhubs_rdb" {
+  description = "A list of event hubs to add to namespace for IDPAY Asset register application."
   type = list(object({
     name              = string
     partitions        = number
@@ -291,6 +315,7 @@ variable "enable" {
     idpay = object({
       eventhub_idpay_00 = bool
       eventhub_idpay_01 = bool
+      eventhub_rdb      = bool
     })
   })
   description = "Feature flags"
@@ -298,6 +323,7 @@ variable "enable" {
     idpay = {
       eventhub_idpay_00 = false
       eventhub_idpay_01 = false
+      eventhub_rdb      = false
     }
   }
 }
