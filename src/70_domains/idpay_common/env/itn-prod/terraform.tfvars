@@ -445,7 +445,7 @@ enable = {
   idpay = {
     eventhub_idpay_00 = true
     eventhub_idpay_01 = false
-    eventhub_rdb =true
+    eventhub_rdb      = true
   }
 }
 
