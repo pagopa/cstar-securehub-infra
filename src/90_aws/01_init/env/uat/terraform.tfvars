@@ -1,0 +1,2 @@
+env    = "uat"
+domain = "core"
