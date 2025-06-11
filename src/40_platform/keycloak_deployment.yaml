@@ -45,9 +45,9 @@ spec:
             - name: KC_DB
               value: "postgres"
             - name: KC_DB_USERNAME
-              value: "admin25"
+              value: ""
             - name: KC_DB_PASSWORD
-              value: "keycloak2025@"
+              value: ""
           ports:
             - name: http
               containerPort: 8080
