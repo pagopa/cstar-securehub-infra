@@ -85,12 +85,12 @@ selc_base_url = "https://api.dev.selfcare.pagopa.it"
 #
 # BE IO API
 #
-io_manage_backend_base_url = "https://api-io.dev.cstar.pagopa.it/idpay/mock"
+io_manage_backend_base_url = "https://api-io.dev.cstar.pagopa.it/idpay-itn/mock"
 
 #
 # ONE TRUST API
 #
-one_trust_privacynotice_base_url = "https://api-io.dev.cstar.pagopa.it/idpay/mock/api/privacynotice/v2"
+one_trust_privacynotice_base_url = "https://api-io.dev.cstar.pagopa.it/idpay-itn/mock/api/privacynotice/v2"
 
 #
 # TLS Checker
