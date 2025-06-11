@@ -22,8 +22,20 @@ resource "azurerm_dns_txt_record" "dmarc" {
   tags = module.tag_config.tags
 }
 
+resource "azurerm_dns_mx_record" "mx" {
+  name                = local.ses_username
+  zone_name           = local.public_dns_zone_name
+  resource_group_name = local.vnet_legacy_rg
+  ttl                 = 3600
+
+  record {
+    preference = 10
+    exchange   = "feedback-smtp.${var.aws_region}.amazonses.com"
+  }
+}
+
 resource "azurerm_dns_txt_record" "spf" {
-  name                = "@"
+  name                = local.ses_username
   zone_name           = local.public_dns_zone_name
   resource_group_name = local.vnet_legacy_rg
   ttl                 = 3600
