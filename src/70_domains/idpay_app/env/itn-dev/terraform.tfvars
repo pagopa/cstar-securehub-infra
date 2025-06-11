@@ -64,7 +64,7 @@ mil_issuer_url        = "https://api-mcshared.dev.cstar.pagopa.it/auth"
 #
 # WEBVIEW
 #
-webViewUrl = "https://api-io.dev.cstar.pagopa.it/idpay/self-expense/login"
+webViewUrl = "https://api-io.dev.cstar.pagopa.it/idpay-itn/self-expense/login"
 
 #
 # PM
