@@ -18,6 +18,10 @@ terraform {
       source  = "hashicorp/null"
       version = "~> 3.0"
     }
+    kubernetes = {
+      source  = "hashicorp/kubernetes"
+      version = "= 2.37.1"
+    }
   }
 
   backend "azurerm" {}
@@ -45,4 +49,8 @@ data "azurerm_client_config" "current" {}
 module "__v4__" {
   # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v6.8.1
   source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=d2d05c1fc8cc35bd5fcb33b40611a98a815a2a80"
+}
+
+provider "kubernetes" {
+  config_path = "${var.k8s_kube_config_path_prefix}/config"
 }
