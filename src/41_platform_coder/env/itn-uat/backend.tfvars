@@ -1,4 +1,4 @@
 resource_group_name  = "terraform-state-rg"
 storage_account_name = "tfinfuatcstar"
 container_name       = "terraform-state"
-key                  = "cstar-securehub-infra-platform-develop-uat.tfstate"
+key                  = "cstar-securehub-infra-platform-coder-uat.tfstate"
