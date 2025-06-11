@@ -17,4 +17,3 @@ data "azuread_group" "adgroup_externals" {
 data "azurerm_resource_group" "security_rg" {
   name = "${local.project}-security-rg"
 }
-
