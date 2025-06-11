@@ -65,4 +65,9 @@ locals {
     }
   }
 
+  #
+  # AKS
+  #
+  aks_name                = "${local.product_nodomain}-${var.env}-aks"
+
 }
