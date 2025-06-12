@@ -24,6 +24,17 @@ variable "aws_region" {
   default     = "eu-south-1"
 }
 
+variable "location_short" {
+  type = string
+  validation {
+    condition = (
+      length(var.location_short) == 3
+    )
+    error_message = "Length must be 3 chars."
+  }
+  description = "One of wue, neu"
+}
+
 variable "env" {
   type = string
 }

@@ -8,7 +8,7 @@ locals {
 
   ses_username = "noreply"
 
-
+  iam_ses_user = "${var.prefix}-${var.env}-ses-user"
   tags = {
     for key, value in module.tag_config.tags : key => replace(value, "&", "e")
   }
