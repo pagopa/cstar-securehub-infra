@@ -17,7 +17,7 @@ jobs:
         id: get-paths
         uses: pagopa/eng-github-actions-iac-template/global/get-modifed-folders@f10814b649ecd6e5d97c489084d2a107e2f1b2ee #v1.22.3
         with:
-          ignore_patterns: ".github,.devops,.vscode,.terraform-version"
+          ignore_patterns: ".github,.devops,.vscode,.terraform-version,90_aws"
           start_folder: "src"
           include_folders: "tag_config"
           include_patterns: "src,domains"
