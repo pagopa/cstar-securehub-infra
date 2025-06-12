@@ -16,7 +16,7 @@ resource "aws_iam_user_policy" "ses_user_policy" {
         Resource = module.ses.ses_domain_identity_arn
         Condition = {
           StringEquals = {
-            "ses:FromAddress" = "noreply@${local.ses_domain}"
+            "ses:FromAddress" = "${local.ses_username}@${local.ses_domain}"
           }
         }
       },
@@ -40,4 +40,12 @@ resource "azurerm_key_vault_secret" "ses_secret_key" {
   key_vault_id = data.azurerm_key_vault.kv_idpay.id
   name         = "aws-${var.prefix}-ses-user-secret-key"
   value        = aws_iam_access_key.ses_user.secret
+  tags         = module.tag_config.tags
+}
+
+resource "azurerm_key_vault_secret" "ses_username" {
+  key_vault_id = data.azurerm_key_vault.kv_idpay.id
+  name         = "aws-${var.prefix}-ses-username"
+  value        = "${local.ses_username}@${local.ses_domain}"
+  tags         = module.tag_config.tags
 }
