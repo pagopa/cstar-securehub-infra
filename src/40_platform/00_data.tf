@@ -15,9 +15,23 @@ data "azurerm_virtual_network" "vnet_hub" {
   resource_group_name = local.vnet_rg_name
 }
 
+data "azurerm_virtual_network" "vnet_compute" {
+  name                = local.vnet_core_compute_name
+  resource_group_name = local.vnet_rg_name
+}
+
 data "azurerm_private_dns_zone" "storage_account_table" {
   name                = local.dns_privatelink_storage_table
   resource_group_name = local.legacy_vnet_core_rg_name
+}
+
+
+#
+# Private DNS zones
+#
+data "azurerm_private_dns_zone" "peered_services_dns_zone" {
+  name                = "peered.pagopa.it"
+  resource_group_name = local.vnet_rg_name
 }
 
 #
@@ -45,4 +59,13 @@ data "azurerm_key_vault_secret" "email_google_cstar_status" {
 data "azurerm_key_vault_secret" "email_slack_cstar_status" {
   name         = "email-slack-cstar-status"
   key_vault_id = data.azurerm_key_vault.cicd_kv.id
+}
+
+data "azurerm_key_vault_secret" "pagopa_subscritpion_id" {
+  name         = "pagopa-subscription-id"
+  key_vault_id = data.azurerm_key_vault.core_kv.id
+}
+data "azurerm_key_vault_secret" "pagopa_rtp_eventhub_pip" {
+  name         = "peered-rtp-eventhub-pip"
+  key_vault_id = data.azurerm_key_vault.core_kv.id
 }

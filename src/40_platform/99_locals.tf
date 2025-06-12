@@ -8,7 +8,12 @@ locals {
   #
   vnet_rg_name            = "${local.product_nodomain}-core-network-rg"
   vnet_core_hub_name      = "${local.product_nodomain}-core-hub-vnet"
+  vnet_core_compute_name  = "${local.product_nodomain}-core-compute-vnet"
   vnet_core_platform_name = "${local.product_nodomain}-core-spoke-platform-vnet"
+
+  # pagopa peered vnet
+  pagopa_cstar_integration_vnet_name    = "pagopa-${var.env_short}-itn-cstar-integration-vnet"
+  pagopa_cstar_integration_vnet_rg_name = "pagopa-${var.env_short}-itn-vnet-rg"
 
   legacy_vnet_core_rg_name      = "${local.product}-vnet-rg"
   dns_privatelink_storage_table = "privatelink.table.core.windows.net"
