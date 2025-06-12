@@ -6,6 +6,7 @@ locals {
   product      = "${var.prefix}-${var.env_short}-${var.location_short}"
   project_core = "${var.prefix}-${var.env_short}-${var.location_short}-core"
 
+
   tenant_id = data.azurerm_client_config.current.tenant_id
 
   #
