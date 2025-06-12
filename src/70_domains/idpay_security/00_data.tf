@@ -22,3 +22,8 @@ data "azurerm_api_management" "apim" {
   name                = local.apim_name
   resource_group_name = local.apim_resource_group_name
 }
+
+data "azurerm_user_assigned_identity" "azdo_managed_identity" {
+  name                = local.azdo_managed_identity_name
+  resource_group_name = local.azdo_managed_identity_rg_name
+}
