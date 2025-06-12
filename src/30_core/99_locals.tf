@@ -2,10 +2,9 @@
 # General
 #
 locals {
-  project             = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
-  product             = "${var.prefix}-${var.env_short}-${var.location_short}"
-  project_core        = "${var.prefix}-${var.env_short}-${var.location_short}-core"
-  product_no_location = "${var.prefix}-${var.env_short}"
+  project      = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
+  product      = "${var.prefix}-${var.env_short}-${var.location_short}"
+  project_core = "${var.prefix}-${var.env_short}-${var.location_short}-core"
 
 
   tenant_id = data.azurerm_client_config.current.tenant_id
