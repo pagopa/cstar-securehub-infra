@@ -61,9 +61,9 @@ resource "azurerm_virtual_network_peering" "peer_spoke_compute_to_pagopa_integra
 
 
 resource "azurerm_private_dns_a_record" "pagopa_eventhub_private_dns_record" {
-  name                = "rtp-eventhub"
+  name                = "pagopa-${var.env_short}-itn-gps-rtp-integration-evh"
   records             = [data.azurerm_key_vault_secret.pagopa_rtp_eventhub_pip.value]
-  resource_group_name = data.azurerm_private_dns_zone.peered_services_dns_zone.resource_group_name
+  resource_group_name = data.azurerm_private_dns_zone.privatelink_servicebus_windows_net.resource_group_name
   ttl                 = 300
-  zone_name           = data.azurerm_private_dns_zone.peered_services_dns_zone.name
+  zone_name           = data.azurerm_private_dns_zone.privatelink_servicebus_windows_net.name
 }

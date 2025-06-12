@@ -21,17 +21,3 @@ resource "azurerm_private_dns_zone_virtual_network_link" "prometheus_dns_zone_vn
   virtual_network_id    = module.vnet_spoke_data.id
   private_dns_zone_name = azurerm_private_dns_zone.prometheus_dns_zone.name
 }
-
-
-# peered services dns zone
-resource "azurerm_private_dns_zone" "peered_service_dns_zone" {
-  name                = "peered.pagopa.it"
-  resource_group_name = azurerm_resource_group.rg_network.name
-}
-
-resource "azurerm_private_dns_zone_virtual_network_link" "peered_service_dns_zone_vnet_link_compute" {
-  name                  = module.vnet_spoke_compute.name
-  resource_group_name   = azurerm_resource_group.rg_network.name
-  virtual_network_id    = module.vnet_spoke_compute.id
-  private_dns_zone_name = azurerm_private_dns_zone.peered_service_dns_zone.name
-}

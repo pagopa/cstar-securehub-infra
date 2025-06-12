@@ -29,9 +29,9 @@ data "azurerm_private_dns_zone" "storage_account_table" {
 #
 # Private DNS zones
 #
-data "azurerm_private_dns_zone" "peered_services_dns_zone" {
-  name                = "peered.pagopa.it"
-  resource_group_name = local.vnet_rg_name
+data "azurerm_private_dns_zone" "privatelink_servicebus_windows_net" {
+  name                = "privatelink.servicebus.windows.net"
+  resource_group_name = local.legacy_vnet_core_rg_name
 }
 
 #
