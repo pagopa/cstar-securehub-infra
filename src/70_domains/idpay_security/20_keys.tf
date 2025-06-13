@@ -19,4 +19,3 @@ resource "azurerm_key_vault_key" "idpay_pinblock_key" {
     "encrypt"
   ]
 }
-
