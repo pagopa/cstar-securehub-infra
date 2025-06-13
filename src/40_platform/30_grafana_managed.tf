@@ -74,7 +74,6 @@ resource "azurerm_role_assignment" "grafana_dashboard_roles" {
   ]
 }
 
-
 #
 # 📦 Grafana dashboard modules
 #
@@ -98,32 +97,17 @@ resource "azurerm_key_vault_secret" "grafana_service_account_name" {
   ]
 }
 
-#
-# Validate Grafana token
-#
-data "azurerm_key_vault_secret" "grafana_service_account_token" {
-  name         = "grafana-itn-service-account-token"
+resource "azurerm_key_vault_secret" "grafana_service_account_token" {
+  name         = "grafana-itn-service-account-token-value"
   key_vault_id = data.azurerm_key_vault.core_kv.id
-}
+  value        = "genete token manually on grafana dashboard using grafana-service-account"
+  depends_on = [
+    data.external.grafana_generate_service_account
+  ]
 
-data "external" "validate_grafana_token" {
-  program = ["${path.module}/scripts/terragrafana_validate_token.sh"]
-
-  query = {
-    grafana_endpoint              = azurerm_dashboard_grafana.grafana_managed.endpoint
-    grafana_service_account_token = data.azurerm_key_vault_secret.grafana_service_account_token.value
+  lifecycle {
+    ignore_changes = [
+      value
+    ]
   }
-}
-
-module "auto_dashboard" {
-  source = "./.terraform/modules/__v4__/grafana_dashboard"
-
-  grafana_api_key      = data.azurerm_key_vault_secret.grafana_service_account_token.value
-  grafana_url          = azurerm_dashboard_grafana.grafana_managed.endpoint
-  monitor_workspace_id = azurerm_log_analytics_workspace.monitoring_log_analytics_workspace.id
-  prefix               = "cstar"
-}
-
-output "grafana_token_validation" {
-  value = data.external.validate_grafana_token.result
 }
