@@ -217,11 +217,11 @@ module "cdn_idpay_welfare" {
 # }
 #
 resource "azurerm_key_vault_secret" "idpay_welfare_cdn_storage_primary_connection_string" {
-   name         = "web-storage-connection-string"
-   value        = module.cdn_idpay_welfare.storage_primary_connection_string
-   content_type = "text/plain"
+  name         = "web-storage-connection-string"
+  value        = module.cdn_idpay_welfare.storage_primary_connection_string
+  content_type = "text/plain"
 
-   key_vault_id = data.azurerm_key_vault.domain_kv.id
+  key_vault_id = data.azurerm_key_vault.domain_kv.id
 }
 #
 # resource "azurerm_key_vault_secret" "idpay_welfare_cdn_storage_blob_connection_string" {
