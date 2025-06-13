@@ -1,6 +1,6 @@
-#
+#----------------------------------------------------------------
 # Network
-#
+#----------------------------------------------------------------
 module "synthetic_snet" {
   source = "./.terraform/modules/__v4__/subnet"
   # source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//subnet?ref=v1.20.0"
@@ -21,9 +21,9 @@ module "synthetic_snet" {
   }
 }
 
-#
-# Private endpoints
-#
+#----------------------------------------------------------------
+# Subnets Private endpoints
+#----------------------------------------------------------------
 module "storage_private_endpoint_snet" {
   source = "./.terraform/modules/__v4__/subnet"
   # source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//subnet?ref=v1.20.0"
@@ -51,7 +51,9 @@ module "container_app_private_endpoint_snet" {
 
 }
 
-# peer to pagopa integration cstar vnet
+#----------------------------------------------------------------
+# Peer from compute vs pagopa integration cstar vnet
+#----------------------------------------------------------------
 resource "azurerm_virtual_network_peering" "peer_spoke_compute_to_pagopa_integration_cstar" {
   name                      = "${data.azurerm_virtual_network.vnet_compute.name}-to-${local.pagopa_cstar_integration_vnet_name}"
   resource_group_name       = data.azurerm_virtual_network.vnet_compute.resource_group_name
@@ -59,7 +61,9 @@ resource "azurerm_virtual_network_peering" "peer_spoke_compute_to_pagopa_integra
   remote_virtual_network_id = "/subscriptions/${data.azurerm_key_vault_secret.pagopa_subscritpion_id.value}/resourceGroups/${local.pagopa_cstar_integration_vnet_rg_name}/providers/Microsoft.Network/virtualNetworks/${local.pagopa_cstar_integration_vnet_name}"
 }
 
-
+#----------------------------------------------------------------
+# Private DNS
+#----------------------------------------------------------------
 resource "azurerm_private_dns_a_record" "pagopa_eventhub_private_dns_record" {
   name                = "pagopa-${var.env_short}-itn-gps-rtp-integration-evh"
   records             = [data.azurerm_key_vault_secret.pagopa_rtp_eventhub_pip.value]
