@@ -7,8 +7,8 @@ locals {
   # Monitoring
   #
   monitoring_rg_name = "cstar-${var.env_short}-itn-platform-monitoring-rg"
-  law_name                = "${local.project}-monitoring-law"
-  grafana_name = "cstar-${var.env_short}-itn-grafana"
+  law_name           = "${local.project}-monitoring-law"
+  grafana_name       = "cstar-${var.env_short}-itn-grafana"
 
   #
   # KV
