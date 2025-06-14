@@ -92,17 +92,20 @@ resource "azurerm_key_vault_secret" "grafana_service_account_name" {
   name         = "grafana-itn-service-account-name"
   key_vault_id = data.azurerm_key_vault.core_kv.id
   value        = data.external.grafana_generate_service_account.result["grafana_service_account_name"]
+
   depends_on = [
-    data.external.grafana_generate_service_account
+    data.external.grafana_generate_service_account,
+    azurerm_role_assignment.grafana_dashboard_roles
   ]
 }
 
 resource "azurerm_key_vault_secret" "grafana_service_account_token" {
   name         = "grafana-itn-service-account-token-value"
   key_vault_id = data.azurerm_key_vault.core_kv.id
-  value        = "genete token manually on grafana dashboard using grafana-service-account"
+  value        = "genete token manually on grafana dashboard on settings using `grafana-service-account`"
   depends_on = [
-    data.external.grafana_generate_service_account
+    data.external.grafana_generate_service_account ,
+    azurerm_role_assignment.grafana_dashboard_roles
   ]
 
   lifecycle {
