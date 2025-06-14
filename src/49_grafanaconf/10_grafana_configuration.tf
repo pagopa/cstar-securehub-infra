@@ -11,7 +11,7 @@ data "external" "validate_grafana_token" {
 }
 
 module "auto_dashboard" {
-  source = "../40_platform/.terraform/modules/__v4__/grafana_dashboard"
+  source = "./.terraform/modules/__v4__/grafana_dashboard"
 
   grafana_api_key      = data.azurerm_key_vault_secret.grafana_service_account_token.value
   grafana_url          = data.azurerm_dashboard_grafana.grafana_managed.endpoint
