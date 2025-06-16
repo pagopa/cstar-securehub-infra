@@ -28,6 +28,6 @@ provider "azurerm" {
 }
 
 module "__v4__" {
-  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v7.4.1
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=f0464942ed0cc6ca2891fdbc596e73f11b340557"
+  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v7.5.0
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=7658d833e421b7117eee2f204811a06f204d1820"
 }

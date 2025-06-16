@@ -32,13 +32,6 @@ variable "location_short" {
   description = "Location short like eg: neu, weu.."
 }
 
-variable "tags" {
-  type = map(any)
-  default = {
-    CreatedBy = "Terraform"
-  }
-}
-
 variable "domain" {
   type = string
   validation {
@@ -47,4 +40,35 @@ variable "domain" {
     )
     error_message = "Max length is 12 chars."
   }
+}
+
+## CDN
+
+variable "cdn_location" {
+  type        = string
+  description = "One of westeurope, northeurope"
+}
+
+variable "azuread_service_principal_azure_cdn_frontdoor_id" {
+  type        = string
+  description = "Azure CDN Front Door Principal ID - Microsoft.AzureFrontDoor-Cdn"
+}
+
+## Analytics Workspace
+variable "law_sku" {
+  type        = string
+  description = "Sku of the Log Analytics Workspace"
+  default     = "PerGB2018"
+}
+
+variable "law_retention_in_days" {
+  type        = number
+  description = "The workspace data retention in days"
+  default     = 30
+}
+
+variable "law_daily_quota_gb" {
+  type        = number
+  description = "The workspace daily quota for ingestion in GB."
+  default     = -1
 }
