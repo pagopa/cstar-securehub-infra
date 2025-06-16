@@ -6,24 +6,22 @@
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >=1.10.0 |
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | ~> 3 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 4 |
-| <a name="requirement_grafana"></a> [grafana](#requirement\_grafana) | ~> 3.0 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 4.26 |
 | <a name="requirement_null"></a> [null](#requirement\_null) | ~> 3.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 3.3.0 |
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.28.0 |
+| <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 3.4.0 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.26.0 |
 | <a name="provider_external"></a> [external](#provider\_external) | 2.3.5 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | d2d05c1fc8cc35bd5fcb33b40611a98a815a2a80 |
-| <a name="module_auto_dashboard"></a> [auto\_dashboard](#module\_auto\_dashboard) | ./.terraform/modules/__v4__/grafana_dashboard | n/a |
+| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | 575238d5aef1e53f9185ba2732156f0ba5db18af |
 | <a name="module_container_app_private_endpoint_snet"></a> [container\_app\_private\_endpoint\_snet](#module\_container\_app\_private\_endpoint\_snet) | ./.terraform/modules/__v4__/subnet | n/a |
 | <a name="module_default_resource_groups"></a> [default\_resource\_groups](#module\_default\_resource\_groups) | ./.terraform/modules/__v4__/payments_default_resource_groups | n/a |
 | <a name="module_storage_private_endpoint_snet"></a> [storage\_private\_endpoint\_snet](#module\_storage\_private\_endpoint\_snet) | ./.terraform/modules/__v4__/subnet | n/a |
@@ -35,13 +33,16 @@
 | Name | Type |
 |------|------|
 | [azurerm_application_insights.monitoring_application_insights](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/application_insights) | resource |
+| [azurerm_application_insights.synthetic_application_insights](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/application_insights) | resource |
 | [azurerm_container_app_environment.synthetic_cae](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/container_app_environment) | resource |
 | [azurerm_dashboard_grafana.grafana_managed](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/dashboard_grafana) | resource |
 | [azurerm_key_vault_secret.grafana_service_account_name](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.grafana_service_account_token](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_log_analytics_workspace.monitoring_log_analytics_workspace](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/log_analytics_workspace) | resource |
+| [azurerm_log_analytics_workspace.synthetic_log_analytics_workspace](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/log_analytics_workspace) | resource |
 | [azurerm_monitor_action_group.cstar_status](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_action_group) | resource |
 | [azurerm_private_dns_a_record.pagopa_eventhub_private_dns_record](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_a_record) | resource |
-| [azurerm_private_endpoint.private_endpoint_container_app](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
+| [azurerm_private_endpoint.synthetic_cae_private_endpoint](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
 | [azurerm_resource_group.monitoring_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.synthetic_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_role_assignment.grafana_dashboard_identity_roles](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
@@ -54,7 +55,6 @@
 | [azurerm_key_vault.core_kv](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault) | data source |
 | [azurerm_key_vault_secret.email_google_cstar_status](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.email_slack_cstar_status](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
-| [azurerm_key_vault_secret.grafana_service_account_token](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.pagopa_rtp_eventhub_pip](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.pagopa_subscritpion_id](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_monitor_action_group.infra_opsgenie](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/monitor_action_group) | data source |
@@ -64,7 +64,6 @@
 | [azurerm_virtual_network.vnet_compute](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/virtual_network) | data source |
 | [azurerm_virtual_network.vnet_hub](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/virtual_network) | data source |
 | [external_external.grafana_generate_service_account](https://registry.terraform.io/providers/hashicorp/external/latest/docs/data-sources/external) | data source |
-| [external_external.validate_grafana_token](https://registry.terraform.io/providers/hashicorp/external/latest/docs/data-sources/external) | data source |
 
 ## Inputs
 
@@ -94,7 +93,5 @@
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| <a name="output_grafana_token_validation"></a> [grafana\_token\_validation](#output\_grafana\_token\_validation) | n/a |
+No outputs.
 <!-- END_TF_DOCS -->

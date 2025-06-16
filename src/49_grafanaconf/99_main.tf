@@ -8,7 +8,11 @@ terraform {
     }
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "<= 4.26"
+      version = "~> 4"
+    }
+    grafana = {
+      source  = "grafana/grafana"
+      version = "~> 3.0"
     }
     null = {
       source  = "hashicorp/null"
@@ -25,6 +29,13 @@ provider "azurerm" {
       purge_soft_delete_on_destroy = false
     }
   }
+}
+
+provider "grafana" {
+  alias = "cloud"
+
+  url  = data.azurerm_dashboard_grafana.grafana_managed.endpoint
+  auth = data.azurerm_key_vault_secret.grafana_service_account_token.value
 }
 
 data "azurerm_subscription" "current" {}
