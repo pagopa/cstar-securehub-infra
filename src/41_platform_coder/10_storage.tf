@@ -17,7 +17,7 @@ module "postgres_flexible_server_public" {
 
   count = var.pgflex_public_config.enabled ? 1 : 0
 
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//postgres_flexible_server?ref=v8.12.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//postgres_flexible_server?ref=v8.8.0"
 
   name                = "${local.program}-public-pgflex"
   location            = azurerm_resource_group.postgres_dbs.location
