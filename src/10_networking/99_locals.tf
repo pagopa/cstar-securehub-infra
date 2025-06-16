@@ -1,9 +1,6 @@
 locals {
-  project          = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
-  product          = "${var.prefix}-${var.env_short}"
-  product_nodomain = "${var.prefix}-${var.env_short}-${var.location_short}"
-
-  tags_for_private_dns = { "PrivateDns" = "true" }
+  project = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
+  product = "${var.prefix}-${var.env_short}"
 
   ### 🏷️ Tags
   tags_for_mc = merge(var.tags, {

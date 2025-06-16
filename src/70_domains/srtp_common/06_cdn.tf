@@ -1,0 +1,64 @@
+module "cdn" {
+  source = "./.terraform/modules/__v4__/cdn"
+
+  name                = "fe"
+  prefix              = local.project
+  resource_group_name = local.data_rg
+  location            = var.location
+  cdn_location        = var.cdn_location
+
+  hostname                     = "rtp.${local.dns_zone_name}"
+  dns_zone_name                = local.dns_zone_name
+  dns_zone_resource_group_name = local.vnet_legacy_core_rg
+
+  storage_account_replication_type = "ZRS"
+
+  https_rewrite_enabled      = true
+  index_document             = "index.html"
+  error_404_document         = "error_404.html"
+  log_analytics_workspace_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+
+  keyvault_id                                      = data.azurerm_key_vault.domain_kv.id
+  tenant_id                                        = data.azurerm_key_vault.domain_kv.tenant_id
+  keyvault_resource_group_name                     = data.azurerm_key_vault.domain_kv.resource_group_name
+  azuread_service_principal_azure_cdn_frontdoor_id = var.azuread_service_principal_azure_cdn_frontdoor_id
+  keyvault_subscription_id                         = data.azurerm_key_vault.domain_kv.tenant_id
+  keyvault_vault_name                              = data.azurerm_key_vault.domain_kv.name
+  custom_hostname_kv_enabled                       = true
+
+  delivery_rule_rewrite = [{
+    name  = "RewriteRulesForReactRouting"
+    order = 2
+
+    conditions = [{
+      condition_type   = "url_file_extension_condition"
+      operator         = "LessThan"
+      match_values     = ["1"]
+      transforms       = []
+      negate_condition = false
+    }]
+
+    url_rewrite_action = {
+      source_pattern          = "/"
+      destination             = "/index.html"
+      preserve_unmatched_path = false
+    }
+  }]
+
+  global_delivery_rule = {
+    cache_expiration_action       = []
+    cache_key_query_string_action = []
+    modify_request_header_action  = []
+
+    # HSTS
+    modify_response_header_action = [
+      {
+        action = "Overwrite"
+        name   = "Strict-Transport-Security"
+        value  = "max-age=31536000"
+      },
+      # Add Content Security Policy protection
+    ]
+  }
+  tags = module.tag_config.tags
+}

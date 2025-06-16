@@ -36,6 +36,9 @@ resource "azurerm_application_insights" "monitoring_application_insights" {
   tags = var.tags
 }
 
+#--------------------------------------------------------------------------------------------
+# Action Groups
+#--------------------------------------------------------------------------------------------
 resource "azurerm_monitor_action_group" "cstar_status" {
   name                = "cstar_status"
   short_name          = "cstar_status"
