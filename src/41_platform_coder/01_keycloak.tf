@@ -25,6 +25,7 @@ resource "kubernetes_secret" "credentials_postgress_admin" {
 
   data = {
     "admin-username" = data.azurerm_key_vault_secret.postgres_admin_username.value
+    "admin-password" = data.azurerm_key_vault_secret.postgres_admin_password.value
   }
 
   type = "Opaque"

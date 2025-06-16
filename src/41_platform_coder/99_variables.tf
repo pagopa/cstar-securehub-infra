@@ -57,13 +57,13 @@ variable "k8s_kube_config_path_prefix" {
   type    = string
   default = "~/.kube"
 }
+
+
 #  Start Postgres
 variable "name" {
   type        = string
   description = "(Required) The name which should be used for this PostgreSQL Flexible Server. Changing this forces a new PostgreSQL Flexible Server to be created."
 }
-
-
 
 variable "resource_group_name" {
   type        = string
@@ -152,23 +152,6 @@ variable "customer_managed_key_enabled" {
   description = "enable customer_managed_key"
   default     = false
 }
-
-variable "customer_managed_key_kv_key_id" {
-  type        = string
-  description = "The ID of the Key Vault Key"
-  default     = null
-}
-
-variable "administrator_login" {
-  type        = string
-  description = "Flexible PostgreSql server administrator_login"
-}
-
-variable "administrator_password" {
-  type        = string
-  description = "Flexible PostgreSql server administrator_password"
-}
-
 #
 # Backup
 #
@@ -391,5 +374,47 @@ variable "auto_grow_enabled" {
 
 locals {
   metric_alerts = var.custom_metric_alerts != null ? var.custom_metric_alerts : var.default_metric_alerts
+}
+
+variable "pgflex_public_config" {
+  default = {
+    eneabled = true
+    }
+
+}
+variable "pgflex_public_metric_alerts" {
+  description = <<EOD
+  Map of name = criteria objects
+  EOD
+
+  type = map(object({
+    # criteria.*.aggregation to be one of [Average Count Minimum Maximum Total]
+    aggregation = string
+    # "Insights.Container/pods" "Insights.Container/nodes"
+    metric_namespace = string
+    metric_name      = string
+    # criteria.0.operator to be one of [Equals NotEquals GreaterThan GreaterThanOrEqual LessThan LessThanOrEqual]
+    operator  = string
+    threshold = number
+    # Possible values are PT1M, PT5M, PT15M, PT30M and PT1H
+    frequency = string
+    # Possible values are PT1M, PT5M, PT15M, PT30M, PT1H, PT6H, PT12H and P1D.
+    window_size = string
+    # severity: The severity of this Metric Alert. Possible values are 0, 1, 2, 3 and 4. Defaults to 3. Lower is worst
+    severity = number
+  }))
+
+  default = {
+    cpu_percent = {
+      frequency        = "PT1M"
+      window_size      = "PT5M"
+      metric_namespace = "Microsoft.DBforPostgreSQL/flexibleServers"
+      aggregation      = "Average"
+      metric_name      = "cpu_percent"
+      operator         = "GreaterThan"
+      threshold        = 80
+      severity = 2
+    }
+  }
 }
 #  End Postgres

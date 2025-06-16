@@ -4,7 +4,7 @@ metadata:
   name: keycloak
   labels:
     app: keycloak
-  namespace: idpay
+  namespace: keycloak
 spec:
   replicas: 1
   selector:
@@ -23,8 +23,8 @@ spec:
             - name: KC_BOOTSTRAP_ADMIN_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: keycloak-admin-secret
-                  key: admin-username
+                  name: XX
+                  key: "X"
             - name: KC_BOOTSTRAP_ADMIN_PASSWORD
               value: "admin"
             - name: KC_HOSTNAME
@@ -59,9 +59,15 @@ spec:
                   key: keycloak-config
                   name: data.kc-db
             - name: KC_DB_USERNAME
-              value: ""
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak-admin-secret
+                  key: admin-username
             - name: KC_DB_PASSWORD
-              value: ""
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak-admin-secret
+                  key: admin-password
           ports:
             - name: http
               containerPort: 8080

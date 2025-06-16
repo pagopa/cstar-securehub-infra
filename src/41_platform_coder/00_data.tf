@@ -28,8 +28,8 @@ data "azurerm_key_vault_secret" "postgres_admin_username" {
   key_vault_id = data.azurerm_key_vault.key_vault_core.id
 }
 
-data "azurerm_key_vault_secret" "argocd_admin_password" {
-  name         = "argocd-admin-password"
+data "azurerm_key_vault_secret" "postgres_admin_password" {
+  name         = "postgres-admin-password"
   key_vault_id = data.azurerm_key_vault.key_vault_core.id
 }
 
@@ -47,14 +47,4 @@ resource "kubernetes_config_map" "keycloak-config" {
 }
 # Stop Keycloak
 
-# Start Postgres
-# KV secrets flex server
-data "azurerm_key_vault_secret" "pgres_flex_admin_login" {
-  name         = "pgres-flex-admin-login"
-  key_vault_id = data.azurerm_key_vault.kv.id
-}
 
-data "azurerm_key_vault_secret" "pgres_flex_admin_pwd" {
-  name         = "pgres-flex-admin-pwd"
-  key_vault_id = data.azurerm_key_vault.kv.id
-}
