@@ -21,7 +21,10 @@ spec:
           args: ["start-dev"]
           env:
             - name: KC_BOOTSTRAP_ADMIN_USERNAME
-              value: "admin"
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak-admin-secret
+                  key: admin-username
             - name: KC_BOOTSTRAP_ADMIN_PASSWORD
               value: "admin"
             - name: KC_HOSTNAME
@@ -39,11 +42,22 @@ spec:
             - name: KC_DB_URL_HOST
               value: "cstar-d-itn-idpay-keycloak.postgres.database.azure.com"
             - name: KC_DB_SCHEMA
-              value: "public"
+              valueFrom:
+                configMapKeyRef:
+                  key: keycloak-config
+                  name: data.kc-db-schema
+              # value: "public"
             - name: KC_DB_URL_PORT
-              value: "5432"
+              valueFrom:
+                configMapKeyRef:
+                  key: keycloak-config
+                  name: data.kc-db-url-port
+              # value: "5432"
             - name: KC_DB
-              value: "postgres"
+              valueFrom:
+                configMapKeyRef:
+                  key: keycloak-config
+                  name: data.kc-db
             - name: KC_DB_USERNAME
               value: ""
             - name: KC_DB_PASSWORD
