@@ -3,7 +3,7 @@ locals {
   product = "${var.prefix}-${var.env_short}"
 
   ### 🏷️ Tags
-  tags_for_mc = merge(var.tags, {
+  tags_for_mc = merge(module.tag_config.tags, {
     "domain" = "mc"
   })
 

@@ -15,4 +15,5 @@ resource "azurerm_key_vault_key" "sops_key" {
     azurerm_key_vault_access_policy.adgroup_developers_policy,
     azurerm_key_vault_access_policy.ad_group_policy,
   ]
+  tags = module.tag_config.tags
 }

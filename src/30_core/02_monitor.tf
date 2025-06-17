@@ -2,7 +2,7 @@ resource "azurerm_resource_group" "monitor_rg" {
   name     = "${local.project}-monitor-rg"
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_log_analytics_workspace" "log_analytics_workspace" {
@@ -13,7 +13,7 @@ resource "azurerm_log_analytics_workspace" "log_analytics_workspace" {
   retention_in_days   = var.law_retention_in_days
   daily_quota_gb      = var.law_daily_quota_gb
 
-  tags = var.tags
+  tags = module.tag_config.tags
 
   lifecycle {
     ignore_changes = [
@@ -31,7 +31,7 @@ resource "azurerm_application_insights" "application_insights" {
 
   workspace_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_monitor_action_group" "email" {
@@ -45,7 +45,7 @@ resource "azurerm_monitor_action_group" "email" {
     use_common_alert_schema = true
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_monitor_action_group" "slack" {
@@ -59,7 +59,7 @@ resource "azurerm_monitor_action_group" "slack" {
     use_common_alert_schema = true
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_monitor_action_group" "cstar_infra_opsgenie" { #
@@ -74,7 +74,7 @@ resource "azurerm_monitor_action_group" "cstar_infra_opsgenie" { #
     use_common_alert_schema = true
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 #
@@ -85,7 +85,8 @@ resource "azurerm_monitor_workspace" "monitor_workspace" {
   resource_group_name           = azurerm_resource_group.monitor_rg.name
   location                      = var.location
   public_network_access_enabled = false
-  tags                          = var.tags
+
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_private_endpoint" "monitor_workspace_private_endpoint" {
@@ -109,5 +110,5 @@ resource "azurerm_private_endpoint" "monitor_workspace_private_endpoint" {
 
   depends_on = [azurerm_monitor_workspace.monitor_workspace]
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
