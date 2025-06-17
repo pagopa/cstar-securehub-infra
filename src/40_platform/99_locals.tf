@@ -40,6 +40,20 @@ locals {
   # Domains to setup
   #
   domains_setup = {
+    "platform" = {
+      tags = {
+        "CostCenter"   = "TS310 - PAGAMENTI & SERVIZI"
+        "BusinessUnit" = "CStar"
+        "Owner"        = "CStar"
+        "Environment"  = var.env
+        "CreatedBy"    = "Terraform"
+        "Source"       = "https://github.com/pagopa/cstar-securehub-infra"
+        "domain"       = "platform"
+      }
+      additional_resource_groups = [
+        #"${local.product_nodomain}-idpay-azdo-rg"
+      ]
+    }
     "idpay" = {
       tags = {
         "CostCenter"   = "TS310 - PAGAMENTI & SERVIZI"
