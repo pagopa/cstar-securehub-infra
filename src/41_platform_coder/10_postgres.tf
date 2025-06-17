@@ -1,5 +1,3 @@
-
-
 resource "azurerm_resource_group" "postgres_dbs" {
   name     = "${local.program}-postgres-dbs-rg"
   location = var.location
