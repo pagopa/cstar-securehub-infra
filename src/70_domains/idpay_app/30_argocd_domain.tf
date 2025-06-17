@@ -37,10 +37,6 @@ locals {
         name          = "idpay-kafka-connect"
         target_branch = "main"
       },
-      "idpay-keycloak" = {
-        name          = "idpay-keycloak"
-        target_branch = "main"
-      },
       "idpay-asset-register-backend" = {
         name          = "idpay-asset-register-backend"
         target_branch = "RDB-34-asset-register-helm"
