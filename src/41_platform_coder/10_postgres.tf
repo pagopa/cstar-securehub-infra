@@ -13,9 +13,10 @@ resource "azurerm_resource_group" "postgres_dbs" {
 # https://docs.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-compare-single-server-flexible-server
 module "postgres_flexible_server_public" {
 
+  # source = "./.terraform/modules/__v4__/azure_devops_agent"
   count = var.pgflex_public_config.enabled ? 1 : 0
 
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//postgres_flexible_server?ref=v8.8.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//postgres_flexible_server"
 
   name                = "${local.program}-public-pgflex"
   location            = azurerm_resource_group.postgres_dbs.location
@@ -43,7 +44,7 @@ module "postgres_flexible_server_public" {
   alerts_enabled       = true
 
   diagnostic_settings_enabled               = true
-  log_analytics_workspace_id                = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
-  diagnostic_setting_destination_storage_id = data.azurerm_storage_account.security_monitoring_storage.id
+  #log_analytics_workspace_id                = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
+  # diagnostic_setting_destination_storage_id = data.azurerm_storage_account.security_monitoring_storage.id
 
 }
