@@ -66,6 +66,13 @@ resource "azurerm_key_vault_secret" "sops_local_secrets" {
   name         = each.value.sec_key
   value        = each.value.sec_val
 
+  tags = merge(
+    module.tag_config.tags,
+    {
+      "Sops" : "True"
+    }
+  )
+
   depends_on = [
     module.key_vault,
   ]

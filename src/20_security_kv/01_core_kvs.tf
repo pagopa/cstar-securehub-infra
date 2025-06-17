@@ -2,7 +2,7 @@ resource "azurerm_resource_group" "sec_rg" {
   name     = "${local.project_nodomain}-core-sec-rg"
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 #
@@ -21,7 +21,7 @@ module "key_vault" {
   soft_delete_retention_days    = var.env != "prod" ? 7 : 90
   public_network_access_enabled = true
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 ## ad group policy ##
@@ -33,7 +33,7 @@ resource "azurerm_key_vault_access_policy" "ad_group_policy" {
   tenant_id = data.azurerm_client_config.current.tenant_id
   object_id = data.azuread_group.adgroup_admin.object_id
 
-  key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", "GetRotationPolicy", "Encrypt", "Decrypt"]
+  key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", "GetRotationPolicy", "SetRotationPolicy", "Encrypt", "Decrypt"]
   secret_permissions      = ["Get", "List", "Set", "Delete", "Recover", "Restore"]
   storage_permissions     = []
   certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Purge", "Recover"]

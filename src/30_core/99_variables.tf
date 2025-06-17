@@ -38,13 +38,6 @@ variable "pagopa_location_short" {
   description = "Pagopa's location short like eg: weu.."
 }
 
-variable "tags" {
-  type = map(any)
-  default = {
-    CreatedBy = "Terraform"
-  }
-}
-
 variable "domain" {
   type = string
   validation {

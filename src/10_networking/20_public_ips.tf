@@ -17,4 +17,6 @@ resource "azurerm_public_ip" "compute_nat_gateway_pip" {
   resource_group_name = azurerm_resource_group.rg_network.name
   allocation_method   = "Static"
   zones               = var.default_zones
+
+  tags = module.tag_config.tags
 }

@@ -8,7 +8,7 @@ resource "azurerm_nat_gateway" "compute_nat_gateway" {
   sku_name                = var.nat_sku
   idle_timeout_in_minutes = var.nat_idle_timeout_in_minutes
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_nat_gateway_public_ip_association" "compute_nat_gateway_pip_association" {

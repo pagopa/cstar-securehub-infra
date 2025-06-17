@@ -2,7 +2,7 @@ resource "azurerm_resource_group" "rg_network" {
   name     = "${local.project}-network-rg"
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 #
@@ -21,7 +21,7 @@ module "vnet_core_hub" {
   resource_group_name = azurerm_resource_group.rg_network.name
   address_space       = var.cidr_core_hub_vnet
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 
@@ -36,7 +36,7 @@ module "vnet_spoke_data" {
   resource_group_name = azurerm_resource_group.rg_network.name
   address_space       = var.cidr_spoke_data_vnet
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 module "vnet_spoke_compute" {
@@ -47,7 +47,7 @@ module "vnet_spoke_compute" {
   resource_group_name = azurerm_resource_group.rg_network.name
   address_space       = var.cidr_spoke_compute_vnet
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 module "vnet_spoke_security" {
@@ -59,5 +59,5 @@ module "vnet_spoke_security" {
   resource_group_name = azurerm_resource_group.rg_network.name
   address_space       = var.cidr_spoke_security_vnet
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }

@@ -6,14 +6,6 @@ location_short        = "itn"
 domain                = "core"
 pagopa_location_short = "weu"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "PROD"
-  Owner       = "CSTAR"
-  Source      = "https://github.com/pagopa/cstar-securehub-infra"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-}
-
 ## Monitor
 law_daily_quota_gb = 10
 

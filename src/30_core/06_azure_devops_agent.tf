@@ -15,7 +15,7 @@ module "azdoa_linux_app" {
   zones        = var.devops_agent_zones
   zone_balance = var.devops_agent_balance_zones
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 module "azdoa_linux_infra" {
@@ -36,7 +36,7 @@ module "azdoa_linux_infra" {
   zones        = var.devops_agent_zones
   zone_balance = var.devops_agent_balance_zones
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 #

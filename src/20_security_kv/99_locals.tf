@@ -7,4 +7,6 @@ locals {
   azdo_iac_managed_identities   = toset(["azdo-${var.env}-cstar-iac-deploy", "azdo-${var.env}-cstar-iac-plan"]) // e.g. ["azdo-dev-cstar-iac-deploy", "azdo-dev-cstar-iac-plan"]
 
   prefix_key_vaults = ["core", "cicd"] // e.g. ["core", "cicd"]
+
+  input_file = "./secret/itn-${var.env}/configs.json"
 }
