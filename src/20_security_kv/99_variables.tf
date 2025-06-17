@@ -32,13 +32,6 @@ variable "location_short" {
   description = "Location short like eg: neu, weu.."
 }
 
-variable "tags" {
-  type = map(any)
-  default = {
-    CreatedBy = "Terraform"
-  }
-}
-
 variable "domain" {
   type = string
   validation {
@@ -47,9 +40,4 @@ variable "domain" {
     )
     error_message = "Max length is 12 chars."
   }
-}
-
-variable "input_file" {
-  type        = string
-  description = "secret json file"
 }
