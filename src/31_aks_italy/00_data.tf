@@ -25,13 +25,18 @@ data "azurerm_key_vault_secret" "argocd_admin_password" {
 #
 # 🌐 Network
 #
-data "azurerm_resource_group" "vnet_compute_spoke_rg" {
+data "azurerm_resource_group" "vnet_rg" {
   name = "${local.project}-network-rg"
+}
+
+data "azurerm_virtual_network" "vnet_hub" {
+  name                = "${local.project}-hub-vnet"
+  resource_group_name = data.azurerm_resource_group.vnet_rg.name
 }
 
 data "azurerm_virtual_network" "vnet_compute_spoke" {
   name                = "${local.project}-spoke-compute-vnet"
-  resource_group_name = data.azurerm_resource_group.vnet_compute_spoke_rg.name
+  resource_group_name = data.azurerm_resource_group.vnet_rg.name
 }
 
 data "azurerm_private_dns_zone" "internal" {

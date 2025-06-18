@@ -40,8 +40,8 @@ module "prometheus_managed_addon" {
   location_short         = var.location_short
   monitor_workspace_name = data.azurerm_monitor_workspace.workspace.name
   monitor_workspace_rg   = data.azurerm_monitor_workspace.workspace.resource_group_name
-  grafana_name           = "${var.prefix}-${var.env_short}-itn-grafana"
-  grafana_resource_group = "${var.prefix}-${var.env_short}-itn-platform-monitoring-rg"
+  grafana_name           = "${var.prefix}-${var.env_short}-${var.location_short}-grafana"
+  grafana_resource_group = "${var.prefix}-${var.env_short}-${var.location_short}-platform-monitoring-rg"
 
   # takes a list and replaces any elements that are lists with a
   # flattened sequence of the list contents.
@@ -56,5 +56,5 @@ module "prometheus_managed_addon" {
     ] : [])
   ])
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }

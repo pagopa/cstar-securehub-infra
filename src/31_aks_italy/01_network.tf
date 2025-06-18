@@ -39,3 +39,13 @@ module "aks_user_snet" {
     "Microsoft.ServiceBus"
   ]
 }
+
+# 🔎 DNS
+resource "azurerm_private_dns_zone_virtual_network_link" "private_dns_zone_aks" {
+  for_each = var.aks_private_cluster_is_enabled ? { for i in toset([data.azurerm_virtual_network.vnet_hub]) : i.name => i } : {}
+
+  name                  = each.value.name
+  private_dns_zone_name = module.aks.managed_private_dns_zone_name
+  resource_group_name   = module.aks.managed_resource_group_name
+  virtual_network_id    = each.value.id
+}

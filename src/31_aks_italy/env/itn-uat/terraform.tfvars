@@ -5,14 +5,6 @@ location       = "italynorth"
 location_short = "itn"
 domain         = "core"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "UAT"
-  Owner       = "CSTAR"
-  Source      = "https://github.com/pagopa/cstar-securehub-infra"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-}
-
 #
 # Dns
 #
@@ -26,7 +18,7 @@ default_zones = [1, 2, 3]
 # https://pagopa.atlassian.net/wiki/spaces/DEVOPS/pages/482967553/AKS#sku-(dimensionamento)
 
 aks_sku_tier                   = "Standard"
-aks_private_cluster_is_enabled = false
+aks_private_cluster_is_enabled = true
 aks_alerts_enabled             = false
 aks_enable_workload_identity   = true
 
@@ -73,7 +65,7 @@ aks_user_node_pool = {
 aks_cidr_subnet      = ["10.10.1.0/24"] # 10.10.1.0 -> 10.10.1.255
 aks_cidr_subnet_user = ["10.10.2.0/24"] # 10.10.2.0 -> 10.10.2.255
 
-aks_kubernetes_version = "1.32.0"
+aks_kubernetes_version = "1.32.4"
 
 ingress_min_replica_count = "1"
 ingress_max_replica_count = "3"
