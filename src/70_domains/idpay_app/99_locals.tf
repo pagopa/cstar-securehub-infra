@@ -27,6 +27,9 @@ locals {
   idpay_kv_name    = "${local.project}-kv"
   idpay_kv_rg_name = "${local.project}-security-rg"
 
+  secret_name_idpay_workload_identity_client_id = "idpay-itn-workload-identity-client-id"
+  secret_name_idpay_workload_identity_service_account_name = "idpay-itn-workload-identity-service-account-name"
+
   #
   # AKS
   #
