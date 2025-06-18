@@ -21,7 +21,7 @@ resource "azurerm_dashboard_grafana" "grafana_managed" {
     ]
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 #

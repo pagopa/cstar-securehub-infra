@@ -3,7 +3,7 @@ resource "azurerm_resource_group" "monitoring_rg" {
   name     = "${local.project}-monitoring-rg"
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 ### 📝 log analytics workspace
@@ -15,7 +15,7 @@ resource "azurerm_log_analytics_workspace" "monitoring_log_analytics_workspace" 
   retention_in_days   = var.monitoring_law_retention_in_days
   daily_quota_gb      = var.monitoring_law_daily_quota_gb
 
-  tags = var.tags
+  tags = module.tag_config.tags
 
   lifecycle {
     ignore_changes = [
@@ -33,7 +33,7 @@ resource "azurerm_application_insights" "monitoring_application_insights" {
 
   workspace_id = azurerm_log_analytics_workspace.monitoring_log_analytics_workspace.id
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 #--------------------------------------------------------------------------------------------
@@ -56,7 +56,7 @@ resource "azurerm_monitor_action_group" "cstar_status" {
     use_common_alert_schema = true
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 data "azurerm_monitor_action_group" "infra_opsgenie" {

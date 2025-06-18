@@ -21,12 +21,13 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | 575238d5aef1e53f9185ba2732156f0ba5db18af |
+| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | c40e7522e9c0c609e60daed83ff93fb5fd7d8b66 |
 | <a name="module_container_app_private_endpoint_snet"></a> [container\_app\_private\_endpoint\_snet](#module\_container\_app\_private\_endpoint\_snet) | ./.terraform/modules/__v4__/subnet | n/a |
 | <a name="module_default_resource_groups"></a> [default\_resource\_groups](#module\_default\_resource\_groups) | ./.terraform/modules/__v4__/payments_default_resource_groups | n/a |
 | <a name="module_storage_private_endpoint_snet"></a> [storage\_private\_endpoint\_snet](#module\_storage\_private\_endpoint\_snet) | ./.terraform/modules/__v4__/subnet | n/a |
 | <a name="module_synthetic_monitoring_jobs"></a> [synthetic\_monitoring\_jobs](#module\_synthetic\_monitoring\_jobs) | ./.terraform/modules/__v4__/monitoring_function | n/a |
 | <a name="module_synthetic_snet"></a> [synthetic\_snet](#module\_synthetic\_snet) | ./.terraform/modules/__v4__/subnet | n/a |
+| <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../tag_config | n/a |
 
 ## Resources
 
@@ -89,7 +90,6 @@
 | <a name="input_synthetic_domain_tae_enabled"></a> [synthetic\_domain\_tae\_enabled](#input\_synthetic\_domain\_tae\_enabled) | (Optional) Enables the synthetic monitoring for the RTD | `bool` | n/a | yes |
 | <a name="input_synthetic_self_alert_enabled"></a> [synthetic\_self\_alert\_enabled](#input\_synthetic\_self\_alert\_enabled) | (Optional) enables the alert on the function itself | `bool` | `true` | no |
 | <a name="input_synthetic_storage_account_replication_type"></a> [synthetic\_storage\_account\_replication\_type](#input\_synthetic\_storage\_account\_replication\_type) | (Required) table storage replication type | `string` | n/a | yes |
-| <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br/>  "CreatedBy": "Terraform"<br/>}</pre> | no |
 
 ## Outputs
 

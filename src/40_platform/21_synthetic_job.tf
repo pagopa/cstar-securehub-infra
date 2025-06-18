@@ -38,7 +38,7 @@ module "synthetic_monitoring_jobs" {
 
   storage_private_endpoint_subnet_id = module.storage_private_endpoint_snet.id
 
-  tags = var.tags
+  tags = module.tag_config.tags
 
   self_alert_configuration = {
     enabled = var.synthetic_self_alert_enabled
