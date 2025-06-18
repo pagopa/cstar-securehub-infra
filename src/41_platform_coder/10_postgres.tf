@@ -22,7 +22,7 @@ resource "random_password" "keycloak_db_admin_password" {
   min_numeric      = 1
 }
 
-resource "azurerm_key_vault_secret" "keycloak_admin_password" {
+resource "azurerm_key_vault_secret" "keycloak_db_admin_password" {
   name         = "keycloak-db-admin-password"
   value        = random_password.keycloak_db_admin_password.result
   key_vault_id = data.azurerm_key_vault.key_vault_core.id
@@ -53,7 +53,7 @@ module "keycloak_pgflex" {
   pgbouncer_enabled           = var.keycloak_pgflex_params.pgres_flex_pgbouncer_enabled
   diagnostic_settings_enabled = var.keycloak_pgflex_params.pgres_flex_diagnostic_settings_enabled
   administrator_login         = azurerm_key_vault_secret.keycloak_db_admin_user.value
-  administrator_password      = azurerm_key_vault_secret.keycloak_admin_password.value
+  administrator_password      = azurerm_key_vault_secret.keycloak_db_admin_password.value
 
   sku_name                     = var.keycloak_pgflex_params.sku_name
   db_version                   = var.keycloak_pgflex_params.db_version
