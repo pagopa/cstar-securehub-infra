@@ -37,13 +37,6 @@ variable "location_display_name" {
   description = "Location short like eg: neu, weu.."
 }
 
-variable "tags" {
-  type = map(any)
-  default = {
-    CreatedBy = "Terraform"
-  }
-}
-
 variable "domain" {
   type = string
   validation {
