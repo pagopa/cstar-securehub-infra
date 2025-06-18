@@ -38,13 +38,6 @@ variable "location_short" {
 #   description = "Pagopa's location short like eg: weu.."
 # }
 
-variable "tags" {
-  type = map(any)
-  default = {
-    CreatedBy = "Terraform"
-  }
-}
-
 variable "domain" {
   type = string
   validation {
@@ -106,7 +99,7 @@ variable "aks_sku_tier" {
 }
 
 variable "force_upgrade_enabled" {
-  type        = string
+  type        = bool
   description = "(Optional) If set to true, cluster will be forced to upgrade even if the latest version of the control plane and agents is not available."
   default     = false
 }

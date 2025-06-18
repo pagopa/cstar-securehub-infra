@@ -84,4 +84,7 @@ module "nginx_ingress" {
       value = var.nginx_helm.controller.config.proxy-body-size
     }
   ]
+  depends_on = [
+    helm_release.keda
+  ]
 }

@@ -39,7 +39,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "user_nodepool_default" {
     drain_timeout_in_minutes = 30
   }
 
-  tags = merge(var.tags, var.aks_user_node_pool.node_tags)
+  tags = merge(module.tag_config.tags, var.aks_user_node_pool.node_tags)
 
   lifecycle {
     ignore_changes = [
