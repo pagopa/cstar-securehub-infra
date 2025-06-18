@@ -148,6 +148,9 @@ resource "argocd_application" "domain_argocd_applications" {
             serviceAccount : {
               name : data.azurerm_key_vault_secret.workload_identity_service_account_name.value
             }
+            envSecret : {
+              AZURE_CLIENT_ID : local.secret_name_idpay_workload_identity_client_id
+            }
           }
         })
         value_files                = ["../../../_global/${each.value.name}.yaml"]
