@@ -79,3 +79,10 @@ variable "keycloak_pgflex_params" {
     pgbouncer_default_pool_size            = number
   })
 }
+
+variable "keycloak_configuration" {
+    type = object({
+        replica_count_min         = number
+        replica_count_max         = number
+    })
+}

@@ -34,3 +34,8 @@ keycloak_pgflex_params = {
   pgbouncer_min_pool_size                = 100
   pgbouncer_default_pool_size            = 100
 }
+
+keycloak_configuration = {
+    replica_count_min = 1
+    replica_count_max = 2
+}
