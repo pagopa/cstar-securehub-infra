@@ -34,7 +34,7 @@ resource "kubernetes_secret" "keycloak_db" {
     namespace = kubernetes_namespace.keycloak.metadata[0].name
   }
   data = {
-    "password" = azurerm_key_vault_secret.keycloak_db_admin_password.value
+    "db-password" = azurerm_key_vault_secret.keycloak_db_admin_password.value
   }
 }
 
@@ -56,9 +56,9 @@ resource "kubernetes_config_map" "keycloak_config" {
 resource "helm_release" "keycloak" {
   name       = "keycloak"
   namespace  = kubernetes_namespace.keycloak.metadata[0].name
-  repository = "https://charts.bitnami.com/bitnami"
+  repository = "oci://registry-1.docker.io/bitnamicharts"
   chart      = "keycloak"
-  version    = "24.7.4" 
+  version    = "24.7.4"
 
   values = [
     templatefile("${path.module}/k8s/keycloak/values.yaml.tpl", {
