@@ -30,6 +30,10 @@ terraform {
       source  = "Azure/azapi"
       version = "~> 2.3"
     }
+    keycloak = {
+      source = "keycloak/keycloak"
+      version = ">= 5.0.0"
+    }
   }
 
   backend "azurerm" {}
@@ -66,3 +70,9 @@ provider "argocd" {
     config_context = "config-${local.aks_name}"
   }
 }
+
+provider "keycloak" {
+  client_id     = "terraform"
+  client_secret = ""
+  url           = "http://localhost:8080"
+  }
