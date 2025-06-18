@@ -21,4 +21,7 @@ locals {
   law_name = "${local.project}-monitoring-law"
   app_insights_name = "${local.project}-monitoring-appinsights"
 
+    # Keycloak
+  keycloak_db_name = "bitnami_keycloak"
+  keycloak_ingress_hostname = "keycloak.itn.internal.dev.cstar.pagopa.it"
 }

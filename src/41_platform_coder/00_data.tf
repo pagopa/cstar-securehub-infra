@@ -10,16 +10,6 @@ data "azurerm_key_vault" "key_vault_core" {
   resource_group_name = local.kv_core_resource_group_name
 }
 
-data "azurerm_key_vault_secret" "postgres_admin_username" {
-  name         = "postgres-admin-username"
-  key_vault_id = data.azurerm_key_vault.key_vault_core.id
-}
-
-data "azurerm_key_vault_secret" "postgres_admin_password" {
-  name         = "postgres-admin-password"
-  key_vault_id = data.azurerm_key_vault.key_vault_core.id
-}
-
 #-----------------------------------------------
 # Network
 #-----------------------------------------------

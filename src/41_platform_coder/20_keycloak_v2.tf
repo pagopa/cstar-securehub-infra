@@ -15,7 +15,7 @@ resource "random_password" "keycloak_admin" {
 resource "azurerm_key_vault_secret" "keycloak_admin" {
   name         = "keycloak-admin-password"
   value        = random_password.keycloak_admin.result
-  key_vault_id = data.azurerm_key_vault.key_vault_domain.id
+  key_vault_id = data.azurerm_key_vault.key_vault_core.id
 }
 
 resource "kubernetes_secret" "keycloak_admin" {
@@ -49,6 +49,7 @@ resource "kubernetes_config_map" "keycloak_config" {
   data = {
     KC_HEALTH_ENABLED  = "true"
     KC_METRICS_ENABLED = "true"
+    KC_DB_URL_PROPERTIES = "sslmode=require"
   }
 }
 
@@ -60,10 +61,15 @@ resource "helm_release" "keycloak" {
   version    = "24.7.4" 
 
   values = [
-    templatefile("${path.module}/values.yaml.tmpl", {
-      replica_count   = 1
-      env             = var.env
-      tls_secret_name = var.tls_secret_name
+    templatefile("${path.module}/k8s/keycloak/values.yaml.tpl", {
+      postgres_db_host         = module.keycloak_pgflex.fqdn
+      postgres_db_port         = "5432"
+      postgres_db_username     = module.keycloak_pgflex.administrator_login
+      postgres_db_name         = local.keycloak_db_name
+      keycloak_ingress_hostname = local.keycloak_ingress_hostname
+      ingress_tls_secret_name  = replace(local.keycloak_ingress_hostname, ".", "-")
+      replica_count_min        = var.keycloak_configuration.replica_count_min
+      replica_count_max        = var.keycloak_configuration.replica_count_max
     })
   ]
   depends_on = [
