@@ -40,8 +40,8 @@ data "azurerm_subscription" "current" {}
 data "azurerm_client_config" "current" {}
 
 module "__v4__" {
-  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v7.6.0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=fix/aks-upgrade-override"
+  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v7.6.1
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=c40e7522e9c0c609e60daed83ff93fb5fd7d8b66"
 }
 
 provider "kubernetes" {

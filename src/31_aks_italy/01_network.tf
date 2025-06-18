@@ -26,7 +26,8 @@ module "aks_snet" {
 }
 
 module "aks_user_snet" {
-  source                            = "./.terraform/modules/__v4__/subnet"
+  source = "./.terraform/modules/__v4__/subnet"
+
   name                              = "${local.project}-aks-user-snet"
   address_prefixes                  = var.aks_cidr_subnet_user
   resource_group_name               = data.azurerm_virtual_network.vnet_compute_spoke.resource_group_name
@@ -42,10 +43,22 @@ module "aks_user_snet" {
 
 # 🔎 DNS
 resource "azurerm_private_dns_zone_virtual_network_link" "private_dns_zone_aks" {
-  for_each = var.aks_private_cluster_is_enabled ? { for i in toset([data.azurerm_virtual_network.vnet_hub]) : i.name => i } : {}
+  for_each = var.aks_private_cluster_is_enabled ? {
+    for i in toset([data.azurerm_virtual_network.vnet_hub]) : i.name => i
+  } : {}
 
   name                  = each.value.name
   private_dns_zone_name = module.aks.managed_private_dns_zone_name
   resource_group_name   = module.aks.managed_resource_group_name
   virtual_network_id    = each.value.id
+}
+
+resource "azurerm_private_dns_a_record" "argocd" {
+  name                = "${local.argocd_namespace}.${var.location_short}"
+  zone_name           = data.azurerm_private_dns_zone.internal.name
+  resource_group_name = data.azurerm_private_dns_zone.internal.resource_group_name
+  ttl                 = 3600
+  records             = [var.ingress_load_balancer_ip]
+
+  tags = module.tag_config.tags
 }
