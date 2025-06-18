@@ -8,15 +8,19 @@ terraform {
     }
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = ">= 4.32.0"
+      version = "~> 4.32.0"
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
-      version = "= 2.37.1"
+      version = "~> 2.0"
     }
     null = {
       source  = "hashicorp/null"
       version = "~> 3.0"
+    }
+    helm = {
+      source  = "hashicorp/helm"
+      version = "~> 2"
     }
   }
 
@@ -41,5 +45,11 @@ module "__v4__" {
 }
 
 provider "kubernetes" {
-  config_path = "${var.k8s_kube_config_path_prefix}/config"
+  config_path = "${var.k8s_kube_config_path_prefix}/config-${local.aks_name}"
+}
+
+provider "helm" {
+  kubernetes {
+    config_path = "${var.k8s_kube_config_path_prefix}/config-${local.aks_name}"
+  }
 }

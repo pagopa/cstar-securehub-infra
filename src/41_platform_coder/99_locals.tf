@@ -24,4 +24,10 @@ locals {
     # Keycloak
   keycloak_db_name = "bitnami_keycloak"
   keycloak_ingress_hostname = "keycloak.itn.internal.dev.cstar.pagopa.it"
+
+    #
+  # AKS
+  #
+  aks_name                = "${local.product}-${var.location_short}-${var.env}-aks"
+  aks_resource_group_name = "${local.product}-${var.location_short}-core-aks-rg"
 }
