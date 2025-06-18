@@ -67,3 +67,10 @@ module "keycloak_pgflex" {
 
   tags = var.tags
 }
+
+resource "azurerm_postgresql_flexible_server_database" "keycloak_db" {
+  name      = local.keycloak_db_name
+  server_id = module.keycloak_pgflex.id
+  charset   = "UTF8"
+  collation = "en_US.utf8"
+}
