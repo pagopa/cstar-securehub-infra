@@ -1,8 +1,8 @@
 forceDeployVersion: ${force_deploy_version}
 
 auth:
-  adminUser: "admin"
-  existingSecret: "keycloak-admin-secret"
+  adminUser: "${keycloak_admin_username}"
+  existingSecret: "keycloak-admin-secret" #keycload admin password is in this secret
 
 extraEnvVarsCM: "keycloak-config"
 

@@ -8,9 +8,21 @@ resource "random_password" "keycloak_admin" {
   special = true
 }
 
-resource "azurerm_key_vault_secret" "keycloak_admin" {
+resource "azurerm_key_vault_secret" "keycloak_admin_password" {
   name         = "keycloak-admin-password"
   value        = random_password.keycloak_admin.result
+  key_vault_id = data.azurerm_key_vault.key_vault_core.id
+}
+
+resource "azurerm_key_vault_secret" "keycloak_admin_username" {
+  name         = "keycloak-admin-username"
+  value        = "admin"
+  key_vault_id = data.azurerm_key_vault.key_vault_core.id
+}
+
+resource "azurerm_key_vault_secret" "keycloak_url" {
+  name         = "keycloak-url"
+  value        = local.keycloak_ingress_hostname
   key_vault_id = data.azurerm_key_vault.key_vault_core.id
 }
 
@@ -20,7 +32,7 @@ resource "kubernetes_secret" "keycloak_admin" {
     namespace = kubernetes_namespace.keycloak.metadata[0].name
   }
   data = {
-    "admin-password" = azurerm_key_vault_secret.keycloak_admin.value
+    "admin-password" = azurerm_key_vault_secret.keycloak_admin_password.value
   }
 }
 
@@ -62,6 +74,7 @@ resource "helm_release" "keycloak" {
       postgres_db_port         = "5432"
       postgres_db_username     = module.keycloak_pgflex.administrator_login
       postgres_db_name         = local.keycloak_db_name
+      keycloak_admin_username   = azurerm_key_vault_secret.keycloak_admin_username.value
       keycloak_ingress_hostname = local.keycloak_ingress_hostname
       ingress_tls_secret_name  = replace(local.keycloak_ingress_hostname, ".", "-")
       replica_count_min        = var.keycloak_configuration.replica_count_min
