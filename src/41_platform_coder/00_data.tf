@@ -38,6 +38,11 @@ data "azurerm_private_dns_zone" "postgres_flexible_privatelink" {
   resource_group_name = local.legacy_vnet_core_rg_name
 }
 
+data "azurerm_private_dns_zone" "internal" {
+  name                = local.dns_private_internal_name
+  resource_group_name = local.dns_private_internal_rg_name
+}
+
 #-----------------------------------------------
 # Monitoring
 #-----------------------------------------------

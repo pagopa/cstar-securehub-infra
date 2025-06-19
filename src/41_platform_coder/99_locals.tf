@@ -3,12 +3,19 @@ locals {
   product          = "${var.prefix}-${var.env_short}"
   product_nodomain = "${var.prefix}-${var.env_short}-${var.location_short}"
 
-  # VNET
+  #
+  # 🌐 Network
+  #
   vnet_data_name            = "${local.product_nodomain}-core-spoke-data-vnet"
   vnet_network_rg_name         = "${local.product_nodomain}-core-network-rg"
 
   subnet_postgres_name                = "${local.product_nodomain}-platform-postgres-snet"
   legacy_vnet_core_rg_name      = "${local.product}-vnet-rg"
+
+
+  dns_private_internal_name    = "${var.dns_zone_internal_prefix}.${var.prefix}.${var.external_domain}"
+  dns_private_internal_rg_name = "${var.prefix}-${var.env_short}-vnet-rg"
+
 
   # RG
   platform_data_rg_name = "${local.product_nodomain}-platform-data-rg"
@@ -30,4 +37,6 @@ locals {
   #
   aks_name                = "${local.product}-${var.location_short}-${var.env}-aks"
   aks_resource_group_name = "${local.product}-${var.location_short}-core-aks-rg"
+
+  aks_ingress_load_balancer_ip  = "10.10.1.250"
 }

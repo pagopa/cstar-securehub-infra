@@ -1,3 +1,5 @@
+forceDeployVersion: ${force_deploy_version}
+
 auth:
   adminUser: "admin"
   existingSecret: "keycloak-admin-secret"

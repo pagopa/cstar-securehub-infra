@@ -53,12 +53,32 @@ variable "domain" {
     error_message = "Max length is 12 chars."
   }
 }
+
+#
+# DNS
+#
+variable "dns_zone_internal_prefix" {
+  type        = string
+  default     = null
+  description = "The dns subdomain."
+}
+
+variable "external_domain" {
+  type        = string
+  description = "Domain for delegation"
+}
+
+#
+# Kubernetes
+#
 variable "k8s_kube_config_path_prefix" {
   type    = string
   default = "~/.kube"
 }
 
+#
 # Postgres Flexible
+#
 variable "keycloak_pgflex_params" {
   type = object({
     enabled                                = bool

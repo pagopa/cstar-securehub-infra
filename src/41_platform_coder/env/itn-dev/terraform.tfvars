@@ -14,6 +14,12 @@ tags = {
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
 
+#
+# Dns
+#
+dns_zone_internal_prefix = "internal.dev"
+external_domain          = "pagopa.it"
+
 ## Postgres
 keycloak_pgflex_params = {
   enabled    = true

@@ -66,6 +66,7 @@ resource "helm_release" "keycloak" {
       ingress_tls_secret_name  = replace(local.keycloak_ingress_hostname, ".", "-")
       replica_count_min        = var.keycloak_configuration.replica_count_min
       replica_count_max        = var.keycloak_configuration.replica_count_max
+      force_deploy_version       = "v2"
     })
   ]
   depends_on = [
@@ -74,4 +75,15 @@ resource "helm_release" "keycloak" {
     kubernetes_config_map.keycloak_config,
     kubernetes_namespace.keycloak
   ]
+}
+
+#
+# 🌐 DNS private - Records
+#
+resource "azurerm_private_dns_a_record" "keycloak" {
+  name                = "keycloak.${var.location_short}"
+  zone_name           = data.azurerm_private_dns_zone.internal.name
+  resource_group_name = data.azurerm_private_dns_zone.internal.resource_group_name
+  ttl                 = 3600
+  records             = [local.aks_ingress_load_balancer_ip]
 }
