@@ -66,13 +66,6 @@ variable "location_short_weu" {
   description = "One of wue, neu"
 }
 
-variable "tags" {
-  type = map(any)
-  default = {
-    CreatedBy = "Terraform"
-  }
-}
-
 #
 # 🛜 Network
 #
@@ -99,16 +92,6 @@ variable "cidr_idpay_data_storage" {
 variable "dns_zone_internal_prefix" {
   type        = string
   description = "The dns subdomain."
-}
-
-#
-#
-#
-variable "rtd_keyvault" {
-  type = object({
-    name           = string
-    resource_group = string
-  })
 }
 
 variable "cosmos_mongo_account_params" {

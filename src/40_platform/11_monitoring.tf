@@ -1,16 +1,8 @@
-### RG for monitoring
-resource "azurerm_resource_group" "monitoring_rg" {
-  name     = "${local.project}-monitoring-rg"
-  location = var.location
-
-  tags = module.tag_config.tags
-}
-
 ### 📝 log analytics workspace
 resource "azurerm_log_analytics_workspace" "monitoring_log_analytics_workspace" {
   name                = "${local.project}-monitoring-law"
-  location            = azurerm_resource_group.monitoring_rg.location
-  resource_group_name = azurerm_resource_group.monitoring_rg.name
+  location            = var.location
+  resource_group_name = module.default_resource_groups[var.domain].resource_group_names["monitoring"]
   sku                 = var.monitoring_law_sku
   retention_in_days   = var.monitoring_law_retention_in_days
   daily_quota_gb      = var.monitoring_law_daily_quota_gb
@@ -27,8 +19,8 @@ resource "azurerm_log_analytics_workspace" "monitoring_log_analytics_workspace" 
 ### 🔍 Application insights
 resource "azurerm_application_insights" "monitoring_application_insights" {
   name                = "${local.project}-monitoring-appinsights"
-  location            = azurerm_resource_group.monitoring_rg.location
-  resource_group_name = azurerm_resource_group.monitoring_rg.name
+  location            = var.location
+  resource_group_name = module.default_resource_groups[var.domain].resource_group_names["monitoring"]
   application_type    = "other"
 
   workspace_id = azurerm_log_analytics_workspace.monitoring_log_analytics_workspace.id
@@ -42,7 +34,7 @@ resource "azurerm_application_insights" "monitoring_application_insights" {
 resource "azurerm_monitor_action_group" "cstar_status" {
   name                = "cstar_status"
   short_name          = "cstar_status"
-  resource_group_name = azurerm_resource_group.monitoring_rg.name
+  resource_group_name = module.default_resource_groups[var.domain].resource_group_names["monitoring"]
 
   email_receiver {
     name                    = data.azurerm_key_vault_secret.email_google_cstar_status.name
@@ -61,6 +53,6 @@ resource "azurerm_monitor_action_group" "cstar_status" {
 
 data "azurerm_monitor_action_group" "infra_opsgenie" {
   count               = var.env_short == "p" ? 1 : 0
-  resource_group_name = "${local.product}-monitor-rg"
+  resource_group_name = module.default_resource_groups[var.domain].resource_group_names["monitoring"]
   name                = "CstarInfraOpsgenie"
 }

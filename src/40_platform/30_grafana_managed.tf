@@ -3,7 +3,7 @@
 #
 resource "azurerm_dashboard_grafana" "grafana_managed" {
   name                              = "${local.product}-${var.location_short}-grafana"
-  resource_group_name               = azurerm_resource_group.monitoring_rg.name
+  resource_group_name               = module.default_resource_groups[var.domain].resource_group_names["monitoring"]
   location                          = var.location
   api_key_enabled                   = true
   deterministic_outbound_ip_enabled = true
@@ -81,7 +81,7 @@ data "external" "grafana_generate_service_account" {
   program = ["bash", "${path.module}/scripts/terragrafana_generate_service_account.sh"]
 
   query = {
-    resource_group               = azurerm_resource_group.monitoring_rg.name
+    resource_group               = module.default_resource_groups[var.domain].resource_group_names["monitoring"]
     grafana_name                 = azurerm_dashboard_grafana.grafana_managed.name
     grafana_service_account_name = "grafana-service-account"
     grafana_service_account_role = "Admin"
@@ -107,6 +107,7 @@ resource "azurerm_key_vault_secret" "grafana_service_account_token" {
     data.external.grafana_generate_service_account,
     azurerm_role_assignment.grafana_dashboard_roles
   ]
+  tags = module.tag_config.tags
 
   lifecycle {
     ignore_changes = [

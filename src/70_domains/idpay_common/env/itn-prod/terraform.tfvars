@@ -15,15 +15,6 @@ dns_zone_internal_prefix = "internal.cstar"
 
 external_domain = "pagopa.it"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Prod"
-  Owner       = "CSTAR"
-  Source      = "https://github.com/pagopa/cstar-infrastructure"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-  Application = "IdPay"
-}
-
 #
 # CIDRs
 #
@@ -31,12 +22,6 @@ cidr_idpay_data_cosmos   = ["10.20.10.0/27"]  # 10.20.10.0 -> 10.20.10.31
 cidr_idpay_data_eventhub = ["10.20.10.32/27"] # 10.20.10.32 -> 10.20.10.63
 cidr_idpay_data_redis    = ["10.20.10.64/27"] # 10.20.10.64 -> 10.20.10.95
 cidr_idpay_data_storage  = ["10.20.10.96/27"] # 10.20.10.96 -> 10.20.10.127
-
-
-rtd_keyvault = {
-  name           = "cstar-p-rtd-kv"
-  resource_group = "cstar-p-rtd-sec-rg"
-}
 
 cosmos_mongo_account_params = {
   enabled      = true
@@ -80,7 +65,7 @@ redis_params = {
 # Service bus
 #
 service_bus_namespace = {
-  sku = "Standard"
+  sku = "Premium"
 }
 
 ##Eventhub

@@ -13,7 +13,7 @@ module "idpay_redis" {
   private_endpoint = {
     enabled              = true
     virtual_network_id   = data.azurerm_virtual_network.vnet_spoke_data.id
-    subnet_id            = module.idpay_redis_snet.id
+    subnet_id            = module.private_endpoint_redis_snet.id
     private_dns_zone_ids = [data.azurerm_private_dns_zone.redis.id]
   }
 

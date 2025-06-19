@@ -22,8 +22,8 @@ module "eventhub_namespace_idpay_00" {
   maximum_throughput_units = var.ehns_maximum_throughput_units
 
   private_endpoint_created             = true
-  private_endpoint_resource_group_name = module.idpay_eventhub_snet.resource_group_name
-  private_endpoint_subnet_id           = module.idpay_eventhub_snet.id
+  private_endpoint_resource_group_name = module.private_endpoint_eventhub_snet.resource_group_name
+  private_endpoint_subnet_id           = module.private_endpoint_eventhub_snet.id
   private_dns_zones_ids                = [data.azurerm_private_dns_zone.eventhub.id]
 
   alerts_enabled = var.ehns_alerts_enabled
@@ -96,8 +96,8 @@ module "eventhub_namespace_idpay_01" {
   maximum_throughput_units = var.ehns_maximum_throughput_units
 
   private_endpoint_created             = true
-  private_endpoint_resource_group_name = module.idpay_eventhub_snet.resource_group_name
-  private_endpoint_subnet_id           = module.idpay_eventhub_snet.id
+  private_endpoint_resource_group_name = module.private_endpoint_eventhub_snet.resource_group_name
+  private_endpoint_subnet_id           = module.private_endpoint_eventhub_snet.id
   private_dns_zones_ids                = [data.azurerm_private_dns_zone.eventhub.id]
 
   alerts_enabled = var.ehns_alerts_enabled
@@ -172,8 +172,8 @@ module "eventhub_namespace_rdb" {
   maximum_throughput_units = var.ehns_maximum_throughput_units
 
   private_endpoint_created             = true
-  private_endpoint_resource_group_name = module.idpay_eventhub_snet.resource_group_name
-  private_endpoint_subnet_id           = module.idpay_eventhub_snet.id
+  private_endpoint_resource_group_name = module.private_endpoint_eventhub_snet.resource_group_name
+  private_endpoint_subnet_id           = module.private_endpoint_eventhub_snet.id
   private_dns_zones_ids                = [data.azurerm_private_dns_zone.eventhub.id]
 
   alerts_enabled = var.ehns_alerts_enabled

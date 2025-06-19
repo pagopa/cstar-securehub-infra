@@ -65,7 +65,7 @@ resource "azurerm_servicebus_namespace" "idpay_service_bus_ns" {
   resource_group_name           = data.azurerm_resource_group.idpay_data_rg.name
   sku                           = var.service_bus_namespace.sku
   minimum_tls_version           = "1.2"
-  public_network_access_enabled = true #Mandatory because only the premium SKU supports private endpoints
+  public_network_access_enabled = var.service_bus_namespace.sku == "Premium" ? false : true #Mandatory because only the premium SKU supports private endpoints
 
   tags = module.tag_config.tags
 }

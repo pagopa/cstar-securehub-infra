@@ -19,7 +19,7 @@ module "idpay_asset_storage" {
 
   private_endpoint_enabled  = true
   private_dns_zone_blob_ids = [data.azurerm_private_dns_zone.storage_account_blob.id]
-  subnet_id                 = module.idpay_storage_snet.id
+  subnet_id                 = module.private_endpoint_storage_snet.id
 
   tags = module.tag_config.tags
 }

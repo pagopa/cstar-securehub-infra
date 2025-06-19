@@ -74,17 +74,16 @@ module "cdn_idpay_assetregister" {
       name   = "Strict-Transport-Security"
       value  = "max-age=31536000"
       },
-      # # Content-Security-Policy (in Report mode)
-      # {
-      #   action = "Overwrite"
-      #   name   = "Content-Security-Policy-Report-Only"
-      #   value  = "default-src 'self'; object-src 'none'; connect-src 'self' https://api-io.${var.dns_zone_prefix}.${var.external_domain}/ https://api-eu.mixpanel.com/track/; "
-      # },
-      # {
-      #   action = "Append"
-      #   name   = "Content-Security-Policy-Report-Only"
-      #   value  = "script-src 'self'; style-src 'self' 'unsafe-inline' https://selfcare${local.selfare_asset_temp_suffix}.pagopa.it/assets/font/selfhostedfonts.css; worker-src 'none'; font-src 'self' https://selfcare${local.selfare_asset_temp_suffix}.pagopa.it/assets/font/; "
-      # },
+      {
+        action = "Append"
+        name   = contains(["d"], var.env_short) ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
+        value  = "default-src 'self'; object-src 'none'; connect-src 'self' https://api-io.${var.dns_zone_prefix}.${var.external_domain}/ https://api-eu.mixpanel.com/track/; "
+      },
+      {
+        action = "Append"
+        name   = contains(["d"], var.env_short) ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
+        value  = "script-src 'self'; style-src 'self' 'unsafe-inline' https://selfcare${local.selfare_asset_temp_suffix}.pagopa.it/assets/font/selfhostedfonts.css; worker-src 'none'; font-src 'self' https://selfcare${local.selfare_asset_temp_suffix}.pagopa.it/assets/font/; "
+      },
       # {
       #   action = "Append"
       #   name   = "Content-Security-Policy-Report-Only"
