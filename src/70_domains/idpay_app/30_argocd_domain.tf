@@ -39,7 +39,7 @@ locals {
       },
       "idpay-asset-register-backend" = {
         name          = "idpay-asset-register-backend"
-        target_branch = "RDB-34-asset-register-helm"
+        target_branch = "main"
       }
     }
     "mid" = {
