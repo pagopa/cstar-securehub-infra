@@ -61,6 +61,20 @@ resource "kubernetes_config_map" "keycloak_config" {
   }
 }
 
+#TODO: Import admin realm to configure Keycloak with initial admin user and roles.
+resource "kubernetes_config_map" "keycloak_realm_import" {
+  metadata {
+    name      = "keycloak-realm-import"
+    namespace = local.keycloak_namespace
+  }
+  data = {
+    "admin_realm.json" = templatefile("${path.module}/k8s/keycloak/admin_realm.json.tpl", {
+      keycloak_admin_username = azurerm_key_vault_secret.keycloak_admin_username.value,
+      keycloak_admin_password = azurerm_key_vault_secret.keycloak_admin_password.value
+    })
+  }
+}
+
 resource "helm_release" "keycloak" {
   name       = "keycloak"
   namespace  = kubernetes_namespace.keycloak.metadata[0].name
@@ -79,6 +93,7 @@ resource "helm_release" "keycloak" {
       ingress_tls_secret_name  = replace(local.keycloak_ingress_hostname, ".", "-")
       replica_count_min        = var.keycloak_configuration.replica_count_min
       replica_count_max        = var.keycloak_configuration.replica_count_max
+      realm_admin_import_filename = "admin_realm.json"
       force_deploy_version       = "v2"
     })
   ]
@@ -86,7 +101,7 @@ resource "helm_release" "keycloak" {
     kubernetes_secret.keycloak_admin,
     kubernetes_secret.keycloak_db,
     kubernetes_config_map.keycloak_config,
-    kubernetes_namespace.keycloak
+    kubernetes_namespace.keycloak,
   ]
 }
 

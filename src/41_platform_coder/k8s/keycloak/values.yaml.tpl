@@ -2,7 +2,7 @@ forceDeployVersion: ${force_deploy_version}
 
 auth:
   adminUser: "${keycloak_admin_username}"
-  existingSecret: "keycloak-admin-secret" #keycload admin password is in this secret
+  existingSecret: "keycloak-admin-secret" #keycloak admin password is in this secret
 
 extraEnvVarsCM: "keycloak-config"
 
@@ -14,27 +14,33 @@ resources:
     memory: "2Gi"
     cpu: "2"
 
-# ------------------------------------------------------
-# Database – External Azure PostgreSQL Flexible Server
-# ------------------------------------------------------
 postgresql:
-  enabled: false  # Disables embedded PostgreSQL
+  enabled: false
 
 externalDatabase:
   host: ${postgres_db_host}
   port: ${postgres_db_port}
   user: ${postgres_db_username}
   database: ${postgres_db_name}
-  existingSecret: "keycloak-db-secret"  # Secret with key "password"
+  existingSecret: "keycloak-db-secret"
 
-# TLS/SSL for DB connection via JDBC parameter
+# TLS/SSL per la connessione al DB
 extraEnvVars:
   - name: KC_DB_URL_PROPERTIES
     value: "sslmode=require"
+  - name: KEYCLOAK_IMPORT
+    value: /opt/bitnami/keycloak/data/import/${realm_admin_import_filename}
 
-# ------------------------------------------------------
-# Ingress (NGINX)
-# ------------------------------------------------------
+extraVolumes:
+  - name: realm-import
+    configMap:
+      name: keycloak-realm-import
+
+extraVolumeMounts:
+  - name: realm-import
+    mountPath: /opt/bitnami/keycloak/data/import
+    readOnly: true
+
 ingress:
   enabled: true
   hostname: ${keycloak_ingress_hostname}
@@ -45,9 +51,6 @@ ingress:
         - ${keycloak_ingress_hostname}
       secretName: ${ingress_tls_secret_name}
 
-# ------------------------------------------------------
-# Autoscaling: CPU & MEMORY
-# ------------------------------------------------------
 autoscaling:
   enabled: true
   minReplicas: ${replica_count_min}
@@ -61,9 +64,6 @@ autoscaling:
           value: 100
           periodSeconds: 60
 
-# ------------------------------------------------------
-# Update strategy & startup probe (Zero Downtime Upgrades)
-# ------------------------------------------------------
 updateStrategy:
   type: RollingUpdate
 
@@ -75,16 +75,10 @@ startupProbe:
   failureThreshold: 60
   successThreshold: 1
 
-# ------------------------------------------------------
-# Pod Disruption Budget (Zero downtime during maintenance)
-# ------------------------------------------------------
 pdb:
   create: true
   minAvailable: 1
 
-# ------------------------------------------------------
-# Topology Spread / Affinity – spread pods across nodes
-# ------------------------------------------------------
 affinity: {}
 
 topologySpreadConstraints:
@@ -95,9 +89,6 @@ topologySpreadConstraints:
       matchLabels:
         app.kubernetes.io/name: keycloak
 
-# ------------------------------------------------------
-# Resources & Service
-# ------------------------------------------------------
 service:
   type: ClusterIP
   ports:
