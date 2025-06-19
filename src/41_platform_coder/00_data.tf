@@ -24,8 +24,8 @@ data "azurerm_subnet" "platform_subnet" {
   resource_group_name  = data.azurerm_virtual_network.data_vnet.resource_group_name
 }
 
-data "azurerm_private_dns_zone" "postgres_flexible_dns" {
-  name                = "private.postgres.database.azure.com"
+data "azurerm_private_dns_zone" "postgres_flexible_privatelink" {
+  name                = "privatelink.postgres.database.azure.com"
   resource_group_name = local.legacy_vnet_core_rg_name
 }
 

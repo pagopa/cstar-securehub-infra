@@ -46,7 +46,7 @@ module "keycloak_pgflex" {
 
   # Network
   delegated_subnet_id      = data.azurerm_subnet.platform_subnet.id
-  private_dns_zone_id      = data.azurerm_private_dns_zone.postgres_flexible_dns.id
+  private_dns_zone_id      = data.azurerm_private_dns_zone.postgres_flexible_privatelink.id
 
   high_availability_enabled   = var.keycloak_pgflex_params.pgres_flex_ha_enabled
   standby_availability_zone   = var.env_short != "d" ? var.keycloak_pgflex_params.standby_zone : null
