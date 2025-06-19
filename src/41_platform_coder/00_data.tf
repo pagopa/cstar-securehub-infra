@@ -1,5 +1,5 @@
 data "azurerm_resource_group" "platform_data" {
-  name     = local.kv_core_resource_group_name
+  name = local.kv_core_resource_group_name
 }
 
 #------------------------------------------------
@@ -47,7 +47,7 @@ data "azurerm_private_dns_zone" "internal" {
 # Monitoring
 #-----------------------------------------------
 data "azurerm_resource_group" "monitoring_rg" {
-  name     = local.monitoring_rg_name
+  name = local.monitoring_rg_name
 }
 
 data "azurerm_application_insights" "app_insights" {
@@ -77,5 +77,3 @@ data "azuread_group" "adgroup_externals" {
 data "azuread_group" "adgroup_security" {
   display_name = "${local.product}-adgroup-security"
 }
-
-

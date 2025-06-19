@@ -42,6 +42,6 @@ keycloak_pgflex_params = {
 }
 
 keycloak_configuration = {
-    replica_count_min = 1
-    replica_count_max = 2
+  replica_count_min = 1
+  replica_count_max = 2
 }

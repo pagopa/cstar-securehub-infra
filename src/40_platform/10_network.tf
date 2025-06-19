@@ -52,15 +52,15 @@ module "container_app_private_endpoint_snet" {
 }
 
 module "data_postgres_flexible_snet" {
-  source                                        = "./.terraform/modules/__v4__/IDH/subnet"
-  name                                          = "${local.project}-postgres-snet"
-  resource_group_name                           = data.azurerm_virtual_network.vnet_data.resource_group_name
-  virtual_network_name                          = data.azurerm_virtual_network.vnet_data.name
-  service_endpoints                             = ["Microsoft.Storage"]
+  source               = "./.terraform/modules/__v4__/IDH/subnet"
+  name                 = "${local.project}-postgres-snet"
+  resource_group_name  = data.azurerm_virtual_network.vnet_data.resource_group_name
+  virtual_network_name = data.azurerm_virtual_network.vnet_data.name
+  service_endpoints    = ["Microsoft.Storage"]
 
   idh_resource_tier = "postgres_flexible"
-  product_name = var.prefix
-  env = var.env
+  product_name      = var.prefix
+  env               = var.env
 }
 
 #----------------------------------------------------------------

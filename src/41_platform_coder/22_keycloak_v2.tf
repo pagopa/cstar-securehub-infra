@@ -55,8 +55,8 @@ resource "kubernetes_config_map" "keycloak_config" {
     namespace = kubernetes_namespace.keycloak.metadata[0].name
   }
   data = {
-    KC_HEALTH_ENABLED  = "true"
-    KC_METRICS_ENABLED = "true"
+    KC_HEALTH_ENABLED    = "true"
+    KC_METRICS_ENABLED   = "true"
     KC_DB_URL_PROPERTIES = "sslmode=require"
   }
 }
@@ -84,17 +84,17 @@ resource "helm_release" "keycloak" {
 
   values = [
     templatefile("${path.module}/k8s/keycloak/values.yaml.tpl", {
-      postgres_db_host         = module.keycloak_pgflex.fqdn
-      postgres_db_port         = "5432"
-      postgres_db_username     = module.keycloak_pgflex.administrator_login
-      postgres_db_name         = local.keycloak_db_name
-      keycloak_admin_username   = azurerm_key_vault_secret.keycloak_admin_username.value
-      keycloak_ingress_hostname = local.keycloak_ingress_hostname
-      ingress_tls_secret_name  = replace(local.keycloak_ingress_hostname, ".", "-")
-      replica_count_min        = var.keycloak_configuration.replica_count_min
-      replica_count_max        = var.keycloak_configuration.replica_count_max
+      postgres_db_host            = module.keycloak_pgflex.fqdn
+      postgres_db_port            = "5432"
+      postgres_db_username        = module.keycloak_pgflex.administrator_login
+      postgres_db_name            = local.keycloak_db_name
+      keycloak_admin_username     = azurerm_key_vault_secret.keycloak_admin_username.value
+      keycloak_ingress_hostname   = local.keycloak_ingress_hostname
+      ingress_tls_secret_name     = replace(local.keycloak_ingress_hostname, ".", "-")
+      replica_count_min           = var.keycloak_configuration.replica_count_min
+      replica_count_max           = var.keycloak_configuration.replica_count_max
       realm_admin_import_filename = "admin_realm.json"
-      force_deploy_version       = "v2"
+      force_deploy_version        = "v2"
     })
   ]
   depends_on = [

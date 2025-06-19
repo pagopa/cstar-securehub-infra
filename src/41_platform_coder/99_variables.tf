@@ -101,8 +101,8 @@ variable "keycloak_pgflex_params" {
 }
 
 variable "keycloak_configuration" {
-    type = object({
-        replica_count_min         = number
-        replica_count_max         = number
-    })
+  type = object({
+    replica_count_min = number
+    replica_count_max = number
+  })
 }
