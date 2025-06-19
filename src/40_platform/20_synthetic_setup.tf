@@ -5,7 +5,7 @@ resource "azurerm_resource_group" "synthetic_rg" {
   name     = "${local.project}-synthetic-rg"
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_log_analytics_workspace" "synthetic_log_analytics_workspace" {
@@ -16,7 +16,7 @@ resource "azurerm_log_analytics_workspace" "synthetic_log_analytics_workspace" {
   retention_in_days   = var.monitoring_law_retention_in_days
   daily_quota_gb      = var.monitoring_law_daily_quota_gb
 
-  tags = var.tags
+  tags = module.tag_config.tags
 
   lifecycle {
     ignore_changes = [
@@ -34,7 +34,7 @@ resource "azurerm_application_insights" "synthetic_application_insights" {
 
   workspace_id = azurerm_log_analytics_workspace.synthetic_log_analytics_workspace.id
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_container_app_environment" "synthetic_cae" {

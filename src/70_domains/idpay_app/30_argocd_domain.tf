@@ -36,6 +36,10 @@ locals {
       "idpay-kafka-connect" = {
         name          = "idpay-kafka-connect"
         target_branch = "main"
+      },
+      "idpay-asset-register-backend" = {
+        name          = "idpay-asset-register-backend"
+        target_branch = "main"
       }
     }
     "mid" = {
@@ -147,9 +151,6 @@ resource "argocd_application" "domain_argocd_applications" {
             }
             serviceAccount : {
               name : data.azurerm_key_vault_secret.workload_identity_service_account_name.value
-            }
-            envSecret : {
-              AZURE_CLIENT_ID : local.secret_name_idpay_workload_identity_client_id
             }
           }
         })

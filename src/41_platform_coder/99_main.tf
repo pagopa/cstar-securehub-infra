@@ -8,7 +8,19 @@ terraform {
     }
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~> 4"
+      version = "~> 4.32.0"
+    }
+    kubernetes = {
+      source  = "hashicorp/kubernetes"
+      version = "~> 2.0"
+    }
+    null = {
+      source  = "hashicorp/null"
+      version = "~> 3.0"
+    }
+    helm = {
+      source  = "hashicorp/helm"
+      version = "~> 2"
     }
   }
 
@@ -30,4 +42,14 @@ data "azurerm_client_config" "current" {}
 module "__v4__" {
   # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v7.2.0
   source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=5c38b6fc6e2aa2c2c3e94be5dd6bb6ee8d690a49"
+}
+
+provider "kubernetes" {
+  config_path = "${var.k8s_kube_config_path_prefix}/config-${local.aks_name}"
+}
+
+provider "helm" {
+  kubernetes {
+    config_path = "${var.k8s_kube_config_path_prefix}/config-${local.aks_name}"
+  }
 }

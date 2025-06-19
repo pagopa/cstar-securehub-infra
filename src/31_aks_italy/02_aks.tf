@@ -2,9 +2,8 @@ resource "azurerm_resource_group" "aks_rg" {
   name     = "${local.project}-aks-rg"
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
-
 
 module "aks" {
   source = "./.terraform/modules/__v4__/kubernetes_cluster"
@@ -93,18 +92,5 @@ module "aks" {
 
   microsoft_defender_log_analytics_workspace_id = var.env == "prod" ? data.azurerm_log_analytics_workspace.log_analytics.id : null
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
-
-# TODO: ACR Needs to be created firts
-# data "azurerm_container_registry" "acr" {
-#   name                = local.acr_name
-#   resource_group_name = local.acr_resource_group_name
-# }
-
-# # add the role to the identity the kubernetes cluster was assigned
-# resource "azurerm_role_assignment" "aks_to_acr" {
-#   scope                = data.azurerm_container_registry.acr.id
-#   role_definition_name = "AcrPull"
-#   principal_id         = module.aks.kubelet_identity_id
-# }
