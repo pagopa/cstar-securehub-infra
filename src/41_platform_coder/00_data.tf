@@ -2,6 +2,15 @@ data "azurerm_resource_group" "platform_data" {
   name     = local.kv_core_resource_group_name
 }
 
+#------------------------------------------------
+# Azure Kubernetes Service
+#------------------------------------------------
+data "azurerm_kubernetes_cluster" "aks" {
+  name                = local.aks_name
+  resource_group_name = local.aks_resource_group_name
+}
+
+
 #-----------------------------------------------
 # Key Vault
 #-----------------------------------------------
