@@ -11,8 +11,6 @@ locals {
 module "eventhub_namespace_idpay_00" {
   source = "./.terraform/modules/__v4__/eventhub"
 
-  count = var.env == "dev" ? 1 : 0
-
   name                     = local.eventhub_00_name
   location                 = var.location
   resource_group_name      = data.azurerm_resource_group.idpay_data_rg.name
@@ -53,12 +51,11 @@ module "eventhub_namespace_idpay_00" {
 
 module "event_hub_idpay_00_configuration" {
   source = "./.terraform/modules/__v4__/eventhub_configuration"
-  count  = var.env == "dev" ? 1 : 0
 
-  event_hub_namespace_name                = module.eventhub_namespace_idpay_00[0].name
-  event_hub_namespace_resource_group_name = module.eventhub_namespace_idpay_00[0].resource_group_name
+  event_hub_namespace_name                = module.eventhub_namespace_idpay_00.name
+  event_hub_namespace_resource_group_name = module.eventhub_namespace_idpay_00.resource_group_name
 
-  eventhubs = var.eventhubs_idpay
+  eventhubs = local.eventhubs_idpay_00
 
   depends_on = [
     module.eventhub_namespace_idpay_00
@@ -67,10 +64,10 @@ module "event_hub_idpay_00_configuration" {
 
 #tfsec:ignore:AZU023
 resource "azurerm_key_vault_secret" "event_hub_idpay_00_primary_connection_string" {
-  for_each = var.env == "dev" ? module.event_hub_idpay_00_configuration[0].key_ids : {}
+  for_each = module.event_hub_idpay_00_configuration.key_ids
 
   name         = format("evh-%s-%s-idpay-00", replace(each.key, ".", "-"), "jaas-config")
-  value        = format(local.jaas_config_template_idpay, module.event_hub_idpay_00_configuration[0].keys[each.key].primary_connection_string)
+  value        = format(local.jaas_config_template_idpay, module.event_hub_idpay_00_configuration.keys[each.key].primary_connection_string)
   content_type = "text/plain"
 
   key_vault_id = data.azurerm_key_vault.domain_kv.id
@@ -129,12 +126,11 @@ module "event_hub_idpay_01_configuration" {
   count = var.enable.idpay.eventhub_idpay_01 ? 1 : 0
 
   source = "./.terraform/modules/__v4__/eventhub_configuration"
-  # source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//eventhub_configuration?ref=PAYMCLOUD-344-v-4-event-hub-revisione-modulo-v-4"
 
   event_hub_namespace_name                = module.eventhub_namespace_idpay_01[0].name
   event_hub_namespace_resource_group_name = module.eventhub_namespace_idpay_01[0].resource_group_name
 
-  eventhubs = var.eventhubs_idpay_01
+  eventhubs = local.eventhubs_idpay_01
 
   depends_on = [
     module.eventhub_namespace_idpay_01
@@ -143,7 +139,7 @@ module "event_hub_idpay_01_configuration" {
 
 #tfsec:ignore:AZU023
 resource "azurerm_key_vault_secret" "event_hub_idpay_01_primary_connection_string" {
-  for_each = var.env == "dev" ? module.event_hub_idpay_01_configuration[0].key_ids : {}
+  for_each = module.event_hub_idpay_01_configuration[0].key_ids
 
   name         = format("evh-%s-%s-idpay-01", replace(each.key, ".", "-"), "jaas-config")
   value        = format(local.jaas_config_template_idpay, module.event_hub_idpay_01_configuration[0].keys[each.key].primary_connection_string)
@@ -202,15 +198,13 @@ module "eventhub_namespace_rdb" {
 }
 
 module "event_hub_idpay_rdb_configuration" {
-
-  count = var.enable.idpay.eventhub_rdb ? 1 : 0
-
   source = "./.terraform/modules/__v4__/eventhub_configuration"
+  count  = var.enable.idpay.eventhub_rdb ? 1 : 0
 
   event_hub_namespace_name                = module.eventhub_namespace_rdb[0].name
   event_hub_namespace_resource_group_name = module.eventhub_namespace_rdb[0].resource_group_name
 
-  eventhubs = var.eventhubs_rdb
+  eventhubs = local.eventhubs_rdb
 
   depends_on = [
     module.eventhub_namespace_rdb
@@ -220,7 +214,7 @@ module "event_hub_idpay_rdb_configuration" {
 
 #tfsec:ignore:AZU023
 resource "azurerm_key_vault_secret" "event_hub_idpay_rdb_primary_connection_string" {
-  for_each = var.env == "dev" ? module.event_hub_idpay_rdb_configuration[0].key_ids : {}
+  for_each = module.event_hub_idpay_rdb_configuration[0].key_ids
 
   name         = format("evh-%s-%s-idpay-rdb", replace(each.key, ".", "-"), "jaas-config")
   value        = format(local.jaas_config_template_idpay, module.event_hub_idpay_rdb_configuration[0].keys[each.key].primary_connection_string)

@@ -1,30 +1,28 @@
 #
 # Storage for refunds API
 #
-#tfsec:ignore:azure-storage-default-action-deny
-module "idpay_refund_storage" {
-  source = "./.terraform/modules/__v4__/storage_account"
 
-  name                = replace("${local.project}-refund-sa", "-", "")
-  resource_group_name = data.azurerm_resource_group.idpay_data_rg.name
+module "storage_idpay_refund" {
+  source = "./.terraform/modules/__v4__/IDH/storage_account"
+
+  # General
+  product_name        = var.prefix
+  env                 = var.env
   location            = var.location
-  account_kind        = "StorageV2"
-  account_tier        = "Standard"
+  resource_group_name = local.data_rg
+  tags                = module.tag_config.tags
 
-  account_replication_type        = var.storage_account_settings.replication_type
-  access_tier                     = "Hot"
-  blob_versioning_enabled         = var.storage_account_settings.enable_versioning
-  advanced_threat_protection      = var.storage_account_settings.advanced_threat_protection_enabled
-  allow_nested_items_to_be_public = false
-  public_network_access_enabled   = false
+  # IDH Resources
+  idh_resource_tier = var.env_short != "prod" ? "basic" : "??"
 
-  blob_delete_retention_days = var.storage_account_settings.delete_retention_days
+  # Storage Account Settings
+  name   = replace("${local.project}-refund-sa", "-", "")
+  domain = var.domain
 
-  private_endpoint_enabled  = true
-  private_dns_zone_blob_ids = [data.azurerm_private_dns_zone.storage_account_blob.id]
-  subnet_id                 = module.private_endpoint_storage_snet.id
+  # Network
+  private_dns_zone_blob_ids  = [data.azurerm_private_dns_zone.blob_storage.id]
+  private_endpoint_subnet_id = module.private_endpoint_storage_snet.id
 
-  tags = module.tag_config.tags
 }
 
 #
@@ -41,7 +39,7 @@ locals {
 resource "azurerm_storage_container" "idpay" {
   for_each              = toset(local.idpay_containers)
   name                  = each.value
-  storage_account_id    = module.idpay_refund_storage.id
+  storage_account_id    = module.storage_idpay_refund.id
   container_access_type = "private"
 }
 
@@ -50,9 +48,9 @@ resource "azurerm_storage_container" "idpay" {
 #
 locals {
   refund_secrets = {
-    "refund-storage-access-key"             = module.idpay_refund_storage.primary_access_key
-    "refund-storage-connection-string"      = module.idpay_refund_storage.primary_connection_string
-    "refund-storage-blob-connection-string" = module.idpay_refund_storage.primary_blob_connection_string
+    "refund-storage-access-key"             = module.storage_idpay_refund.primary_access_key
+    "refund-storage-connection-string"      = module.storage_idpay_refund.primary_connection_string
+    "refund-storage-blob-connection-string" = module.storage_idpay_refund.primary_blob_connection_string
   }
 }
 

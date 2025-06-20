@@ -1,30 +1,25 @@
-#
-# Storage for Audit Logs Data
-#
-module "idpay_audit_storage" {
-  source = "./.terraform/modules/__v4__/storage_account"
+module "storage_idpay_audit" {
+  source = "./.terraform/modules/__v4__/IDH/storage_account"
 
-  name                = replace("${local.project}-audit-sa", "-", "")
-  resource_group_name = data.azurerm_resource_group.idpay_data_rg.name
+  # General
+  product_name        = var.prefix
+  env                 = var.env
   location            = var.location
-  account_kind        = "StorageV2"
-  account_tier        = "Standard"
+  resource_group_name = local.data_rg
+  tags                = module.tag_config.tags
 
-  access_tier                     = "Hot"
-  account_replication_type        = var.storage_account_settings.replication_type
-  blob_versioning_enabled         = var.storage_account_settings.enable_versioning
-  advanced_threat_protection      = var.storage_account_settings.advanced_threat_protection_enabled
-  allow_nested_items_to_be_public = false
-  public_network_access_enabled   = false
+  # IDH Resources
+  idh_resource_tier = var.env_short != "prod" ? "basic" : "??"
 
-  blob_delete_retention_days = var.storage_account_settings.delete_retention_days
+  # Storage Account Settings
+  name   = replace("${local.project}-audit-sa", "-", "")
+  domain = var.domain
 
-  private_endpoint_enabled   = true
-  private_dns_zone_blob_ids  = [data.azurerm_private_dns_zone.storage_account_blob.id]
+  # Network
+  private_dns_zone_blob_ids  = [data.azurerm_private_dns_zone.blob_storage.id]
   private_dns_zone_table_ids = [data.azurerm_private_dns_zone.storage_account_table.id]
-  subnet_id                  = module.private_endpoint_storage_snet.id
+  private_endpoint_subnet_id = module.private_endpoint_storage_snet.id
 
-  tags = module.tag_config.tags
 }
 
 #
@@ -37,10 +32,11 @@ locals {
 }
 
 resource "azurerm_storage_container" "idpay_audit_container" {
-  for_each              = local.idpay_audit_containers
+  for_each = local.idpay_audit_containers
+
   name                  = each.key
   container_access_type = each.value
-  storage_account_id    = module.idpay_audit_storage.id
+  storage_account_id    = module.storage_idpay_audit.id
 }
 
 #
@@ -50,8 +46,11 @@ resource "azurerm_log_analytics_linked_storage_account" "idpay_audit_analytics_l
   data_source_type      = "CustomLogs"
   resource_group_name   = data.azurerm_log_analytics_workspace.log_analytics.resource_group_name
   workspace_resource_id = data.azurerm_log_analytics_workspace.log_analytics.id
-  storage_account_ids   = [module.idpay_audit_storage.id]
-  depends_on            = [module.idpay_audit_storage]
+  storage_account_ids   = [module.storage_idpay_audit.id]
+
+  depends_on = [
+    module.storage_idpay_audit
+  ]
 }
 
 resource "azapi_resource" "idpay_audit_log_table" {
@@ -82,12 +81,12 @@ resource "azurerm_log_analytics_data_export_rule" "idpay_audit_analytics_export_
   name                    = "${local.project}-audit-export-rule"
   resource_group_name     = data.azurerm_log_analytics_workspace.log_analytics.resource_group_name
   workspace_resource_id   = data.azurerm_log_analytics_workspace.log_analytics.id
-  destination_resource_id = module.idpay_audit_storage.id
+  destination_resource_id = module.storage_idpay_audit.id
   table_names             = ["IdPayAuditLog_CL"]
   enabled                 = true
 
   depends_on = [
-    module.idpay_audit_storage,
+    module.storage_idpay_audit,
     azurerm_log_analytics_linked_storage_account.idpay_audit_analytics_linked_storage,
     azapi_resource.idpay_audit_log_table
   ]
@@ -100,7 +99,7 @@ resource "null_resource" "idpay_audit_legal_hold_configuration" {
   count = var.env != "dev" ? 1 : 0
 
   triggers = {
-    account_name = module.idpay_audit_storage.name
+    account_name = module.storage_idpay_audit.name
   }
 
   provisioner "local-exec" {
@@ -125,7 +124,7 @@ resource "null_resource" "idpay_audit_legal_hold_configuration" {
   }
 
   depends_on = [
-    module.idpay_audit_storage,
+    module.storage_idpay_audit,
     azurerm_log_analytics_data_export_rule.idpay_audit_analytics_export_rule,
     azurerm_storage_container.idpay_audit_container
   ]

@@ -1,6 +1,7 @@
 
 # Collections
 locals {
+
   ###
   ### Collection IDPAY
   ###

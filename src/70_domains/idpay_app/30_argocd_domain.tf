@@ -189,12 +189,3 @@ resource "argocd_application" "domain_argocd_applications" {
     }
   }
 }
-
-#
-# 🔒 secrets
-#
-resource "azurerm_key_vault_secret" "argocd_server_url" {
-  name         = "argocd-server-url"
-  key_vault_id = data.azurerm_key_vault.key_vault_domain.id
-  value        = local.argocd_internal_url
-}
