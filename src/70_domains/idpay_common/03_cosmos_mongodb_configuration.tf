@@ -1,7 +1,11 @@
 
 # Collections
 locals {
-  collections = [
+
+  ###
+  ### Collection IDPAY
+  ###
+  collections_idpay = [
     {
       name = "onboarding_citizen"
       indexes = [{
@@ -689,6 +693,9 @@ locals {
       ]
     }
   ]
+  ###
+  ### Collection RDB
+  ###
   collections_rdb = [
     {
       name = "role_permission"
@@ -707,6 +714,15 @@ locals {
           unique = true
         }
       ]
+    },
+    {
+      name = "upload_csv"
+      indexes = [
+        {
+          keys   = ["_id"]
+          unique = true
+        }
+      ]
     }
   ]
 }
@@ -715,10 +731,9 @@ locals {
 # Database idpay
 #
 resource "azurerm_cosmosdb_mongo_database" "idpay" {
-
   name                = "idpay"
   resource_group_name = data.azurerm_resource_group.idpay_data_rg.name
-  account_name        = module.idpay_cosmos_mongodb_account.name
+  account_name        = module.cosmos_db_account.name
 
   throughput = var.cosmos_mongo_db_idpay_params.throughput
 
@@ -741,10 +756,9 @@ resource "azurerm_cosmosdb_mongo_database" "idpay" {
 #
 
 resource "azurerm_cosmosdb_mongo_database" "rdb" {
-
   name                = "rdb"
   resource_group_name = data.azurerm_resource_group.idpay_data_rg.name
-  account_name        = module.idpay_cosmos_mongodb_account.name
+  account_name        = module.cosmos_db_account.name
 
   throughput = var.cosmos_mongo_db_idpay_params.throughput
 
@@ -766,16 +780,15 @@ resource "azurerm_cosmosdb_mongo_database" "rdb" {
 # Collection idpay
 #
 resource "azurerm_cosmosdb_mongo_collection" "mongodb_collections_idpay" {
-
   for_each = {
-    for index, coll in local.collections :
+    for index, coll in local.collections_idpay :
     coll.name => coll
   }
 
   name                = each.value.name
   resource_group_name = data.azurerm_resource_group.idpay_data_rg.name
 
-  account_name  = module.idpay_cosmos_mongodb_account.name
+  account_name  = module.cosmos_db_account.name
   database_name = azurerm_cosmosdb_mongo_database.idpay.name
 
   dynamic "index" {
@@ -819,7 +832,7 @@ resource "azurerm_cosmosdb_mongo_collection" "mongodb_collections_rdb" {
   name                = each.value.name
   resource_group_name = data.azurerm_resource_group.idpay_data_rg.name
 
-  account_name  = module.idpay_cosmos_mongodb_account.name
+  account_name  = module.cosmos_db_account.name
   database_name = azurerm_cosmosdb_mongo_database.rdb.name
 
   dynamic "index" {

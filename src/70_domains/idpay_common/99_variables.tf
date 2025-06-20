@@ -66,74 +66,13 @@ variable "location_short_weu" {
   description = "One of wue, neu"
 }
 
-variable "tags" {
-  type = map(any)
-  default = {
-    CreatedBy = "Terraform"
-  }
-}
-
 #
 # 🛜 Network
 #
-variable "cidr_idpay_data_cosmos" {
-  type        = list(string)
-  description = "Cosmos subnet network address space."
-}
-
-variable "cidr_idpay_data_eventhub" {
-  type        = list(string)
-  description = "Eventhub subnet network address space."
-}
-
-variable "cidr_idpay_data_redis" {
-  type        = list(string)
-  description = "Redis subnet network address space."
-}
-
-variable "cidr_idpay_data_storage" {
-  type        = list(string)
-  description = "Storage subnet network address space."
-}
 
 variable "dns_zone_internal_prefix" {
   type        = string
   description = "The dns subdomain."
-}
-
-#
-#
-#
-variable "rtd_keyvault" {
-  type = object({
-    name           = string
-    resource_group = string
-  })
-}
-
-variable "cosmos_mongo_account_params" {
-  type = object({
-    enabled        = bool
-    capabilities   = list(string)
-    offer_type     = string
-    server_version = string
-    consistency_policy = object({
-      consistency_level       = string
-      max_interval_in_seconds = number
-      max_staleness_prefix    = number
-    })
-    main_geo_location_zone_redundant = bool
-    enable_free_tier                 = bool
-    additional_geo_locations = list(object({
-      location          = string
-      failover_priority = number
-      zone_redundant    = bool
-    }))
-    private_endpoint_enabled          = bool
-    public_network_access_enabled     = bool
-    is_virtual_network_filter_enabled = bool
-    backup_continuous_enabled         = bool
-  })
 }
 
 variable "cosmos_mongo_db_idpay_params" {
@@ -152,15 +91,6 @@ variable "external_domain" {
 variable "dns_zone_prefix" {
   type        = string
   description = "The dns subdomain."
-}
-
-variable "ns_dns_records_welfare" {
-  type = list(object({
-    name    = string
-    records = list(string)
-  }))
-  description = "ns records to delegate the dns zone into the subscription/env."
-  default     = []
 }
 
 #CDN
@@ -207,57 +137,6 @@ variable "ehns_auto_inflate_enabled" {
   # default     = false
 }
 
-variable "eventhubs_idpay" {
-  description = "A list of event hubs to add to namespace for IDPAY application."
-  type = list(object({
-    name              = string
-    partitions        = number
-    message_retention = number
-    consumers         = list(string)
-    keys = list(object({
-      name   = string
-      listen = bool
-      send   = bool
-      manage = bool
-    }))
-  }))
-  # default = []
-}
-
-variable "eventhubs_rdb" {
-  description = "A list of event hubs to add to namespace for IDPAY Asset register application."
-  type = list(object({
-    name              = string
-    partitions        = number
-    message_retention = number
-    consumers         = list(string)
-    keys = list(object({
-      name   = string
-      listen = bool
-      send   = bool
-      manage = bool
-    }))
-  }))
-  # default = []
-}
-
-variable "eventhubs_idpay_01" {
-  description = "A list of event hubs to add to namespace for IDPAY application."
-  type = list(object({
-    name              = string
-    partitions        = number
-    message_retention = number
-    consumers         = list(string)
-    keys = list(object({
-      name   = string
-      listen = bool
-      send   = bool
-      manage = bool
-    }))
-  }))
-  # default = []
-}
-
 variable "ehns_alerts_enabled" {
   type = bool
   # default     = true
@@ -293,16 +172,6 @@ EOD
   }))
 }
 
-#Redis
-variable "redis_params" {
-  type = object({
-    capacity = number
-    family   = string
-    sku_name = string
-  })
-  description = "Redis configuration parameters"
-}
-
 variable "service_bus_namespace" {
   type = object({
     sku = string
@@ -328,14 +197,6 @@ variable "enable" {
   }
 }
 
-variable "aks_vnet" {
-  type = object({
-    name           = string
-    resource_group = string
-    subnet         = string
-  })
-}
-
 variable "idpay_cdn_sa_advanced_threat_protection_enabled" {
   type = bool
   # default = false
@@ -354,26 +215,7 @@ variable "selfcare_welfare_cdn_storage_account_replication_type" {
 #
 # AKS
 #
-variable "aks_resource_group_name" {
-  type        = string
-  description = "(Required) Resource group of the Kubernetes cluster."
-}
-
-variable "aks_name" {
-  type        = string
-  description = "(Required) Name of the Kubernetes cluster."
-}
-
 variable "k8s_kube_config_path_prefix" {
   type    = string
   default = "~/.kube"
-}
-
-variable "storage_account_settings" {
-  type = object({
-    replication_type                   = string
-    delete_retention_days              = number
-    enable_versioning                  = bool
-    advanced_threat_protection_enabled = bool
-  })
 }
