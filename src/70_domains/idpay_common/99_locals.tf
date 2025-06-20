@@ -19,6 +19,8 @@ locals {
   idpay_kv_name    = "${local.project}-kv"
   idpay_kv_rg_name = "${local.project}-security-rg"
 
+  kv_core_name                = "${local.product_no_domain}-core-kv"
+  kv_core_resource_group_name = "${local.product_no_domain}-core-sec-rg"
   #
   # AKS
   #
