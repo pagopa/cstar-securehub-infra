@@ -73,6 +73,6 @@ provider "argocd" {
 
 provider "keycloak" {
   client_id     = "terraform"
-  client_secret = ""
-  url           = "http://localhost:8080"
+  client_secret = data.azurerm_key_vault_secret.terraform_client_secret_for_keycloak.value
+  url           = data.azurerm_key_vault_secret.keycloak_url.value
   }
