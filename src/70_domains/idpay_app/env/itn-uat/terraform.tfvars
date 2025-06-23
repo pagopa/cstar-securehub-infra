@@ -29,7 +29,7 @@ aks_vmss_name           = "aks-cstuat01usr-39999986-vmss"
 aks_cluster_domain_name = "uat01"
 
 ingress_load_balancer_ip = "10.11.100.250"
-ingress_domain_hostname  = "uat01.idpay.internal.uat.cstar.pagopa.it"
+ingress_domain_hostname  = "idpay.itn.internal.uat.cstar.pagopa.it"
 reverse_proxy_be_io      = "10.1.0.250"
 
 #
@@ -90,17 +90,6 @@ io_manage_backend_base_url = "https://api.io.pagopa.it" #"https://api-io.uat.cst
 # ONE TRUST API
 #
 one_trust_privacynotice_base_url = "https://app-de.onetrust.com/api/privacynotice/v2"
-
-#
-# TLS Checker
-#
-# chart releases: https://github.com/pagopa/aks-microservice-chart-blueprint/releases
-# image tags: https://github.com/pagopa/infra-ssl-check/releases
-tls_cert_check_helm = {
-  chart_version = "1.21.0"
-  image_name    = "ghcr.io/pagopa/infra-ssl-check"
-  image_tag     = "v1.2.2@sha256:22f4b53177cc8891bf10cbd0deb39f60e1cd12877021c3048a01e7738f63e0f9"
-}
 
 # Storage
 storage_delete_retention_days = 5
