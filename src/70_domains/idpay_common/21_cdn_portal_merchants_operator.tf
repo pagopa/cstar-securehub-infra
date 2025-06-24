@@ -1,7 +1,7 @@
 locals {
   selfare_merchant_op_temp_suffix = "-italy"
   spa_merchant_op = [
-    for i, spa_merchant_op in var.single_page_applications_asset_register_roots_dirs :
+    for i, spa_merchant_op in var.single_page_applications_portal_merchants_operator_roots_dirs :
     {
       name  = replace(replace("SPA-${spa_merchant_op}", "-", ""), "/", "0")
       order = i + 3 // +3 required because the order start from 1: 1 is reserved for default application redirect; 2 is reserved for the https rewrite;
@@ -46,7 +46,7 @@ module "cdn_idpay_portalmerchantsoperator" {
   hostname              = "portaleesercenti.${data.azurerm_dns_zone.public_cstar.name}"
   https_rewrite_enabled = true
 
-  storage_account_name             = "${local.project}regcdnsa"
+  storage_account_name             = "${local.project}regcdnsa" # TODO fix
   storage_account_replication_type = var.idpay_cdn_storage_account_replication_type
   index_document                   = "index.html"
   error_404_document               = "error.html"
