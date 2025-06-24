@@ -18,6 +18,7 @@ locals {
   network_rg              = "${local.project_core}-network-rg"
   vnet_spoke_data_rg_name = "${local.project_core}-network-rg"
   vnet_spoke_data_name    = "${local.project_core}-spoke-data-vnet"
+  vnet_spoke_compute_name    = "${local.project_core}-spoke-compute-vnet"
 
   public_dns_zone_name = "${var.dns_zone_prefix}.${var.external_domain}"
 

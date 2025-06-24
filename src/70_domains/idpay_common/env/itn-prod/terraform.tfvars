@@ -64,3 +64,18 @@ single_page_applications_roots_dirs = [
 single_page_applications_asset_register_roots_dirs = [
   "registro-dei-beni"
 ]
+
+#----------------------------------------------------------------
+# AKS
+#----------------------------------------------------------------
+aks_nodepool_blue = {
+    autoscale_enabled = true
+    node_count_min  = 1
+    node_count_max  = 3
+}
+
+aks_nodepool_blue = {
+    autoscale_enabled = false
+    node_count_min  = 0
+    node_count_max  = 0
+}
