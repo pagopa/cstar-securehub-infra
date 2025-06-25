@@ -37,7 +37,7 @@ locals {
 module "cdn_idpay_portalmerchantsoperator" {
   source = "./.terraform/modules/__v4__/cdn"
 
-  name                = "portal-merchants-operator"
+  name                = "portal-merchants-op"
   prefix              = local.project_weu
   resource_group_name = data.azurerm_resource_group.idpay_data_rg.name
   location            = var.location
@@ -46,7 +46,7 @@ module "cdn_idpay_portalmerchantsoperator" {
   hostname              = "portaleesercenti.${data.azurerm_dns_zone.public_cstar.name}"
   https_rewrite_enabled = true
 
-  storage_account_name             = "${local.project}merchantsregcdnsa"
+  storage_account_name             = "${local.project}meropcdnsa"
   storage_account_replication_type = var.idpay_cdn_storage_account_replication_type
   index_document                   = "index.html"
   error_404_document               = "error.html"
