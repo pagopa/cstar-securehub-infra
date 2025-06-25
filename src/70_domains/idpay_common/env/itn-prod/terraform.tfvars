@@ -70,15 +70,15 @@ single_page_applications_asset_register_roots_dirs = [
 # AKS
 #----------------------------------------------------------------
 aks_nodepool_blue = {
-    vm_sku_name = "Standard_D8ads_v5_active"
-    autoscale_enabled = true
-    node_count_min  = 1
-    node_count_max  = 3
+  vm_sku_name       = "Standard_D8ads_v5_active"
+  autoscale_enabled = true
+  node_count_min    = 1
+  node_count_max    = 3
 }
 
 aks_nodepool_green = {
-    vm_sku_name = "Standard_D8ads_v5_passive"
-    autoscale_enabled = false
-    node_count_min  = 0
-    node_count_max  = 0
+  vm_sku_name       = "Standard_D8ads_v5_passive"
+  autoscale_enabled = false
+  node_count_min    = 0
+  node_count_max    = 0
 }
