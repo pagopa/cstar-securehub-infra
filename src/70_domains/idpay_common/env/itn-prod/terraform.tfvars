@@ -74,7 +74,7 @@ aks_nodepool_blue = {
     node_count_max  = 3
 }
 
-aks_nodepool_blue = {
+aks_nodepool_green = {
     autoscale_enabled = false
     node_count_min  = 0
     node_count_max  = 0
