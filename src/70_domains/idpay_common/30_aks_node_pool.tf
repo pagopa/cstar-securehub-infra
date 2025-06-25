@@ -7,7 +7,7 @@ module "aks_idpay_node_pool_blue" {
   tags                = module.tag_config.tags
 
   # IDH Resources
-  idh_resource_tier = var.env != "dev" ? "Standard_D8ads_v5" : "Standard_B8ms"
+  idh_resource_tier = var.aks_nodepool_blue.vm_sku_name
 
   # Storage Account Settings
   name   = "cs${var.env_short}idpblue"
@@ -30,7 +30,7 @@ module "aks_idpay_node_pool_green" {
   tags                = module.tag_config.tags
 
   # IDH Resources
-  idh_resource_tier = var.env != "dev" ? "Standard_D8ads_v5" : "Standard_B8ms"
+  idh_resource_tier = var.aks_nodepool_green.vm_sku_name
 
   # Storage Account Settings
   name   = "cs${var.env_short}idpgreen"
