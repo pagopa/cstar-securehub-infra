@@ -46,7 +46,7 @@ module "cdn_idpay_portalmerchantsoperator" {
   hostname              = "portaleesercenti.${data.azurerm_dns_zone.public_cstar.name}"
   https_rewrite_enabled = true
 
-  storage_account_name             = "${local.project}regcdnsa" # TODO fix
+  storage_account_name             = "${local.project}merchantsregcdnsa" # TODO fix
   storage_account_replication_type = var.idpay_cdn_storage_account_replication_type
   index_document                   = "index.html"
   error_404_document               = "error.html"
