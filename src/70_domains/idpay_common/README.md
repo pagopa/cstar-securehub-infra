@@ -28,7 +28,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | c3d420cd3d64163cd912cc40bdedb99900c8ddef |
+| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | 0a7c2d5439660df28f2154eb86f5a8af0bbe8892 |
 | <a name="module_aks_idpay_node_pool_blue"></a> [aks\_idpay\_node\_pool\_blue](#module\_aks\_idpay\_node\_pool\_blue) | git::https://github.com/pagopa/terraform-azurerm-v4.git//IDH/aks_node_pool | PAYMCLOUD-449-idh-node-pool-aks |
 | <a name="module_aks_idpay_node_pool_green"></a> [aks\_idpay\_node\_pool\_green](#module\_aks\_idpay\_node\_pool\_green) | git::https://github.com/pagopa/terraform-azurerm-v4.git//IDH/aks_node_pool | PAYMCLOUD-449-idh-node-pool-aks |
 | <a name="module_aks_overlay_snet"></a> [aks\_overlay\_snet](#module\_aks\_overlay\_snet) | ./.terraform/modules/__v4__/IDH/subnet | n/a |
