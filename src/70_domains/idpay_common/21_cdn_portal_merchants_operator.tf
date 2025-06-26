@@ -1,23 +1,23 @@
 locals {
   selfare_merchant_op_temp_suffix = "-italy"
-  spa_merchant_op                 = [
+  spa_merchant_op = [
     for i, spa_merchant_op in var.single_page_applications_portal_merchants_operator_roots_dirs :
     {
-      name = replace(replace("SPA-${spa_merchant_op}", "-", ""), "/", "0")
+      name  = replace(replace("SPA-${spa_merchant_op}", "-", ""), "/", "0")
       order = i + 3
       // +3 required because the order start from 1: 1 is reserved for default application redirect; 2 is reserved for the https rewrite;
       conditions = [
         {
           condition_type   = "url_path_condition"
           operator         = "BeginsWith"
-          match_values = ["/${spa_merchant_op}/"]
+          match_values     = ["/${spa_merchant_op}/"]
           negate_condition = false
           transforms       = null
         },
         {
           condition_type   = "url_file_extension_condition"
           operator         = "LessThanOrEqual"
-          match_values = ["0"]
+          match_values     = ["0"]
           negate_condition = false
           transforms       = null
         },
@@ -65,9 +65,9 @@ module "cdn_idpay_portalmerchantsoperator" {
   advanced_threat_protection_enabled = var.idpay_cdn_sa_advanced_threat_protection_enabled
 
   global_delivery_rule = {
-    cache_expiration_action = []
+    cache_expiration_action       = []
     cache_key_query_string_action = []
-    modify_request_header_action = []
+    modify_request_header_action  = []
 
     # HSTS
     modify_response_header_action = [
@@ -102,7 +102,7 @@ module "cdn_idpay_portalmerchantsoperator" {
         {
           condition_type   = "url_path_condition"
           operator         = "Equal"
-          match_values = ["/"]
+          match_values     = ["/"]
           negate_condition = false
           transforms       = null
         }
@@ -113,13 +113,13 @@ module "cdn_idpay_portalmerchantsoperator" {
         preserve_unmatched_path = false
       }
     }
-  ],
+    ],
     local.spa_merchant_op
   )
 
   delivery_rule = [
     {
-      name = "robotsNoIndex"
+      name  = "robotsNoIndex"
       order = 3 + length(local.spa_merchant_op)
 
       // conditions
@@ -131,19 +131,19 @@ module "cdn_idpay_portalmerchantsoperator" {
           transforms       = null
         }
       ]
-      cookies_conditions = []
-      device_conditions = []
-      http_version_conditions = []
-      post_arg_conditions = []
-      query_string_conditions = []
-      remote_address_conditions = []
-      request_body_conditions = []
-      request_header_conditions = []
-      request_method_conditions = []
-      request_scheme_conditions = []
-      request_uri_conditions = []
+      cookies_conditions            = []
+      device_conditions             = []
+      http_version_conditions       = []
+      post_arg_conditions           = []
+      query_string_conditions       = []
+      remote_address_conditions     = []
+      request_body_conditions       = []
+      request_header_conditions     = []
+      request_method_conditions     = []
+      request_scheme_conditions     = []
+      request_uri_conditions        = []
       url_file_extension_conditions = []
-      url_file_name_conditions = []
+      url_file_name_conditions      = []
 
       // actions
       modify_response_header_actions = [
@@ -153,35 +153,35 @@ module "cdn_idpay_portalmerchantsoperator" {
           value  = "noindex, nofollow"
         }
       ]
-      cache_expiration_actions = []
+      cache_expiration_actions       = []
       cache_key_query_string_actions = []
-      modify_request_header_actions = []
-      url_redirect_actions = []
-      url_rewrite_actions = []
+      modify_request_header_actions  = []
+      url_redirect_actions           = []
+      url_rewrite_actions            = []
     },
     {
-      name = "microcomponentsNoCache"
+      name  = "microcomponentsNoCache"
       order = 4 + length(local.spa_merchant_op)
 
       // conditions
-      url_path_conditions = []
-      cookies_conditions = []
-      device_conditions = []
-      http_version_conditions = []
-      post_arg_conditions = []
-      query_string_conditions = []
-      remote_address_conditions = []
-      request_body_conditions = []
-      request_header_conditions = []
-      request_method_conditions = []
-      request_scheme_conditions = []
-      request_uri_conditions = []
+      url_path_conditions           = []
+      cookies_conditions            = []
+      device_conditions             = []
+      http_version_conditions       = []
+      post_arg_conditions           = []
+      query_string_conditions       = []
+      remote_address_conditions     = []
+      request_body_conditions       = []
+      request_header_conditions     = []
+      request_method_conditions     = []
+      request_scheme_conditions     = []
+      request_uri_conditions        = []
       url_file_extension_conditions = []
 
       url_file_name_conditions = [
         {
           operator         = "Equal"
-          match_values = ["remoteEntry.js"]
+          match_values     = ["remoteEntry.js"]
           negate_condition = false
           transforms       = null
         }
@@ -195,11 +195,11 @@ module "cdn_idpay_portalmerchantsoperator" {
           value  = "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0"
         }
       ]
-      cache_expiration_actions = []
+      cache_expiration_actions       = []
       cache_key_query_string_actions = []
-      modify_request_header_actions = []
-      url_redirect_actions = []
-      url_rewrite_actions = []
+      modify_request_header_actions  = []
+      url_redirect_actions           = []
+      url_rewrite_actions            = []
     }
   ]
 
