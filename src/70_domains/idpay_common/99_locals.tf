@@ -2,14 +2,22 @@ locals {
   product           = "${var.prefix}-${var.env_short}"
   product_no_domain = "${var.prefix}-${var.env_short}-${var.location_short}"
   project           = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
+  project_core      = "${var.prefix}-${var.env_short}-${var.location_short}-core"
   project_weu       = "${var.prefix}-${var.env_short}-${var.location_short_weu}-${var.domain}"
+
+  # Default Domain Resource Group
+  data_rg     = "${local.project}-data-rg"
+  security_rg = "${local.project}}-security-rg"
+  compute_rg  = "${local.project}}-compute-rg"
+  cicd_rg     = "${local.project}}-cicd-rg"
 
   #
   # 🌐 Network
   #
   vnet_core_rg_name       = "${local.product}-vnet-rg"
-  vnet_spoke_data_name    = "${local.product_no_domain}-core-spoke-data-vnet"
-  vnet_spoke_data_rg_name = "${local.product_no_domain}-core-network-rg"
+  network_rg              = "${local.project_core}-network-rg"
+  vnet_spoke_data_rg_name = "${local.project_core}-network-rg"
+  vnet_spoke_data_name    = "${local.project_core}-spoke-data-vnet"
 
   public_dns_zone_name = "${var.dns_zone_prefix}.${var.external_domain}"
 

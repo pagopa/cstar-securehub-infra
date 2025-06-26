@@ -256,18 +256,10 @@ variable "pm_timeout_sec" {
   default     = 5
 }
 
-#
-# Tls Checker
-#
-variable "tls_cert_check_helm" {
-  type = object({
-    chart_version = string,
-    image_name    = string,
-    image_tag     = string
-  })
-  description = "tls cert helm chart configuration"
-}
 
+#
+# Storage Account
+#
 variable "storage_account_replication_type" {
   type        = string
   description = "Defines the type of replication to use for this storage account. Valid options are LRS, GRS, RAGRS, ZRS, GZRS and RAGZRS. Changing this forces a new resource to be created when types LRS, GRS and RAGRS are changed to ZRS, GZRS or RAGZRS and vice versa"

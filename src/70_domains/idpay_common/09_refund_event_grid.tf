@@ -6,7 +6,7 @@ resource "azurerm_eventgrid_system_topic" "idpay_refund_storage_topic" {
   name                   = "${local.project}-events-refund-storage-topic"
   location               = var.location
   resource_group_name    = data.azurerm_resource_group.idpay_data_rg.name
-  source_arm_resource_id = module.idpay_refund_storage.id
+  source_arm_resource_id = module.storage_idpay_refund.id
   topic_type             = "Microsoft.Storage.StorageAccounts"
 
   identity {
@@ -53,11 +53,11 @@ resource "azurerm_eventgrid_system_topic_event_subscription" "idpay_refund_stora
 }
 
 resource "azurerm_role_assignment" "refund_storage_data_contributor" {
-  scope                = module.idpay_refund_storage.id
+  scope                = module.storage_idpay_refund.id
   role_definition_name = "Storage Blob Data Contributor"
   principal_id         = data.azurerm_api_management.apim_core.identity[0].principal_id
 
   depends_on = [
-    module.idpay_refund_storage
+    module.storage_idpay_refund
   ]
 }

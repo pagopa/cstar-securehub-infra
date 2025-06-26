@@ -1,46 +1,91 @@
-module "idpay_cosmosdb_snet" {
-  source = "./.terraform/modules/__v4__/subnet"
+module "private_endpoint_cosmos_snet" {
+  source = "./.terraform/modules/__v4__/IDH/subnet"
 
-  name                 = "${local.project}-cosmosdb-snet"
+  # General
+  product_name        = var.prefix
+  env                 = var.env
+  resource_group_name = local.network_rg
+
+  # Network
+  name                 = "${local.project}-cosmos-prv-end-snet"
   virtual_network_name = local.vnet_spoke_data_name
-  resource_group_name  = local.vnet_spoke_data_rg_name
-  address_prefixes     = var.cidr_idpay_data_cosmos
+
+  # IDH Resources
+  idh_resource_tier = "private_endpoint"
 
   service_endpoints = [
     "Microsoft.AzureCosmosDB"
   ]
 }
 
-module "idpay_eventhub_snet" {
-  source = "./.terraform/modules/__v4__/subnet"
-  # source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//subnet?ref=PAYMCLOUD-344-v-4-event-hub-revisione-modulo-v-4"
+module "private_endpoint_eventhub_snet" {
+  source = "./.terraform/modules/__v4__/IDH/subnet"
 
-  name                 = "${local.project}-eventhub-snet"
+  # General
+  product_name        = var.prefix
+  env                 = var.env
+  resource_group_name = local.network_rg
+
+  # Network
+  name                 = "${local.project}-eventhub-prv-end-snet"
   virtual_network_name = local.vnet_spoke_data_name
-  resource_group_name  = local.vnet_spoke_data_rg_name
-  address_prefixes     = var.cidr_idpay_data_eventhub
+
+  # IDH Resources
+  idh_resource_tier = "private_endpoint"
 
   service_endpoints = [
     "Microsoft.EventHub"
   ]
 }
 
-module "idpay_redis_snet" {
-  source = "./.terraform/modules/__v4__/subnet"
+module "private_endpoint_redis_snet" {
+  source = "./.terraform/modules/__v4__/IDH/subnet"
 
-  name                 = "${local.project}-redis-snet"
+  # General
+  product_name        = var.prefix
+  env                 = var.env
+  resource_group_name = local.network_rg
+
+  # Network
+  name                 = "${local.project}-redis-prv-end-snet"
   virtual_network_name = local.vnet_spoke_data_name
-  resource_group_name  = local.vnet_spoke_data_rg_name
-  address_prefixes     = var.cidr_idpay_data_redis
+
+  # IDH Resources
+  idh_resource_tier = "private_endpoint"
 }
 
-module "idpay_storage_snet" {
-  source = "./.terraform/modules/__v4__/subnet"
 
-  name                 = "${local.project}-storage-snet"
+module "private_endpoint_storage_snet" {
+  source = "./.terraform/modules/__v4__/IDH/subnet"
+
+  # General
+  product_name        = var.prefix
+  env                 = var.env
+  resource_group_name = local.network_rg
+
+  # Network
+  name                 = "${local.project}-storage-prv-end-snet"
   virtual_network_name = local.vnet_spoke_data_name
-  resource_group_name  = local.vnet_spoke_data_rg_name
-  address_prefixes     = var.cidr_idpay_data_storage
+
+  # IDH Resources
+  idh_resource_tier = "private_endpoint"
+}
+
+module "private_endpoint_service_bus_snet" {
+  source = "./.terraform/modules/__v4__/IDH/subnet"
+  count  = var.service_bus_namespace.sku == "Premium" ? 1 : 0
+
+  # General
+  product_name        = var.prefix
+  env                 = var.env
+  resource_group_name = local.network_rg
+
+  # Network
+  name                 = "${local.project}-serv-bus-prv-end-snet"
+  virtual_network_name = local.vnet_spoke_data_name
+
+  # IDH Resources
+  idh_resource_tier = "private_endpoint"
 }
 
 # 🔎 DNS

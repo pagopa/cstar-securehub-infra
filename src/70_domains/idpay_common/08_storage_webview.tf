@@ -1,27 +1,24 @@
-#tfsec:ignore:azure-storage-default-action-deny
-module "idpay_webview_storage" {
-  source = "./.terraform/modules/__v4__/storage_account"
+module "storage_idpay_webview" {
+  source = "./.terraform/modules/__v4__/IDH/storage_account"
 
-  name                = replace("${local.project}-webview-sa", "-", "")
-  resource_group_name = data.azurerm_resource_group.idpay_data_rg.name
+  # General
+  product_name        = var.prefix
+  env                 = var.env
   location            = var.location
+  resource_group_name = local.data_rg
+  tags                = module.tag_config.tags
 
-  account_kind                    = "StorageV2"
-  account_tier                    = "Standard"
-  access_tier                     = "Hot"
-  account_replication_type        = var.storage_account_settings.replication_type
-  blob_versioning_enabled         = var.storage_account_settings.enable_versioning
-  advanced_threat_protection      = var.storage_account_settings.advanced_threat_protection_enabled
-  allow_nested_items_to_be_public = false
-  public_network_access_enabled   = false
+  # IDH Resources
+  idh_resource_tier = var.env_short != "prod" ? "basic" : "??"
 
-  blob_delete_retention_days = var.storage_account_settings.delete_retention_days
+  # Storage Account Settings
+  name   = replace("${local.project}-webview-sa", "-", "")
+  domain = var.domain
 
-  private_endpoint_enabled  = true
-  private_dns_zone_blob_ids = [data.azurerm_private_dns_zone.storage_account_blob.id]
-  subnet_id                 = module.idpay_storage_snet.id
+  # Network
+  private_dns_zone_blob_ids  = [data.azurerm_private_dns_zone.blob_storage.id]
+  private_endpoint_subnet_id = module.private_endpoint_storage_snet.id
 
-  tags = module.tag_config.tags
 }
 
 #
@@ -29,7 +26,7 @@ module "idpay_webview_storage" {
 #
 resource "azurerm_storage_container" "idpay_webview_container" {
   name                  = "webview"
-  storage_account_id    = module.idpay_webview_storage.id
+  storage_account_id    = module.storage_idpay_webview.id
   container_access_type = "private"
 }
 
@@ -37,12 +34,12 @@ resource "azurerm_storage_container" "idpay_webview_container" {
 # Roles
 #
 resource "azurerm_role_assignment" "webview_storage_data_contributor" {
-  scope                = module.idpay_webview_storage.id
+  scope                = module.storage_idpay_webview.id
   role_definition_name = "Storage Blob Data Contributor"
   principal_id         = data.azurerm_api_management.apim_core.identity[0].principal_id
 
   depends_on = [
-    module.idpay_webview_storage
+    module.storage_idpay_webview
   ]
 }
 
@@ -51,8 +48,8 @@ resource "azurerm_role_assignment" "webview_storage_data_contributor" {
 #
 locals {
   webview_secrets = {
-    "webview-storage-access-key"        = module.idpay_webview_storage.primary_access_key
-    "webview-storage-connection-string" = module.idpay_webview_storage.primary_connection_string
+    "webview-storage-access-key"        = module.storage_idpay_webview.primary_access_key
+    "webview-storage-connection-string" = module.storage_idpay_webview.primary_connection_string
   }
 }
 
