@@ -20,7 +20,7 @@
 | <a name="provider_argocd"></a> [argocd](#provider\_argocd) | 7.8.2 |
 | <a name="provider_azapi"></a> [azapi](#provider\_azapi) | 2.4.0 |
 | <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 3.4.0 |
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.33.0 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.34.0 |
 | <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | 2.37.1 |
 | <a name="provider_null"></a> [null](#provider\_null) | 3.2.4 |
 
@@ -28,7 +28,10 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | c3d420cd3d64163cd912cc40bdedb99900c8ddef |
+| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | 0a7c2d5439660df28f2154eb86f5a8af0bbe8892 |
+| <a name="module_aks_idpay_node_pool_blue"></a> [aks\_idpay\_node\_pool\_blue](#module\_aks\_idpay\_node\_pool\_blue) | ./.terraform/modules/__v4__/IDH/aks_node_pool | n/a |
+| <a name="module_aks_idpay_node_pool_green"></a> [aks\_idpay\_node\_pool\_green](#module\_aks\_idpay\_node\_pool\_green) | ./.terraform/modules/__v4__/IDH/aks_node_pool | n/a |
+| <a name="module_aks_overlay_snet"></a> [aks\_overlay\_snet](#module\_aks\_overlay\_snet) | ./.terraform/modules/__v4__/IDH/subnet | n/a |
 | <a name="module_cdn_idpay_assetregister"></a> [cdn\_idpay\_assetregister](#module\_cdn\_idpay\_assetregister) | ./.terraform/modules/__v4__/cdn | n/a |
 | <a name="module_cdn_idpay_selfcare"></a> [cdn\_idpay\_selfcare](#module\_cdn\_idpay\_selfcare) | ./.terraform/modules/__v4__/cdn | n/a |
 | <a name="module_cdn_idpay_welfare"></a> [cdn\_idpay\_welfare](#module\_cdn\_idpay\_welfare) | ./.terraform/modules/__v4__/cdn | n/a |
@@ -129,6 +132,8 @@
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_aks_nodepool_blue"></a> [aks\_nodepool\_blue](#input\_aks\_nodepool\_blue) | Paramters for blue node pool | <pre>object({<br/>    vm_sku_name       = string<br/>    autoscale_enabled = optional(bool, true)<br/>    node_count_min    = number<br/>    node_count_max    = number<br/>  })</pre> | n/a | yes |
+| <a name="input_aks_nodepool_green"></a> [aks\_nodepool\_green](#input\_aks\_nodepool\_green) | Paramters for blue node pool | <pre>object({<br/>    vm_sku_name       = string<br/>    autoscale_enabled = optional(bool, true)<br/>    node_count_min    = number<br/>    node_count_max    = number<br/>  })</pre> | n/a | yes |
 | <a name="input_cosmos_mongo_db_idpay_params"></a> [cosmos\_mongo\_db\_idpay\_params](#input\_cosmos\_mongo\_db\_idpay\_params) | n/a | <pre>object({<br/>    throughput     = number<br/>    max_throughput = number<br/>  })</pre> | n/a | yes |
 | <a name="input_dns_zone_internal_prefix"></a> [dns\_zone\_internal\_prefix](#input\_dns\_zone\_internal\_prefix) | The dns subdomain. | `string` | n/a | yes |
 | <a name="input_dns_zone_prefix"></a> [dns\_zone\_prefix](#input\_dns\_zone\_prefix) | The dns subdomain. | `string` | n/a | yes |
