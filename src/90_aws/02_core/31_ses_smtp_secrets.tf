@@ -5,16 +5,16 @@ resource "aws_secretsmanager_secret" "ses_smtp" {
 }
 
 resource "aws_secretsmanager_secret_version" "ses_smtp" {
-  secret_id     = aws_secretsmanager_secret.ses_smtp.id
+  secret_id = aws_secretsmanager_secret.ses_smtp.id
   secret_string = jsonencode({
-    host                = local.ses_smtp_host,
-    port                = local.ses_smtp_port,
-    username            = aws_iam_access_key.ses_user.id,                # AccessKeyId
-    password            = aws_iam_access_key.ses_user.ses_smtp_password_v4,
-    access_key_id       = aws_iam_access_key.ses_user.id,
-    secret_access_key   = aws_iam_access_key.ses_user.secret,
-    from_address        = local.ses_from_address,
-    mail_from_domain    = local.ses_mail_from_dom
+    host              = local.ses_smtp_host,
+    port              = local.ses_smtp_port,
+    username          = aws_iam_access_key.ses_user.id, # AccessKeyId
+    password          = aws_iam_access_key.ses_user.ses_smtp_password_v4,
+    access_key_id     = aws_iam_access_key.ses_user.id,
+    secret_access_key = aws_iam_access_key.ses_user.secret,
+    from_address      = local.ses_from_address,
+    mail_from_domain  = local.ses_mail_from_dom
   })
 }
 
