@@ -1,3 +1,10 @@
+resource "random_password" "bucket_suffix" {
+  length  = 8
+  special = false
+  lower   = false
+  upper   = false
+}
+
 module "bucket_state" {
   source  = "terraform-aws-modules/s3-bucket/aws"
   version = "4.10.1"
