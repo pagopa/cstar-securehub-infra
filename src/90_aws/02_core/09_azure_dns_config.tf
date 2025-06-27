@@ -5,7 +5,7 @@ resource "azurerm_dns_cname_record" "dkim" {
   zone_name           = local.public_dns_zone_name
   resource_group_name = local.vnet_legacy_rg
   ttl                 = 3600
-  record              = "${element(module.ses.dkim_tokens, count.index)}.dkim.${var.aws_region}.amazonses.com"
+  record              = "${element(module.ses.dkim_tokens, count.index)}.dkim.${var.region}.amazonses.com"
 
   tags = module.tag_config.tags
 }
@@ -30,7 +30,7 @@ resource "azurerm_dns_mx_record" "mx" {
 
   record {
     preference = 10
-    exchange   = "feedback-smtp.${var.aws_region}.amazonses.com"
+    exchange   = "feedback-smtp.${var.region}.amazonses.com"
   }
 }
 

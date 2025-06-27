@@ -18,7 +18,7 @@ variable "domain" {
   }
 }
 
-variable "aws_region" {
+variable "region" {
   type        = string
   description = "AWS region (default is Milan)"
 }
