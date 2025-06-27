@@ -88,7 +88,25 @@ module "private_endpoint_service_bus_snet" {
   idh_resource_tier = "private_endpoint"
 }
 
+module "aks_overlay_snet" {
+  source = "./.terraform/modules/__v4__/IDH/subnet"
+
+  # General
+  product_name        = var.prefix
+  env                 = var.env
+  resource_group_name = local.network_rg
+
+  # Network
+  name                 = "${local.project}-aks-idpay-overlay-snet"
+  virtual_network_name = local.vnet_spoke_compute_name
+
+  # IDH Resources
+  idh_resource_tier = "aks_overlay"
+}
+
+#----------------------------------------------------------------
 # 🔎 DNS
+#----------------------------------------------------------------
 resource "azurerm_private_dns_a_record" "ingress_idpay" {
   name                = "idpay.itn"
   zone_name           = "${var.dns_zone_internal_prefix}.${var.external_domain}"
