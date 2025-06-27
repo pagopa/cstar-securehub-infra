@@ -10,13 +10,17 @@ terraform {
       source  = "hashicorp/azurerm"
       version = "~> 4.18"
     }
+    random = {
+      source  = "hashicorp/random"
+      version = "~> 3.6"
+    }
   }
 
   backend "s3" {}
 }
 
 provider "aws" {
-  region = var.region
+  region = var.aws_region
   default_tags {
     tags = local.tags
   }
