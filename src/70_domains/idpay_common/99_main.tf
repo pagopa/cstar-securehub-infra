@@ -30,6 +30,10 @@ terraform {
       source  = "Azure/azapi"
       version = "~> 2.3"
     }
+    keycloak = {
+      source  = "keycloak/keycloak"
+      version = ">= 5.0.0"
+    }
   }
 
   backend "azurerm" {}
@@ -65,4 +69,11 @@ provider "argocd" {
   kubernetes {
     config_context = "config-${local.aks_name}"
   }
+}
+
+provider "keycloak" {
+  client_id     = "terraform"
+  client_secret = data.azurerm_key_vault_secret.terraform_client_secret_for_keycloak.value
+  url           = "https://${data.azurerm_key_vault_secret.keycloak_url.value}"
+  realm         = "master"
 }
