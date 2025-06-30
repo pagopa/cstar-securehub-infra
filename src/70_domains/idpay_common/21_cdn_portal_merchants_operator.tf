@@ -1,5 +1,4 @@
 locals {
-  selfare_merchant_op_temp_suffix = "-italy"
   spa_merchant_op = [
     for i, spa_merchant_op in var.single_page_applications_portal_merchants_operator_roots_dirs :
     {
