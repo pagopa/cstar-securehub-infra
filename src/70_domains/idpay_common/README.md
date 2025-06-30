@@ -33,6 +33,7 @@
 | <a name="module_aks_idpay_node_pool_green"></a> [aks\_idpay\_node\_pool\_green](#module\_aks\_idpay\_node\_pool\_green) | ./.terraform/modules/__v4__/IDH/aks_node_pool | n/a |
 | <a name="module_aks_overlay_snet"></a> [aks\_overlay\_snet](#module\_aks\_overlay\_snet) | ./.terraform/modules/__v4__/IDH/subnet | n/a |
 | <a name="module_cdn_idpay_assetregister"></a> [cdn\_idpay\_assetregister](#module\_cdn\_idpay\_assetregister) | ./.terraform/modules/__v4__/cdn | n/a |
+| <a name="module_cdn_idpay_portalmerchantsoperator"></a> [cdn\_idpay\_portalmerchantsoperator](#module\_cdn\_idpay\_portalmerchantsoperator) | ./.terraform/modules/__v4__/cdn | n/a |
 | <a name="module_cdn_idpay_selfcare"></a> [cdn\_idpay\_selfcare](#module\_cdn\_idpay\_selfcare) | ./.terraform/modules/__v4__/cdn | n/a |
 | <a name="module_cdn_idpay_welfare"></a> [cdn\_idpay\_welfare](#module\_cdn\_idpay\_welfare) | ./.terraform/modules/__v4__/cdn | n/a |
 | <a name="module_cosmos_db_account"></a> [cosmos\_db\_account](#module\_cosmos\_db\_account) | ./.terraform/modules/__v4__/IDH/cosmosdb_account | n/a |
@@ -164,6 +165,7 @@
 | <a name="input_selfcare_welfare_cdn_storage_account_replication_type"></a> [selfcare\_welfare\_cdn\_storage\_account\_replication\_type](#input\_selfcare\_welfare\_cdn\_storage\_account\_replication\_type) | Which replication must use the blob storage under cdn | `string` | n/a | yes |
 | <a name="input_service_bus_namespace"></a> [service\_bus\_namespace](#input\_service\_bus\_namespace) | n/a | <pre>object({<br/>    sku = string<br/>  })</pre> | n/a | yes |
 | <a name="input_single_page_applications_asset_register_roots_dirs"></a> [single\_page\_applications\_asset\_register\_roots\_dirs](#input\_single\_page\_applications\_asset\_register\_roots\_dirs) | spa root dirs | `list(string)` | n/a | yes |
+| <a name="input_single_page_applications_portal_merchants_operator_roots_dirs"></a> [single\_page\_applications\_portal\_merchants\_operator\_roots\_dirs](#input\_single\_page\_applications\_portal\_merchants\_operator\_roots\_dirs) | spa root dirs | `list(string)` | n/a | yes |
 | <a name="input_single_page_applications_roots_dirs"></a> [single\_page\_applications\_roots\_dirs](#input\_single\_page\_applications\_roots\_dirs) | spa root dirs | `list(string)` | n/a | yes |
 
 ## Outputs
