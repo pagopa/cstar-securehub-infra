@@ -21,9 +21,8 @@ locals {
   key_vault_rg_name = "${local.project}-security-rg"
 
   # 📊 Monitoring
-  application_insights_name    = "${local.project_core}-appinsights"
-  monitor_resource_group_name  = "${local.project_core}-monitor-rg"
-  log_analytics_workspace_name = "${local.project_core}-law"
+  monitor_resource_group_name  = "${local.project}-monitoring-rg"
+
 
   # 🔎 DNS
   dns_zone_name = "${var.env != "prod" ? "${var.env}." : ""}${var.prefix}.pagopa.it"
