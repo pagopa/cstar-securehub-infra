@@ -1,4 +1,4 @@
-bucket         = "terraform-state-eu-central-1-53414179"
+bucket         = "terraform-state-eu-central-1-73226307"
 key            = "01_init.tfstate"
-aws_region     = "eu-central-1"
+region         = "eu-central-1"
 dynamodb_table = "terraform-lock"
