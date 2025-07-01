@@ -23,7 +23,12 @@ locals {
   key_vault_name    = "${local.project}-kv"
   key_vault_rg_name = "${local.project}-security-rg"
 
-  # 📊 Monitoring
+  # Storage Account
+  srtp_storage_account_name = "${local.project}-sa"
+
+  # APIM
+  apim_rg_name = "cstar-${var.env_short}-api-rg"
+  apim_name = "cstar-${var.env_short}-apim"
 
 
   # 🔎 DNS

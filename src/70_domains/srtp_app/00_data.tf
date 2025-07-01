@@ -10,3 +10,19 @@ data "azurerm_key_vault" "domain_kv" {
 data "azurerm_resource_group" "identities_rg" {
   name = local.identities_rg
 }
+
+#
+# Storage Account
+#
+data "azurerm_storage_account" "rtp_storage_account" {
+  name                = replace(local.srtp_storage_account_name, "-", "")
+  resource_group_name = local.data_rg
+}
+
+#---------------------------------------------------------------------
+# APIM
+#---------------------------------------------------------------------
+data "azurerm_api_management" "apim" {
+  name                = local.apim_name
+  resource_group_name = local.apim_rg_name
+}
