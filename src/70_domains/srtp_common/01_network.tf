@@ -62,6 +62,18 @@ resource "azurerm_subnet" "private_endpoint_cae_env_snet" {
   virtual_network_name                          = local.vnet_spoke_compute_name
 }
 
+#
+# NAT Gateway
+#
+resource "azurerm_subnet_nat_gateway_association" "nat_gateway_association" {
+  subnet_id      = module.cae_env_snet.id
+  nat_gateway_id = data.azurerm_nat_gateway.compute_nat_gateway.id
+
+  depends_on = [
+    module.cae_env_snet,
+  ]
+}
+
 # module "private_endpoint_cae_env_snet" {
 #   source = "./.terraform/modules/__v4__/IDH/subnet"
 #
