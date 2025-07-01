@@ -91,6 +91,7 @@ resource "helm_release" "keycloak" {
       keycloak_admin_username     = azurerm_key_vault_secret.keycloak_admin_username.value
       keycloak_ingress_hostname   = local.keycloak_ingress_hostname
       ingress_tls_secret_name     = replace(local.keycloak_ingress_hostname, ".", "-")
+      keycloak_external_hostname  = local.keycloak_external_hostname
       replica_count_min           = var.keycloak_configuration.replica_count_min
       replica_count_max           = var.keycloak_configuration.replica_count_max
       realm_admin_import_filename = "admin_realm.json"

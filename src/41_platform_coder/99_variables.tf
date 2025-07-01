@@ -68,6 +68,12 @@ variable "external_domain" {
   description = "Domain for delegation"
 }
 
+variable "mcshared_dns_zone_prefix" {
+  type        = string
+  default     = null
+  description = "The dns subdomain for mcshared"
+}
+
 #
 # Kubernetes
 #
