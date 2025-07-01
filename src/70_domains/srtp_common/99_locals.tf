@@ -5,15 +5,17 @@ locals {
   product      = "${var.prefix}-${var.env_short}"
 
   # Default Domain Resource Group
-  data_rg     = "${local.project}-data-rg"
-  security_rg = "${local.project}}-security-rg"
-  compute_rg  = "${local.project}}-compute-rg"
-  cicd_rg     = "${local.project}}-cicd-rg"
+  data_rg                     = "${local.project}-data-rg"
+  security_rg                 = "${local.project}-security-rg"
+  compute_rg                  = "${local.project}-compute-rg"
+  cicd_rg                     = "${local.project}-cicd-rg"
+  monitor_resource_group_name = "${local.project}-monitoring-rg"
 
   # 🛜 VNET + Subnets
-  network_rg           = "${local.project_core}-network-rg"
-  vnet_spoke_data_name = "${local.project_core}-spoke-data-vnet"
-  vnet_legacy_core_rg  = "${local.product}-vnet-rg"
+  network_rg              = "${local.project_core}-network-rg"
+  vnet_spoke_data_name    = "${local.project_core}-spoke-data-vnet"
+  vnet_spoke_compute_name = "${local.project_core}-spoke-compute-vnet"
+  vnet_legacy_core_rg     = "${local.product}-vnet-rg"
 
 
   # 🔐 KV
@@ -21,9 +23,7 @@ locals {
   key_vault_rg_name = "${local.project}-security-rg"
 
   # 📊 Monitoring
-  application_insights_name    = "${local.project_core}-appinsights"
-  monitor_resource_group_name  = "${local.project_core}-monitor-rg"
-  log_analytics_workspace_name = "${local.project_core}-law"
+
 
   # 🔎 DNS
   dns_zone_name = "${var.env != "prod" ? "${var.env}." : ""}${var.prefix}.pagopa.it"

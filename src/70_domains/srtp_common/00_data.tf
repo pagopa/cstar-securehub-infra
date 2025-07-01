@@ -20,13 +20,13 @@ data "azurerm_key_vault" "domain_kv" {
   resource_group_name = local.key_vault_rg_name
 }
 
-# 📊 Monitoring
-data "azurerm_application_insights" "appinsights" {
-  name                = local.application_insights_name
-  resource_group_name = local.monitor_resource_group_name
+#
+# RG
+#
+data "azurerm_resource_group" "srtp_monitoring_rg" {
+  name = local.monitor_resource_group_name
 }
 
-data "azurerm_log_analytics_workspace" "log_analytics" {
-  name                = local.log_analytics_workspace_name
-  resource_group_name = local.monitor_resource_group_name
+data "azurerm_resource_group" "compute_rg" {
+  name = local.compute_rg
 }

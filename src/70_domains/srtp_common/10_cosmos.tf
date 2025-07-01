@@ -34,9 +34,16 @@ module "cosmos_db_account" {
 # ------------------------------------------------------------------------------
 # Storing CosmosDB primary mongo connection string in the rtp key vault.
 # ------------------------------------------------------------------------------
-resource "azurerm_key_vault_secret" "cosmosdb_account_rtp_connection_string" {
-  name         = "cosmosdb-account-rtp-connection-string"
+resource "azurerm_key_vault_secret" "cosmosdb_account_rtp_primary_connection_string" {
+  name         = "cosmosdb-account-rtp-primary-connection-string"
   value        = module.cosmos_db_account.primary_connection_strings
+  key_vault_id = data.azurerm_key_vault.domain_kv.id
+  tags         = module.tag_config.tags
+}
+
+resource "azurerm_key_vault_secret" "cosmosdb_account_rtp_secondary_connection_string" {
+  name         = "cosmosdb-account-rtp-secondary-connection-string"
+  value        = module.cosmos_db_account.secondary_connection_strings
   key_vault_id = data.azurerm_key_vault.domain_kv.id
   tags         = module.tag_config.tags
 }
