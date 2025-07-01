@@ -52,17 +52,17 @@ module "cae_env_snet" {
   idh_resource_tier = "container_app_environment"
 }
 
-   resource "azurerm_subnet" "private_endpoint_cae_env_snet" {
-       name                                          = "${local.project}-cae-private-endpoint-snet"
-       resource_group_name                           = local.network_rg
-       address_prefixes                              = [
-           "10.10.4.0/28",
-        ]
-       default_outbound_access_enabled               = true
-       private_endpoint_network_policies             = "Disabled"
-       private_link_service_network_policies_enabled = true
-       virtual_network_name                          = local.vnet_spoke_compute_name
-    }
+resource "azurerm_subnet" "private_endpoint_cae_env_snet" {
+  name                = "${local.project}-cae-private-endpoint-snet"
+  resource_group_name = local.network_rg
+  address_prefixes = [
+    "10.10.4.0/28",
+  ]
+  default_outbound_access_enabled               = true
+  private_endpoint_network_policies             = "Disabled"
+  private_link_service_network_policies_enabled = true
+  virtual_network_name                          = local.vnet_spoke_compute_name
+}
 
 # module "private_endpoint_cae_env_snet" {
 #   source = "./.terraform/modules/__v4__/IDH/subnet"
@@ -81,4 +81,3 @@ module "cae_env_snet" {
 #
 #   depends_on = [module.cae_env_snet]
 # }
-
