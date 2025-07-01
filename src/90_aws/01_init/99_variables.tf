@@ -10,8 +10,7 @@ variable "prefix" {
 
 variable "aws_region" {
   type        = string
-  description = "AWS region (default is Milan)"
-  default     = "eu-south-1"
+  description = "AWS region"
 }
 
 variable "domain" {
