@@ -1,19 +1,3 @@
-# 🔎 DNS
-data "azurerm_private_dns_zone" "cosmos_mongo" {
-  name                = "privatelink.mongo.cosmos.azure.com"
-  resource_group_name = local.vnet_legacy_core_rg
-}
-
-data "azurerm_private_dns_zone" "blob_storage" {
-  name                = "privatelink.blob.core.windows.net"
-  resource_group_name = local.vnet_legacy_core_rg
-}
-
-data "azurerm_private_dns_zone" "file_storage" {
-  name                = "privatelink.file.core.windows.net"
-  resource_group_name = local.network_rg
-}
-
 # 🔐 KV
 data "azurerm_key_vault" "domain_kv" {
   name                = local.key_vault_name
@@ -29,4 +13,28 @@ data "azurerm_resource_group" "srtp_monitoring_rg" {
 
 data "azurerm_resource_group" "compute_rg" {
   name = local.compute_rg
+}
+
+#
+# Apim
+#
+data "azurerm_api_management" "apim" {
+  name                = "${local.project}-apim"
+  resource_group_name = local.
+}
+
+# 🔎 DNS
+data "azurerm_private_dns_zone" "cosmos_mongo" {
+  name                = "privatelink.mongo.cosmos.azure.com"
+  resource_group_name = local.vnet_legacy_core_rg
+}
+
+data "azurerm_private_dns_zone" "blob_storage" {
+  name                = "privatelink.blob.core.windows.net"
+  resource_group_name = local.vnet_legacy_core_rg
+}
+
+data "azurerm_private_dns_zone" "file_storage" {
+  name                = "privatelink.file.core.windows.net"
+  resource_group_name = local.network_rg
 }
