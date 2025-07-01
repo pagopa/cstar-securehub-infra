@@ -15,6 +15,14 @@ data "azurerm_resource_group" "compute_rg" {
   name = local.compute_rg
 }
 
+#
+# Network
+#
+data "azurerm_nat_gateway" "compute_nat_gateway" {
+  name                = "${local.project_core}-compute-natgw"
+  resource_group_name = local.network_rg
+}
+
 # 🔎 DNS
 data "azurerm_private_dns_zone" "cosmos_mongo" {
   name                = "privatelink.mongo.cosmos.azure.com"
