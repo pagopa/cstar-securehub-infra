@@ -34,10 +34,8 @@ module "private_endpoint_storage_account_snet" {
 # CAE Environment and Private Endpoint Subnets
 #---------------------------------------------------------------
 module "cae_env_snet" {
-  # source = "./.terraform/modules/__v4__/IDH/subnet"
-
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//IDH/subnet?ref=fix-subnet-container-app"
-
+  source = "./.terraform/modules/__v4__/IDH/subnet"
+  # source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//IDH/subnet?ref=fix-subnet-container-app"
 
   # General
   product_name        = var.prefix

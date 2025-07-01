@@ -20,7 +20,7 @@
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | ebd0d1a5e405be41b878d452fab0ece3d1bbdeb1 |
-| <a name="module_cae_env_snet"></a> [cae\_env\_snet](#module\_cae\_env\_snet) | git::https://github.com/pagopa/terraform-azurerm-v4.git//IDH/subnet | fix-subnet-container-app |
+| <a name="module_cae_env_snet"></a> [cae\_env\_snet](#module\_cae\_env\_snet) | ./.terraform/modules/__v4__/IDH/subnet | n/a |
 | <a name="module_cdn"></a> [cdn](#module\_cdn) | ./.terraform/modules/__v4__/cdn | n/a |
 | <a name="module_cosmos_db_account"></a> [cosmos\_db\_account](#module\_cosmos\_db\_account) | ./.terraform/modules/__v4__/IDH/cosmosdb_account | n/a |
 | <a name="module_private_endpoint_cosmos_snet"></a> [private\_endpoint\_cosmos\_snet](#module\_private\_endpoint\_cosmos\_snet) | ./.terraform/modules/__v4__/IDH/subnet | n/a |
