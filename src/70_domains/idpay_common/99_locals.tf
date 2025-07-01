@@ -11,6 +11,9 @@ locals {
   compute_rg  = "${local.project}}-compute-rg"
   cicd_rg     = "${local.project}}-cicd-rg"
 
+  # SMTP
+  ses_smtp_port = 465
+
   #
   # 🌐 Network
   #
