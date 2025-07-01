@@ -9,7 +9,8 @@ locals {
   security_rg = "${local.project}-security-rg"
   compute_rg  = "${local.project}-compute-rg"
   cicd_rg     = "${local.project}-cicd-rg"
-  monitor_resource_group_name = "${local.project}-monitoring-rg"
+  monitoring_rg = "${local.project}-monitoring-rg"
+  identities_rg = "${local.project}-identity-rg"
 
   # 🛜 VNET + Subnets
   network_rg              = "${local.project_core}-network-rg"
