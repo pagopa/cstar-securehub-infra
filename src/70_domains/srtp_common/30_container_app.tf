@@ -21,6 +21,14 @@ resource "azurerm_container_app_environment" "srtp_cae" {
   }
 }
 
+resource "azurerm_management_lock" "cae_lock" {
+  count      = var.env != "prod" ? 1 : 0
+
+  name       = "${azurerm_container_app_environment.srtp_cae.name}-lock"
+  scope      = azurerm_container_app_environment.srtp_cae.id
+  lock_level = "CanNotDelete"
+}
+
 resource "azurerm_private_endpoint" "srtp_cae_private_endpoint" {
   name                = azurerm_container_app_environment.srtp_cae.name
   location            = data.azurerm_resource_group.compute_rg.location
