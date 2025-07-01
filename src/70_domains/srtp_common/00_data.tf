@@ -26,3 +26,7 @@ data "azurerm_key_vault" "domain_kv" {
 data "azurerm_resource_group" "srtp_monitoring_rg" {
   name = local.monitor_resource_group_name
 }
+
+data "azurerm_resource_group" "compute_rg" {
+  name = local.compute_rg
+}

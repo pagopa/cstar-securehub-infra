@@ -6,13 +6,15 @@ locals {
 
   # Default Domain Resource Group
   data_rg     = "${local.project}-data-rg"
-  security_rg = "${local.project}}-security-rg"
-  compute_rg  = "${local.project}}-compute-rg"
-  cicd_rg     = "${local.project}}-cicd-rg"
+  security_rg = "${local.project}-security-rg"
+  compute_rg  = "${local.project}-compute-rg"
+  cicd_rg     = "${local.project}-cicd-rg"
+  monitor_resource_group_name  = "${local.project}-monitoring-rg"
 
   # 🛜 VNET + Subnets
   network_rg           = "${local.project_core}-network-rg"
   vnet_spoke_data_name = "${local.project_core}-spoke-data-vnet"
+  vnet_spoke_compute_name = "${local.project_core}-spoke-compute-vnet"
   vnet_legacy_core_rg  = "${local.product}-vnet-rg"
 
 
@@ -21,7 +23,6 @@ locals {
   key_vault_rg_name = "${local.project}-security-rg"
 
   # 📊 Monitoring
-  monitor_resource_group_name  = "${local.project}-monitoring-rg"
 
 
   # 🔎 DNS
