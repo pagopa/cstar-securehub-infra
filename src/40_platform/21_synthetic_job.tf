@@ -9,7 +9,7 @@ module "synthetic_monitoring_jobs" {
   location_display_name = var.location_display_name
   prefix                = "${local.product}-${var.location_short}"
   resource_group_name   = azurerm_resource_group.synthetic_rg.name
-  tags = module.tag_config.tags
+  tags                  = module.tag_config.tags
 
   enabled_sythetic_dashboard = false
   subscription_id            = data.azurerm_subscription.current.subscription_id

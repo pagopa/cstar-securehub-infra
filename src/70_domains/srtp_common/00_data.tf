@@ -15,14 +15,6 @@ data "azurerm_resource_group" "compute_rg" {
   name = local.compute_rg
 }
 
-#
-# Apim
-#
-data "azurerm_api_management" "apim" {
-  name                = "${local.project}-apim"
-  resource_group_name = local.
-}
-
 # 🔎 DNS
 data "azurerm_private_dns_zone" "cosmos_mongo" {
   name                = "privatelink.mongo.cosmos.azure.com"

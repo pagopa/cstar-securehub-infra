@@ -5,7 +5,7 @@ resource "azurerm_user_assigned_identity" "activator" {
   resource_group_name = data.azurerm_resource_group.identities_rg.name
   location            = data.azurerm_resource_group.identities_rg.location
   name                = "${local.project}-activator-id"
-  tags = module.tag_config.tags
+  tags                = module.tag_config.tags
 }
 
 resource "azurerm_role_assignment" "secrets_user_on_domain_kv_to_activator_identity" {
@@ -27,7 +27,7 @@ resource "azurerm_user_assigned_identity" "sender" {
   resource_group_name = data.azurerm_resource_group.identities_rg.name
   location            = data.azurerm_resource_group.identities_rg.location
   name                = "${local.project}-sender-id"
-  tags = module.tag_config.tags
+  tags                = module.tag_config.tags
 }
 
 resource "azurerm_role_assignment" "secrets_user_on_domain_kv_to_sender_identity" {
