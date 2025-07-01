@@ -41,7 +41,7 @@ resource "azurerm_key_vault_access_policy" "ad_group_policy" {
 
 ## ad group policy ##
 resource "azurerm_key_vault_access_policy" "adgroup_developers_policy" {
-  for_each = var.env == "dev" ? toset(local.prefix_key_vaults) : []
+  for_each = contains(["d", "u"], var.env_short) ? toset(local.prefix_key_vaults) : []
 
   key_vault_id = module.key_vault[each.key].id
 
@@ -56,6 +56,21 @@ resource "azurerm_key_vault_access_policy" "adgroup_developers_policy" {
     "Delete", "Restore", "Purge", "Recover"
   ]
 }
+
+resource "azurerm_key_vault_access_policy" "adgroup_developers_policy_cicd" {
+  count = var.env_short == "p" ? 1 : 0
+
+  key_vault_id = module.key_vault["cicd"].id
+
+  tenant_id = data.azurerm_client_config.current.tenant_id
+  object_id = data.azuread_group.adgroup_developers.object_id
+
+  key_permissions         = []
+  secret_permissions      = ["Get", "List"]
+  storage_permissions     = []
+  certificate_permissions = []
+}
+
 
 resource "azurerm_key_vault_access_policy" "adgroup_externals_policy" {
   for_each = var.env == "dev" ? toset(local.prefix_key_vaults) : []
