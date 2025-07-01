@@ -1,5 +1,12 @@
+#-----------------------------------------------------------------------------------
+# Storage Accounts for SRTP Common
+#-----------------------------------------------------------------------------------
 module "srtp_storage_account" {
   source = "./.terraform/modules/__v4__/IDH/storage_account"
+
+  # Storage Account Settings
+  name   = replace("${local.project}-sa", "-", "")
+  domain = var.domain
 
   # General
   product_name        = var.prefix
@@ -10,10 +17,6 @@ module "srtp_storage_account" {
 
   # IDH Resources
   idh_resource_tier = var.env_short != "prod" ? "basic" : "backup30"
-
-  # Storage Account Settings
-  name   = replace("${local.project}-sa", "-", "")
-  domain = var.domain
 
   # Network
   private_dns_zone_blob_ids  = [data.azurerm_private_dns_zone.blob_storage.id]
@@ -28,9 +31,15 @@ resource "azurerm_storage_container" "srtp_container" {
   container_access_type = "private"
 }
 
+#-------------------------------------------------------------------------------
 # File Share Storage Account
+# ------------------------------------------------------------------------------
 module "share_storage_account" {
   source = "./.terraform/modules/__v4__/IDH/storage_account"
+
+  # Storage Account Settings
+  name   = replace("${local.project}-share-sa", "-", "")
+  domain = var.domain
 
   # General
   product_name        = var.prefix
@@ -41,10 +50,6 @@ module "share_storage_account" {
 
   # IDH Resources
   idh_resource_tier = var.env_short != "prod" ? "basic" : "backup7"
-
-  # Storage Account Settings
-  name   = replace("${local.project}-share-sa", "-", "")
-  domain = var.domain
 
   # Network
   private_dns_zone_file_ids  = [data.azurerm_private_dns_zone.file_storage.id]

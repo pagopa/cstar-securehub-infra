@@ -17,13 +17,9 @@ locals {
   vnet_spoke_compute_name = "${local.project_core}-spoke-compute-vnet"
   vnet_legacy_core_rg     = "${local.product}-vnet-rg"
 
-
   # 🔐 KV
   key_vault_name    = "${local.project}-kv"
   key_vault_rg_name = "${local.project}-security-rg"
-
-  # 📊 Monitoring
-
 
   # 🔎 DNS
   dns_zone_name = "${var.env != "prod" ? "${var.env}." : ""}${var.prefix}.pagopa.it"
