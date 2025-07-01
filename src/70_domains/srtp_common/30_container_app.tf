@@ -2,6 +2,7 @@ resource "azurerm_container_app_environment" "srtp_cae" {
   name                = "${local.project}-cae"
   location            = data.azurerm_resource_group.compute_rg.location
   resource_group_name = data.azurerm_resource_group.compute_rg.name
+  tags = module.tag_config.tags
 
   log_analytics_workspace_id     = azurerm_log_analytics_workspace.log_analytics_workspace.id
   infrastructure_subnet_id       = module.cae_env_snet.id
@@ -19,6 +20,7 @@ resource "azurerm_container_app_environment" "srtp_cae" {
       infrastructure_resource_group_name
     ]
   }
+
 }
 
 resource "azurerm_management_lock" "cae_lock" {

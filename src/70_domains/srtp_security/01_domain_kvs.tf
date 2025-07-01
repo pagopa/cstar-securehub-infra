@@ -13,7 +13,7 @@ module "key_vault" {
   location            = var.location
   resource_group_name = data.azurerm_resource_group.security_rg.name
   tenant_id           = data.azurerm_client_config.current.tenant_id
-  tags                = {}
+  tags         = module.tag_config.tags
 }
 
 #
