@@ -3,18 +3,21 @@ locals {
     "idpay-asset-register-backend" = {
       repository_secrets = [
         {
-          SONAR_TOKEN = "TEST"
+          SONAR_TOKEN = data.azurerm_key_vault_secret.sonar_token.value
         }
       ]
       repository_variables = [
         {
           SONARCLOUD_ORG          = "pagopa"
-          SONARCLOUD_PROJECT_KEY  = ""
-          SONARCLOUD_PROJECT_NAME = ""
+          SONARCLOUD_PROJECT_KEY  = "pagopa_idpay-asset-register-backend"
+          SONARCLOUD_PROJECT_NAME = "idpay-asset-register-backend"
         }
       ]
     }
   }
+
+  protected_branches = ["develop", "main", "uat"]
+
   repository_variables_flattened = merge([
     for repo_name, repo_data in local.repository : merge([
       for variable_map in repo_data.repository_variables : {
@@ -40,4 +43,19 @@ locals {
       }
     ]...)
   ]...)
+
+  repo_branch_map = {
+    for i in flatten([
+      for repo in keys(local.repository) : [
+        for branch in local.protected_branches : {
+          key    = "${repo}:${branch}"
+          repo   = repo
+          branch = branch
+        }
+      ]
+      ]) : i.key => {
+      repo   = i.repo
+      branch = i.branch
+    }
+  }
 }
