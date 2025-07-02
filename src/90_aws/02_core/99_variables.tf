@@ -20,8 +20,14 @@ variable "domain" {
 
 variable "aws_region" {
   type        = string
-  description = "AWS region (default is Milan)"
+  description = "AWS region"
 }
+
+variable "aws_profile" {
+  type        = string
+  description = "AWS profile. Configured in ~/.aws/config file cstar-ENV."
+}
+
 
 variable "location_short" {
   type = string
