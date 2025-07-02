@@ -1,6 +1,5 @@
 module "default_resource_groups" {
   source = "./.terraform/modules/__v4__/payments_default_resource_groups"
-  # source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//payments_default_resource_groups?ref=new-identity-rg"
 
   for_each = local.domains_setup
 
