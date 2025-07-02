@@ -1,10 +1,4 @@
 # Key Vault/ Secrets
-
-## Init project
-
-
-
-
 <!-- markdownlint-disable -->
 <!-- BEGIN_TF_DOCS -->
 ## Requirements

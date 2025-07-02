@@ -13,6 +13,11 @@ variable "aws_region" {
   description = "AWS region"
 }
 
+variable "aws_profile" {
+  type        = string
+  description = "AWS profile. Configured in ~/.aws/config file cstar-ENV."
+}
+
 variable "domain" {
   type = string
   validation {

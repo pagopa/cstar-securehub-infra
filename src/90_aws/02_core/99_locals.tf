@@ -10,7 +10,7 @@ locals {
   ses_domain        = var.env != "prod" ? "${var.env}.${var.prefix}.pagopa.it" : "${var.prefix}.pagopa.it"
   ses_username      = "noreply"
   ses_smtp_host     = "email-smtp.${var.aws_region}.amazonaws.com"
-  ses_smtp_port     = 587
+  ses_smtp_port     = 465
   ses_from_address  = "${local.ses_username}@${local.ses_domain}"
   ses_mail_from_dom = aws_ses_domain_mail_from.noreply.mail_from_domain
 

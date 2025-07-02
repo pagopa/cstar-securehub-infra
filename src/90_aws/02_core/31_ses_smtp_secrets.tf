@@ -1,7 +1,6 @@
 resource "aws_secretsmanager_secret" "ses_smtp" {
   name        = "${var.prefix}/${var.env}/ses-smtp"
   description = "SMTP & IAM creds for Keycloak via Amazon SES"
-  tags        = local.tags
 }
 
 resource "aws_secretsmanager_secret_version" "ses_smtp" {

@@ -21,4 +21,8 @@ module "ses" {
 resource "aws_ses_domain_mail_from" "noreply" {
   domain           = local.ses_domain
   mail_from_domain = "${local.ses_username}.${local.ses_domain}"
+
+  depends_on = [
+    module.ses
+  ]
 }
