@@ -127,3 +127,23 @@ data "azurerm_key_vault_secret" "keycloak_url" {
   name         = "keycloak-url"
   key_vault_id = data.azurerm_key_vault.core_kv.id
 }
+
+data "azurerm_key_vault_secret" "ses_smtp_username" {
+  name         = "aws-ses-mail-smtp-username"
+  key_vault_id = data.azurerm_key_vault.domain_kv.id
+}
+
+data "azurerm_key_vault_secret" "ses_smtp_password" {
+  name         = "aws-ses-mail-smtp-password"
+  key_vault_id = data.azurerm_key_vault.domain_kv.id
+}
+
+data "azurerm_key_vault_secret" "ses_smtp_host" {
+  name         = "aws-ses-mail-host"
+  key_vault_id = data.azurerm_key_vault.domain_kv.id
+}
+
+data "azurerm_key_vault_secret" "ses_from_address" {
+  name         = "aws-ses-mail-from"
+  key_vault_id = data.azurerm_key_vault.domain_kv.id
+}
