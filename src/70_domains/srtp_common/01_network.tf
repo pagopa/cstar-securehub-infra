@@ -34,10 +34,8 @@ module "private_endpoint_storage_account_snet" {
 # CAE Environment and Private Endpoint Subnets
 #---------------------------------------------------------------
 module "cae_env_snet" {
-  # source = "./.terraform/modules/__v4__/IDH/subnet"
-
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//IDH/subnet?ref=fix-subnet-container-app"
-
+  source = "./.terraform/modules/__v4__/IDH/subnet"
+  # source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//IDH/subnet?ref=fix-subnet-container-app"
 
   # General
   product_name        = var.prefix
@@ -62,6 +60,18 @@ resource "azurerm_subnet" "private_endpoint_cae_env_snet" {
   private_endpoint_network_policies             = "Disabled"
   private_link_service_network_policies_enabled = true
   virtual_network_name                          = local.vnet_spoke_compute_name
+}
+
+#
+# NAT Gateway
+#
+resource "azurerm_subnet_nat_gateway_association" "nat_gateway_association" {
+  subnet_id      = module.cae_env_snet.id
+  nat_gateway_id = data.azurerm_nat_gateway.compute_nat_gateway.id
+
+  depends_on = [
+    module.cae_env_snet,
+  ]
 }
 
 # module "private_endpoint_cae_env_snet" {
