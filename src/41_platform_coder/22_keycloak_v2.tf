@@ -115,3 +115,18 @@ resource "azurerm_private_dns_a_record" "keycloak" {
   ttl                 = 3600
   records             = [local.aks_ingress_load_balancer_ip]
 }
+
+
+# ConfigMap per il tema custom
+resource "kubernetes_config_map" "keycloak_custom_theme" {
+  metadata {
+    name      = "keycloak-custom-theme"
+    namespace = kubernetes_namespace.keycloak.metadata[0].name
+  }
+
+  # Qui carichi i file del tema dalla cartella locale
+  data = {
+    for file in fileset("${path.module}/k8s/themes/pagopa", "**/*") :
+    file => file(file)
+  }
+}

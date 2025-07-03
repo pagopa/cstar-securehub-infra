@@ -1,5 +1,3 @@
-<!-- markdownlint-disable -->
-<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -15,11 +13,11 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 3.4.0 |
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.32.0 |
-| <a name="provider_helm"></a> [helm](#provider\_helm) | 2.17.0 |
-| <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | 2.37.1 |
-| <a name="provider_random"></a> [random](#provider\_random) | 3.7.2 |
+| <a name="provider_azuread"></a> [azuread](#provider\_azuread) | ~> 3 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | ~> 4.32.0 |
+| <a name="provider_helm"></a> [helm](#provider\_helm) | ~> 2 |
+| <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | ~> 2.0 |
+| <a name="provider_random"></a> [random](#provider\_random) | n/a |
 
 ## Modules
 
@@ -45,6 +43,7 @@
 | [helm_release.keycloak](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
 | [helm_release.reloader](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
 | [kubernetes_config_map.keycloak_config](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/config_map) | resource |
+| [kubernetes_config_map.keycloak_custom_theme](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/config_map) | resource |
 | [kubernetes_config_map.keycloak_realm_import](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/config_map) | resource |
 | [kubernetes_namespace.keycloak](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/namespace) | resource |
 | [kubernetes_secret.keycloak_admin](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/secret) | resource |
@@ -89,4 +88,3 @@
 ## Outputs
 
 No outputs.
-<!-- END_TF_DOCS -->

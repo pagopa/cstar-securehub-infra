@@ -35,10 +35,18 @@ extraVolumes:
   - name: realm-import
     configMap:
       name: keycloak-realm-import
+  # Volume per il tema custom
+  - name: custom-theme
+    configMap:
+      name: keycloak-custom-theme
 
 extraVolumeMounts:
   - name: realm-import
     mountPath: /opt/bitnami/keycloak/data/import
+    readOnly: true
+  # Mount del tema custom
+  - name: custom-theme
+    mountPath: /opt/bitnami/keycloak/themes/pagopa
     readOnly: true
 
 ingress:
