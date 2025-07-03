@@ -103,6 +103,10 @@ data "azurerm_resource_group" "monitor_rg" {
   name = local.monitor_resource_group_name
 }
 
+data "azurerm_resource_group" "idpay_monitoring_rg" {
+  name = local.idpay_monitor_resource_group_name
+}
+
 data "azurerm_application_insights" "application_insights" {
   name                = local.application_insights_name
   resource_group_name = data.azurerm_resource_group.monitor_rg.name
