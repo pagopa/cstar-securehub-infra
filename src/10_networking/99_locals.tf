@@ -7,7 +7,27 @@ locals {
     "domain" = "mc"
   })
 
-  # VNET
+  vnets_secure_hub_italy = {
+    core_hub = {
+      name = module.vnet_core_hub.name
+      id   = module.vnet_core_hub.id
+    }
+    spoke_data = {
+      name = module.vnet_spoke_data.name
+      id   = module.vnet_spoke_data.id
+    }
+    spoke_compute = {
+      name = module.vnet_spoke_compute.name
+      id   = module.vnet_spoke_compute.id
+    }
+    spoke_security = {
+      name = module.vnet_spoke_security.name
+      id   = module.vnet_spoke_security.id
+    }
+  }
+
+
+  # VNET Legacy
   vnet_weu_core = {
     name           = "${var.prefix}-${var.env_short}-vnet"
     resource_group = "${var.prefix}-${var.env_short}-vnet-rg"
