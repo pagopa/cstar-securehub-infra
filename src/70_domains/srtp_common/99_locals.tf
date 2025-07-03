@@ -28,15 +28,17 @@ locals {
   cosmos_db = {
     rtp = {
       rtps = {
-        index = {
-          keys   = ["_id"]
-          unique = true
-        }
+        indexes = [
+          {
+            keys   = ["_id"]
+            unique = true
+          }
+        ]
       }
     }
     activation = {
       activations = {
-        index = [
+        indexes = [
           {
             keys   = ["_id"]
             unique = true
@@ -48,10 +50,12 @@ locals {
         ]
       }
       deleted_activations = {
-        index = {
-          keys   = ["_id"]
-          unique = true
-        }
+        indexes = [
+          {
+            keys   = ["_id"]
+            unique = true
+          }
+        ]
       }
     }
   }
@@ -60,7 +64,7 @@ locals {
       for coll_name, coll in db : {
         db_name   = db_name
         coll_name = coll_name
-        indexes   = flatten([coll.index])
+        indexes   = coll.indexes
       }
     ]
   ])
