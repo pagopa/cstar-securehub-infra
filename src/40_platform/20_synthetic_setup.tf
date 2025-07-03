@@ -44,8 +44,8 @@ resource "azurerm_container_app_environment" "synthetic_cae" {
   resource_group_name = azurerm_resource_group.synthetic_rg.name
   tags                = module.tag_config.tags
 
-  logs_destination = "log-analytics"
-  log_analytics_workspace_id     = azurerm_log_analytics_workspace.synthetic_log_analytics_workspace.id
+  logs_destination           = "log-analytics"
+  log_analytics_workspace_id = azurerm_log_analytics_workspace.synthetic_log_analytics_workspace.id
 
   infrastructure_subnet_id       = module.synthetic_snet.id
   internal_load_balancer_enabled = true
@@ -86,7 +86,7 @@ resource "azurerm_private_endpoint" "synthetic_cae_private_endpoint" {
   }
 
   private_dns_zone_group {
-    name = data.azurerm_private_dns_zone.container_apps.name
+    name                 = data.azurerm_private_dns_zone.container_apps.name
     private_dns_zone_ids = [data.azurerm_private_dns_zone.container_apps.id]
   }
 

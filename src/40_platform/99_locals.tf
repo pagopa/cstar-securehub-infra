@@ -16,7 +16,7 @@ locals {
   pagopa_cstar_integration_vnet_name    = "pagopa-${var.env_short}-itn-cstar-integration-vnet"
   pagopa_cstar_integration_vnet_rg_name = "pagopa-${var.env_short}-itn-vnet-rg"
 
-  legacy_vnet_core_rg_name      = "${local.product}-vnet-rg"
+  legacy_vnet_core_rg_name = "${local.product}-vnet-rg"
 
   monitor_resource_group_name  = "${local.product_nodomain}-core-monitor-rg"
   log_analytics_workspace_name = "${local.product_nodomain}-core-law"
