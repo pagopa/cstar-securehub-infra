@@ -38,3 +38,8 @@ data "azurerm_private_dns_zone" "file_storage" {
   name                = "privatelink.file.core.windows.net"
   resource_group_name = local.network_rg
 }
+
+data "azurerm_private_dns_zone" "container_apps" {
+  name                = "privatelink.${var.location}.azurecontainerapps.io"
+  resource_group_name = local.network_rg
+}
