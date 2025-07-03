@@ -5,6 +5,8 @@ resource "azurerm_container_app_environment" "srtp_cae" {
   tags                = module.tag_config.tags
 
   log_analytics_workspace_id     = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  logs_destination = "log-analytics"
+
   infrastructure_subnet_id       = module.cae_env_snet.id
   internal_load_balancer_enabled = true
   zone_redundancy_enabled        = true
@@ -42,6 +44,11 @@ resource "azurerm_private_endpoint" "srtp_cae_private_endpoint" {
     private_connection_resource_id = azurerm_container_app_environment.srtp_cae.id
     is_manual_connection           = false
     subresource_names              = ["managedEnvironments"]
+  }
+
+  private_dns_zone_group {
+    name = data.azurerm_private_dns_zone.container_apps.name
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.container_apps.id]
   }
 
   depends_on = [
