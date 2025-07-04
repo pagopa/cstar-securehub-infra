@@ -16,9 +16,9 @@ module "aks" {
   log_analytics_workspace_id = data.azurerm_log_analytics_workspace.log_analytics.id
   sku_tier                   = var.aks_sku_tier
 
-  workload_identity_enabled = var.aks_enable_workload_identity
-  oidc_issuer_enabled       = var.aks_enable_workload_identity
-  force_upgrade_enabled     = var.force_upgrade_enabled
+  workload_identity_enabled = true
+  oidc_issuer_enabled       = true
+  force_upgrade_enabled     = false
 
   ## Prometheus managed
   # ffppa: ⚠️ Installed on all ENV please do not change
