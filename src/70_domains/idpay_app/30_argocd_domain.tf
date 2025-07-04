@@ -39,7 +39,7 @@ locals {
       },
       "idpay-asset-register-backend" = {
         name          = "idpay-asset-register-backend"
-        target_branch = "RDB-51-be-integrazione-servizio-eprel"
+        target_branch = "main"
       }
     }
     "mid" = {
@@ -77,10 +77,6 @@ locals {
       },
       "idpay-timeline" = {
         name          = "idpay-timeline"
-        target_branch = "main"
-      },
-      "cstar-io-mock" = {
-        name          = "cstar-io-mock"
         target_branch = "main"
       }
     }
