@@ -18,10 +18,9 @@ default_zones = [1]
 # https://pagopa.atlassian.net/wiki/spaces/DEVOPS/pages/482967553/AKS#sku-(dimensionamento)
 
 aks_sku_tier                   = "Standard"
-aks_private_cluster_is_enabled = false
+aks_private_cluster_is_enabled = true
 aks_alerts_enabled             = false
-aks_enable_workload_identity   = true
-aks_kubernetes_version = "1.32.0"
+aks_kubernetes_version = "1.32.4"
 
 # Standard is recommended tier Standard_D2ads_v5
 # D – General purpose compute
@@ -113,7 +112,7 @@ nginx_helm = {
 # chart releases: https://github.com/kedacore/charts/releases
 # keda image tags: https://github.com/kedacore/keda/pkgs/container/keda/versions
 # keda-metrics-apiserver image tags: https://github.com/kedacore/keda/pkgs/container/keda-metrics-apiserver/versions
-keda_helm_chart_version = "2.16.1"
+keda_helm_chart_version = "2.17.1"
 
 # chart releases: https://github.com/stakater/Reloader/releases
 # image tags: https://hub.docker.com/r/stakater/reloader/tags
