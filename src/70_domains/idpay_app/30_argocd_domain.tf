@@ -78,7 +78,7 @@ locals {
       "idpay-timeline" = {
         name          = "idpay-timeline"
         target_branch = "main"
-      },
+      }
     }
     "ext" = {
       "idpay-iban" = {

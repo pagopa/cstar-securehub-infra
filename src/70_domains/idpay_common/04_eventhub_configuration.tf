@@ -232,7 +232,7 @@ locals {
   ]
 
   ###
-  ### Eventhub 00 IDPAY
+  ### Eventhub 01 IDPAY
   ###
 
   eventhubs_idpay_01 = [
@@ -419,6 +419,33 @@ locals {
           manage = false
         }
       ]
+    }
+  ]
+
+  ###
+  ### Eventhub 02 IDPAY
+  ###
+  eventhubs_idpay_02 = [
+    {
+      name              = "idpay-cdc-configs"
+      partitions        = 1
+      message_retention = 1
+      consumers         = []
+      keys              = []
+    },
+    {
+      name              = "idpay-cdc-offsets"
+      partitions        = 25
+      message_retention = 1
+      consumers         = []
+      keys              = []
+    },
+    {
+      name              = "idpay-cdc-status"
+      partitions        = 5
+      message_retention = 1
+      consumers         = []
+      keys              = []
     }
   ]
 
