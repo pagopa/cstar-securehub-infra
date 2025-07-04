@@ -60,5 +60,20 @@ resource "azurerm_private_dns_a_record" "argocd" {
   ttl                 = 3600
   records             = [var.ingress_load_balancer_ip]
 
-  tags = module.tag_config.tags
+  tags = local.tags
+}
+
+#------------------------------------------------------
+#nat gateway
+#------------------------------------------------------
+resource "azurerm_subnet_nat_gateway_association" "nat_gateway_association" {
+  for_each = local.nat_node_pool_subnet_list
+
+  subnet_id      = each.value
+  nat_gateway_id = data.azurerm_nat_gateway.compute_nat_gateway.id
+
+  depends_on = [
+    module.aks_snet,
+    module.aks_user_snet
+  ]
 }

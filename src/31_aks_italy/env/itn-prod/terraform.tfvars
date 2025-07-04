@@ -21,6 +21,7 @@ aks_sku_tier                   = "Standard"
 aks_private_cluster_is_enabled = false
 aks_alerts_enabled             = false
 aks_enable_workload_identity   = true
+aks_kubernetes_version = "1.32.0"
 
 # Standard is recommended tier Standard_D2ads_v5
 # D – General purpose compute
@@ -62,10 +63,25 @@ aks_user_node_pool = {
   node_tags       = { node_tag_2 : "2" },
 }
 
+#----------------------------------------------------------------
+# AKS
+#----------------------------------------------------------------
+aks_nodepool_blue = {
+  vm_sku_name       = "Standard_D8ads_v5_active"
+  autoscale_enabled = true
+  node_count_min    = 1
+  node_count_max    = 3
+}
+
+aks_nodepool_green = {
+  vm_sku_name       = "Standard_D8ads_v5_passive"
+  autoscale_enabled = false
+  node_count_min    = 0
+  node_count_max    = 0
+}
+
 aks_cidr_subnet      = ["10.10.1.0/24"] # 10.10.1.0 -> 10.10.1.255
 aks_cidr_subnet_user = ["10.10.2.0/24"] # 10.10.2.0 -> 10.10.2.255
-
-aks_kubernetes_version = "1.32.0"
 
 ingress_min_replica_count = "1"
 ingress_max_replica_count = "3"

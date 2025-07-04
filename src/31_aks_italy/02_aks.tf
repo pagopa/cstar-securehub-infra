@@ -92,5 +92,10 @@ module "aks" {
 
   microsoft_defender_log_analytics_workspace_id = var.env == "prod" ? data.azurerm_log_analytics_workspace.log_analytics.id : null
 
-  tags = module.tag_config.tags
+  automatic_channel_upgrade = null
+  maintenance_windows_node_os = {
+    enabled = true
+  }
+
+  tags = local.tags
 }

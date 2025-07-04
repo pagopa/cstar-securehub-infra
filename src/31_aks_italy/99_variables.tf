@@ -140,6 +140,26 @@ variable "aks_user_node_pool" {
   description = "AKS node pool user configuration"
 }
 
+variable "aks_nodepool_blue" {
+  type = object({
+    vm_sku_name       = string
+    autoscale_enabled = optional(bool, true)
+    node_count_min    = number
+    node_count_max    = number
+  })
+  description = "Paramters for blue node pool"
+}
+
+variable "aks_nodepool_green" {
+  type = object({
+    vm_sku_name       = string
+    autoscale_enabled = optional(bool, true)
+    node_count_min    = number
+    node_count_max    = number
+  })
+  description = "Paramters for blue node pool"
+}
+
 
 variable "aks_cidr_subnet" {
   type        = list(string)
