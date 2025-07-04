@@ -1,3 +1,4 @@
+data "azurerm_subscription" "current" {}
 #
 # Private DNS Zones
 #
@@ -18,5 +19,10 @@ data "azurerm_private_dns_zone" "container_app" {
 #
 data "azurerm_key_vault" "domain_general_kv" {
   name                = local.general_kv_name
+  resource_group_name = local.security_rg_name
+}
+
+data "azurerm_key_vault" "auth_general_kv" {
+  name                = local.auth_kv_name
   resource_group_name = local.security_rg_name
 }

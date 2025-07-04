@@ -19,5 +19,29 @@ resource "azurerm_federated_identity_credential" "identity_credentials_cd" {
   audience            = ["api://AzureADTokenExchange"]
   issuer              = "https://token.actions.githubusercontent.com"
   parent_id           = azurerm_user_assigned_identity.identity_cd.id
-  subject             = "repo:pagopa/${each.value}:environment:${local.project}"
+  subject             = "repo:pagopa/${each.value}:environment:${var.location_short}-${var.env}"
+}
+
+resource "azurerm_role_assignment" "identity_role_assignment_cd" {
+  for_each = toset(local.default_resourge_group_names)
+
+  scope                = "/subscriptions/${data.azurerm_subscription.current.subscription_id}/resourceGroups/${each.key}"
+  role_definition_name = "Contributor"
+  principal_id         = azurerm_user_assigned_identity.identity_cd.principal_id
+}
+
+resource "azurerm_role_assignment" "identity_role_assignment_cd_state_storaga_account" {
+
+  scope                = "/subscriptions/${data.azurerm_subscription.current.subscription_id}/resourceGroups/terraform-state-rg/providers/Microsoft.Storage/storageAccounts/tfapp${var.env}cstar"
+  role_definition_name = "Storage Account Key Operator Service Role"
+  principal_id         = azurerm_user_assigned_identity.identity_cd.principal_id
+}
+
+resource "azurerm_key_vault_access_policy" "kv_access_policy_cd" {
+
+  key_vault_id = data.azurerm_key_vault.domain_general_kv.id
+  tenant_id    = data.azurerm_key_vault.domain_general_kv.tenant_id
+  object_id    = azurerm_user_assigned_identity.auth.principal_id
+
+  secret_permissions = ["Get", "List"]
 }

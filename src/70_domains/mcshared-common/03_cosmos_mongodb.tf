@@ -35,7 +35,7 @@ module "cosmos_db_account" {
 # 🔑 Secrets
 #
 resource "azurerm_key_vault_secret" "cosmosdb_account_mongodb_primary_connection_strings" {
-  name         = "mongodb-primary-connection-string"
+  name         = "cosmosdb-account-mcshared-primary-mongodb-connection-string"
   value        = module.cosmos_db_account.primary_connection_strings
   content_type = "text/plain"
 
@@ -45,7 +45,7 @@ resource "azurerm_key_vault_secret" "cosmosdb_account_mongodb_primary_connection
 }
 
 resource "azurerm_key_vault_secret" "cosmosdb_account_mongodb_secondary_connection_strings" {
-  name         = "mongodb-secondary-connection-string"
+  name         = "cosmosdb-account-mcshared-secondary-mongodb-connection-string"
   value        = module.cosmos_db_account.secondary_connection_strings
   content_type = "text/plain"
 

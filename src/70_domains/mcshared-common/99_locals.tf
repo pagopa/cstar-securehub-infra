@@ -11,6 +11,14 @@ locals {
   cicd_rg_name     = "${local.project}-cicd-rg"
   monitor_rg_name  = "${local.project}-monitoring-rg"
 
+  default_resourge_group_names = [
+    local.data_rg_name,
+    local.security_rg_name,
+    local.compute_rg_name,
+    local.cicd_rg_name,
+    local.monitor_rg_name
+  ]
+
   #
   # 🌐 Network
   #
@@ -22,6 +30,7 @@ locals {
 
   # KeyVault
   general_kv_name = "${local.project_nodomain}-mc-gen-kv"
+  auth_kv_name    = "${local.project_nodomain}-mc-auth-kv"
 
   revoked_refresh_tokens_ttl = 7776000
 
