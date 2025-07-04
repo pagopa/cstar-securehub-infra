@@ -41,34 +41,13 @@ aks_system_node_pool = {
   node_tags                    = { node_tag_1 : "1" },
 }
 
-
-# Standard is recommended tier Standard_D8ads_v5
-# D – General purpose compute
-# 8 – VM Size
-# a – AMD-based processor
-# d – Diskfull (local temp disk is present)
-# s – Premium Storage capable
-# v5 – version
-aks_user_node_pool = {
-  enabled         = true
-  name            = "userdefault"
-  vm_size         = "Standard_D8ads_v5"
-  os_disk_type    = "Managed"
-  os_disk_size_gb = "128"
-  node_count_min  = "1"
-  node_count_max  = "3"
-  node_labels     = { node_name : "aks-user-01", node_type : "user" },
-  node_taints     = [],
-  node_tags       = { node_tag_2 : "2" },
-}
-
 #----------------------------------------------------------------
 # AKS
 #----------------------------------------------------------------
 aks_nodepool_blue = {
   vm_sku_name       = "Standard_D8ads_v5_active"
   autoscale_enabled = true
-  node_count_min    = 1
+  node_count_min    = 3
   node_count_max    = 3
 }
 
