@@ -3,10 +3,10 @@ locals {
   #    The subnet ID must be added below. This list will be included in the NAT gateway for AKS.
   #    If this step is skipped, the new nodes will never come up.
   #    ref: src/31_aks/01_natgateway.tf:22
-  nat_node_pool_subnet_list = toset([
-    module.aks_snet.id,
-    module.aks_user_snet.id
-  ])
+  nat_node_pool_subnets = {
+    aks_snet  = module.aks_snet.id
+    user_snet = module.aks_user_snet.id
+  }
 }
 
 module "aks_snet" {
@@ -64,10 +64,10 @@ resource "azurerm_private_dns_a_record" "argocd" {
 }
 
 #------------------------------------------------------
-#nat gateway
+# nat gateway
 #------------------------------------------------------
 resource "azurerm_subnet_nat_gateway_association" "nat_gateway_association" {
-  for_each = local.nat_node_pool_subnet_list
+  for_each = local.nat_node_pool_subnets
 
   subnet_id      = each.value
   nat_gateway_id = data.azurerm_nat_gateway.compute_nat_gateway.id

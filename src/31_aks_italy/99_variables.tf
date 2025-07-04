@@ -98,12 +98,6 @@ variable "aks_sku_tier" {
   description = "The SKU Tier that should be used for this Kubernetes Cluster. Possible values are Free and Paid (which includes the Uptime SLA)."
 }
 
-variable "force_upgrade_enabled" {
-  type        = bool
-  description = "(Optional) If set to true, cluster will be forced to upgrade even if the latest version of the control plane and agents is not available."
-  default     = false
-}
-
 variable "aks_system_node_pool" {
   type = object({
     name                         = string,
