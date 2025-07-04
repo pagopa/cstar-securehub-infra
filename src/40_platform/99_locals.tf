@@ -82,6 +82,17 @@ locals {
         #"${local.product_nodomain}-idpay-azdo-rg"
       ]
     }
+    "mcshared" = {
+      tags = {
+        "CostCenter"   = "TS310 - PAGAMENTI & SERVIZI"
+        "BusinessUnit" = "CStar"
+        "Owner"        = "CStar"
+        "Environment"  = var.env
+        "CreatedBy"    = "Terraform"
+        "Source"       = "https://github.com/pagopa/cstar-securehub-infra"
+        "domain"       = "mcshared"
+      }
+      additional_resource_groups = []
+    }
   }
-
 }
