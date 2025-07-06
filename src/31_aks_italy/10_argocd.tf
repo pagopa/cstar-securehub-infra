@@ -2,10 +2,6 @@ resource "kubernetes_namespace" "namespace_argocd" {
   metadata {
     name = "argocd"
   }
-
-  depends_on = [
-    module.aks
-  ]
 }
 
 locals {

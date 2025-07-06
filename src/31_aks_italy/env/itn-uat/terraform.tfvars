@@ -20,7 +20,6 @@ default_zones = [1, 2, 3]
 aks_sku_tier                   = "Standard"
 aks_private_cluster_is_enabled = true
 aks_alerts_enabled             = false
-aks_enable_workload_identity   = true
 
 # Standard is recommended tier
 # D – General purpose compute
@@ -39,27 +38,6 @@ aks_system_node_pool = {
   only_critical_addons_enabled = true
   node_labels                  = { node_name : "aks-system-01", node_type : "system" },
   node_tags                    = { node_tag_1 : "1" },
-}
-
-
-# Standard is recommended tier
-# D – General purpose compute
-# 8 – VM Size
-# a – AMD-based processor
-# d – Diskfull (local temp disk is present)
-# s – Premium Storage capable
-# v5 – version
-aks_user_node_pool = {
-  enabled         = true
-  name            = "userdefault"
-  vm_size         = "Standard_D8ads_v5"
-  os_disk_type    = "Managed"
-  os_disk_size_gb = "128"
-  node_count_min  = "1"
-  node_count_max  = "3"
-  node_labels     = { node_name : "aks-user-01", node_type : "user" },
-  node_taints     = [],
-  node_tags       = { node_tag_2 : "2" },
 }
 
 aks_cidr_subnet      = ["10.10.1.0/24"] # 10.10.1.0 -> 10.10.1.255
