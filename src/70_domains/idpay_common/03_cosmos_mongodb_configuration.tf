@@ -734,6 +734,10 @@ locals {
         {
           keys   = ["_id"]
           unique = true
+        },
+        {
+          keys   = ["registrationDate"]
+          unique = false
         }
       ]
     }
