@@ -20,7 +20,7 @@ default_zones = [1]
 aks_sku_tier                   = "Standard"
 aks_private_cluster_is_enabled = true
 aks_alerts_enabled             = false
-aks_kubernetes_version = "1.32.4"
+aks_kubernetes_version         = "1.32.4"
 
 # Standard is recommended tier Standard_D2ads_v5
 # D – General purpose compute
