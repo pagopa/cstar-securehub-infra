@@ -147,7 +147,11 @@ module "cdn_idpay_bonuselettrodomestici" {
   cdn_location        = var.location_weu
 
   # DNS Configuration
-  hostname                     = local.bonus_dns_zone.name
+  hostname = local.bonus_dns_zone.name
+
+  # Enforce to not use module null_resource, the dns_zone_name must be different by hostname.
+  ## - This was made for skip single custom domain setup for custom multi-domain setup.
+  ##  * Includes: .it, .com, .info, .io, .net, .eu
   dns_zone_name                = "dummy"
   dns_zone_resource_group_name = "dummy"
   create_dns_record            = false # Managed manually below
