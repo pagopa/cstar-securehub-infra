@@ -1,0 +1,5 @@
+bucket         = "terraform-state-eu-central-1-73226307"
+key            = "01_init.tfstate"
+region         = "eu-central-1"
+dynamodb_table = "terraform-lock"
+profile        = "cstar-prod"

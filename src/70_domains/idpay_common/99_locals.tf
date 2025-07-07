@@ -11,6 +11,9 @@ locals {
   compute_rg  = "${local.project}}-compute-rg"
   cicd_rg     = "${local.project}}-cicd-rg"
 
+  # SMTP
+  ses_smtp_port = 465
+
   #
   # 🌐 Network
   #
@@ -18,6 +21,7 @@ locals {
   network_rg              = "${local.project_core}-network-rg"
   vnet_spoke_data_rg_name = "${local.project_core}-network-rg"
   vnet_spoke_data_name    = "${local.project_core}-spoke-data-vnet"
+  vnet_spoke_compute_name = "${local.project_core}-spoke-compute-vnet"
 
   public_dns_zone_name = "${var.dns_zone_prefix}.${var.external_domain}"
 
@@ -27,6 +31,8 @@ locals {
   idpay_kv_name    = "${local.project}-kv"
   idpay_kv_rg_name = "${local.project}-security-rg"
 
+  kv_core_name                = "${local.product_no_domain}-core-kv"
+  kv_core_resource_group_name = "${local.product_no_domain}-core-sec-rg"
   #
   # AKS
   #

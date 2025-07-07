@@ -20,7 +20,8 @@ default_zones = [1, 2, 3]
 aks_sku_tier                   = "Standard"
 aks_private_cluster_is_enabled = true
 aks_alerts_enabled             = false
-aks_enable_workload_identity   = true
+
+aks_kubernetes_version = "1.32.4"
 
 # Standard is recommended tier
 # D – General purpose compute
@@ -41,31 +42,25 @@ aks_system_node_pool = {
   node_tags                    = { node_tag_1 : "1" },
 }
 
+#----------------------------------------------------------------
+# AKS
+#----------------------------------------------------------------
+aks_nodepool_blue = {
+  vm_sku_name       = "Standard_D8ads_v5_active"
+  autoscale_enabled = true
+  node_count_min    = 1
+  node_count_max    = 3
+}
 
-# Standard is recommended tier
-# D – General purpose compute
-# 8 – VM Size
-# a – AMD-based processor
-# d – Diskfull (local temp disk is present)
-# s – Premium Storage capable
-# v5 – version
-aks_user_node_pool = {
-  enabled         = true
-  name            = "userdefault"
-  vm_size         = "Standard_D8ads_v5"
-  os_disk_type    = "Managed"
-  os_disk_size_gb = "128"
-  node_count_min  = "1"
-  node_count_max  = "3"
-  node_labels     = { node_name : "aks-user-01", node_type : "user" },
-  node_taints     = [],
-  node_tags       = { node_tag_2 : "2" },
+aks_nodepool_green = {
+  vm_sku_name       = "Standard_D8ads_v5_passive"
+  autoscale_enabled = false
+  node_count_min    = 0
+  node_count_max    = 0
 }
 
 aks_cidr_subnet      = ["10.10.1.0/24"] # 10.10.1.0 -> 10.10.1.255
 aks_cidr_subnet_user = ["10.10.2.0/24"] # 10.10.2.0 -> 10.10.2.255
-
-aks_kubernetes_version = "1.32.4"
 
 ingress_min_replica_count = "1"
 ingress_max_replica_count = "3"
@@ -97,7 +92,7 @@ nginx_helm = {
 # chart releases: https://github.com/kedacore/charts/releases
 # keda image tags: https://github.com/kedacore/keda/pkgs/container/keda/versions
 # keda-metrics-apiserver image tags: https://github.com/kedacore/keda/pkgs/container/keda-metrics-apiserver/versions
-keda_helm_chart_version = "2.16.1"
+keda_helm_chart_version = "2.17.1"
 
 # chart releases: https://github.com/stakater/Reloader/releases
 # image tags: https://hub.docker.com/r/stakater/reloader/tags

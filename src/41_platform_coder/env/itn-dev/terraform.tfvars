@@ -19,6 +19,7 @@ tags = {
 #
 dns_zone_internal_prefix = "internal.dev"
 external_domain          = "pagopa.it"
+mcshared_dns_zone_prefix = "api-mcshared.dev"
 
 ## Postgres
 keycloak_pgflex_params = {

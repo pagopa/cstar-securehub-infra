@@ -112,6 +112,13 @@ variable "single_page_applications_asset_register_roots_dirs" {
   description = "spa root dirs"
 }
 
+# Single Page Applications Merchants Operator
+variable "single_page_applications_portal_merchants_operator_roots_dirs" {
+  type        = list(string)
+  description = "spa root dirs"
+}
+
+
 ## Event hub
 variable "ehns_sku_name" {
   type        = string
@@ -218,4 +225,24 @@ variable "selfcare_welfare_cdn_storage_account_replication_type" {
 variable "k8s_kube_config_path_prefix" {
   type    = string
   default = "~/.kube"
+}
+
+variable "aks_nodepool_blue" {
+  type = object({
+    vm_sku_name       = string
+    autoscale_enabled = optional(bool, true)
+    node_count_min    = number
+    node_count_max    = number
+  })
+  description = "Paramters for blue node pool"
+}
+
+variable "aks_nodepool_green" {
+  type = object({
+    vm_sku_name       = string
+    autoscale_enabled = optional(bool, true)
+    node_count_min    = number
+    node_count_max    = number
+  })
+  description = "Paramters for blue node pool"
 }

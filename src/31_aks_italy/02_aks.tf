@@ -16,9 +16,9 @@ module "aks" {
   log_analytics_workspace_id = data.azurerm_log_analytics_workspace.log_analytics.id
   sku_tier                   = var.aks_sku_tier
 
-  workload_identity_enabled = var.aks_enable_workload_identity
-  oidc_issuer_enabled       = var.aks_enable_workload_identity
-  force_upgrade_enabled     = var.force_upgrade_enabled
+  workload_identity_enabled = true
+  oidc_issuer_enabled       = true
+  force_upgrade_enabled     = false
 
   ## Prometheus managed
   # ffppa: ⚠️ Installed on all ENV please do not change
@@ -92,5 +92,10 @@ module "aks" {
 
   microsoft_defender_log_analytics_workspace_id = var.env == "prod" ? data.azurerm_log_analytics_workspace.log_analytics.id : null
 
-  tags = module.tag_config.tags
+  automatic_channel_upgrade = null
+  maintenance_windows_node_os = {
+    enabled = true
+  }
+
+  tags = local.tags
 }

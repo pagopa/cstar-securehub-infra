@@ -2,9 +2,11 @@
 # 📊  Managed
 #
 resource "azurerm_dashboard_grafana" "grafana_managed" {
-  name                              = "${local.product}-${var.location_short}-grafana"
-  resource_group_name               = module.default_resource_groups[var.domain].resource_group_names["monitoring"]
-  location                          = var.location
+  name                = "${local.product}-${var.location_short}-grafana"
+  resource_group_name = module.default_resource_groups[var.domain].resource_group_names["monitoring"]
+  location            = var.location
+  tags                = module.tag_config.tags
+
   api_key_enabled                   = true
   deterministic_outbound_ip_enabled = true
   public_network_access_enabled     = true
@@ -21,7 +23,6 @@ resource "azurerm_dashboard_grafana" "grafana_managed" {
     ]
   }
 
-  tags = module.tag_config.tags
 }
 
 #

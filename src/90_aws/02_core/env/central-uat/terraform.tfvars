@@ -1,0 +1,7 @@
+prefix         = "cstar"
+env            = "uat"
+env_short      = "u"
+domain         = "core"
+location_short = "itn"
+aws_region     = "eu-central-1"
+aws_profile    = "cstar-uat"

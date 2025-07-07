@@ -1,3 +1,28 @@
+# 🔐 KV
+data "azurerm_key_vault" "domain_kv" {
+  name                = local.key_vault_name
+  resource_group_name = local.key_vault_rg_name
+}
+
+#
+# RG
+#
+data "azurerm_resource_group" "srtp_monitoring_rg" {
+  name = local.monitor_resource_group_name
+}
+
+data "azurerm_resource_group" "compute_rg" {
+  name = local.compute_rg
+}
+
+#
+# Network
+#
+data "azurerm_nat_gateway" "compute_nat_gateway" {
+  name                = "${local.project_core}-compute-natgw"
+  resource_group_name = local.network_rg
+}
+
 # 🔎 DNS
 data "azurerm_private_dns_zone" "cosmos_mongo" {
   name                = "privatelink.mongo.cosmos.azure.com"
@@ -14,19 +39,7 @@ data "azurerm_private_dns_zone" "file_storage" {
   resource_group_name = local.network_rg
 }
 
-# 🔐 KV
-data "azurerm_key_vault" "domain_kv" {
-  name                = local.key_vault_name
-  resource_group_name = local.key_vault_rg_name
-}
-
-# 📊 Monitoring
-data "azurerm_application_insights" "appinsights" {
-  name                = local.application_insights_name
-  resource_group_name = local.monitor_resource_group_name
-}
-
-data "azurerm_log_analytics_workspace" "log_analytics" {
-  name                = local.log_analytics_workspace_name
-  resource_group_name = local.monitor_resource_group_name
+data "azurerm_private_dns_zone" "container_apps" {
+  name                = "privatelink.${var.location}.azurecontainerapps.io"
+  resource_group_name = local.network_rg
 }

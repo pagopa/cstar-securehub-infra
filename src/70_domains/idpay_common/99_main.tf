@@ -30,6 +30,10 @@ terraform {
       source  = "Azure/azapi"
       version = "~> 2.3"
     }
+    keycloak = {
+      source  = "keycloak/keycloak"
+      version = ">= 5.0.0"
+    }
   }
 
   backend "azurerm" {}
@@ -44,8 +48,8 @@ provider "azurerm" {
 }
 
 module "__v4__" {
-  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v7.10.1
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=c3d420cd3d64163cd912cc40bdedb99900c8ddef"
+  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v7.12.0
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=0a7c2d5439660df28f2154eb86f5a8af0bbe8892"
 }
 
 provider "kubernetes" {
@@ -65,4 +69,11 @@ provider "argocd" {
   kubernetes {
     config_context = "config-${local.aks_name}"
   }
+}
+
+provider "keycloak" {
+  client_id     = "terraform"
+  client_secret = data.azurerm_key_vault_secret.terraform_client_secret_for_keycloak.value
+  url           = "https://${data.azurerm_key_vault_secret.keycloak_url.value}"
+  realm         = "master"
 }

@@ -53,6 +53,7 @@ enable = {
 ### CDN
 idpay_cdn_storage_account_replication_type            = "ZRS"
 selfcare_welfare_cdn_storage_account_replication_type = "ZRS"
+robots_indexed_paths                                  = []
 idpay_cdn_sa_advanced_threat_protection_enabled       = true
 single_page_applications_roots_dirs = [
   "portale-enti",
@@ -64,3 +65,20 @@ single_page_applications_roots_dirs = [
 single_page_applications_asset_register_roots_dirs = [
   "registro-dei-beni"
 ]
+
+#----------------------------------------------------------------
+# AKS
+#----------------------------------------------------------------
+aks_nodepool_blue = {
+  vm_sku_name       = "Standard_D8ads_v5_active"
+  autoscale_enabled = true
+  node_count_min    = 1
+  node_count_max    = 3
+}
+
+aks_nodepool_green = {
+  vm_sku_name       = "Standard_D8ads_v5_passive"
+  autoscale_enabled = false
+  node_count_min    = 0
+  node_count_max    = 0
+}
