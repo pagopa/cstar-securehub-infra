@@ -12,7 +12,7 @@ module "srtp_storage_account" {
   product_name        = var.prefix
   env                 = var.env
   location            = var.location
-  resource_group_name = local.data_rg
+  resource_group_name = local.data_rg_name
   tags                = module.tag_config.tags
 
   # IDH Resources
@@ -45,7 +45,7 @@ module "share_storage_account" {
   product_name        = var.prefix
   env                 = var.env
   location            = var.location
-  resource_group_name = local.data_rg
+  resource_group_name = local.data_rg_name
   tags                = module.tag_config.tags
 
   # IDH Resources

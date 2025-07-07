@@ -3,7 +3,7 @@ locals {
   cicd_rg_name = "${local.project}-cicd-rg"
 
   repository = {
-    "mil-auth" = {
+    rtp-activator = {
       env_variables = [],
       env_secret_variables = [
         {
@@ -15,7 +15,7 @@ locals {
       repository_secrets   = []
       repository_variables = []
     }
-    "mil-auth" = {
+    rtp-sender = {
       env_variables = [],
       env_secret_variables = [
         {
@@ -28,6 +28,7 @@ locals {
       repository_variables = []
     }
   }
+
   # Environment Secrets of the Repository #
   env_secret_variables_flattened = merge([
     for repo_name, repo_data in local.repository : merge([

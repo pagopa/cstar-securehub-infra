@@ -5,11 +5,19 @@ locals {
   product      = "${var.prefix}-${var.env_short}"
 
   # Default Domain Resource Group
-  data_rg                     = "${local.project}-data-rg"
-  security_rg                 = "${local.project}-security-rg"
-  compute_rg                  = "${local.project}-compute-rg"
-  cicd_rg                     = "${local.project}-cicd-rg"
-  monitor_resource_group_name = "${local.project}-monitoring-rg"
+  data_rg_name     = "${local.project}-data-rg"
+  security_rg_name = "${local.project}-security-rg"
+  compute_rg_name  = "${local.project}-compute-rg"
+  cicd_rg_name     = "${local.project}-cicd-rg"
+  monitor_rg_name  = "${local.project}-monitoring-rg"
+
+  default_resourge_group_names = [
+    local.data_rg_name,
+    local.security_rg_name,
+    local.compute_rg_name,
+    local.cicd_rg_name,
+    local.monitor_rg_name
+  ]
 
   # 🛜 VNET + Subnets
   network_rg              = "${local.project_core}-network-rg"
@@ -23,6 +31,8 @@ locals {
 
   # 🔎 DNS
   dns_zone_name = "${var.env != "prod" ? "${var.env}." : ""}${var.prefix}.pagopa.it"
+
+  repositories = ["rtp-sender", "rtp-activation"]
 
   # 🍀 Cosmos DB Collection
   cosmos_db = {
