@@ -28,6 +28,12 @@ data "azurerm_nat_gateway" "compute_nat_gateway" {
   resource_group_name = local.network_rg
 }
 
+data "azurerm_dns_zone" "bonus_elettrodomestici" {
+  for_each            = toset(local.public_dns_zone_bonus_elettrodomestici.zones)
+  name                = each.value
+  resource_group_name = "${local.project_core}-network-rg"
+}
+
 #
 # Private DNS Zones
 #

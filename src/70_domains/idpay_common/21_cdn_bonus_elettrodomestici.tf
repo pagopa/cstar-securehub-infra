@@ -1,0 +1,248 @@
+/**
+ * CDN
+ */
+
+locals {
+  # CDN Configuration Constants
+  cdn_storage_account_name = "${local.project}bonuscdnsa"
+  cdn_index_document       = "index.html"
+  cdn_error_document       = "error.html"
+
+  # DNS Zone Key for the main CDN (the one configured in the module)
+  dns_zone_key = var.env_short != "p" ? "${var.env}.bonuselettrodomestici.it" : "bonuselettrodomestici.it"
+
+  # DNS Zone Reference for the main CDN
+  bonus_dns_zone = data.azurerm_dns_zone.bonus_elettrodomestici[local.dns_zone_key]
+
+  # All bonus elettrodomestici zones
+  all_bonus_zones = data.azurerm_dns_zone.bonus_elettrodomestici
+
+  # Security Headers
+  security_headers = [
+    {
+      action = "Overwrite"
+      name   = "Strict-Transport-Security"
+      value  = "max-age=31536000"
+    },
+    {
+      action = "Append"
+      name   = contains(["d"], var.env_short) ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
+      value  = "default-src 'self'; object-src 'none'; connect-src 'self' https://api-io.${var.dns_zone_prefix}.${var.external_domain}/ https://api-eu.mixpanel.com/track/; "
+    },
+    {
+      action = "Append"
+      name   = contains(["d"], var.env_short) ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
+      value  = "script-src 'self'; style-src 'self' 'unsafe-inline' https://selfcare${local.selfare_asset_temp_suffix}.pagopa.it/assets/font/selfhostedfonts.css; worker-src 'none'; font-src 'self' https://selfcare${local.selfare_asset_temp_suffix}.pagopa.it/assets/font/; "
+    },
+    {
+      action = "Append"
+      name   = "X-Content-Type-Options"
+      value  = "nosniff"
+    },
+    {
+      action = "Overwrite"
+      name   = "X-Frame-Options"
+      value  = "SAMEORIGIN"
+    }
+  ]
+
+  # Application Delivery Rules - rewrite only
+  app_delivery_rules = [
+    {
+      name  = "CittadinoApplication"
+      order = 2
+      conditions = [
+        {
+          condition_type   = "url_path_condition"
+          operator         = "BeginsWith"
+          match_values     = ["/cittadino"]
+          negate_condition = false
+          transforms       = null
+        }
+      ]
+      url_rewrite_action = {
+        source_pattern          = "/cittadino"
+        destination             = "/cittadino/index.html"
+        preserve_unmatched_path = false
+      }
+    },
+    {
+      name  = "PortaleEsercentiApplication"
+      order = 3
+      conditions = [
+        {
+          condition_type   = "url_path_condition"
+          operator         = "BeginsWith"
+          match_values     = ["/portale-esercenti"]
+          negate_condition = false
+          transforms       = null
+        }
+      ]
+      url_rewrite_action = {
+        source_pattern          = "/portale-esercenti"
+        destination             = "/portale-esercenti/index.html"
+        preserve_unmatched_path = false
+      }
+    }
+  ]
+
+  # Root Redirect Rule - separate because it's a redirect, not a rewrite
+  root_redirect_rule = [
+    {
+      name  = "RootRedirect"
+      order = length(local.app_delivery_rules) + 2
+
+      // conditions
+      url_path_conditions = [
+        {
+          operator         = "Equal"
+          match_values     = ["/"]
+          negate_condition = false
+          transforms       = null
+        }
+      ]
+      cookies_conditions            = []
+      device_conditions             = []
+      http_version_conditions       = []
+      post_arg_conditions           = []
+      query_string_conditions       = []
+      remote_address_conditions     = []
+      request_body_conditions       = []
+      request_header_conditions     = []
+      request_method_conditions     = []
+      request_scheme_conditions     = []
+      request_uri_conditions        = []
+      url_file_extension_conditions = []
+      url_file_name_conditions      = []
+
+      // actions
+      url_redirect_actions = [
+        {
+          redirect_type = "Found"
+          protocol      = "Https"
+          hostname      = "ioapp.it"
+          path          = "/"
+          fragment      = ""
+          query_string  = ""
+        }
+      ]
+      cache_expiration_actions       = []
+      cache_key_query_string_actions = []
+      modify_request_header_actions  = []
+      modify_response_header_actions = []
+      url_rewrite_actions            = []
+    }
+  ]
+}
+
+// Public CDN to serve frontend - main domain
+module "cdn_idpay_bonuselettrodomestici" {
+  source = "./.terraform/modules/__v4__/cdn"
+
+  # Basic Configuration
+  name                = "bonus"
+  prefix              = local.project_weu
+  resource_group_name = data.azurerm_resource_group.idpay_data_rg.name
+  location            = var.location
+  cdn_location        = var.location_weu
+
+  # DNS Configuration
+  hostname                     = local.bonus_dns_zone.name
+  dns_zone_name                = "dummy"
+  dns_zone_resource_group_name = "dummy"
+  create_dns_record            = false # Managed manually below
+
+  # Storage Configuration
+  storage_account_name             = local.cdn_storage_account_name
+  storage_account_replication_type = var.idpay_cdn_storage_account_replication_type
+  index_document                   = local.cdn_index_document
+  error_404_document               = local.cdn_error_document
+
+  # Security Configuration
+  https_rewrite_enabled              = true
+  advanced_threat_protection_enabled = var.idpay_cdn_sa_advanced_threat_protection_enabled
+
+  # Key Vault Configuration
+  keyvault_resource_group_name = local.idpay_kv_rg_name
+  keyvault_subscription_id     = data.azurerm_subscription.current.subscription_id
+  keyvault_vault_name          = local.idpay_kv_name
+
+  # Caching Configuration
+  querystring_caching_behaviour = "BypassCaching"
+  log_analytics_workspace_id    = data.azurerm_log_analytics_workspace.log_analytics.id
+
+  # Global Delivery Rules
+  global_delivery_rule = {
+    cache_expiration_action       = []
+    cache_key_query_string_action = []
+    modify_request_header_action  = []
+    modify_response_header_action = local.security_headers
+  }
+
+  # Application-specific Delivery Rules (rewrite only)
+  delivery_rule_rewrite = local.app_delivery_rules
+
+  # Generic Delivery Rules (including redirects)
+  delivery_rule = local.root_redirect_rule
+
+  tags = module.tag_config.tags
+}
+
+/**
+ * DNS Records for all bonus elettrodomestici zones
+ * Includes: .it, .com, .info, .io, .net, .eu
+ */
+
+# A Record for APEX domain for ALL bonus elettrodomestici zones
+resource "azurerm_dns_a_record" "bonus_all_zones_apex" {
+  for_each = local.all_bonus_zones
+
+  name                = "@"
+  zone_name           = each.value.name
+  resource_group_name = each.value.resource_group_name
+  ttl                 = 300
+  target_resource_id  = module.cdn_idpay_bonuselettrodomestici.id
+
+  tags = module.tag_config.tags
+}
+
+# CNAME cdnverify record for ALL bonus elettrodomestici zones
+resource "azurerm_dns_cname_record" "bonus_all_zones_cdnverify" {
+  for_each = local.all_bonus_zones
+
+  name                = "cdnverify"
+  zone_name           = each.value.name
+  resource_group_name = each.value.resource_group_name
+  ttl                 = 300
+  record              = "cdnverify.${module.cdn_idpay_bonuselettrodomestici.hostname}"
+
+  tags = module.tag_config.tags
+}
+
+/**
+ * Custom Domain Configuration for Azure CDN (Classic)
+ * Associates all bonus elettrodomestici domains to the CDN endpoint
+ * Note: Using azurerm_cdn_endpoint_custom_domain for Azure CDN Classic
+ */
+
+# Custom Domain for each bonus elettrodomestici zone - Azure CDN Classic
+resource "azurerm_cdn_endpoint_custom_domain" "bonus_custom_domains" {
+  for_each = local.all_bonus_zones
+
+  name            = replace(replace(each.key, ".", "-"), "_", "-")
+  cdn_endpoint_id = module.cdn_idpay_bonuselettrodomestici.id
+  host_name       = each.value.name
+
+  # Enable HTTPS with CDN managed certificate
+  cdn_managed_https {
+    certificate_type = "Dedicated"
+    protocol_type    = "ServerNameIndication"
+    tls_version      = "TLS12"
+  }
+
+  # Depends on DNS records for domain verification
+  depends_on = [
+    azurerm_dns_a_record.bonus_all_zones_apex,
+    azurerm_dns_cname_record.bonus_all_zones_cdnverify
+  ]
+}
