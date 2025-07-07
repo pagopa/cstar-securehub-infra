@@ -18,8 +18,10 @@ default_zones = [1, 2, 3]
 # https://pagopa.atlassian.net/wiki/spaces/DEVOPS/pages/482967553/AKS#sku-(dimensionamento)
 
 aks_sku_tier                   = "Free"
-aks_private_cluster_is_enabled = true
+aks_private_cluster_is_enabled = false
 aks_alerts_enabled             = false
+
+aks_kubernetes_version = "1.32.4"
 
 # Standard is recommended tier Standard_B2ms
 # B – Economical burstable
@@ -38,10 +40,25 @@ aks_system_node_pool = {
   node_tags                    = { node_tag_1 : "1" },
 }
 
+#----------------------------------------------------------------
+# AKS
+#----------------------------------------------------------------
+aks_nodepool_blue = {
+  vm_sku_name       = "Standard_B8ms_active"
+  autoscale_enabled = true
+  node_count_min    = 1
+  node_count_max    = 3
+}
+
+aks_nodepool_green = {
+  vm_sku_name       = "Standard_B8ms_passive"
+  autoscale_enabled = false
+  node_count_min    = 0
+  node_count_max    = 0
+}
+
 aks_cidr_subnet      = ["10.10.1.0/24"] # 10.10.1.0 -> 10.10.1.255
 aks_cidr_subnet_user = ["10.10.2.0/24"] # 10.10.2.0 -> 10.10.2.255
-
-aks_kubernetes_version = "1.32.4"
 
 ingress_min_replica_count = "1"
 ingress_max_replica_count = "3"
