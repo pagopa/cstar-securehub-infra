@@ -30,9 +30,9 @@ resource "github_repository_ruleset" "dev" {
     required_signatures     = false
 
     pull_request {
-      require_code_owner_review    = true
-      required_approving_review_count = 1
-      dismiss_stale_reviews_on_push          = true
+      require_code_owner_review         = true
+      required_approving_review_count   = 1
+      dismiss_stale_reviews_on_push     = true
       required_review_thread_resolution = true
     }
   }
@@ -62,9 +62,9 @@ resource "github_repository_ruleset" "uat_prod" {
     required_signatures     = false
 
     pull_request {
-      require_code_owner_review    = true
-      required_approving_review_count = 1
-      dismiss_stale_reviews_on_push          = true
+      require_code_owner_review         = true
+      required_approving_review_count   = 1
+      dismiss_stale_reviews_on_push     = true
       required_review_thread_resolution = true
     }
   }
