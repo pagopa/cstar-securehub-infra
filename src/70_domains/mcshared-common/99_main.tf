@@ -24,6 +24,6 @@ provider "azurerm" {
 }
 
 module "__v4__" {
-  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v7.15.0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=feat/add-container-app-private-endpoint"
+  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v7.18.0
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=f3af5e00981a65609eba184544cd2db022b9e969"
 }
