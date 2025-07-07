@@ -716,11 +716,28 @@ locals {
       ]
     },
     {
-      name = "upload_csv"
+      name = "product_file"
       indexes = [
         {
           keys   = ["_id"]
           unique = true
+        },
+        {
+          keys   = ["dateUpload"]
+          unique = false
+        }
+      ]
+    },
+    {
+      name = "product"
+      indexes = [
+        {
+          keys   = ["_id"]
+          unique = true
+        },
+        {
+          keys   = ["registrationDate"]
+          unique = false
         }
       ]
     }
