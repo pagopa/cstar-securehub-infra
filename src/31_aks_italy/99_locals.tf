@@ -7,6 +7,8 @@ locals {
   project_core = "${var.prefix}-${var.env_short}-${var.location_short}-core"
   tenant_id    = data.azurerm_client_config.current.tenant_id
 
+  tags = merge(module.tag_config.tags, { grafana = "yes" })
+
   #
   # AKS
   #

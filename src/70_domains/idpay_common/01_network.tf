@@ -88,6 +88,9 @@ module "private_endpoint_service_bus_snet" {
   idh_resource_tier = "private_endpoint"
 }
 
+#----------------------------------------------------------------
+# 🔎 AKS Overlay Subnet
+#----------------------------------------------------------------
 module "aks_overlay_snet" {
   source = "./.terraform/modules/__v4__/IDH/subnet"
 
@@ -102,6 +105,11 @@ module "aks_overlay_snet" {
 
   # IDH Resources
   idh_resource_tier = "aks_overlay"
+}
+
+resource "azurerm_subnet_nat_gateway_association" "nat_gateway_association" {
+  subnet_id      = module.aks_overlay_snet.id
+  nat_gateway_id = data.azurerm_nat_gateway.compute_nat_gateway.id
 }
 
 #----------------------------------------------------------------

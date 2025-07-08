@@ -27,7 +27,21 @@ locals {
           SONARCLOUD_PROJECT_NAME = "idpay-asset-register-frontend"
         }
       ]
-    }
+    },
+    "idpay-merchant" = {
+      repository_secrets = [
+        {
+          SONAR_TOKEN = data.azurerm_key_vault_secret.sonar_token.value
+        }
+      ]
+      repository_variables = [
+        {
+          SONARCLOUD_ORG          = "pagopa"
+          SONARCLOUD_PROJECT_KEY  = "pagopa_idpay-merchant"
+          SONARCLOUD_PROJECT_NAME = "idpay-merchant"
+        }
+      ]
+    },
   }
 
   protected_branches = ["develop", "main", "uat"]

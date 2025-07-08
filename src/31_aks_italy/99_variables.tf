@@ -73,12 +73,10 @@ variable "default_zones" {
 variable "aks_private_cluster_is_enabled" {
   type        = bool
   description = "Allow to configure the AKS, to be setup as a private cluster. To reach it, you need to use an internal VM or VPN"
-  default     = true
 }
 
 variable "aks_alerts_enabled" {
   type        = bool
-  default     = false
   description = "AKS alerts enabled?"
 }
 
@@ -98,12 +96,6 @@ variable "aks_sku_tier" {
   description = "The SKU Tier that should be used for this Kubernetes Cluster. Possible values are Free and Paid (which includes the Uptime SLA)."
 }
 
-variable "force_upgrade_enabled" {
-  type        = bool
-  description = "(Optional) If set to true, cluster will be forced to upgrade even if the latest version of the control plane and agents is not available."
-  default     = false
-}
-
 variable "aks_system_node_pool" {
   type = object({
     name                         = string,
@@ -119,25 +111,24 @@ variable "aks_system_node_pool" {
   description = "AKS node pool system configuration"
 }
 
-variable "aks_user_node_pool" {
+variable "aks_nodepool_blue" {
   type = object({
-    enabled                    = optional(bool, true),
-    name                       = string,
-    vm_size                    = string,
-    os_disk_type               = string,
-    os_disk_size_gb            = string,
-    node_count_min             = number,
-    node_count_max             = number,
-    node_labels                = map(any),
-    node_taints                = list(string),
-    node_tags                  = map(any),
-    ultra_ssd_enabled          = optional(bool, false),
-    enable_host_encryption     = optional(bool, true),
-    max_pods                   = optional(number, 250),
-    upgrade_settings_max_surge = optional(string, "30%"),
-    zones                      = optional(list(any), [1, 2, 3]),
+    vm_sku_name       = string
+    autoscale_enabled = optional(bool, true)
+    node_count_min    = number
+    node_count_max    = number
   })
-  description = "AKS node pool user configuration"
+  description = "Paramters for blue node pool"
+}
+
+variable "aks_nodepool_green" {
+  type = object({
+    vm_sku_name       = string
+    autoscale_enabled = optional(bool, true)
+    node_count_min    = number
+    node_count_max    = number
+  })
+  description = "Paramters for blue node pool"
 }
 
 
@@ -206,11 +197,6 @@ variable "reloader_helm" {
     image_tag     = string
   })
   description = "reloader helm chart configuration"
-}
-
-variable "aks_enable_workload_identity" {
-  type    = bool
-  default = false
 }
 
 variable "skip_metric_validation" {
