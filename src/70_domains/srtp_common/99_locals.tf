@@ -35,7 +35,7 @@ locals {
   # 🔎 DNS
   dns_zone_name = "${var.env != "prod" ? "${var.env}." : ""}${var.prefix}.pagopa.it"
 
-  repositories = ["rtp-sender", "rtp-activation"]
+  repositories = ["rtp-sender", "rtp-activator"]
 
   # 🍀 Cosmos DB Collection
   cosmos_db = {
