@@ -132,8 +132,8 @@ locals {
   flattened_applications = merge([
     for class, apps in local.argocd_applications : {
       for app_name, app in apps :
-        app_name => merge(app, { class = class })
-        if contains(app.env, var.env)
+      app_name => merge(app, { class = class })
+      if contains(app.env, var.env)
     }
   ]...)
 }
