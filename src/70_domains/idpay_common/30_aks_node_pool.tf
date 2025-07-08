@@ -9,14 +9,13 @@ module "aks_idpay_node_pool_blue" {
   # IDH Resources
   idh_resource_tier = var.aks_nodepool_blue.vm_sku_name
 
-  # Storage Account Settings
-  name           = "cs${var.env_short}idpblue"
+  name           = "cs${var.env_short}blueidpay"
   node_count_min = var.aks_nodepool_blue.node_count_min
   node_count_max = var.aks_nodepool_blue.node_count_max
 
-  node_labels           = { node_name : "idpay-blue", node_type : "user", domain : var.domain }
+  node_labels           = { node_name : "idpay-blue", node_type : "user", domain : var.domain, phase : "blue" }
   node_taints           = ["${var.domain}Only=true:NoSchedule"]
-  node_tags             = { node_tag : "blue" }
+  node_tags             = { node_tag : "blue", phase : "blue" }
   kubernetes_cluster_id = data.azurerm_kubernetes_cluster.aks.id
   vnet_subnet_id        = module.aks_overlay_snet.id
 }
@@ -32,15 +31,14 @@ module "aks_idpay_node_pool_green" {
   # IDH Resources
   idh_resource_tier = var.aks_nodepool_green.vm_sku_name
 
-  # Storage Account Settings
-  name = "cs${var.env_short}idpgreen"
+  name = "cs${var.env_short}grenidpay"
 
   autoscale_enabled     = var.aks_nodepool_green.autoscale_enabled
   node_count_min        = var.aks_nodepool_green.node_count_min
   node_count_max        = var.aks_nodepool_green.node_count_max
-  node_labels           = { node_name : "idpay-green", node_type : "user", domain : var.domain }
+  node_labels           = { node_name : "idpay-green", node_type : "user", domain : var.domain, phase : "green" }
   node_taints           = ["${var.domain}Only=true:NoSchedule"]
-  node_tags             = { node_tag : "green" }
+  node_tags             = { node_tag : "green", phase : "green" }
   kubernetes_cluster_id = data.azurerm_kubernetes_cluster.aks.id
   vnet_subnet_id        = module.aks_overlay_snet.id
 }
