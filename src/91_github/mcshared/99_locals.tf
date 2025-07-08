@@ -28,6 +28,7 @@ locals {
       repository_variables = []
     }
   }
+
   # Environment Secrets of the Repository #
   env_secret_variables_flattened = merge([
     for repo_name, repo_data in local.repository : merge([

@@ -30,10 +30,13 @@ resource "azurerm_user_assigned_identity" "sender" {
   tags                = module.tag_config.tags
 }
 
-resource "azurerm_role_assignment" "secrets_user_on_domain_kv_to_sender_identity" {
-  scope                = data.azurerm_key_vault.domain_kv.id
-  role_definition_name = "Key Vault Secrets User"
-  principal_id         = azurerm_user_assigned_identity.sender.principal_id
+resource "azurerm_key_vault_access_policy" "access_policy_auth_kv" {
+
+  key_vault_id = data.azurerm_key_vault.domain_kv.id
+  tenant_id    = data.azurerm_key_vault.domain_kv.tenant_id
+  object_id    = azurerm_user_assigned_identity.sender.principal_id
+
+  secret_permissions = ["Get", "List", "Set", "Delete"]
 }
 
 resource "azurerm_role_assignment" "storage_account_to_sender_identity" {

@@ -10,13 +10,16 @@ locals {
   compute_rg_name  = "${local.project}-compute-rg"
   cicd_rg_name     = "${local.project}-cicd-rg"
   monitor_rg_name  = "${local.project}-monitoring-rg"
+  identity_rg_name = "${local.project}-identity-rg"
 
-  default_resourge_group_names = [
+
+  default_resource_group_names = [
     local.data_rg_name,
     local.security_rg_name,
     local.compute_rg_name,
     local.cicd_rg_name,
-    local.monitor_rg_name
+    local.monitor_rg_name,
+    local.identity_rg_name
   ]
 
   # 🛜 VNET + Subnets

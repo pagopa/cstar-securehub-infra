@@ -23,7 +23,7 @@ resource "azurerm_federated_identity_credential" "identity_credentials_cd" {
 }
 
 resource "azurerm_role_assignment" "identity_role_assignment_cd" {
-  for_each = toset(local.default_resourge_group_names)
+  for_each = toset(local.default_resource_group_names)
 
   scope                = "/subscriptions/${data.azurerm_subscription.current.subscription_id}/resourceGroups/${each.key}"
   role_definition_name = "Contributor"
