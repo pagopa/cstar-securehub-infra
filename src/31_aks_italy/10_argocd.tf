@@ -19,8 +19,12 @@ resource "helm_release" "argocd" {
 
   values = [
     templatefile("argocd/argocd_helm_setup_values.yaml", {
-      ARGOCD_INTERNAL_URL  = local.argocd_internal_url
-      ARGOCD_TLS_CERT_NAME = replace(local.argocd_internal_url, ".", "-")
+        ARGOCD_INTERNAL_URL  = local.argocd_internal_url
+        ARGOCD_TLS_CERT_NAME = replace(local.argocd_internal_url, ".", "-")
+        ARGOCD_PDB_ENABLED = var.argocd_pdb_enabled
+        FORCE_REINSTALL = var.argocd_force_reinstall_version
+        ARGOCD_MIN_REPLICAS = var.argocd_min_replicas
+        ARGOCD_MAX_REPLICAS = var.argocd_max_replicas
       }
     )
   ]

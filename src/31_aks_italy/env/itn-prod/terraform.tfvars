@@ -103,4 +103,8 @@ reloader_helm = {
 
 ### ARGOCD
 #https://github.com/argoproj/argo-helm/releases/tag/argo-cd-7.7.7
-argocd_helm_release_version = "7.7.7" #2.13.1
+argocd_helm_release_version = "7.9.1" #2.13.1
+argocd_force_reinstall_version = "v20250709"
+argocd_pdb_enabled = true
+argocd_min_replicas = 3
+argocd_max_replicas = 5
