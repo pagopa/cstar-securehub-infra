@@ -237,16 +237,37 @@ resource "azurerm_cdn_endpoint_custom_domain" "bonus_custom_domains" {
   cdn_endpoint_id = module.cdn_idpay_bonuselettrodomestici.id
   host_name       = each.value.name
 
-  # Enable HTTPS with CDN managed certificate
-  cdn_managed_https {
-    certificate_type = "Dedicated"
-    protocol_type    = "ServerNameIndication"
-    tls_version      = "TLS12"
+  # Enable HTTPS with CDN user defined certificate
+  user_managed_https {
+    key_vault_secret_id = data.azurerm_key_vault_certificate.bonus_elettrodomestici_cert[
+      join("-", split(".", each.key))
+    ].secret_id
+    tls_version = "TLS12"
   }
 
   # Depends on DNS records for domain verification
   depends_on = [
     azurerm_dns_a_record.bonus_all_zones_apex,
     azurerm_dns_cname_record.bonus_all_zones_cdnverify
+  ]
+}
+
+data "azuread_service_principal" "microsoft_cdn" {
+  display_name = "Microsoft.AzureFrontDoor-Cdn"
+}
+
+resource "azurerm_key_vault_access_policy" "cdn_certificates_policy" {
+  key_vault_id = data.azurerm_key_vault.domain_kv.id
+  tenant_id    = data.azurerm_client_config.current.tenant_id
+  object_id    = data.azuread_service_principal.microsoft_cdn.object_id
+
+  certificate_permissions = [
+    "Get",
+    "List"
+  ]
+
+  secret_permissions = [
+    "Get",
+    "List"
   ]
 }

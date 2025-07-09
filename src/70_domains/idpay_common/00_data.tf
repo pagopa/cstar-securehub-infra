@@ -1,4 +1,3 @@
-
 data "azurerm_subscription" "current" {}
 
 data "azurerm_client_config" "current" {}
@@ -157,4 +156,14 @@ data "azurerm_key_vault_secret" "ses_smtp_host" {
 data "azurerm_key_vault_secret" "ses_from_address" {
   name         = "aws-ses-mail-from"
   key_vault_id = data.azurerm_key_vault.domain_kv.id
+}
+
+data "azurerm_key_vault_certificate" "bonus_elettrodomestici_cert" {
+  for_each = toset([
+    for zone in local.public_dns_zone_bonus_elettrodomestici.zones :
+    join("-", split(".", zone))
+  ])
+
+  key_vault_id = data.azurerm_key_vault.domain_kv.id
+  name         = each.value
 }
