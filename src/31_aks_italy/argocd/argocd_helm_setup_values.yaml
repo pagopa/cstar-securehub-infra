@@ -26,17 +26,15 @@ global:
 
 configs:
   params:
-    application.namespaces: "${join(",", argocd_application_namespaces)}"
-    server.insecure: true  # Miglioramento: Abilitazione TLS a livello di ArgoCD
+    server.insecure: true
 
   cm:
     timeout.reconciliation: 30s
     application.resourceTrackingMethod: annotation
     exec.enabled: "false"
-    admin.enabled: "true"  # Miglioramento: Disabilitazione dell'utente admin predefinito
+    admin.enabled: "true"
     statusbadge.enabled: "true"
     url: https://${ARGOCD_INTERNAL_URL}
-
 
   rbac:
     policy.default: role:guest
@@ -273,3 +271,42 @@ applicationSet:
     limits:
       cpu: 500m
       memory: 512Mi
+
+notifications:
+  replicas: 1
+  autoscaling:
+    enabled: true
+    minReplicas: ${ARGOCD_MIN_REPLICAS}
+    maxReplicas: ${ARGOCD_MAX_REPLICAS}
+    targetCPUUtilizationPercentage: 80
+    targetMemoryUtilizationPercentage: 80
+    behavior:
+      scaleDown:
+        stabilizationWindowSeconds: 300
+        policies:
+          - type: Pods
+            value: 1
+            periodSeconds: 180
+      scaleUp:
+        stabilizationWindowSeconds: 60
+        policies:
+          - type: Pods
+            value: 1
+            periodSeconds: 60
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+  pdb:
+    enabled: ${ARGOCD_PDB_ENABLED}
+    minAvailable: 1
+  resources:
+    limits:
+     cpu: 100m
+     memory: 128Mi
+    requests:
+     cpu: 100m
+     memory: 128Mi
+
+dex:
+  enabled: false
