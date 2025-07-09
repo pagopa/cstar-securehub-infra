@@ -216,3 +216,23 @@ variable "argocd_helm_release_version" {
   type        = string
   description = "ArgoCD helm chart release version"
 }
+
+variable "argocd_force_reinstall_version" {
+  type        = string
+  description = "version to force reinstall ArgoCD"
+}
+
+variable "argocd_pdb_enabled" {
+  type        = bool
+  description = "Enable Pod Disruption Budget for ArgoCD"
+}
+
+variable "argocd_min_replicas" {
+  type        = number
+  description = "Minimum number of replicas for ArgoCD"
+}
+
+variable "argocd_max_replicas" {
+  type        = number
+  description = "Maximum number of replicas for ArgoCD"
+}
