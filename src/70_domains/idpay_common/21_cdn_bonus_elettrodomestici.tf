@@ -17,7 +17,8 @@ locals {
   # All bonus elettrodomestici zones
   all_bonus_zones = data.azurerm_dns_zone.bonus_elettrodomestici
 
-  # Security Headers
+  # Security Headers - Applied globally to all responses
+  # These headers enhance security by preventing common attacks
   security_headers = [
     {
       action = "Overwrite"
@@ -46,11 +47,32 @@ locals {
     }
   ]
 
-  # Application Delivery Rules - rewrite only
-  app_delivery_rules = [
+  # Application Delivery Rules - URL Rewrite Rules
+  # These rules handle routing for different frontend applications
+  # by rewriting URLs to serve the correct index.html files
+  app_delivery_rules = concat([
+    {
+      name  = "defaultApplication"
+      order = 2
+      conditions = [
+        {
+          condition_type   = "url_path_condition"
+          operator         = "BeginsWith"
+          match_values     = ["/portale-esercenti"]
+          negate_condition = false
+          transforms       = null
+        }
+      ]
+      url_rewrite_action = {
+        source_pattern          = "/"
+        destination             = "/portale-esercenti/index.html"
+        preserve_unmatched_path = false
+      }
+    },
+    # Cittadino Application Rule - Handles citizen portal routing
     {
       name  = "CittadinoApplication"
-      order = 2
+      order = 3
       conditions = [
         {
           condition_type   = "url_path_condition"
@@ -66,31 +88,151 @@ locals {
         preserve_unmatched_path = false
       }
     },
+    # Esercenti Application Rule - Handles merchant portal routing
     {
       name  = "PortaleEsercentiApplication"
-      order = 3
+      order = 4
       conditions = [
         {
           condition_type   = "url_path_condition"
           operator         = "BeginsWith"
-          match_values     = ["/portale-esercenti"]
+          match_values     = ["/esercente"]
           negate_condition = false
           transforms       = null
         }
       ]
       url_rewrite_action = {
-        source_pattern          = "/portale-esercenti"
-        destination             = "/portale-esercenti/index.html"
+        source_pattern          = "/esercente"
+        destination             = "/esercente/index.html"
         preserve_unmatched_path = false
       }
     }
-  ]
+    ],
+    # Dynamic SPA Merchant Operator Rules
+    # These rules are generated dynamically based on the variable
+    # single_page_applications_portal_merchants_operator_roots_dirs
+    # Each SPA gets its own routing rule to serve its index.html
+    try(var.single_page_applications_portal_merchants_operator_roots_dirs, null) != null ? [
+      for i, spa_merchant_op in var.single_page_applications_portal_merchants_operator_roots_dirs :
+      {
+        name  = replace(replace("SPA-${spa_merchant_op}", "-", ""), "/", "0")
+        order = i + 8
+        conditions = [
+          {
+            condition_type   = "url_path_condition"
+            operator         = "BeginsWith"
+            match_values     = ["/${spa_merchant_op}/"]
+            negate_condition = false
+            transforms       = null
+          },
+          {
+            condition_type   = "url_file_extension_condition"
+            operator         = "LessThanOrEqual"
+            match_values     = ["0"]
+            negate_condition = false
+            transforms       = null
+          },
+        ]
+        url_rewrite_action = {
+          source_pattern          = "/${spa_merchant_op}/"
+          destination             = "/${spa_merchant_op}/index.html"
+          preserve_unmatched_path = false
+        }
+      }
+    ] : []
+  )
 
-  # Root Redirect Rule - separate because it's a redirect, not a rewrite
-  root_redirect_rule = [
+  # Calculate the total number of rewrite rules for subsequent order calculations
+  total_rewrite_rules = length(local.app_delivery_rules)
+
+  # Additional Delivery Rules - Non-rewrite rules (redirects, headers, caching)
+  additional_delivery_rules = [
+    {
+      name  = "robotsNoIndex"
+      order = local.total_rewrite_rules + 1
+
+      // conditions
+      url_path_conditions = [
+        {
+          operator         = "Equal"
+          match_values     = try(length(var.robots_indexed_paths) > 0 ? var.robots_indexed_paths : ["dummy"], ["dummy"])
+          negate_condition = true
+          transforms       = null
+        }
+      ]
+      cookies_conditions            = []
+      device_conditions             = []
+      http_version_conditions       = []
+      post_arg_conditions           = []
+      query_string_conditions       = []
+      remote_address_conditions     = []
+      request_body_conditions       = []
+      request_header_conditions     = []
+      request_method_conditions     = []
+      request_scheme_conditions     = []
+      request_uri_conditions        = []
+      url_file_extension_conditions = []
+      url_file_name_conditions      = []
+
+      // actions
+      modify_response_header_actions = [
+        {
+          action = "Overwrite"
+          name   = "X-Robots-Tag"
+          value  = "noindex, nofollow"
+        }
+      ]
+      cache_expiration_actions       = []
+      cache_key_query_string_actions = []
+      modify_request_header_actions  = []
+      url_redirect_actions           = []
+      url_rewrite_actions            = []
+    },
+    {
+      name  = "microcomponentsNoCache"
+      order = local.total_rewrite_rules + 2
+
+      // conditions
+      url_path_conditions           = []
+      cookies_conditions            = []
+      device_conditions             = []
+      http_version_conditions       = []
+      post_arg_conditions           = []
+      query_string_conditions       = []
+      remote_address_conditions     = []
+      request_body_conditions       = []
+      request_header_conditions     = []
+      request_method_conditions     = []
+      request_scheme_conditions     = []
+      request_uri_conditions        = []
+      url_file_extension_conditions = []
+
+      url_file_name_conditions = [
+        {
+          operator         = "Equal"
+          match_values     = ["remoteEntry.js"]
+          negate_condition = false
+          transforms       = null
+        }
+      ]
+
+      // actions
+      modify_response_header_actions = [
+        {
+          action = "Overwrite"
+          name   = "Cache-Control"
+          value  = "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0"
+        }
+      ]
+      cache_expiration_actions       = []
+      cache_key_query_string_actions = []
+      modify_request_header_actions  = []
+      url_redirect_actions           = []
+      url_rewrite_actions            = []
+    },
     {
       name  = "RootRedirect"
-      order = length(local.app_delivery_rules) + 2
+      order = local.total_rewrite_rules + 3
 
       // conditions
       url_path_conditions = [
@@ -187,10 +329,11 @@ module "cdn_idpay_bonuselettrodomestici" {
   delivery_rule_rewrite = local.app_delivery_rules
 
   # Generic Delivery Rules (including redirects)
-  delivery_rule = local.root_redirect_rule
+  delivery_rule = local.additional_delivery_rules
 
   tags = module.tag_config.tags
 }
+
 
 /**
  * DNS Records for all bonus elettrodomestici zones
