@@ -241,7 +241,7 @@ resource "azurerm_cdn_endpoint_custom_domain" "bonus_custom_domains" {
   user_managed_https {
     key_vault_secret_id = data.azurerm_key_vault_certificate.bonus_elettrodomestici_cert[
       join("-", split(".", each.key))
-    ].secret_id
+    ].versionless_secret_id
     tls_version = "TLS12"
   }
 
