@@ -25,6 +25,27 @@ locals {
 
   public_dns_zone_name = "${var.dns_zone_prefix}.${var.external_domain}"
 
+  ########################################
+  # Bonus Elettrodomestici DNS Public zone
+  ########################################
+  public_dns_zone_bonus_elettrodomestici = {
+    zones = var.env_short != "p" ? [
+      "${var.env}.bonuselettrodomestici.it",
+      "${var.env}.bonuselettrodomestici.com",
+      "${var.env}.bonuselettrodomestici.info",
+      "${var.env}.bonuselettrodomestici.io",
+      "${var.env}.bonuselettrodomestici.net",
+      "${var.env}.bonuselettrodomestici.eu"
+      ] : [
+      "bonuselettrodomestici.it",
+      "bonuselettrodomestici.com",
+      "bonuselettrodomestici.info",
+      "bonuselettrodomestici.io",
+      "bonuselettrodomestici.net",
+      "bonuselettrodomestici.eu"
+    ]
+  }
+
   #
   # 🔑 KeyVault
   #

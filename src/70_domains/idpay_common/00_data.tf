@@ -1,4 +1,3 @@
-
 data "azurerm_subscription" "current" {}
 
 data "azurerm_client_config" "current" {}
@@ -26,6 +25,12 @@ data "azurerm_dns_zone" "public_cstar" {
 data "azurerm_nat_gateway" "compute_nat_gateway" {
   name                = "${local.project_core}-compute-natgw"
   resource_group_name = local.network_rg
+}
+
+data "azurerm_dns_zone" "bonus_elettrodomestici" {
+  for_each            = toset(local.public_dns_zone_bonus_elettrodomestici.zones)
+  name                = each.value
+  resource_group_name = "${local.project_core}-network-rg"
 }
 
 #
@@ -151,4 +156,14 @@ data "azurerm_key_vault_secret" "ses_smtp_host" {
 data "azurerm_key_vault_secret" "ses_from_address" {
   name         = "aws-ses-mail-from"
   key_vault_id = data.azurerm_key_vault.domain_kv.id
+}
+
+data "azurerm_key_vault_certificate" "bonus_elettrodomestici_cert" {
+  for_each = toset([
+    for zone in local.public_dns_zone_bonus_elettrodomestici.zones :
+    join("-", split(".", zone))
+  ])
+
+  key_vault_id = data.azurerm_key_vault.domain_kv.id
+  name         = each.value
 }
