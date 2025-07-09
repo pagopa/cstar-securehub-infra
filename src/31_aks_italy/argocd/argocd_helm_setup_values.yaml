@@ -9,7 +9,7 @@ global:
    - maxSkew: 1
      topologyKey: kubernetes.io/hostname
      whenUnsatisfiable: DoNotSchedule
-  securityContext:                          
+  securityContext:
     runAsUser: 999
     runAsGroup: 999
     fsGroup: 999
