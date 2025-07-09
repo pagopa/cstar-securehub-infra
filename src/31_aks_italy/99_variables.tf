@@ -73,12 +73,10 @@ variable "default_zones" {
 variable "aks_private_cluster_is_enabled" {
   type        = bool
   description = "Allow to configure the AKS, to be setup as a private cluster. To reach it, you need to use an internal VM or VPN"
-  default     = true
 }
 
 variable "aks_alerts_enabled" {
   type        = bool
-  default     = false
   description = "AKS alerts enabled?"
 }
 

@@ -4,118 +4,140 @@ locals {
       "idpay-onboarding-workflow" = {
         name          = "idpay-onboarding-workflow"
         target_branch = "main"
+        env           = ["dev", "uat", "prod"]
       },
       "idpay-payment" = {
         name          = "idpay-payment"
         target_branch = "main"
+        env           = ["dev", "uat", "prod"]
       },
       "idpay-wallet" = {
         name          = "idpay-wallet"
         target_branch = "main"
+        env           = ["dev", "uat", "prod"]
       },
       "idpay-reward-calculator" = {
         name          = "idpay-reward-calculator"
         target_branch = "main"
+        env           = ["dev", "uat", "prod"]
       },
       "idpay-merchant" = {
         name          = "idpay-merchant"
         target_branch = "main"
+        env           = ["dev", "uat", "prod"]
       },
       "idpay-admissibility-assessor" = {
         name          = "idpay-admissibility-assessor"
         target_branch = "main"
+        env           = ["dev", "uat", "prod"]
       },
       "idpay-transactions" = {
         name          = "idpay-transactions"
         target_branch = "main"
+        env           = ["dev", "uat", "prod"]
       },
       "idpay-portal-welfare-backend-initiative" = {
         name          = "idpay-portal-welfare-backend-initiative"
         target_branch = "main"
+        env           = ["dev", "uat", "prod"]
       },
       "idpay-kafka-connect" = {
         name          = "idpay-kafka-connect"
         target_branch = "main"
+        env           = ["dev", "uat", "prod"]
       },
       "idpay-asset-register-backend" = {
         name          = "idpay-asset-register-backend"
         target_branch = "main"
+        env           = ["dev", "uat", "prod"]
       }
     }
     "mid" = {
       "idpay-group" = {
         name          = "idpay-group"
         target_branch = "main"
+        env           = ["dev", "uat", "prod"]
       },
       "idpay-initiative-statistics" = {
         name          = "idpay-initiative-statistics"
         target_branch = "main"
+        env           = ["dev", "uat", "prod"]
       },
       "idpay-payment-instrument" = {
         name          = "idpay-payment-instrument"
         target_branch = "main"
+        env           = ["dev", "uat", "prod"]
       },
       "idpay-portal-welfare-backend-role-permission" = {
         name          = "idpay-portal-welfare-backend-role-permission"
         target_branch = "main"
+        env           = ["dev", "uat", "prod"]
       },
       "idpay-ranking" = {
         name          = "idpay-ranking"
         target_branch = "main"
+        env           = ["dev", "uat", "prod"]
       },
       "idpay-recovery-error-topic" = {
         name          = "idpay-recovery-error-topic"
         target_branch = "main"
+        env           = ["dev", "uat", "prod"]
       },
-      " idpay-reward-notification" = {
+      "idpay-reward-notification" = {
         name          = "idpay-reward-notification"
         target_branch = "main"
+        env           = [""]
       },
       "idpay-reward-user-id-splitter" = {
         name          = "idpay-reward-user-id-splitter"
         target_branch = "main"
+        env           = ["dev", "uat", "prod"]
       },
       "idpay-timeline" = {
         name          = "idpay-timeline"
         target_branch = "main"
-      },
+        env           = ["dev", "uat", "prod"]
+      }
     }
     "ext" = {
       "idpay-iban" = {
         name          = "idpay-iban"
         target_branch = "main"
+        env           = ["dev", "uat", "prod"]
       },
       "idpay-notification-email" = {
         name          = "idpay-notification-email"
         target_branch = "main"
+        env           = ["dev", "uat", "prod"]
       },
       "idpay-notification-manager" = {
         name          = "idpay-notification-manager"
         target_branch = "main"
+        env           = ["dev", "uat", "prod"]
       },
       "idpay-self-expense-backend" = {
         name          = "idpay-self-expense-backend"
         target_branch = "main"
+        env           = ["dev", "uat", "prod"]
       },
       "idpay-mock" = {
         name          = "idpay-mock"
         target_branch = "main"
+        env           = ["uat", "prod"]
       }
     }
   }
+
+  # FLATTEN con FILTRO su env
   flattened_applications = merge([
     for class, apps in local.argocd_applications : {
-      for app_name, app in apps : app_name => merge(app, {
-        class = class
-      })
+      for app_name, app in apps :
+      app_name => merge(app, { class = class })
+      if contains(app.env, var.env)
     }
   ]...)
 }
 
-
-#
-# APPS
-#
 resource "argocd_application" "domain_argocd_applications" {
   for_each = local.flattened_applications
 
@@ -161,7 +183,6 @@ resource "argocd_application" "domain_argocd_applications" {
       }
     }
 
-    # Sync policy configuration
     sync_policy {
       # sync_options = []
       #

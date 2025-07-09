@@ -55,3 +55,12 @@ resource "azurerm_private_endpoint" "srtp_cae_private_endpoint" {
     azurerm_container_app_environment.srtp_cae
   ]
 }
+
+resource "azurerm_container_app_environment_storage" "rtp_sender_file_share_storage" {
+  name                         = "${local.project}-sender-fss"
+  container_app_environment_id = azurerm_container_app_environment.srtp_cae.id
+  account_name                 = module.share_storage_account.name
+  share_name                   = azurerm_storage_share.rtp_jks_file_share.name
+  access_key                   = module.share_storage_account.primary_access_key
+  access_mode                  = "ReadWrite"
+}

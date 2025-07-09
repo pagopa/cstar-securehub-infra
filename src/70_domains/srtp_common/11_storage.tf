@@ -12,7 +12,7 @@ module "srtp_storage_account" {
   product_name        = var.prefix
   env                 = var.env
   location            = var.location
-  resource_group_name = local.data_rg
+  resource_group_name = local.data_rg_name
   tags                = module.tag_config.tags
 
   # IDH Resources
@@ -45,11 +45,11 @@ module "share_storage_account" {
   product_name        = var.prefix
   env                 = var.env
   location            = var.location
-  resource_group_name = local.data_rg
+  resource_group_name = local.data_rg_name
   tags                = module.tag_config.tags
 
   # IDH Resources
-  idh_resource_tier = var.env_short != "prod" ? "basic" : "backup7"
+  idh_resource_tier = var.env_short != "prod" ? "basic_public" : "backup7"
 
   # Network
   private_dns_zone_file_ids  = [data.azurerm_private_dns_zone.file_storage.id]
