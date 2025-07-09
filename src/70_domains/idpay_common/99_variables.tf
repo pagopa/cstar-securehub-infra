@@ -118,6 +118,11 @@ variable "single_page_applications_portal_merchants_operator_roots_dirs" {
   description = "spa root dirs"
 }
 
+# Single Page Applications Users Portal
+variable "single_page_applications_users_portal_roots_dirs" {
+  type        = list(string)
+  description = "spa root dirs"
+}
 
 ## Event hub
 variable "ehns_sku_name" {

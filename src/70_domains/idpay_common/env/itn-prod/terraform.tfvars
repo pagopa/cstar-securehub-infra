@@ -66,6 +66,10 @@ single_page_applications_asset_register_roots_dirs = [
   "registro-dei-beni"
 ]
 
+single_page_applications_users_portal_roots_dirs = [
+  "portale-utenti"
+]
+
 #----------------------------------------------------------------
 # AKS
 #----------------------------------------------------------------
