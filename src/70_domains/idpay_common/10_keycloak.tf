@@ -1,6 +1,6 @@
 
 # See https://github.com/keycloak/terraform-provider-keycloak/blob/main/example/main.tf
-resource "keycloak_realm" "merchant-operator" {
+resource "keycloak_realm" "merchant_operator" {
   realm        = "merchant-operator"
   enabled      = true
   display_name = "merchant-operator"
@@ -16,4 +16,23 @@ resource "keycloak_realm" "merchant-operator" {
       password = data.azurerm_key_vault_secret.ses_smtp_password.value
     }
   }
+}
+
+resource "keycloak_openid_client" "merchant-operator-frontend" {
+  realm_id = keycloak_realm.merchant_operator.id
+  client_id = "frontend"
+  name      = "Merchant Operator Frontend"
+  enabled   = true
+
+  access_type = "PUBLIC"
+
+  web_origins = [
+    local.keycloak_external_hostname,
+    "http://localhost:5173",
+  ]
+
+  redirect_uris = [
+    "${local.keycloak_external_hostname}/*",
+    "http://localhost:5173/*",
+  ]
 }
