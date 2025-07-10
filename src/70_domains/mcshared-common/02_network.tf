@@ -31,7 +31,7 @@ module "private_endpoint_cae_snet" {
 
   # Network
   name                 = "${local.project}-cae-prv-end-snet"
-  virtual_network_name = local.vnet_spoke_data_name
+  virtual_network_name = local.vnet_spoke_compute_name
 
   # IDH Resources
   idh_resource_tier = "private_endpoint"
