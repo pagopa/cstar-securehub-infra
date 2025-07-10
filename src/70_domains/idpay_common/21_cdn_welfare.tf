@@ -202,7 +202,7 @@ module "cdn_idpay_welfare" {
   ]
 
   tags                       = module.tag_config.tags
-  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.log_analytics.id
+  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.core_log_analytics.id
 }
 
 # #

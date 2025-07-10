@@ -44,8 +44,8 @@ resource "azurerm_storage_container" "idpay_audit_container" {
 #
 resource "azurerm_log_analytics_linked_storage_account" "idpay_audit_analytics_linked_storage" {
   data_source_type      = "CustomLogs"
-  resource_group_name   = data.azurerm_log_analytics_workspace.log_analytics.resource_group_name
-  workspace_resource_id = data.azurerm_log_analytics_workspace.log_analytics.id
+  resource_group_name   = data.azurerm_log_analytics_workspace.core_log_analytics.resource_group_name
+  workspace_resource_id = data.azurerm_log_analytics_workspace.core_log_analytics.id
   storage_account_ids   = [module.storage_idpay_audit.id]
 
   depends_on = [
@@ -56,7 +56,7 @@ resource "azurerm_log_analytics_linked_storage_account" "idpay_audit_analytics_l
 resource "azapi_resource" "idpay_audit_log_table" {
   type      = "Microsoft.OperationalInsights/workspaces/tables@2022-10-01"
   name      = "IdPayAuditLog_CL"
-  parent_id = data.azurerm_log_analytics_workspace.log_analytics.id
+  parent_id = data.azurerm_log_analytics_workspace.core_log_analytics.id
 
   body = {
     properties = {
@@ -79,8 +79,8 @@ resource "azapi_resource" "idpay_audit_log_table" {
 
 resource "azurerm_log_analytics_data_export_rule" "idpay_audit_analytics_export_rule" {
   name                    = "${local.project}-audit-export-rule"
-  resource_group_name     = data.azurerm_log_analytics_workspace.log_analytics.resource_group_name
-  workspace_resource_id   = data.azurerm_log_analytics_workspace.log_analytics.id
+  resource_group_name     = data.azurerm_log_analytics_workspace.core_log_analytics.resource_group_name
+  workspace_resource_id   = data.azurerm_log_analytics_workspace.core_log_analytics.id
   destination_resource_id = module.storage_idpay_audit.id
   table_names             = ["IdPayAuditLog_CL"]
   enabled                 = true

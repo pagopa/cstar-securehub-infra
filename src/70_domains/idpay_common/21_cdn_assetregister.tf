@@ -59,7 +59,7 @@ module "cdn_idpay_assetregister" {
   keyvault_vault_name          = local.idpay_kv_name
 
   querystring_caching_behaviour = "BypassCaching"
-  log_analytics_workspace_id    = data.azurerm_log_analytics_workspace.log_analytics.id
+  log_analytics_workspace_id    = data.azurerm_log_analytics_workspace.core_log_analytics.id
 
   advanced_threat_protection_enabled = var.idpay_cdn_sa_advanced_threat_protection_enabled
 
