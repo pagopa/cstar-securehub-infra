@@ -246,3 +246,9 @@ variable "aks_nodepool_green" {
   })
   description = "Paramters for blue node pool"
 }
+
+variable "mcshared_dns_zone_prefix" {
+  type        = string
+  default     = null
+  description = "The dns subdomain for mcshared"
+}

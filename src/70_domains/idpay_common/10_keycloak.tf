@@ -31,8 +31,12 @@ resource "keycloak_openid_client" "merchant-operator-frontend" {
     "http://localhost:5173",
   ]
 
-  redirect_uris = [
+  valid_redirect_uris = [
     "${local.keycloak_external_hostname}/*",
     "http://localhost:5173/*",
+  ]
+
+  depends_on = [
+    keycloak_realm.merchant_operator,
   ]
 }
