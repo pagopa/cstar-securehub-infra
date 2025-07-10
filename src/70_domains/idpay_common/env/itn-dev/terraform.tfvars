@@ -63,7 +63,7 @@ single_page_applications_portal_merchants_operator_roots_dirs = [
 ]
 
 single_page_applications_users_portal_roots_dirs = [
-  "portale-utenti"
+  "cittadino"
 ]
 #----------------------------------------------------------------
 # AKS

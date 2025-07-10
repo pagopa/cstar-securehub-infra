@@ -113,7 +113,7 @@ module "cdn_idpay_usersportal" {
       ]
       url_rewrite_action = {
         source_pattern          = "/"
-        destination             = "/portale-utenti/index.html"
+        destination             = "/cittadino/index.html"
         preserve_unmatched_path = false
       }
     }],
