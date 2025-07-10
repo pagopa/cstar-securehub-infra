@@ -315,7 +315,7 @@ module "cdn_idpay_bonuselettrodomestici" {
 
   # Caching Configuration
   querystring_caching_behaviour = "BypassCaching"
-  log_analytics_workspace_id    = data.azurerm_log_analytics_workspace.log_analytics.id
+  log_analytics_workspace_id    = data.azurerm_log_analytics_workspace.core_log_analytics.id
 
   # Global Delivery Rules
   global_delivery_rule = {

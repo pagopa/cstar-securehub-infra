@@ -9,6 +9,10 @@ data "azurerm_resource_group" "idpay_data_rg" {
   name = "${local.project}-data-rg"
 }
 
+data "azurerm_resource_group" "idpay_monitoring_rg" {
+  name = "${local.project}-monitoring-rg"
+}
+
 #----------------------------------------------------------------
 # 🌐 Network
 #----------------------------------------------------------------
@@ -104,18 +108,18 @@ data "azurerm_kubernetes_cluster" "aks" {
 #
 # Azure Monitor
 #
-data "azurerm_log_analytics_workspace" "log_analytics" {
-  name                = local.log_analytics_workspace_name
-  resource_group_name = local.monitor_resource_group_name
+data "azurerm_log_analytics_workspace" "core_log_analytics" {
+  name                = local.core_log_analytics_workspace_name
+  resource_group_name = local.core_monitor_resource_group_name
 }
 
-data "azurerm_resource_group" "monitor_rg" {
-  name = local.monitor_resource_group_name
+data "azurerm_resource_group" "core_monitor_rg" {
+  name = local.core_monitor_resource_group_name
 }
 
-data "azurerm_application_insights" "application_insights" {
-  name                = local.application_insights_name
-  resource_group_name = data.azurerm_resource_group.monitor_rg.name
+data "azurerm_application_insights" "core_application_insights" {
+  name                = local.core_application_insights_name
+  resource_group_name = data.azurerm_resource_group.core_monitor_rg.name
 }
 
 data "azurerm_resource_group" "apim_rg" {
@@ -127,7 +131,9 @@ data "azurerm_api_management" "apim_core" {
   resource_group_name = data.azurerm_resource_group.apim_rg.name
 }
 
-
+#
+# KV Secrets
+#
 data "azurerm_key_vault_secret" "terraform_client_secret_for_keycloak" {
   name         = "terraform-client-secret-for-keycloak"
   key_vault_id = data.azurerm_key_vault.core_kv.id
