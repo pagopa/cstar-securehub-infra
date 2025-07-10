@@ -18,7 +18,7 @@ resource "keycloak_realm" "merchant_operator" {
   }
 }
 
-resource "keycloak_openid_client" "merchant-operator-frontend" {
+resource "keycloak_openid_client" "merchant_operator_frontend" {
   realm_id = keycloak_realm.merchant_operator.id
   client_id = "frontend"
   name      = "Merchant Operator Frontend"
