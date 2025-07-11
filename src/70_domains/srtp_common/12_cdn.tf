@@ -3,7 +3,7 @@ module "cdn" {
 
   name                = "fe"
   prefix              = local.project
-  resource_group_name = local.data_rg
+  resource_group_name = local.data_rg_name
   location            = var.location
   cdn_location        = var.cdn_location
 

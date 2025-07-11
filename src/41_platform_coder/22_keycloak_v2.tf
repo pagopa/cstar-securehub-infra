@@ -12,18 +12,24 @@ resource "azurerm_key_vault_secret" "keycloak_admin_password" {
   name         = "keycloak-admin-password"
   value        = random_password.keycloak_admin.result
   key_vault_id = data.azurerm_key_vault.key_vault_core.id
+
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_key_vault_secret" "keycloak_admin_username" {
   name         = "keycloak-admin-username"
   value        = "admin"
   key_vault_id = data.azurerm_key_vault.key_vault_core.id
+
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_key_vault_secret" "keycloak_url" {
   name         = "keycloak-url"
   value        = local.keycloak_ingress_hostname
   key_vault_id = data.azurerm_key_vault.key_vault_core.id
+
+  tags = module.tag_config.tags
 }
 
 resource "kubernetes_secret" "keycloak_admin" {
@@ -91,6 +97,7 @@ resource "helm_release" "keycloak" {
       keycloak_admin_username     = azurerm_key_vault_secret.keycloak_admin_username.value
       keycloak_ingress_hostname   = local.keycloak_ingress_hostname
       ingress_tls_secret_name     = replace(local.keycloak_ingress_hostname, ".", "-")
+      keycloak_external_hostname  = local.keycloak_external_hostname
       replica_count_min           = var.keycloak_configuration.replica_count_min
       replica_count_max           = var.keycloak_configuration.replica_count_max
       realm_admin_import_filename = "admin_realm.json"
@@ -114,4 +121,6 @@ resource "azurerm_private_dns_a_record" "keycloak" {
   resource_group_name = data.azurerm_private_dns_zone.internal.resource_group_name
   ttl                 = 3600
   records             = [local.aks_ingress_load_balancer_ip]
+
+  tags = module.tag_config.tags
 }

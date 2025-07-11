@@ -14,6 +14,13 @@ tags = {
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
 
+#
+# Dns
+#
+dns_zone_internal_prefix = "internal.uat"
+external_domain          = "pagopa.it"
+mcshared_dns_zone_prefix = "api-mcshared.uat"
+
 ## Postgres
 keycloak_pgflex_params = {
   sku_name   = "B_Standard_B2s"

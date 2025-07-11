@@ -56,5 +56,5 @@ module "prometheus_managed_addon" {
     ] : [])
   ])
 
-  tags = module.tag_config.tags
+  tags = local.tags
 }

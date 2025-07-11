@@ -1,5 +1,8 @@
 forceDeployVersion: ${force_deploy_version}
 
+production: true
+proxy: "edge"
+
 auth:
   adminUser: "${keycloak_admin_username}"
   existingSecret: "keycloak-admin-secret" #keycloak admin password is in this secret
@@ -30,6 +33,12 @@ extraEnvVars:
     value: "sslmode=require"
   - name: KEYCLOAK_IMPORT
     value: /opt/bitnami/keycloak/data/import/${realm_admin_import_filename}
+  - name: KEYCLOAK_HOSTNAME
+    value: ${keycloak_external_hostname}
+  - name: KEYCLOAK_HOSTNAME_BACKCHANNEL_DYNAMIC
+    value: "true"
+  - name: KEYCLOAK_HOSTNAME_ADMIN
+    value: "https://${keycloak_ingress_hostname}"
 
 extraVolumes:
   - name: realm-import

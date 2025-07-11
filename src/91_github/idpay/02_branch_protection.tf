@@ -5,27 +5,67 @@ resource "github_branch_default" "default" {
   branch     = "main"
 }
 
-resource "github_branch_protection" "main" {
-  for_each = local.repo_branch_map
 
-  repository_id = each.value.repo
-  pattern       = each.value.branch
+# iterate over the repositories and create branch protection rules for the develop branch
+resource "github_repository_ruleset" "dev" {
+  for_each = local.repository
 
-  required_status_checks {
-    strict   = true
-    contexts = []
+  name        = "dev"
+  repository  = each.key
+  target      = "branch"
+  enforcement = "active"
+
+  conditions {
+    ref_name {
+      include = ["refs/heads/develop"]
+      exclude = []
+    }
   }
 
-  require_conversation_resolution = true
-  required_linear_history         = true
+  rules {
+    creation                = false
+    update                  = false
+    deletion                = false
+    required_linear_history = false
+    required_signatures     = false
 
-  require_signed_commits = false
+    pull_request {
+      require_code_owner_review         = true
+      required_approving_review_count   = 1
+      dismiss_stale_reviews_on_push     = true
+      required_review_thread_resolution = true
+    }
+  }
+}
 
-  required_pull_request_reviews {
-    dismiss_stale_reviews           = false
-    require_code_owner_reviews      = true
-    required_approving_review_count = 1
+# iterate over the repositories and create branch protection rules for the develop branch
+resource "github_repository_ruleset" "uat_prod" {
+  for_each = local.repository
+
+  name        = "uat_prod"
+  repository  = each.key
+  target      = "branch"
+  enforcement = "active"
+
+  conditions {
+    ref_name {
+      include = ["refs/heads/uat", "refs/heads/main"]
+      exclude = []
+    }
   }
 
-  allows_deletions = false
+  rules {
+    creation                = true
+    update                  = true
+    deletion                = true
+    required_linear_history = false
+    required_signatures     = false
+
+    pull_request {
+      require_code_owner_review         = true
+      required_approving_review_count   = 1
+      dismiss_stale_reviews_on_push     = true
+      required_review_thread_resolution = true
+    }
+  }
 }
