@@ -72,9 +72,19 @@ locals {
   # Monitoring
   #
 
+  monitor_resource_group_name       = "cstar-${var.env_short}-itn-core-monitor-rg"
+  idpay_monitor_resource_group_name = "${local.project}-monitoring-rg"
+  log_analytics_workspace_name      = "cstar-${var.env_short}-itn-core-law"
+  application_insights_name         = "cstar-${var.env_short}-itn-core-appinsights"
+
+  platform_monitor_resource_group_name  = "cstar-${var.env_short}-itn-platform-monitoring-rg"
+  platform_log_analytics_workspace_name = "cstar-${var.env_short}-itn-platform-monitoring-law"
+  platform_application_insights_name    = "cstar-${var.env_short}-itn-platform-monitoring-appinsights"
+
   core_monitor_resource_group_name  = "cstar-${var.env_short}-itn-core-monitor-rg"
   core_log_analytics_workspace_name = "cstar-${var.env_short}-itn-core-law"
   core_application_insights_name    = "cstar-${var.env_short}-itn-core-appinsights"
+
 
   #
   # APIM
