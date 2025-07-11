@@ -18,13 +18,11 @@ module "cdn" {
   error_404_document         = "error_404.html"
   log_analytics_workspace_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
 
-  keyvault_id                                      = data.azurerm_key_vault.domain_kv.id
   tenant_id                                        = data.azurerm_key_vault.domain_kv.tenant_id
   keyvault_resource_group_name                     = data.azurerm_key_vault.domain_kv.resource_group_name
   azuread_service_principal_azure_cdn_frontdoor_id = var.azuread_service_principal_azure_cdn_frontdoor_id
   keyvault_subscription_id                         = data.azurerm_key_vault.domain_kv.tenant_id
   keyvault_vault_name                              = data.azurerm_key_vault.domain_kv.name
-  custom_hostname_kv_enabled                       = true
 
   delivery_rule_rewrite = [{
     name  = "RewriteRulesForReactRouting"
