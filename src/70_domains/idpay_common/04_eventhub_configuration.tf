@@ -377,7 +377,7 @@ locals {
   ### Eventhub 02 IDPAY
   ###
   eventhubs_idpay_02 = [
-	{
+    {
       name              = "rtd-pi-to-app"
       message_retention = 1
       partitions        = 4
