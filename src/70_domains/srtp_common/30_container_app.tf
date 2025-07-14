@@ -28,7 +28,7 @@ resource "azurerm_private_endpoint" "srtp_cae_private_endpoint" {
   name                = azurerm_container_app_environment.srtp_cae.name
   location            = data.azurerm_resource_group.compute_rg.location
   resource_group_name = data.azurerm_resource_group.compute_rg.name
-  subnet_id           = azurerm_subnet.private_endpoint_cae_env_snet.id
+  subnet_id           = module.private_endpoint_cae_snet.id
 
   private_service_connection {
     name                           = azurerm_container_app_environment.srtp_cae.name
