@@ -45,3 +45,12 @@ data "azurerm_private_dns_zone" "container_apps" {
   name                = "privatelink.${var.location}.azurecontainerapps.io"
   resource_group_name = local.network_rg
 }
+
+#
+# APIM
+#
+
+data "azurerm_api_management" "apim" {
+  name                = local.apim_name
+  resource_group_name = local.apim_rg_name
+}
