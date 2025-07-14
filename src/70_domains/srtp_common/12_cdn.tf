@@ -1,5 +1,6 @@
 module "cdn" {
   source = "./.terraform/modules/__v4__/cdn"
+  count  = var.enable_cdn ? 1 : 0
 
   name                = "fe"
   prefix              = local.project
@@ -55,7 +56,22 @@ module "cdn" {
         name   = "Strict-Transport-Security"
         value  = "max-age=31536000"
       },
-      # Add Content Security Policy protection
+      # To be reviewed with the front-end team when this CDN is deployed to UAT and PROD.
+      {
+        action = "Append"
+        name   = contains(["d"], var.env_short) ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
+        value  = "default-src 'self'; object-src 'none'; style-src 'self'; connect-src 'self' https://api-rtp.${local.dns_zone_name}/ ; "
+      },
+      {
+        action = "Append"
+        name   = "X-Content-Type-Options"
+        value  = "nosniff"
+      },
+      {
+        action = "Overwrite"
+        name   = "X-Frame-Options"
+        value  = "SAMEORIGIN"
+      }
     ]
   }
   tags = module.tag_config.tags

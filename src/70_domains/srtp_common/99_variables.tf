@@ -72,3 +72,8 @@ variable "law_daily_quota_gb" {
   description = "The workspace daily quota for ingestion in GB."
   default     = -1
 }
+
+variable "enable_cdn" {
+  type        = bool
+  description = "Enable CDN for the domain"
+}

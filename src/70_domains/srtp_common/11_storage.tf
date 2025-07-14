@@ -49,7 +49,7 @@ module "share_storage_account" {
   tags                = module.tag_config.tags
 
   # IDH Resources
-  idh_resource_tier = var.env_short != "prod" ? "basic_public" : "backup7_public"
+  idh_resource_tier = var.env_short != "p" ? "basic_public" : "backup7_public"
 
   # Network
   private_dns_zone_file_ids  = [data.azurerm_private_dns_zone.file_storage.id]
