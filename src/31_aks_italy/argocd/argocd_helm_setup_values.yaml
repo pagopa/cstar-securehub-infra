@@ -2,11 +2,13 @@ terraform:
   force: ${FORCE_REINSTALL}
 global:
   addPrometheusAnnotations: true
+  logging:
+    level: error
   topologySpreadConstraints:
-   - maxSkew: 1
+   - maxSkew: 2
      topologyKey: topology.kubernetes.io/zone
      whenUnsatisfiable: DoNotSchedule
-   - maxSkew: 1
+   - maxSkew: 2
      topologyKey: kubernetes.io/hostname
      whenUnsatisfiable: DoNotSchedule
   securityContext:
