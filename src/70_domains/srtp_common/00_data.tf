@@ -1,3 +1,5 @@
+data "azurerm_subscription" "current" {}
+
 # 🔐 KV
 data "azurerm_key_vault" "domain_kv" {
   name                = local.key_vault_name
@@ -8,11 +10,11 @@ data "azurerm_key_vault" "domain_kv" {
 # RG
 #
 data "azurerm_resource_group" "srtp_monitoring_rg" {
-  name = local.monitor_resource_group_name
+  name = local.monitor_rg_name
 }
 
 data "azurerm_resource_group" "compute_rg" {
-  name = local.compute_rg
+  name = local.compute_rg_name
 }
 
 #

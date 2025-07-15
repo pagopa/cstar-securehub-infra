@@ -65,10 +65,12 @@ module "keycloak_pgflex" {
 
   log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs_workspace.id
 
-  tags = merge(var.tags, {
-    "domain"  = "platform",
-    "grafana" = "yes"
-  })
+  tags = merge(
+    module.tag_config.tags,
+    {
+      "grafana" = "yes"
+    }
+  )
 }
 
 resource "azurerm_postgresql_flexible_server_database" "keycloak_db" {

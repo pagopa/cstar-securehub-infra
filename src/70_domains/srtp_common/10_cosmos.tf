@@ -8,7 +8,7 @@ module "cosmos_db_account" {
   product_name        = var.prefix
   env                 = var.env
   location            = var.location
-  resource_group_name = local.data_rg
+  resource_group_name = local.data_rg_name
   tags                = module.tag_config.tags
 
   # IDH Resources
@@ -55,7 +55,7 @@ resource "azurerm_cosmosdb_mongo_database" "mongo_database" {
   for_each = local.cosmos_db
 
   name                = each.key
-  resource_group_name = local.data_rg
+  resource_group_name = local.data_rg_name
   account_name        = module.cosmos_db_account.name
 }
 
@@ -69,7 +69,7 @@ resource "azurerm_cosmosdb_mongo_collection" "mongo_collection" {
   }
 
   name                = each.value.coll_name
-  resource_group_name = local.data_rg
+  resource_group_name = local.data_rg_name
   account_name        = module.cosmos_db_account.name
   database_name       = each.value.db_name
 
