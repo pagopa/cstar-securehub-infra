@@ -36,3 +36,16 @@ resource "azurerm_application_insights" "idpay_application_insights" {
   workspace_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
 
 }
+
+
+### 🔍 Logger APIM
+resource "azurerm_api_management_logger" "apim_logger" {
+  name                = "${local.project}-apim-logger"
+  api_management_name = data.azurerm_api_management.apim.name
+  resource_group_name = data.azurerm_api_management.apim.resource_group_name
+  resource_id         = azurerm_application_insights.idpay_application_insights.id
+
+  application_insights {
+    instrumentation_key = azurerm_application_insights.idpay_application_insights.instrumentation_key
+  }
+}

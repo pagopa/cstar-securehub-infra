@@ -173,3 +173,12 @@ data "azurerm_key_vault_certificate" "bonus_elettrodomestici_cert" {
   key_vault_id = data.azurerm_key_vault.domain_kv.id
   name         = each.value
 }
+
+
+# APIM
+#
+
+data "azurerm_api_management" "apim" {
+  name                = local.apim_name
+  resource_group_name = local.apim_rg_name
+}
