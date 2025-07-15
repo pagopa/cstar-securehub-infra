@@ -59,7 +59,7 @@ module "cdn" {
       # To be reviewed with the front-end team when this CDN is deployed to UAT and PROD.
       {
         action = "Append"
-        name   = contains(["d"], var.env_short) ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
+        name   = contains(["d", "u"], var.env_short) ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
         value  = "default-src 'self'; object-src 'none'; style-src 'self'; connect-src 'self' https://api-rtp.${local.dns_zone_name}/ ; "
       },
       {
