@@ -8,10 +8,10 @@ resource "random_password" "keycloak_admin" {
   special = true
 }
 
-resource "random_password" "terraform_client_secret" {
-  length  = 24
-  special = true
-}
+# resource "random_password" "terraform_client_secret" {
+#   length  = 24
+#   special = true
+# }
 
 resource "azurerm_key_vault_secret" "keycloak_admin_password" {
   name         = "keycloak-admin-password"
@@ -57,11 +57,11 @@ resource "kubernetes_secret" "keycloak_db" {
   }
 }
 
-resource "azurerm_key_vault_secret" "terraform_client_secret_for_keycloak" {
-  name         = "terraform-client-secret-for-keycloak"
-  value        = random_password.terraform_client_secret.result
-  key_vault_id = data.azurerm_key_vault.key_vault_core.id
-}
+# resource "azurerm_key_vault_secret" "terraform_client_secret_for_keycloak" {
+#   name         = "terraform-client-secret-for-keycloak"
+#   value        = random_password.terraform_client_secret.result
+#   key_vault_id = data.azurerm_key_vault.key_vault_core.id
+# }
 
 #------------------------------------------------------------------------------
 # Kubernetes
@@ -87,14 +87,9 @@ resource "kubernetes_config_map" "keycloak_realm_import" {
   data = {
     "admin_realm.json" = templatefile("${path.module}/k8s/keycloak/admin_realm.json.tpl", {
       keycloak_admin_username = azurerm_key_vault_secret.keycloak_admin_username.value,
-      keycloak_admin_password = azurerm_key_vault_secret.keycloak_admin_password.value,
-      terraform_client_secret = azurerm_key_vault_secret.terraform_client_secret_for_keycloak.value,
+      keycloak_admin_password = azurerm_key_vault_secret.keycloak_admin_password.value
     })
   }
-
-  depends_on = [
-    azurerm_key_vault_secret.terraform_client_secret_for_keycloak
-  ]
 }
 
 resource "helm_release" "keycloak" {
@@ -123,8 +118,7 @@ resource "helm_release" "keycloak" {
     kubernetes_secret.keycloak_admin,
     kubernetes_secret.keycloak_db,
     kubernetes_config_map.keycloak_config,
-    kubernetes_namespace.keycloak,
-    kubernetes_config_map.keycloak_realm_import,
+    kubernetes_namespace.keycloak
   ]
 }
 
