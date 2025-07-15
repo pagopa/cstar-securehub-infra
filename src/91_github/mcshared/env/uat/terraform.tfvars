@@ -1,0 +1,5 @@
+prefix         = "cstar"
+env            = "uat"
+env_short      = "u"
+location_short = "itn"
+domain         = "mcshared"

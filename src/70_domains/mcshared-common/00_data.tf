@@ -26,3 +26,12 @@ data "azurerm_key_vault" "auth_general_kv" {
   name                = local.auth_kv_name
   resource_group_name = local.security_rg_name
 }
+
+#
+# APIM
+#
+
+data "azurerm_api_management" "apim" {
+  name                = local.apim_name
+  resource_group_name = local.apim_rg_name
+}
