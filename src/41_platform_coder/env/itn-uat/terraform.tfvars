@@ -23,6 +23,7 @@ mcshared_dns_zone_prefix = "api-mcshared.uat"
 
 ## Postgres
 keycloak_pgflex_params = {
+  enabled    = true
   sku_name   = "B_Standard_B2s"
   db_version = "16"
   # Possible values are 32768, 65536, 131072, 262144, 524288, 1048576,
@@ -39,4 +40,9 @@ keycloak_pgflex_params = {
   max_connections                        = 1700
   pgbouncer_min_pool_size                = 100
   pgbouncer_default_pool_size            = 100
+}
+
+keycloak_configuration = {
+  replica_count_min = 1
+  replica_count_max = 2
 }
