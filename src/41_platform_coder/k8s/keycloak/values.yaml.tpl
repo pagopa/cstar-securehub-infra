@@ -31,8 +31,9 @@ externalDatabase:
 extraEnvVars:
   - name: KC_DB_URL_PROPERTIES
     value: "sslmode=require"
-  - name: KEYCLOAK_EXTRA_ARGS
-    value: "--import-realm"
+# enable this option to import realm on startup. ATM it is disabled because it creates a new realm and the client is not usable by the terraform provider to create new realms
+#  - name: KEYCLOAK_EXTRA_ARGS
+#    value: "--import-realm"
   - name: KEYCLOAK_HOSTNAME
     value: ${keycloak_external_hostname}
   - name: KEYCLOAK_HOSTNAME_BACKCHANNEL_DYNAMIC
