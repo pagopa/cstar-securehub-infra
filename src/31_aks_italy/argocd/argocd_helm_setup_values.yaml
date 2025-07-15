@@ -5,12 +5,12 @@ global:
   logging:
     level: error
   topologySpreadConstraints:
-   - maxSkew: 2
+   - maxSkew: 1
      topologyKey: topology.kubernetes.io/zone
-     whenUnsatisfiable: DoNotSchedule
-   - maxSkew: 2
+     whenUnsatisfiable: ScheduleAnyway
+   - maxSkew: 1
      topologyKey: kubernetes.io/hostname
-     whenUnsatisfiable: DoNotSchedule
+     whenUnsatisfiable: ScheduleAnyway
   securityContext:
     runAsUser: 999
     runAsGroup: 999
