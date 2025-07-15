@@ -63,7 +63,7 @@
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
-      "secret": "${terraform_client_secret}",
+      "secret": "test",
       "redirectUris": [
         "/*"
       ],
