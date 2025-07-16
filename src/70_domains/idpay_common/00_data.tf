@@ -1,4 +1,3 @@
-
 data "azurerm_subscription" "current" {}
 
 data "azurerm_client_config" "current" {}
@@ -8,6 +7,10 @@ data "azurerm_client_config" "current" {}
 #
 data "azurerm_resource_group" "idpay_data_rg" {
   name = "${local.project}-data-rg"
+}
+
+data "azurerm_resource_group" "idpay_monitoring_rg" {
+  name = "${local.project}-monitoring-rg"
 }
 
 #----------------------------------------------------------------
@@ -26,6 +29,12 @@ data "azurerm_dns_zone" "public_cstar" {
 data "azurerm_nat_gateway" "compute_nat_gateway" {
   name                = "${local.project_core}-compute-natgw"
   resource_group_name = local.network_rg
+}
+
+data "azurerm_dns_zone" "bonus_elettrodomestici" {
+  for_each            = toset(local.public_dns_zone_bonus_elettrodomestici.zones)
+  name                = each.value
+  resource_group_name = "${local.project_core}-network-rg"
 }
 
 #
@@ -99,18 +108,18 @@ data "azurerm_kubernetes_cluster" "aks" {
 #
 # Azure Monitor
 #
-data "azurerm_log_analytics_workspace" "log_analytics" {
-  name                = local.log_analytics_workspace_name
-  resource_group_name = local.monitor_resource_group_name
+data "azurerm_log_analytics_workspace" "core_log_analytics" {
+  name                = local.core_log_analytics_workspace_name
+  resource_group_name = local.core_monitor_resource_group_name
 }
 
-data "azurerm_resource_group" "monitor_rg" {
-  name = local.monitor_resource_group_name
+data "azurerm_resource_group" "core_monitor_rg" {
+  name = local.core_monitor_resource_group_name
 }
 
-data "azurerm_application_insights" "application_insights" {
-  name                = local.application_insights_name
-  resource_group_name = data.azurerm_resource_group.monitor_rg.name
+data "azurerm_application_insights" "core_application_insights" {
+  name                = local.core_application_insights_name
+  resource_group_name = data.azurerm_resource_group.core_monitor_rg.name
 }
 
 data "azurerm_resource_group" "apim_rg" {
@@ -122,7 +131,9 @@ data "azurerm_api_management" "apim_core" {
   resource_group_name = data.azurerm_resource_group.apim_rg.name
 }
 
-
+#
+# KV Secrets
+#
 data "azurerm_key_vault_secret" "terraform_client_secret_for_keycloak" {
   name         = "terraform-client-secret-for-keycloak"
   key_vault_id = data.azurerm_key_vault.core_kv.id
@@ -151,4 +162,23 @@ data "azurerm_key_vault_secret" "ses_smtp_host" {
 data "azurerm_key_vault_secret" "ses_from_address" {
   name         = "aws-ses-mail-from"
   key_vault_id = data.azurerm_key_vault.domain_kv.id
+}
+
+data "azurerm_key_vault_certificate" "bonus_elettrodomestici_cert" {
+  for_each = toset([
+    for zone in local.public_dns_zone_bonus_elettrodomestici.zones :
+    join("-", split(".", zone))
+  ])
+
+  key_vault_id = data.azurerm_key_vault.domain_kv.id
+  name         = each.value
+}
+
+
+# APIM
+#
+
+data "azurerm_api_management" "apim" {
+  name                = local.apim_name
+  resource_group_name = local.apim_rg_name
 }

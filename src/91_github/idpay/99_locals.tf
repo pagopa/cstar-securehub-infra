@@ -42,6 +42,20 @@ locals {
         }
       ]
     },
+    "idpay-portal-users-frontend" = {
+      repository_secrets = [
+        {
+          SONAR_TOKEN = data.azurerm_key_vault_secret.sonar_token.value
+        }
+      ]
+      repository_variables = [
+        {
+          SONARCLOUD_ORG          = "pagopa"
+          SONARCLOUD_PROJECT_KEY  = "pagopa_idpay-portal-users-frontend"
+          SONARCLOUD_PROJECT_NAME = "idpay-portal-users-frontend"
+        }
+      ]
+    },
   }
 
   protected_branches = ["develop", "main", "uat"]

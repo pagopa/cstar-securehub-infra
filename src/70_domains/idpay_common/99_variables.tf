@@ -251,3 +251,28 @@ variable "aks_nodepool_green" {
   })
   description = "Paramters for blue node pool"
 }
+
+## Monitor
+variable "law_sku" {
+  type        = string
+  description = "Sku of the Log Analytics Workspace"
+  default     = "PerGB2018"
+}
+
+variable "law_retention_in_days" {
+  type        = number
+  description = "The workspace data retention in days"
+  default     = 30
+}
+
+variable "law_daily_quota_gb" {
+  type        = number
+  description = "The workspace daily quota for ingestion in GB."
+  default     = -1
+}
+
+variable "mcshared_dns_zone_prefix" {
+  type        = string
+  default     = null
+  description = "The dns subdomain for mcshared"
+}

@@ -1,35 +1,314 @@
-dex:
-  enabled: false
-server:
-  replicas: 1
-  extraArgs:
-    - --insecure
-  config:
-    repositories: |
-      - type: helm
-        name: argo-cd
-        url: https://argoproj.github.io/argo-helm
-  ingress:
-    enabled: true
-    labels: {}
-    ingressClassName: "nginx"
-    hostname: ${ARGOCD_INTERNAL_URL}
+terraform:
+  force: ${FORCE_REINSTALL}
+global:
+  addPrometheusAnnotations: true
+  logging:
+    level: error
+  topologySpreadConstraints:
+   - maxSkew: 1
+     topologyKey: topology.kubernetes.io/zone
+     whenUnsatisfiable: ScheduleAnyway
+   - maxSkew: 1
+     topologyKey: kubernetes.io/hostname
+     whenUnsatisfiable: ScheduleAnyway
+  securityContext:
+    runAsUser: 999
+    runAsGroup: 999
+    fsGroup: 999
+    runAsNonRoot: true
+  containerSecurityContext:
+    runAsNonRoot: true
+    readOnlyRootFilesystem: true
+    allowPrivilegeEscalation: false
+    seccompProfile:
+      type: RuntimeDefault
+    capabilities:
+      drop:
+        - ALL
 
-    annotations:
-      nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
-      nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
-    extraTls:
-      - hosts:
-        - ${ARGOCD_INTERNAL_URL}
-        # Based on the ingress controller used secret might be optional
-        secretName: ${ARGOCD_TLS_CERT_NAME}
-    https: true
-redis-ha:
-  enabled: false
-repoServer:
-  replicas: 1
-applicationSet:
-  replicas: 1
 configs:
+  params:
+    server.insecure: true
+
   cm:
     timeout.reconciliation: 30s
+    application.resourceTrackingMethod: annotation
+    exec.enabled: "false"
+    admin.enabled: "true"
+    statusbadge.enabled: "true"
+    url: https://${ARGOCD_INTERNAL_URL}
+
+  rbac:
+    policy.default: role:guest
+    policy.csv: |
+      # Admin role: full access to all resources
+      p, role:admin, applications, *, */*, allow
+      p, role:admin, projects, *, *, allow
+      p, role:admin, repositories, *, *, allow
+      p, role:admin, clusters, *, *, allow
+      p, role:admin, accounts, *, *, allow
+
+      # Developer role: can manage applications but cannot delete them or modify infrastructure-level settings
+      p, role:developer, applications, get, */*, allow
+      p, role:developer, applications, create, */*, allow
+      p, role:developer, applications, update, */*, allow
+      p, role:developer, applications, sync, */*, allow
+      p, role:developer, applications, override, */*, allow
+      p, role:developer, projects, get, *, allow
+      p, role:developer, clusters, get, *, allow
+      p, role:developer, repositories, get, *, allow
+      p, role:developer, accounts, get, *, allow
+
+      # Reader role: can only view applications and logs, but cannot access secrets
+      p, role:reader, applications, get, */*, allow
+      p, role:reader, applications, logs, */*, allow
+      p, role:reader, projects, get, *, allow
+
+      # Explicitly deny access to secrets for the reader role
+      p, role:reader, applications, get, */secrets, deny
+
+      # Guest role: no permissions (default for unassigned users)
+      p, role:guest, applications, get, */*, deny
+      p, role:guest, projects, get, *, deny
+      p, role:guest, repositories, get, *, deny
+      p, role:guest, clusters, get, *, deny
+      p, role:guest, accounts, get, *, deny
+
+    scopes: "[preferred_username, email, groups]"
+
+
+server:
+  replicas: 1
+  autoscaling:
+    enabled: true
+    minReplicas: ${ARGOCD_MIN_REPLICAS}
+    maxReplicas: ${ARGOCD_MAX_REPLICAS}
+    targetCPUUtilizationPercentage: 70
+    targetMemoryUtilizationPercentage: 70
+    behavior:
+      scaleDown:
+        stabilizationWindowSeconds: 300
+        policies:
+          - type: Pods
+            value: 1
+            periodSeconds: 180
+      scaleUp:
+        stabilizationWindowSeconds: 60
+        policies:
+          - type: Pods
+            value: 1
+            periodSeconds: 60
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+  pdb:
+    enabled: ${ARGOCD_PDB_ENABLED}
+    minAvailable: 1
+  resources:
+    requests:
+      cpu: 500m
+      memory: 512Mi
+    limits:
+      cpu: 1000m
+      memory: 1Gi
+  ingress:
+    enabled: true
+    ingressClassName: "nginx"
+    hostname: ${ARGOCD_INTERNAL_URL}
+    annotations:
+      nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+      nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+      nginx.ingress.kubernetes.io/ssl-redirect: "true"
+      nginx.ingress.kubernetes.io/grpc-backend: "true"
+      nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+      nginx.ingress.kubernetes.io/proxy-body-size: "100m"
+      nginx.ingress.kubernetes.io/proxy-read-timeout: "90"
+    tls: false
+    extraTls:
+      - hosts:
+          - ${ARGOCD_INTERNAL_URL}
+        secretName: ${ARGOCD_TLS_CERT_NAME}
+
+redis:
+  enabled: true
+  pdb:
+    enabled: ${ARGOCD_PDB_ENABLED}
+    minAvailable: 1
+  resources:
+    limits:
+      cpu: 200m
+      memory: 128Mi
+    requests:
+      cpu: 100m
+      memory: 64Mi
+  service:
+    port: 6379
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+  containerPorts:
+    metrics: 9121
+    redis: 6379
+  readinessProbe:
+    enabled: true
+    initialDelaySeconds: 30
+    periodSeconds: 15
+    timeoutSeconds: 15
+    successThreshold: 1
+    failureThreshold: 5
+  livenessProbe:
+    enabled: true
+    initialDelaySeconds: 30
+    periodSeconds: 15
+    timeoutSeconds: 15
+    successThreshold: 1
+    failureThreshold: 5
+
+controller:
+  replicas: 1
+  autoscaling:
+    enabled: true
+    minReplicas: ${ARGOCD_MIN_REPLICAS}
+    maxReplicas: ${ARGOCD_MAX_REPLICAS}
+    targetCPUUtilizationPercentage: 80
+    targetMemoryUtilizationPercentage: 80
+    behavior:
+      scaleDown:
+        stabilizationWindowSeconds: 300
+        policies:
+          - type: Pods
+            value: 1
+            periodSeconds: 180
+      scaleUp:
+        stabilizationWindowSeconds: 60
+        policies:
+          - type: Pods
+            value: 1
+            periodSeconds: 60
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+  pdb:
+    enabled: ${ARGOCD_PDB_ENABLED}
+    minAvailable: 1
+  resources:
+    requests:
+      cpu: 500m
+      memory: 1Gi
+    limits:
+      cpu: 1000m
+      memory: 2Gi
+
+repoServer:
+  replicas: 1
+  autoscaling:
+    enabled: true
+    minReplicas: ${ARGOCD_MIN_REPLICAS}
+    maxReplicas: ${ARGOCD_MAX_REPLICAS}
+    targetCPUUtilizationPercentage: 80
+    targetMemoryUtilizationPercentage: 80
+    behavior:
+      scaleDown:
+        stabilizationWindowSeconds: 300
+        policies:
+          - type: Pods
+            value: 1
+            periodSeconds: 180
+      scaleUp:
+        stabilizationWindowSeconds: 60
+        policies:
+          - type: Pods
+            value: 1
+            periodSeconds: 60
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+  pdb:
+    enabled: ${ARGOCD_PDB_ENABLED}
+    minAvailable: 1
+  resources:
+    requests:
+      cpu: 500m
+      memory: 512Mi
+    limits:
+      cpu: 1000m
+      memory: 1Gi
+
+applicationSet:
+  replicas: 1
+  autoscaling:
+    enabled: true
+    minReplicas: ${ARGOCD_MIN_REPLICAS}
+    maxReplicas: ${ARGOCD_MAX_REPLICAS}
+    targetCPUUtilizationPercentage: 80
+    targetMemoryUtilizationPercentage: 80
+    behavior:
+      scaleDown:
+        stabilizationWindowSeconds: 300
+        policies:
+          - type: Pods
+            value: 1
+            periodSeconds: 180
+      scaleUp:
+        stabilizationWindowSeconds: 60
+        policies:
+          - type: Pods
+            value: 1
+            periodSeconds: 60
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+  pdb:
+    enabled: ${ARGOCD_PDB_ENABLED}
+    minAvailable: 1
+  resources:
+    requests:
+      cpu: 250m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+
+notifications:
+  replicas: 1
+  autoscaling:
+    enabled: true
+    minReplicas: ${ARGOCD_MIN_REPLICAS}
+    maxReplicas: ${ARGOCD_MAX_REPLICAS}
+    targetCPUUtilizationPercentage: 80
+    targetMemoryUtilizationPercentage: 80
+    behavior:
+      scaleDown:
+        stabilizationWindowSeconds: 300
+        policies:
+          - type: Pods
+            value: 1
+            periodSeconds: 180
+      scaleUp:
+        stabilizationWindowSeconds: 60
+        policies:
+          - type: Pods
+            value: 1
+            periodSeconds: 60
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+  pdb:
+    enabled: ${ARGOCD_PDB_ENABLED}
+    minAvailable: 1
+  resources:
+    limits:
+     cpu: 100m
+     memory: 128Mi
+    requests:
+     cpu: 100m
+     memory: 128Mi
+
+dex:
+  enabled: false

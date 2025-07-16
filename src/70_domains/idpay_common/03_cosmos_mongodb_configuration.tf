@@ -738,6 +738,22 @@ locals {
         {
           keys   = ["registrationDate"]
           unique = false
+        },
+        {
+          keys   = ["category"]
+          unique = false
+        },
+        {
+          keys   = ["energyClass"]
+          unique = false
+        },
+        {
+          keys   = ["eprelCode"]
+          unique = false
+        },
+        {
+          keys   = ["category", "productFileId"]
+          unique = false
         }
       ]
     }

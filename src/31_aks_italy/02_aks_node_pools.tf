@@ -13,13 +13,13 @@ module "aks_user_node_pool_blue" {
   idh_resource_tier = var.aks_nodepool_blue.vm_sku_name
 
   # Storage Account Settings
-  name           = "cs${var.env_short}itusblu"
+  name           = "cs${var.env_short}blueusrit"
   node_count_min = var.aks_nodepool_blue.node_count_min
   node_count_max = var.aks_nodepool_blue.node_count_max
 
-  node_labels           = { node_name : "aks-blue", node_type : "user", domain : var.domain }
+  node_labels           = { node_name : "aks-blue", node_type : "user", domain : var.domain, phase : "blue" }
   node_taints           = []
-  node_tags             = { node_tag : "blue" }
+  node_tags             = { node_tag : "blue", phase : "blue" }
   kubernetes_cluster_id = module.aks.id
   vnet_subnet_id        = module.aks_user_snet.id
 }
@@ -36,14 +36,14 @@ module "aks_user_node_pool_green" {
   idh_resource_tier = var.aks_nodepool_green.vm_sku_name
 
   # Storage Account Settings
-  name = "cs${var.env_short}itusgren"
+  name = "cs${var.env_short}grenusrit"
 
   autoscale_enabled     = var.aks_nodepool_green.autoscale_enabled
   node_count_min        = var.aks_nodepool_green.node_count_min
   node_count_max        = var.aks_nodepool_green.node_count_max
-  node_labels           = { node_name : "aks-green", node_type : "user", domain : var.domain }
+  node_labels           = { node_name : "aks-green", node_type : "user", domain : var.domain, phase : "green" }
   node_taints           = []
-  node_tags             = { node_tag : "green" }
+  node_tags             = { node_tag : "green", phase : "green" }
   kubernetes_cluster_id = module.aks.id
   vnet_subnet_id        = module.aks_user_snet.id
 }
