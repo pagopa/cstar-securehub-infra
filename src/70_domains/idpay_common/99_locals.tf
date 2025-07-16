@@ -72,13 +72,19 @@ locals {
   # Monitoring
   #
 
-  monitor_resource_group_name  = "cstar-${var.env_short}-itn-core-monitor-rg"
-  log_analytics_workspace_name = "cstar-${var.env_short}-itn-core-law"
-  application_insights_name    = "cstar-${var.env_short}-itn-core-appinsights"
+  monitor_resource_group_name       = "cstar-${var.env_short}-itn-core-monitor-rg"
+  idpay_monitor_resource_group_name = "${local.project}-monitoring-rg"
+  log_analytics_workspace_name      = "cstar-${var.env_short}-itn-core-law"
+  application_insights_name         = "cstar-${var.env_short}-itn-core-appinsights"
 
   platform_monitor_resource_group_name  = "cstar-${var.env_short}-itn-platform-monitoring-rg"
   platform_log_analytics_workspace_name = "cstar-${var.env_short}-itn-platform-monitoring-law"
   platform_application_insights_name    = "cstar-${var.env_short}-itn-platform-monitoring-appinsights"
+
+  core_monitor_resource_group_name  = "cstar-${var.env_short}-itn-core-monitor-rg"
+  core_log_analytics_workspace_name = "cstar-${var.env_short}-itn-core-law"
+  core_application_insights_name    = "cstar-${var.env_short}-itn-core-appinsights"
+
 
   #
   # APIM
@@ -103,5 +109,8 @@ locals {
   #
   # azdo_managed_identity_rg_name = "${var.prefix}-${var.env_short}-identity-rg"
   # azdo_iac_managed_identities   = toset(["azdo-${var.env}-${var.prefix}-iac-deploy-v2", "azdo-${var.env}-${var.prefix}-iac-plan-v2"])
+
+
+  keycloak_external_hostname = "https://${var.mcshared_dns_zone_prefix}.${var.prefix}.${var.external_domain}/auth-itn"
 
 }

@@ -4,7 +4,7 @@ data "azurerm_subscription" "current" {}
 
 
 data "github_team" "admin" {
-  slug = "swc-mil-team-admin"
+  slug = "rtp-team-admin"
 }
 
 data "azurerm_user_assigned_identity" "cd_client_identity" {

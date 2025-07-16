@@ -27,7 +27,7 @@ locals {
 #
 # ⛓️ Peering to legacy cstar-infrastructure (+VPN)
 #
-# ALL SECURE-HUB Vnets TO CSTAR WEU CORE
+# Core HUB Vnet TO All legacy VNETs
 module "vnet_secure_hub_to_legacy_peerings" {
   source = "./.terraform/modules/__v4__/virtual_network_peering"
 
@@ -46,10 +46,12 @@ module "vnet_secure_hub_to_legacy_peerings" {
 }
 
 #
-# ⛓️ Peering from secure spoke compute to vnet integration (apim)
+# ⛓️ Peering from secure spoke compute to all legacy VNETs
 #
-module "vnet_secure_spoke_compute_to_vnet_integration" {
+module "vnet_secure_spoke_compute_to_legacy_peerings" {
   source = "./.terraform/modules/__v4__/virtual_network_peering"
+
+  for_each = local.all_hub_to_legacy_peerings
 
   # Define source virtual network peering details
   source_resource_group_name       = azurerm_resource_group.rg_network.name
@@ -57,8 +59,28 @@ module "vnet_secure_spoke_compute_to_vnet_integration" {
   source_remote_virtual_network_id = module.vnet_spoke_compute.id
   source_allow_gateway_transit     = true
 
-  target_resource_group_name       = data.azurerm_virtual_network.vnet_weu_integration.resource_group_name
-  target_virtual_network_name      = data.azurerm_virtual_network.vnet_weu_integration.name
-  target_remote_virtual_network_id = data.azurerm_virtual_network.vnet_weu_integration.id
+  target_resource_group_name       = each.value.resource_group_name
+  target_virtual_network_name      = each.value.name
+  target_remote_virtual_network_id = each.value.id
+  target_use_remote_gateways       = false
+}
+
+#
+# ⛓️ Peering from secure spoke data to all legacy VNETs
+#
+module "vnet_secure_spoke_data_to_vnet_integration" {
+  source = "./.terraform/modules/__v4__/virtual_network_peering"
+
+  for_each = local.all_hub_to_legacy_peerings
+
+  # Define source virtual network peering details
+  source_resource_group_name       = azurerm_resource_group.rg_network.name
+  source_virtual_network_name      = module.vnet_spoke_data.name
+  source_remote_virtual_network_id = module.vnet_spoke_data.id
+  source_allow_gateway_transit     = false
+
+  target_resource_group_name       = each.value.resource_group_name
+  target_virtual_network_name      = each.value.name
+  target_remote_virtual_network_id = each.value.id
   target_use_remote_gateways       = false
 }

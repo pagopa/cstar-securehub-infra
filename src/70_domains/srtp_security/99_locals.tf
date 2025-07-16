@@ -8,7 +8,6 @@ locals {
 
   # this are the folder names inside the secrets folder in idpay_security
   secrets_folders_kv = ["srtp"] // e.g. ["core", "cicd"]
+  input_file         = "./secrets/${var.domain}/${var.location_short}-${var.env}"
 
-  apim_name                = "${local.product}-apim"
-  apim_resource_group_name = "${local.product}-api-rg"
 }

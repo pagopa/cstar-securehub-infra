@@ -28,6 +28,10 @@ locals {
   vnet_spoke_compute_name = "${local.project_core}-spoke-compute-vnet"
   vnet_legacy_core_rg     = "${local.product}-vnet-rg"
 
+  # APIM
+  apim_name    = "${local.product}-apim"
+  apim_rg_name = "${local.product}-api-rg"
+
   # 🔐 KV
   key_vault_name    = "${local.project}-kv"
   key_vault_rg_name = "${local.project}-security-rg"

@@ -32,11 +32,6 @@ locals {
     },
     {
       action = "Append"
-      name   = contains(["d"], var.env_short) ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
-      value  = "script-src 'self'; style-src 'self' 'unsafe-inline' https://selfcare${local.selfare_asset_temp_suffix}.pagopa.it/assets/font/selfhostedfonts.css; worker-src 'none'; font-src 'self' https://selfcare${local.selfare_asset_temp_suffix}.pagopa.it/assets/font/; "
-    },
-    {
-      action = "Append"
       name   = "X-Content-Type-Options"
       value  = "nosniff"
     },
@@ -51,47 +46,29 @@ locals {
   # These rules handle routing for different frontend applications
   # by rewriting URLs to serve the correct index.html files
   app_delivery_rules = concat([
+    # Cittadino Application Rule - Handles citizen portal routing
     {
-      name  = "defaultApplication"
+      name  = "CittadinoApplication"
       order = 2
       conditions = [
         {
           condition_type   = "url_path_condition"
           operator         = "BeginsWith"
-          match_values     = ["/portale-esercenti"]
+          match_values     = ["/utente"]
           negate_condition = false
           transforms       = null
         }
       ]
       url_rewrite_action = {
-        source_pattern          = "/"
-        destination             = "/portale-esercenti/index.html"
-        preserve_unmatched_path = false
-      }
-    },
-    # Cittadino Application Rule - Handles citizen portal routing
-    {
-      name  = "CittadinoApplication"
-      order = 3
-      conditions = [
-        {
-          condition_type   = "url_path_condition"
-          operator         = "BeginsWith"
-          match_values     = ["/cittadino"]
-          negate_condition = false
-          transforms       = null
-        }
-      ]
-      url_rewrite_action = {
-        source_pattern          = "/cittadino"
-        destination             = "/cittadino/index.html"
+        source_pattern          = "/utente"
+        destination             = "/utente/index.html"
         preserve_unmatched_path = false
       }
     },
     # Esercenti Application Rule - Handles merchant portal routing
     {
       name  = "PortaleEsercentiApplication"
-      order = 4
+      order = 3
       conditions = [
         {
           condition_type   = "url_path_condition"
@@ -108,38 +85,6 @@ locals {
       }
     }
     ],
-    # Dynamic SPA Merchant Operator Rules
-    # These rules are generated dynamically based on the variable
-    # single_page_applications_portal_merchants_operator_roots_dirs
-    # Each SPA gets its own routing rule to serve its index.html
-    try(var.single_page_applications_portal_merchants_operator_roots_dirs, null) != null ? [
-      for i, spa_merchant_op in var.single_page_applications_portal_merchants_operator_roots_dirs :
-      {
-        name  = replace(replace("SPA-${spa_merchant_op}", "-", ""), "/", "0")
-        order = i + 8
-        conditions = [
-          {
-            condition_type   = "url_path_condition"
-            operator         = "BeginsWith"
-            match_values     = ["/${spa_merchant_op}/"]
-            negate_condition = false
-            transforms       = null
-          },
-          {
-            condition_type   = "url_file_extension_condition"
-            operator         = "LessThanOrEqual"
-            match_values     = ["0"]
-            negate_condition = false
-            transforms       = null
-          },
-        ]
-        url_rewrite_action = {
-          source_pattern          = "/${spa_merchant_op}/"
-          destination             = "/${spa_merchant_op}/index.html"
-          preserve_unmatched_path = false
-        }
-      }
-    ] : []
   )
 
   # Calculate the total number of rewrite rules for subsequent order calculations
@@ -149,7 +94,7 @@ locals {
   additional_delivery_rules = [
     {
       name  = "robotsNoIndex"
-      order = local.total_rewrite_rules + 1
+      order = local.total_rewrite_rules + 2
 
       // conditions
       url_path_conditions = [
@@ -190,7 +135,7 @@ locals {
     },
     {
       name  = "microcomponentsNoCache"
-      order = local.total_rewrite_rules + 2
+      order = local.total_rewrite_rules + 3
 
       // conditions
       url_path_conditions           = []
@@ -232,7 +177,7 @@ locals {
     },
     {
       name  = "RootRedirect"
-      order = local.total_rewrite_rules + 3
+      order = local.total_rewrite_rules + 4
 
       // conditions
       url_path_conditions = [
@@ -315,7 +260,7 @@ module "cdn_idpay_bonuselettrodomestici" {
 
   # Caching Configuration
   querystring_caching_behaviour = "BypassCaching"
-  log_analytics_workspace_id    = data.azurerm_log_analytics_workspace.log_analytics.id
+  log_analytics_workspace_id    = data.azurerm_log_analytics_workspace.core_log_analytics.id
 
   # Global Delivery Rules
   global_delivery_rule = {

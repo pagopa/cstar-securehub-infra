@@ -1,5 +1,6 @@
 module "cdn" {
   source = "./.terraform/modules/__v4__/cdn"
+  count  = var.enable_cdn ? 1 : 0
 
   name                = "fe"
   prefix              = local.project
@@ -18,13 +19,11 @@ module "cdn" {
   error_404_document         = "error_404.html"
   log_analytics_workspace_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
 
-  keyvault_id                                      = data.azurerm_key_vault.domain_kv.id
   tenant_id                                        = data.azurerm_key_vault.domain_kv.tenant_id
   keyvault_resource_group_name                     = data.azurerm_key_vault.domain_kv.resource_group_name
   azuread_service_principal_azure_cdn_frontdoor_id = var.azuread_service_principal_azure_cdn_frontdoor_id
   keyvault_subscription_id                         = data.azurerm_key_vault.domain_kv.tenant_id
   keyvault_vault_name                              = data.azurerm_key_vault.domain_kv.name
-  custom_hostname_kv_enabled                       = true
 
   delivery_rule_rewrite = [{
     name  = "RewriteRulesForReactRouting"
@@ -57,7 +56,22 @@ module "cdn" {
         name   = "Strict-Transport-Security"
         value  = "max-age=31536000"
       },
-      # Add Content Security Policy protection
+      # To be reviewed with the front-end team when this CDN is deployed to UAT and PROD.
+      {
+        action = "Append"
+        name   = contains(["d", "u"], var.env_short) ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
+        value  = "default-src 'self'; object-src 'none'; style-src 'self'; connect-src 'self' https://api-rtp.${local.dns_zone_name}/ ; "
+      },
+      {
+        action = "Append"
+        name   = "X-Content-Type-Options"
+        value  = "nosniff"
+      },
+      {
+        action = "Overwrite"
+        name   = "X-Frame-Options"
+        value  = "SAMEORIGIN"
+      }
     ]
   }
   tags = module.tag_config.tags
