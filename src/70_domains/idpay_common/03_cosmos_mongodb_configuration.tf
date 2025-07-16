@@ -697,6 +697,10 @@ locals {
       indexes = [{
         keys   = ["_id"]
         unique = true
+        },
+        {
+          keys   = ["franchiseName"]
+          unique = false
         }
       ]
     }
