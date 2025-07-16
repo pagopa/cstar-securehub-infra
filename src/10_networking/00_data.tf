@@ -10,16 +10,16 @@ data "azurerm_key_vault" "kv_core" {
 # Vnet Legacy
 #
 data "azurerm_virtual_network" "vnet_weu_core" {
-  name                = local.vnet_weu_core.name
-  resource_group_name = local.vnet_weu_core.resource_group
+  name                = "${var.prefix}-${var.env_short}-vnet"
+  resource_group_name = "${var.prefix}-${var.env_short}-vnet-rg"
 }
 
 data "azurerm_virtual_network" "vnet_weu_integration" {
-  name                = local.vnet_weu_integration.name
-  resource_group_name = local.vnet_weu_integration.resource_group
+  name                = "${var.prefix}-${var.env_short}-integration-vnet"
+  resource_group_name = "${var.prefix}-${var.env_short}-vnet-rg"
 }
 
 data "azurerm_virtual_network" "vnet_weu_aks" {
-  name                = local.vnet_weu_aks.name
-  resource_group_name = local.vnet_weu_aks.resource_group
+  name                = "${var.prefix}-${var.env_short}-weu-${var.env}01-vnet"
+  resource_group_name = "${var.prefix}-${var.env_short}-weu-${var.env}01-vnet-rg"
 }
