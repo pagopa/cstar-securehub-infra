@@ -7,7 +7,7 @@ locals {
     "domain" = "mc"
   })
 
-  vnets_secure_hub_italy = {
+  vnets_all = {
     core_hub = {
       name = module.vnet_core_hub.name
       id   = module.vnet_core_hub.id
@@ -24,23 +24,18 @@ locals {
       name = module.vnet_spoke_security.name
       id   = module.vnet_spoke_security.id
     }
-  }
-
-
-  # VNET Legacy
-  vnet_weu_core = {
-    name           = "${var.prefix}-${var.env_short}-vnet"
-    resource_group = "${var.prefix}-${var.env_short}-vnet-rg"
-  }
-
-  vnet_weu_integration = {
-    name           = "${var.prefix}-${var.env_short}-integration-vnet"
-    resource_group = "${var.prefix}-${var.env_short}-vnet-rg"
-  }
-
-  vnet_weu_aks = {
-    name           = "${var.prefix}-${var.env_short}-weu-${var.env}01-vnet"
-    resource_group = "${var.prefix}-${var.env_short}-weu-${var.env}01-vnet-rg"
+    vnet_core = {
+      name = data.azurerm_virtual_network.vnet_weu_core.name
+      id   = data.azurerm_virtual_network.vnet_weu_core.id
+    }
+    vnet_weu_integration = {
+      name = data.azurerm_virtual_network.vnet_weu_integration.name
+      id   = data.azurerm_virtual_network.vnet_weu_integration.id
+    }
+    vnet_weu_aks = {
+      name = data.azurerm_virtual_network.vnet_weu_aks.name
+      id   = data.azurerm_virtual_network.vnet_weu_aks.id
+    }
   }
 
   #
@@ -48,11 +43,6 @@ locals {
   #
   kv_core_name                = "${local.project}-kv"
   kv_core_resource_group_name = "${local.project}-sec-rg"
-
-  #
-  # Packer
-  #
-  packer_rg_name = "${local.product}-${var.location_short}-packer-rg"
 
   # 🔎 DNS
   dns_public_zones = [
