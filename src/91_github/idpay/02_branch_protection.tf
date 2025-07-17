@@ -23,9 +23,9 @@ resource "github_repository_ruleset" "dev" {
   }
 
   rules {
-    creation                = false
+    creation                = true
     update                  = false
-    deletion                = false
+    deletion                = true
     required_linear_history = false
     required_signatures     = false
 
@@ -56,7 +56,7 @@ resource "github_repository_ruleset" "uat_prod" {
 
   rules {
     creation                = true
-    update                  = true
+    update                  = false
     deletion                = true
     required_linear_history = false
     required_signatures     = false
