@@ -46,10 +46,13 @@ extraVolumes:
     configMap:
       name: keycloak-realm-import
 
+  - name: pagopa-theme
+    configMap:
+      name: keycloak-pagopa-theme
+
 extraVolumeMounts:
-  - name: realm-import
-    mountPath: /opt/bitnami/keycloak/data/import
-    readOnly: true
+  ${keycloak_extra_volume_mounts}
+
 
 ingress:
   enabled: true

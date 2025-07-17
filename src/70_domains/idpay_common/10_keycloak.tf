@@ -5,6 +5,8 @@ resource "keycloak_realm" "merchant_operator" {
   enabled      = true
   display_name = "merchant-operator"
 
+  login_theme = "pagopa"
+
   smtp_server {
     host = data.azurerm_key_vault_secret.ses_smtp_host.value
     port = local.ses_smtp_port
