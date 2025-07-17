@@ -691,6 +691,18 @@ locals {
           unique = false
         }
       ]
+    },
+    {
+      name = "point_of_sales"
+      indexes = [{
+        keys   = ["_id"]
+        unique = true
+        },
+        {
+          keys   = ["franchiseName"]
+          unique = false
+        }
+      ]
     }
   ]
   ###
