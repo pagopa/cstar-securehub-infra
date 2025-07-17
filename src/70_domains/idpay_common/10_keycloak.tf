@@ -31,14 +31,50 @@ resource "keycloak_openid_client" "merchant_operator_frontend" {
   web_origins = [
     local.keycloak_external_hostname,
     "http://localhost:5173",
+    var.keycloak_bonus_hostname
   ]
 
   valid_redirect_uris = [
     "${local.keycloak_external_hostname}/*",
     "http://localhost:5173/*",
+    "${var.keycloak_bonus_hostname}/*"
   ]
 
   depends_on = [
     keycloak_realm.merchant_operator,
+  ]
+}
+
+# User
+resource "keycloak_realm" "user" {
+  realm        = "user"
+  enabled      = true
+  display_name = "user"
+}
+
+resource "keycloak_openid_client" "user_frontend" {
+  realm_id  = keycloak_realm.user.id
+  client_id = "frontend"
+  name      = "Portal User Frontend"
+  enabled   = true
+
+  access_type = "PUBLIC"
+
+  standard_flow_enabled = true
+
+  web_origins = [
+    local.keycloak_external_hostname,
+    "http://localhost:5173",
+    var.keycloak_bonus_hostname
+  ]
+
+  valid_redirect_uris = [
+    "${local.keycloak_external_hostname}/*",
+    "http://localhost:5173/*",
+    "${var.keycloak_bonus_hostname}/*"
+  ]
+
+  depends_on = [
+    keycloak_realm.user,
   ]
 }
