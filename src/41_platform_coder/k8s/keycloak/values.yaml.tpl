@@ -51,7 +51,7 @@ extraVolumes:
       name: keycloak-pagopa-theme
 
 extraVolumeMounts:
-  ${keycloak_extra_volume_mounts}
+${keycloak_extra_volume_mounts}
 
 
 ingress:
