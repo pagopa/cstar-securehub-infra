@@ -30,15 +30,17 @@ resource "keycloak_openid_client" "merchant_operator_frontend" {
 
   standard_flow_enabled = true
 
-  web_origins = [
-    local.keycloak_external_hostname,
-    "http://localhost:5173",
-  ]
+  web_origins = flatten([
+    [
+      local.keycloak_external_hostname,
+      "http://localhost:5173",
+  ], formatlist("https://%s", local.public_dns_zone_bonus_elettrodomestici.zones)])
 
-  valid_redirect_uris = [
-    "${local.keycloak_external_hostname}/*",
-    "http://localhost:5173/*",
-  ]
+  valid_redirect_uris = flatten([
+    [
+      "${local.keycloak_external_hostname}/*",
+      "http://localhost:5173/*",
+  ], formatlist("https://%s/*", local.public_dns_zone_bonus_elettrodomestici.zones)])
 
   depends_on = [
     keycloak_realm.merchant_operator,
