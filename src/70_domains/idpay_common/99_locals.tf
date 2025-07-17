@@ -113,5 +113,4 @@ locals {
 
   keycloak_external_hostname = "https://${var.mcshared_dns_zone_prefix}.${var.prefix}.${var.external_domain}/auth-itn"
 
-  keycloak_bonus_hostname = "https://${var.env}.bonuselettrodomestici.it"
 }

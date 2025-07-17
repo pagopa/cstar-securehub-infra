@@ -31,13 +31,13 @@ resource "keycloak_openid_client" "merchant_operator_frontend" {
   web_origins = [
     local.keycloak_external_hostname,
     "http://localhost:5173",
-    local.keycloak_bonus_hostname
+    var.keycloak_bonus_hostname
   ]
 
   valid_redirect_uris = [
     "${local.keycloak_external_hostname}/*",
     "http://localhost:5173/*",
-    "${local.keycloak_bonus_hostname}/*"
+    "${var.keycloak_bonus_hostname}/*"
   ]
 
   depends_on = [
@@ -65,13 +65,13 @@ resource "keycloak_openid_client" "user_frontend" {
   web_origins = [
     local.keycloak_external_hostname,
     "http://localhost:5173",
-    local.keycloak_bonus_hostname
+    var.keycloak_bonus_hostname
   ]
 
   valid_redirect_uris = [
     "${local.keycloak_external_hostname}/*",
     "http://localhost:5173/*",
-    "${local.keycloak_bonus_hostname}/*"
+    "${var.keycloak_bonus_hostname}/*"
   ]
 
   depends_on = [

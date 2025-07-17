@@ -271,3 +271,9 @@ variable "mcshared_dns_zone_prefix" {
   default     = null
   description = "The dns subdomain for mcshared"
 }
+
+variable "keycloak_bonus_hostname" {
+  type        = string
+  description = ""
+  default     = "false"
+}
