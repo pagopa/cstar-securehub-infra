@@ -42,3 +42,10 @@ resource "keycloak_openid_client" "merchant_operator_frontend" {
     keycloak_realm.merchant_operator,
   ]
 }
+
+# User
+resource "keycloak_realm" "user" {
+  realm        = "user"
+  enabled      = true
+  display_name = "user"
+}
