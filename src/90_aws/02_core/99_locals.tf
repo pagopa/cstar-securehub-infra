@@ -1,7 +1,7 @@
 locals {
   product = "${var.prefix}-${var.env_short}"
 
-  public_dns_zone_name = var.env != "prod" ? "${var.env}.bonuselettrodomestici.pagopa.it" : "bonuselettrodomestici.pagopa.it"
+  public_dns_zone_name = var.env != "prod" ? "${var.env}.${var.prefix}.pagopa.it" : "${var.prefix}.pagopa.it"
 
   vnet_legacy_rg = "${local.product}-vnet-rg"
 
