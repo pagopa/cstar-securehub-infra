@@ -34,6 +34,10 @@ terraform {
       source  = "devops-rob/terracurl"
       version = "1.2.1"
     }
+    azapi = {
+      source  = "azure/azapi"
+      version = ">=0.1.1"
+    }
   }
 
   backend "azurerm" {}
