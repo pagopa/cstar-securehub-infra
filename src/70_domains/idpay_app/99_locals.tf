@@ -50,9 +50,11 @@ locals {
   #
   eventhub_00_namespace_name  = "${local.project}-evh-00-ns"
   eventhub_01_namespace_name  = "${local.project}-evh-01-ns"
+  eventhub_02_namespace_name  = "${local.project}-evh-02-ns"
   eventhub_rdb_namespace_name = "${local.project}-evh-rdb-ns"
   eventhub_00_url             = "${local.eventhub_00_namespace_name}.servicebus.windows.net:${var.event_hub_port}"
   eventhub_01_url             = "${local.eventhub_01_namespace_name}.servicebus.windows.net:${var.event_hub_port}"
+  eventhub_02_url             = "${local.eventhub_02_namespace_name}.servicebus.windows.net:${var.event_hub_port}"
   eventhub_rdb_url            = "${local.eventhub_rdb_namespace_name}.servicebus.windows.net:${var.event_hub_port}"
 
   #ORIGINS (used for CORS on IDPAY Welfare Portal)
