@@ -70,8 +70,8 @@ resource "azapi_resource" "idpay_workbook" {
 
   type      = "Microsoft.Insights/workbooks@2022-04-01"
   name      = uuidv5("oid", each.value.name)
-  location  = data.azurerm_resource_group.monitor_rg.location
-  parent_id = data.azurerm_resource_group.monitor_rg.id
+  location  = data.azurerm_resource_group.monitoring_rg.location
+  parent_id = data.azurerm_resource_group.monitoring_rg.id
 
   body = jsonencode({
     properties = {
