@@ -51,7 +51,8 @@ locals {
     "bonuselettrodomestici.info",
     "bonuselettrodomestici.io",
     "bonuselettrodomestici.net",
-    "bonuselettrodomestici.eu"
+    "bonuselettrodomestici.eu",
+    "bonuselettrodomestici.pagopa.it"
   ]
 
   dns_env_public_zones = [
@@ -60,20 +61,22 @@ locals {
   ]
 
   dev_ns_records = {
-    "bonuselettrodomestici.it"   = ["ns1-09.azure-dns.com.", "ns2-09.azure-dns.net.", "ns3-09.azure-dns.org.", "ns4-09.azure-dns.info."]
-    "bonuselettrodomestici.com"  = ["ns1-03.azure-dns.com.", "ns2-03.azure-dns.net.", "ns3-03.azure-dns.org.", "ns4-03.azure-dns.info."]
-    "bonuselettrodomestici.info" = ["ns1-02.azure-dns.com.", "ns2-02.azure-dns.net.", "ns3-02.azure-dns.org.", "ns4-02.azure-dns.info."]
-    "bonuselettrodomestici.io"   = ["ns1-07.azure-dns.com.", "ns2-07.azure-dns.net.", "ns3-07.azure-dns.org.", "ns4-07.azure-dns.info."]
-    "bonuselettrodomestici.net"  = ["ns1-07.azure-dns.com.", "ns2-07.azure-dns.net.", "ns3-07.azure-dns.org.", "ns4-07.azure-dns.info."]
-    "bonuselettrodomestici.eu"   = ["ns1-01.azure-dns.com.", "ns2-01.azure-dns.net.", "ns3-01.azure-dns.org.", "ns4-01.azure-dns.info."]
+    "bonuselettrodomestici.it"        = ["ns1-09.azure-dns.com.", "ns2-09.azure-dns.net.", "ns3-09.azure-dns.org.", "ns4-09.azure-dns.info."]
+    "bonuselettrodomestici.com"       = ["ns1-03.azure-dns.com.", "ns2-03.azure-dns.net.", "ns3-03.azure-dns.org.", "ns4-03.azure-dns.info."]
+    "bonuselettrodomestici.info"      = ["ns1-02.azure-dns.com.", "ns2-02.azure-dns.net.", "ns3-02.azure-dns.org.", "ns4-02.azure-dns.info."]
+    "bonuselettrodomestici.io"        = ["ns1-07.azure-dns.com.", "ns2-07.azure-dns.net.", "ns3-07.azure-dns.org.", "ns4-07.azure-dns.info."]
+    "bonuselettrodomestici.net"       = ["ns1-07.azure-dns.com.", "ns2-07.azure-dns.net.", "ns3-07.azure-dns.org.", "ns4-07.azure-dns.info."]
+    "bonuselettrodomestici.eu"        = ["ns1-01.azure-dns.com.", "ns2-01.azure-dns.net.", "ns3-01.azure-dns.org.", "ns4-01.azure-dns.info."]
+    "bonuselettrodomestici.pagopa.it" = ["ns1-09.azure-dns.com.", "ns2-09.azure-dns.com.", "ns3-09.azure-dns.com.", "ns4-09.azure-dns.com."]
   }
   uat_ns_records = {
-    "bonuselettrodomestici.it"   = ["ns1-03.azure-dns.com.", "ns2-03.azure-dns.net.", "ns3-03.azure-dns.org.", "ns4-03.azure-dns.info."]
-    "bonuselettrodomestici.com"  = ["ns1-03.azure-dns.com.", "ns2-03.azure-dns.net.", "ns3-03.azure-dns.org.", "ns4-03.azure-dns.info."]
-    "bonuselettrodomestici.info" = ["ns1-01.azure-dns.com.", "ns2-01.azure-dns.net.", "ns3-01.azure-dns.org.", "ns4-01.azure-dns.info."]
-    "bonuselettrodomestici.io"   = ["ns1-01.azure-dns.com.", "ns2-01.azure-dns.net.", "ns3-01.azure-dns.org.", "ns4-01.azure-dns.info."]
-    "bonuselettrodomestici.net"  = ["ns1-06.azure-dns.com.", "ns2-06.azure-dns.net.", "ns3-06.azure-dns.org.", "ns4-06.azure-dns.info."]
-    "bonuselettrodomestici.eu"   = ["ns1-04.azure-dns.com.", "ns2-04.azure-dns.net.", "ns3-04.azure-dns.org.", "ns4-04.azure-dns.info."]
+    "bonuselettrodomestici.it"        = ["ns1-03.azure-dns.com.", "ns2-03.azure-dns.net.", "ns3-03.azure-dns.org.", "ns4-03.azure-dns.info."]
+    "bonuselettrodomestici.com"       = ["ns1-03.azure-dns.com.", "ns2-03.azure-dns.net.", "ns3-03.azure-dns.org.", "ns4-03.azure-dns.info."]
+    "bonuselettrodomestici.info"      = ["ns1-01.azure-dns.com.", "ns2-01.azure-dns.net.", "ns3-01.azure-dns.org.", "ns4-01.azure-dns.info."]
+    "bonuselettrodomestici.io"        = ["ns1-01.azure-dns.com.", "ns2-01.azure-dns.net.", "ns3-01.azure-dns.org.", "ns4-01.azure-dns.info."]
+    "bonuselettrodomestici.net"       = ["ns1-06.azure-dns.com.", "ns2-06.azure-dns.net.", "ns3-06.azure-dns.org.", "ns4-06.azure-dns.info."]
+    "bonuselettrodomestici.eu"        = ["ns1-04.azure-dns.com.", "ns2-04.azure-dns.net.", "ns3-04.azure-dns.org.", "ns4-04.azure-dns.info."]
+    "bonuselettrodomestici.pagopa.it" = ["ns1-07.azure-dns.com.", "ns2-07.azure-dns.com.", "ns3-07.azure-dns.com.", "ns4-07.azure-dns.com."]
   }
 
   dns_default_ttl_sec = 3600
