@@ -41,16 +41,16 @@ locals {
         target_branch = "main"
         env           = ["dev", "uat", "prod"]
       },
-      "idpay-kafka-connect" = {
-        name          = "idpay-kafka-connect"
-        target_branch = "main"
-        env           = ["dev", "uat", "prod"]
-      },
-      "idpay-asset-register-backend" = {
-        name          = "idpay-asset-register-backend"
-        target_branch = "main"
-        env           = ["dev", "uat", "prod"]
-      }
+      # "idpay-kafka-connect" = {
+      #   name          = "idpay-kafka-connect"
+      #   target_branch = "main"
+      #   env           = ["dev", "uat", "prod"]
+      # }, #TODO To deploy when ready
+      # "idpay-asset-register-backend" = {
+      #   name          = "idpay-asset-register-backend"
+      #   target_branch = "main"
+      #   env           = ["dev", "uat", "prod"]
+      # } #TODO To deploy when ready
     }
     "mid" = {
       "idpay-group" = {
@@ -120,11 +120,11 @@ locals {
         target_branch = "main"
         env           = ["dev", "uat", "prod"]
       },
-      "idpay-mock" = {
-        name          = "idpay-mock"
-        target_branch = "main"
-        env           = ["uat", "prod"]
-      }
+      # "idpay-mock" = {
+      #   name          = "idpay-mock"
+      #   target_branch = "main"
+      #   env           = ["uat", "prod"]
+      # } #TODO To deploy when ready
     }
   }
 
