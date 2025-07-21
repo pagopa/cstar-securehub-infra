@@ -48,7 +48,7 @@ aks_nodepool_blue = {
   vm_sku_name       = "Standard_D8ads_v5_active"
   autoscale_enabled = true
   node_count_min    = 3
-  node_count_max    = 3
+  node_count_max    = 4
 }
 
 aks_nodepool_green = {
@@ -106,5 +106,5 @@ reloader_helm = {
 argocd_helm_release_version    = "7.9.1" #2.13.1
 argocd_force_reinstall_version = "v20250710"
 argocd_pdb_enabled             = true
-argocd_min_replicas            = 1
-argocd_max_replicas            = 1
+argocd_min_replicas            = 3
+argocd_max_replicas            = 3
