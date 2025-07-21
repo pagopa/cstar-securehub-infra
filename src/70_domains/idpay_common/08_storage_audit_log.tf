@@ -105,6 +105,10 @@ resource "null_resource" "idpay_audit_legal_hold_configuration" {
   provisioner "local-exec" {
     when    = create
     command = <<EOC
+      az storage account blob-service-properties update \
+        --account-name ${self.triggers.account_name} \
+        --enable-restore-policy false \
+      && \
       az storage container legal-hold set \
         --account-name ${self.triggers.account_name} \
         --container-name am-idpayauditlog-cl \
