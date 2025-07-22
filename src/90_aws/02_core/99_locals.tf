@@ -7,7 +7,7 @@ locals {
 
   ## SMTP settings for Amazon SES
   iam_ses_user      = "${var.prefix}-${var.env}-ses-user"
-  ses_domain        = var.env != "prod" ? "${var.env}.bonuselettrodomestici.pagopa.it" : "bonuselettrodomestici.pagopa.it"
+  ses_domain        = var.env != "prod" ? "${var.env}.${var.prefix}.pagopa.it" : "${var.prefix}.pagopa.it"
   ses_username      = "noreply"
   ses_smtp_host     = "email-smtp.${var.aws_region}.amazonaws.com"
   ses_smtp_port     = 465
