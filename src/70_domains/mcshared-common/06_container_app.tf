@@ -5,11 +5,12 @@ module "container_app_environment" {
   location            = var.location
   resource_group_name = local.compute_rg_name
 
-  log_analytics_workspace_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  #log_analytics_workspace_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+
 
   subnet_id              = module.cae_env_snet.id
   internal_load_balancer = true
-  zone_redundant         = true
+  zone_redundant         = true ### serve???? fixme
 
   workload_profiles = [{
     name      = "Consumption"
@@ -24,4 +25,22 @@ module "container_app_environment" {
     private_dns_zone_ids = [data.azurerm_private_dns_zone.container_app.id]
   }
   tags = module.tag_config.tags
+}
+
+
+resource "azurerm_monitor_diagnostic_setting" "container_app_environment_diagnostic" {
+  count                      = azurerm_log_analytics_workspace.log_analytics_workspace.id != null ? 1 : 0
+  name                       = "${local.project}-cae-diagnostic"
+  target_resource_id         = module.container_app_environment.id
+  log_analytics_workspace_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+
+  enabled_log {
+    category = "ContainerAppconsolelogs"
+
+  }
+
+  enabled_log {
+    category = "ContainerAppsystemlogs"
+
+  }
 }
