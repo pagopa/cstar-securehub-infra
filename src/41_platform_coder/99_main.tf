@@ -40,8 +40,8 @@ data "azurerm_subscription" "current" {}
 data "azurerm_client_config" "current" {}
 
 module "__v4__" {
-  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v7.22.0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=70cf66cc338d8c13ed5a831ddcd54b8ea26a4ac0"
+  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v7.26.0
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=ac214b087ff30caa40cd505d30c4a783bc81efe0"
 }
 
 provider "kubernetes" {

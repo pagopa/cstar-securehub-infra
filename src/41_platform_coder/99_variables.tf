@@ -88,6 +88,7 @@ variable "k8s_kube_config_path_prefix" {
 variable "keycloak_pgflex_params" {
   type = object({
     enabled                                = bool
+    zone                                   = number
     idh_resource_tier                      = string
     geo_replication_enabled                = bool
     pgres_flex_pgbouncer_enabled           = bool

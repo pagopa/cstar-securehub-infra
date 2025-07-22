@@ -60,6 +60,7 @@ module "keycloak_pgflex" {
   log_analytics_workspace_id  = data.azurerm_log_analytics_workspace.logs_workspace.id
   private_dns_registration    = false
   pg_bouncer_enabled          = var.keycloak_pgflex_params.pgres_flex_pgbouncer_enabled
+  zone                        = var.keycloak_pgflex_params.zone
 
   # Geo-replication configuration for disaster recovery
   geo_replication = {
