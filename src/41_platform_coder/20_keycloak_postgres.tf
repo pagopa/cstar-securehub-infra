@@ -33,44 +33,44 @@ resource "azurerm_key_vault_secret" "keycloak_db_admin_password" {
 }
 
 
-#
-# Postgres Flexible Server
-#
+# Create PostgreSQL Flexible Server instance for Keycloak
 module "keycloak_pgflex" {
-  source = "./.terraform/modules/__v4__/postgres_flexible_server"
+  source = "./.terraform/modules/__v4__/IDH/postgres_flexible_server"
 
-  name                     = "${local.project}-keycloak-pgflex"
-  location                 = data.azurerm_resource_group.platform_data.location
-  resource_group_name      = data.azurerm_resource_group.platform_data.name
-  private_endpoint_enabled = true
+  # Basic server configuration
+  name                = "${local.project}-keycloak-pgflex"
+  location            = data.azurerm_resource_group.platform_data.location
+  resource_group_name = data.azurerm_resource_group.platform_data.name
 
-  # Network
+  # Resource tier and environment settings
+  idh_resource_tier = var.keycloak_pgflex_params.idh_resource_tier
+  product_name      = var.prefix
+  env               = var.env
+
+  # Network configuration
   delegated_subnet_id = data.azurerm_subnet.platform_subnet.id
   private_dns_zone_id = data.azurerm_private_dns_zone.postgres_flexible_privatelink.id
 
-  high_availability_enabled   = var.keycloak_pgflex_params.pgres_flex_ha_enabled
-  standby_availability_zone   = var.env_short != "d" ? var.keycloak_pgflex_params.standby_zone : null
-  pgbouncer_enabled           = var.keycloak_pgflex_params.pgres_flex_pgbouncer_enabled
+  # Authentication configuration
+  administrator_login    = azurerm_key_vault_secret.keycloak_db_admin_user.value
+  administrator_password = azurerm_key_vault_secret.keycloak_db_admin_password.value
+
+  # Monitoring and performance settings
   diagnostic_settings_enabled = var.keycloak_pgflex_params.pgres_flex_diagnostic_settings_enabled
-  administrator_login         = azurerm_key_vault_secret.keycloak_db_admin_user.value
-  administrator_password      = azurerm_key_vault_secret.keycloak_db_admin_password.value
+  log_analytics_workspace_id  = data.azurerm_log_analytics_workspace.logs_workspace.id
+  private_dns_registration    = false
+  pg_bouncer_enabled          = var.keycloak_pgflex_params.pgres_flex_pgbouncer_enabled
 
-  sku_name                     = var.keycloak_pgflex_params.sku_name
-  db_version                   = var.keycloak_pgflex_params.db_version
-  storage_mb                   = var.keycloak_pgflex_params.storage_mb
-  zone                         = var.env_short == "d" ? 2 : var.keycloak_pgflex_params.zone
-  backup_retention_days        = var.keycloak_pgflex_params.backup_retention_days
-  geo_redundant_backup_enabled = var.keycloak_pgflex_params.geo_redundant_backup_enabled
-  create_mode                  = var.keycloak_pgflex_params.create_mode
+  # Geo-replication configuration for disaster recovery
+  geo_replication = {
+    enabled                     = var.keycloak_pgflex_params.geo_replication_enabled
+    name                        = "${local.project}-keycloak-pgflex-replica"
+    subnet_id                   = data.azurerm_subnet.platform_subnet.id
+    location                    = "germanywestcentral"
+    private_dns_registration_ve = true
+  }
 
-  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs_workspace.id
-
-  tags = merge(
-    module.tag_config.tags,
-    {
-      "grafana" = "yes"
-    }
-  )
+  tags = module.tag_config.tags_grafana_yes
 }
 
 resource "azurerm_postgresql_flexible_server_database" "keycloak_db" {

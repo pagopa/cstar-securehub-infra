@@ -18,16 +18,16 @@
 | <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 3.4.0 |
 | <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.32.0 |
 | <a name="provider_helm"></a> [helm](#provider\_helm) | 2.17.0 |
-| <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | 2.37.1 |
+| <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | 2.38.0 |
 | <a name="provider_random"></a> [random](#provider\_random) | 3.7.2 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | 5c38b6fc6e2aa2c2c3e94be5dd6bb6ee8d690a49 |
+| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | 70cf66cc338d8c13ed5a831ddcd54b8ea26a4ac0 |
 | <a name="module_cert_mounter"></a> [cert\_mounter](#module\_cert\_mounter) | ./.terraform/modules/__v4__/cert_mounter | n/a |
-| <a name="module_keycloak_pgflex"></a> [keycloak\_pgflex](#module\_keycloak\_pgflex) | ./.terraform/modules/__v4__/postgres_flexible_server | n/a |
+| <a name="module_keycloak_pgflex"></a> [keycloak\_pgflex](#module\_keycloak\_pgflex) | ./.terraform/modules/__v4__/IDH/postgres_flexible_server | n/a |
 | <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../tag_config | n/a |
 | <a name="module_workload_identity_configuration_platform_coder_keycloak"></a> [workload\_identity\_configuration\_platform\_coder\_keycloak](#module\_workload\_identity\_configuration\_platform\_coder\_keycloak) | ./.terraform/modules/__v4__/kubernetes_workload_identity_configuration | n/a |
 | <a name="module_workload_identity_platform_coder"></a> [workload\_identity\_platform\_coder](#module\_workload\_identity\_platform\_coder) | ./.terraform/modules/__v4__/kubernetes_workload_identity_init | n/a |
@@ -74,14 +74,14 @@
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_dns_zone_internal_prefix"></a> [dns\_zone\_internal\_prefix](#input\_dns\_zone\_internal\_prefix) | The dns subdomain. | `string` | `null` | no |
+| <a name="input_dns_zone_internal_prefix"></a> [dns\_zone\_internal\_prefix](#input\_dns\_zone\_internal\_prefix) | The dns subdomain. | `string` | `""` | no |
 | <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | n/a | yes |
 | <a name="input_env"></a> [env](#input\_env) | Environment | `string` | n/a | yes |
 | <a name="input_env_short"></a> [env\_short](#input\_env\_short) | n/a | `string` | n/a | yes |
 | <a name="input_external_domain"></a> [external\_domain](#input\_external\_domain) | Domain for delegation | `string` | n/a | yes |
 | <a name="input_k8s_kube_config_path_prefix"></a> [k8s\_kube\_config\_path\_prefix](#input\_k8s\_kube\_config\_path\_prefix) | Kubernetes | `string` | `"~/.kube"` | no |
 | <a name="input_keycloak_configuration"></a> [keycloak\_configuration](#input\_keycloak\_configuration) | n/a | <pre>object({<br/>    replica_count_min = number<br/>    replica_count_max = number<br/>  })</pre> | n/a | yes |
-| <a name="input_keycloak_pgflex_params"></a> [keycloak\_pgflex\_params](#input\_keycloak\_pgflex\_params) | Postgres Flexible | <pre>object({<br/>    enabled                                = bool<br/>    sku_name                               = string<br/>    db_version                             = string<br/>    storage_mb                             = string<br/>    zone                                   = number<br/>    standby_zone                           = optional(number, 1)<br/>    backup_retention_days                  = number<br/>    geo_redundant_backup_enabled           = bool<br/>    create_mode                            = string<br/>    pgres_flex_private_endpoint_enabled    = bool<br/>    pgres_flex_ha_enabled                  = bool<br/>    pgres_flex_pgbouncer_enabled           = bool<br/>    pgres_flex_diagnostic_settings_enabled = bool<br/>    max_connections                        = number<br/>    pgbouncer_min_pool_size                = number<br/>    pgbouncer_default_pool_size            = number<br/>  })</pre> | n/a | yes |
+| <a name="input_keycloak_pgflex_params"></a> [keycloak\_pgflex\_params](#input\_keycloak\_pgflex\_params) | Postgres Flexible | <pre>object({<br/>    enabled                                = bool<br/>    idh_resource_tier                      = string<br/>    geo_replication_enabled                = bool<br/>    pgres_flex_pgbouncer_enabled           = bool<br/>    pgres_flex_diagnostic_settings_enabled = bool<br/>  })</pre> | n/a | yes |
 | <a name="input_location"></a> [location](#input\_location) | n/a | `string` | n/a | yes |
 | <a name="input_location_display_name"></a> [location\_display\_name](#input\_location\_display\_name) | Location short like eg: neu, weu.. | `string` | n/a | yes |
 | <a name="input_location_short"></a> [location\_short](#input\_location\_short) | Location short like eg: neu, weu.. | `string` | n/a | yes |
