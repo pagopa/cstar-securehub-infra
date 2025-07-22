@@ -68,6 +68,36 @@
           },
           {
             "version": "KqlParameterItem/1.0",
+            "name": "timeRangeAssetRegister",
+            "type": 4,
+            "isRequired": true,
+            "typeSettings": {
+              "selectableValues": [
+                {
+                  "durationMs": 300000
+                },
+                {
+                  "durationMs": 900000
+                },
+                {
+                  "durationMs": 1800000
+                },
+                {
+                  "durationMs": 86400000
+                }
+              ],
+              "allowCustom": true
+            },
+            "timeContext": {
+              "durationMs": 86400000
+            },
+            "value": {
+              "durationMs": 86400000
+            },
+            "id": "616318ef-457b-43a9-a7d3-1e1c06fb8d83"
+          },
+          {
+            "version": "KqlParameterItem/1.0",
             "name": "timeRangeEnte",
             "type": 4,
             "isRequired": true,
@@ -189,6 +219,30 @@
               "showDefault": false
             },
             "jsonData": "[\r\n    {\"value\": \"getIban\", \"selected\": true},\r\n    {\"value\": \"getIbanList\", \"selected\": true},\r\n    {\"value\": \"getWallet\", \"selected\": true},\r\n    {\"value\": \"getWalletDetail\", \"selected\": true},\r\n    {\"value\": \"enrollIban\", \"selected\": true},\r\n    {\"value\": \"enrollInstrument\", \"selected\": true},\r\n    {\"value\": \"getInstrumentList\", \"selected\": true},\r\n    {\"value\": \"deleteInstrument\", \"selected\": true},\r\n    {\"value\": \"unsubscribe\", \"selected\": true},\r\n    {\"value\": \"getWalletStatus\", \"selected\": true},\r\n    {\"value\": \"getInitiativesWithInstrument\", \"selected\": true},\r\n    {\"value\": \"getTimeline\", \"selected\": true},\r\n    {\"value\": \"getTimelineDetail\", \"selected\": true},\r\n    {\"value\": \"getInitiativeData\", \"selected\": true},\r\n    {\"value\": \"onboardingCitizen\", \"selected\": true},\r\n    {\"value\": \"checkPrerequisites\", \"selected\": true},\r\n    {\"value\": \"consentOnboarding\", \"selected\": true},\r\n    {\"value\": \"onboardingStatus\", \"selected\": true}\r\n]",
+            "timeContext": {
+              "durationMs": 0
+            },
+            "timeContextFromParameter": "timeRange",
+            "value": [
+              "value::all"
+            ]
+          },
+          {
+            "id": "4633b118-cfd9-4cd4-ae4c-e06de1523e93",
+            "version": "KqlParameterItem/1.0",
+            "name": "apiAssetRegistry",
+            "type": 2,
+            "multiSelect": true,
+            "quote": "'",
+            "delimiter": ",",
+            "isHiddenWhenLocked": true,
+            "typeSettings": {
+              "additionalResourceOptions": [
+                "value::all"
+              ],
+              "showDefault": false
+            },
+            "jsonData": "[\r\n    {\"value\": \"userPermission\", \"selected\": true},\r\n    {\"value\": \"getPortalConsent\", \"selected\": true},\r\n    {\"value\": \"savePortalConsent\", \"selected\": true},\r\n    {\"value\": \"uploadProductList\", \"selected\": true},\r\n    {\"value\": \"getProductFilesList\", \"selected\": true},\r\n    {\"value\": \"downloadErrorReport\", \"selected\": true},\r\n    {\"value\": \"getProducts\", \"selected\": true},\r\n    {\"value\": \"retrieveInstitutionById\", \"selected\": true}\r\n]",
             "timeContext": {
               "durationMs": 0
             },
@@ -410,6 +464,14 @@
                   "subTarget": "all",
                   "style": "link",
                   "linkIsContextBlade": true
+                },
+                {
+                  "id": "3518e155-9bfb-4859-91a4-8a6cbc291254",
+                  "cellValue": "selectedTab",
+                  "linkTarget": "parameter",
+                  "linkLabel": "OPEX - REGISTRO DEI BENI",
+                  "subTarget": "assetRegistry",
+                  "style": "link"
                 },
                 {
                   "id": "49c95533-9c20-465a-b92b-5bec7f8a46ad",
@@ -988,7 +1050,7 @@
                     "queryType": 0,
                     "resourceType": "microsoft.operationalinsights/workspaces",
                     "crossComponentResources": [
-                      "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-law"
+                      "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${domain}-law"
                     ],
                     "visualization": "timechart"
                   },
@@ -1276,8 +1338,8 @@
                           "resourceType": "microsoft.eventhub/namespaces",
                           "metricScope": 0,
                           "resourceIds": [
-                            "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-ns-01",
-                            "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-ns-00"
+                            "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-01-ns",
+                            "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-00-ns"
                           ],
                           "timeContextFromParameter": "timeRangeOverall",
                           "timeContext": {
@@ -1371,7 +1433,7 @@
                         "content": {
                           "version": "NotebookGroup/1.0",
                           "groupType": "editable",
-                          "title": "idpay-evh-ns-00",
+                          "title": "idpay-evh-00-ns",
                           "items": [
                             {
                               "type": 10,
@@ -1383,7 +1445,7 @@
                                 "resourceType": "microsoft.eventhub/namespaces",
                                 "metricScope": 0,
                                 "resourceIds": [
-                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-ns-00"
+                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-00-ns"
                                 ],
                                 "timeContextFromParameter": "timeRangeOverall",
                                 "timeContext": {
@@ -1427,7 +1489,7 @@
                                 "resourceType": "microsoft.eventhub/namespaces",
                                 "metricScope": 0,
                                 "resourceIds": [
-                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-ns-00"
+                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-00-ns"
                                 ],
                                 "timeContextFromParameter": "timeRangeOverall",
                                 "timeContext": {
@@ -1463,14 +1525,14 @@
                             }
                           ]
                         },
-                        "name": "idpay-evh-ns-00"
+                        "name": "idpay-evh-00-ns"
                       },
                       {
                         "type": 12,
                         "content": {
                           "version": "NotebookGroup/1.0",
                           "groupType": "editable",
-                          "title": "idpay-evh-ns-01",
+                          "title": "idpay-evh-01-ns",
                           "items": [
                             {
                               "type": 10,
@@ -1482,7 +1544,7 @@
                                 "resourceType": "microsoft.eventhub/namespaces",
                                 "metricScope": 0,
                                 "resourceIds": [
-                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-ns-01"
+                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-01-ns"
                                 ],
                                 "timeContextFromParameter": "timeRangeOverall",
                                 "timeContext": {
@@ -1526,7 +1588,7 @@
                                 "resourceType": "microsoft.eventhub/namespaces",
                                 "metricScope": 0,
                                 "resourceIds": [
-                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-ns-01"
+                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-01-ns"
                                 ],
                                 "timeContextFromParameter": "timeRangeOverall",
                                 "timeContext": {
@@ -1562,7 +1624,7 @@
                             }
                           ]
                         },
-                        "name": "idpay-evh-ns-01"
+                        "name": "idpay-evh-01-ns"
                       }
                     ]
                   },
@@ -1577,6 +1639,853 @@
               "value": "all"
             },
             "name": "all"
+          },
+          {
+            "type": 12,
+            "content": {
+              "version": "NotebookGroup/1.0",
+              "groupType": "editable",
+              "items": [
+                {
+                  "type": 3,
+                  "content": {
+                    "version": "KqlItem/1.0",
+                    "query": "let startTime = {timeRangeAssetRegister:start};\r\nlet endTime = {timeRangeAssetRegister:end};\r\nlet interval = endTime-startTime;\r\n\r\nlet totalCount = requests\r\n| where timestamp between (startTime .. endTime)\r\n| where operation_Name has_any ({apiAssetRegistry})\r\n| summarize Total = count() by operation_Name;\r\nlet data = requests\r\n| where timestamp between (startTime .. endTime)\r\n| where operation_Name has_any ({apiAssetRegistry});\r\ndata\r\n| join kind=inner totalCount on operation_Name\r\n| summarize Count = count(), Users = dcount(tostring(customDimensions[\"Request-X-Forwarded-For\"])) by operation_Name, resultCode, Total//, timestamp=bin(timestamp,interval)\r\n| project ['Request Name'] = operation_Name, ['Result Code'] = resultCode, ['Total Response'] = Count, ['Rate %'] = (Count*100)/Total, ['Users Affected'] = Users\r\n| sort by ['Request Name']",
+                    "size": 0,
+                    "showAnalytics": true,
+                    "queryType": 0,
+                    "resourceType": "microsoft.insights/components",
+                    "crossComponentResources": [
+                      "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
+                    ],
+                    "gridSettings": {
+                      "formatters": [
+                        {
+                          "columnMatch": "Result Code",
+                          "formatter": 18,
+                          "formatOptions": {
+                            "thresholdsOptions": "icons",
+                            "thresholdsGrid": [
+                              {
+                                "operator": "==",
+                                "thresholdValue": "429",
+                                "representation": "4",
+                                "text": "{0}{1}"
+                              },
+                              {
+                                "operator": "==",
+                                "thresholdValue": "404",
+                                "representation": "success",
+                                "text": "{0}{1}"
+                              },
+                              {
+                                "operator": "startsWith",
+                                "thresholdValue": "5",
+                                "representation": "4",
+                                "text": "{0}{1}"
+                              },
+                              {
+                                "operator": "startsWith",
+                                "thresholdValue": "2",
+                                "representation": "success",
+                                "text": "{0}{1}"
+                              },
+                              {
+                                "operator": "Default",
+                                "thresholdValue": null,
+                                "representation": "warning",
+                                "text": "{0}{1}"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "columnMatch": "Total Response",
+                          "formatter": 8,
+                          "formatOptions": {
+                            "min": 1,
+                            "palette": "blue"
+                          }
+                        },
+                        {
+                          "columnMatch": "Rate %",
+                          "formatter": 8,
+                          "formatOptions": {
+                            "min": 0,
+                            "max": 100,
+                            "palette": "yellowGreenBlue"
+                          },
+                          "numberFormat": {
+                            "unit": 1,
+                            "options": {
+                              "style": "decimal",
+                              "useGrouping": false
+                            }
+                          }
+                        },
+                        {
+                          "columnMatch": "Users Affected",
+                          "formatter": 8,
+                          "formatOptions": {
+                            "min": 0,
+                            "palette": "blueDark"
+                          }
+                        },
+                        {
+                          "columnMatch": "Group",
+                          "formatter": 1
+                        },
+                        {
+                          "columnMatch": "Failed with Result Code",
+                          "formatter": 18,
+                          "formatOptions": {
+                            "thresholdsOptions": "icons",
+                            "thresholdsGrid": [
+                              {
+                                "operator": "startsWith",
+                                "thresholdValue": "5",
+                                "representation": "4",
+                                "text": "{0}{1}"
+                              },
+                              {
+                                "operator": "==",
+                                "thresholdValue": "429",
+                                "representation": "4",
+                                "text": "{0}{1}"
+                              },
+                              {
+                                "operator": "startsWith",
+                                "thresholdValue": "2",
+                                "representation": "success",
+                                "text": "{0}{1}"
+                              },
+                              {
+                                "operator": "==",
+                                "thresholdValue": "404",
+                                "representation": "success",
+                                "text": "{0}{1}"
+                              },
+                              {
+                                "operator": "Default",
+                                "thresholdValue": null,
+                                "representation": "2",
+                                "text": "{0}{1}"
+                              }
+                            ],
+                            "compositeBarSettings": {
+                              "labelText": "",
+                              "columnSettings": [
+                                {
+                                  "columnName": "Failed with Result Code",
+                                  "color": "blue"
+                                }
+                              ]
+                            }
+                          },
+                          "numberFormat": {
+                            "unit": 0,
+                            "options": {
+                              "style": "decimal"
+                            }
+                          }
+                        },
+                        {
+                          "columnMatch": "Total Failures",
+                          "formatter": 8,
+                          "formatOptions": {
+                            "min": 1,
+                            "palette": "blue"
+                          }
+                        },
+                        {
+                          "columnMatch": "Failure rate %",
+                          "formatter": 8,
+                          "formatOptions": {
+                            "min": 0,
+                            "max": 100,
+                            "palette": "redGreen"
+                          }
+                        }
+                      ]
+                    },
+                    "sortBy": [],
+                    "tileSettings": {
+                      "showBorder": false,
+                      "titleContent": {
+                        "columnMatch": "Request Name",
+                        "formatter": 1
+                      },
+                      "leftContent": {
+                        "columnMatch": "Total Failures",
+                        "formatter": 12,
+                        "formatOptions": {
+                          "palette": "auto"
+                        },
+                        "numberFormat": {
+                          "unit": 17,
+                          "options": {
+                            "maximumSignificantDigits": 3,
+                            "maximumFractionDigits": 2
+                          }
+                        }
+                      }
+                    },
+                    "graphSettings": {
+                      "type": 0,
+                      "topContent": {
+                        "columnMatch": "Request Name",
+                        "formatter": 1
+                      },
+                      "leftContent": {
+                        "columnMatch": "Failed with Result Code"
+                      },
+                      "centerContent": {
+                        "columnMatch": "Total Failures",
+                        "formatter": 1,
+                        "numberFormat": {
+                          "unit": 17,
+                          "options": {
+                            "maximumSignificantDigits": 3,
+                            "maximumFractionDigits": 2
+                          }
+                        }
+                      },
+                      "rightContent": {
+                        "columnMatch": "Failure rate %"
+                      },
+                      "bottomContent": {
+                        "columnMatch": "Users Affected"
+                      },
+                      "nodeIdField": "Request Name",
+                      "sourceIdField": "Failed with Result Code",
+                      "targetIdField": "Total Failures",
+                      "graphOrientation": 3,
+                      "showOrientationToggles": false,
+                      "nodeSize": null,
+                      "staticNodeSize": 100,
+                      "colorSettings": null,
+                      "hivesMargin": 5
+                    },
+                    "chartSettings": {
+                      "showLegend": true,
+                      "showDataPoints": true
+                    },
+                    "mapSettings": {
+                      "locInfo": "LatLong",
+                      "sizeSettings": "Total Failures",
+                      "sizeAggregation": "Sum",
+                      "legendMetric": "Total Failures",
+                      "legendAggregation": "Sum",
+                      "itemColorSettings": {
+                        "type": "heatmap",
+                        "colorAggregation": "Sum",
+                        "nodeColorField": "Total Failures",
+                        "heatmapPalette": "greenRed"
+                      }
+                    }
+                  },
+                  "name": "query - 14"
+                },
+                {
+                  "type": 3,
+                  "content": {
+                    "version": "KqlItem/1.0",
+                    "query": "let startTime = {timeRangeAssetRegister:start};\nlet endTime = {timeRangeAssetRegister:end};\nlet interval = totimespan({timeSpan:label});\n\nrequests\n| where timestamp between (startTime .. endTime)\n| where operation_Name has_any ({apiAssetRegistry})\n| summarize total = count(), n_ok = countif(resultCode startswith '2'  or resultCode == '404') by bin(timestamp,interval)\n| project timestamp, availability = todouble(n_ok)/total\n| join kind=fullouter (range timestamp from startTime to endTime step interval) on timestamp\n| project timestamp=coalesce(timestamp,timestamp1), availability = coalesce(availability,1.0), watermark=0.99",
+                    "size": 0,
+                    "aggregation": 3,
+                    "showAnalytics": true,
+                    "title": "Availability",
+                    "queryType": 0,
+                    "resourceType": "microsoft.insights/components",
+                    "crossComponentResources": [
+                      "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
+                    ],
+                    "visualization": "timechart"
+                  },
+                  "customWidth": "50",
+                  "name": "Availability"
+                },
+                {
+                  "type": 3,
+                  "content": {
+                    "version": "KqlItem/1.0",
+                    "query": "let startTime = {timeRangeAssetRegister:start};\r\nlet endTime = {timeRangeAssetRegister:end};\r\nlet interval = totimespan({timeSpan:label});\r\n\r\nlet dataset = requests\r\n    // additional filters can be applied here\r\n    | where timestamp between (startTime .. endTime) \r\n        and operation_Name has_any ({apiAssetRegistry})\r\n;\r\ndataset\r\n| summarize percentile_95=percentile(duration, 95) by bin(timestamp, interval)\r\n| project timestamp, percentile_95, watermark=1000\r\n| render timechart",
+                    "size": 0,
+                    "aggregation": 3,
+                    "showAnalytics": true,
+                    "title": "Requests duration p95",
+                    "queryType": 0,
+                    "resourceType": "microsoft.insights/components",
+                    "crossComponentResources": [
+                      "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
+                    ]
+                  },
+                  "customWidth": "50",
+                  "name": "Requests duration p95"
+                },
+                {
+                  "type": 12,
+                  "content": {
+                    "version": "NotebookGroup/1.0",
+                    "groupType": "editable",
+                    "title": "API",
+                    "items": [
+                      {
+                        "type": 10,
+                        "content": {
+                          "chartId": "workbooka988ef27-8dda-41dd-8df0-8b15a16c6599",
+                          "version": "MetricsItem/2.0",
+                          "size": 1,
+                          "chartType": 2,
+                          "resourceType": "microsoft.insights/components",
+                          "metricScope": 0,
+                          "resourceIds": [
+                            "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
+                          ],
+                          "timeContextFromParameter": "timeRangeAssetRegister",
+                          "timeContext": {
+                            "durationMs": 86400000
+                          },
+                          "metrics": [
+                            {
+                              "namespace": "microsoft.insights/components/kusto",
+                              "metric": "microsoft.insights/components/kusto-Server-requests/count",
+                              "aggregation": 1,
+                              "splitBy": "customDimensions/Operation Name"
+                            }
+                          ],
+                          "title": "Requests by API",
+                          "showOpenInMe": true,
+                          "filters": [
+                            {
+                              "id": "1",
+                              "key": "customDimensions/Operation Name",
+                              "operator": 0,
+                              "valueParam": "apiAssetRegistry"
+                            }
+                          ],
+                          "gridSettings": {
+                            "rowLimit": 10000
+                          }
+                        },
+                        "name": "Requests by API"
+                      },
+                      {
+                        "type": 10,
+                        "content": {
+                          "chartId": "workbook3bad6310-d83f-41df-925d-4b24f93a0885",
+                          "version": "MetricsItem/2.0",
+                          "size": 1,
+                          "chartType": 2,
+                          "resourceType": "microsoft.insights/components",
+                          "metricScope": 0,
+                          "resourceIds": [
+                            "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
+                          ],
+                          "timeContextFromParameter": "timeRangeAssetRegister",
+                          "timeContext": {
+                            "durationMs": 86400000
+                          },
+                          "metrics": [
+                            {
+                              "namespace": "microsoft.insights/components/kusto",
+                              "metric": "microsoft.insights/components/kusto-Server-requests/count",
+                              "aggregation": 1,
+                              "splitBy": "request/resultCode"
+                            }
+                          ],
+                          "title": "Requests by code 2xx",
+                          "showOpenInMe": true,
+                          "filters": [
+                            {
+                              "id": "1",
+                              "key": "customDimensions/Operation Name",
+                              "operator": 0,
+                              "valueParam": "apiAssetRegistry"
+                            },
+                            {
+                              "id": "2",
+                              "key": "request/resultCode",
+                              "operator": 0,
+                              "values": [
+                                "200",
+                                "201",
+                                "202",
+                                "204"
+                              ]
+                            }
+                          ],
+                          "gridSettings": {
+                            "rowLimit": 10000
+                          }
+                        },
+                        "name": "Requests by code 2xx"
+                      },
+                      {
+                        "type": 10,
+                        "content": {
+                          "chartId": "workbook3bad6310-d83f-41df-925d-4b24f93a0885",
+                          "version": "MetricsItem/2.0",
+                          "size": 1,
+                          "chartType": 2,
+                          "resourceType": "microsoft.insights/components",
+                          "metricScope": 0,
+                          "resourceIds": [
+                            "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
+                          ],
+                          "timeContextFromParameter": "timeRangeAssetRegister",
+                          "timeContext": {
+                            "durationMs": 86400000
+                          },
+                          "metrics": [
+                            {
+                              "namespace": "microsoft.insights/components/kusto",
+                              "metric": "microsoft.insights/components/kusto-Server-requests/count",
+                              "aggregation": 1,
+                              "splitBy": "request/resultCode"
+                            }
+                          ],
+                          "title": "Requests by code 4xx",
+                          "showOpenInMe": true,
+                          "filters": [
+                            {
+                              "id": "1",
+                              "key": "customDimensions/Operation Name",
+                              "operator": 0,
+                              "valueParam": "apiAssetRegistry"
+                            },
+                            {
+                              "id": "2",
+                              "key": "request/resultCode",
+                              "operator": 0,
+                              "values": [
+                                "400",
+                                "401",
+                                "403",
+                                "404",
+                                "429"
+                              ]
+                            }
+                          ],
+                          "gridSettings": {
+                            "rowLimit": 10000
+                          }
+                        },
+                        "name": "Requests by code 4xx"
+                      },
+                      {
+                        "type": 10,
+                        "content": {
+                          "chartId": "workbook3bad6310-d83f-41df-925d-4b24f93a0885",
+                          "version": "MetricsItem/2.0",
+                          "size": 1,
+                          "chartType": 2,
+                          "resourceType": "microsoft.insights/components",
+                          "metricScope": 0,
+                          "resourceIds": [
+                            "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
+                          ],
+                          "timeContextFromParameter": "timeRangeAssetRegister",
+                          "timeContext": {
+                            "durationMs": 86400000
+                          },
+                          "metrics": [
+                            {
+                              "namespace": "microsoft.insights/components/kusto",
+                              "metric": "microsoft.insights/components/kusto-Server-requests/count",
+                              "aggregation": 1,
+                              "splitBy": "request/resultCode"
+                            }
+                          ],
+                          "title": "Requests by code 5xx",
+                          "showOpenInMe": true,
+                          "filters": [
+                            {
+                              "id": "1",
+                              "key": "customDimensions/Operation Name",
+                              "operator": 0,
+                              "valueParam": "apiAssetRegistry"
+                            },
+                            {
+                              "id": "2",
+                              "key": "request/resultCode",
+                              "operator": 0,
+                              "values": [
+                                "500",
+                                "501",
+                                "503",
+                                "504"
+                              ]
+                            }
+                          ],
+                          "gridSettings": {
+                            "rowLimit": 10000
+                          }
+                        },
+                        "name": "Requests by code 5xx"
+                      },
+                      {
+                        "type": 10,
+                        "content": {
+                          "chartId": "workbook5c67947b-ac01-422c-86e0-3b8f5322f3c7",
+                          "version": "MetricsItem/2.0",
+                          "size": 0,
+                          "chartType": 2,
+                          "resourceType": "microsoft.insights/components",
+                          "metricScope": 0,
+                          "resourceIds": [
+                            "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
+                          ],
+                          "timeContextFromParameter": "timeRangeAssetRegister",
+                          "timeContext": {
+                            "durationMs": 86400000
+                          },
+                          "metrics": [
+                            {
+                              "namespace": "microsoft.insights/components/kusto",
+                              "metric": "microsoft.insights/components/kusto-Server-requests/duration",
+                              "aggregation": 4,
+                              "splitBy": "operation/name"
+                            }
+                          ],
+                          "title": "Requests response time",
+                          "showOpenInMe": true,
+                          "filters": [
+                            {
+                              "id": "1",
+                              "key": "customDimensions/Operation Name",
+                              "operator": 0,
+                              "valueParam": "apiAssetRegistry"
+                            }
+                          ],
+                          "gridSettings": {
+                            "rowLimit": 10000
+                          }
+                        },
+                        "name": "Requests response time"
+                      }
+                    ]
+                  },
+                  "customWidth": "50",
+                  "name": "API"
+                },
+                {
+                  "type": 12,
+                  "content": {
+                    "version": "NotebookGroup/1.0",
+                    "groupType": "editable",
+                    "items": [
+                      {
+                        "type": 10,
+                        "content": {
+                          "chartId": "workbook2f4c21ef-b2c2-4013-8a15-04e72dbdd9fa",
+                          "version": "MetricsItem/2.0",
+                          "size": 1,
+                          "chartType": 2,
+                          "resourceType": "microsoft.eventhub/namespaces",
+                          "metricScope": 0,
+                          "resourceIds": [
+                            "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-01-ns",
+                            "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-00-ns"
+                          ],
+                          "timeContextFromParameter": "timeRangeAssetRegister",
+                          "timeContext": {
+                            "durationMs": 86400000
+                          },
+                          "metrics": [
+                            {
+                              "namespace": "microsoft.eventhub/namespaces",
+                              "metric": "microsoft.eventhub/namespaces--IncomingMessages",
+                              "aggregation": 1,
+                              "splitBy": null
+                            },
+                            {
+                              "namespace": "microsoft.eventhub/namespaces",
+                              "metric": "microsoft.eventhub/namespaces--OutgoingMessages",
+                              "aggregation": 1
+                            }
+                          ],
+                          "title": "Eventhubs incoming-outgoing",
+                          "gridFormatType": 1,
+                          "showOpenInMe": true,
+                          "filters": [
+                            {
+                              "id": "1",
+                              "key": "EntityName",
+                              "operator": 0,
+                              "valueParam": "eventhubBeneficiary"
+                            }
+                          ],
+                          "gridSettings": {
+                            "formatters": [
+                              {
+                                "columnMatch": "Subscription",
+                                "formatter": 5
+                              },
+                              {
+                                "columnMatch": "Name",
+                                "formatter": 13,
+                                "formatOptions": {
+                                  "linkTarget": "Resource"
+                                }
+                              },
+                              {
+                                "columnMatch": "microsoft.eventhub/namespaces--IncomingMessages Timeline",
+                                "formatter": 5
+                              },
+                              {
+                                "columnMatch": "microsoft.eventhub/namespaces--IncomingMessages",
+                                "formatter": 1,
+                                "numberFormat": {
+                                  "unit": 0,
+                                  "options": null
+                                }
+                              },
+                              {
+                                "columnMatch": "microsoft.eventhub/namespaces--OutgoingMessages Timeline",
+                                "formatter": 5
+                              },
+                              {
+                                "columnMatch": "microsoft.eventhub/namespaces--OutgoingMessages",
+                                "formatter": 1,
+                                "numberFormat": {
+                                  "unit": 0,
+                                  "options": null
+                                }
+                              },
+                              {
+                                "columnMatch": "Metric",
+                                "formatter": 1
+                              },
+                              {
+                                "columnMatch": "Aggregation",
+                                "formatter": 5
+                              },
+                              {
+                                "columnMatch": "Value",
+                                "formatter": 1
+                              },
+                              {
+                                "columnMatch": "Timeline",
+                                "formatter": 9
+                              }
+                            ],
+                            "rowLimit": 10000
+                          }
+                        },
+                        "name": "Eventhubs incoming-outgoing"
+                      },
+                      {
+                        "type": 12,
+                        "content": {
+                          "version": "NotebookGroup/1.0",
+                          "groupType": "editable",
+                          "title": "idpay-evh-00-ns",
+                          "items": [
+                            {
+                              "type": 10,
+                              "content": {
+                                "chartId": "workbook3e41622d-4b0a-4f4f-b335-b65ef5c909d1",
+                                "version": "MetricsItem/2.0",
+                                "size": 0,
+                                "chartType": 2,
+                                "resourceType": "microsoft.eventhub/namespaces",
+                                "metricScope": 0,
+                                "resourceIds": [
+                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-00-ns"
+                                ],
+                                "timeContextFromParameter": "timeRangeAssetRegister",
+                                "timeContext": {
+                                  "durationMs": 86400000
+                                },
+                                "metrics": [
+                                  {
+                                    "namespace": "microsoft.eventhub/namespaces",
+                                    "metric": "microsoft.eventhub/namespaces--IncomingMessages",
+                                    "aggregation": 1,
+                                    "splitBy": "EntityName"
+                                  }
+                                ],
+                                "title": "Incoming Messages",
+                                "showOpenInMe": true,
+                                "filters": [
+                                  {
+                                    "id": "1",
+                                    "key": "EntityName",
+                                    "operator": 0,
+                                    "valueParam": "eventhubBeneficiary"
+                                  }
+                                ],
+                                "gridSettings": {
+                                  "rowLimit": 10000
+                                }
+                              },
+                              "customWidth": "50",
+                              "name": "Incoming Messages",
+                              "styleSettings": {
+                                "maxWidth": "50"
+                              }
+                            },
+                            {
+                              "type": 10,
+                              "content": {
+                                "chartId": "workbook95d246e7-53f0-4e0a-9c7b-b99deec02502",
+                                "version": "MetricsItem/2.0",
+                                "size": 0,
+                                "chartType": 2,
+                                "resourceType": "microsoft.eventhub/namespaces",
+                                "metricScope": 0,
+                                "resourceIds": [
+                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-00-ns"
+                                ],
+                                "timeContextFromParameter": "timeRangeAssetRegister",
+                                "timeContext": {
+                                  "durationMs": 86400000
+                                },
+                                "metrics": [
+                                  {
+                                    "namespace": "microsoft.eventhub/namespaces",
+                                    "metric": "microsoft.eventhub/namespaces--OutgoingMessages",
+                                    "aggregation": 1,
+                                    "splitBy": "EntityName"
+                                  }
+                                ],
+                                "title": "Outgoing Messages",
+                                "showOpenInMe": true,
+                                "filters": [
+                                  {
+                                    "id": "1",
+                                    "key": "EntityName",
+                                    "operator": 0,
+                                    "valueParam": "eventhubBeneficiary"
+                                  }
+                                ],
+                                "gridSettings": {
+                                  "rowLimit": 10000
+                                }
+                              },
+                              "customWidth": "50",
+                              "name": "Outgoing Messages",
+                              "styleSettings": {
+                                "maxWidth": "50"
+                              }
+                            }
+                          ]
+                        },
+                        "name": "idpay-evh-00-ns"
+                      },
+                      {
+                        "type": 12,
+                        "content": {
+                          "version": "NotebookGroup/1.0",
+                          "groupType": "editable",
+                          "title": "idpay-evh-01-ns",
+                          "items": [
+                            {
+                              "type": 10,
+                              "content": {
+                                "chartId": "workbook3e41622d-4b0a-4f4f-b335-b65ef5c909d1",
+                                "version": "MetricsItem/2.0",
+                                "size": 0,
+                                "chartType": 2,
+                                "resourceType": "microsoft.eventhub/namespaces",
+                                "metricScope": 0,
+                                "resourceIds": [
+                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-01-ns"
+                                ],
+                                "timeContextFromParameter": "timeRangeAssetRegister",
+                                "timeContext": {
+                                  "durationMs": 86400000
+                                },
+                                "metrics": [
+                                  {
+                                    "namespace": "microsoft.eventhub/namespaces",
+                                    "metric": "microsoft.eventhub/namespaces--IncomingMessages",
+                                    "aggregation": 1,
+                                    "splitBy": "EntityName"
+                                  }
+                                ],
+                                "title": "Incoming Messages",
+                                "showOpenInMe": true,
+                                "filters": [
+                                  {
+                                    "id": "1",
+                                    "key": "EntityName",
+                                    "operator": 0,
+                                    "valueParam": "eventhubBeneficiary"
+                                  }
+                                ],
+                                "gridSettings": {
+                                  "rowLimit": 10000
+                                }
+                              },
+                              "customWidth": "50",
+                              "name": "Incoming Messages - Copy",
+                              "styleSettings": {
+                                "maxWidth": "50"
+                              }
+                            },
+                            {
+                              "type": 10,
+                              "content": {
+                                "chartId": "workbook95d246e7-53f0-4e0a-9c7b-b99deec02502",
+                                "version": "MetricsItem/2.0",
+                                "size": 0,
+                                "chartType": 2,
+                                "resourceType": "microsoft.eventhub/namespaces",
+                                "metricScope": 0,
+                                "resourceIds": [
+                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-01-ns"
+                                ],
+                                "timeContextFromParameter": "timeRangeAssetRegister",
+                                "timeContext": {
+                                  "durationMs": 86400000
+                                },
+                                "metrics": [
+                                  {
+                                    "namespace": "microsoft.eventhub/namespaces",
+                                    "metric": "microsoft.eventhub/namespaces--OutgoingMessages",
+                                    "aggregation": 1,
+                                    "splitBy": "EntityName"
+                                  }
+                                ],
+                                "title": "Outgoing Messages",
+                                "showOpenInMe": true,
+                                "filters": [
+                                  {
+                                    "id": "1",
+                                    "key": "EntityName",
+                                    "operator": 0,
+                                    "valueParam": "eventhubBeneficiary"
+                                  }
+                                ],
+                                "gridSettings": {
+                                  "rowLimit": 10000
+                                }
+                              },
+                              "customWidth": "50",
+                              "name": "Outgoing Messages - Copy",
+                              "styleSettings": {
+                                "maxWidth": "50"
+                              }
+                            }
+                          ]
+                        },
+                        "name": "idpay-evh-01-ns"
+                      }
+                    ]
+                  },
+                  "customWidth": "50",
+                  "name": "group - 5"
+                }
+              ]
+            },
+            "conditionalVisibility": {
+              "parameterName": "selectedTab",
+              "comparison": "isEqualTo",
+              "value": "assetRegistry"
+            },
+            "name": "assetRegistry"
           },
           {
             "type": 12,
@@ -2123,8 +3032,8 @@
                           "resourceType": "microsoft.eventhub/namespaces",
                           "metricScope": 0,
                           "resourceIds": [
-                            "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-ns-01",
-                            "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-ns-00"
+                            "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-01-ns",
+                            "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-00-ns"
                           ],
                           "timeContextFromParameter": "timeRangeBeneficiary",
                           "timeContext": {
@@ -2218,7 +3127,7 @@
                         "content": {
                           "version": "NotebookGroup/1.0",
                           "groupType": "editable",
-                          "title": "idpay-evh-ns-00",
+                          "title": "idpay-evh-00-ns",
                           "items": [
                             {
                               "type": 10,
@@ -2230,7 +3139,7 @@
                                 "resourceType": "microsoft.eventhub/namespaces",
                                 "metricScope": 0,
                                 "resourceIds": [
-                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-ns-00"
+                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-00-ns"
                                 ],
                                 "timeContextFromParameter": "timeRangeBeneficiary",
                                 "timeContext": {
@@ -2274,7 +3183,7 @@
                                 "resourceType": "microsoft.eventhub/namespaces",
                                 "metricScope": 0,
                                 "resourceIds": [
-                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-ns-00"
+                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-00-ns"
                                 ],
                                 "timeContextFromParameter": "timeRangeBeneficiary",
                                 "timeContext": {
@@ -2310,14 +3219,14 @@
                             }
                           ]
                         },
-                        "name": "idpay-evh-ns-00"
+                        "name": "idpay-evh-00-ns"
                       },
                       {
                         "type": 12,
                         "content": {
                           "version": "NotebookGroup/1.0",
                           "groupType": "editable",
-                          "title": "idpay-evh-ns-01",
+                          "title": "idpay-evh-01-ns",
                           "items": [
                             {
                               "type": 10,
@@ -2329,7 +3238,7 @@
                                 "resourceType": "microsoft.eventhub/namespaces",
                                 "metricScope": 0,
                                 "resourceIds": [
-                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-ns-01"
+                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-01-ns"
                                 ],
                                 "timeContextFromParameter": "timeRangeBeneficiary",
                                 "timeContext": {
@@ -2373,7 +3282,7 @@
                                 "resourceType": "microsoft.eventhub/namespaces",
                                 "metricScope": 0,
                                 "resourceIds": [
-                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-ns-01"
+                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-01-ns"
                                 ],
                                 "timeContextFromParameter": "timeRangeBeneficiary",
                                 "timeContext": {
@@ -2409,7 +3318,7 @@
                             }
                           ]
                         },
-                        "name": "idpay-evh-ns-01"
+                        "name": "idpay-evh-01-ns"
                       }
                     ]
                   },
@@ -2969,8 +3878,8 @@
                           "resourceType": "microsoft.eventhub/namespaces",
                           "metricScope": 0,
                           "resourceIds": [
-                            "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-ns-01",
-                            "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-ns-00"
+                            "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-01-ns",
+                            "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-00-ns"
                           ],
                           "timeContextFromParameter": "timeRangeEnte",
                           "timeContext": {
@@ -3064,7 +3973,7 @@
                         "content": {
                           "version": "NotebookGroup/1.0",
                           "groupType": "editable",
-                          "title": "idpay-evh-ns-00",
+                          "title": "idpay-evh-00-ns",
                           "items": [
                             {
                               "type": 10,
@@ -3076,7 +3985,7 @@
                                 "resourceType": "microsoft.eventhub/namespaces",
                                 "metricScope": 0,
                                 "resourceIds": [
-                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-ns-00"
+                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-00-ns"
                                 ],
                                 "timeContextFromParameter": "timeRangeEnte",
                                 "timeContext": {
@@ -3120,7 +4029,7 @@
                                 "resourceType": "microsoft.eventhub/namespaces",
                                 "metricScope": 0,
                                 "resourceIds": [
-                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-ns-00"
+                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-00-ns"
                                 ],
                                 "timeContextFromParameter": "timeRangeEnte",
                                 "timeContext": {
@@ -3156,14 +4065,14 @@
                             }
                           ]
                         },
-                        "name": "idpay-evh-ns-00"
+                        "name": "idpay-evh-00-ns"
                       },
                       {
                         "type": 12,
                         "content": {
                           "version": "NotebookGroup/1.0",
                           "groupType": "editable",
-                          "title": "idpay-evh-ns-01",
+                          "title": "idpay-evh-01-ns",
                           "items": [
                             {
                               "type": 10,
@@ -3175,7 +4084,7 @@
                                 "resourceType": "microsoft.eventhub/namespaces",
                                 "metricScope": 0,
                                 "resourceIds": [
-                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-ns-01"
+                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-01-ns"
                                 ],
                                 "timeContextFromParameter": "timeRangeEnte",
                                 "timeContext": {
@@ -3219,7 +4128,7 @@
                                 "resourceType": "microsoft.eventhub/namespaces",
                                 "metricScope": 0,
                                 "resourceIds": [
-                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-ns-01"
+                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-01-ns"
                                 ],
                                 "timeContextFromParameter": "timeRangeEnte",
                                 "timeContext": {
@@ -3255,7 +4164,7 @@
                             }
                           ]
                         },
-                        "name": "idpay-evh-ns-01"
+                        "name": "idpay-evh-01-ns"
                       }
                     ]
                   },
@@ -3815,7 +4724,7 @@
                           "resourceType": "microsoft.eventhub/namespaces",
                           "metricScope": 0,
                           "resourceIds": [
-                            "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-ns-01"
+                            "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-01-ns"
                           ],
                           "timeContextFromParameter": "timeRangeMerchant",
                           "timeContext": {
@@ -3909,7 +4818,7 @@
                         "content": {
                           "version": "NotebookGroup/1.0",
                           "groupType": "editable",
-                          "title": "idpay-evh-ns-01",
+                          "title": "idpay-evh-01-ns",
                           "items": [
                             {
                               "type": 10,
@@ -3921,7 +4830,7 @@
                                 "resourceType": "microsoft.eventhub/namespaces",
                                 "metricScope": 0,
                                 "resourceIds": [
-                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-ns-01"
+                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-01-ns"
                                 ],
                                 "timeContextFromParameter": "timeRangeMerchant",
                                 "timeContext": {
@@ -3965,7 +4874,7 @@
                                 "resourceType": "microsoft.eventhub/namespaces",
                                 "metricScope": 0,
                                 "resourceIds": [
-                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-ns-01"
+                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-01-ns"
                                 ],
                                 "timeContextFromParameter": "timeRangeMerchant",
                                 "timeContext": {
@@ -4001,7 +4910,7 @@
                             }
                           ]
                         },
-                        "name": "idpay-evh-ns-01"
+                        "name": "idpay-evh-01-ns"
                       }
                     ]
                   },
@@ -4561,7 +5470,7 @@
                           "resourceType": "microsoft.eventhub/namespaces",
                           "metricScope": 0,
                           "resourceIds": [
-                            "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-ns-01"
+                            "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-01-ns"
                           ],
                           "timeContextFromParameter": "timeRangePayment",
                           "timeContext": {
@@ -4655,7 +5564,7 @@
                         "content": {
                           "version": "NotebookGroup/1.0",
                           "groupType": "editable",
-                          "title": "idpay-evh-ns-01",
+                          "title": "idpay-evh-01-ns",
                           "items": [
                             {
                               "type": 10,
@@ -4667,7 +5576,7 @@
                                 "resourceType": "microsoft.eventhub/namespaces",
                                 "metricScope": 0,
                                 "resourceIds": [
-                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-ns-01"
+                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-01-ns"
                                 ],
                                 "timeContextFromParameter": "timeRangePayment",
                                 "timeContext": {
@@ -4711,7 +5620,7 @@
                                 "resourceType": "microsoft.eventhub/namespaces",
                                 "metricScope": 0,
                                 "resourceIds": [
-                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-ns-01"
+                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-01-ns"
                                 ],
                                 "timeContextFromParameter": "timeRangePayment",
                                 "timeContext": {
@@ -4747,7 +5656,7 @@
                             }
                           ]
                         },
-                        "name": "idpay-evh-ns-01"
+                        "name": "idpay-evh-01-ns"
                       }
                     ]
                   },
@@ -4936,7 +5845,7 @@
               "queryType": 0,
               "resourceType": "microsoft.insights/components",
               "crossComponentResources": [
-                "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
+                "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
               ]
             },
             "customWidth": "50",
