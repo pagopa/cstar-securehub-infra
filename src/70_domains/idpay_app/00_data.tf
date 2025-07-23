@@ -22,6 +22,14 @@ data "azurerm_eventhub_namespace" "eventhub_00" {
   resource_group_name = local.data_rg_name
 }
 
+#
+# Monitor
+#
+data "azurerm_resource_group" "monitoring_rg" {
+  name = local.monitoring_rg_name
+}
+
+
 #------------------------------------------------------------------
 # Azure AD
 #------------------------------------------------------------------
