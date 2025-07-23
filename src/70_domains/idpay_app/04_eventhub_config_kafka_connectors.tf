@@ -16,11 +16,11 @@ resource "azurerm_key_vault_secret" "event_hub_root_key_idpay_00" {
   key_vault_id = data.azurerm_key_vault.key_vault_domain.id
 }
 
-resource "null_resource" "transaction_in_progress_connector" {
-  triggers = {
-    checksum = filesha256("configs/kafka-connectors/transaction_in_progress_connector.json")
-  }
-  provisioner "local-exec" {
-    command = "bash update_connector.sh https://${local.idpay_ingress_url}/idpaykafkaconnect/connectors/transaction-in-progress-connector/config"
-  }
-}
+# resource "null_resource" "transaction_in_progress_connector" {
+#   triggers = {
+#     checksum = filesha256("configs/kafka-connectors/transaction_in_progress_connector.json")
+#   }
+#   provisioner "local-exec" {
+#     command = "bash update_connector.sh https://${local.idpay_ingress_url}/idpaykafkaconnect/connectors/transaction-in-progress-connector/config"
+#   }
+# } #TODO To deploy when ready

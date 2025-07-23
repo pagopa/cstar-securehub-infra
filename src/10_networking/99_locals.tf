@@ -7,7 +7,7 @@ locals {
     "domain" = "mc"
   })
 
-  vnets_secure_hub_italy = {
+  vnets_all = {
     core_hub = {
       name = module.vnet_core_hub.name
       id   = module.vnet_core_hub.id
@@ -24,23 +24,18 @@ locals {
       name = module.vnet_spoke_security.name
       id   = module.vnet_spoke_security.id
     }
-  }
-
-
-  # VNET Legacy
-  vnet_weu_core = {
-    name           = "${var.prefix}-${var.env_short}-vnet"
-    resource_group = "${var.prefix}-${var.env_short}-vnet-rg"
-  }
-
-  vnet_weu_integration = {
-    name           = "${var.prefix}-${var.env_short}-integration-vnet"
-    resource_group = "${var.prefix}-${var.env_short}-vnet-rg"
-  }
-
-  vnet_weu_aks = {
-    name           = "${var.prefix}-${var.env_short}-weu-${var.env}01-vnet"
-    resource_group = "${var.prefix}-${var.env_short}-weu-${var.env}01-vnet-rg"
+    vnet_core = {
+      name = data.azurerm_virtual_network.vnet_weu_core.name
+      id   = data.azurerm_virtual_network.vnet_weu_core.id
+    }
+    vnet_weu_integration = {
+      name = data.azurerm_virtual_network.vnet_weu_integration.name
+      id   = data.azurerm_virtual_network.vnet_weu_integration.id
+    }
+    vnet_weu_aks = {
+      name = data.azurerm_virtual_network.vnet_weu_aks.name
+      id   = data.azurerm_virtual_network.vnet_weu_aks.id
+    }
   }
 
   #
@@ -49,11 +44,6 @@ locals {
   kv_core_name                = "${local.project}-kv"
   kv_core_resource_group_name = "${local.project}-sec-rg"
 
-  #
-  # Packer
-  #
-  packer_rg_name = "${local.product}-${var.location_short}-packer-rg"
-
   # 🔎 DNS
   dns_public_zones = [
     "bonuselettrodomestici.it",
@@ -61,7 +51,8 @@ locals {
     "bonuselettrodomestici.info",
     "bonuselettrodomestici.io",
     "bonuselettrodomestici.net",
-    "bonuselettrodomestici.eu"
+    "bonuselettrodomestici.eu",
+    "bonuselettrodomestici.pagopa.it"
   ]
 
   dns_env_public_zones = [
@@ -70,20 +61,22 @@ locals {
   ]
 
   dev_ns_records = {
-    "bonuselettrodomestici.it"   = ["ns1-09.azure-dns.com.", "ns2-09.azure-dns.net.", "ns3-09.azure-dns.org.", "ns4-09.azure-dns.info."]
-    "bonuselettrodomestici.com"  = ["ns1-03.azure-dns.com.", "ns2-03.azure-dns.net.", "ns3-03.azure-dns.org.", "ns4-03.azure-dns.info."]
-    "bonuselettrodomestici.info" = ["ns1-02.azure-dns.com.", "ns2-02.azure-dns.net.", "ns3-02.azure-dns.org.", "ns4-02.azure-dns.info."]
-    "bonuselettrodomestici.io"   = ["ns1-07.azure-dns.com.", "ns2-07.azure-dns.net.", "ns3-07.azure-dns.org.", "ns4-07.azure-dns.info."]
-    "bonuselettrodomestici.net"  = ["ns1-07.azure-dns.com.", "ns2-07.azure-dns.net.", "ns3-07.azure-dns.org.", "ns4-07.azure-dns.info."]
-    "bonuselettrodomestici.eu"   = ["ns1-01.azure-dns.com.", "ns2-01.azure-dns.net.", "ns3-01.azure-dns.org.", "ns4-01.azure-dns.info."]
+    "bonuselettrodomestici.it"        = ["ns1-09.azure-dns.com.", "ns2-09.azure-dns.net.", "ns3-09.azure-dns.org.", "ns4-09.azure-dns.info."]
+    "bonuselettrodomestici.com"       = ["ns1-03.azure-dns.com.", "ns2-03.azure-dns.net.", "ns3-03.azure-dns.org.", "ns4-03.azure-dns.info."]
+    "bonuselettrodomestici.info"      = ["ns1-02.azure-dns.com.", "ns2-02.azure-dns.net.", "ns3-02.azure-dns.org.", "ns4-02.azure-dns.info."]
+    "bonuselettrodomestici.io"        = ["ns1-07.azure-dns.com.", "ns2-07.azure-dns.net.", "ns3-07.azure-dns.org.", "ns4-07.azure-dns.info."]
+    "bonuselettrodomestici.net"       = ["ns1-07.azure-dns.com.", "ns2-07.azure-dns.net.", "ns3-07.azure-dns.org.", "ns4-07.azure-dns.info."]
+    "bonuselettrodomestici.eu"        = ["ns1-01.azure-dns.com.", "ns2-01.azure-dns.net.", "ns3-01.azure-dns.org.", "ns4-01.azure-dns.info."]
+    "bonuselettrodomestici.pagopa.it" = ["ns1-09.azure-dns.com.", "ns2-09.azure-dns.com.", "ns3-09.azure-dns.com.", "ns4-09.azure-dns.com."]
   }
   uat_ns_records = {
-    "bonuselettrodomestici.it"   = ["ns1-03.azure-dns.com.", "ns2-03.azure-dns.net.", "ns3-03.azure-dns.org.", "ns4-03.azure-dns.info."]
-    "bonuselettrodomestici.com"  = ["ns1-03.azure-dns.com.", "ns2-03.azure-dns.net.", "ns3-03.azure-dns.org.", "ns4-03.azure-dns.info."]
-    "bonuselettrodomestici.info" = ["ns1-01.azure-dns.com.", "ns2-01.azure-dns.net.", "ns3-01.azure-dns.org.", "ns4-01.azure-dns.info."]
-    "bonuselettrodomestici.io"   = ["ns1-01.azure-dns.com.", "ns2-01.azure-dns.net.", "ns3-01.azure-dns.org.", "ns4-01.azure-dns.info."]
-    "bonuselettrodomestici.net"  = ["ns1-06.azure-dns.com.", "ns2-06.azure-dns.net.", "ns3-06.azure-dns.org.", "ns4-06.azure-dns.info."]
-    "bonuselettrodomestici.eu"   = ["ns1-04.azure-dns.com.", "ns2-04.azure-dns.net.", "ns3-04.azure-dns.org.", "ns4-04.azure-dns.info."]
+    "bonuselettrodomestici.it"        = ["ns1-03.azure-dns.com.", "ns2-03.azure-dns.net.", "ns3-03.azure-dns.org.", "ns4-03.azure-dns.info."]
+    "bonuselettrodomestici.com"       = ["ns1-03.azure-dns.com.", "ns2-03.azure-dns.net.", "ns3-03.azure-dns.org.", "ns4-03.azure-dns.info."]
+    "bonuselettrodomestici.info"      = ["ns1-01.azure-dns.com.", "ns2-01.azure-dns.net.", "ns3-01.azure-dns.org.", "ns4-01.azure-dns.info."]
+    "bonuselettrodomestici.io"        = ["ns1-01.azure-dns.com.", "ns2-01.azure-dns.net.", "ns3-01.azure-dns.org.", "ns4-01.azure-dns.info."]
+    "bonuselettrodomestici.net"       = ["ns1-06.azure-dns.com.", "ns2-06.azure-dns.net.", "ns3-06.azure-dns.org.", "ns4-06.azure-dns.info."]
+    "bonuselettrodomestici.eu"        = ["ns1-04.azure-dns.com.", "ns2-04.azure-dns.net.", "ns3-04.azure-dns.org.", "ns4-04.azure-dns.info."]
+    "bonuselettrodomestici.pagopa.it" = ["ns1-07.azure-dns.com.", "ns2-07.azure-dns.com.", "ns3-07.azure-dns.com.", "ns4-07.azure-dns.com."]
   }
 
   dns_default_ttl_sec = 3600

@@ -1,13 +1,13 @@
 locals {
   product = "${var.prefix}-${var.env_short}"
 
-  public_dns_zone_name = var.env != "prod" ? "${var.env}.${var.prefix}.pagopa.it" : "${var.prefix}.pagopa.it"
+  public_dns_zone_name = var.env != "prod" ? "${var.env}.bonuselettrodomestici.pagopa.it" : "bonuselettrodomestici.pagopa.it"
 
-  vnet_legacy_rg = "${local.product}-vnet-rg"
+  vnet_legacy_rg = "${local.product}-${var.location_short}-core-network-rg"
 
   ## SMTP settings for Amazon SES
   iam_ses_user      = "${var.prefix}-${var.env}-ses-user"
-  ses_domain        = var.env != "prod" ? "${var.env}.${var.prefix}.pagopa.it" : "${var.prefix}.pagopa.it"
+  ses_domain        = var.env != "prod" ? "${var.env}.bonuselettrodomestici.pagopa.it" : "bonuselettrodomestici.pagopa.it"
   ses_username      = "noreply"
   ses_smtp_host     = "email-smtp.${var.aws_region}.amazonaws.com"
   ses_smtp_port     = 465

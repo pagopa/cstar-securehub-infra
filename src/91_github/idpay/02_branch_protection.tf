@@ -23,15 +23,15 @@ resource "github_repository_ruleset" "dev" {
   }
 
   rules {
-    creation                = false
+    creation                = true
     update                  = false
-    deletion                = false
+    deletion                = true
     required_linear_history = false
     required_signatures     = false
 
     pull_request {
       require_code_owner_review         = true
-      required_approving_review_count   = 1
+      required_approving_review_count   = 2
       dismiss_stale_reviews_on_push     = true
       required_review_thread_resolution = true
     }
@@ -56,14 +56,14 @@ resource "github_repository_ruleset" "uat_prod" {
 
   rules {
     creation                = true
-    update                  = true
+    update                  = false
     deletion                = true
     required_linear_history = false
     required_signatures     = false
 
     pull_request {
       require_code_owner_review         = true
-      required_approving_review_count   = 1
+      required_approving_review_count   = 2
       dismiss_stale_reviews_on_push     = true
       required_review_thread_resolution = true
     }

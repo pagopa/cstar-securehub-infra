@@ -691,6 +691,18 @@ locals {
           unique = false
         }
       ]
+    },
+    {
+      name = "point_of_sales"
+      indexes = [{
+        keys   = ["_id"]
+        unique = true
+        },
+        {
+          keys   = ["franchiseName"]
+          unique = false
+        }
+      ]
     }
   ]
   ###
@@ -737,6 +749,22 @@ locals {
         },
         {
           keys   = ["registrationDate"]
+          unique = false
+        },
+        {
+          keys   = ["category"]
+          unique = false
+        },
+        {
+          keys   = ["energyClass"]
+          unique = false
+        },
+        {
+          keys   = ["eprelCode"]
+          unique = false
+        },
+        {
+          keys   = ["category", "productFileId"]
           unique = false
         }
       ]

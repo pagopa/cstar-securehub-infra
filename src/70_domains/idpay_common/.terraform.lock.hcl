@@ -66,6 +66,7 @@ provider "registry.terraform.io/hashicorp/azurerm" {
   version     = "4.34.0"
   constraints = "~> 4.0, ~> 4.25"
   hashes = [
+    "h1:Q7/5PS85D37uoe8uANGyBeiuOVlXvChNDuMTNckCBO8=",
     "h1:gaDqI1j1w6sGScP7Gs0xg5pcjMlRmZjP5lvH6PoiW2A=",
     "zh:07838a6b64533d70d441ebb61b04fe2a801e3c8d111af2bd7813385ed9baf778",
     "zh:27e2793081c363000bd41ea75f9e5eb0c368d01a65f1e2237b8f52651374874f",
@@ -170,6 +171,7 @@ provider "registry.terraform.io/hashicorp/random" {
   version     = "3.7.2"
   constraints = "~> 3.0"
   hashes = [
+    "h1:0hcNr59VEJbhZYwuDE/ysmyTS0evkfcLarlni+zATPM=",
     "h1:KG4NuIBl1mRWU0KD/BGfCi1YN/j3F7H4YgeeM7iSdNs=",
     "zh:14829603a32e4bc4d05062f059e545a91e27ff033756b48afbae6b3c835f508f",
     "zh:1527fb07d9fea400d70e9e6eb4a2b918d5060d604749b6f1c361518e7da546dc",
@@ -187,9 +189,11 @@ provider "registry.terraform.io/hashicorp/random" {
 }
 
 provider "registry.terraform.io/keycloak/keycloak" {
-  version = "5.2.0"
+  version     = "5.2.0"
+  constraints = ">= 5.0.0"
   hashes = [
     "h1:Ap0OMntK+7UCCdzrZ9PqJmhgH3BtyS327+oDepFctTM=",
+    "h1:cTw3v5iuUEgu5BWRK8iV7AjuATrmHHVYmley/m3ORk8=",
     "zh:1ebe05797ab1ff1a5fe8534c9df1f516648cf38ddc01cef3b603d3e9da60de3b",
     "zh:233c704b38ca37e6831eef27ca7793a0ab3e91aba551a1fd0ea6d188f61a02cb",
     "zh:4d40bfe3bdfbaacbfd41f0c6703fedd3697ce69ad7ca96755e0dcb5102567048",

@@ -35,14 +35,16 @@ locals {
       "${var.env}.bonuselettrodomestici.info",
       "${var.env}.bonuselettrodomestici.io",
       "${var.env}.bonuselettrodomestici.net",
-      "${var.env}.bonuselettrodomestici.eu"
+      "${var.env}.bonuselettrodomestici.eu",
+      "${var.env}.bonuselettrodomestici.pagopa.it"
       ] : [
       "bonuselettrodomestici.it",
       "bonuselettrodomestici.com",
       "bonuselettrodomestici.info",
       "bonuselettrodomestici.io",
       "bonuselettrodomestici.net",
-      "bonuselettrodomestici.eu"
+      "bonuselettrodomestici.eu",
+      "bonuselettrodomestici.pagopa.it"
     ]
   }
 
@@ -109,5 +111,8 @@ locals {
   #
   # azdo_managed_identity_rg_name = "${var.prefix}-${var.env_short}-identity-rg"
   # azdo_iac_managed_identities   = toset(["azdo-${var.env}-${var.prefix}-iac-deploy-v2", "azdo-${var.env}-${var.prefix}-iac-plan-v2"])
+
+
+  keycloak_external_hostname = "https://${var.mcshared_dns_zone_prefix}.${var.prefix}.${var.external_domain}/auth-itn"
 
 }

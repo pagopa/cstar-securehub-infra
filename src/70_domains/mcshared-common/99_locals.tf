@@ -11,6 +11,10 @@ locals {
   cicd_rg_name     = "${local.project}-cicd-rg"
   monitor_rg_name  = "${local.project}-monitoring-rg"
 
+  # APIM
+  apim_name    = "${local.product}-apim"
+  apim_rg_name = "${local.product}-api-rg"
+
   default_resourge_group_names = [
     local.data_rg_name,
     local.security_rg_name,

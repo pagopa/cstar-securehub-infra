@@ -1,9 +1,11 @@
 
 # See https://github.com/keycloak/terraform-provider-keycloak/blob/main/example/main.tf
-resource "keycloak_realm" "merchant-operator" {
+resource "keycloak_realm" "merchant_operator" {
   realm        = "merchant-operator"
   enabled      = true
   display_name = "merchant-operator"
+
+  login_theme = "pagopa"
 
   smtp_server {
     host = data.azurerm_key_vault_secret.ses_smtp_host.value
@@ -16,4 +18,31 @@ resource "keycloak_realm" "merchant-operator" {
       password = data.azurerm_key_vault_secret.ses_smtp_password.value
     }
   }
+}
+
+resource "keycloak_openid_client" "merchant_operator_frontend" {
+  realm_id  = keycloak_realm.merchant_operator.id
+  client_id = "frontend"
+  name      = "Merchant Operator Frontend"
+  enabled   = true
+
+  access_type = "PUBLIC"
+
+  standard_flow_enabled = true
+
+  web_origins = flatten([
+    [
+      local.keycloak_external_hostname,
+      "http://localhost:5173",
+  ], formatlist("https://%s", local.public_dns_zone_bonus_elettrodomestici.zones)])
+
+  valid_redirect_uris = flatten([
+    [
+      "${local.keycloak_external_hostname}/*",
+      "http://localhost:5173/*",
+  ], formatlist("https://%s/*", local.public_dns_zone_bonus_elettrodomestici.zones)])
+
+  depends_on = [
+    keycloak_realm.merchant_operator,
+  ]
 }

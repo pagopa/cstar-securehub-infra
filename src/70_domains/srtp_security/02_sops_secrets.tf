@@ -5,7 +5,7 @@ data "external" "terrasops" {
     "bash", "terrasops.sh"
   ]
   query = {
-    path = "secrets/${each.key}/${var.location_short}-${var.env}"
+    path = local.input_file
   }
   # Example output for each instance:
   # key: "core" =>
@@ -65,6 +65,13 @@ resource "azurerm_key_vault_secret" "sops_local_secrets" {
   key_vault_id = module.key_vault[each.value.key_vault].id
   name         = each.value.sec_key
   value        = each.value.sec_val
+
+  tags = merge(
+    module.tag_config.tags,
+    {
+      "SOPS" = true
+    }
+  )
 
   depends_on = [
     module.key_vault,

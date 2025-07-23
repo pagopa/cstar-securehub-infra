@@ -265,3 +265,9 @@ variable "law_daily_quota_gb" {
   description = "The workspace daily quota for ingestion in GB."
   default     = -1
 }
+
+variable "mcshared_dns_zone_prefix" {
+  type        = string
+  default     = null
+  description = "The dns subdomain for mcshared"
+}

@@ -31,8 +31,9 @@ externalDatabase:
 extraEnvVars:
   - name: KC_DB_URL_PROPERTIES
     value: "sslmode=require"
-  - name: KEYCLOAK_IMPORT
-    value: /opt/bitnami/keycloak/data/import/${realm_admin_import_filename}
+# enable this option to import realm on startup. ATM it is disabled because it creates a new realm and the client is not usable by the terraform provider to create new realms
+#  - name: KEYCLOAK_EXTRA_ARGS
+#    value: "--import-realm"
   - name: KEYCLOAK_HOSTNAME
     value: ${keycloak_external_hostname}
   - name: KEYCLOAK_HOSTNAME_BACKCHANNEL_DYNAMIC
@@ -45,10 +46,13 @@ extraVolumes:
     configMap:
       name: keycloak-realm-import
 
+  - name: pagopa-theme
+    configMap:
+      name: keycloak-pagopa-theme
+
 extraVolumeMounts:
-  - name: realm-import
-    mountPath: /opt/bitnami/keycloak/data/import
-    readOnly: true
+${keycloak_extra_volume_mounts}
+
 
 ingress:
   enabled: true
@@ -78,7 +82,7 @@ updateStrategy:
 
 startupProbe:
   enabled: true
-  initialDelaySeconds: 60
+  initialDelaySeconds: 30
   periodSeconds: 5
   timeoutSeconds: 2
   failureThreshold: 60

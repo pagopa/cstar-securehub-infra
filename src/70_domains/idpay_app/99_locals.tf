@@ -57,6 +57,12 @@ locals {
   eventhub_02_url             = "${local.eventhub_02_namespace_name}.servicebus.windows.net:${var.event_hub_port}"
   eventhub_rdb_url            = "${local.eventhub_rdb_namespace_name}.servicebus.windows.net:${var.event_hub_port}"
 
+
+  #
+  # Monitoring
+  #
+  monitoring_rg_name = "${local.project}-monitoring-rg"
+
   #ORIGINS (used for CORS on IDPAY Welfare Portal)
   origins = {
     base = concat(
