@@ -31,7 +31,7 @@ data "azurerm_nat_gateway" "compute_nat_gateway" {
   resource_group_name = local.network_rg
 }
 
-data "azurerm_dns_zone" "bonus_elettrodomestici" {
+data "azurerm_dns_zone" "bonus_elettrodomestici_apex" {
   for_each            = toset(local.public_dns_zone_bonus_elettrodomestici.zones)
   name                = each.value
   resource_group_name = "${local.project_core}-network-rg"
@@ -164,7 +164,7 @@ data "azurerm_key_vault_secret" "ses_from_address" {
   key_vault_id = data.azurerm_key_vault.domain_kv.id
 }
 
-data "azurerm_key_vault_certificate" "bonus_elettrodomestici_cert" {
+data "azurerm_key_vault_certificate" "bonus_elettrodomestici_cert_apex" {
   for_each = toset([
     for zone in local.public_dns_zone_bonus_elettrodomestici.zones :
     join("-", split(".", zone))
@@ -173,7 +173,6 @@ data "azurerm_key_vault_certificate" "bonus_elettrodomestici_cert" {
   key_vault_id = data.azurerm_key_vault.domain_kv.id
   name         = each.value
 }
-
 
 # APIM
 #
