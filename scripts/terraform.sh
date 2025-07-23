@@ -90,7 +90,7 @@ function extract_resources() {
 
   rm $TMP_FILE
 
-  echo "./terraform.sh $action $ENV $TARGETS"
+  eval "./terraform.sh $action $ENV $TARGETS"
 }
 
 function help_usage() {
@@ -283,7 +283,7 @@ if [ -n "$env" ]; then
     exit 1
   fi
   az account set -s "${subscription}"
-  export ARM_SUBSCRIPTION_ID=$(az account list --query "[?isDefault].id" --output tsv | tr -d '\r')
+  export ARM_SUBSCRIPTION_ID=$(az account list --query "[?isDefault].id" --output tsv)
 fi
 
 # Call appropriate function based on action
