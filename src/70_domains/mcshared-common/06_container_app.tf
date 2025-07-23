@@ -5,8 +5,6 @@ module "container_app_environment" {
   location            = var.location
   resource_group_name = local.compute_rg_name
 
-  #log_analytics_workspace_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
-
 
   subnet_id              = module.cae_env_snet.id
   internal_load_balancer = true
