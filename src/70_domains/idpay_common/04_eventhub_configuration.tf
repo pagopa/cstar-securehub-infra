@@ -158,76 +158,6 @@ locals {
           manage = false
         }
       ]
-    },
-    {
-      name              = "rtd-pi-to-app"
-      message_retention = 1
-      partitions        = 4
-      consumers = [
-        "rtd-pi-to-app-consumer-group"
-      ]
-      keys = [
-        {
-          name   = "rtd-pi-to-app-consumer-policy"
-          listen = true
-          send   = true
-          manage = false
-        },
-        {
-          name   = "rtd-pi-to-app-producer-policy"
-          listen = false
-          send   = true
-          manage = false
-        }
-      ]
-    },
-    {
-      name              = "rtd-pi-from-app"
-      message_retention = 1
-      partitions        = 4
-      consumers = [
-        "rtd-pi-from-app-consumer-group"
-      ]
-      keys = [
-        {
-          name   = "rtd-pi-from-app-consumer-policy"
-          listen = true
-          send   = true
-          manage = false
-        },
-        {
-          name   = "rtd-pi-from-app-producer-policy"
-          listen = false
-          send   = true
-          manage = false
-        }
-      ]
-    },
-    {
-      name              = "rtd-trx"
-      partitions        = 1
-      message_retention = 1
-      consumers         = ["idpay-consumer-group"]
-      keys = [
-        {
-          name   = "rtd-trx-consumer"
-          listen = true
-          send   = false
-          manage = false
-        },
-        {
-          name   = "rtd-trx-producer"
-          listen = false
-          send   = true
-          manage = false
-        },
-        {
-          name   = "rtd-trx-test-policy"
-          listen = true
-          send   = true
-          manage = false
-        }
-      ]
     }
   ]
 
@@ -427,25 +357,74 @@ locals {
   ###
   eventhubs_idpay_02 = [
     {
-      name              = "idpay-cdc-configs"
+      name              = "rtd-pi-to-app"
+      message_retention = 1
+      partitions        = 4
+      consumers = [
+        "rtd-pi-to-app-consumer-group"
+      ]
+      keys = [
+        {
+          name   = "rtd-pi-to-app-consumer-policy"
+          listen = true
+          send   = true
+          manage = false
+        },
+        {
+          name   = "rtd-pi-to-app-producer-policy"
+          listen = false
+          send   = true
+          manage = false
+        }
+      ]
+    },
+    {
+      name              = "rtd-pi-from-app"
+      message_retention = 1
+      partitions        = 4
+      consumers = [
+        "rtd-pi-from-app-consumer-group"
+      ]
+      keys = [
+        {
+          name   = "rtd-pi-from-app-consumer-policy"
+          listen = true
+          send   = true
+          manage = false
+        },
+        {
+          name   = "rtd-pi-from-app-producer-policy"
+          listen = false
+          send   = true
+          manage = false
+        }
+      ]
+    },
+    {
+      name              = "rtd-trx"
       partitions        = 1
       message_retention = 1
-      consumers         = []
-      keys              = []
-    },
-    {
-      name              = "idpay-cdc-offsets"
-      partitions        = 25
-      message_retention = 1
-      consumers         = []
-      keys              = []
-    },
-    {
-      name              = "idpay-cdc-status"
-      partitions        = 5
-      message_retention = 1
-      consumers         = []
-      keys              = []
+      consumers         = ["idpay-consumer-group"]
+      keys = [
+        {
+          name   = "rtd-trx-consumer"
+          listen = true
+          send   = false
+          manage = false
+        },
+        {
+          name   = "rtd-trx-producer"
+          listen = false
+          send   = true
+          manage = false
+        },
+        {
+          name   = "rtd-trx-test-policy"
+          listen = true
+          send   = true
+          manage = false
+        }
+      ]
     }
   ]
 
