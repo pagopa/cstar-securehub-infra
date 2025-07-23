@@ -158,27 +158,6 @@ locals {
           manage = false
         }
       ]
-    },
-    {
-      name              = "idpay-cdc-configs"
-      partitions        = 1
-      message_retention = 1
-      consumers         = []
-      keys              = []
-    },
-    {
-      name              = "idpay-cdc-offsets"
-      partitions        = 1
-      message_retention = 7
-      consumers         = []
-      keys              = []
-    },
-    {
-      name              = "idpay-cdc-status"
-      partitions        = 1
-      message_retention = 7
-      consumers         = []
-      keys              = []
     }
   ]
 
