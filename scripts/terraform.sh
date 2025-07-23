@@ -90,7 +90,7 @@ function extract_resources() {
 
   rm $TMP_FILE
 
-  eval "./terraform.sh $action $ENV $TARGETS"
+  echo "./terraform.sh $action $ENV $TARGETS"
 }
 
 function help_usage() {
