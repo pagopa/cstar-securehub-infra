@@ -168,15 +168,15 @@ locals {
     },
     {
       name              = "idpay-cdc-offsets"
-      partitions        = 25
-      message_retention = 1
+      partitions        = 1
+      message_retention = 7
       consumers         = []
       keys              = []
     },
     {
       name              = "idpay-cdc-status"
-      partitions        = 5
-      message_retention = 1
+      partitions        = 1
+      message_retention = 7
       consumers         = []
       keys              = []
     }
