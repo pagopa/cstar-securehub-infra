@@ -31,7 +31,7 @@ cosmos_mongo_db_idpay_params = {
 # Service bus
 #
 service_bus_namespace = {
-  sku = "Premium"
+  sku = "Standard"
 }
 
 ##Eventhub
@@ -45,7 +45,7 @@ ehns_alerts_enabled           = true
 enable = {
   idpay = {
     eventhub_idpay_00 = true
-    eventhub_idpay_01 = false
+    eventhub_idpay_01 = true
     eventhub_rdb      = true
   }
 }
@@ -76,8 +76,8 @@ single_page_applications_portal_merchants_operator_roots_dirs = [
 aks_nodepool_blue = {
   vm_sku_name       = "Standard_D8ads_v5_active"
   autoscale_enabled = true
-  node_count_min    = 1
-  node_count_max    = 3
+  node_count_min    = 3
+  node_count_max    = 4
 }
 
 aks_nodepool_green = {
