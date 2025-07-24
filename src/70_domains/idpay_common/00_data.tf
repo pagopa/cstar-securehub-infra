@@ -174,6 +174,16 @@ data "azurerm_key_vault_certificate" "bonus_elettrodomestici_cert_apex" {
   name         = each.value
 }
 
+data "azurerm_key_vault_secret" "idp-pagopa-client-id" {
+  name         = "idp-pagopa-client-id"
+  key_vault_id = data.azurerm_key_vault.domain_kv.id
+}
+
+data "azurerm_key_vault_secret" "idp-pagopa-client-secret" {
+  name         = "idp-pagopa-client-secret"
+  key_vault_id = data.azurerm_key_vault.domain_kv.id
+}
+
 # APIM
 #
 
