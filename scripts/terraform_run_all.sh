@@ -21,9 +21,17 @@ array=(
     'src/30_core::itn-dev'
     'src/31_aks_italy::itn-dev'
     'src/40_platform::itn-dev'
+    'src/41_platform_coder::itn-dev'
+    'src/49_grafanaconf::itn-dev'
     'src/70_domains/idpay_common::itn-dev'
-    'src/06_domains/idpay_secrets::itn-dev'
-    'src/06_domains/idpay_app::itn-dev'
+    'src/70_domains/idpay_secrets::itn-dev'
+    'src/70_domains/idpay_app::itn-dev'
+    'src/70_domains/srtp_common::itn-dev'
+    'src/70_domains/srtp_secrets::itn-dev'
+    'src/70_domains/srtp_app::itn-dev'
+    'src/70_domains/mcshared_common::itn-dev'
+    'src/70_domains/mcshared_app::itn-dev'
+    'src/91_github::itn-dev'
 )
 
 function rm_terraform {
