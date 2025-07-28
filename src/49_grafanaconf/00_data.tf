@@ -10,6 +10,16 @@ data "azurerm_log_analytics_workspace" "law" {
   resource_group_name = local.monitoring_rg_name
 }
 
+data "azurerm_log_analytics_workspace" "law_core" {
+  name                = local.law_name_core
+  resource_group_name = local.law_name_core_rg
+}
+
+data "azurerm_log_analytics_workspace" "law_core_itn" {
+  name                = local.law_name_core_itn
+  resource_group_name = local.law_name_core_itn_rg
+}
+
 # ---------------------------------------------------------------
 # Data per Secret su Key Vault
 # ---------------------------------------------------------------

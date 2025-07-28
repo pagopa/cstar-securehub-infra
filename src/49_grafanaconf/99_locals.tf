@@ -6,9 +6,15 @@ locals {
   #
   # Monitoring
   #
-  monitoring_rg_name = "cstar-${var.env_short}-itn-platform-monitoring-rg"
   law_name           = "${local.project}-monitoring-law"
-  grafana_name       = "cstar-${var.env_short}-itn-grafana"
+  monitoring_rg_name = "cstar-${var.env_short}-itn-platform-monitoring-rg"
+
+  law_name_core_itn    = "${local.product_nodomain}-core-law"
+  law_name_core_itn_rg = "${local.product_nodomain}-core-monitor-rg"
+  law_name_core        = "${local.product}-law"
+  law_name_core_rg     = "${local.product}-monitor-rg"
+
+  grafana_name = "cstar-${var.env_short}-itn-grafana"
 
   #
   # KV
@@ -18,4 +24,31 @@ locals {
 
   kv_core_name                = "${local.product_nodomain}-core-kv"
   kv_core_resource_group_name = "${local.product_nodomain}-core-sec-rg"
+
+
+  # Configuration for different team products and their AKS clusters
+  # Contains settings for each team's environment including:
+  # - location_short: Geographic location code
+  # - monitor_workspace_id: Log Analytics workspace ID for monitoring
+  # - aks_name: Name of the AKS cluster
+  team_product = {
+    aks = {
+      idpay = {
+        location_short       = "itn",
+        monitor_workspace_id = data.azurerm_log_analytics_workspace.law_core_itn.id,
+        aks_name             = "${var.prefix}-${var.env_short}-${var.location_short}-${var.env}-aks"
+      },
+      mil = {
+        location_short       = "weu",
+        monitor_workspace_id = data.azurerm_log_analytics_workspace.law_core.id,
+        aks_name             = "${var.prefix}-${var.env_short}-weu-${var.env}01-aks"
+      },
+      rtd = {
+        location_short       = "weu",
+        monitor_workspace_id = data.azurerm_log_analytics_workspace.law_core.id,
+        aks_name             = "${var.prefix}-${var.env_short}-weu-${var.env}01-aks"
+      }
+    }
+  }
+
 }

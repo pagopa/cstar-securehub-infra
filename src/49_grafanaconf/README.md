@@ -17,6 +17,7 @@
 | <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 3.4.0 |
 | <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.37.0 |
 | <a name="provider_external"></a> [external](#provider\_external) | 2.3.5 |
+| <a name="provider_grafana.cloud"></a> [grafana.cloud](#provider\_grafana.cloud) | 3.25.9 |
 
 ## Modules
 
@@ -29,6 +30,11 @@
 
 | Name | Type |
 |------|------|
+| [grafana_dashboard.aks_container_logs_dashboard](https://registry.terraform.io/providers/grafana/grafana/latest/docs/resources/dashboard) | resource |
+| [grafana_folder.team_dashboard_folder](https://registry.terraform.io/providers/grafana/grafana/latest/docs/resources/folder) | resource |
+| [grafana_folder.teams](https://registry.terraform.io/providers/grafana/grafana/latest/docs/resources/folder) | resource |
+| [grafana_folder_permission.aks_container_logs_reader](https://registry.terraform.io/providers/grafana/grafana/latest/docs/resources/folder_permission) | resource |
+| [grafana_team.teams](https://registry.terraform.io/providers/grafana/grafana/latest/docs/resources/team) | resource |
 | [azuread_group.adgroup_admin](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_developers](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_externals](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
@@ -38,6 +44,8 @@
 | [azurerm_key_vault.core](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault) | data source |
 | [azurerm_key_vault_secret.grafana_service_account_token](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_log_analytics_workspace.law](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/log_analytics_workspace) | data source |
+| [azurerm_log_analytics_workspace.law_core](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/log_analytics_workspace) | data source |
+| [azurerm_log_analytics_workspace.law_core_itn](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/log_analytics_workspace) | data source |
 | [azurerm_subscription.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subscription) | data source |
 | [external_external.validate_grafana_token](https://registry.terraform.io/providers/hashicorp/external/latest/docs/data-sources/external) | data source |
 
