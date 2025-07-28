@@ -12,8 +12,8 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.100.0 |
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.35.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 5.99 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | ~> 4.18 |
 
 ## Modules
 
