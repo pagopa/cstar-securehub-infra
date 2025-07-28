@@ -102,4 +102,4 @@ jobs:
             -v /tmp/.terraform.d/plugin-cache:/tmp/.terraform.d/plugin-cache \
             -w /lint \
             ghcr.io/antonbabenko/pre-commit-terraform:$TAG \
-            run --files $TARGET_FILES
+            run --files $TARGET_FILES --show-diff-on-failure
