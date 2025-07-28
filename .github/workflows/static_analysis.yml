@@ -94,10 +94,12 @@ jobs:
           echo    "+- 🚨 PRECOMMIT TERRAFORM 🚨 -+"
           echo -e "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n"
 
-          TAG=v1.99.2@sha256:34f6cef8b944d571ea22be316a960d8353fcc0571adea35302cbd9ab80bf2758
+          TARGET_FILES=$(find . -type f -name "*.tf" ! -path "*/.terraform/*" ! -path "./src/90_aws/*")
+
+          TAG=v1.96.2@sha256:01f870b7689b5a09c1a370914fcddcac42c4b6478c9d369e1d2590dd0a66ffd0
           docker run \
             -v "$(pwd)":/lint \
             -v /tmp/.terraform.d/plugin-cache:/tmp/.terraform.d/plugin-cache \
             -w /lint \
             ghcr.io/antonbabenko/pre-commit-terraform:$TAG \
-            run -a --filter-paths '!src/90_aws'
+            run --files $TARGET_FILES
