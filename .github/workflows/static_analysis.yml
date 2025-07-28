@@ -74,7 +74,7 @@ jobs:
                 -platform=darwin_amd64 \
                 -platform=linux_amd64 \
                 -platform=linux_arm64
-            ) || echo "⚠️ Initialization failed for ${f}" # Log failure for specific folders
+            ) || echo "⚠️ Initialization failed for ${f}"
           done
 
       - name: Show precommit version
