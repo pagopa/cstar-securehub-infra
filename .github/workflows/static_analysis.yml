@@ -63,12 +63,7 @@ jobs:
             (
               cd "${f}" || exit
               sed -i -e 's/  backend "azurerm" {}//g' 99_main.tf
-              terraform init -upgrade -lockfile=true &&
-              terraform providers lock \
-                -platform=darwin_arm64 \
-                -platform=darwin_amd64 \
-                -platform=linux_amd64 \
-                -platform=linux_arm64
+              terraform init -upgrade
             )
           done
 
