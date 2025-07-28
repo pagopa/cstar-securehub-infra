@@ -58,7 +58,7 @@ jobs:
         echo    "+ 🏁 INIT TERRAFORM FOLDERS 🏁   +"
         echo -e "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-\n"
 
-        FOLDERS=$(grep -rl --include='*.tf' --exclude-dir='.terraform' --exclude-dir='src/90_aws/01_init' '^' . | xargs -I{} dirname {} | sort -u)
+        FOLDERS=$(grep -rl --include='*.tf' --exclude-dir='.terraform' --exclude-dir='90_aws' '^' . | xargs -I{} dirname {} | sort -u)
         echo "FOLDERS=${FOLDERS}"
 
         pids=()
