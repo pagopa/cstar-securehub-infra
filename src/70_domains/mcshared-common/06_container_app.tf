@@ -8,7 +8,7 @@ module "container_app_environment" {
 
   subnet_id              = module.cae_env_snet.id
   internal_load_balancer = true
-  zone_redundant         = true ### serve???? fixme
+  zone_redundant         = var.env_short == "p" ? true : false
 
   workload_profiles = [{
     name      = "Consumption"
