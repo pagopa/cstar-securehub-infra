@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - fix-main-static-analysis
 
 jobs:
   static_analysis:
