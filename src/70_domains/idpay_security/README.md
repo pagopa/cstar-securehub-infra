@@ -20,10 +20,10 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_azuread"></a> [azuread](#provider\_azuread) | ~> 2.53 |
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | ~> 4 |
-| <a name="provider_external"></a> [external](#provider\_external) | ~> 2.3 |
-| <a name="provider_tls"></a> [tls](#provider\_tls) | n/a |
+| <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 2.53.1 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.37.0 |
+| <a name="provider_external"></a> [external](#provider\_external) | 2.3.5 |
+| <a name="provider_tls"></a> [tls](#provider\_tls) | 4.1.0 |
 
 ## Modules
 
