@@ -64,17 +64,17 @@ resource "keycloak_openid_client" "user_frontend" {
 
   standard_flow_enabled = true
 
-  web_origins = [
-    local.keycloak_external_hostname,
-    "http://localhost:5173",
-    var.keycloak_bonus_hostname
-  ]
+  web_origins = flatten([
+    [
+      local.keycloak_external_hostname,
+      "http://localhost:5173",
+  ], formatlist("https://%s", local.public_dns_zone_bonus_elettrodomestici.zones)])
 
-  valid_redirect_uris = [
-    "${local.keycloak_external_hostname}/*",
-    "http://localhost:5173/*",
-    "${var.keycloak_bonus_hostname}/*"
-  ]
+  valid_redirect_uris = flatten([
+    [
+      "${local.keycloak_external_hostname}/*",
+      "http://localhost:5173/*",
+  ], formatlist("https://%s/*", local.public_dns_zone_bonus_elettrodomestici.zones)])
 
   depends_on = [
     keycloak_realm.user,
