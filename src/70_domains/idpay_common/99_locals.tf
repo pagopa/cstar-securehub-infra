@@ -114,5 +114,5 @@ locals {
 
 
   keycloak_external_hostname = "https://${var.mcshared_dns_zone_prefix}.${var.prefix}.${var.external_domain}/auth-itn"
-  one_identity_base_url = "https://uat.oneid.pagopa.it/"
+  one_identity_base_url      = "https://uat.oneid.pagopa.it"
 }
