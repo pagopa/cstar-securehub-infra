@@ -87,66 +87,70 @@ resource "keycloak_oidc_identity_provider" "one_identity_provider" {
   display_name      = "OneIdentity"
   authorization_url = "${local.one_identity_base_url}/login"
   token_url         = "${local.one_identity_base_url}/oidc/token"
-  client_id         = data.azurerm_key_vault_secret.one_identity_pagopa_client.value
-  client_secret     = data.azurerm_key_vault_secret.one_identity_pagopa_client_secret.value
+  client_id         = data.azurerm_key_vault_secret.oneidentity-client-id.value
+  client_secret     = data.azurerm_key_vault_secret.oneidentity-client-secret.value
   issuer            = local.one_identity_base_url
   trust_email       = true
   store_token       = true
-  stored_tokens_readable = true
   sync_mode         = "LEGACY"
   validate_signature = false
   backchannel_supported = false
-  default_scopes    = "openid email profile"
 
   extra_config = {
     "clientAuthMethod" = "client_secret_basic"
   }
 }
 
-resource "keycloak_identity_provider_mapper" "first_name_mapper" {
-  realm                    = keycloak_realm.user.id
-  identity_provider_alias  = keycloak_oidc_identity_provider.one_identity_provider.alias
-  name                     = "firstName-mapper"
-  identity_provider_mapper = "oidc-user-attribute-idp-mapper"
+resource "keycloak_attribute_importer_identity_provider_mapper" "first_name_mapper" {
+  realm                   = keycloak_realm.user.id
+  name                    = "first_name_mapper"
+  claim_name              = "name"
+  identity_provider_alias = keycloak_oidc_identity_provider.one_identity_provider.alias
+  user_attribute          = "firstName"
 
+  # extra_config with syncMode is required in Keycloak 10+
   extra_config = {
-    "claim"             = "name"
-    "user.attribute"    = "firstName"
+    syncMode = "INHERIT"
   }
 }
 
-resource "keycloak_identity_provider_mapper" "last_name_mapper" {
-  realm                    = keycloak_realm.user.id
-  identity_provider_alias  = keycloak_oidc_identity_provider.one_identity_provider.alias
-  name                     = "lastName-mapper"
-  identity_provider_mapper = "oidc-user-attribute-idp-mapper"
+resource "keycloak_attribute_importer_identity_provider_mapper" "last_name_mapper" {
+  realm                   = keycloak_realm.user.id
+  name                    = "last_name_mapper"
+  claim_name              = "familyName"
+  identity_provider_alias = keycloak_oidc_identity_provider.one_identity_provider.alias
+  user_attribute          = "lastName"
 
+  # extra_config with syncMode is required in Keycloak 10+
   extra_config = {
-    "claim"             = "familyName"
-    "user.attribute"    = "lastName"
+    syncMode = "INHERIT"
   }
 }
 
-resource "keycloak_identity_provider_mapper" "username_mapper" {
-  realm                    = keycloak_realm.user.id
-  identity_provider_alias  = keycloak_oidc_identity_provider.one_identity_provider.alias
-  name                     = "username-mapper"
-  identity_provider_mapper = "oidc-user-username-idp-mapper"
 
+
+resource "keycloak_user_template_importer_identity_provider_mapper" "username_mapper" {
+  realm                   = keycloak_realm.user.id
+  name                    = "username-mapper"
+  identity_provider_alias = keycloak_oidc_identity_provider.one_identity_provider.alias
+  template                = "$${CLAIM.email}"
+
+  # extra_config with syncMode is required in Keycloak 10+
   extra_config = {
-    "template" = "${CLAIM.email}"
-    "target"   = "BROKER_ID"
+    syncMode = "INHERIT"
+    target   = "BROKER_ID"
   }
 }
 
-resource "keycloak_identity_provider_mapper" "email_mapper" {
-  realm                    = keycloak_realm.user.id
-  identity_provider_alias  = keycloak_oidc_identity_provider.one_identity_provider.alias
-  name                     = "email-mapper"
-  identity_provider_mapper = "oidc-user-attribute-idp-mapper"
+resource "keycloak_attribute_importer_identity_provider_mapper" "email_mapper" {
+  realm                   = keycloak_realm.user.id
+  name                    = "last_name_mapper"
+  claim_name              = "email"
+  identity_provider_alias = keycloak_oidc_identity_provider.one_identity_provider.alias
+  user_attribute          = "email"
 
+  # extra_config with syncMode is required in Keycloak 10+
   extra_config = {
-    "claim"          = "email"
-    "user.attribute" = "email"
+    syncMode = "INHERIT"
   }
 }
