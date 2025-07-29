@@ -47,24 +47,73 @@ resource "keycloak_openid_client" "merchant_operator_frontend" {
   ]
 }
 
-#$ terraform import keycloak_oidc_identity_provider.realm_identity_provider my-realm/my-idp
+
 resource "keycloak_oidc_identity_provider" "one_identity_provider" {
   realm             = keycloak_realm.user.id
   alias             = "oneid-keycloak"
   display_name      = "OneIdentity"
-  #TODO TBV
-  authorization_url = "https://accounts.google.com/o/oauth2/auth"
+  authorization_url = "${local.one_identity_base_url}/login"
+  token_url         = "${local.one_identity_base_url}/oidc/token"
   client_id         = data.azurerm_key_vault_secret.one_identity_pagopa_client.value
   client_secret     = data.azurerm_key_vault_secret.one_identity_pagopa_client_secret.value
-  token_url         = "https://oauth2.googleapis.com/token"
-  trust_email = true
-  default_scopes = "openid email profile"
+  issuer            = local.one_identity_base_url
+  trust_email       = true
+  store_token       = true
+  stored_tokens_readable = true
+  sync_mode         = "LEGACY"
+  validate_signature = false
   backchannel_supported = false
-  gui_order = 0
-  store_token = false
-  sync_mode = "IMPORT"
+  default_scopes    = "openid email profile"
+
   extra_config = {
     "clientAuthMethod" = "client_secret_basic"
   }
-  first_broker_login_flow_alias="first broker login"
+}
+
+resource "keycloak_identity_provider_mapper" "first_name_mapper" {
+  realm                    = keycloak_realm.user.id
+  identity_provider_alias  = keycloak_oidc_identity_provider.one_identity_provider.alias
+  name                     = "firstName-mapper"
+  identity_provider_mapper = "oidc-user-attribute-idp-mapper"
+
+  extra_config = {
+    "claim"             = "name"
+    "user.attribute"    = "firstName"
+  }
+}
+
+resource "keycloak_identity_provider_mapper" "last_name_mapper" {
+  realm                    = keycloak_realm.user.id
+  identity_provider_alias  = keycloak_oidc_identity_provider.one_identity_provider.alias
+  name                     = "lastName-mapper"
+  identity_provider_mapper = "oidc-user-attribute-idp-mapper"
+
+  extra_config = {
+    "claim"             = "familyName"
+    "user.attribute"    = "lastName"
+  }
+}
+
+resource "keycloak_identity_provider_mapper" "username_mapper" {
+  realm                    = keycloak_realm.user.id
+  identity_provider_alias  = keycloak_oidc_identity_provider.one_identity_provider.alias
+  name                     = "username-mapper"
+  identity_provider_mapper = "oidc-user-username-idp-mapper"
+
+  extra_config = {
+    "template" = "${CLAIM.email}"
+    "target"   = "BROKER_ID"
+  }
+}
+
+resource "keycloak_identity_provider_mapper" "email_mapper" {
+  realm                    = keycloak_realm.user.id
+  identity_provider_alias  = keycloak_oidc_identity_provider.one_identity_provider.alias
+  name                     = "email-mapper"
+  identity_provider_mapper = "oidc-user-attribute-idp-mapper"
+
+  extra_config = {
+    "claim"          = "email"
+    "user.attribute" = "email"
+  }
 }
