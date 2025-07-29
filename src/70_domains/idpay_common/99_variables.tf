@@ -181,7 +181,9 @@ EOD
 
 variable "service_bus_namespace" {
   type = object({
-    sku = string
+    sku                          = string
+    capacity                     = optional(number, 0)
+    premium_messaging_partitions = optional(number, 0)
   })
 }
 

@@ -9,7 +9,7 @@ module "redis" {
   tags                = module.tag_config.tags
 
   # IDH Resources
-  idh_resource_tier = contains(["d", "u"], var.env_short) ? "basic" : "critical"
+  idh_resource_tier = contains(["d", "u"], var.env_short) ? "basic" : "standard"
 
   # Redis Settings
   name = "${local.project}-redis"

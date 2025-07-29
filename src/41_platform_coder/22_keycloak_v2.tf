@@ -1,4 +1,46 @@
+locals {
+  theme_dir   = "${path.module}/k8s/keycloak/themes/pagopa/login"
+  files       = fileset(local.theme_dir, "**")
+  binary_exts = [".png", ".jpg", ".jpeg", ".ico", ".woff", ".woff2"]
 
+  flattened_key = { for f in local.files : f => replace(f, "/", "__") }
+
+  text_files = {
+    for f in local.files :
+    local.flattened_key[f] => file("${local.theme_dir}/${f}")
+    if !endswith(f, "/") && !contains(local.binary_exts, lower(substr(f, length(f) - 4, 5)))
+  }
+
+  binary_files = {
+    for f in local.files :
+    local.flattened_key[f] => filebase64("${local.theme_dir}/${f}")
+    if !endswith(f, "/") && contains(local.binary_exts, lower(substr(f, length(f) - 4, 5)))
+  }
+
+  # Fixed volume mount
+  fixed_volume_mounts = [
+    {
+      name      = "realm-import"
+      mountPath = "/opt/bitnami/keycloak/data/import"
+      readOnly  = true
+    }
+  ]
+
+  # Create a volume mount for each file in configmap with subPath
+  theme_volume_mounts = [
+    for f in local.files : {
+      name      = "pagopa-theme"
+      mountPath = "/opt/bitnami/keycloak/themes/pagopa/login/${f}"
+      subPath   = local.flattened_key[f]
+      readOnly  = true
+    }
+    if !endswith(f, "/")
+  ]
+
+  # Merge volume mount
+  keycloak_extra_volume_mounts = concat(local.fixed_volume_mounts, local.theme_volume_mounts)
+
+}
 
 #------------------------------------------------------------------------------
 # Keycloak secrets
@@ -92,6 +134,16 @@ resource "kubernetes_config_map" "keycloak_realm_import" {
   }
 }
 
+resource "kubernetes_config_map" "keycloak_pagopa_theme" {
+  metadata {
+    name      = "keycloak-pagopa-theme"
+    namespace = local.keycloak_namespace
+  }
+
+  data        = local.text_files
+  binary_data = local.binary_files
+}
+
 resource "helm_release" "keycloak" {
   name       = "keycloak"
   namespace  = kubernetes_namespace.keycloak.metadata[0].name
@@ -101,17 +153,18 @@ resource "helm_release" "keycloak" {
 
   values = [
     templatefile("${path.module}/k8s/keycloak/values.yaml.tpl", {
-      postgres_db_host           = module.keycloak_pgflex.fqdn
-      postgres_db_port           = "5432"
-      postgres_db_username       = module.keycloak_pgflex.administrator_login
-      postgres_db_name           = local.keycloak_db_name
-      keycloak_admin_username    = azurerm_key_vault_secret.keycloak_admin_username.value
-      keycloak_ingress_hostname  = local.keycloak_ingress_hostname
-      ingress_tls_secret_name    = replace(local.keycloak_ingress_hostname, ".", "-")
-      keycloak_external_hostname = local.keycloak_external_hostname
-      replica_count_min          = var.keycloak_configuration.replica_count_min
-      replica_count_max          = var.keycloak_configuration.replica_count_max
-      force_deploy_version       = "v2"
+      postgres_db_host             = module.keycloak_pgflex.fqdn
+      postgres_db_port             = "5432"
+      postgres_db_username         = module.keycloak_pgflex.administrator_login
+      postgres_db_name             = local.keycloak_db_name
+      keycloak_admin_username      = azurerm_key_vault_secret.keycloak_admin_username.value
+      keycloak_ingress_hostname    = local.keycloak_ingress_hostname
+      ingress_tls_secret_name      = replace(local.keycloak_ingress_hostname, ".", "-")
+      keycloak_external_hostname   = local.keycloak_external_hostname
+      replica_count_min            = var.keycloak_configuration.replica_count_min
+      replica_count_max            = var.keycloak_configuration.replica_count_max
+      force_deploy_version         = "v2"
+      keycloak_extra_volume_mounts = yamlencode(local.keycloak_extra_volume_mounts)
     })
   ]
   depends_on = [

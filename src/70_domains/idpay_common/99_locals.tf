@@ -35,14 +35,16 @@ locals {
       "${var.env}.bonuselettrodomestici.info",
       "${var.env}.bonuselettrodomestici.io",
       "${var.env}.bonuselettrodomestici.net",
-      "${var.env}.bonuselettrodomestici.eu"
+      "${var.env}.bonuselettrodomestici.eu",
+      "${var.env}.bonuselettrodomestici.pagopa.it"
       ] : [
       "bonuselettrodomestici.it",
       "bonuselettrodomestici.com",
       "bonuselettrodomestici.info",
       "bonuselettrodomestici.io",
       "bonuselettrodomestici.net",
-      "bonuselettrodomestici.eu"
+      "bonuselettrodomestici.eu",
+      "bonuselettrodomestici.pagopa.it"
     ]
   }
 
