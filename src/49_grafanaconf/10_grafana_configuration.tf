@@ -15,7 +15,7 @@ module "auto_dashboard" {
 
   grafana_api_key      = data.azurerm_key_vault_secret.grafana_service_account_token.value
   grafana_url          = data.azurerm_dashboard_grafana.grafana_managed.endpoint
-  monitor_workspace_id = data.azurerm_log_analytics_workspace.law.id
+  monitor_workspace_id = data.azurerm_log_analytics_workspace.law_core_itn.id
   prefix               = "cstar"
 }
 
