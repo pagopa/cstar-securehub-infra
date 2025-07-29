@@ -764,6 +764,14 @@ locals {
           unique = false
         },
         {
+          keys   = ["status"]
+          unique = false
+        },
+        {
+          keys   = ["productName"]
+          unique = false
+        },
+        {
           keys   = ["category", "productFileId"]
           unique = false
         }
