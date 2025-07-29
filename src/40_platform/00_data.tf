@@ -78,3 +78,8 @@ data "azurerm_key_vault_secret" "pagopa_rtp_eventhub_pip" {
   name         = "peered-rtp-eventhub-pip"
   key_vault_id = data.azurerm_key_vault.core_kv.id
 }
+
+data "azurerm_log_analytics_workspace" "logs_workspace" {
+  name                = local.log_analytics_workspace_name
+  resource_group_name = local.monitor_resource_group_name
+}

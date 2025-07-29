@@ -1,6 +1,7 @@
 locals {
   # General
   project = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
+  product = "${var.prefix}-${var.env_short}-${var.location_short}"
 
   # Default Domain Resource Group
   data_rg       = "${local.project}-data-rg"
@@ -21,4 +22,8 @@ locals {
   # APIM
   apim_rg_name = "cstar-${var.env_short}-api-rg"
   apim_name    = "cstar-${var.env_short}-apim"
+
+  # PLATFORM GITHUB Container Apps Environment
+  github_cae_name = "${local.product}-platform-github-cae"
+  github_cae_rg   = "${local.product}-platform-compute-rg"
 }
