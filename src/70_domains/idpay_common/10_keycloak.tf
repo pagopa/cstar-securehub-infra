@@ -46,3 +46,37 @@ resource "keycloak_openid_client" "merchant_operator_frontend" {
     keycloak_realm.merchant_operator,
   ]
 }
+
+# User
+resource "keycloak_realm" "user" {
+  realm        = "user"
+  enabled      = true
+  display_name = "user"
+}
+
+resource "keycloak_openid_client" "user_frontend" {
+  realm_id  = keycloak_realm.user.id
+  client_id = "frontend"
+  name      = "Portal User Frontend"
+  enabled   = true
+
+  access_type = "PUBLIC"
+
+  standard_flow_enabled = true
+
+  web_origins = flatten([
+    [
+      local.keycloak_external_hostname,
+      "http://localhost:5173",
+  ], formatlist("https://%s", local.public_dns_zone_bonus_elettrodomestici.zones)])
+
+  valid_redirect_uris = flatten([
+    [
+      "${local.keycloak_external_hostname}/*",
+      "http://localhost:5173/*",
+  ], formatlist("https://%s/*", local.public_dns_zone_bonus_elettrodomestici.zones)])
+
+  depends_on = [
+    keycloak_realm.user,
+  ]
+}
