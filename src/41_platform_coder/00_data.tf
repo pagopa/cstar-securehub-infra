@@ -1,5 +1,5 @@
 data "azurerm_resource_group" "platform_data" {
-  name = local.kv_core_resource_group_name
+  name = local.platform_data_rg_name
 }
 
 #------------------------------------------------

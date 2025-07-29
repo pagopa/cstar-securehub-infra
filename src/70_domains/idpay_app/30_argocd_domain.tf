@@ -86,7 +86,7 @@ locals {
       "idpay-reward-notification" = {
         name          = "idpay-reward-notification"
         target_branch = "main"
-        env           = [""]
+        env           = ["dev", "uat", "prod"]
       },
       "idpay-reward-user-id-splitter" = {
         name          = "idpay-reward-user-id-splitter"

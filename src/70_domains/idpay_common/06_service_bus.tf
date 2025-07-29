@@ -66,8 +66,9 @@ resource "azurerm_servicebus_namespace" "idpay_service_bus_ns" {
   sku                           = var.service_bus_namespace.sku
   minimum_tls_version           = "1.2"
   public_network_access_enabled = var.service_bus_namespace.sku == "Premium" ? false : true #Mandatory because only the premium SKU supports private endpoints
-
-  tags = module.tag_config.tags
+  capacity                      = var.service_bus_namespace.capacity
+  premium_messaging_partitions  = var.service_bus_namespace.premium_messaging_partitions
+  tags                          = module.tag_config.tags
 }
 
 resource "azurerm_servicebus_namespace_authorization_rule" "namespace_rules" {
