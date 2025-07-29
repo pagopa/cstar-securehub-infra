@@ -144,7 +144,7 @@ resource "keycloak_user_template_importer_identity_provider_mapper" "username_ma
 
 resource "keycloak_attribute_importer_identity_provider_mapper" "email_mapper" {
   realm                   = keycloak_realm.user.id
-  name                    = "last_name_mapper"
+  name                    = "email-mapper"
   claim_name              = "email"
   identity_provider_alias = keycloak_oidc_identity_provider.one_identity_provider.alias
   user_attribute          = "email"
