@@ -24,6 +24,10 @@ resource "grafana_folder_permission" "admin_permission" {
     role       = "Admin"
     permission = "Admin"
   }
+  permissions {
+    role       = "Viewer"
+    permission = "View"
+  }
 }
 
 resource "grafana_folder" "team_dashboard_folder" {
