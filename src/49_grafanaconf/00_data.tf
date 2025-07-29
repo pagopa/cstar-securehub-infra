@@ -20,6 +20,17 @@ data "azurerm_log_analytics_workspace" "law_core_itn" {
   resource_group_name = local.law_name_core_itn_rg
 }
 
+data "azurerm_log_analytics_workspace" "law_srtp" {
+  name                = local.law_name_srtp
+  resource_group_name = local.law_name_srtp_rg
+}
+
+data "azurerm_log_analytics_workspace" "law_mcshared" {
+  name                = local.law_name_mcshared
+  resource_group_name = local.law_name_mcshared_rg
+}
+
+
 # ---------------------------------------------------------------
 # Data per Secret su Key Vault
 # ---------------------------------------------------------------
@@ -41,6 +52,11 @@ data "azuread_group" "adgroup_admin" {
 
 data "azuread_group" "adgroup_developers" {
   display_name = "${local.product}-adgroup-developers"
+}
+
+data "azuread_user" "adgroup_cstar_users_developer" {
+  for_each  = toset(data.azuread_group.adgroup_developers.members)
+  object_id = each.value
 }
 
 data "azuread_group" "adgroup_externals" {

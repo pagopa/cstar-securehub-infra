@@ -14,6 +14,12 @@ locals {
   law_name_core        = "${local.product}-law"
   law_name_core_rg     = "${local.product}-monitor-rg"
 
+  law_name_srtp    = "${local.product_nodomain}-srtp-law"
+  law_name_srtp_rg = "${local.product_nodomain}-srtp-monitoring-rg"
+
+  law_name_mcshared    = "${local.product_nodomain}-mcshared-law"
+  law_name_mcshared_rg = "${local.product_nodomain}-mcshared-monitoring-rg"
+
   grafana_name = "cstar-${var.env_short}-itn-grafana"
 
   #
@@ -32,23 +38,38 @@ locals {
   # - monitor_workspace_id: Log Analytics workspace ID for monitoring
   # - aks_name: Name of the AKS cluster
   team_product = {
-    aks = {
-      idpay = {
+    idpay = {
+      aks = {
         location_short       = "itn",
         monitor_workspace_id = data.azurerm_log_analytics_workspace.law_core_itn.id,
         aks_name             = "${var.prefix}-${var.env_short}-${var.location_short}-${var.env}-aks"
       },
-      mil = {
-        location_short       = "weu",
-        monitor_workspace_id = data.azurerm_log_analytics_workspace.law_core.id,
-        aks_name             = "${var.prefix}-${var.env_short}-weu-${var.env}01-aks"
-      },
-      rtd = {
+    }
+    mil = {
+      aks = {
         location_short       = "weu",
         monitor_workspace_id = data.azurerm_log_analytics_workspace.law_core.id,
         aks_name             = "${var.prefix}-${var.env_short}-weu-${var.env}01-aks"
       }
+    },
+    rtd = {
+      aks = {
+        location_short       = "weu",
+        monitor_workspace_id = data.azurerm_log_analytics_workspace.law_core.id,
+        aks_name             = "${var.prefix}-${var.env_short}-weu-${var.env}01-aks"
+      }
+    },
+    srtp = {
+      aca = {
+        location_short       = "itn",
+        monitor_workspace_id = data.azurerm_log_analytics_workspace.law_srtp.id,
+      }
+    },
+    mcshared = {
+      aca = {
+        location_short       = "itn",
+        monitor_workspace_id = data.azurerm_log_analytics_workspace.law_mcshared.id,
+      }
     }
   }
-
 }
