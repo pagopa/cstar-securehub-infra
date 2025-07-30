@@ -531,7 +531,11 @@ locals {
         {
           keys   = ["initiativeId"]
           unique = false
-        }
+        },
+        {
+          keys   = ["userId"]
+          unique = false
+        },
       ]
     },
     {
@@ -700,6 +704,30 @@ locals {
         },
         {
           keys   = ["franchiseName"]
+          unique = false
+        },
+        {
+          keys   = ["type"]
+          unique = false
+        },
+        {
+          keys   = ["address", "streetNumber"]
+          unique = false
+        },
+        {
+          keys   = ["website"]
+          unique = false
+        },
+        {
+          keys   = ["city"]
+          unique = false
+        },
+        {
+          keys   = ["contactEmail"]
+          unique = true
+        },
+        {
+          keys   = ["contactName", "contactSurname"]
           unique = false
         }
       ]
