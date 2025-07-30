@@ -7,7 +7,7 @@ module "key_vault" {
   for_each = toset(local.secrets_folders_kv)
 
   name                = "${local.project_nodomain}-mc-${each.key}-kv"
-  idh_resource_tier   = var.env_short != "prod" ? "standard_private" : "premium_private"
+  idh_resource_tier   = var.env_short != "p" ? "standard_private" : "premium_private"
   product_name        = "cstar"
   env                 = var.env
   location            = var.location

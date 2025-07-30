@@ -8,7 +8,8 @@ resource "azurerm_container_app_environment" "srtp_cae" {
 
   infrastructure_subnet_id       = module.cae_env_snet.id
   internal_load_balancer_enabled = true
-  zone_redundancy_enabled        = true
+  zone_redundancy_enabled        = var.env_short == "p" ? true : false
+
   workload_profile {
     name                  = "Consumption"
     workload_profile_type = "Consumption"
