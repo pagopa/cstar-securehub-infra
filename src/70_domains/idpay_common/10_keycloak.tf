@@ -98,12 +98,14 @@ resource "keycloak_oidc_identity_provider" "one_identity_provider" {
 
   extra_config = {
     "clientAuthMethod" = "client_secret_basic"
+    "pkceEnabled"      = true
+    "pkceMethod"       = "S256"
   }
 }
 
 resource "keycloak_attribute_importer_identity_provider_mapper" "first_name_mapper" {
   realm                   = keycloak_realm.user.id
-  name                    = "first_name_mapper"
+  name                    = "first-name-mapper"
   claim_name              = "name"
   identity_provider_alias = keycloak_oidc_identity_provider.one_identity_provider.alias
   user_attribute          = "firstName"
@@ -116,7 +118,7 @@ resource "keycloak_attribute_importer_identity_provider_mapper" "first_name_mapp
 
 resource "keycloak_attribute_importer_identity_provider_mapper" "last_name_mapper" {
   realm                   = keycloak_realm.user.id
-  name                    = "last_name_mapper"
+  name                    = "last-name-mapper"
   claim_name              = "familyName"
   identity_provider_alias = keycloak_oidc_identity_provider.one_identity_provider.alias
   user_attribute          = "lastName"
