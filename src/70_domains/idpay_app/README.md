@@ -19,7 +19,7 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_argocd"></a> [argocd](#provider\_argocd) | 7.8.2 |
+| <a name="provider_argocd"></a> [argocd](#provider\_argocd) | 7.10.0 |
 | <a name="provider_azapi"></a> [azapi](#provider\_azapi) | 1.11.0 |
 | <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 3.4.0 |
 | <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.25.0 |
