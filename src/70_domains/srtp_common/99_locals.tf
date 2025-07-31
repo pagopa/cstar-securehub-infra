@@ -1,8 +1,9 @@
 locals {
   # General
-  project      = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
-  project_core = "${var.prefix}-${var.env_short}-${var.location_short}-core"
-  product      = "${var.prefix}-${var.env_short}"
+  project           = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
+  project_core      = "${var.prefix}-${var.env_short}-${var.location_short}-core"
+  project_no_domain = "${var.prefix}-${var.env_short}-${var.location_short}"
+  product           = "${var.prefix}-${var.env_short}"
 
   # Default Domain Resource Group
   data_rg_name     = "${local.project}-data-rg"
@@ -40,6 +41,10 @@ locals {
   dns_zone_name = "${var.env != "prod" ? "${var.env}." : ""}${var.prefix}.pagopa.it"
 
   repositories = ["rtp-sender", "rtp-activator"]
+
+  # AKS
+  aks_name                = "${local.project_no_domain}-${var.env}-aks"
+  aks_resource_group_name = "${local.project_no_domain}-core-aks-rg"
 
   # 🍀 Cosmos DB Collection
   cosmos_db = {
