@@ -85,3 +85,6 @@ law_retention_in_days = 30
 law_daily_quota_gb    = 5
 
 mcshared_dns_zone_prefix = "api-mcshared.dev"
+
+#OneIdentity
+oneidentity_base_url = "https://uat.oneid.pagopa.it"
