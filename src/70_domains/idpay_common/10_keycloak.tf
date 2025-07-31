@@ -83,7 +83,7 @@ resource "keycloak_openid_client" "user_frontend" {
 
 resource "azurerm_key_vault_secret" "keycloak_url_idpay" {
   name         = "keycloak-url"
-  value        = data.azurerm_key_vault_secret.keycloak_url.value
+  value        = "https://${data.azurerm_key_vault_secret.keycloak_url.value}"
   key_vault_id = data.azurerm_key_vault.domain_kv.id
 }
 
