@@ -273,3 +273,10 @@ variable "mcshared_dns_zone_prefix" {
   default     = null
   description = "The dns subdomain for mcshared"
 }
+
+# OneIdentity
+variable "oneidentity_base_url" {
+  type        = string
+  default     = null
+  description = "OneIdentity base Url"
+}

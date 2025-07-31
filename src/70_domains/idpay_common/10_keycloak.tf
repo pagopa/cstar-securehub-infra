@@ -85,11 +85,11 @@ resource "keycloak_oidc_identity_provider" "one_identity_provider" {
   realm                 = keycloak_realm.user.id
   alias                 = "oneid-keycloak"
   display_name          = "OneIdentity"
-  authorization_url     = "${local.one_identity_base_url}/login"
-  token_url             = "${local.one_identity_base_url}/oidc/token"
+  authorization_url     = "${var.oneidentity_base_url}/login"
+  token_url             = "${var.oneidentity_base_url}/oidc/token"
   client_id             = data.azurerm_key_vault_secret.oneidentity-client-id.value
   client_secret         = data.azurerm_key_vault_secret.oneidentity-client-secret.value
-  issuer                = local.one_identity_base_url
+  issuer                = var.oneidentity_base_url
   trust_email           = true
   store_token           = true
   sync_mode             = "LEGACY"
