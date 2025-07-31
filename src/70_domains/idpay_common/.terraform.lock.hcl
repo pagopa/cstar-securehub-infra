@@ -5,6 +5,7 @@ provider "registry.terraform.io/argoproj-labs/argocd" {
   version     = "7.8.2"
   constraints = "~> 7.0"
   hashes = [
+    "h1:2wFSwavY6xsF1aT18yElydmrPwgMsUHzTA6tBpq1H8c=",
     "h1:7NZkuoL3rKuGhAvD+U8aSUvdcBC33xTIQau1nvt+oPU=",
     "h1:BXlReMkv0JmuGLswMDuUqf2x5T2oRNAgJTLdRUnHWJs=",
     "h1:UVYHmqBrcEDJtsoFfUpGVBGlsDjvCvrERrkIb8UeSgA=",
@@ -30,6 +31,7 @@ provider "registry.terraform.io/azure/azapi" {
     "h1:NES5jXAH/+BZYvof1bFXB4SrZ3+xnzRx2ssmedRKQQY=",
     "h1:Y22DrUlUHsHJPyo+2lqT+zmw7HRnlsAVeo7GvMVuDDM=",
     "h1:fQirkh7J3ZrV0rQ8COf0IBZwgHfl3W5Gn0KGJYhf67c=",
+    "h1:juZm8D/GJoldcZj281xaI+K5Pd4Eo8iV4AOCaF0sCiw=",
     "zh:24a2ebfec4a79b7ef122e07afe6ddda51ce91b3dbed7007757b9c53511976396",
     "zh:2a26868f8243666b6d0cd29ea5d1b1ecfedb1bbccc3801d383ab7a3f7930aa69",
     "zh:4c3ced3ce1f937dc5bcea61f638eee9134570af6cbe7e4db7c60d9bb517da689",
@@ -53,6 +55,7 @@ provider "registry.terraform.io/hashicorp/azuread" {
     "h1:CkN8DpmNYWU9mvlrmOpzFdPofGjKgrnL8leImrSL9Uk=",
     "h1:D4wPDjiMNuWQcB1cYQIbS9M68QwQ2BQ8TdcamU3ig3k=",
     "h1:KeA9a60dssTVEFWkAuJ2lxztHyYB9bKmUfYanW2POSo=",
+    "h1:rfO7hSYJLdpff/s2iuooHtxNacwKq5n03IwvVQ+xbSI=",
     "zh:035a6d6e6aa7f117969702873c27344ec4ddd88f676cebc1088316fb26d5c95a",
     "zh:11f86935174d8223699cae00b3a705ded1d75a4efb6d4723d3788f5446e1eaa5",
     "zh:16d52b5bf8eefa98cd2793122be0c5a7b41767caedbd8a08786aeefb3d0c6856",
@@ -72,6 +75,7 @@ provider "registry.terraform.io/hashicorp/azurerm" {
   version     = "4.37.0"
   constraints = "~> 4.0, ~> 4.25"
   hashes = [
+    "h1:MfFA2dyXwJlMi4p7PBjQzyRDLm0vcpnVeMPedvUT6BE=",
     "h1:TnYunwlF59toWHSHaQ80cGc46VVJ9+wC3Go5TFTAN0o=",
     "h1:V03ptgtr1zg5fOLMoTowNZx4JIbZKsKQL8AqV5jordU=",
     "h1:Vbk0QSLIOm5UFlNB7nONHcUdpkr1WH078kfq5vNqU0c=",
@@ -98,6 +102,7 @@ provider "registry.terraform.io/hashicorp/external" {
     "h1:1JSWWSmVSxzHGbD4RmaNUsdGsr2hPo+WwYaluyWv7vY=",
     "h1:FnUk98MI5nOh3VJ16cHf8mchQLewLfN1qZG/MqNgPrI=",
     "h1:IE3n531K7Agq3/pourJdsKV7l5EifBb09TXsb8shTXM=",
+    "h1:ORX3G4aEHO9sFP3dyv821JJTF9qa8J9XVp441SvvjvA=",
     "h1:smKSos4zs57pJjQrNuvGBpSWth2el9SgePPbPHo0aps=",
     "zh:6e89509d056091266532fa64de8c06950010498adf9070bf6ff85bc485a82562",
     "zh:78d5eefdd9e494defcb3c68d282b8f96630502cac21d1ea161f53cfe9bb483b3",
@@ -122,6 +127,7 @@ provider "registry.terraform.io/hashicorp/helm" {
     "h1:If79Gw54AMearm13Sk9RmWuDesCQQMUtmlJXXqISxfU=",
     "h1:K5FEjxvDnxb1JF1kG1xr8J3pNGxoaR3Z0IBG9Csm/Is=",
     "h1:kQMkcPVvHOguOqnxoEU2sm1ND9vCHiT8TvZ2x6v/Rsw=",
+    "h1:rsqAO9oKyDMLiysQqrWEzf9CNtU9NJtwEGk7bSItC9g=",
     "zh:06fb4e9932f0afc1904d2279e6e99353c2ddac0d765305ce90519af410706bd4",
     "zh:104eccfc781fc868da3c7fec4385ad14ed183eb985c96331a1a937ac79c2d1a7",
     "zh:129345c82359837bb3f0070ce4891ec232697052f7d5ccf61d43d818912cf5f3",
@@ -141,6 +147,7 @@ provider "registry.terraform.io/hashicorp/kubernetes" {
   version     = "2.38.0"
   constraints = "~> 2.30, ~> 2.36"
   hashes = [
+    "h1:1OF0rDUteVdoX04BrtmTc0T4NOo6+D0utmK6hM0EzZw=",
     "h1:5CkveFo5ynsLdzKk+Kv+r7+U9rMrNjfZPT3a0N/fhgE=",
     "h1:7nJdsd1RMPBtOjDXidB37+KSDN5VcOWkbkow69qJVGc=",
     "h1:XCkL/mxjWTawg6gg+jlpCQhF/+SNRoCEZxbbkDTj42s=",
@@ -164,6 +171,7 @@ provider "registry.terraform.io/hashicorp/null" {
   version     = "3.2.4"
   constraints = "~> 3.2"
   hashes = [
+    "h1:+Ag4hSb4qQjNtAS6gj2+gsGl7v0iB/Bif6zZZU8lXsw=",
     "h1:127ts0CG8hFk1bHIfrBsKxcnt9bAYQCq3udWM+AACH8=",
     "h1:L5V05xwp/Gto1leRryuesxjMfgZwjb7oool4WS1UEFQ=",
     "h1:hkf5w5B6q8e2A42ND2CjAvgvSN3puAosDmOJb3zCVQM=",
@@ -187,6 +195,7 @@ provider "registry.terraform.io/hashicorp/random" {
   version     = "3.7.2"
   constraints = "~> 3.0"
   hashes = [
+    "h1:0hcNr59VEJbhZYwuDE/ysmyTS0evkfcLarlni+zATPM=",
     "h1:356j/3XnXEKr9nyicLUufzoF4Yr6hRy481KIxRVpK0c=",
     "h1:KG4NuIBl1mRWU0KD/BGfCi1YN/j3F7H4YgeeM7iSdNs=",
     "h1:Lmv2TxyKKm9Vt4uxcPZHw1uf0Ax/yYizJlilbLSZN8E=",
@@ -210,6 +219,7 @@ provider "registry.terraform.io/keycloak/keycloak" {
   version     = "5.4.0"
   constraints = ">= 5.0.0"
   hashes = [
+    "h1:1o6vE9KLdhS7CY/pPJ6pYxuWNbYuV27iN7qiUMJgMJQ=",
     "h1:bYVK8lOuBuS3bhLjVt/smVTdDeIuj3vK1wxmnEF8/Qk=",
     "h1:czplroaKCDmVGXiIE2feThIpXOP6E5wvM98yDCcP8dQ=",
     "h1:tvfg2MrrAQ36IprANNIEBRpnO3Ze2tbx/DDvBAeAdYA=",
