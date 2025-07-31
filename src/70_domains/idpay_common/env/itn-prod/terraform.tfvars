@@ -90,6 +90,5 @@ aks_nodepool_green = {
 #Monitoring
 law_sku               = "PerGB2018"
 law_retention_in_days = 30
-law_daily_quota_gb    = 10
 
 mcshared_dns_zone_prefix = "api-mcshared"
