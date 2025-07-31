@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - chore-fix-static-analysis-MA
 
 jobs:
   static_analysis:
