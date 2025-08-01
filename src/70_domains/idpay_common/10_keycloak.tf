@@ -70,15 +70,15 @@ resource "azurerm_key_vault_secret" "keycloak_merchant_operator_app_client_secre
 
 # create a client for the sdk to access the merchant operator realm
 resource "keycloak_openid_client" "merchant_operator_app_client" {
-  realm_id  = keycloak_realm.merchant_operator.id
-  name      = "Merchant Op App Client"
-  enabled   = true
+  realm_id = keycloak_realm.merchant_operator.id
+  name     = "Merchant Op App Client"
+  enabled  = true
 
-  client_id = "merchant-operator-app-client"
-  client_secret_wo = random_password.keycloak_merchant_operator_app_client.result
+  client_id                = "merchant-operator-app-client"
+  client_secret_wo         = random_password.keycloak_merchant_operator_app_client.result
   client_secret_wo_version = 1
 
-  access_type = "CONFIDENTIAL"
+  access_type              = "CONFIDENTIAL"
   service_accounts_enabled = true
 
   depends_on = [random_password.keycloak_merchant_operator_app_client]
@@ -91,9 +91,9 @@ data "keycloak_openid_client" "realm_mgmt" {
 }
 
 data "keycloak_role" "manage_users" {
-  realm_id  = keycloak_realm.merchant_operator.id
-  client_id = data.keycloak_openid_client.realm_mgmt.id
-  name        = "manage-users"
+  realm_id   = keycloak_realm.merchant_operator.id
+  client_id  = data.keycloak_openid_client.realm_mgmt.id
+  name       = "manage-users"
   depends_on = [data.keycloak_openid_client.realm_mgmt]
 }
 
@@ -114,24 +114,24 @@ data "keycloak_role" "view_users" {
 }
 
 resource "keycloak_openid_client_service_account_role" "app_client_service_account_role_manage_users" {
-  realm_id  = keycloak_realm.merchant_operator.id
+  realm_id                = keycloak_realm.merchant_operator.id
   service_account_user_id = keycloak_openid_client.merchant_operator_app_client.service_account_user_id
   client_id               = data.keycloak_openid_client.realm_mgmt.id
   role                    = data.keycloak_role.manage_users.name
 }
 
 resource "keycloak_openid_client_service_account_role" "app_client_service_account_role_view_users" {
-  realm_id  = keycloak_realm.merchant_operator.id
+  realm_id                = keycloak_realm.merchant_operator.id
   service_account_user_id = keycloak_openid_client.merchant_operator_app_client.service_account_user_id
   client_id               = data.keycloak_openid_client.realm_mgmt.id
   role                    = data.keycloak_role.manage_users.name
 }
 
 resource "keycloak_openid_client_service_account_role" "app_client_service_account_role_query_users" {
-realm_id  = keycloak_realm.merchant_operator.id
-service_account_user_id = keycloak_openid_client.merchant_operator_app_client.service_account_user_id
-client_id               = data.keycloak_openid_client.realm_mgmt.id
-role                    = data.keycloak_role.manage_users.name
+  realm_id                = keycloak_realm.merchant_operator.id
+  service_account_user_id = keycloak_openid_client.merchant_operator_app_client.service_account_user_id
+  client_id               = data.keycloak_openid_client.realm_mgmt.id
+  role                    = data.keycloak_role.manage_users.name
 }
 
 ##################
