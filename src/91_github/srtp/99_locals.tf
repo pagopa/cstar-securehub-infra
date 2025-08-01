@@ -8,6 +8,8 @@ locals {
   rtp_kv_name                = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}-kv"
   rtp_kv_resource_group_name = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}-${var.location_short == "itn" ? "security" : "sec"}-rg"
 
+  current_env = "${var.location_short}-${var.env}"
+
   # AKS
   aks_name                = "${local.project_no_domain}-${var.env}-aks"
   aks_resource_group_name = "${local.project_no_domain}-core-aks-rg"
@@ -40,6 +42,7 @@ locals {
       repository_variables = []
     }
     rtp-platform-qa = {
+      env = ["${var.location_short}-dev", "${var.location_short}-uat"],
       env_variables = [
         {
           AZURE_RESOURCE_GROUP   = local.aks_resource_group_name
@@ -58,7 +61,16 @@ locals {
     }
   }
 
-  # Environment Secrets of the Repository #
+  # Github Environments
+  github_environments = {
+    for repo_name, repo in local.repository :
+    repo_name => repo
+    if(
+      !contains(keys(repo), "env") || contains(try(repo.env, []), local.current_env)
+    )
+  }
+
+  # Environment secrets of Environment
   env_secret_variables_flattened = merge([
     for repo_name, repo_data in local.repository : merge([
       for secret_map in repo_data.env_secret_variables : {
@@ -73,7 +85,7 @@ locals {
     ]...)
   ]...)
 
-  # Environment Secrets of the Repository #
+  # Environment Variable of the Environment
   env_variable_variables_flattened = merge([
     for repo_name, repo_data in local.repository : merge([
       for env_map in repo_data.env_variables : {

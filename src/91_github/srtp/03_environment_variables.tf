@@ -2,7 +2,10 @@
 # Secrets of the Environment #
 ##########################################
 resource "github_actions_environment_secret" "env_secrets" {
-  for_each = local.env_secret_variables_flattened
+  for_each = {
+    for k, v in local.env_secret_variables_flattened :
+    k => v if contains(keys(local.github_environments), v.repository)
+  }
 
   repository      = each.value.repository
   environment     = each.value.environment
@@ -17,7 +20,10 @@ resource "github_actions_environment_secret" "env_secrets" {
 ##########################################
 
 resource "github_actions_environment_variable" "env_variables" {
-  for_each = local.env_variable_variables_flattened
+  for_each = {
+    for k, v in local.env_variable_variables_flattened :
+    k => v if contains(keys(local.github_environments), v.repository)
+  }
 
   repository    = each.value.repository
   environment   = each.value.environment
