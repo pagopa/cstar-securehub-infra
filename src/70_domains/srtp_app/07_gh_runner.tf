@@ -8,12 +8,12 @@ module "gh_runner_job" {
   environment_rg   = local.github_cae_rg
 
   gh_identity_suffix = "job-01"
-  runner_labels      = ["self-hosted-job", var.env]
-  gh_env             = var.env
+  runner_labels      = ["self-hosted-job", "${var.location_short}-${var.env}"]
+  gh_env             = "${var.location_short}-${var.env}"
   gh_repositories = [
     {
-      name : "rtp-platform-qa",
-      short_name : "platform-qa"
+      name       = "rtp-platform-qa", # Not used in prod, but needed for the job to be created
+      short_name = "platform-qa"
     }
   ]
   job = {
@@ -33,7 +33,14 @@ module "gh_runner_job" {
   domain_security_rg_name = "${local.project}-security-rg"
 
   identity_rg_name = local.identities_rg
-  identity_role    = "ci"
+  identity_role    = "cd"
+
+  kubernetes_deploy = {
+    enabled      = true
+    namespaces   = [var.domain]
+    cluster_name = local.aks_name
+    rg           = local.aks_resource_group_name
+  }
 
   tags = module.tag_config.tags
 }

@@ -26,4 +26,8 @@ locals {
   # PLATFORM GITHUB Container Apps Environment
   github_cae_name = "${local.product}-platform-github-cae"
   github_cae_rg   = "${local.product}-platform-compute-rg"
+
+  # AKS
+  aks_name                = "${local.product}-${var.env}-aks"
+  aks_resource_group_name = "${local.product}-core-aks-rg"
 }
