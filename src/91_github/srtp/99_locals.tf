@@ -1,9 +1,16 @@
 locals {
-  project                    = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
+  project           = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
+  product           = "${var.prefix}-${var.env_short}"
+  project_no_domain = "${var.prefix}-${var.env_short}-${var.location_short}"
+
   cicd_rg_name               = "${local.project}-cicd-rg"
+  identities_rg              = "${local.project}-identity-rg"
   rtp_kv_name                = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}-kv"
   rtp_kv_resource_group_name = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}-${var.location_short == "itn" ? "security" : "sec"}-rg"
 
+  # AKS
+  aks_name                = "${local.project_no_domain}-${var.env}-aks"
+  aks_resource_group_name = "${local.project_no_domain}-core-aks-rg"
 
   repository = {
     rtp-activator = {
@@ -32,6 +39,23 @@ locals {
       repository_secrets   = []
       repository_variables = []
     }
+    rtp-platform-qa = {
+      env_variables = [
+        {
+          AZURE_RESOURCE_GROUP   = local.aks_resource_group_name
+          AZURE_AKS_CLUSTER_NAME = local.aks_name
+        }
+      ],
+      env_secret_variables = [
+        {
+          AZURE_CLIENT_ID       = data.azurerm_user_assigned_identity.cd_job_github_runner.client_id
+          AZURE_SUBSCRIPTION_ID = data.azurerm_subscription.current.subscription_id
+          AZURE_TENANT_ID       = data.azurerm_client_config.current.tenant_id
+        }
+      ]
+      repository_secrets   = []
+      repository_variables = []
+    }
   }
 
   # Environment Secrets of the Repository #
@@ -44,6 +68,21 @@ locals {
           environment = "${var.location_short}-${var.env}"
           secret_name = secret_name
           value       = secret_value
+        }
+      }
+    ]...)
+  ]...)
+
+  # Environment Secrets of the Repository #
+  env_variable_variables_flattened = merge([
+    for repo_name, repo_data in local.repository : merge([
+      for env_map in repo_data.env_variables : {
+        for env_key, env_value in env_map :
+        "${repo_name}@${env_key}" => {
+          repository  = repo_name
+          environment = "${var.location_short}-${var.env}"
+          env_key     = env_key
+          env_value   = env_value
         }
       }
     ]...)

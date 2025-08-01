@@ -1,3 +1,4 @@
+# This file contains the resources that were used for testing in the DEV and UAT environments
 resource "kubernetes_namespace" "namespace" {
   count = contains(["d", "u"], var.env_short) ? 1 : 0
 
@@ -33,4 +34,17 @@ module "workload_identity_configuration" {
   depends_on = [
     module.workload_identity,
   ]
+}
+
+#----------------------------------------------------------------
+# 🔎 DNS
+#----------------------------------------------------------------
+resource "azurerm_private_dns_a_record" "ingress_qa" {
+  count = contains(["d", "u"], var.env_short) ? 1 : 0
+
+  name                = "qa"
+  zone_name           = local.dns_zone_internal
+  resource_group_name = local.vnet_legacy_core_rg
+  ttl                 = 3600
+  records             = [local.ingress_private_load_balancer_ip]
 }

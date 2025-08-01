@@ -12,6 +12,11 @@ data "azurerm_user_assigned_identity" "cd_client_identity" {
   resource_group_name = local.cicd_rg_name
 }
 
+data "azurerm_user_assigned_identity" "cd_job_github_runner" {
+  name                = "${local.product}-${var.domain}-job-01-github-cd-identity"
+  resource_group_name = local.identities_rg
+}
+
 # ------------------------------------------------------------------------------
 # General purpose key vault used to protect secrets.
 # ------------------------------------------------------------------------------
