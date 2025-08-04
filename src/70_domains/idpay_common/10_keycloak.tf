@@ -58,6 +58,7 @@ resource "keycloak_openid_client" "merchant_operator_frontend" {
 resource "random_password" "keycloak_merchant_operator_app_client" {
   length  = 24
   special = true
+  override_special = "*()-+[]{}<>:?"
 }
 
 resource "azurerm_key_vault_secret" "keycloak_merchant_operator_app_client_secret" {
@@ -76,7 +77,7 @@ resource "keycloak_openid_client" "merchant_operator_app_client" {
 
   client_id                = "merchant-operator-app-client"
   client_secret_wo         = random_password.keycloak_merchant_operator_app_client.result
-  client_secret_wo_version = 1
+  client_secret_wo_version = 2
 
   access_type              = "CONFIDENTIAL"
   service_accounts_enabled = true
