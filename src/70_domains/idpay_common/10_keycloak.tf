@@ -56,8 +56,8 @@ resource "keycloak_openid_client" "merchant_operator_frontend" {
 }
 
 resource "random_password" "keycloak_merchant_operator_app_client" {
-  length  = 24
-  special = true
+  length           = 24
+  special          = true
   override_special = "*()-+[]{}<>:?"
 }
 
