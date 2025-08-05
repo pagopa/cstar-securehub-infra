@@ -56,8 +56,8 @@ resource "keycloak_openid_client" "merchant_operator_frontend" {
 }
 
 resource "random_password" "keycloak_merchant_operator_app_client" {
-  length           = 30
-  special          = false
+  length  = 30
+  special = false
 }
 
 resource "azurerm_key_vault_secret" "keycloak_merchant_operator_app_client_secret" {
