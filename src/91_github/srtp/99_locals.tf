@@ -47,6 +47,8 @@ locals {
         {
           AZURE_RESOURCE_GROUP   = local.aks_resource_group_name
           AZURE_AKS_CLUSTER_NAME = local.aks_name
+          DEPLOYMENT_NAME        = "rtp-platform-qa"
+          NAMESPACE              = var.domain
         }
       ],
       env_secret_variables = [
