@@ -14,7 +14,7 @@ locals {
         }
       ]
     },
-    "idpay-asset-register-frontend" = {
+    "idpay-payment-instrument" = {
       repository_secrets = [
         {
           SONAR_TOKEN = data.azurerm_key_vault_secret.sonar_token.value
@@ -23,8 +23,64 @@ locals {
       repository_variables = [
         {
           SONARCLOUD_ORG          = "pagopa"
-          SONARCLOUD_PROJECT_KEY  = "pagopa_idpay-asset-register-frontend"
-          SONARCLOUD_PROJECT_NAME = "idpay-asset-register-frontend"
+          SONARCLOUD_PROJECT_KEY  = "pagopa_idpay-payment-instrument"
+          SONARCLOUD_PROJECT_NAME = "idpay-payment-instrument"
+        }
+      ]
+    },
+    "idpay-portal-merchants-frontend" = {
+      repository_secrets = [
+        {
+          SONAR_TOKEN = data.azurerm_key_vault_secret.sonar_token.value
+        }
+      ]
+      repository_variables = [
+        {
+          SONARCLOUD_ORG          = "pagopa"
+          SONARCLOUD_PROJECT_KEY  = "pagopa_idpay-portal-merchants-frontend"
+          SONARCLOUD_PROJECT_NAME = "idpay-portal-merchants-frontend"
+        }
+      ]
+    },
+    "idpay-recovery-error-topic" = {
+      repository_secrets = [
+        {
+          SONAR_TOKEN = data.azurerm_key_vault_secret.sonar_token.value
+        }
+      ]
+      repository_variables = [
+        {
+          SONARCLOUD_ORG          = "pagopa"
+          SONARCLOUD_PROJECT_KEY  = "pagopa_idpay-recovery-error-topic"
+          SONARCLOUD_PROJECT_NAME = "idpay-recovery-error-topic"
+        }
+      ]
+    },
+    "idpay-reward-calculator" = {
+      repository_secrets = [
+        {
+          SONAR_TOKEN = data.azurerm_key_vault_secret.sonar_token.value
+        }
+      ]
+      repository_variables = [
+        {
+          SONARCLOUD_ORG          = "pagopa"
+          SONARCLOUD_PROJECT_KEY  = "pagopa_idpay-reward-calculator"
+          SONARCLOUD_PROJECT_NAME = "idpay-reward-calculator"
+        }
+      ]
+    },
+    "idpay-self-expense-backend" = {
+      repository_secrets = [
+        {
+          SONAR_TOKEN = data.azurerm_key_vault_secret.sonar_token.value
+        }
+      ]
+      repository_variables = [
+        {
+          SONARCLOUD_ORG          = "pagopa"
+          SONARCLOUD_PROJECT_KEY  = "pagopa_idpay-self-expense-backend"
+          SONARCLOUD_PROJECT_NAME = "idpay-self-expense-backend"
         }
       ]
     },
@@ -42,6 +98,230 @@ locals {
         }
       ]
     },
+    "idpay-transactions" = {
+      repository_secrets = [
+        {
+          SONAR_TOKEN = data.azurerm_key_vault_secret.sonar_token.value
+        }
+      ]
+      repository_variables = [
+        {
+          SONARCLOUD_ORG          = "pagopa"
+          SONARCLOUD_PROJECT_KEY  = "pagopa_idpay-transactions"
+          SONARCLOUD_PROJECT_NAME = "idpay-transactions"
+        }
+      ]
+    },
+    "idpay-initiative-statistics" = {
+      repository_secrets = [
+        {
+          SONAR_TOKEN = data.azurerm_key_vault_secret.sonar_token.value
+        }
+      ]
+      repository_variables = [
+        {
+          SONARCLOUD_ORG          = "pagopa"
+          SONARCLOUD_PROJECT_KEY  = "pagopa_idpay-initiative-statistics"
+          SONARCLOUD_PROJECT_NAME = "idpay-initiative-statistics"
+        }
+      ]
+    },
+    "idpay-onboarding-workflow" = {
+      repository_secrets = [
+        {
+          SONAR_TOKEN = data.azurerm_key_vault_secret.sonar_token.value
+        }
+      ]
+      repository_variables = [
+        {
+          SONARCLOUD_ORG          = "pagopa"
+          SONARCLOUD_PROJECT_KEY  = "pagopa_idpay-onboarding-workflow"
+          SONARCLOUD_PROJECT_NAME = "idpay-onboarding-workflow"
+        }
+      ]
+    },
+    "idpay-admissibility-assessor" = {
+      repository_secrets = [
+        {
+          SONAR_TOKEN = data.azurerm_key_vault_secret.sonar_token.value
+        }
+      ]
+      repository_variables = [
+        {
+          SONARCLOUD_ORG          = "pagopa"
+          SONARCLOUD_PROJECT_KEY  = "pagopa_idpay-admissibility-assessor"
+          SONARCLOUD_PROJECT_NAME = "idpay-admissibility-assessor"
+        }
+      ]
+    },
+    "idpay-wallet" = {
+      repository_secrets = [
+        {
+          SONAR_TOKEN = data.azurerm_key_vault_secret.sonar_token.value
+        }
+      ]
+      repository_variables = [
+        {
+          SONARCLOUD_ORG          = "pagopa"
+          SONARCLOUD_PROJECT_KEY  = "pagopa_idpay-wallet"
+          SONARCLOUD_PROJECT_NAME = "idpay-wallet"
+        }
+      ]
+    },
+    "idpay-timeline" = {
+      repository_secrets = [
+        {
+          SONAR_TOKEN = data.azurerm_key_vault_secret.sonar_token.value
+        }
+      ]
+      repository_variables = [
+        {
+          SONARCLOUD_ORG          = "pagopa"
+          SONARCLOUD_PROJECT_KEY  = "pagopa_idpay-timeline"
+          SONARCLOUD_PROJECT_NAME = "idpay-timeline"
+        }
+      ]
+    },
+    "idpay-portal-welfare-backend-initiative" = {
+      repository_secrets = [
+        {
+          SONAR_TOKEN = data.azurerm_key_vault_secret.sonar_token.value
+        }
+      ]
+      repository_variables = [
+        {
+          SONARCLOUD_ORG          = "pagopa"
+          SONARCLOUD_PROJECT_KEY  = "pagopa_idpay-portal-welfare-backend-initiative"
+          SONARCLOUD_PROJECT_NAME = "idpay-portal-welfare-backend-initiative"
+        }
+      ]
+    },
+    "idpay-notification-email" = {
+      repository_secrets = [
+        {
+          SONAR_TOKEN = data.azurerm_key_vault_secret.sonar_token.value
+        }
+      ]
+      repository_variables = [
+        {
+          SONARCLOUD_ORG          = "pagopa"
+          SONARCLOUD_PROJECT_KEY  = "pagopa_idpay-notification-email"
+          SONARCLOUD_PROJECT_NAME = "idpay-notification-email"
+        }
+      ]
+    },
+    "idpay-notification-manager" = {
+      repository_secrets = [
+        {
+          SONAR_TOKEN = data.azurerm_key_vault_secret.sonar_token.value
+        }
+      ]
+      repository_variables = [
+        {
+          SONARCLOUD_ORG          = "pagopa"
+          SONARCLOUD_PROJECT_KEY  = "pagopa_idpay-notification-manager"
+          SONARCLOUD_PROJECT_NAME = "idpay-notification-manager"
+        }
+      ]
+    },
+    "idpay-kafka-connect" = {
+      repository_secrets = [
+        {
+          SONAR_TOKEN = data.azurerm_key_vault_secret.sonar_token.value
+        }
+      ]
+      repository_variables = [
+        {
+          SONARCLOUD_ORG          = "pagopa"
+          SONARCLOUD_PROJECT_KEY  = "pagopa_idpay-kafka-connect"
+          SONARCLOUD_PROJECT_NAME = "idpay-kafka-connect"
+        }
+      ]
+    },
+    "idpay-group" = {
+      repository_secrets = [
+        {
+          SONAR_TOKEN = data.azurerm_key_vault_secret.sonar_token.value
+        }
+      ]
+      repository_variables = [
+        {
+          SONARCLOUD_ORG          = "pagopa"
+          SONARCLOUD_PROJECT_KEY  = "pagopa_idpay-group"
+          SONARCLOUD_PROJECT_NAME = "idpay-group"
+        }
+      ]
+    },
+    "idpay-reward-user-id-splitter" = {
+      repository_secrets = [
+        {
+          SONAR_TOKEN = data.azurerm_key_vault_secret.sonar_token.value
+        }
+      ]
+      repository_variables = [
+        {
+          SONARCLOUD_ORG          = "pagopa"
+          SONARCLOUD_PROJECT_KEY  = "pagopa_idpay-reward-user-id-splitter"
+          SONARCLOUD_PROJECT_NAME = "idpay-reward-user-id-splitter"
+        }
+      ]
+    },
+    "idpay-reward-notification" = {
+      repository_secrets = [
+        {
+          SONAR_TOKEN = data.azurerm_key_vault_secret.sonar_token.value
+        }
+      ]
+      repository_variables = [
+        {
+          SONARCLOUD_ORG          = "pagopa"
+          SONARCLOUD_PROJECT_KEY  = "pagopa_idpay-reward-notification"
+          SONARCLOUD_PROJECT_NAME = "idpay-reward-notification"
+        }
+      ]
+    },
+    "idpay-iban" = {
+      repository_secrets = [
+        {
+          SONAR_TOKEN = data.azurerm_key_vault_secret.sonar_token.value
+        }
+      ]
+      repository_variables = [
+        {
+          SONARCLOUD_ORG          = "pagopa"
+          SONARCLOUD_PROJECT_KEY  = "pagopa_idpay-iban"
+          SONARCLOUD_PROJECT_NAME = "idpay-iban"
+        }
+      ]
+    },
+    "idpay-mock" = {
+      repository_secrets = [
+        {
+          SONAR_TOKEN = data.azurerm_key_vault_secret.sonar_token.value
+        }
+      ]
+      repository_variables = [
+        {
+          SONARCLOUD_ORG          = "pagopa"
+          SONARCLOUD_PROJECT_KEY  = "pagopa_idpay-mock"
+          SONARCLOUD_PROJECT_NAME = "idpay-mock"
+        }
+      ]
+    },
+    "idpay-ranking" = {
+      repository_secrets = [
+        {
+          SONAR_TOKEN = data.azurerm_key_vault_secret.sonar_token.value
+        }
+      ]
+      repository_variables = [
+        {
+          SONARCLOUD_ORG          = "pagopa"
+          SONARCLOUD_PROJECT_KEY  = "pagopa_idpay-ranking"
+          SONARCLOUD_PROJECT_NAME = "idpay-ranking"
+        }
+      ]
+    },
     "idpay-portal-users-frontend" = {
       repository_secrets = [
         {
@@ -56,6 +336,20 @@ locals {
         }
       ]
     },
+    "idpay-payment" = {
+      repository_secrets = [
+        {
+          SONAR_TOKEN = data.azurerm_key_vault_secret.sonar_token.value
+        }
+      ]
+      repository_variables = [
+        {
+          SONARCLOUD_ORG          = "pagopa"
+          SONARCLOUD_PROJECT_KEY  = "pagopa_idpay-payment"
+          SONARCLOUD_PROJECT_NAME = "idpay-payment"
+        }
+      ]
+    },
     "idpay-portal-merchants-operator-frontend" = {
       repository_secrets = [
         {
@@ -67,6 +361,76 @@ locals {
           SONARCLOUD_ORG          = "pagopa"
           SONARCLOUD_PROJECT_KEY  = "pagopa_idpay-portal-merchants-operator-frontend"
           SONARCLOUD_PROJECT_NAME = "idpay-portal-merchants-operator-frontend"
+        }
+      ]
+    },
+    "idpay-portal-welfare-frontend" = {
+      repository_secrets = [
+        {
+          SONAR_TOKEN = data.azurerm_key_vault_secret.sonar_token.value
+        }
+      ]
+      repository_variables = [
+        {
+          SONARCLOUD_ORG          = "pagopa"
+          SONARCLOUD_PROJECT_KEY  = "pagopa_idpay-portal-welfare-frontend"
+          SONARCLOUD_PROJECT_NAME = "idpay-portal-welfare-frontend"
+        }
+      ]
+    },
+    "idpay-asset-register-frontend" = {
+      repository_secrets = [
+        {
+          SONAR_TOKEN = data.azurerm_key_vault_secret.sonar_token.value
+        }
+      ]
+      repository_variables = [
+        {
+          SONARCLOUD_ORG          = "pagopa"
+          SONARCLOUD_PROJECT_KEY  = "pagopa_idpay-asset-register-frontend"
+          SONARCLOUD_PROJECT_NAME = "idpay-asset-register-frontend"
+        }
+      ]
+    },
+    "idpay-outbox-processor" = {
+      repository_secrets = [
+        {
+          SONAR_TOKEN = data.azurerm_key_vault_secret.sonar_token.value
+        }
+      ]
+      repository_variables = [
+        {
+          SONARCLOUD_ORG          = "pagopa"
+          SONARCLOUD_PROJECT_KEY  = "pagopa_idpay-outbox-processor"
+          SONARCLOUD_PROJECT_NAME = "idpay-outbox-processor"
+        }
+      ]
+    },
+    "idpay-self-expense-webview" = {
+      repository_secrets = [
+        {
+          SONAR_TOKEN = data.azurerm_key_vault_secret.sonar_token.value
+        }
+      ]
+      repository_variables = [
+        {
+          SONARCLOUD_ORG          = "pagopa"
+          SONARCLOUD_PROJECT_KEY  = "pagopa_idpay-self-expense-webview"
+          SONARCLOUD_PROJECT_NAME = "idpay-self-expense-webview"
+        }
+      ]
+    },
+    "idpay-portal-welfare-backend-role-permission" = {
+      repository_secrets = [
+        {
+          SONAR_TOKEN = data.azurerm_key_vault_secret.sonar_token.value
+        }
+      ]
+      repository_variables = [
+        {
+          SONARCLOUD_ORG          = "pagopa"
+          SONARCLOUD_PROJECT_KEY  = "pagopa_idpay-portal-welfare-backend-role-permission"
+          SONARCLOUD_PROJECT_NAME = "idpay-portal-welfare-backend-role-permission"
         }
       ]
     },
