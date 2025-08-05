@@ -5,7 +5,6 @@ module "container_app_environment" {
   location            = var.location
   resource_group_name = local.compute_rg_name
 
-
   subnet_id              = module.cae_env_snet.id
   internal_load_balancer = true
   zone_redundant         = var.env_short == "p" ? true : false

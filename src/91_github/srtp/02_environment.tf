@@ -3,10 +3,10 @@
 ##########################################
 resource "github_repository_environment" "env" {
 
-  for_each = toset(keys(local.repository))
+  for_each = local.github_environments
 
   repository          = each.key
-  environment         = "${var.location_short}-${var.env}"
+  environment         = local.current_env
   can_admins_bypass   = true
   prevent_self_review = true
 
