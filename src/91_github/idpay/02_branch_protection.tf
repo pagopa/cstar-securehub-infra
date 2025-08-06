@@ -123,3 +123,18 @@ resource "github_repository_ruleset" "uat_and_main" {
     }
   }
 }
+
+resource "null_resource" "change_allowed_merge_methods" {
+  for_each = local.repository
+ 
+  triggers = {
+    always_run = "${timestamp()}"
+  }
+
+  provisioner "local-exec" {
+    command = <<-EOT
+      sh change_allowed_merge_methods.sh pagopa ${each.key} develop squash
+      sh change_allowed_merge_methods.sh pagopa ${each.key} uat_and_main merge
+    EOT
+  }
+}
