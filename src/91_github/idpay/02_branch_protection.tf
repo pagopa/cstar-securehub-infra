@@ -126,7 +126,7 @@ resource "github_repository_ruleset" "uat_and_main" {
 
 resource "null_resource" "change_allowed_merge_methods" {
   for_each = local.repository
- 
+
   triggers = {
     always_run = "${timestamp()}"
   }
