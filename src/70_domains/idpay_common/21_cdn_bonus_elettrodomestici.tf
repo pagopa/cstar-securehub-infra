@@ -28,7 +28,7 @@ locals {
     {
       action = "Overwrite"
       name   = contains(["d"], var.env_short) ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
-      value  = "default-src 'self'; object-src 'none'; connect-src 'self' https://api-io.${var.dns_zone_prefix}.${var.external_domain}/ https://api-eu.mixpanel.com/track/; "
+      value  = "default-src 'self'; object-src 'none'; connect-src 'self' https://api-io.${var.dns_zone_prefix}.${var.external_domain}/ https://api-eu.mixpanel.com/track/ https://${var.mcshared_dns_zone_prefix}.${var.prefix}.${var.external_domain}/; "
     },
     {
       action = "Append"
@@ -122,7 +122,7 @@ locals {
         preserve_unmatched_path = false
       }
     }
-    ],
+  ],
   )
 
   # Calculate the total number of rewrite rules for subsequent order calculations
@@ -366,7 +366,7 @@ resource "azurerm_cdn_endpoint_custom_domain" "bonus_custom_domains" {
   # Enable HTTPS with CDN user defined certificate
   user_managed_https {
     key_vault_secret_id = data.azurerm_key_vault_certificate.bonus_elettrodomestici_cert_apex[
-      join("-", split(".", each.key))
+    join("-", split(".", each.key))
     ].versionless_secret_id
     tls_version = "TLS12"
   }
