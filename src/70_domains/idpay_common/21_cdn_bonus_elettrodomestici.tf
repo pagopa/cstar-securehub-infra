@@ -28,7 +28,7 @@ locals {
     {
       action = "Overwrite"
       name   = contains(["d"], var.env_short) ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
-      value  = "default-src 'self'; object-src 'none'; connect-src 'self' https://api-io.${var.dns_zone_prefix}.${var.external_domain}/ https://api-eu.mixpanel.com/track/; "
+      value  = "default-src 'self'; object-src 'none'; connect-src 'self' https://api-io.${var.dns_zone_prefix}.${var.external_domain}/ https://api-eu.mixpanel.com/track/ https://${var.mcshared_dns_zone_prefix}.${var.prefix}.${var.external_domain}/; "
     },
     {
       action = "Append"
@@ -38,7 +38,7 @@ locals {
     {
       action = "Append"
       name   = contains(["d"], var.env_short) ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
-      value  = "img-src 'self' https://assets.cdn.io.italia.it https://${module.cdn_idpay_bonuselettrodomestici.storage_primary_web_host} https://${var.env != "prod" ? "${var.env}." : ""}selfcare${local.selfare_temp_suffix}.pagopa.it https://selc${var.env_short}checkoutsa.z6.web.core.windows.net/institutions/ data:; "
+      value  = "img-src 'self' https://assets.cdn.io.italia.it https://${module.cdn_idpay_bonuselettrodomestici.storage_primary_web_host}; "
     },
     {
       action = "Append"
