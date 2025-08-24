@@ -55,16 +55,14 @@ module "cdn_idpay_welfare" {
 
   querystring_caching_behaviour = "IgnoreQueryString"
 
-  global_delivery_rule = {
-    cache_expiration_action       = []
-    cache_key_query_string_action = []
-    modify_request_header_action  = []
-
+  global_delivery_rules = [{
+    order = 1
     # HSTS
-    modify_response_header_action = [{
-      action = "Overwrite"
-      name   = "Strict-Transport-Security"
-      value  = "max-age=31536000"
+    modify_response_header_action = [
+      {
+        action = "Overwrite"
+        name   = "Strict-Transport-Security"
+        value  = "max-age=31536000"
       },
       # Content-Security-Policy (in Report mode)
       {
@@ -82,23 +80,29 @@ module "cdn_idpay_welfare" {
         name   = contains(["d"], var.env_short) ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
         value  = "img-src 'self' https://assets.cdn.io.italia.it https://${module.cdn_idpay_welfare.storage_primary_web_host} https://${var.env != "prod" ? "${var.env}." : ""}selfcare${local.selfare_temp_suffix}.pagopa.it https://selc${var.env_short}checkoutsa.z6.web.core.windows.net/institutions/ data:; "
       },
+    ]
+  },
+   {
+      order = 2
+    # HSTS
+    modify_response_header_action = [
       {
         action = "Append"
         name   = "X-Content-Type-Options"
         value  = "nosniff"
       }
-      # ,
-      # {
-      #   action = "Overwrite"
-      #   name   = "X-Frame-Options"
-      #   value  = "SAMEORIGIN"
-      # }
+      ,
+      {
+        action = "Overwrite"
+        name   = "X-Frame-Options"
+        value  = "SAMEORIGIN"
+      }
     ]
-  }
+  } ]
 
   delivery_rule_rewrite = concat([{
     name  = "defaultApplication"
-    order = 2
+    order = 10
     conditions = [
       {
         condition_type   = "url_path_condition"
@@ -120,7 +124,7 @@ module "cdn_idpay_welfare" {
   delivery_rule = [
     {
       name  = "robotsNoIndex"
-      order = 3 + length(local.spa)
+      order = 20 + length(local.spa)
 
       // conditions
       url_path_conditions = [{
@@ -157,7 +161,7 @@ module "cdn_idpay_welfare" {
     },
     {
       name  = "microcomponentsNoCache"
-      order = 4 + length(local.spa)
+      order = 30 + length(local.spa)
 
       // conditions
       url_path_conditions           = []
