@@ -146,19 +146,6 @@ locals {
           transforms       = null
         }
       ]
-      cookies_conditions            = []
-      device_conditions             = []
-      http_version_conditions       = []
-      post_arg_conditions           = []
-      query_string_conditions       = []
-      remote_address_conditions     = []
-      request_body_conditions       = []
-      request_header_conditions     = []
-      request_method_conditions     = []
-      request_scheme_conditions     = []
-      request_uri_conditions        = []
-      url_file_extension_conditions = []
-      url_file_name_conditions      = []
 
       // actions
       modify_response_header_actions = [
@@ -168,30 +155,12 @@ locals {
           value  = "noindex, nofollow"
         }
       ]
-      cache_expiration_actions       = []
-      cache_key_query_string_actions = []
-      modify_request_header_actions  = []
-      url_redirect_actions           = []
-      url_rewrite_actions            = []
     },
     {
       name  = "microcomponentsNoCache"
       order = 20 + local.total_rewrite_rules + 3
 
       // conditions
-      url_path_conditions           = []
-      cookies_conditions            = []
-      device_conditions             = []
-      http_version_conditions       = []
-      post_arg_conditions           = []
-      query_string_conditions       = []
-      remote_address_conditions     = []
-      request_body_conditions       = []
-      request_header_conditions     = []
-      request_method_conditions     = []
-      request_scheme_conditions     = []
-      request_uri_conditions        = []
-      url_file_extension_conditions = []
 
       url_file_name_conditions = [
         {
@@ -210,11 +179,6 @@ locals {
           value  = "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0"
         }
       ]
-      cache_expiration_actions       = []
-      cache_key_query_string_actions = []
-      modify_request_header_actions  = []
-      url_redirect_actions           = []
-      url_rewrite_actions            = []
     },
     {
       name  = "RootRedirect"
@@ -229,19 +193,6 @@ locals {
           transforms       = null
         }
       ]
-      cookies_conditions            = []
-      device_conditions             = []
-      http_version_conditions       = []
-      post_arg_conditions           = []
-      query_string_conditions       = []
-      remote_address_conditions     = []
-      request_body_conditions       = []
-      request_header_conditions     = []
-      request_method_conditions     = []
-      request_scheme_conditions     = []
-      request_uri_conditions        = []
-      url_file_extension_conditions = []
-      url_file_name_conditions      = []
 
       // actions
       url_redirect_actions = [
@@ -254,11 +205,6 @@ locals {
           query_string  = ""
         }
       ]
-      cache_expiration_actions       = []
-      cache_key_query_string_actions = []
-      modify_request_header_actions  = []
-      modify_response_header_actions = []
-      url_rewrite_actions            = []
     }
   ]
 }
@@ -305,8 +251,8 @@ module "cdn_idpay_bonuselettrodomestici" {
   # Application-specific Delivery Rules (rewrite only)
   delivery_rule_rewrite = local.app_delivery_rules
 
-  # # Generic Delivery Rules (including redirects)
-  # delivery_rule = local.additional_delivery_rules
+  # Generic Delivery Rules (including redirects)
+  delivery_rule = local.additional_delivery_rules
 
   tags = module.tag_config.tags
 }
