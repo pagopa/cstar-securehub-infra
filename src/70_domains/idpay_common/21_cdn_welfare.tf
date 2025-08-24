@@ -35,32 +35,25 @@ locals {
  */
 // public_cstar storage used to serve FE
 module "cdn_idpay_welfare" {
-  source = "./.terraform/modules/__v4__/cdn"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//cdn_frontdoor?ref=PAYMCLOUD-477-v-4-creazione-modulo-cdn-front-door-per-sostituire-cdn-classic-deprecata"
 
-  name                = "welfare"
-  prefix              = local.project_weu
+  cdn_prefix_name                    = "${local.project}welfare"
   resource_group_name = data.azurerm_resource_group.idpay_data_rg.name
   location            = var.location
   cdn_location        = var.location_weu
 
   hostname              = "welfare-italy.${data.azurerm_dns_zone.public_cstar.name}"
-  https_rewrite_enabled = true
 
   storage_account_name             = "${local.project}welcdnsa"
   storage_account_replication_type = var.idpay_cdn_storage_account_replication_type
-  index_document                   = "index.html"
-  error_404_document               = "error.html"
+  storage_account_index_document                   = "index.html"
+  storage_account_error_404_document               = "error.html"
 
   dns_zone_name                = data.azurerm_dns_zone.public_cstar.name
   dns_zone_resource_group_name = data.azurerm_dns_zone.public_cstar.resource_group_name
+  # keyvault_id = data.azurerm_key_vault.domain_kv.id
 
-  keyvault_resource_group_name = local.idpay_kv_rg_name
-  keyvault_subscription_id     = data.azurerm_subscription.current.subscription_id
-  keyvault_vault_name          = local.idpay_kv_name
-
-  querystring_caching_behaviour = "BypassCaching"
-
-  advanced_threat_protection_enabled = var.idpay_cdn_sa_advanced_threat_protection_enabled
+  querystring_caching_behaviour = "IgnoreQueryString"
 
   global_delivery_rule = {
     cache_expiration_action       = []
@@ -93,12 +86,13 @@ module "cdn_idpay_welfare" {
         action = "Append"
         name   = "X-Content-Type-Options"
         value  = "nosniff"
-      },
-      {
-        action = "Overwrite"
-        name   = "X-Frame-Options"
-        value  = "SAMEORIGIN"
       }
+      # ,
+      # {
+      #   action = "Overwrite"
+      #   name   = "X-Frame-Options"
+      #   value  = "SAMEORIGIN"
+      # }
     ]
   }
 
