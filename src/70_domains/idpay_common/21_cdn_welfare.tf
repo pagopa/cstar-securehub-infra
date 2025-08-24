@@ -37,18 +37,18 @@ locals {
 module "cdn_idpay_welfare" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//cdn_frontdoor?ref=PAYMCLOUD-477-v-4-creazione-modulo-cdn-front-door-per-sostituire-cdn-classic-deprecata"
 
-  cdn_prefix_name                    = "${local.project}-welfare"
+  cdn_prefix_name     = "${local.project}-welfare"
   resource_group_name = data.azurerm_resource_group.idpay_data_rg.name
   location            = var.location
 
-  hostname              = "welfare-italy.${data.azurerm_dns_zone.public_cstar.name}"
+  hostname                     = "welfare-italy.${data.azurerm_dns_zone.public_cstar.name}"
   dns_zone_name                = data.azurerm_dns_zone.public_cstar.name
   dns_zone_resource_group_name = data.azurerm_dns_zone.public_cstar.resource_group_name
 
-  storage_account_name             = "${local.project}welcdnsa"
-  storage_account_replication_type = var.idpay_cdn_storage_account_replication_type
-  storage_account_index_document                   = "index.html"
-  storage_account_error_404_document               = "error.html"
+  storage_account_name               = "${local.project}welcdnsa"
+  storage_account_replication_type   = var.idpay_cdn_storage_account_replication_type
+  storage_account_index_document     = "index.html"
+  storage_account_error_404_document = "error.html"
 
   querystring_caching_behaviour = "IgnoreQueryString"
 
@@ -78,24 +78,24 @@ module "cdn_idpay_welfare" {
         value  = "img-src 'self' https://assets.cdn.io.italia.it https://${module.cdn_idpay_welfare.storage_primary_web_host} https://${var.env != "prod" ? "${var.env}." : ""}selfcare${local.selfare_temp_suffix}.pagopa.it https://selc${var.env_short}checkoutsa.z6.web.core.windows.net/institutions/ data:; "
       },
     ]
-  },
-   {
+    },
+    {
       order = 2
-    # HSTS
-    modify_response_header_action = [
-      {
-        action = "Append"
-        name   = "X-Content-Type-Options"
-        value  = "nosniff"
-      }
-      ,
-      {
-        action = "Overwrite"
-        name   = "X-Frame-Options"
-        value  = "SAMEORIGIN"
-      }
-    ]
-  } ]
+      # HSTS
+      modify_response_header_action = [
+        {
+          action = "Append"
+          name   = "X-Content-Type-Options"
+          value  = "nosniff"
+        }
+        ,
+        {
+          action = "Overwrite"
+          name   = "X-Frame-Options"
+          value  = "SAMEORIGIN"
+        }
+      ]
+  }]
 
   delivery_rule_rewrite = concat([{
     name  = "defaultApplication"
