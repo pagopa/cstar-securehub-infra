@@ -37,21 +37,18 @@ locals {
 module "cdn_idpay_welfare" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//cdn_frontdoor?ref=PAYMCLOUD-477-v-4-creazione-modulo-cdn-front-door-per-sostituire-cdn-classic-deprecata"
 
-  cdn_prefix_name                    = "${local.project}welfare"
+  cdn_prefix_name                    = "${local.project}-welfare"
   resource_group_name = data.azurerm_resource_group.idpay_data_rg.name
   location            = var.location
-  cdn_location        = var.location_weu
 
   hostname              = "welfare-italy.${data.azurerm_dns_zone.public_cstar.name}"
+  dns_zone_name                = data.azurerm_dns_zone.public_cstar.name
+  dns_zone_resource_group_name = data.azurerm_dns_zone.public_cstar.resource_group_name
 
   storage_account_name             = "${local.project}welcdnsa"
   storage_account_replication_type = var.idpay_cdn_storage_account_replication_type
   storage_account_index_document                   = "index.html"
   storage_account_error_404_document               = "error.html"
-
-  dns_zone_name                = data.azurerm_dns_zone.public_cstar.name
-  dns_zone_resource_group_name = data.azurerm_dns_zone.public_cstar.resource_group_name
-  # keyvault_id = data.azurerm_key_vault.domain_kv.id
 
   querystring_caching_behaviour = "IgnoreQueryString"
 
