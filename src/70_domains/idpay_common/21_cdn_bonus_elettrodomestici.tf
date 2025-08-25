@@ -17,6 +17,13 @@ locals {
   # All bonus elettrodomestici zones apex
   all_bonus_zones_apex = data.azurerm_dns_zone.bonus_elettrodomestici_apex
 
+  custom_domains = [for z in local.all_bonus_zones_apex : {
+    domain_name                 = z.name
+    dns_name                    = z.name
+    dns_resource_group_name  = z.resource_group_name
+    ttl                         = var.env != "p" ? 300 : 3600
+  }]
+
   # Security Headers - Applied globally to all responses
   # These headers enhance security by preventing common attacks
   security_headers_part1 = [
@@ -219,19 +226,15 @@ module "cdn_idpay_bonuselettrodomestici" {
   resource_group_name = data.azurerm_resource_group.idpay_data_rg.name
   location            = var.location
 
-  enable_custom_domain = false
-
   # Storage Configuration
   storage_account_name               = local.cdn_storage_account_name
   storage_account_replication_type   = var.idpay_cdn_storage_account_replication_type
   storage_account_index_document     = local.cdn_index_document
   storage_account_error_404_document = local.cdn_error_document
 
-  # Security Configuration
-  https_rewrite_enabled = true
-
   # Key Vault Configuration
   keyvault_id = data.azurerm_key_vault.domain_kv.id
+  tenant_id = data.azurerm_client_config.current.tenant_id
 
   # Caching Configuration
   querystring_caching_behaviour = "IgnoreQueryString"
@@ -254,9 +257,11 @@ module "cdn_idpay_bonuselettrodomestici" {
   # Generic Delivery Rules (including redirects)
   delivery_rule = local.additional_delivery_rules
 
+  # Domain Configuration
+  custom_domains = local.custom_domains
+
   tags = module.tag_config.tags
 }
-
 
 # /**
 #  * DNS Records for all bonus elettrodomestici apex zones
