@@ -41,9 +41,14 @@ module "cdn_idpay_welfare" {
   resource_group_name = data.azurerm_resource_group.idpay_data_rg.name
   location            = var.location
 
-  hostname                     = "welfare-italy.${data.azurerm_dns_zone.public_cstar.name}"
-  dns_zone_name                = data.azurerm_dns_zone.public_cstar.name
-  dns_zone_resource_group_name = data.azurerm_dns_zone.public_cstar.resource_group_name
+  custom_domains = [
+    {
+      domain_name             = "welfare-italy.${data.azurerm_dns_zone.public_cstar.name}"
+      dns_name                = data.azurerm_dns_zone.public_cstar.name
+      dns_resource_group_name = data.azurerm_dns_zone.public_cstar.resource_group_name
+      ttl                     = var.env != "p" ? 300 : 3600
+    }
+  ]
 
   storage_account_name               = "${local.project}welcdnsa"
   storage_account_replication_type   = var.idpay_cdn_storage_account_replication_type
