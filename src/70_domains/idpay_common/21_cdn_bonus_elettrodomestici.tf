@@ -24,43 +24,82 @@ locals {
     ttl                         = var.env != "p" ? 300 : 3600
   }]
 
-  # Security Headers - Applied globally to all responses
-  # These headers enhance security by preventing common attacks
-  security_headers_part1 = [
+  #--------------------------------------------------
+  # ⚠️ Redirect Rules - Handles root URL redirection to main domain
+  #--------------------------------------------------
+  bonus_redirect_urls = [
     {
-      action = "Overwrite"
-      name   = contains(["d"], var.env_short) ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
-      value  = "default-src 'self'; object-src 'none'; connect-src 'self' https://api-io.${var.dns_zone_prefix}.${var.external_domain}/ https://api-eu.mixpanel.com/track/ https://${var.mcshared_dns_zone_prefix}.${var.prefix}.${var.external_domain}/; "
-    },
-    {
-      action = "Append"
-      name   = contains(["d"], var.env_short) ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
-      value  = "script-src 'self'; style-src 'self' 'unsafe-inline' https://selfcare${local.selfare_temp_suffix}.pagopa.it/assets/font/selfhostedfonts.css; worker-src 'none'; font-src 'self' https://selfcare${local.selfare_temp_suffix}.pagopa.it/assets/font/; "
-    },
-    {
-      action = "Append"
-      name   = contains(["d"], var.env_short) ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
-      value  = "img-src 'self' https://assets.cdn.io.italia.it https://${module.cdn_idpay_bonuselettrodomestici.storage_primary_web_host}; "
-    },
-  ]
+      name  = "RootRedirect"
+      order = 0
+      behavior_on_match = "Stop"
 
-  security_headers_part2 = [
-    {
-      action = "Overwrite"
-      name   = "Strict-Transport-Security"
-      value  = "max-age=31536000"
-    },
-    {
-      action = "Append"
-      name   = "X-Content-Type-Options"
-      value  = "nosniff"
-    },
-    {
-      action = "Overwrite"
-      name   = "X-Frame-Options"
-      value  = "SAMEORIGIN"
+      // conditions
+      url_path_conditions = [
+        {
+          operator         = "Equal"
+          match_values     = ["/"]
+          negate_condition = false
+          transforms       = null
+        }
+      ]
+
+      // actions
+      url_redirect_actions = [
+        {
+          redirect_type = "Found"
+          protocol      = "Https"
+          hostname      = "ioapp.it"
+          path          = "/"
+          fragment      = ""
+          query_string  = ""
+        }
+      ]
     }
   ]
+
+  # Security Headers - Applied globally to all responses
+  # These headers enhance security by preventing common attacks
+  global_delivery_rules = [
+    {
+      order                         = 1
+      modify_response_header_action = [
+        {
+          action = "Overwrite"
+          name   = contains(["d"], var.env_short) ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
+          value  = "default-src 'self'; object-src 'none'; connect-src 'self' https://api-io.${var.dns_zone_prefix}.${var.external_domain}/ https://api-eu.mixpanel.com/track/ https://${var.mcshared_dns_zone_prefix}.${var.prefix}.${var.external_domain}/; "
+        },
+        {
+          action = "Append"
+          name   = contains(["d"], var.env_short) ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
+          value  = "script-src 'self'; style-src 'self' 'unsafe-inline' https://selfcare${local.selfare_temp_suffix}.pagopa.it/assets/font/selfhostedfonts.css; worker-src 'none'; font-src 'self' https://selfcare${local.selfare_temp_suffix}.pagopa.it/assets/font/; "
+        },
+        {
+          action = "Append"
+          name   = contains(["d"], var.env_short) ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
+          value  = "img-src 'self' https://assets.cdn.io.italia.it https://${module.cdn_idpay_bonuselettrodomestici.storage_primary_web_host}; "
+        },
+      ]
+    },
+    {
+      order                         = 2
+      modify_response_header_action = [
+        {
+          action = "Overwrite"
+          name   = "Strict-Transport-Security"
+          value  = "max-age=31536000"
+        },
+        {
+          action = "Append"
+          name   = "X-Content-Type-Options"
+          value  = "nosniff"
+        },
+        {
+          action = "Overwrite"
+          name   = "X-Frame-Options"
+          value  = "SAMEORIGIN"
+        }
+      ]
+  }]
 
   # Application Delivery Rules - URL Rewrite Rules
   # These rules handle routing for different frontend applications
@@ -139,7 +178,7 @@ locals {
   total_rewrite_rules = length(local.app_delivery_rules)
 
   # Additional Delivery Rules - Non-rewrite rules (redirects, headers, caching)
-  additional_delivery_rules = [
+  delivery_custom_rules = [
     {
       name  = "robotsNoIndex"
       order = 20 + local.total_rewrite_rules + 2
@@ -187,33 +226,9 @@ locals {
         }
       ]
     },
-    {
-      name  = "RootRedirect"
-      order = 20 + local.total_rewrite_rules + 4
-
-      // conditions
-      url_path_conditions = [
-        {
-          operator         = "Equal"
-          match_values     = ["/"]
-          negate_condition = false
-          transforms       = null
-        }
-      ]
-
-      // actions
-      url_redirect_actions = [
-        {
-          redirect_type = "Found"
-          protocol      = "Https"
-          hostname      = "ioapp.it"
-          path          = "/"
-          fragment      = ""
-          query_string  = ""
-        }
-      ]
-    }
   ]
+
+
 }
 
 // Public CDN to serve frontend - main domain
@@ -240,22 +255,16 @@ module "cdn_idpay_bonuselettrodomestici" {
   querystring_caching_behaviour = "IgnoreQueryString"
   log_analytics_workspace_id    = data.azurerm_log_analytics_workspace.core_log_analytics.id
 
+  delivery_rule_redirects = local.bonus_redirect_urls
+
   # Global Delivery Rules
-  global_delivery_rules = [
-    {
-      order                         = 1
-      modify_response_header_action = local.security_headers_part1
-    },
-    {
-      order                         = 2
-      modify_response_header_action = local.security_headers_part2
-  }]
+  global_delivery_rules = local.global_delivery_rules
 
   # Application-specific Delivery Rules (rewrite only)
   delivery_rule_rewrite = local.app_delivery_rules
 
   # Generic Delivery Rules (including redirects)
-  delivery_rule = local.additional_delivery_rules
+  delivery_custom_rules = local.delivery_custom_rules
 
   # Domain Configuration
   custom_domains = local.custom_domains
