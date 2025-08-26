@@ -11,9 +11,6 @@ locals {
   # DNS Zone Key for the main CDN (the one configured in the module)
   dns_zone_key = var.env_short != "p" ? "${var.env}.bonuselettrodomestici.it" : "bonuselettrodomestici.it"
 
-  # DNS Zone Reference for the main CDN
-  bonus_dns_zone = data.azurerm_dns_zone.bonus_elettrodomestici_apex[local.dns_zone_key]
-
   # All bonus elettrodomestici zones apex
   all_bonus_zones_apex = data.azurerm_dns_zone.bonus_elettrodomestici_apex
 
@@ -227,8 +224,6 @@ locals {
       ]
     },
   ]
-
-
 }
 
 // Public CDN to serve frontend - main domain
@@ -271,83 +266,3 @@ module "cdn_idpay_bonuselettrodomestici" {
 
   tags = module.tag_config.tags
 }
-
-# /**
-#  * DNS Records for all bonus elettrodomestici apex zones
-#  * Includes: .it, .com, .info, .io, .net, .eu, pagopa.it
-#  */
-#
-# # A Record for APEX domain for ALL bonus elettrodomestici zones
-# resource "azurerm_dns_a_record" "bonus_all_zones_apex" {
-#   for_each = local.all_bonus_zones_apex
-#
-#   name                = "@"
-#   zone_name           = each.value.name
-#   resource_group_name = each.value.resource_group_name
-#   ttl                 = 300
-#   target_resource_id  = module.cdn_idpay_bonuselettrodomestici.id
-#
-#   tags = module.tag_config.tags
-# }
-#
-# # CNAME cdnverify record for ALL bonus elettrodomestici zones
-# resource "azurerm_dns_cname_record" "bonus_all_zones_cdnverify" {
-#   for_each = local.all_bonus_zones_apex
-#
-#   name                = "cdnverify"
-#   zone_name           = each.value.name
-#   resource_group_name = each.value.resource_group_name
-#   ttl                 = 300
-#   record              = "cdnverify.${module.cdn_idpay_bonuselettrodomestici.hostname}"
-#
-#   tags = module.tag_config.tags
-# }
-#
-# /**
-#  * Custom Domain Configuration for Azure CDN (Classic)
-#  * Associates all bonus elettrodomestici domains to the CDN endpoint
-#  * Note: Using azurerm_cdn_endpoint_custom_domain for Azure CDN Classic
-#  */
-#
-# # Custom Domain for each bonus elettrodomestici zone apex - Azure CDN Classic
-# resource "azurerm_cdn_endpoint_custom_domain" "bonus_custom_domains" {
-#   for_each = local.all_bonus_zones_apex
-#
-#   name            = replace(replace(each.key, ".", "-"), "_", "-")
-#   cdn_endpoint_id = module.cdn_idpay_bonuselettrodomestici.id
-#   host_name       = each.value.name
-#
-#   # Enable HTTPS with CDN user defined certificate
-#   user_managed_https {
-#     key_vault_secret_id = data.azurerm_key_vault_certificate.bonus_elettrodomestici_cert_apex[
-#       join("-", split(".", each.key))
-#     ].versionless_secret_id
-#     tls_version = "TLS12"
-#   }
-#
-#   # Depends on DNS records for domain verification
-#   depends_on = [
-#     azurerm_dns_a_record.bonus_all_zones_apex,
-#     azurerm_dns_cname_record.bonus_all_zones_cdnverify
-#   ]
-# }
-#
-# data "azuread_service_principal" "microsoft_cdn" {
-#   display_name = "Microsoft.AzureFrontDoor-Cdn"
-# }
-#
-# resource "azurerm_key_vault_access_policy" "cdn_certificates_policy" {
-#   key_vault_id = data.azurerm_key_vault.domain_kv.id
-#   tenant_id    = data.azurerm_client_config.current.tenant_id
-#   object_id    = data.azuread_service_principal.microsoft_cdn.object_id
-#
-#   certificate_permissions = [
-#     "Get",
-#     "List"
-#   ]
-#
-#   secret_permissions = [
-#     "Get",
-#     "List"
-#   ]
-# }
