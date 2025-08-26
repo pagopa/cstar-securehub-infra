@@ -35,6 +35,7 @@ locals {
  */
 // public_cstar storage used to serve FE
 module "cdn_idpay_welfare" {
+
   source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//cdn_frontdoor?ref=PAYMCLOUD-477-v-4-creazione-modulo-cdn-front-door-per-sostituire-cdn-classic-deprecata"
 
   cdn_prefix_name     = "${local.project}-welfare"
@@ -61,11 +62,6 @@ module "cdn_idpay_welfare" {
     order = 1
     # HSTS
     modify_response_header_action = [
-      {
-        action = "Overwrite"
-        name   = "Strict-Transport-Security"
-        value  = "max-age=31536000"
-      },
       # Content-Security-Policy (in Report mode)
       {
         action = "Overwrite"
@@ -89,11 +85,15 @@ module "cdn_idpay_welfare" {
       # HSTS
       modify_response_header_action = [
         {
+          action = "Overwrite"
+          name   = "Strict-Transport-Security"
+          value  = "max-age=31536000"
+        },
+        {
           action = "Append"
           name   = "X-Content-Type-Options"
           value  = "nosniff"
-        }
-        ,
+        },
         {
           action = "Overwrite"
           name   = "X-Frame-Options"
@@ -123,7 +123,7 @@ module "cdn_idpay_welfare" {
     local.spa
   )
 
-  delivery_rule = [
+  delivery_custom_rules = [
     {
       name  = "robotsNoIndex"
       order = 20 + length(local.spa)
@@ -168,17 +168,17 @@ module "cdn_idpay_welfare" {
   log_analytics_workspace_id = data.azurerm_log_analytics_workspace.core_log_analytics.id
 }
 
-# #
-# # 🔑 Cannot be merged in local values, because contains sensitive data
-# #
-# resource "azurerm_key_vault_secret" "idpay_welfare_cdn_storage_primary_access_key" {
-#   name         = "web-storage-access-key"
-#   value        = module.cdn_idpay_welfare.storage_primary_access_key
-#   content_type = "text/plain"
 #
-#   key_vault_id = data.azurerm_key_vault.domain_kv.id
-# }
+# 🔑 Cannot be merged in local values, because contains sensitive data
 #
+resource "azurerm_key_vault_secret" "idpay_welfare_cdn_storage_primary_access_key" {
+  name         = "web-storage-access-key"
+  value        = module.cdn_idpay_welfare.storage_primary_access_key
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.domain_kv.id
+}
+
 resource "azurerm_key_vault_secret" "idpay_welfare_cdn_storage_primary_connection_string" {
   name         = "web-storage-connection-string"
   value        = module.cdn_idpay_welfare.storage_primary_connection_string
@@ -186,11 +186,11 @@ resource "azurerm_key_vault_secret" "idpay_welfare_cdn_storage_primary_connectio
 
   key_vault_id = data.azurerm_key_vault.domain_kv.id
 }
-#
-# resource "azurerm_key_vault_secret" "idpay_welfare_cdn_storage_blob_connection_string" {
-#   name         = "web-storage-blob-connection-string"
-#   value        = module.cdn_idpay_welfare.storage_primary_blob_connection_string
-#   content_type = "text/plain"
-#
-#   key_vault_id = data.azurerm_key_vault.domain_kv.id
-# }
+
+resource "azurerm_key_vault_secret" "idpay_welfare_cdn_storage_blob_connection_string" {
+  name         = "web-storage-blob-connection-string"
+  value        = module.cdn_idpay_welfare.storage_primary_blob_connection_string
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.domain_kv.id
+}
