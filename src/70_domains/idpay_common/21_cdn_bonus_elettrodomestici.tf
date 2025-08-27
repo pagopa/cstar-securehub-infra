@@ -108,24 +108,24 @@ locals {
       order = 10
 
       url_path_conditions = [{
-          operator         = "BeginsWith"
-          match_values     = ["/utente"]
-          negate_condition = false
-          transforms       = null
+        operator         = "BeginsWith"
+        match_values     = ["/utente"]
+        negate_condition = false
+        transforms       = null
       }]
 
       url_file_extension_conditions = [{
-          operator         = "LessThanOrEqual"
-          match_values     = ["0"]
-          negate_condition = false
-          transforms       = []
+        operator         = "LessThanOrEqual"
+        match_values     = ["0"]
+        negate_condition = false
+        transforms       = []
       }]
 
       url_file_extension_conditions = [{
-          operator         = "BeginsWith"
-          match_values     = ["/utente/assets"]
-          negate_condition = true
-          transforms       = []
+        operator         = "BeginsWith"
+        match_values     = ["/utente/assets"]
+        negate_condition = true
+        transforms       = []
       }]
 
       url_rewrite_actions = [{
@@ -140,24 +140,24 @@ locals {
       order = 11
 
       url_path_conditions = [{
-          operator         = "BeginsWith"
-          match_values     = ["/esercente"]
-          negate_condition = false
-          transforms       = null
+        operator         = "BeginsWith"
+        match_values     = ["/esercente"]
+        negate_condition = false
+        transforms       = null
       }]
 
       url_path_conditions = [{
-          operator         = "BeginsWith"
-          match_values     = ["/esercente/assets"]
-          negate_condition = true
-          transforms       = []
+        operator         = "BeginsWith"
+        match_values     = ["/esercente/assets"]
+        negate_condition = true
+        transforms       = []
       }]
 
       url_file_extension_conditions = [{
-          operator         = "LessThanOrEqual"
-          match_values     = ["0"]
-          negate_condition = false
-          transforms       = []
+        operator         = "LessThanOrEqual"
+        match_values     = ["0"]
+        negate_condition = false
+        transforms       = []
       }]
 
       url_rewrite_actions = [{

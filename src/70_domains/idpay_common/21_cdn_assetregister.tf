@@ -108,20 +108,20 @@ module "cdn_idpay_assetregister" {
   ]
 
   delivery_rule_rewrites = concat([{
-      name  = "RewritesDefaultApplication"
-      order = 20
+    name  = "RewritesDefaultApplication"
+    order = 20
 
-      url_path_conditions = [{
-        operator         = "Equal"
-        match_values     = ["/"]
-        negate_condition = false
-        transforms       = null
-      }]
-      url_rewrite_actions = [{
-        source_pattern          = "/"
-        destination             = "/registro-dei-beni/index.html"
-        preserve_unmatched_path = false
-      }]
+    url_path_conditions = [{
+      operator         = "Equal"
+      match_values     = ["/"]
+      negate_condition = false
+      transforms       = null
+    }]
+    url_rewrite_actions = [{
+      source_pattern          = "/"
+      destination             = "/registro-dei-beni/index.html"
+      preserve_unmatched_path = false
+    }]
     }],
     local.spa_asset_rewrite
   )
