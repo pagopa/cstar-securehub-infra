@@ -15,10 +15,10 @@ locals {
   all_bonus_zones_apex = data.azurerm_dns_zone.bonus_elettrodomestici_apex
 
   custom_domains = [for z in local.all_bonus_zones_apex : {
-    domain_name                 = z.name
-    dns_name                    = z.name
-    dns_resource_group_name  = z.resource_group_name
-    ttl                         = var.env != "p" ? 300 : 3600
+    domain_name             = z.name
+    dns_name                = z.name
+    dns_resource_group_name = z.resource_group_name
+    ttl                     = var.env != "p" ? 300 : 3600
   }]
 
   #--------------------------------------------------
@@ -26,8 +26,8 @@ locals {
   #--------------------------------------------------
   bonus_redirect_urls = [
     {
-      name  = "RootRedirect"
-      order = 0
+      name              = "RootRedirect"
+      order             = 0
       behavior_on_match = "Stop"
 
       // conditions
@@ -58,7 +58,7 @@ locals {
   # These headers enhance security by preventing common attacks
   global_delivery_rules = [
     {
-      order                         = 1
+      order = 1
       modify_response_header_action = [
         {
           action = "Overwrite"
@@ -68,7 +68,7 @@ locals {
         {
           action = "Append"
           name   = contains(["d"], var.env_short) ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
-          value  = "script-src 'self'; style-src 'self' 'unsafe-inline' https://selfcare${local.selfare_temp_suffix}.pagopa.it/assets/font/selfhostedfonts.css; worker-src 'none'; font-src 'self' https://selfcare${local.selfare_temp_suffix}.pagopa.it/assets/font/; "
+          value  = "script-src 'self'; style-src 'self' 'unsafe-inline' https://${local.selfare_subdomain}.pagopa.it/assets/font/selfhostedfonts.css; worker-src 'none'; font-src 'self' https://${local.selfare_subdomain}.pagopa.it/assets/font/; "
         },
         {
           action = "Append"
@@ -78,7 +78,7 @@ locals {
       ]
     },
     {
-      order                         = 2
+      order = 2
       modify_response_header_action = [
         {
           action = "Overwrite"
@@ -244,7 +244,7 @@ module "cdn_idpay_bonuselettrodomestici" {
 
   # Key Vault Configuration
   keyvault_id = data.azurerm_key_vault.domain_kv.id
-  tenant_id = data.azurerm_client_config.current.tenant_id
+  tenant_id   = data.azurerm_client_config.current.tenant_id
 
   # Caching Configuration
   querystring_caching_behaviour = "IgnoreQueryString"
