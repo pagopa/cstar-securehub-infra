@@ -27,7 +27,7 @@ module "cdn_idpay_selfcare" {
     order = 1
 
     # HSTS
-    modify_response_header_action = [{
+    modify_response_header_actions = [{
       action = "Overwrite"
       name   = "Strict-Transport-Security"
       value  = "max-age=31536000"
@@ -37,7 +37,7 @@ module "cdn_idpay_selfcare" {
 
   // https://antbutcher.medium.com/hosting-a-react-js-app-on-azure-blob-storage-azure-cdn-for-ssl-and-routing-8fdf4a48feeb
   // it is important to add base tag in index.html too (i.e. <base href="/">)
-  delivery_rule_rewrite = [{
+  delivery_rule_rewrites = [{
     name  = "RewriteRules"
     order = 2
 

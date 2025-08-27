@@ -59,7 +59,7 @@ module "cdn_idpay_welfare" {
   global_delivery_rules = [{
     order = 1
     # HSTS
-    modify_response_header_action = [
+    modify_response_header_actions = [
       # Content-Security-Policy (in Report mode)
       {
         action = "Overwrite"
@@ -81,7 +81,7 @@ module "cdn_idpay_welfare" {
     {
       order = 2
       # HSTS
-      modify_response_header_action = [
+      modify_response_header_actions = [
         {
           action = "Overwrite"
           name   = "Strict-Transport-Security"
@@ -100,7 +100,7 @@ module "cdn_idpay_welfare" {
       ]
   }]
 
-  delivery_rule_rewrite = concat(
+  delivery_rule_rewrites = concat(
     [
       {
         name  = "RewriteDefaultApplication"

@@ -59,7 +59,7 @@ locals {
   global_delivery_rules = [
     {
       order = 1
-      modify_response_header_action = [
+      modify_response_header_actions = [
         {
           action = "Overwrite"
           name   = contains(["d"], var.env_short) ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
@@ -79,7 +79,7 @@ locals {
     },
     {
       order = 2
-      modify_response_header_action = [
+      modify_response_header_actions = [
         {
           action = "Overwrite"
           name   = "Strict-Transport-Security"
@@ -104,69 +104,67 @@ locals {
   app_delivery_rules = concat([
     # Cittadino Application Rule - Handles citizen portal routing
     {
-      name  = "CittadinoApplication"
+      name  = "RewriteUtenteCittadinoApplication"
       order = 10
-      conditions = [
-        {
-          condition_type   = "url_path_condition"
+
+      url_path_conditions = [{
           operator         = "BeginsWith"
           match_values     = ["/utente"]
           negate_condition = false
           transforms       = null
-        },
-        {
-          condition_type   = "url_file_extension_condition"
+      }]
+
+      url_file_extension_conditions = [{
           operator         = "LessThanOrEqual"
           match_values     = ["0"]
           negate_condition = false
           transforms       = []
-        },
-        {
-          condition_type   = "url_file_extension_condition"
+      }]
+
+      url_file_extension_conditions = [{
           operator         = "BeginsWith"
           match_values     = ["/utente/assets"]
           negate_condition = true
           transforms       = []
-        }
-      ]
-      url_rewrite_action = {
+      }]
+
+      url_rewrite_actions = [{
         source_pattern          = "/utente"
         destination             = "/utente/index.html"
         preserve_unmatched_path = false
-      }
+      }]
     },
     # Esercenti Application Rule - Handles merchant portal routing
     {
-      name  = "PortaleEsercentiApplication"
+      name  = "RewritePortaleEsercentiApplication"
       order = 11
-      conditions = [
-        {
-          condition_type   = "url_path_condition"
+
+      url_path_conditions = [{
           operator         = "BeginsWith"
           match_values     = ["/esercente"]
           negate_condition = false
           transforms       = null
-        },
-        {
-          condition_type   = "url_file_extension_condition"
-          operator         = "LessThanOrEqual"
-          match_values     = ["0"]
-          negate_condition = false
-          transforms       = []
-        },
-        {
-          condition_type   = "url_path_condition"
+      }]
+
+      url_path_conditions = [{
           operator         = "BeginsWith"
           match_values     = ["/esercente/assets"]
           negate_condition = true
           transforms       = []
-        }
-      ]
-      url_rewrite_action = {
+      }]
+
+      url_file_extension_conditions = [{
+          operator         = "LessThanOrEqual"
+          match_values     = ["0"]
+          negate_condition = false
+          transforms       = []
+      }]
+
+      url_rewrite_actions = [{
         source_pattern          = "/esercente"
         destination             = "/esercente/index.html"
         preserve_unmatched_path = false
-      }
+      }]
     }
     ],
   )
@@ -256,7 +254,7 @@ module "cdn_idpay_bonuselettrodomestici" {
   global_delivery_rules = local.global_delivery_rules
 
   # Application-specific Delivery Rules (rewrite only)
-  delivery_rule_rewrite = local.app_delivery_rules
+  delivery_rule_rewrites = local.app_delivery_rules
 
   # Generic Delivery Rules (including redirects)
   delivery_custom_rules = local.delivery_custom_rules

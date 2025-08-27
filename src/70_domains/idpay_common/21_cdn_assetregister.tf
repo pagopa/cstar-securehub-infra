@@ -66,7 +66,7 @@ module "cdn_idpay_assetregister" {
   global_delivery_rules = [{
     order = 1
     # HSTS
-    modify_response_header_action = [
+    modify_response_header_actions = [
       {
         action = "Append"
         name   = contains(["d"], var.env_short) ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
@@ -88,7 +88,7 @@ module "cdn_idpay_assetregister" {
     {
       order = 2
       # HSTS
-      modify_response_header_action = [{
+      modify_response_header_actions = [{
         action = "Overwrite"
         name   = "Strict-Transport-Security"
         value  = "max-age=31536000"
@@ -107,7 +107,7 @@ module "cdn_idpay_assetregister" {
     }
   ]
 
-  delivery_rule_rewrite = concat([{
+  delivery_rule_rewrites = concat([{
       name  = "RewritesDefaultApplication"
       order = 20
 
