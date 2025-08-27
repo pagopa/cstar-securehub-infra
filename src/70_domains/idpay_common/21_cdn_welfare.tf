@@ -1,31 +1,29 @@
 locals {
-  selfare_temp_suffix = "-italy"
-  spa = [
+  spa_rewrite_urls = [
     for i, spa in var.single_page_applications_roots_dirs :
     {
-      name  = replace(replace("SPA-${spa}", "-", ""), "/", "0")
+      name  = replace(replace("rewrite-SPA-${spa}", "-", ""), "/", "0")
       order = i + 3 // +3 required because the order start from 1: 1 is reserved for default application redirect; 2 is reserved for the https rewrite;
-      conditions = [
-        {
-          condition_type   = "url_path_condition"
-          operator         = "BeginsWith"
-          match_values     = ["/${spa}/"]
-          negate_condition = false
-          transforms       = null
-        },
-        {
-          condition_type   = "url_file_extension_condition"
-          operator         = "LessThanOrEqual"
-          match_values     = ["0"]
-          negate_condition = false
-          transforms       = null
-        },
-      ]
-      url_rewrite_action = {
+
+      url_path_conditions = [{
+        operator         = "BeginsWith"
+        match_values     = ["/${spa}/"]
+        negate_condition = false
+        transforms       = null
+      }]
+
+      url_file_extension_conditions = [{
+        operator         = "LessThanOrEqual"
+        match_values     = ["0"]
+        negate_condition = false
+        transforms       = null
+      }]
+
+      url_rewrite_actions = [{
         source_pattern          = "/${spa}/"
         destination             = "/${spa}/index.html"
         preserve_unmatched_path = false
-      }
+      }]
     }
   ]
 }
@@ -71,12 +69,12 @@ module "cdn_idpay_welfare" {
       {
         action = "Append"
         name   = contains(["d"], var.env_short) ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
-        value  = "script-src 'self'; style-src 'self' 'unsafe-inline' https://selfcare${local.selfare_temp_suffix}.pagopa.it/assets/font/selfhostedfonts.css; worker-src 'none'; font-src 'self' https://selfcare${local.selfare_temp_suffix}.pagopa.it/assets/font/; "
+        value  = "script-src 'self'; style-src 'self' 'unsafe-inline' https://${local.selfare_subdomain}.pagopa.it/assets/font/selfhostedfonts.css; worker-src 'none'; font-src 'self' https://${local.selfare_subdomain}.pagopa.it/assets/font/; "
       },
       {
         action = "Append"
         name   = contains(["d"], var.env_short) ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
-        value  = "img-src 'self' https://assets.cdn.io.italia.it https://${module.cdn_idpay_welfare.storage_primary_web_host} https://${var.env != "prod" ? "${var.env}." : ""}selfcare${local.selfare_temp_suffix}.pagopa.it https://selc${var.env_short}checkoutsa.z6.web.core.windows.net/institutions/ data:; "
+        value  = "img-src 'self' https://assets.cdn.io.italia.it https://${module.cdn_idpay_welfare.storage_primary_web_host} https://${var.env != "prod" ? "${var.env}." : ""}${local.selfare_subdomain}.pagopa.it https://selc${var.env_short}checkoutsa.z6.web.core.windows.net/institutions/ data:; "
       },
     ]
     },
@@ -102,31 +100,32 @@ module "cdn_idpay_welfare" {
       ]
   }]
 
-  delivery_rule_rewrite = concat([{
-    name  = "defaultApplication"
-    order = 10
-    conditions = [
+  delivery_rule_rewrite = concat(
+    [
       {
-        condition_type   = "url_path_condition"
-        operator         = "Equal"
-        match_values     = ["/"]
-        negate_condition = false
-        transforms       = null
+        name  = "RewriteDefaultApplication"
+        order = 10
+        // conditions
+        url_path_conditions = [{
+          operator         = "Equal"
+          match_values     = ["/"]
+          negate_condition = false
+          transforms       = null
+        }]
+        url_rewrite_actions = [{
+          source_pattern          = "/"
+          destination             = "/portale-enti/index.html"
+          preserve_unmatched_path = false
+        }]
       }
-    ]
-    url_rewrite_action = {
-      source_pattern          = "/"
-      destination             = "/portale-enti/index.html"
-      preserve_unmatched_path = false
-    }
-    }],
-    local.spa
+    ],
+    local.spa_rewrite_urls
   )
 
   delivery_custom_rules = [
     {
       name  = "robotsNoIndex"
-      order = 20 + length(local.spa)
+      order = 20 + length(local.spa_rewrite_urls)
 
       // conditions
       url_path_conditions = [{
@@ -145,7 +144,7 @@ module "cdn_idpay_welfare" {
     },
     {
       name  = "microcomponentsNoCache"
-      order = 30 + length(local.spa)
+      order = 30 + length(local.spa_rewrite_urls)
 
       // conditions
       url_file_name_conditions = [{
