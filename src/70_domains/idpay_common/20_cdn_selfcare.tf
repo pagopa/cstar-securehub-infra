@@ -67,7 +67,7 @@ module "cdn_idpay_selfcare" {
 }
 
 locals {
-  selfcare-issuer = "https://${var.env != "prod" ? "${var.env}." : ""}selfcare-italy.pagopa.it"
+  selfcare-issuer = "https://${var.env != "prod" ? "${var.env}." : ""}selfcare.pagopa.it"
 }
 
 resource "azurerm_storage_blob" "oidc_configuration" {
