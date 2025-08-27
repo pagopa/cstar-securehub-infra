@@ -1,0 +1,7 @@
+prefix         = "cstar"
+env            = "prod"
+env_short      = "p"
+domain         = "idpay"
+location_short = "itn"
+aws_region     = "eu-central-1"
+aws_profile    = "cstar-prod"
