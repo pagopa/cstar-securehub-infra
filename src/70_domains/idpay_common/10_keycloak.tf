@@ -263,52 +263,52 @@ resource "keycloak_realm_user_profile" "user_profile" {
   unmanaged_attribute_policy = "ENABLED"
 
   attribute {
-      name         = "username"
-      display_name = "Username"
+    name         = "username"
+    display_name = "Username"
 
-      multi_valued = false
+    multi_valued = false
 
-      permissions {
-        view = ["admin", "user"]
-        edit = ["admin", "user"]
-        }
+    permissions {
+      view = ["admin", "user"]
+      edit = ["admin", "user"]
     }
+  }
 
-    attribute {
-      name         = "email"
-      display_name = "Email"
+  attribute {
+    name         = "email"
+    display_name = "Email"
 
-      multi_valued = false
+    multi_valued = false
 
-      permissions {
-        view = ["admin", "user"]
-        edit = ["admin", "user"]
-      }
+    permissions {
+      view = ["admin", "user"]
+      edit = ["admin", "user"]
     }
+  }
 
-    attribute {
-      name         = "firstName"
-      display_name = "First Name"
+  attribute {
+    name         = "firstName"
+    display_name = "First Name"
 
-      multi_valued = false
+    multi_valued = false
 
-      permissions {
-        view = ["admin", "user"]
-        edit = ["admin", "user"]
-      }
+    permissions {
+      view = ["admin", "user"]
+      edit = ["admin", "user"]
     }
+  }
 
-    attribute {
-      name         = "lastName"
-      display_name = "Last Name"
+  attribute {
+    name         = "lastName"
+    display_name = "Last Name"
 
-      multi_valued = false
+    multi_valued = false
 
-      permissions {
-        view = ["admin", "user"]
-        edit = ["admin", "user"]
-      }
+    permissions {
+      view = ["admin", "user"]
+      edit = ["admin", "user"]
     }
+  }
 
 
   attribute {
@@ -318,8 +318,8 @@ resource "keycloak_realm_user_profile" "user_profile" {
     multi_valued = false
 
     permissions {
-        view = ["admin", "user"]
-        edit = ["admin", "user"]
+      view = ["admin", "user"]
+      edit = ["admin", "user"]
     }
 
   }
@@ -334,15 +334,15 @@ resource "keycloak_openid_client_scope" "fiscal_number_scope" {
 
 # Mapper per fiscalNumber into scope
 resource "keycloak_openid_user_attribute_protocol_mapper" "fiscal_number_mapper" {
-  realm_id           = keycloak_realm.user.id
-  client_scope_id    = keycloak_openid_client_scope.fiscal_number_scope.id
-  name               = "fiscalNumber"
-  user_attribute     = "fiscalNumber"
-  claim_name         = "fiscalNumber"
-  claim_value_type   = "String"
-  add_to_id_token    = true
+  realm_id            = keycloak_realm.user.id
+  client_scope_id     = keycloak_openid_client_scope.fiscal_number_scope.id
+  name                = "fiscalNumber"
+  user_attribute      = "fiscalNumber"
+  claim_name          = "fiscalNumber"
+  claim_value_type    = "String"
+  add_to_id_token     = true
   add_to_access_token = true
-  add_to_userinfo    = true
+  add_to_userinfo     = true
 
   depends_on = [keycloak_realm_user_profile.user_profile, keycloak_openid_client_scope.fiscal_number_scope]
 }
