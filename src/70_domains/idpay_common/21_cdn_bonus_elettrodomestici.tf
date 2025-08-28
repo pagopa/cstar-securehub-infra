@@ -109,8 +109,8 @@ locals {
 
       url_path_conditions = [{
         operator         = "BeginsWith"
-        match_values     = ["/utente"]
-        negate_condition = false
+        match_values     = ["/utente/assets"]
+        negate_condition = true
         transforms       = null
       }]
 
@@ -118,13 +118,6 @@ locals {
         operator         = "LessThanOrEqual"
         match_values     = ["0"]
         negate_condition = false
-        transforms       = []
-      }]
-
-      url_file_extension_conditions = [{
-        operator         = "BeginsWith"
-        match_values     = ["/utente/assets"]
-        negate_condition = true
         transforms       = []
       }]
 
