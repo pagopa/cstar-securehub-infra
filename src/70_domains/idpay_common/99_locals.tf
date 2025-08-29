@@ -25,7 +25,7 @@ locals {
 
   public_dns_zone_name = "${var.dns_zone_prefix}.${var.external_domain}"
 
-  selfare_subdomain = "selfcare-italy"
+  selfare_subdomain = "selfcare"
 
   ########################################
   # Bonus Elettrodomestici DNS Public zone

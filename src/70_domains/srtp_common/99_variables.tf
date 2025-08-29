@@ -77,3 +77,15 @@ variable "enable_cdn" {
   type        = bool
   description = "Enable CDN for the domain"
 }
+
+variable "cosmos_collections_autoscale_max_throughput" {
+  type        = number
+  description = "Max throughput for autoscale"
+  default     = null
+}
+
+variable "cosmos_collections_max_throughput" {
+  type        = number
+  description = "Max throughput for collections"
+  default     = null
+}
