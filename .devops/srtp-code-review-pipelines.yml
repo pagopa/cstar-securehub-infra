@@ -52,9 +52,9 @@ stages:
       - template: './base-code-review-pipelines.yml'
         parameters:
           ENV: "dev"
-          WORKING_DIR_APP: "src/70_domains/srtp-app"
-          WORKING_DIR_COMMON: "src/70_domains/srtp-common"
-          WORKING_DIR_SECRET: "src/70_domains/srtp-security"
+          WORKING_DIR_APP: "src/70_domains/srtp_app"
+          WORKING_DIR_COMMON: "src/70_domains/srtp_common"
+          WORKING_DIR_SECRET: "src/70_domains/srtp_security"
           SC_PLAN_NAME: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_DEV)'
           AKS_APISERVER_URL: '$(TF_DEV_AKS_APISERVER_URL)'
           AKS_AZURE_DEVOPS_SA_CACRT: '$(TF_DEV_AKS_AZURE_DEVOPS_SA_CACRT)'
@@ -66,9 +66,9 @@ stages:
       - template: './base-code-review-pipelines.yml'
         parameters:
           ENV: "uat"
-          WORKING_DIR_APP: "src/70_domains/srtp-app"
-          WORKING_DIR_COMMON: "src/70_domains/srtp-common"
-          WORKING_DIR_SECRET: "src/70_domains/srtp-security"
+          WORKING_DIR_APP: "src/70_domains/srtp_app"
+          WORKING_DIR_COMMON: "src/70_domains/srtp_common"
+          WORKING_DIR_SECRET: "src/70_domains/srtp_security"
           SC_PLAN_NAME: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_UAT)'
           AKS_APISERVER_URL: '$(TF_UAT_AKS_APISERVER_URL)'
           AKS_AZURE_DEVOPS_SA_CACRT: '$(TF_UAT_AKS_AZURE_DEVOPS_SA_CACRT)'
@@ -80,9 +80,9 @@ stages:
       - template: './base-code-review-pipelines.yml'
         parameters:
           ENV: "prod"
-          WORKING_DIR_APP: "src/70_domains/srtp-app"
-          WORKING_DIR_COMMON: "src/70_domains/srtp-common"
-          WORKING_DIR_SECRET: "src/70_domains/srtp-security"
+          WORKING_DIR_APP: "src/70_domains/srtp_app"
+          WORKING_DIR_COMMON: "src/70_domains/srtp_common"
+          WORKING_DIR_SECRET: "src/70_domains/srtp_security"
           SC_PLAN_NAME: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_PROD)'
           AKS_APISERVER_URL: '$(TF_PROD_AKS_APISERVER_URL)'
           AKS_AZURE_DEVOPS_SA_CACRT: '$(TF_PROD_AKS_AZURE_DEVOPS_SA_CACRT)'
