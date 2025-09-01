@@ -8,7 +8,7 @@ module "cdn_idpay_selfcare" {
 
   custom_domains = [
     {
-      domain_name             = "selfcare-italy.${data.azurerm_dns_zone.public_cstar.name}"
+      domain_name             = "selfcare.${data.azurerm_dns_zone.public_cstar.name}"
       dns_name                = data.azurerm_dns_zone.public_cstar.name
       dns_resource_group_name = data.azurerm_dns_zone.public_cstar.resource_group_name
       ttl                     = var.env != "p" ? 300 : 3600
