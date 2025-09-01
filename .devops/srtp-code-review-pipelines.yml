@@ -5,9 +5,9 @@ pr:
       - main
   paths:
     include:
-      - "src/70_domains/srtp-app"
-      - "src/70_domains/srtp-common"
-      - "src/70_domains/srtp-security"
+      - "src/70_domains/srtp_app"
+      - "src/70_domains/srtp_common"
+      - "src/70_domains/srtp_security"
     exclude:
       - '**/*.lock.hcl'
       - '**/*.md'
