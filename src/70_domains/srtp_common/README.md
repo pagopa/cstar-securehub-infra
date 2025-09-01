@@ -77,6 +77,8 @@
 |------|-------------|------|---------|:--------:|
 | <a name="input_azuread_service_principal_azure_cdn_frontdoor_id"></a> [azuread\_service\_principal\_azure\_cdn\_frontdoor\_id](#input\_azuread\_service\_principal\_azure\_cdn\_frontdoor\_id) | Azure CDN Front Door Principal ID - Microsoft.AzureFrontDoor-Cdn | `string` | n/a | yes |
 | <a name="input_cdn_location"></a> [cdn\_location](#input\_cdn\_location) | One of westeurope, northeurope | `string` | n/a | yes |
+| <a name="input_cosmos_collections_autoscale_max_throughput"></a> [cosmos\_collections\_autoscale\_max\_throughput](#input\_cosmos\_collections\_autoscale\_max\_throughput) | Max throughput for autoscale | `number` | `null` | no |
+| <a name="input_cosmos_collections_max_throughput"></a> [cosmos\_collections\_max\_throughput](#input\_cosmos\_collections\_max\_throughput) | Max throughput for collections | `number` | `null` | no |
 | <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | n/a | yes |
 | <a name="input_enable_cdn"></a> [enable\_cdn](#input\_enable\_cdn) | Enable CDN for the domain | `bool` | n/a | yes |
 | <a name="input_env"></a> [env](#input\_env) | Environment | `string` | n/a | yes |

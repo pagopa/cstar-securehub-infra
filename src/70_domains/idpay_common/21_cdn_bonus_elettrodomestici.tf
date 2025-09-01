@@ -63,18 +63,18 @@ locals {
         {
           action = "Overwrite"
           name   = contains(["d"], var.env_short) ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
-          value  = "default-src 'self'; object-src 'none'; connect-src 'self' https://api-io.${var.dns_zone_prefix}.${var.external_domain}/ https://api-eu.mixpanel.com/track/ https://${var.mcshared_dns_zone_prefix}.${var.prefix}.${var.external_domain}/; "
+          value  = "default-src 'self'; object-src 'none'; frame-src 'self' https://api-io.${var.dns_zone_prefix}.${var.external_domain}/ https://${var.mcshared_dns_zone_prefix}.${var.prefix}.${var.external_domain}/; connect-src 'self' https://selfcare.pagopa.it https://api-io.${var.dns_zone_prefix}.${var.external_domain}/ https://${var.mcshared_dns_zone_prefix}.${var.prefix}.${var.external_domain}/ https://api-eu.mixpanel.com/track/;"
         },
         {
           action = "Append"
           name   = contains(["d"], var.env_short) ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
-          value  = "script-src 'self'; style-src 'self' 'unsafe-inline' https://${local.selfare_subdomain}.pagopa.it/assets/font/selfhostedfonts.css; worker-src 'none'; font-src 'self' https://${local.selfare_subdomain}.pagopa.it/assets/font/; "
+          value  = "script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://${local.selfare_subdomain}.pagopa.it/assets/font/selfhostedfonts.css; worker-src 'none'; font-src 'self' https://${local.selfare_subdomain}.pagopa.it/assets/font/;"
         },
         {
           action = "Append"
           name   = contains(["d"], var.env_short) ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
-          value  = "img-src 'self' https://assets.cdn.io.italia.it https://${module.cdn_idpay_bonuselettrodomestici.storage_primary_web_host}; "
-        },
+          value  = "img-src 'self' https://assets.cdn.io.italia.it https://${module.cdn_idpay_bonuselettrodomestici.storage_primary_web_host};"
+        }
       ]
     },
     {
@@ -107,12 +107,20 @@ locals {
       name  = "RewriteUtenteCittadinoApplication"
       order = 10
 
-      url_path_conditions = [{
-        operator         = "BeginsWith"
-        match_values     = ["/utente/assets"]
-        negate_condition = true
-        transforms       = null
-      }]
+      url_path_conditions = [
+        {
+          operator         = "BeginsWith"
+          match_values     = ["/utente/assets"]
+          negate_condition = true
+          transforms       = null
+        },
+        {
+          operator         = "BeginsWith"
+          match_values     = ["/utente"]
+          negate_condition = false
+          transforms       = null
+        }
+      ]
 
       url_file_extension_conditions = [{
         operator         = "LessThanOrEqual"
@@ -130,21 +138,22 @@ locals {
     # Esercenti Application Rule - Handles merchant portal routing
     {
       name  = "RewritePortaleEsercentiApplication"
-      order = 11
+      order = 15
 
-      url_path_conditions = [{
-        operator         = "BeginsWith"
-        match_values     = ["/esercente"]
-        negate_condition = false
-        transforms       = null
-      }]
-
-      url_path_conditions = [{
-        operator         = "BeginsWith"
-        match_values     = ["/esercente/assets"]
-        negate_condition = true
-        transforms       = []
-      }]
+      url_path_conditions = [
+        {
+          operator         = "BeginsWith"
+          match_values     = ["/esercente/assets"]
+          negate_condition = true
+          transforms       = []
+        },
+        {
+          operator         = "BeginsWith"
+          match_values     = ["/esercente"]
+          negate_condition = false
+          transforms       = null
+        }
+      ]
 
       url_file_extension_conditions = [{
         operator         = "LessThanOrEqual"

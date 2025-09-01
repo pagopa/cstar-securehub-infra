@@ -73,6 +73,15 @@ resource "azurerm_cosmosdb_mongo_collection" "mongo_collection" {
   account_name        = module.cosmos_db_account.name
   database_name       = each.value.db_name
 
+  dynamic "autoscale_settings" {
+    for_each = each.value.autoscale_max_throughput != null ? [each.value.autoscale_max_throughput] : []
+    content {
+      max_throughput = each.value.autoscale_max_throughput
+    }
+  }
+
+  throughput = each.value.max_throughput != null ? each.value.max_throughput : null
+
   dynamic "index" {
     for_each = each.value.indexes
     content {
