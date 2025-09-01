@@ -13,5 +13,4 @@ data "azurerm_key_vault_secret" "slack_mail_alarm" {
 data "azurerm_key_vault" "kv_idpay" {
   name                = "${local.product}-${var.location_short}-idpay-kv"
   resource_group_name = "${local.product}-${var.location_short}-idpay-security-rg"
-
 }

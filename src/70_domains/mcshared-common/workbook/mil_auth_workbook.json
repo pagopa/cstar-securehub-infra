@@ -1,0 +1,455 @@
+{
+  "version": "Notebook/1.0",
+  "items": [
+    {
+      "type": 9,
+      "content": {
+        "version": "KqlParameterItem/1.0",
+        "parameters": [
+          {
+            "id": "8cc07227-f13d-4bd3-b122-d6214f013987",
+            "version": "KqlParameterItem/1.0",
+            "name": "observation_window",
+            "label": "Observation Window",
+            "type": 4,
+            "isRequired": true,
+            "isGlobal": true,
+            "typeSettings": {
+              "selectableValues": [
+                {
+                  "durationMs": 1800000
+                },
+                {
+                  "durationMs": 3600000
+                },
+                {
+                  "durationMs": 14400000
+                },
+                {
+                  "durationMs": 43200000
+                },
+                {
+                  "durationMs": 86400000
+                },
+                {
+                  "durationMs": 172800000
+                },
+                {
+                  "durationMs": 259200000
+                },
+                {
+                  "durationMs": 604800000
+                }
+              ]
+            },
+            "timeContext": {
+              "durationMs": 86400000
+            },
+            "value": {
+              "durationMs": 86400000
+            }
+          }
+        ],
+        "style": "pills",
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces"
+      },
+      "name": "observation_window"
+    },
+    {
+      "type": 12,
+      "content": {
+        "version": "NotebookGroup/1.0",
+        "groupType": "editable",
+        "title": "APIM",
+        "items": [
+          {
+            "type": 10,
+            "content": {
+              "chartId": "workbookb840a0f0-e2f7-4450-b63d-8b3c0d19cde6",
+              "version": "MetricsItem/2.0",
+              "size": 0,
+              "chartType": 2,
+              "resourceType": "microsoft.apimanagement/service",
+              "metricScope": 0,
+              "resourceIds": [
+                "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-api-rg/providers/Microsoft.ApiManagement/service/${prefix}-${env_short}-apim"
+              ],
+              "timeContextFromParameter": "observation_window",
+              "timeContext": {
+                "durationMs": 86400000
+              },
+              "timeGrain": "PT5M",
+              "metrics": [
+                {
+                  "namespace": "microsoft.apimanagement/service",
+                  "metric": "microsoft.apimanagement/service-Gateway Requests-Requests",
+                  "aggregation": 1
+                }
+              ],
+              "filters": [
+                {
+                  "id": "2",
+                  "key": "ApiId",
+                  "operator": 0,
+                  "values": [
+                    "${prefix}-u-mcshared-auth"
+                  ]
+                }
+              ],
+              "gridSettings": {
+                "rowLimit": 10000
+              }
+            },
+            "customWidth": "50",
+            "name": "metric - 2"
+          },
+          {
+            "type": 10,
+            "content": {
+              "chartId": "workbook5e9861cb-7e9d-4c05-adc9-1ae759870f09",
+              "version": "MetricsItem/2.0",
+              "size": 0,
+              "chartType": 2,
+              "color": "orange",
+              "resourceType": "microsoft.apimanagement/service",
+              "metricScope": 0,
+              "resourceIds": [
+                "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-api-rg/providers/Microsoft.ApiManagement/service/${prefix}-${env_short}-apim"
+              ],
+              "timeContextFromParameter": "observation_window",
+              "timeContext": {
+                "durationMs": 86400000
+              },
+              "timeGrain": "PT5M",
+              "metrics": [
+                {
+                  "namespace": "microsoft.apimanagement/service",
+                  "metric": "microsoft.apimanagement/service-Gateway Requests-Duration",
+                  "aggregation": 4
+                }
+              ],
+              "filters": [
+                {
+                  "id": "1",
+                  "key": "ApiId",
+                  "operator": 0,
+                  "values": [
+                    "${prefix}-u-mcshared-auth"
+                  ]
+                }
+              ],
+              "gridSettings": {
+                "rowLimit": 10000
+              }
+            },
+            "customWidth": "50",
+            "name": "metric - 1"
+          }
+        ]
+      },
+      "name": "APIM",
+      "styleSettings": {
+        "showBorder": true
+      }
+    },
+    {
+      "type": 12,
+      "content": {
+        "version": "NotebookGroup/1.0",
+        "groupType": "editable",
+        "title": "Container App",
+        "items": [
+          {
+            "type": 10,
+            "content": {
+              "chartId": "workbookfb7cb65a-329c-49c4-bf38-c6140c9775b3",
+              "version": "MetricsItem/2.0",
+              "size": 0,
+              "chartType": 2,
+              "color": "purple",
+              "resourceType": "microsoft.app/containerapps",
+              "metricScope": 0,
+              "resourceIds": [
+                "/subscriptions/f9f0ed60-4b4b-49a6-97cb-8c8a0f9e2435/resourceGroups/${prefix}-u-itn-mcshared-compute-rg/providers/Microsoft.App/containerApps/${prefix}-u-mcshared-auth-ca"
+              ],
+              "timeContextFromParameter": "observation_window",
+              "timeContext": {
+                "durationMs": 86400000
+              },
+              "timeGrain": "PT5M",
+              "metrics": [
+                {
+                  "namespace": "microsoft.app/containerapps",
+                  "metric": "microsoft.app/containerapps-Basic-Requests",
+                  "aggregation": 1
+                }
+              ],
+              "gridSettings": {
+                "rowLimit": 10000
+              }
+            },
+            "customWidth": "25",
+            "name": "metric - 1"
+          },
+          {
+            "type": 10,
+            "content": {
+              "chartId": "workbookee65d043-d9fd-41a5-abf1-e05b2d79ccf0",
+              "version": "MetricsItem/2.0",
+              "size": 0,
+              "chartType": 2,
+              "color": "blue",
+              "resourceType": "microsoft.app/containerapps",
+              "metricScope": 0,
+              "resourceIds": [
+                "/subscriptions/f9f0ed60-4b4b-49a6-97cb-8c8a0f9e2435/resourceGroups/${prefix}-u-itn-mcshared-compute-rg/providers/Microsoft.App/containerApps/${prefix}-u-mcshared-auth-ca"
+              ],
+              "timeContextFromParameter": "observation_window",
+              "timeContext": {
+                "durationMs": 86400000
+              },
+              "timeGrain": "PT5M",
+              "metrics": [
+                {
+                  "namespace": "microsoft.app/containerapps",
+                  "metric": "microsoft.app/containerapps-Basic-CpuPercentage",
+                  "aggregation": 4,
+                  "columnName": ""
+                }
+              ],
+              "gridSettings": {
+                "rowLimit": 10000
+              }
+            },
+            "customWidth": "25",
+            "name": "metric - 1"
+          },
+          {
+            "type": 10,
+            "content": {
+              "chartId": "workbook0f347b26-3102-4dc5-b0c9-4e1807db89c3",
+              "version": "MetricsItem/2.0",
+              "size": 0,
+              "chartType": 2,
+              "color": "redBright",
+              "resourceType": "microsoft.app/containerapps",
+              "metricScope": 0,
+              "resourceIds": [
+                "/subscriptions/f9f0ed60-4b4b-49a6-97cb-8c8a0f9e2435/resourceGroups/${prefix}-u-itn-mcshared-compute-rg/providers/Microsoft.App/containerApps/${prefix}-u-mcshared-auth-ca"
+              ],
+              "timeContextFromParameter": "observation_window",
+              "timeContext": {
+                "durationMs": 86400000
+              },
+              "timeGrain": "PT5M",
+              "metrics": [
+                {
+                  "namespace": "microsoft.app/containerapps",
+                  "metric": "microsoft.app/containerapps-Basic-MemoryPercentage",
+                  "aggregation": 4,
+                  "columnName": ""
+                }
+              ],
+              "gridSettings": {
+                "rowLimit": 10000
+              }
+            },
+            "customWidth": "25",
+            "name": "metric - 2"
+          },
+          {
+            "type": 10,
+            "content": {
+              "chartId": "workbookb410033c-2337-4259-8080-8784ebfb773f",
+              "version": "MetricsItem/2.0",
+              "size": 0,
+              "chartType": 2,
+              "color": "green",
+              "resourceType": "microsoft.app/containerapps",
+              "metricScope": 0,
+              "resourceIds": [
+                "/subscriptions/f9f0ed60-4b4b-49a6-97cb-8c8a0f9e2435/resourceGroups/${prefix}-u-itn-mcshared-compute-rg/providers/Microsoft.App/containerApps/${prefix}-u-mcshared-auth-ca"
+              ],
+              "timeContextFromParameter": "observation_window",
+              "timeContext": {
+                "durationMs": 86400000
+              },
+              "timeGrain": "PT5M",
+              "metrics": [
+                {
+                  "namespace": "microsoft.app/containerapps",
+                  "metric": "microsoft.app/containerapps-Basic-Replicas",
+                  "aggregation": 3,
+                  "columnName": ""
+                }
+              ],
+              "gridSettings": {
+                "rowLimit": 10000
+              }
+            },
+            "customWidth": "25",
+            "name": "metric - 0"
+          }
+        ]
+      },
+      "name": "Container App",
+      "styleSettings": {
+        "showBorder": true
+      }
+    },
+    {
+      "type": 12,
+      "content": {
+        "version": "NotebookGroup/1.0",
+        "groupType": "editable",
+        "title": "Cosmos",
+        "items": [
+          {
+            "type": 10,
+            "content": {
+              "chartId": "workbooke80ab67f-5e5e-453a-a85d-3cb30297491b",
+              "version": "MetricsItem/2.0",
+              "size": 0,
+              "chartType": 2,
+              "color": "gray",
+              "resourceType": "microsoft.documentdb/databaseaccounts",
+              "metricScope": 0,
+              "resourceIds": [
+                "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/${prefix}-d-itn-mcshared-data-rg/providers/Microsoft.DocumentDB/databaseAccounts/${prefix}-d-itn-mcshared-mongodb-account"
+              ],
+              "timeContextFromParameter": "observation_window",
+              "timeContext": {
+                "durationMs": 86400000
+              },
+              "timeGrain": "PT5M",
+              "metrics": [
+                {
+                  "namespace": "microsoft.documentdb/databaseaccounts",
+                  "metric": "microsoft.documentdb/databaseaccounts-Requests-TotalRequests",
+                  "aggregation": 7
+                }
+              ],
+              "gridSettings": {
+                "rowLimit": 10000
+              }
+            },
+            "name": "metric - 0"
+          }
+        ]
+      },
+      "name": "Cosmos",
+      "styleSettings": {
+        "showBorder": true
+      }
+    },
+    {
+      "type": 12,
+      "content": {
+        "version": "NotebookGroup/1.0",
+        "groupType": "editable",
+        "title": "Key Vault",
+        "items": [
+          {
+            "type": 10,
+            "content": {
+              "chartId": "workbookfe5c75c1-a3fc-400c-8ca1-7394ab654cd5",
+              "version": "MetricsItem/2.0",
+              "size": 0,
+              "chartType": 2,
+              "color": "yellowDark",
+              "resourceType": "microsoft.keyvault/vaults",
+              "metricScope": 0,
+              "resourceIds": [
+                "/subscriptions/f9f0ed60-4b4b-49a6-97cb-8c8a0f9e2435/resourceGroups/${prefix}-u-itn-mcshared-security-rg/providers/Microsoft.KeyVault/vaults/${prefix}-u-itn-mc-auth-kv"
+              ],
+              "timeContextFromParameter": "observation_window",
+              "timeContext": {
+                "durationMs": 86400000
+              },
+              "timeGrain": "PT5M",
+              "metrics": [
+                {
+                  "namespace": "microsoft.keyvault/vaults",
+                  "metric": "microsoft.keyvault/vaults--ServiceApiHit",
+                  "aggregation": 7
+                }
+              ],
+              "gridSettings": {
+                "rowLimit": 10000
+              }
+            },
+            "customWidth": "50",
+            "name": "metric - 1"
+          },
+          {
+            "type": 10,
+            "content": {
+              "chartId": "workbookb60d4206-9689-43bc-82b5-a0a089af803d",
+              "version": "MetricsItem/2.0",
+              "size": 0,
+              "chartType": 2,
+              "color": "turquoise",
+              "resourceType": "microsoft.keyvault/vaults",
+              "metricScope": 0,
+              "resourceIds": [
+                "/subscriptions/f9f0ed60-4b4b-49a6-97cb-8c8a0f9e2435/resourceGroups/${prefix}-u-itn-mcshared-security-rg/providers/Microsoft.KeyVault/vaults/${prefix}-u-itn-mc-auth-kv"
+              ],
+              "timeContextFromParameter": "observation_window",
+              "timeContext": {
+                "durationMs": 86400000
+              },
+              "timeGrain": "PT5M",
+              "metrics": [
+                {
+                  "namespace": "microsoft.keyvault/vaults",
+                  "metric": "microsoft.keyvault/vaults--ServiceApiLatency",
+                  "aggregation": 4
+                }
+              ],
+              "gridSettings": {
+                "rowLimit": 10000
+              }
+            },
+            "customWidth": "50",
+            "name": "metric - 2"
+          }
+        ]
+      },
+      "name": "Key Vault",
+      "styleSettings": {
+        "showBorder": true
+      }
+    },
+    {
+      "type": 12,
+      "content": {
+        "version": "NotebookGroup/1.0",
+        "groupType": "editable",
+        "items": [
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "ApiManagementGatewayLogs\n| where OperationId == \"getAccessTokens\"\n| mv-expand TraceRecords\n| where TraceRecords.metadata.key == \"counterKey\"\n| summarize count=count() by client_id=tostring(TraceRecords.message), ResponseCode\n| sort by client_id asc, ResponseCode asc",
+              "size": 0,
+              "title": "Tokens requested by client_id",
+              "timeContextFromParameter": "observation_window",
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces",
+              "crossComponentResources": [
+                "/subscriptions/f9f0ed60-4b4b-49a6-97cb-8c8a0f9e2435/resourceGroups/${prefix}-u-itn-mcshared-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-u-itn-mcshared-law"
+              ],
+              "sortBy": []
+            },
+            "name": "tokens-by-client_id"
+          }
+        ]
+      },
+      "name": "group - 6",
+      "styleSettings": {
+        "showBorder": true
+      }
+    }
+  ]
+}

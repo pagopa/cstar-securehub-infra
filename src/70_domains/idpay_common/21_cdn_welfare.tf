@@ -1,31 +1,29 @@
 locals {
-  selfare_temp_suffix = "-italy"
-  spa = [
+  spa_rewrite_urls = [
     for i, spa in var.single_page_applications_roots_dirs :
     {
-      name  = replace(replace("SPA-${spa}", "-", ""), "/", "0")
+      name  = replace(replace("rewrite-SPA-${spa}", "-", ""), "/", "0")
       order = i + 3 // +3 required because the order start from 1: 1 is reserved for default application redirect; 2 is reserved for the https rewrite;
-      conditions = [
-        {
-          condition_type   = "url_path_condition"
-          operator         = "BeginsWith"
-          match_values     = ["/${spa}/"]
-          negate_condition = false
-          transforms       = null
-        },
-        {
-          condition_type   = "url_file_extension_condition"
-          operator         = "LessThanOrEqual"
-          match_values     = ["0"]
-          negate_condition = false
-          transforms       = null
-        },
-      ]
-      url_rewrite_action = {
+
+      url_path_conditions = [{
+        operator         = "BeginsWith"
+        match_values     = ["/${spa}/"]
+        negate_condition = false
+        transforms       = null
+      }]
+
+      url_file_extension_conditions = [{
+        operator         = "LessThanOrEqual"
+        match_values     = ["0"]
+        negate_condition = false
+        transforms       = null
+      }]
+
+      url_rewrite_actions = [{
         source_pattern          = "/${spa}/"
         destination             = "/${spa}/index.html"
         preserve_unmatched_path = false
-      }
+      }]
     }
   ]
 }
@@ -35,44 +33,33 @@ locals {
  */
 // public_cstar storage used to serve FE
 module "cdn_idpay_welfare" {
-  source = "./.terraform/modules/__v4__/cdn"
 
-  name                = "welfare"
-  prefix              = local.project_weu
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//cdn_frontdoor?ref=PAYMCLOUD-477-v-4-creazione-modulo-cdn-front-door-per-sostituire-cdn-classic-deprecata"
+
+  cdn_prefix_name     = "${local.project}-welfare"
   resource_group_name = data.azurerm_resource_group.idpay_data_rg.name
   location            = var.location
-  cdn_location        = var.location_weu
 
-  hostname              = "welfare-italy.${data.azurerm_dns_zone.public_cstar.name}"
-  https_rewrite_enabled = true
+  custom_domains = [
+    {
+      domain_name             = "welfare.${data.azurerm_dns_zone.public_cstar.name}"
+      dns_name                = data.azurerm_dns_zone.public_cstar.name
+      dns_resource_group_name = data.azurerm_dns_zone.public_cstar.resource_group_name
+      ttl                     = var.env != "p" ? 300 : 3600
+    }
+  ]
 
-  storage_account_name             = "${local.project}welcdnsa"
-  storage_account_replication_type = var.idpay_cdn_storage_account_replication_type
-  index_document                   = "index.html"
-  error_404_document               = "error.html"
+  storage_account_name               = "${local.project}welcdnsa"
+  storage_account_replication_type   = var.idpay_cdn_storage_account_replication_type
+  storage_account_index_document     = "index.html"
+  storage_account_error_404_document = "error.html"
 
-  dns_zone_name                = data.azurerm_dns_zone.public_cstar.name
-  dns_zone_resource_group_name = data.azurerm_dns_zone.public_cstar.resource_group_name
+  querystring_caching_behaviour = "IgnoreQueryString"
 
-  keyvault_resource_group_name = local.idpay_kv_rg_name
-  keyvault_subscription_id     = data.azurerm_subscription.current.subscription_id
-  keyvault_vault_name          = local.idpay_kv_name
-
-  querystring_caching_behaviour = "BypassCaching"
-
-  advanced_threat_protection_enabled = var.idpay_cdn_sa_advanced_threat_protection_enabled
-
-  global_delivery_rule = {
-    cache_expiration_action       = []
-    cache_key_query_string_action = []
-    modify_request_header_action  = []
-
+  global_delivery_rules = [{
+    order = 1
     # HSTS
-    modify_response_header_action = [{
-      action = "Overwrite"
-      name   = "Strict-Transport-Security"
-      value  = "max-age=31536000"
-      },
+    modify_response_header_actions = [
       # Content-Security-Policy (in Report mode)
       {
         action = "Overwrite"
@@ -82,51 +69,63 @@ module "cdn_idpay_welfare" {
       {
         action = "Append"
         name   = contains(["d"], var.env_short) ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
-        value  = "script-src 'self'; style-src 'self' 'unsafe-inline' https://selfcare${local.selfare_temp_suffix}.pagopa.it/assets/font/selfhostedfonts.css; worker-src 'none'; font-src 'self' https://selfcare${local.selfare_temp_suffix}.pagopa.it/assets/font/; "
+        value  = "script-src 'self'; style-src 'self' 'unsafe-inline' https://${local.selfare_subdomain}.pagopa.it/assets/font/selfhostedfonts.css; worker-src 'none'; font-src 'self' https://${local.selfare_subdomain}.pagopa.it/assets/font/; "
       },
       {
         action = "Append"
         name   = contains(["d"], var.env_short) ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
-        value  = "img-src 'self' https://assets.cdn.io.italia.it https://${module.cdn_idpay_welfare.storage_primary_web_host} https://${var.env != "prod" ? "${var.env}." : ""}selfcare${local.selfare_temp_suffix}.pagopa.it https://selc${var.env_short}checkoutsa.z6.web.core.windows.net/institutions/ data:; "
+        value  = "img-src 'self' https://assets.cdn.io.italia.it https://${module.cdn_idpay_welfare.storage_primary_web_host} https://${var.env != "prod" ? "${var.env}." : ""}${local.selfare_subdomain}.pagopa.it https://selc${var.env_short}checkoutsa.z6.web.core.windows.net/institutions/ data:; "
       },
-      {
-        action = "Append"
-        name   = "X-Content-Type-Options"
-        value  = "nosniff"
-      },
-      {
-        action = "Overwrite"
-        name   = "X-Frame-Options"
-        value  = "SAMEORIGIN"
-      }
     ]
-  }
+    },
+    {
+      order = 2
+      # HSTS
+      modify_response_header_actions = [
+        {
+          action = "Overwrite"
+          name   = "Strict-Transport-Security"
+          value  = "max-age=31536000"
+        },
+        {
+          action = "Append"
+          name   = "X-Content-Type-Options"
+          value  = "nosniff"
+        },
+        {
+          action = "Overwrite"
+          name   = "X-Frame-Options"
+          value  = "SAMEORIGIN"
+        }
+      ]
+  }]
 
-  delivery_rule_rewrite = concat([{
-    name  = "defaultApplication"
-    order = 2
-    conditions = [
+  delivery_rule_rewrites = concat(
+    [
       {
-        condition_type   = "url_path_condition"
-        operator         = "Equal"
-        match_values     = ["/"]
-        negate_condition = false
-        transforms       = null
+        name  = "RewriteDefaultApplication"
+        order = 10
+        // conditions
+        url_path_conditions = [{
+          operator         = "Equal"
+          match_values     = ["/"]
+          negate_condition = false
+          transforms       = null
+        }]
+        url_rewrite_actions = [{
+          source_pattern          = "/"
+          destination             = "/portale-enti/index.html"
+          preserve_unmatched_path = false
+        }]
       }
-    ]
-    url_rewrite_action = {
-      source_pattern          = "/"
-      destination             = "/portale-enti/index.html"
-      preserve_unmatched_path = false
-    }
-    }],
-    local.spa
+    ],
+    local.spa_rewrite_urls
   )
 
-  delivery_rule = [
+  delivery_custom_rules = [
     {
       name  = "robotsNoIndex"
-      order = 3 + length(local.spa)
+      order = 20 + length(local.spa_rewrite_urls)
 
       // conditions
       url_path_conditions = [{
@@ -135,19 +134,6 @@ module "cdn_idpay_welfare" {
         negate_condition = true
         transforms       = null
       }]
-      cookies_conditions            = []
-      device_conditions             = []
-      http_version_conditions       = []
-      post_arg_conditions           = []
-      query_string_conditions       = []
-      remote_address_conditions     = []
-      request_body_conditions       = []
-      request_header_conditions     = []
-      request_method_conditions     = []
-      request_scheme_conditions     = []
-      request_uri_conditions        = []
-      url_file_extension_conditions = []
-      url_file_name_conditions      = []
 
       // actions
       modify_response_header_actions = [{
@@ -155,31 +141,12 @@ module "cdn_idpay_welfare" {
         name   = "X-Robots-Tag"
         value  = "noindex, nofollow"
       }]
-      cache_expiration_actions       = []
-      cache_key_query_string_actions = []
-      modify_request_header_actions  = []
-      url_redirect_actions           = []
-      url_rewrite_actions            = []
     },
     {
       name  = "microcomponentsNoCache"
-      order = 4 + length(local.spa)
+      order = 30 + length(local.spa_rewrite_urls)
 
       // conditions
-      url_path_conditions           = []
-      cookies_conditions            = []
-      device_conditions             = []
-      http_version_conditions       = []
-      post_arg_conditions           = []
-      query_string_conditions       = []
-      remote_address_conditions     = []
-      request_body_conditions       = []
-      request_header_conditions     = []
-      request_method_conditions     = []
-      request_scheme_conditions     = []
-      request_uri_conditions        = []
-      url_file_extension_conditions = []
-
       url_file_name_conditions = [{
         operator         = "Equal"
         match_values     = ["remoteEntry.js"]
@@ -193,11 +160,6 @@ module "cdn_idpay_welfare" {
         name   = "Cache-Control"
         value  = "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0"
       }]
-      cache_expiration_actions       = []
-      cache_key_query_string_actions = []
-      modify_request_header_actions  = []
-      url_redirect_actions           = []
-      url_rewrite_actions            = []
     }
   ]
 
@@ -205,17 +167,17 @@ module "cdn_idpay_welfare" {
   log_analytics_workspace_id = data.azurerm_log_analytics_workspace.core_log_analytics.id
 }
 
-# #
-# # 🔑 Cannot be merged in local values, because contains sensitive data
-# #
-# resource "azurerm_key_vault_secret" "idpay_welfare_cdn_storage_primary_access_key" {
-#   name         = "web-storage-access-key"
-#   value        = module.cdn_idpay_welfare.storage_primary_access_key
-#   content_type = "text/plain"
 #
-#   key_vault_id = data.azurerm_key_vault.domain_kv.id
-# }
+# 🔑 Cannot be merged in local values, because contains sensitive data
 #
+resource "azurerm_key_vault_secret" "idpay_welfare_cdn_storage_primary_access_key" {
+  name         = "web-storage-access-key"
+  value        = module.cdn_idpay_welfare.storage_primary_access_key
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.domain_kv.id
+}
+
 resource "azurerm_key_vault_secret" "idpay_welfare_cdn_storage_primary_connection_string" {
   name         = "web-storage-connection-string"
   value        = module.cdn_idpay_welfare.storage_primary_connection_string
@@ -223,11 +185,11 @@ resource "azurerm_key_vault_secret" "idpay_welfare_cdn_storage_primary_connectio
 
   key_vault_id = data.azurerm_key_vault.domain_kv.id
 }
-#
-# resource "azurerm_key_vault_secret" "idpay_welfare_cdn_storage_blob_connection_string" {
-#   name         = "web-storage-blob-connection-string"
-#   value        = module.cdn_idpay_welfare.storage_primary_blob_connection_string
-#   content_type = "text/plain"
-#
-#   key_vault_id = data.azurerm_key_vault.domain_kv.id
-# }
+
+resource "azurerm_key_vault_secret" "idpay_welfare_cdn_storage_blob_connection_string" {
+  name         = "web-storage-blob-connection-string"
+  value        = module.cdn_idpay_welfare.storage_primary_blob_connection_string
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.domain_kv.id
+}

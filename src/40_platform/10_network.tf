@@ -19,7 +19,24 @@ module "synthetic_snet" {
       ]
     }
   }
+}
 
+module "github_cae_snet" {
+  source = "./.terraform/modules/__v4__/IDH/subnet"
+
+  # General
+  product_name        = var.prefix
+  env                 = var.env
+  resource_group_name = local.vnet_rg_name
+
+  # Network
+  name = "${local.project}-github-cae-snet"
+
+  # Set to the spoke compute VNet because it is the only one with peering to pagoPA integration VNet
+  virtual_network_name = local.vnet_core_compute_name
+
+  # IDH Resources
+  idh_resource_tier = "container_app_environment_27"
 }
 
 #----------------------------------------------------------------
@@ -49,7 +66,6 @@ module "container_app_private_endpoint_snet" {
 
   name             = "${local.project}-container-app-private-endpoint-snet"
   address_prefixes = var.cidr_subnet_container_app_private_endpoints
-
 }
 
 module "data_postgres_flexible_snet" {

@@ -174,6 +174,16 @@ data "azurerm_key_vault_certificate" "bonus_elettrodomestici_cert_apex" {
   name         = each.value
 }
 
+data "azurerm_key_vault_secret" "oneidentity-client-id" {
+  name         = "oneidentity-client-id"
+  key_vault_id = data.azurerm_key_vault.domain_kv.id
+}
+
+data "azurerm_key_vault_secret" "oneidentity-client-secret" {
+  name         = "oneidentity-client-secret"
+  key_vault_id = data.azurerm_key_vault.domain_kv.id
+}
+
 # APIM
 #
 

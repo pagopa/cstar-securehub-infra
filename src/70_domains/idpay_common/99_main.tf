@@ -26,13 +26,13 @@ terraform {
       source  = "argoproj-labs/argocd"
       version = "~> 7.0"
     }
-    azapi = {
-      source  = "Azure/azapi"
-      version = "~> 2.3"
-    }
     keycloak = {
       source  = "keycloak/keycloak"
       version = ">= 5.0.0"
+    }
+    azapi = {
+      source  = "Azure/azapi"
+      version = "~> 2.6.0"
     }
   }
 
@@ -48,8 +48,8 @@ provider "azurerm" {
 }
 
 module "__v4__" {
-  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v7.26.2
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=185b6e434c85494d33a164aac0d004fd5012e126"
+  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v7.26.5
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=34656073b57f687059ebeeaee7ae9a9616071ae4"
 }
 
 provider "kubernetes" {
