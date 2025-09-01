@@ -5,9 +5,9 @@ pr:
       - main
   paths:
     include:
-      - "src/06_domains/payhub-app"
-      - "src/06_domains/payhub-common"
-      - "src/06_domains/payhub-secrets"
+      - "src/06_domains/srtp-app"
+      - "src/06_domains/srtp-common"
+      - "src/06_domains/srtp-secrets"
     exclude:
       - '**/*.lock.hcl'
       - '**/*.md'
@@ -43,10 +43,8 @@ resources:
     - repository: terraform
       type: github
       name: pagopa/azure-pipeline-templates
-      ref: refs/tags/v6.9.0
+      ref: refs/tags/v6.17.3
       endpoint: "io-azure-devops-github-ro"
-
-
 
 stages:
   #DEV
@@ -54,9 +52,9 @@ stages:
       - template: './base-code-review-pipelines.yml'
         parameters:
           ENV: "dev"
-          WORKING_DIR_APP: "src/06_domains/payhub-app"
-          WORKING_DIR_COMMON: "src/06_domains/payhub-common"
-          WORKING_DIR_SECRET: "src/06_domains/payhub-secrets"
+          WORKING_DIR_APP: "src/06_domains/srtp-app"
+          WORKING_DIR_COMMON: "src/06_domains/srtp-common"
+          WORKING_DIR_SECRET: "src/06_domains/srtp-secrets"
           SC_PLAN_NAME: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_DEV)'
           AKS_APISERVER_URL: '$(TF_DEV_AKS_APISERVER_URL)'
           AKS_AZURE_DEVOPS_SA_CACRT: '$(TF_DEV_AKS_AZURE_DEVOPS_SA_CACRT)'
@@ -68,9 +66,9 @@ stages:
       - template: './base-code-review-pipelines.yml'
         parameters:
           ENV: "uat"
-          WORKING_DIR_APP: "src/06_domains/payhub-app"
-          WORKING_DIR_COMMON: "src/06_domains/payhub-common"
-          WORKING_DIR_SECRET: "src/06_domains/payhub-secrets"
+          WORKING_DIR_APP: "src/06_domains/srtp-app"
+          WORKING_DIR_COMMON: "src/06_domains/srtp-common"
+          WORKING_DIR_SECRET: "src/06_domains/srtp-secrets"
           SC_PLAN_NAME: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_UAT)'
           AKS_APISERVER_URL: '$(TF_UAT_AKS_APISERVER_URL)'
           AKS_AZURE_DEVOPS_SA_CACRT: '$(TF_UAT_AKS_AZURE_DEVOPS_SA_CACRT)'
@@ -82,9 +80,9 @@ stages:
       - template: './base-code-review-pipelines.yml'
         parameters:
           ENV: "prod"
-          WORKING_DIR_APP: "src/06_domains/payhub-app"
-          WORKING_DIR_COMMON: "src/06_domains/payhub-common"
-          WORKING_DIR_SECRET: "src/06_domains/payhub-secrets"
+          WORKING_DIR_APP: "src/06_domains/srtp-app"
+          WORKING_DIR_COMMON: "src/06_domains/srtp-common"
+          WORKING_DIR_SECRET: "src/06_domains/srtp-secrets"
           SC_PLAN_NAME: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_PROD)'
           AKS_APISERVER_URL: '$(TF_PROD_AKS_APISERVER_URL)'
           AKS_AZURE_DEVOPS_SA_CACRT: '$(TF_PROD_AKS_AZURE_DEVOPS_SA_CACRT)'
