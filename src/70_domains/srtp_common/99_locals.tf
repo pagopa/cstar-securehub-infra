@@ -53,16 +53,24 @@ locals {
   cosmos_db = {
     rtp = {
       rtps = {
+        autoscale_max_throughput          = var.cosmos_collections_autoscale_max_throughput
+        cosmos_collections_max_throughput = var.cosmos_collections_max_throughput
         indexes = [
           {
             keys   = ["_id"]
             unique = true
+          },
+          {
+            keys   = ["operationId", "eventDispatcher"]
+            unique = false
           }
         ]
       }
     }
     activation = {
       activations = {
+        autoscale_max_throughput          = var.cosmos_collections_autoscale_max_throughput
+        cosmos_collections_max_throughput = var.cosmos_collections_max_throughput
         indexes = [
           {
             keys   = ["_id"]
@@ -75,6 +83,8 @@ locals {
         ]
       }
       deleted_activations = {
+        autoscale_max_throughput          = var.cosmos_collections_autoscale_max_throughput
+        cosmos_collections_max_throughput = var.cosmos_collections_max_throughput
         indexes = [
           {
             keys   = ["_id"]
@@ -87,9 +97,11 @@ locals {
   cosmos_collections = flatten([
     for db_name, db in local.cosmos_db : [
       for coll_name, coll in db : {
-        db_name   = db_name
-        coll_name = coll_name
-        indexes   = coll.indexes
+        db_name                  = db_name
+        coll_name                = coll_name
+        indexes                  = coll.indexes
+        autoscale_max_throughput = coll.autoscale_max_throughput
+        max_throughput           = coll.cosmos_collections_max_throughput
       }
     ]
   ])
