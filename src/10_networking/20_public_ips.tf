@@ -12,7 +12,7 @@ resource "azurerm_public_ip" "messagi_cortesia_pips" {
 }
 
 resource "azurerm_public_ip" "compute_nat_gateway_pip" {
-  for_each = toset([for i in range(var.count_nat) : tostring(i)])
+  for_each = toset([for i in range(var.count_ip_nat) : tostring(i)])
 
   name                = "${local.project}-compute-natgw-pip-${each.key}"
   location            = azurerm_resource_group.rg_network.location

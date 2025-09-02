@@ -12,7 +12,7 @@ resource "azurerm_nat_gateway" "compute_nat_gateway" {
 }
 
 resource "azurerm_nat_gateway_public_ip_association" "compute_nat_gateway_pip_association" {
-  for_each = toset([for i in range(var.count_nat) : tostring(i)])
+  for_each = toset([for i in range(var.count_ip_nat) : tostring(i)])
 
   nat_gateway_id       = azurerm_nat_gateway.compute_nat_gateway.id
   public_ip_address_id = azurerm_public_ip.compute_nat_gateway_pip[each.key].id

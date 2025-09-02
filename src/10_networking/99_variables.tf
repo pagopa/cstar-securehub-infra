@@ -50,9 +50,9 @@ variable "default_zones" {
   default     = null
 }
 
-variable "count_nat" {
+variable "count_ip_nat" {
   type        = number
-  description = "Number of NAT Gateway"
+  description = "Number of IP of NAT Gateway"
   default     = 1
 }
 
