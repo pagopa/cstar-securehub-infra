@@ -61,6 +61,7 @@ stages:
           AKS_AZURE_DEVOPS_SA_TOKEN: '$(TF_DEV_AKS_AZURE_DEVOPS_SA_TOKEN)'
           AKS_NAME: '$(TF_AKS_DEV_NAME)'
           POOL_NAME: '$(TF_POOL_NAME_DEV)'
+          USE_SOPS: true
   #UAT
   - ${{ if eq(parameters['UAT'], true) }}:
       - template: './base-code-review-pipelines.yml'
@@ -75,6 +76,7 @@ stages:
           AKS_AZURE_DEVOPS_SA_TOKEN: '$(TF_UAT_AKS_AZURE_DEVOPS_SA_TOKEN)'
           AKS_NAME: '$(TF_AKS_UAT_NAME)'
           POOL_NAME: '$(TF_POOL_NAME_UAT)'
+          USE_SOPS: true
   #PROD
   - ${{ if eq(parameters['PROD'], true) }}:
       - template: './base-code-review-pipelines.yml'
@@ -89,3 +91,4 @@ stages:
           AKS_AZURE_DEVOPS_SA_TOKEN: '$(TF_PROD_AKS_AZURE_DEVOPS_SA_TOKEN)'
           AKS_NAME: '$(TF_AKS_PROD_NAME)'
           POOL_NAME: '$(TF_POOL_NAME_PROD)'
+          USE_SOPS: true

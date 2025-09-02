@@ -46,8 +46,9 @@ parameters:
   - name: 'TIME_OUT'
     type: number
     default: 15
-
-
+  - name: 'USE_SOPS'
+    type: boolean
+    default: false
 
 stages:
   - stage: ${{parameters.ENV}}
@@ -66,6 +67,8 @@ stages:
            - checkout: self
            # 1. Install terraform
            - template: templates/terraform-setup/template.yaml@terraform
+             parameters:
+               USE_SOPS: ${{ parameters.USE_SOPS }}
            - template: templates/terraform-summarize/template.yaml@terraform
            # 2. Run terraform plan core
            - template: templates/terraform-plan/template.yaml@terraform

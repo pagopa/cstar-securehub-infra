@@ -89,3 +89,8 @@ variable "cosmos_collections_max_throughput" {
   description = "Max throughput for collections"
   default     = null
 }
+
+variable "k8s_kube_config_path_prefix" {
+  type    = string
+  default = "~/.kube"
+}
