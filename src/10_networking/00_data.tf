@@ -23,3 +23,12 @@ data "azurerm_virtual_network" "vnet_weu_aks" {
   name                = "${var.prefix}-${var.env_short}-weu-${var.env}01-vnet"
   resource_group_name = "${var.prefix}-${var.env_short}-weu-${var.env}01-vnet-rg"
 }
+
+#
+# Dns Zone
+#
+
+data "azurerm_dns_zone" "default" {
+  name                = local.dns_default_zone_name
+  resource_group_name = local.dns_default_zone_rg
+}
