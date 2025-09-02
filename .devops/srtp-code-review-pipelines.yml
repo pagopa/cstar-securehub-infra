@@ -43,7 +43,7 @@ resources:
     - repository: terraform
       type: github
       name: pagopa/azure-pipeline-templates
-      ref: refs/tags/v6.17.3
+      ref: refs/heads/fix/sops-install
       endpoint: "azure-devops-github-ro"
 
 stages:
