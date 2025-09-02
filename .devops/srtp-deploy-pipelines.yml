@@ -34,9 +34,8 @@ resources:
     - repository: terraform
       type: github
       name: pagopa/azure-pipeline-templates
-      ref: refs/tags/v6.9.0
-      endpoint: "io-azure-devops-github-ro"
-
+      ref: refs/tags/v6.17.4
+      endpoint: "azure-devops-github-ro"
 
 stages:
   #DEV
@@ -44,10 +43,10 @@ stages:
     - template: './base-deploy-pipelines.yml'
       parameters:
         ENV: 'dev'
-        WORKING_DIR_APP: "src/06_domains/payhub-app"
-        WORKING_DIR_COMMON: "src/06_domains/payhub-common"
-        WORKING_DIR_SECRET: "src/06_domains/payhub-secrets"
-        DOMAIN_NAME: 'payhub'
+        WORKING_DIR_APP: "src/70_domains/srtp_app"
+        WORKING_DIR_COMMON: "src/70_domains/srtp_common"
+        WORKING_DIR_SECRET: "src/70_domains/srtp_security"
+        DOMAIN_NAME: 'srtp'
         SC_PLAN_NAME: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_DEV)'
         SC_APPLY_NAME: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_DEV)'
         AKS_APISERVER_URL: '$(TF_DEV_AKS_APISERVER_URL)'
@@ -60,10 +59,10 @@ stages:
     - template: './base-deploy-pipelines.yml'
       parameters:
         ENV: 'uat'
-        WORKING_DIR_APP: "src/06_domains/payhub-app"
-        WORKING_DIR_COMMON: "src/06_domains/payhub-common"
-        WORKING_DIR_SECRET: "src/06_domains/payhub-secrets"
-        DOMAIN_NAME: 'payhub'
+        WORKING_DIR_APP: "src/70_domains/srtp_app"
+        WORKING_DIR_COMMON: "src/70_domains/srtp_common"
+        WORKING_DIR_SECRET: "src/70_domains/srtp_security"
+        DOMAIN_NAME: 'srtp'
         SC_PLAN_NAME: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_UAT)'
         SC_APPLY_NAME: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_UAT)'
         AKS_APISERVER_URL: '$(TF_UAT_AKS_APISERVER_URL)'
@@ -76,10 +75,10 @@ stages:
     - template: './base-deploy-pipelines.yml'
       parameters:
         ENV: 'prod'
-        WORKING_DIR_APP: "src/06_domains/payhub-app"
-        WORKING_DIR_COMMON: "src/06_domains/payhub-common"
-        WORKING_DIR_SECRET: "src/06_domains/payhub-secrets"
-        DOMAIN_NAME: 'payhub'
+        WORKING_DIR_APP: "src/70_domains/srtp_app"
+        WORKING_DIR_COMMON: "src/70_domains/srtp_common"
+        WORKING_DIR_SECRET: "src/70_domains/srtp_security"
+        DOMAIN_NAME: 'srtp'
         SC_PLAN_NAME: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_PROD)'
         SC_APPLY_NAME: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_PROD)'
         AKS_APISERVER_URL: '$(TF_PROD_AKS_APISERVER_URL)'
