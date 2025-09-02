@@ -40,6 +40,8 @@ extraEnvVars:
     value: "true"
   - name: KEYCLOAK_HOSTNAME_ADMIN
     value: "https://${keycloak_ingress_hostname}"
+  - name: KC_SPI_CONNECTIONS_HTTP_CLIENT__DEFAULT__CONNECTION_TTL_MILLIS
+    value: "${keycloak_http_client_connection_ttl_millis}"
 
 extraVolumes:
   - name: realm-import

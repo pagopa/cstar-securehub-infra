@@ -55,6 +55,9 @@ locals {
     "bonuselettrodomestici.pagopa.it"
   ]
 
+  dns_default_zone_name = var.env_short != "p" ? "${var.env}.cstar.pagopa.it" : "cstar.pagopa.it"
+  dns_default_zone_rg   = "${local.product}-vnet-rg"
+
   dns_env_public_zones = [
     for i in local.dns_public_zones :
     var.env_short != "p" ? "${var.env}.${i}" : i

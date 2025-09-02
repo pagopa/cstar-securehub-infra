@@ -46,8 +46,14 @@ variable "domain" {
 
 variable "default_zones" {
   type        = list(number)
-  default     = []
   description = "(Optional) List of availability zones"
+  default     = null
+}
+
+variable "count_ip_nat" {
+  type        = number
+  description = "Number of IP of NAT Gateway"
+  default     = 1
 }
 
 #

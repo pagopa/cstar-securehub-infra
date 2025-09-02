@@ -5,7 +5,6 @@ location       = "italynorth"
 location_short = "itn"
 domain         = "core"
 
-default_zones               = [1]
 nat_idle_timeout_in_minutes = 4
 
 #
