@@ -1,6 +1,6 @@
 # This file contains the resources that were used for testing in the DEV and UAT environments
 resource "kubernetes_namespace" "namespace" {
-  count = contains(["d", "u"], var.env_short) ? 1 : 0
+  count = contains(["d", "u", "p"], var.env_short) ? 1 : 0
 
   metadata {
     name = var.domain
