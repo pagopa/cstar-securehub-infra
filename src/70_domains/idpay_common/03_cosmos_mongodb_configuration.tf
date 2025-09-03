@@ -800,6 +800,10 @@ locals {
           unique = false
         },
         {
+          keys   = ["organizationName"]
+          unique = false
+        },
+        {
           keys   = ["category", "productFileId"]
           unique = false
         }
