@@ -98,8 +98,9 @@ variable "keycloak_pgflex_params" {
 
 variable "keycloak_configuration" {
   type = object({
-    replica_count_min                 = number
-    replica_count_max                 = number
-    http_client_connection_ttl_millis = number
+    replica_count_min                           = number
+    replica_count_max                           = number
+    http_client_connection_ttl_millis           = number
+    http_client_connection_max_idle_time_millis = number
   })
 }
