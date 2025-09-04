@@ -360,14 +360,14 @@ resource "keycloak_openid_user_attribute_protocol_mapper" "fiscal_number_mapper"
   depends_on = [keycloak_realm_user_profile.user_profile, keycloak_openid_client_scope.fiscal_number_scope]
 }
 
-# Client Scope dedicated per fiscalNumber
+# Client Scope dedicated for dateOfBirth
 resource "keycloak_openid_client_scope" "date_of_birth_scope" {
   realm_id    = keycloak_realm.user.id
   name        = "date-of-birth-scope"
   description = "Scope to expose dateOfBirth claim"
 }
 
-# Mapper per fiscalNumber into scope
+# Mapper for dateOfBirth into scope
 resource "keycloak_openid_user_attribute_protocol_mapper" "date_of_birth_mapper" {
   realm_id            = keycloak_realm.user.id
   client_scope_id     = keycloak_openid_client_scope.date_of_birth_scope.id
