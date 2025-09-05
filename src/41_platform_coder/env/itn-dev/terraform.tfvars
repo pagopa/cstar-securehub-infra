@@ -34,6 +34,6 @@ keycloak_pgflex_params = {
 keycloak_configuration = {
   replica_count_min                           = 2
   replica_count_max                           = 3
-  http_client_connection_ttl_millis           = 300000
-  http_client_connection_max_idle_time_millis = 600000
+  http_client_connection_ttl_millis           = 180000
+  http_client_connection_max_idle_time_millis = 360000
 }
