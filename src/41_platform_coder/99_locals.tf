@@ -26,7 +26,6 @@ locals {
   ### Monitoring
   monitoring_rg_name = "${local.project}-monitoring-rg"
   law_name           = "${local.project}-monitoring-law"
-  app_insights_name  = "${local.project}-monitoring-appinsights"
 
   core_monitor_rg_name   = "${local.product_nodomain}-core-monitor-rg"
   app_insights_core_name = "${local.product_nodomain}-core-appinsights"

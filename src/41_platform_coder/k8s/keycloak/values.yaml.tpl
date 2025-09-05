@@ -12,11 +12,7 @@ extraEnvVarsCM: "keycloak-config"
 initContainers:
   - name: agent-downloader
     image: curlimages/curl:latest
-    args:
-      - "-L"
-      - "-o"
-      - "/opt/bitnami/keycloak/agent/applicationinsights-agent.jar"
-      - "https://github.com/microsoft/ApplicationInsights-Java/releases/latest/download/applicationinsights-agent.jar"
+    command: ["curl", "-L", "-o", "/opt/bitnami/keycloak/agent/applicationinsights-agent.jar", "https://github.com/microsoft/ApplicationInsights-Java/releases/download/3.7.4/applicationinsights-agent-3.7.4.jar"]
     volumeMounts:
       - name: agent
         mountPath: "/opt/bitnami/keycloak/agent"
@@ -60,7 +56,7 @@ extraEnvVars:
     value: "${keycloak_http_client_connection_ttl_millis}"
   - name: KC_SPI_CONNECTIONS_HTTP_CLIENT__DEFAULT__MAX_CONNECTION_IDLE_TIME_MILLIS
     value: "${keycloak_http_client_connection_max_idle_millis}"
-  - name: JAVA_TOOL_OPTIONS
+  - name: JAVA_OPTS
     value: "-javaagent:/opt/bitnami/keycloak/agent/applicationinsights-agent.jar"
 
 extraVolumes:
@@ -70,7 +66,7 @@ extraVolumes:
   - name: pagopa-theme
     configMap:
       name: keycloak-pagopa-theme
-  - name: agent,
+  - name: agent
     emptyDir: {}
 
 extraVolumeMounts:

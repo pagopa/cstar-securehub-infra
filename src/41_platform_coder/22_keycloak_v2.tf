@@ -23,6 +23,10 @@ locals {
       name      = "realm-import"
       mountPath = "/opt/bitnami/keycloak/data/import"
       readOnly  = true
+    },
+    {
+      name      = "agent"
+      mountPath = "/opt/bitnami/keycloak/agent"
     }
   ]
 
