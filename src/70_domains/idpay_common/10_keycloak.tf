@@ -257,6 +257,19 @@ resource "keycloak_attribute_importer_identity_provider_mapper" "fiscal_number_m
   }
 }
 
+resource "keycloak_attribute_importer_identity_provider_mapper" "date_of_birth_mapper" {
+  realm                   = keycloak_realm.user.id
+  name                    = "date-of-birth-mapper"
+  claim_name              = "dateOfBirth"
+  identity_provider_alias = keycloak_oidc_identity_provider.one_identity_provider.alias
+  user_attribute          = "dateOfBirth"
+
+  # extra_config with syncMode is required in Keycloak 10+
+  extra_config = {
+    syncMode = "INHERIT"
+  }
+}
+
 resource "keycloak_realm_user_profile" "user_profile" {
   realm_id = keycloak_realm.user.id
 
@@ -323,6 +336,19 @@ resource "keycloak_realm_user_profile" "user_profile" {
     }
 
   }
+
+  attribute {
+    name         = "dateOfBirth"
+    display_name = "Date Of Birth"
+
+    multi_valued = false
+
+    permissions {
+      view = ["admin", "user"]
+      edit = ["admin", "user"]
+    }
+
+  }
 }
 
 # Client Scope dedicated per fiscalNumber
@@ -345,4 +371,26 @@ resource "keycloak_openid_user_attribute_protocol_mapper" "fiscal_number_mapper"
   add_to_userinfo     = true
 
   depends_on = [keycloak_realm_user_profile.user_profile, keycloak_openid_client_scope.fiscal_number_scope]
+}
+
+# Client Scope dedicated for dateOfBirth
+resource "keycloak_openid_client_scope" "date_of_birth_scope" {
+  realm_id    = keycloak_realm.user.id
+  name        = "date-of-birth-scope"
+  description = "Scope to expose dateOfBirth claim"
+}
+
+# Mapper for dateOfBirth into scope
+resource "keycloak_openid_user_attribute_protocol_mapper" "date_of_birth_mapper" {
+  realm_id            = keycloak_realm.user.id
+  client_scope_id     = keycloak_openid_client_scope.date_of_birth_scope.id
+  name                = "dateOfBirth"
+  user_attribute      = "dateOfBirth"
+  claim_name          = "dateOfBirth"
+  claim_value_type    = "String"
+  add_to_id_token     = true
+  add_to_access_token = true
+  add_to_userinfo     = true
+
+  depends_on = [keycloak_realm_user_profile.user_profile, keycloak_openid_client_scope.date_of_birth_scope]
 }
