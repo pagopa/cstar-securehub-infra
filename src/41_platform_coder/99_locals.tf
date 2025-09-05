@@ -28,6 +28,9 @@ locals {
   law_name           = "${local.project}-monitoring-law"
   app_insights_name  = "${local.project}-monitoring-appinsights"
 
+  core_monitor_rg_name   = "${local.product_nodomain}-core-monitor-rg"
+  app_insights_core_name = "${local.product_nodomain}-core-appinsights"
+
   # Keycloak
   keycloak_db_name           = "bitnami_keycloak"
   keycloak_ingress_hostname  = "keycloak.${var.location_short}.${var.dns_zone_internal_prefix}.${var.prefix}.${var.external_domain}"

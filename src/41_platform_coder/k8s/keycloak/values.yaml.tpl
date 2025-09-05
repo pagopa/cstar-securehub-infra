@@ -9,6 +9,18 @@ auth:
 
 extraEnvVarsCM: "keycloak-config"
 
+initContainers:
+  - name: agent-downloader
+    image: curlimages/curl:latest
+    args:
+      - "-L"
+      - "-o"
+      - "/opt/bitnami/keycloak/agent/applicationinsights-agent.jar"
+      - "https://github.com/microsoft/ApplicationInsights-Java/releases/latest/download/applicationinsights-agent.jar"
+    volumeMounts:
+      - name: agent
+        mountPath: "/opt/bitnami/keycloak/agent"
+
 resources:
   requests:
     memory: "1Gi"
@@ -40,19 +52,26 @@ extraEnvVars:
     value: "true"
   - name: KEYCLOAK_HOSTNAME_ADMIN
     value: "https://${keycloak_ingress_hostname}"
+  - name: KC_TRACING_ENABLED
+    value: "true"
+  - name: APPLICATIONINSIGHTS_CONNECTION_STRING
+    value: "${appinsights_connection_string}"
   - name: KC_SPI_CONNECTIONS_HTTP_CLIENT__DEFAULT__CONNECTION_TTL_MILLIS
     value: "${keycloak_http_client_connection_ttl_millis}"
   - name: KC_SPI_CONNECTIONS_HTTP_CLIENT__DEFAULT__MAX_CONNECTION_IDLE_TIME_MILLIS
     value: "${keycloak_http_client_connection_max_idle_millis}"
+  - name: JAVA_TOOL_OPTIONS
+    value: "-javaagent:/opt/bitnami/keycloak/agent/applicationinsights-agent.jar"
 
 extraVolumes:
   - name: realm-import
     configMap:
       name: keycloak-realm-import
-
   - name: pagopa-theme
     configMap:
       name: keycloak-pagopa-theme
+  - name: agent,
+    emptyDir: {}
 
 extraVolumeMounts:
 ${keycloak_extra_volume_mounts}
