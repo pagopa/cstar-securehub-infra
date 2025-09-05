@@ -257,6 +257,19 @@ resource "keycloak_attribute_importer_identity_provider_mapper" "fiscal_number_m
   }
 }
 
+resource "keycloak_attribute_importer_identity_provider_mapper" "date_of_birth_mapper" {
+  realm                   = keycloak_realm.user.id
+  name                    = "date-of-birth-mapper"
+  claim_name              = "dateOfBirth"
+  identity_provider_alias = keycloak_oidc_identity_provider.one_identity_provider.alias
+  user_attribute          = "dateOfBirth"
+
+  # extra_config with syncMode is required in Keycloak 10+
+  extra_config = {
+    syncMode = "INHERIT"
+  }
+}
+
 resource "keycloak_realm_user_profile" "user_profile" {
   realm_id = keycloak_realm.user.id
 
