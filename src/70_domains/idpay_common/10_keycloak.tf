@@ -271,7 +271,7 @@ resource "keycloak_attribute_importer_identity_provider_mapper" "date_of_birth_m
 }
 
 resource "keycloak_attribute_importer_identity_provider_mapper" "merchant_id_mapper" {
-  realm                   = keycloak_realm.user.id
+  realm                   = keycloak_realm.merchant_operator.id
   name                    = "merchant-id-mapper"
   claim_name              = "merchantId"
   identity_provider_alias = keycloak_oidc_identity_provider.one_identity_provider.alias
@@ -284,7 +284,7 @@ resource "keycloak_attribute_importer_identity_provider_mapper" "merchant_id_map
 }
 
 resource "keycloak_attribute_importer_identity_provider_mapper" "point_of_sale_id_mapper" {
-  realm                   = keycloak_realm.user.id
+  realm                   = keycloak_realm.merchant_operator.id
   name                    = "point-of-sale-id-mapper"
   claim_name              = "pointOfSaleId"
   identity_provider_alias = keycloak_oidc_identity_provider.one_identity_provider.alias
@@ -406,14 +406,14 @@ resource "keycloak_realm_user_profile" "user_profile" {
 
 # Client Scope dedicated per merchantId
 resource "keycloak_openid_client_scope" "merchant_id_scope" {
-  realm_id    = keycloak_realm.user.id
+  realm_id    = keycloak_realm.merchant_operator.id
   name        = "merchant-id-scope"
   description = "Scope to expose merchantId claim"
 }
 
 # Mapper per merchantId into scope
 resource "keycloak_openid_user_attribute_protocol_mapper" "merchant_id_mapper" {
-  realm_id            = keycloak_realm.user.id
+  realm_id            = keycloak_realm.merchant_operator.id
   client_scope_id     = keycloak_openid_client_scope.merchant_id_scope.id
   name                = "merchantId"
   user_attribute      = "merchantId"
@@ -428,14 +428,14 @@ resource "keycloak_openid_user_attribute_protocol_mapper" "merchant_id_mapper" {
 
 # Client Scope dedicated per pointOfSaleId
 resource "keycloak_openid_client_scope" "point_of_sale_id_scope" {
-  realm_id    = keycloak_realm.user.id
+  realm_id    = keycloak_realm.merchant_operator.id
   name        = "point-of-sale-id-scope"
   description = "Scope to expose pointOfSaleId claim"
 }
 
 # Mapper per pointOfSaleId into scope
 resource "keycloak_openid_user_attribute_protocol_mapper" "point_of_sale_id_mapper" {
-  realm_id            = keycloak_realm.user.id
+  realm_id            = keycloak_realm.merchant_operator.id
   client_scope_id     = keycloak_openid_client_scope.point_of_sale_id_scope.id
   name                = "pointOfSaleId"
   user_attribute      = "pointOfSaleId"
