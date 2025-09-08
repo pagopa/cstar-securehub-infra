@@ -116,3 +116,7 @@ rbac:
   create: true
 networkPolicy:
   enabled: false
+
+keycloakConfigCli:
+  enabled: true
+  existingConfigmap: "keycloak-terraform-client-config"
