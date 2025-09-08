@@ -270,6 +270,33 @@ resource "keycloak_attribute_importer_identity_provider_mapper" "date_of_birth_m
   }
 }
 
+resource "keycloak_attribute_importer_identity_provider_mapper" "merchant_id_mapper" {
+  realm                   = keycloak_realm.user.id
+  name                    = "merchant-id-mapper"
+  claim_name              = "merchantId"
+  identity_provider_alias = keycloak_oidc_identity_provider.one_identity_provider.alias
+  user_attribute          = "merchantId"
+
+  # extra_config with syncMode is required in Keycloak 10+
+  extra_config = {
+    syncMode = "INHERIT"
+  }
+}
+
+resource "keycloak_attribute_importer_identity_provider_mapper" "point_of_sale_id_mapper" {
+  realm                   = keycloak_realm.user.id
+  name                    = "point-of-sale-id-mapper"
+  claim_name              = "pointOfSaleId"
+  identity_provider_alias = keycloak_oidc_identity_provider.one_identity_provider.alias
+  user_attribute          = "pointOfSaleId"
+
+  # extra_config with syncMode is required in Keycloak 10+
+  extra_config = {
+    syncMode = "INHERIT"
+  }
+}
+
+
 resource "keycloak_realm_user_profile" "user_profile" {
   realm_id = keycloak_realm.user.id
 
@@ -349,6 +376,76 @@ resource "keycloak_realm_user_profile" "user_profile" {
     }
 
   }
+
+  attribute {
+    name         = "merchantId"
+    display_name = "Merchant ID"
+
+    multi_valued = false
+
+    permissions {
+      view = ["admin", "user"]
+      edit = ["admin", "user"]
+    }
+
+  }
+
+  attribute {
+    name         = "pointOfSaleId"
+    display_name = "Point Of Sale ID"
+
+    multi_valued = false
+
+    permissions {
+      view = ["admin", "user"]
+      edit = ["admin", "user"]
+    }
+
+  }
+}
+
+# Client Scope dedicated per merchantId
+resource "keycloak_openid_client_scope" "merchant_id_scope" {
+  realm_id    = keycloak_realm.user.id
+  name        = "merchant-id-scope"
+  description = "Scope to expose merchantId claim"
+}
+
+# Mapper per merchantId into scope
+resource "keycloak_openid_user_attribute_protocol_mapper" "merchant_id_mapper" {
+  realm_id            = keycloak_realm.user.id
+  client_scope_id     = keycloak_openid_client_scope.merchant_id_scope.id
+  name                = "merchantId"
+  user_attribute      = "merchantId"
+  claim_name          = "merchantId"
+  claim_value_type    = "String"
+  add_to_id_token     = true
+  add_to_access_token = true
+  add_to_userinfo     = true
+
+  depends_on = [keycloak_realm_user_profile.user_profile, keycloak_openid_client_scope.merchant_id_scope]
+}
+
+# Client Scope dedicated per pointOfSaleId
+resource "keycloak_openid_client_scope" "point_of_sale_id_scope" {
+  realm_id    = keycloak_realm.user.id
+  name        = "point-of-sale-id-scope"
+  description = "Scope to expose pointOfSaleId claim"
+}
+
+# Mapper per pointOfSaleId into scope
+resource "keycloak_openid_user_attribute_protocol_mapper" "point_of_sale_id_mapper" {
+  realm_id            = keycloak_realm.user.id
+  client_scope_id     = keycloak_openid_client_scope.point_of_sale_id_scope.id
+  name                = "pointOfSaleId"
+  user_attribute      = "pointOfSaleId"
+  claim_name          = "pointOfSaleId"
+  claim_value_type    = "String"
+  add_to_id_token     = true
+  add_to_access_token = true
+  add_to_userinfo     = true
+
+  depends_on = [keycloak_realm_user_profile.user_profile, keycloak_openid_client_scope.point_of_sale_id_scope]
 }
 
 # Client Scope dedicated per fiscalNumber
