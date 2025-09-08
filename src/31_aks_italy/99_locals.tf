@@ -14,6 +14,9 @@ locals {
   #
   aks_name                = "${local.product}-${var.env}-aks"
   aks_resource_group_name = "${local.project}-aks-rg"
+  aks_api_url             = var.env_short == "d" ? module.aks.fqdn : module.aks.private_fqdn
+
+
 
   #
   # 🔐 KV
