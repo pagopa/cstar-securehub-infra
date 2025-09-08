@@ -20,9 +20,11 @@ module "kubernetes_service_account" {
 #-------------------------------------------------------------
 
 resource "kubernetes_role_binding" "deployer_binding" {
+  for_each = toset([var.domain, kubernetes_namespace.namespace_argocd.metadata[0].name, kubernetes_namespace.ingress.metadata[0].name, kubernetes_namespace.monitoring.metadata[0].name])
+
   metadata {
     name      = "deployer-binding"
-    namespace = var.domain
+    namespace = each.key
   }
   role_ref {
     api_group = "rbac.authorization.k8s.io"
