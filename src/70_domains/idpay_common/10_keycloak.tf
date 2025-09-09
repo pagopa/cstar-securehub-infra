@@ -134,6 +134,147 @@ resource "keycloak_openid_client_service_account_role" "app_client_service_accou
   role                    = data.keycloak_role.manage_users.name
 }
 
+
+resource "keycloak_realm_user_profile" "merchant_op_profile" {
+  realm_id = keycloak_realm.merchant_operator.id
+
+  unmanaged_attribute_policy = "ENABLED"
+
+  attribute {
+    name         = "username"
+    display_name = "Username"
+
+    multi_valued = false
+
+    permissions {
+      view = ["admin", "user"]
+      edit = ["admin", "user"]
+    }
+  }
+
+  attribute {
+    name         = "email"
+    display_name = "Email"
+
+    multi_valued = false
+
+    permissions {
+      view = ["admin", "user"]
+      edit = ["admin", "user"]
+    }
+  }
+
+  attribute {
+    name         = "firstName"
+    display_name = "First Name"
+
+    multi_valued = false
+
+    permissions {
+      view = ["admin", "user"]
+      edit = ["admin", "user"]
+    }
+  }
+
+  attribute {
+    name         = "lastName"
+    display_name = "Last Name"
+
+    multi_valued = false
+
+    permissions {
+      view = ["admin", "user"]
+      edit = ["admin", "user"]
+    }
+  }
+
+  attribute {
+    name         = "merchantId"
+    display_name = "Merchant ID"
+
+    multi_valued = false
+
+    permissions {
+      view = ["admin", "user"]
+      edit = ["admin", "user"]
+    }
+
+  }
+
+  attribute {
+    name         = "pointOfSaleId"
+    display_name = "Point Of Sale ID"
+
+    multi_valued = false
+
+    permissions {
+      view = ["admin", "user"]
+      edit = ["admin", "user"]
+    }
+
+  }
+}
+
+# Client Scope dedicated per merchantId
+resource "keycloak_openid_client_scope" "merchant_id_scope" {
+  realm_id    = keycloak_realm.merchant_operator.id
+  name        = "merchant-id-scope"
+  description = "Scope to expose merchantId claim"
+}
+
+# Mapper per merchantId into scope
+resource "keycloak_openid_user_attribute_protocol_mapper" "merchant_id_mapper" {
+  realm_id            = keycloak_realm.merchant_operator.id
+  client_scope_id     = keycloak_openid_client_scope.merchant_id_scope.id
+  name                = "merchantId"
+  user_attribute      = "merchantId"
+  claim_name          = "merchant_id"
+  claim_value_type    = "String"
+  add_to_id_token     = true
+  add_to_access_token = true
+  add_to_userinfo     = true
+
+  depends_on = [keycloak_realm_user_profile.merchant_op_profile, keycloak_openid_client_scope.merchant_id_scope]
+}
+
+# Client Scope dedicated per pointOfSaleId
+resource "keycloak_openid_client_scope" "point_of_sale_id_scope" {
+  realm_id    = keycloak_realm.merchant_operator.id
+  name        = "point-of-sale-id-scope"
+  description = "Scope to expose pointOfSaleId claim"
+}
+
+# Mapper per pointOfSaleId into scope
+resource "keycloak_openid_user_attribute_protocol_mapper" "point_of_sale_id_mapper" {
+  realm_id            = keycloak_realm.merchant_operator.id
+  client_scope_id     = keycloak_openid_client_scope.point_of_sale_id_scope.id
+  name                = "pointOfSaleId"
+  user_attribute      = "pointOfSaleId"
+  claim_name          = "point_of_sale_id"
+  claim_value_type    = "String"
+  add_to_id_token     = true
+  add_to_access_token = true
+  add_to_userinfo     = true
+
+  depends_on = [keycloak_realm_user_profile.merchant_op_profile, keycloak_openid_client_scope.point_of_sale_id_scope]
+}
+
+resource "keycloak_openid_client_default_scopes" "merchant_frontend_defaults" {
+  realm_id  = keycloak_realm.merchant_operator.id
+  client_id = keycloak_openid_client.merchant_operator_frontend.id
+
+  default_scopes = [
+    "web-origins",
+    "roles",
+    "profile",
+    "email",
+    "basic",
+    "acr",
+    keycloak_openid_client_scope.merchant_id_scope.name,
+    keycloak_openid_client_scope.point_of_sale_id_scope.name
+  ]
+}
+
 ##################
 # USER REALM
 ##################
@@ -270,6 +411,7 @@ resource "keycloak_attribute_importer_identity_provider_mapper" "date_of_birth_m
   }
 }
 
+
 resource "keycloak_realm_user_profile" "user_profile" {
   realm_id = keycloak_realm.user.id
 
@@ -349,6 +491,7 @@ resource "keycloak_realm_user_profile" "user_profile" {
     }
 
   }
+
 }
 
 # Client Scope dedicated per fiscalNumber
