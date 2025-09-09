@@ -43,7 +43,7 @@ stages:
       parameters:
         ENV: 'dev'
         WORKING_DIR_MODULE: "src/41_platform_coder"
-        DOMAIN_NAME: 'platform-coder'
+        DOMAIN_NAME: 'platform_coder'
         SC_PLAN_NAME: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_DEV)'
         SC_APPLY_NAME: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_DEV)'
         AKS_APISERVER_URL: '$(TF_DEV_AKS_APISERVER_URL)'
@@ -57,7 +57,7 @@ stages:
       parameters:
         ENV: 'uat'
         WORKING_DIR_MODULE: "src/41_platform_coder"
-        DOMAIN_NAME: 'platform-coder'
+        DOMAIN_NAME: 'platform_coder'
         SC_PLAN_NAME: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_UAT)'
         SC_APPLY_NAME: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_UAT)'
         AKS_APISERVER_URL: '$(TF_UAT_AKS_APISERVER_URL)'
@@ -71,7 +71,7 @@ stages:
       parameters:
         ENV: 'prod'
         WORKING_DIR_MODULE: "src/41_platform_coder"
-        DOMAIN_NAME: 'platform-coder'
+        DOMAIN_NAME: 'platform_coder'
         SC_PLAN_NAME: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_PROD)'
         SC_APPLY_NAME: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_PROD)'
         AKS_APISERVER_URL: '$(TF_PROD_AKS_APISERVER_URL)'
