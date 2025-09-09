@@ -19,11 +19,6 @@ locals {
 
   # Fixed volume mount
   fixed_volume_mounts = [
-    {
-      name      = "realm-import"
-      mountPath = "/opt/bitnami/keycloak/data/import"
-      readOnly  = true
-    }
   ]
 
   # Create a volume mount for each file in configmap with subPath
