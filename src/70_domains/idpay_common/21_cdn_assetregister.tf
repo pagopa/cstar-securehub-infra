@@ -1,5 +1,4 @@
 locals {
-  selfare_asset_temp_suffix = "-italy"
   spa_asset_rewrite = [
     for i, spa_asset in var.single_page_applications_asset_register_roots_dirs :
     {
@@ -75,7 +74,7 @@ module "cdn_idpay_assetregister" {
       {
         action = "Append"
         name   = contains(["d"], var.env_short) ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
-        value  = "script-src 'self'; style-src 'self' 'unsafe-inline' https://${local.selfare_subdomain}.pagopa.it/assets/font/selfhostedfonts.css; worker-src 'none'; font-src 'self' https://selfcare${local.selfare_asset_temp_suffix}.pagopa.it/assets/font/; "
+        value  = "script-src 'self'; style-src 'self' 'unsafe-inline' https://${local.selfare_subdomain}.pagopa.it/assets/font/selfhostedfonts.css; worker-src 'none'; font-src 'self' https://selfcare.pagopa.it/assets/font/; "
       },
       # {
       #   action = "Append"

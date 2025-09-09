@@ -9,6 +9,18 @@ resource "kubernetes_cluster_role" "system_cluster_deployer" {
     verbs      = ["get", "list", "watch", ]
   }
 
+  rule {
+    api_groups = ["rbac.authorization.k8s.io"]
+    resources  = ["rolebindings", "roles"]
+    verbs      = ["get", "list", "watch", ]
+  }
+
+  rule {
+    api_groups = ["autoscaling"]
+    resources  = ["horizontalpodautoscalers"]
+    verbs      = ["create", "update", "delete", ]
+  }
+
   depends_on = [
     module.aks
   ]
