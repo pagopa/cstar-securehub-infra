@@ -43,10 +43,6 @@ extraEnvVars:
     value: "${keycloak_http_client_connection_max_idle_millis}"
 
 extraVolumes:
-  - name: realm-import
-    configMap:
-      name: keycloak-realm-import
-
   - name: pagopa-theme
     configMap:
       name: keycloak-pagopa-theme
