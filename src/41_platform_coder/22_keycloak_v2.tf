@@ -50,10 +50,10 @@ resource "random_password" "keycloak_admin" {
   special = true
 }
 
-# resource "random_password" "terraform_client_secret" {
-#   length  = 24
-#   special = true
-# }
+resource "random_password" "terraform_client_secret" {
+  length  = 24
+  special = true
+}
 
 resource "azurerm_key_vault_secret" "keycloak_admin_password" {
   name         = "keycloak-admin-password"
@@ -99,11 +99,15 @@ resource "kubernetes_secret" "keycloak_db" {
   }
 }
 
-# resource "azurerm_key_vault_secret" "terraform_client_secret_for_keycloak" {
-#   name         = "terraform-client-secret-for-keycloak"
-#   value        = random_password.terraform_client_secret.result
-#   key_vault_id = data.azurerm_key_vault.key_vault_core.id
-# }
+resource "azurerm_key_vault_secret" "terraform_client_secret_for_keycloak" {
+  name         = "terraform-client-secret-for-keycloak"
+  value        = random_password.terraform_client_secret.result
+  key_vault_id = data.azurerm_key_vault.key_vault_core.id
+
+  tags = module.tag_config.tags
+
+  depends_on = [random_password.terraform_client_secret]
+}
 
 #------------------------------------------------------------------------------
 # Kubernetes
@@ -120,18 +124,18 @@ resource "kubernetes_config_map" "keycloak_config" {
   }
 }
 
-#TODO: Import admin realm to configure Keycloak with initial admin user and roles.
-resource "kubernetes_config_map" "keycloak_realm_import" {
+resource "kubernetes_config_map" "keycloak-terraform-client-config" {
   metadata {
-    name      = "keycloak-realm-import"
+    name      = "keycloak-terraform-client-config"
     namespace = local.keycloak_namespace
   }
   data = {
-    "admin_realm.json" = templatefile("${path.module}/k8s/keycloak/admin_realm.json.tpl", {
-      keycloak_admin_username = azurerm_key_vault_secret.keycloak_admin_username.value,
-      keycloak_admin_password = azurerm_key_vault_secret.keycloak_admin_password.value
+    "terraform_client.json" = templatefile("${path.module}/k8s/keycloak/terraform_client.json.tpl", {
+      keycloak_terraform_client_secret = azurerm_key_vault_secret.terraform_client_secret_for_keycloak.value
     })
   }
+
+  depends_on = [azurerm_key_vault_secret.terraform_client_secret_for_keycloak]
 }
 
 resource "kubernetes_config_map" "keycloak_pagopa_theme" {
@@ -153,19 +157,20 @@ resource "helm_release" "keycloak" {
 
   values = [
     templatefile("${path.module}/k8s/keycloak/values.yaml.tpl", {
-      postgres_db_host                           = module.keycloak_pgflex.fqdn
-      postgres_db_port                           = "5432"
-      postgres_db_username                       = module.keycloak_pgflex.administrator_login
-      postgres_db_name                           = local.keycloak_db_name
-      keycloak_admin_username                    = azurerm_key_vault_secret.keycloak_admin_username.value
-      keycloak_ingress_hostname                  = local.keycloak_ingress_hostname
-      ingress_tls_secret_name                    = replace(local.keycloak_ingress_hostname, ".", "-")
-      keycloak_external_hostname                 = local.keycloak_external_hostname
-      replica_count_min                          = var.keycloak_configuration.replica_count_min
-      replica_count_max                          = var.keycloak_configuration.replica_count_max
-      force_deploy_version                       = "v2"
-      keycloak_extra_volume_mounts               = yamlencode(local.keycloak_extra_volume_mounts)
-      keycloak_http_client_connection_ttl_millis = var.keycloak_configuration.http_client_connection_ttl_millis
+      postgres_db_host                                = module.keycloak_pgflex.fqdn
+      postgres_db_port                                = "5432"
+      postgres_db_username                            = module.keycloak_pgflex.administrator_login
+      postgres_db_name                                = local.keycloak_db_name
+      keycloak_admin_username                         = azurerm_key_vault_secret.keycloak_admin_username.value
+      keycloak_ingress_hostname                       = local.keycloak_ingress_hostname
+      ingress_tls_secret_name                         = replace(local.keycloak_ingress_hostname, ".", "-")
+      keycloak_external_hostname                      = local.keycloak_external_hostname
+      replica_count_min                               = var.keycloak_configuration.replica_count_min
+      replica_count_max                               = var.keycloak_configuration.replica_count_max
+      force_deploy_version                            = "v2"
+      keycloak_extra_volume_mounts                    = yamlencode(local.keycloak_extra_volume_mounts)
+      keycloak_http_client_connection_ttl_millis      = var.keycloak_configuration.http_client_connection_ttl_millis
+      keycloak_http_client_connection_max_idle_millis = var.keycloak_configuration.http_client_connection_max_idle_time_millis
     })
   ]
   depends_on = [
