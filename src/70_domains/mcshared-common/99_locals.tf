@@ -39,4 +39,29 @@ locals {
   revoked_refresh_tokens_ttl = 7776000
 
   repositories = ["mil-auth"]
+
+  # AZDO
+  azdo_managed_identity_rg_name = "${var.prefix}-${var.env_short}-identity-rg"
+  azdo_iac_managed_identities   = toset(["azdo-${var.env}-${var.prefix}-iac-deploy-v2", "azdo-${var.env}-${var.prefix}-iac-plan-v2"])
+
+
+  kv_identity_list = flatten([
+    for kv in [data.azurerm_key_vault.auth_general_kv, data.azurerm_key_vault.domain_general_kv] : [
+      for identity, id in data.azurerm_user_assigned_identity.iac_federated_azdo : {
+        key       = "${identity}@${kv.name}"
+        kv_id     = kv.id
+        tenant_id = kv.tenant_id
+        object_id = id.principal_id
+      }
+    ]
+  ])
+
+  kv_identity = {
+    for i in local.kv_identity_list :
+    i.key => {
+      kv_id     = i.kv_id
+      tenant_id = i.tenant_id
+      object_id = i.object_id
+    }
+  }
 }

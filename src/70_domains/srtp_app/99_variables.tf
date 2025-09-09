@@ -41,3 +41,8 @@ variable "domain" {
     error_message = "Max length is 12 chars."
   }
 }
+
+variable "k8s_kube_config_path_prefix" {
+  type    = string
+  default = "~/.kube"
+}

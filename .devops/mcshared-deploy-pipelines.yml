@@ -25,6 +25,7 @@ parameters:
       - False
       - True
 
+
 pool:
   vmImage: 'ubuntu-latest'
 
@@ -42,8 +43,9 @@ stages:
     - template: './base-deploy-pipelines.yml'
       parameters:
         ENV: 'dev'
-        WORKING_DIR_MODULE: "src/10_networking"
-        DOMAIN_NAME: 'networking'
+        WORKING_DIR_COMMON: "src/70_domains/mcshared-common"
+        WORKING_DIR_SECRET: "src/70_domains/mcshared-security"
+        DOMAIN_NAME: 'mcshared'
         SC_PLAN_NAME: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_DEV)'
         SC_APPLY_NAME: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_DEV)'
         POOL_NAME: '$(TF_POOL_NAME_DEV)'
@@ -52,8 +54,9 @@ stages:
     - template: './base-deploy-pipelines.yml'
       parameters:
         ENV: 'uat'
-        WORKING_DIR_MODULE: "src/10_networking"
-        DOMAIN_NAME: 'networking'
+        WORKING_DIR_COMMON: "src/70_domains/mcshared-common"
+        WORKING_DIR_SECRET: "src/70_domains/mcshared-security"
+        DOMAIN_NAME: 'mcshared'
         SC_PLAN_NAME: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_UAT)'
         SC_APPLY_NAME: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_UAT)'
         POOL_NAME: '$(TF_POOL_NAME_UAT)'
@@ -62,8 +65,9 @@ stages:
     - template: './base-deploy-pipelines.yml'
       parameters:
         ENV: 'prod'
-        WORKING_DIR_MODULE: "src/10_networking"
-        DOMAIN_NAME: 'networking'
+        WORKING_DIR_COMMON: "src/70_domains/mcshared-common"
+        WORKING_DIR_SECRET: "src/70_domains/mcshared-security"
+        DOMAIN_NAME: 'mcshared'
         SC_PLAN_NAME: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_PROD)'
         SC_APPLY_NAME: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_PROD)'
         POOL_NAME: '$(TF_POOL_NAME_PROD)'
