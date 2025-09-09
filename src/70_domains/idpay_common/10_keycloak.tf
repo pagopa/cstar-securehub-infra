@@ -228,7 +228,7 @@ resource "keycloak_openid_user_attribute_protocol_mapper" "merchant_id_mapper" {
   client_scope_id     = keycloak_openid_client_scope.merchant_id_scope.id
   name                = "merchantId"
   user_attribute      = "merchantId"
-  claim_name          = "merchantId"
+  claim_name          = "merchant_id"
   claim_value_type    = "String"
   add_to_id_token     = true
   add_to_access_token = true
@@ -250,13 +250,29 @@ resource "keycloak_openid_user_attribute_protocol_mapper" "point_of_sale_id_mapp
   client_scope_id     = keycloak_openid_client_scope.point_of_sale_id_scope.id
   name                = "pointOfSaleId"
   user_attribute      = "pointOfSaleId"
-  claim_name          = "pointOfSaleId"
+  claim_name          = "point_of_sale_id"
   claim_value_type    = "String"
   add_to_id_token     = true
   add_to_access_token = true
   add_to_userinfo     = true
 
   depends_on = [keycloak_realm_user_profile.merchant_op_profile, keycloak_openid_client_scope.point_of_sale_id_scope]
+}
+
+resource "keycloak_openid_client_default_scopes" "merchant_frontend_defaults" {
+  realm_id  = keycloak_realm.merchant_operator.id
+  client_id = keycloak_openid_client.merchant_operator_frontend.id
+
+  default_scopes = [
+    "web-origins",
+    "roles",
+    "profile",
+    "email",
+    "basic",
+    "acr",
+    keycloak_openid_client_scope.merchant_id_scope.name,
+    keycloak_openid_client_scope.point_of_sale_id_scope.name
+  ]
 }
 
 ##################
@@ -388,32 +404,6 @@ resource "keycloak_attribute_importer_identity_provider_mapper" "date_of_birth_m
   claim_name              = "dateOfBirth"
   identity_provider_alias = keycloak_oidc_identity_provider.one_identity_provider.alias
   user_attribute          = "dateOfBirth"
-
-  # extra_config with syncMode is required in Keycloak 10+
-  extra_config = {
-    syncMode = "INHERIT"
-  }
-}
-
-resource "keycloak_attribute_importer_identity_provider_mapper" "merchant_id_mapper" {
-  realm                   = keycloak_realm.merchant_operator.id
-  name                    = "merchant-id-mapper"
-  claim_name              = "merchantId"
-  identity_provider_alias = keycloak_oidc_identity_provider.one_identity_provider.alias
-  user_attribute          = "merchantId"
-
-  # extra_config with syncMode is required in Keycloak 10+
-  extra_config = {
-    syncMode = "INHERIT"
-  }
-}
-
-resource "keycloak_attribute_importer_identity_provider_mapper" "point_of_sale_id_mapper" {
-  realm                   = keycloak_realm.merchant_operator.id
-  name                    = "point-of-sale-id-mapper"
-  claim_name              = "pointOfSaleId"
-  identity_provider_alias = keycloak_oidc_identity_provider.one_identity_provider.alias
-  user_attribute          = "pointOfSaleId"
 
   # extra_config with syncMode is required in Keycloak 10+
   extra_config = {
