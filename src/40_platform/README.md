@@ -21,7 +21,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | 3b8a515b0fdd81a0cd219fb52de2ea769f97ac7f |
+| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | 8f5dbfc8d531ffd24057e3d45a875bd6d8ce17fa |
 | <a name="module_container_app_private_endpoint_snet"></a> [container\_app\_private\_endpoint\_snet](#module\_container\_app\_private\_endpoint\_snet) | ./.terraform/modules/__v4__/subnet | n/a |
 | <a name="module_data_postgres_flexible_snet"></a> [data\_postgres\_flexible\_snet](#module\_data\_postgres\_flexible\_snet) | ./.terraform/modules/__v4__/IDH/subnet | n/a |
 | <a name="module_default_resource_groups"></a> [default\_resource\_groups](#module\_default\_resource\_groups) | ./.terraform/modules/__v4__/payments_default_resource_groups | n/a |
