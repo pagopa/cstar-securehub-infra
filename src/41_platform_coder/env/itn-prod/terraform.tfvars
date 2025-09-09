@@ -26,7 +26,7 @@ keycloak_pgflex_params = {
   enabled                                = true
   idh_resource_tier                      = "pgflex2"
   geo_replication_enabled                = false
-  zone                                   = 2
+  zone                                   = 1
   pgres_flex_pgbouncer_enabled           = false
   pgres_flex_diagnostic_settings_enabled = false
 }
