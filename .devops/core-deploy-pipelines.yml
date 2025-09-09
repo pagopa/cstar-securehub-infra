@@ -25,7 +25,6 @@ parameters:
       - False
       - True
 
-
 pool:
   vmImage: 'ubuntu-latest'
 
@@ -34,9 +33,8 @@ resources:
     - repository: terraform
       type: github
       name: pagopa/azure-pipeline-templates
-      ref: refs/tags/v6.9.0
-      endpoint: "io-azure-devops-github-ro"
-
+      ref: refs/tags/v6.17.4
+      endpoint: "azure-devops-github-ro"
 
 stages:
   #DEV
@@ -44,7 +42,7 @@ stages:
     - template: './base-deploy-pipelines.yml'
       parameters:
         ENV: 'dev'
-        WORKING_DIR_MODULE: "src/04_core"
+        WORKING_DIR_MODULE: "src/30_core"
         DOMAIN_NAME: 'core'
         SC_PLAN_NAME: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_DEV)'
         SC_APPLY_NAME: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_DEV)'
@@ -54,7 +52,7 @@ stages:
     - template: './base-deploy-pipelines.yml'
       parameters:
         ENV: 'uat'
-        WORKING_DIR_MODULE: "src/04_core"
+        WORKING_DIR_MODULE: "src/30_core"
         DOMAIN_NAME: 'core'
         SC_PLAN_NAME: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_UAT)'
         SC_APPLY_NAME: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_UAT)'
@@ -64,7 +62,7 @@ stages:
     - template: './base-deploy-pipelines.yml'
       parameters:
         ENV: 'prod'
-        WORKING_DIR_MODULE: "src/04_core"
+        WORKING_DIR_MODULE: "src/30_core"
         DOMAIN_NAME: 'core'
         SC_PLAN_NAME: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_PROD)'
         SC_APPLY_NAME: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_PROD)'
