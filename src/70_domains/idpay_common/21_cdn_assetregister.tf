@@ -47,7 +47,7 @@ module "cdn_idpay_assetregister" {
 
   custom_domains = [
     {
-      domain_name             = "registrodeibeni.${data.azurerm_dns_zone.public_cstar.name}"
+      domain_name             = "eie.${data.azurerm_dns_zone.public_cstar.name}"
       dns_name                = data.azurerm_dns_zone.public_cstar.name
       dns_resource_group_name = data.azurerm_dns_zone.public_cstar.resource_group_name
       ttl                     = var.env != "p" ? 300 : 3600
@@ -118,7 +118,7 @@ module "cdn_idpay_assetregister" {
     }]
     url_rewrite_actions = [{
       source_pattern          = "/"
-      destination             = "/registro-dei-beni/index.html"
+      destination             = "/elenco-informatico-elettrodomestici/index.html"
       preserve_unmatched_path = false
     }]
     }],

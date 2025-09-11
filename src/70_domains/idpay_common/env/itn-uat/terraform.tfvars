@@ -55,7 +55,7 @@ single_page_applications_roots_dirs = [
 ]
 
 single_page_applications_asset_register_roots_dirs = [
-  "registro-dei-beni"
+  "elenco-informatico-elettrodomestici"
 ]
 
 single_page_applications_portal_merchants_operator_roots_dirs = [
