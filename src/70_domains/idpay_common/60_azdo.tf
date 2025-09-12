@@ -21,7 +21,7 @@ resource "azurerm_key_vault_access_policy" "azdevops_iac_managed_identities_writ
   object_id    = data.azurerm_user_assigned_identity.iac_federated_azdo[each.key].principal_id
 
   key_permissions    = ["Get", "List", "Decrypt", "Encrypt", "Verify", "GetRotationPolicy", "Recover"]
-  secret_permissions = ["Get", "List", "Set", "Delete"]
+  secret_permissions = ["Get", "List", "Set", "Delete", "Recover"]
 
   certificate_permissions = ["List", "Get"]
 
