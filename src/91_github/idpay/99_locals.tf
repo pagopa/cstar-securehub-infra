@@ -434,6 +434,34 @@ locals {
         }
       ]
     },
+    "idpay-ranker" = {
+      repository_secrets = [
+        {
+          SONAR_TOKEN = data.azurerm_key_vault_secret.sonar_token.value
+        }
+      ]
+      repository_variables = [
+        {
+          SONARCLOUD_ORG          = "pagopa"
+          SONARCLOUD_PROJECT_KEY  = "pagopa_idpay-ranker"
+          SONARCLOUD_PROJECT_NAME = "idpay-ranker"
+        }
+      ]
+    },
+    "eie-performance-test" = {
+      repository_secrets = [
+        {
+          SONAR_TOKEN = data.azurerm_key_vault_secret.sonar_token.value
+        }
+      ]
+      repository_variables = [
+        {
+          SONARCLOUD_ORG          = "pagopa"
+          SONARCLOUD_PROJECT_KEY  = "pagopa_eie-performance-test"
+          SONARCLOUD_PROJECT_NAME = "eie-performance-test"
+        }
+      ]
+    },
   }
 
   protected_branches = ["develop", "main", "uat"]
