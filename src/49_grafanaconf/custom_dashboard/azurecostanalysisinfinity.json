@@ -121,7 +121,7 @@
               "root_selector": "properties.rows",
               "source": "url",
               "type": "json",
-              "url": "https://management.azure.com/subscriptions/bbe47ad4-08b3-4925-94c5-1278e5819b86/providers/Microsoft.CostManagement/query?api-version=2023-11-01",
+              "url": "https://management.azure.com/${subscription}/providers/Microsoft.CostManagement/query?api-version=2023-11-01",
               "url_options": {
                 "body_content_type": "application/json",
                 "body_type": "raw",
@@ -322,7 +322,7 @@
               "root_selector": "properties.rows[*]",
               "source": "url",
               "type": "json",
-              "url": "https://management.azure.com/subscriptions/bbe47ad4-08b3-4925-94c5-1278e5819b86/providers/Microsoft.CostManagement/query?api-version=2023-11-01",
+              "url": "https://management.azure.com/${subscription}/providers/Microsoft.CostManagement/query?api-version=2023-11-01",
               "url_options": {
                 "body_content_type": "application/json",
                 "body_type": "raw",
