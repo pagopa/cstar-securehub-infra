@@ -7,15 +7,15 @@ locals {
   #
   # Network
   #
-  vnet_rg_name            = "${local.product_nodomain}-core-network-rg"
-  vnet_core_hub_name      = "${local.product_nodomain}-core-hub-vnet"
-  vnet_core_compute_name  = "${local.product_nodomain}-core-spoke-compute-vnet"
-  vnet_core_data_name     = "${local.product_nodomain}-core-spoke-data-vnet"
+  vnet_rg_name           = "${local.product_nodomain}-core-network-rg"
+  vnet_core_hub_name     = "${local.product_nodomain}-core-hub-vnet"
+  vnet_core_compute_name = "${local.product_nodomain}-core-spoke-compute-vnet"
+  vnet_core_data_name    = "${local.product_nodomain}-core-spoke-data-vnet"
 
   dns_private_internal_name    = "${var.dns_zone_internal_prefix}.${var.prefix}.${var.external_domain}"
   dns_private_internal_rg_name = "${var.prefix}-${var.env_short}-vnet-rg"
 
-  ingress_load_balancer_ip  = "10.10.1.250"
+  ingress_load_balancer_ip = "10.10.1.250"
 
 
   # pagopa peered vnet
@@ -43,7 +43,7 @@ locals {
   internal_private_hostname = var.env == "prod" ? "internal.cstar.pagopa.it" : "internal.${var.env}.cstar.pagopa.it"
 
   ### AKS -----------------------------------------------------------------------
-  aks_cluster_name = "cstar-${var.env_short}-itn-dev-aks"
+  aks_cluster_name        = "cstar-${var.env_short}-itn-dev-aks"
   aks_resource_group_name = "cstar-${var.env_short}-itn-core-aks-rg"
 
   ### ARGOCD

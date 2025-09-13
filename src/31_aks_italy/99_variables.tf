@@ -210,5 +210,3 @@ variable "keda_helm_chart_version" {
   type        = string
   description = "keda helm chart version"
 }
-
-
