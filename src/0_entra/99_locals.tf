@@ -11,10 +11,15 @@ locals {
     "fabio.felici@pagopa.it"
   ]
 
-  argocd_hostname = "argocd.internal.devopslab.pagopa.it"
+  argocd_hostname = var.env == "prod" ? "argocd.itn.internal.cstar.pagopa.it" : "argocd.itn.internal.${var.env}.cstar.pagopa.it"
 
-  kubernetes_cluster_name                = "dvopla-d-itn-dev-aks"
-  kubernetes_cluster_resource_group_name = "dvopla-d-itn-dev-aks-rg"
+  ### Kubernetes
+  kubernetes_cluster_name                = "cstar-${var.env_short}-itn-dev-aks"
+  kubernetes_cluster_resource_group_name = "cstar-${var.env_short}-itn-core-aks-rg"
+
+  ### KV
+  kv_name                = "cstar-${var.env_short}-itn-cicd-kv"
+  kv_resource_group_name = "cstar-${var.env_short}-itn-core-sec-rg"
 
   argocd_namespace            = "argocd"
   argocd_service_account_name = "argocd-server"
