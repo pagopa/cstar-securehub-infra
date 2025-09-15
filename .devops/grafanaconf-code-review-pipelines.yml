@@ -61,6 +61,7 @@ stages:
         parameters:
           ENV: "uat"
           WORKING_DIR_MODULE: "src/49_grafanaconf"
+          SC_PLAN_NAME: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_UAT)'
           POOL_NAME: '$(TF_POOL_NAME_UAT)'
   #PROD
   - ${{ if eq(parameters['PROD'], true) }}:
