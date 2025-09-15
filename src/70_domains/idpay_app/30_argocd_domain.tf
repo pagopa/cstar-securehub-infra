@@ -50,6 +50,11 @@ locals {
         name          = "idpay-asset-register-backend"
         target_branch = "main"
         env           = ["dev", "uat", "prod"]
+      },
+      "idpay-ranker" = {
+        name          = "idpay-ranker"
+        target_branch = "main"
+        env           = ["dev", "uat", "prod"]
       }
     }
     "mid" = {
