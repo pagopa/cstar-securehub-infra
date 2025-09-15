@@ -19,7 +19,7 @@ locals {
   ### ARGOCD
   argocd_internal_url        = "argocd.${var.location_short}.${var.dns_zone_internal_prefix}.${var.external_domain}"
   argocd_domain_project_name = "${var.domain}-project"
-  argocd_namespace           = "argocd"
+  argocd_idpay_apps_namespace           = "argocd"
 
   #
   # 🔑 KeyVault

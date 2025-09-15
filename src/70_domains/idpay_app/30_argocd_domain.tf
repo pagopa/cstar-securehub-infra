@@ -143,7 +143,7 @@ resource "argocd_application" "domain_argocd_applications" {
 
   metadata {
     name      = each.value.name
-    namespace = local.argocd_namespace
+    namespace = local.argocd_idpay_apps_namespace
     labels = {
       name   = each.value.name
       domain = var.domain
@@ -157,7 +157,7 @@ resource "argocd_application" "domain_argocd_applications" {
 
     destination {
       server    = "https://kubernetes.default.svc"
-      namespace = local.argocd_namespace
+      namespace = local.argocd_idpay_apps_namespace
     }
 
     source {
