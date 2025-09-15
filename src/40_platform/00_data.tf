@@ -94,6 +94,11 @@ data "azurerm_key_vault_secret" "argocd_admin_password" {
   key_vault_id = data.azurerm_key_vault.cicd_kv.id
 }
 
+data "azurerm_key_vault_secret" "argocd_entra_app_client_id" {
+  name         = "argocd-entra-app-workload-client-id"
+  key_vault_id = data.azurerm_key_vault.cicd_kv.id
+}
+
 
 #---------------------------------------------------------------
 # Monitor
@@ -103,7 +108,10 @@ data "azurerm_log_analytics_workspace" "logs_workspace" {
   resource_group_name = local.monitor_resource_group_name
 }
 
-data "azurerm_kubernetes_cluster" "aks_cluster" {
+#---------------------------------------------------------------
+# AKS
+#---------------------------------------------------------------
+data "azurerm_kubernetes_cluster" "aks" {
   name                = local.aks_cluster_name
   resource_group_name = local.aks_resource_group_name
 }

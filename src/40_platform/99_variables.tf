@@ -146,17 +146,19 @@ variable "argocd_force_reinstall_version" {
   description = "version to force reinstall ArgoCD"
 }
 
-variable "argocd_pdb_enabled" {
-  type        = bool
-  description = "Enable Pod Disruption Budget for ArgoCD"
+variable "argocd_application_namespaces" {
+  type        = list(string)
+  description = "In which namespaces argocd can create applications"
 }
 
-variable "argocd_min_replicas" {
-  type        = number
-  description = "Minimum number of replicas for ArgoCD"
+#---------------------------------------------------------------
+# AKS
+#---------------------------------------------------------------
+variable "ingress_load_balancer_ip" {
+  type = string
 }
 
-variable "argocd_max_replicas" {
-  type        = number
-  description = "Maximum number of replicas for ArgoCD"
+variable "k8s_kube_config_path_prefix" {
+  type    = string
+  default = "~/.kube"
 }
