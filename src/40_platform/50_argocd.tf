@@ -63,7 +63,7 @@ module "argocd_cert_mounter_workload_identity_configuration" {
 }
 
 module "argocd_cert_mounter_internal_domain_certificate" {
-  source = "./.terraform/modules/__v4__/cert_mounter"
+  source           = "./.terraform/modules/__v4__/cert_mounter"
   namespace        = "argocd"
   certificate_name = replace(local.argocd_internal_url, ".", "-")
   kv_name          = data.azurerm_key_vault.core_kv.name
@@ -91,4 +91,3 @@ resource "helm_release" "reloader_argocd" {
     value = "false"
   }
 }
-

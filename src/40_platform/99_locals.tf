@@ -47,7 +47,7 @@ locals {
   aks_resource_group_name = "cstar-${var.env_short}-itn-core-aks-rg"
 
   ### ARGOCD
-  argocd_internal_url = "argocd.${var.location_short}.${var.dns_zone_internal_prefix}.${var.prefix}.${var.external_domain}"
+  argocd_internal_url    = "argocd.${var.location_short}.${var.dns_zone_internal_prefix}.${var.prefix}.${var.external_domain}"
   argocd_dns_record_name = "argocd"
 
 
