@@ -88,7 +88,7 @@ resources:
       type: github
       name: pagopa/azure-pipeline-templates
       ref: refs/tags/v6.17.4
-      endpoint: "io-azure-devops-github-ro"
+      endpoint: "azure-devops-github-ro"
 
 name: "${{parameters.ACTION}} ${{ parameters.ENV }} for ${{ parameters.REASON }} -  $(Date:yyyyMMdd).$(Rev:r)"
 stages:
