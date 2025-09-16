@@ -69,7 +69,7 @@ variables:
 
   - name: appgwMinCapacity
     ${{ if eq(parameters.ACTION, 'setup') }}:
-      value: 0
+      value: 2
     ${{ if eq(parameters.ACTION, 'teardown') }}:
       value: 0
 
