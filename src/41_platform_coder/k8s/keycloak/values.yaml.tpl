@@ -29,8 +29,6 @@ externalDatabase:
 
 # TLS/SSL per la connessione al DB
 extraEnvVars:
-  - name: KC_LOG_LEVEL
-    value: org.keycloak:debug,org.apache.http:debug,org.hibernate.SQL:debug
   - name: KC_DB_URL_PROPERTIES
     value: "sslmode=require"
   - name: KEYCLOAK_HOSTNAME
@@ -39,9 +37,9 @@ extraEnvVars:
     value: "true"
   - name: KEYCLOAK_HOSTNAME_ADMIN
     value: "https://${keycloak_ingress_hostname}"
-  - name: KC_SPI_CONNECTIONS_HTTP_CLIENT__DEFAULT__CONNECTION_TTL_MILLIS
+  - name: KC_SPI_CONNECTIONS_HTTP_CLIENT_DEFAULT_CONNECTION_TTL_MILLIS
     value: "${keycloak_http_client_connection_ttl_millis}"
-  - name: KC_SPI_CONNECTIONS_HTTP_CLIENT__DEFAULT__MAX_CONNECTION_IDLE_TIME_MILLIS
+  - name: KC_SPI_CONNECTIONS_HTTP_CLIENT_DEFAULT_MAX_CONNECTION_IDLE_TIME_MILLIS
     value: "${keycloak_http_client_connection_max_idle_millis}"
 
 extraVolumes:
