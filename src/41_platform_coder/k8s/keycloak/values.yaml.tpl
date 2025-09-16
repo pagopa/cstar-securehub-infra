@@ -29,6 +29,8 @@ externalDatabase:
 
 # TLS/SSL per la connessione al DB
 extraEnvVars:
+  - name: KC_LOG_LEVEL
+    value: org.keycloak:debug,org.apache.http:debug,org.hibernate.SQL:debug
   - name: KC_DB_URL_PROPERTIES
     value: "sslmode=require"
   - name: KEYCLOAK_HOSTNAME
