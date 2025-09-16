@@ -43,9 +43,14 @@ data "azurerm_private_dns_zone" "container_apps" {
   resource_group_name = local.vnet_rg_name
 }
 
-#
+data "azurerm_private_dns_zone" "internal" {
+  name                = local.dns_private_internal_name
+  resource_group_name = local.dns_private_internal_rg_name
+}
+
+#----------------------------------------------------------------
 # 🔐 KV
-#
+#----------------------------------------------------------------
 
 # CICD
 data "azurerm_key_vault" "cicd_kv" {
@@ -79,7 +84,34 @@ data "azurerm_key_vault_secret" "pagopa_rtp_eventhub_pip" {
   key_vault_id = data.azurerm_key_vault.core_kv.id
 }
 
+data "azurerm_key_vault_secret" "argocd_admin_username" {
+  name         = "argocd-admin-username"
+  key_vault_id = data.azurerm_key_vault.cicd_kv.id
+}
+
+data "azurerm_key_vault_secret" "argocd_admin_password" {
+  name         = "argocd-admin-password"
+  key_vault_id = data.azurerm_key_vault.cicd_kv.id
+}
+
+data "azurerm_key_vault_secret" "argocd_entra_app_client_id" {
+  name         = "argocd-entra-app-workload-client-id"
+  key_vault_id = data.azurerm_key_vault.cicd_kv.id
+}
+
+
+#---------------------------------------------------------------
+# Monitor
+#---------------------------------------------------------------
 data "azurerm_log_analytics_workspace" "logs_workspace" {
   name                = local.log_analytics_workspace_name
   resource_group_name = local.monitor_resource_group_name
+}
+
+#---------------------------------------------------------------
+# AKS
+#---------------------------------------------------------------
+data "azurerm_kubernetes_cluster" "aks" {
+  name                = local.aks_cluster_name
+  resource_group_name = local.aks_resource_group_name
 }

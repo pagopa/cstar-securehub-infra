@@ -196,7 +196,7 @@ data "azurerm_api_management" "apim" {
 # AZDO
 #
 data "azurerm_user_assigned_identity" "iac_federated_azdo" {
-  for_each = local.azdo_iac_managed_identities
+  for_each = toset(concat(local.azdo_iac_managed_identities_read, local.azdo_iac_managed_identities_write))
 
   name                = each.key
   resource_group_name = local.azdo_managed_identity_rg_name

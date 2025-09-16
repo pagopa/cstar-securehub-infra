@@ -14,7 +14,7 @@ locals {
   #
   aks_name                = "${local.product}-${var.env}-aks"
   aks_resource_group_name = "${local.project}-aks-rg"
-  aks_api_url             = var.env_short == "d" ? module.aks.fqdn : module.aks.private_fqdn
+  aks_api_url             = module.aks.private_fqdn
 
 
 
@@ -45,8 +45,5 @@ locals {
   monitor_action_group_opsgenie_name = "CstarInfraOpsgenie"
   monitor_action_group_slack_name    = "SlackPagoPA"
   monitor_action_group_email_name    = "PagoPA"
-
-  ### ARGOCD
-  argocd_internal_url = "argocd.${var.location_short}.${var.dns_zone_internal_prefix}.${var.prefix}.${var.external_domain}"
 
 }

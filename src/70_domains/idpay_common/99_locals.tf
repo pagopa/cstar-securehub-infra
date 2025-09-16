@@ -63,7 +63,7 @@ locals {
   #
   aks_name                = "${local.product_no_domain}-${var.env}-aks"
   aks_resource_group_name = "${local.product_no_domain}-core-aks-rg"
-  aks_api_url             = var.env_short == "d" ? data.azurerm_kubernetes_cluster.aks.fqdn : data.azurerm_kubernetes_cluster.aks.private_fqdn
+  aks_api_url             = data.azurerm_kubernetes_cluster.aks.private_fqdn
 
 
   ### ARGOCD
@@ -75,7 +75,15 @@ locals {
 
   # AZDO
   azdo_managed_identity_rg_name = "${var.prefix}-${var.env_short}-identity-rg"
-  azdo_iac_managed_identities   = toset(["azdo-${var.env}-${var.prefix}-iac-deploy-v2", "azdo-${var.env}-${var.prefix}-iac-plan-v2"])
+  azdo_iac_managed_identities_read = [
+    "azdo-${var.env}-${var.prefix}-iac-plan-v2",
+    "azdo-${var.env}-${var.prefix}-app-plan-v2",
+  ]
+
+  azdo_iac_managed_identities_write = [
+    "azdo-${var.env}-${var.prefix}-iac-deploy-v2",
+    "azdo-${var.env}-${var.prefix}-app-deploy-v2"
+  ]
 
 
   #

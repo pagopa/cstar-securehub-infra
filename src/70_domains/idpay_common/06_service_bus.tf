@@ -32,6 +32,25 @@ locals {
         }
       ]
     }
+    idpay-admissibility-request = {
+      requires_duplicate_detection            = true
+      duplicate_detection_history_time_window = "P1D"
+      dead_lettering_on_message_expiration    = true
+      authorization_rules = [
+        {
+          name   = "idpay-admissibility-request-producer"
+          listen = false
+          send   = true
+          manage = false
+        },
+        {
+          name   = "idpay-admissibility-request-processor"
+          listen = true
+          send   = true
+          manage = false
+        }
+      ]
+    }
   }
 
   servicebus_namespace_auth_rules = [
