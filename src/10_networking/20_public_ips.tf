@@ -19,12 +19,12 @@ resource "azurerm_public_ip" "compute_nat_gateway_pip" {
   resource_group_name = azurerm_resource_group.rg_network.name
   allocation_method   = "Static"
 
-  zones = var.default_zones != null ? var.default_zones : [tostring((each.key) % 3) + 1]
+  zones = var.default_zones
 
   tags = merge(
     module.tag_config.tags,
     {
-      AvailabilityZone = var.default_zones != null ? join(",", var.default_zones) : tostring((each.key) % 3) + 1
+      AvailabilityZone = join(",", var.default_zones)
     }
   )
 }
