@@ -53,16 +53,6 @@ resource "azurerm_private_dns_zone_virtual_network_link" "private_dns_zone_aks" 
   virtual_network_id    = each.value.id
 }
 
-resource "azurerm_private_dns_a_record" "argocd" {
-  name                = "${local.argocd_namespace}.${var.location_short}"
-  zone_name           = data.azurerm_private_dns_zone.internal.name
-  resource_group_name = data.azurerm_private_dns_zone.internal.resource_group_name
-  ttl                 = 3600
-  records             = [var.ingress_load_balancer_ip]
-
-  tags = local.tags
-}
-
 #------------------------------------------------------
 # nat gateway
 #------------------------------------------------------

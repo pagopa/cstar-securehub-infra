@@ -18,10 +18,10 @@ default_zones = [1, 2, 3]
 # https://pagopa.atlassian.net/wiki/spaces/DEVOPS/pages/482967553/AKS#sku-(dimensionamento)
 
 aks_sku_tier                   = "Free"
-aks_private_cluster_is_enabled = false
+aks_private_cluster_is_enabled = true
 aks_alerts_enabled             = false
 
-aks_kubernetes_version = "1.32.4"
+aks_kubernetes_version = "1.32.6"
 
 # Standard is recommended tier Standard_B2ms
 # B – Economical burstable

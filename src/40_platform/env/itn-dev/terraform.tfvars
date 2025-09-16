@@ -16,6 +16,12 @@ cidr_subnet_storage_private_endpoints       = ["10.99.5.0/27"]
 cidr_subnet_container_app_private_endpoints = ["10.99.5.32/27"]
 
 #
+# Dns
+#
+dns_zone_internal_prefix = "internal.dev"
+external_domain          = "pagopa.it"
+
+#
 # Monitoring
 #
 monitoring_law_sku               = "PerGB2018"

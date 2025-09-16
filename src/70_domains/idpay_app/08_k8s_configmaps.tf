@@ -125,6 +125,7 @@ resource "kubernetes_config_map" "rest-client" {
     idpay_group_host                 = "http://idpay-group-microservice-chart:8080"
     idpay_ranking_host               = "http://idpay-ranking-microservice-chart:8080"
     idpay_wallet_host                = "http://idpay-wallet-microservice-chart:8080"
+    idpay_register_host              = "http://idpay-asset-register-backend-microservice-chart:8080"
     initiative_ms_base_url           = "http://idpay-portal-welfare-backend-initiative-microservice-chart:8080"
     email_notification_ms_host       = "http://idpay-notification-email-microservice-chart:8080"
     idpay-reward-calculator-baseurl  = "http://idpay-reward-calculator-microservice-chart:8080"
