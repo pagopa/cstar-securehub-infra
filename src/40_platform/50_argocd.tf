@@ -39,7 +39,7 @@ module "argocd" {
     }
   ]
 
-  entra_admin_group_object_ids = [data.azuread_group.adgroup_admin.id]
+  entra_admin_group_object_ids = [data.azuread_group.adgroup_admin.object_id]
 
   tags = module.tag_config.tags
 
