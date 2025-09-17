@@ -448,7 +448,7 @@ locals {
         }
       ]
     },
-    "eie-performance-test" = {
+    "pari-performance-test" = {
       repository_secrets = [
         {
           SONAR_TOKEN = data.azurerm_key_vault_secret.sonar_token.value
@@ -457,8 +457,8 @@ locals {
       repository_variables = [
         {
           SONARCLOUD_ORG          = "pagopa"
-          SONARCLOUD_PROJECT_KEY  = "pagopa_eie-performance-test"
-          SONARCLOUD_PROJECT_NAME = "eie-performance-test"
+          SONARCLOUD_PROJECT_KEY  = "pagopa_pari-performance-test"
+          SONARCLOUD_PROJECT_NAME = "pari-performance-test"
         }
       ]
     },
