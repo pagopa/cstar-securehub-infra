@@ -43,3 +43,4 @@ __TMP
 __azurite_*
 .idea
 .vscode
+/.project
