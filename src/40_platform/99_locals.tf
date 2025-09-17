@@ -43,7 +43,7 @@ locals {
   internal_private_hostname = var.env == "prod" ? "internal.cstar.pagopa.it" : "internal.${var.env}.cstar.pagopa.it"
 
   ### AKS -----------------------------------------------------------------------
-  aks_cluster_name        = "cstar-${var.env_short}-itn-dev-aks"
+  aks_cluster_name        = "cstar-${var.env_short}-itn-${var.env}-aks"
   aks_resource_group_name = "cstar-${var.env_short}-itn-core-aks-rg"
 
   ### ARGOCD
