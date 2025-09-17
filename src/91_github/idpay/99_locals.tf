@@ -462,6 +462,20 @@ locals {
         }
       ]
     },
+    "mcshared-datavault" = {
+      repository_secrets = [
+        {
+          SONAR_TOKEN = data.azurerm_key_vault_secret.sonar_token.value
+        }
+      ]
+      repository_variables = [
+        {
+          SONARCLOUD_ORG          = "pagopa"
+          SONARCLOUD_PROJECT_KEY  = "pagopa_mcshared-datavault"
+          SONARCLOUD_PROJECT_NAME = "mcshared-datavault"
+        }
+      ]
+    },
   }
 
   protected_branches = ["develop", "main", "uat"]
