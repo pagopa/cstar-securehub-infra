@@ -228,28 +228,25 @@
             ]
           },
           {
-            "id": "4633b118-cfd9-4cd4-ae4c-e06de1523e93",
+            "id": "6a609e10-a136-4059-bb59-8fb6d89fb7fa",
             "version": "KqlParameterItem/1.0",
-            "name": "apiAssetRegistry",
-            "type": 2,
-            "multiSelect": true,
-            "quote": "'",
-            "delimiter": ",",
-            "isHiddenWhenLocked": true,
-            "typeSettings": {
-              "additionalResourceOptions": [
-                "value::all"
-              ],
-              "showDefault": false
-            },
-            "jsonData": "[\r\n    {\"value\": \"userPermission\", \"selected\": true},\r\n    {\"value\": \"getPortalConsent\", \"selected\": true},\r\n    {\"value\": \"savePortalConsent\", \"selected\": true},\r\n    {\"value\": \"uploadProductList\", \"selected\": true},\r\n    {\"value\": \"getProductFilesList\", \"selected\": true},\r\n    {\"value\": \"downloadErrorReport\", \"selected\": true},\r\n    {\"value\": \"getProducts\", \"selected\": true},\r\n    {\"value\": \"retrieveInstitutionById\", \"selected\": true}\r\n]",
-            "timeContext": {
-              "durationMs": 0
-            },
-            "timeContextFromParameter": "timeRange",
-            "value": [
-              "value::all"
-            ]
+            "name": "itnRegisterOperation",
+            "type": 1,
+            "value": "itn-register-operation"
+          },
+          {
+            "id": "eb754b6c-7517-4d6f-995d-301cd2fc97bf",
+            "version": "KqlParameterItem/1.0",
+            "name": "itnRegisterProduct",
+            "type": 1,
+            "value": "idpay_itn_api_register_product"
+          },
+          {
+            "id": "e9aa872b-4fc8-4c21-bd2c-5b7c1194610c",
+            "version": "KqlParameterItem/1.0",
+            "name": "itnRegisterDbName",
+            "type": 1,
+            "value": "rdb"
           },
           {
             "id": "789c75b9-40fe-4ad2-a3e3-1ad2a057bf08",
@@ -1650,7 +1647,7 @@
                   "type": 3,
                   "content": {
                     "version": "KqlItem/1.0",
-                    "query": "let startTime = {timeRangeAssetRegister:start};\r\nlet endTime = {timeRangeAssetRegister:end};\r\nlet interval = endTime-startTime;\r\n\r\nlet totalCount = requests\r\n| where timestamp between (startTime .. endTime)\r\n| where operation_Name has_any ({apiAssetRegistry})\r\n| summarize Total = count() by operation_Name;\r\nlet data = requests\r\n| where timestamp between (startTime .. endTime)\r\n| where operation_Name has_any ({apiAssetRegistry});\r\ndata\r\n| join kind=inner totalCount on operation_Name\r\n| summarize Count = count(), Users = dcount(tostring(customDimensions[\"Request-X-Forwarded-For\"])) by operation_Name, resultCode, Total//, timestamp=bin(timestamp,interval)\r\n| project ['Request Name'] = operation_Name, ['Result Code'] = resultCode, ['Total Response'] = Count, ['Rate %'] = (Count*100)/Total, ['Users Affected'] = Users\r\n| sort by ['Request Name']",
+                    "query": "let startTime = {timeRangeAssetRegister:start};\r\nlet endTime = {timeRangeAssetRegister:end};\r\nlet interval = endTime-startTime;\r\n\r\nlet totalCount = requests\r\n| where timestamp between (startTime .. endTime)\r\n| where operation_Name  has '{itnRegisterOperation}' \r\n| summarize Total = count() by operation_Name;\r\nlet data = requests\r\n| where timestamp between (startTime .. endTime)\r\n| where operation_Name has '{itnRegisterOperation}';\r\ndata\r\n| join kind=inner totalCount on operation_Name\r\n| summarize Count = count(), Users = dcount(tostring(customDimensions[\"Request-X-Forwarded-For\"])) by operation_Name, resultCode, Total//, timestamp=bin(timestamp,interval)\r\n| project ['Request Name'] = operation_Name, ['Result Code'] = resultCode, ['Total Response'] = Count, ['Rate %'] = (Count*100)/Total, ['Users Affected'] = Users\r\n| sort by ['Request Name']",
                     "size": 0,
                     "showAnalytics": true,
                     "queryType": 0,
@@ -1890,7 +1887,7 @@
                   "type": 3,
                   "content": {
                     "version": "KqlItem/1.0",
-                    "query": "let startTime = {timeRangeAssetRegister:start};\nlet endTime = {timeRangeAssetRegister:end};\nlet interval = totimespan({timeSpan:label});\n\nrequests\n| where timestamp between (startTime .. endTime)\n| where operation_Name has_any ({apiAssetRegistry})\n| summarize total = count(), n_ok = countif(resultCode startswith '2'  or resultCode == '404') by bin(timestamp,interval)\n| project timestamp, availability = todouble(n_ok)/total\n| join kind=fullouter (range timestamp from startTime to endTime step interval) on timestamp\n| project timestamp=coalesce(timestamp,timestamp1), availability = coalesce(availability,1.0), watermark=0.99",
+                    "query": "let startTime = {timeRangeAssetRegister:start};\nlet endTime = {timeRangeAssetRegister:end};\nlet interval = totimespan({timeSpan:label});\n\nrequests\n| where timestamp between (startTime .. endTime)\n| where operation_Name has '{itnRegisterOperation}'\n| summarize total = count(), n_ok = countif(resultCode startswith '2'  or resultCode == '404') by bin(timestamp,interval)\n| project timestamp, availability = todouble(n_ok)/total\n| join kind=fullouter (range timestamp from startTime to endTime step interval) on timestamp\n| project timestamp=coalesce(timestamp,timestamp1), availability = coalesce(availability,1.0), watermark=0.99",
                     "size": 0,
                     "aggregation": 3,
                     "showAnalytics": true,
@@ -1909,7 +1906,7 @@
                   "type": 3,
                   "content": {
                     "version": "KqlItem/1.0",
-                    "query": "let startTime = {timeRangeAssetRegister:start};\r\nlet endTime = {timeRangeAssetRegister:end};\r\nlet interval = totimespan({timeSpan:label});\r\n\r\nlet dataset = requests\r\n    // additional filters can be applied here\r\n    | where timestamp between (startTime .. endTime) \r\n        and operation_Name has_any ({apiAssetRegistry})\r\n;\r\ndataset\r\n| summarize percentile_95=percentile(duration, 95) by bin(timestamp, interval)\r\n| project timestamp, percentile_95, watermark=1000\r\n| render timechart",
+                    "query": "let startTime = {timeRangeAssetRegister:start};\r\nlet endTime = {timeRangeAssetRegister:end};\r\nlet interval = totimespan({timeSpan:label});\r\n\r\nlet dataset = requests\r\n    // additional filters can be applied here\r\n    | where timestamp between (startTime .. endTime) \r\n        and operation_Name has '{itnRegisterOperation}'\r\n;\r\ndataset\r\n| summarize percentile_95=percentile(duration, 95) by bin(timestamp, interval)\r\n| project timestamp, percentile_95, watermark=1000\r\n| render timechart",
                     "size": 0,
                     "aggregation": 3,
                     "showAnalytics": true,
@@ -1958,10 +1955,10 @@
                           "showOpenInMe": true,
                           "filters": [
                             {
-                              "id": "1",
-                              "key": "customDimensions/Operation Name",
+                              "id": "7",
+                              "key": "customDimensions/Product Name",
                               "operator": 0,
-                              "valueParam": "apiAssetRegistry"
+                              "valueParam": "itnRegisterProduct"
                             }
                           ],
                           "gridSettings": {
@@ -1998,10 +1995,10 @@
                           "showOpenInMe": true,
                           "filters": [
                             {
-                              "id": "1",
-                              "key": "customDimensions/Operation Name",
+                              "id": "7",
+                              "key": "customDimensions/Product Name",
                               "operator": 0,
-                              "valueParam": "apiAssetRegistry"
+                              "valueParam": "itnRegisterProduct"
                             },
                             {
                               "id": "2",
@@ -2049,10 +2046,10 @@
                           "showOpenInMe": true,
                           "filters": [
                             {
-                              "id": "1",
-                              "key": "customDimensions/Operation Name",
+                              "id": "7",
+                              "key": "customDimensions/Product Name",
                               "operator": 0,
-                              "valueParam": "apiAssetRegistry"
+                              "valueParam": "itnRegisterProduct"
                             },
                             {
                               "id": "2",
@@ -2101,10 +2098,10 @@
                           "showOpenInMe": true,
                           "filters": [
                             {
-                              "id": "1",
-                              "key": "customDimensions/Operation Name",
+                              "id": "7",
+                              "key": "customDimensions/Product Name",
                               "operator": 0,
-                              "valueParam": "apiAssetRegistry"
+                              "valueParam": "itnRegisterProduct"
                             },
                             {
                               "id": "2",
@@ -2152,10 +2149,10 @@
                           "showOpenInMe": true,
                           "filters": [
                             {
-                              "id": "1",
-                              "key": "customDimensions/Operation Name",
+                              "id": "7",
+                              "key": "customDimensions/Product Name",
                               "operator": 0,
-                              "valueParam": "apiAssetRegistry"
+                              "valueParam": "itnRegisterProduct"
                             }
                           ],
                           "gridSettings": {
@@ -2176,302 +2173,205 @@
                     "groupType": "editable",
                     "items": [
                       {
-                        "type": 10,
+                        "type": 12,
                         "content": {
-                          "chartId": "workbook2f4c21ef-b2c2-4013-8a15-04e72dbdd9fa",
-                          "version": "MetricsItem/2.0",
-                          "size": 1,
-                          "chartType": 2,
-                          "resourceType": "microsoft.eventhub/namespaces",
-                          "metricScope": 0,
-                          "resourceIds": [
-                            "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-01-ns",
-                            "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-00-ns"
-                          ],
-                          "timeContextFromParameter": "timeRangeAssetRegister",
-                          "timeContext": {
-                            "durationMs": 86400000
-                          },
-                          "metrics": [
+                          "version": "NotebookGroup/1.0",
+                          "groupType": "editable",
+                          "items": [
                             {
-                              "namespace": "microsoft.eventhub/namespaces",
-                              "metric": "microsoft.eventhub/namespaces--IncomingMessages",
-                              "aggregation": 1,
-                              "splitBy": null
-                            },
-                            {
-                              "namespace": "microsoft.eventhub/namespaces",
-                              "metric": "microsoft.eventhub/namespaces--OutgoingMessages",
-                              "aggregation": 1
+                              "type": 12,
+                              "content": {
+                                "version": "NotebookGroup/1.0",
+                                "groupType": "editable",
+                                "items": [
+                                  {
+                                    "type": 12,
+                                    "content": {
+                                      "version": "NotebookGroup/1.0",
+                                      "groupType": "editable",
+                                      "title": "idpay-evh-rdb-ns",
+                                      "items": [
+                                        {
+                                          "type": 10,
+                                          "content": {
+                                            "chartId": "workbook3e41622d-4b0a-4f4f-b335-b65ef5c909d1",
+                                            "version": "MetricsItem/2.0",
+                                            "size": 0,
+                                            "chartType": 2,
+                                            "resourceType": "microsoft.eventhub/namespaces",
+                                            "metricScope": 0,
+                                            "resourceIds": [
+                                              "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-rdb-ns"
+                                            ],
+                                            "timeContextFromParameter": "timeRangeAssetRegister",
+                                            "timeContext": {
+                                              "durationMs": 86400000
+                                            },
+                                            "metrics": [
+                                              {
+                                                "namespace": "microsoft.eventhub/namespaces",
+                                                "metric": "microsoft.eventhub/namespaces--IncomingMessages",
+                                                "aggregation": 1,
+                                                "splitBy": [
+                                                  "EntityName"
+                                                ]
+                                              }
+                                            ],
+                                            "title": "Incoming Messages",
+                                            "showOpenInMe": true,
+                                            "gridSettings": {
+                                              "rowLimit": 10000
+                                            }
+                                          },
+                                          "name": "Incoming Messages"
+                                        },
+                                        {
+                                          "type": 10,
+                                          "content": {
+                                            "chartId": "workbook95d246e7-53f0-4e0a-9c7b-b99deec02502",
+                                            "version": "MetricsItem/2.0",
+                                            "size": 0,
+                                            "chartType": 2,
+                                            "resourceType": "microsoft.eventhub/namespaces",
+                                            "metricScope": 0,
+                                            "resourceIds": [
+                                              "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-rdb-ns"
+                                            ],
+                                            "timeContextFromParameter": "timeRangeAssetRegister",
+                                            "timeContext": {
+                                              "durationMs": 86400000
+                                            },
+                                            "metrics": [
+                                              {
+                                                "namespace": "microsoft.eventhub/namespaces",
+                                                "metric": "microsoft.eventhub/namespaces--OutgoingMessages",
+                                                "aggregation": 1,
+                                                "splitBy": [
+                                                  "EntityName"
+                                                ]
+                                              }
+                                            ],
+                                            "title": "Outgoing Messages",
+                                            "showOpenInMe": true,
+                                            "gridSettings": {
+                                              "rowLimit": 10000
+                                            }
+                                          },
+                                          "name": "Outgoing Messages"
+                                        }
+                                      ]
+                                    },
+                                    "name": "idpay-evh-rdb-ns"
+                                  },
+                                  {
+                                    "type": 12,
+                                    "content": {
+                                      "version": "NotebookGroup/1.0",
+                                      "groupType": "editable",
+                                      "title": "idpay-itn-mongo-rdb",
+                                      "items": [
+                                        {
+                                          "type": 10,
+                                          "content": {
+                                            "chartId": "workbookb11b2be9-96e1-4e4e-897f-d888a5679bea",
+                                            "version": "MetricsItem/2.0",
+                                            "size": 0,
+                                            "chartType": 2,
+                                            "resourceType": "microsoft.documentdb/databaseaccounts",
+                                            "metricScope": 0,
+                                            "resourceIds": [
+                                              "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.DocumentDB/databaseAccounts/${prefix}-idpay-mongodb-account"
+                                            ],
+                                            "timeContextFromParameter": "timeRangeAssetRegister",
+                                            "timeContext": {
+                                              "durationMs": 86400000
+                                            },
+                                            "metrics": [
+                                              {
+                                                "namespace": "microsoft.documentdb/databaseaccounts",
+                                                "metric": "microsoft.documentdb/databaseaccounts-Requests-NormalizedRUConsumption",
+                                                "aggregation": 4,
+                                                "splitBy": [
+                                                  "CollectionName"
+                                                ]
+                                              }
+                                            ],
+                                            "title": "DB - RU Avg",
+                                            "filters": [
+                                              {
+                                                "id": "2",
+                                                "key": "DatabaseName",
+                                                "operator": 0,
+                                                "valueParam": "itnRegisterDbName"
+                                              }
+                                            ],
+                                            "gridSettings": {
+                                              "rowLimit": 10000
+                                            }
+                                          },
+                                          "name": "DB - RU Avg"
+                                        },
+                                        {
+                                          "type": 10,
+                                          "content": {
+                                            "chartId": "workbook7f1ad027-c5c4-4926-a2bc-853a4cd2aa6c",
+                                            "version": "MetricsItem/2.0",
+                                            "size": 0,
+                                            "chartType": 2,
+                                            "resourceType": "microsoft.documentdb/databaseaccounts",
+                                            "metricScope": 0,
+                                            "resourceIds": [
+                                              "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.DocumentDB/databaseAccounts/${prefix}-idpay-mongodb-account"
+                                            ],
+                                            "timeContextFromParameter": "timeRangeAssetRegister",
+                                            "timeContext": {
+                                              "durationMs": 86400000
+                                            },
+                                            "metrics": [
+                                              {
+                                                "namespace": "microsoft.documentdb/databaseaccounts",
+                                                "metric": "microsoft.documentdb/databaseaccounts-Requests-ServerSideLatencyGateway",
+                                                "aggregation": 4,
+                                                "splitBy": [
+                                                  "CollectionName"
+                                                ]
+                                              }
+                                            ],
+                                            "title": "DB - Server Side Latency",
+                                            "filters": [
+                                              {
+                                                "id": "2",
+                                                "key": "DatabaseName",
+                                                "operator": 0,
+                                                "valueParam": "itnRegisterDbName"
+                                              }
+                                            ],
+                                            "gridSettings": {
+                                              "rowLimit": 10000
+                                            }
+                                          },
+                                          "name": "DB - Server Side Latency"
+                                        }
+                                      ]
+                                    },
+                                    "name": "idpay-itn-mongo-rdb"
+                                  }
+                                ]
+                              },
+                              "name": "group - 5"
                             }
-                          ],
-                          "title": "Eventhubs incoming-outgoing",
-                          "gridFormatType": 1,
-                          "showOpenInMe": true,
-                          "filters": [
-                            {
-                              "id": "1",
-                              "key": "EntityName",
-                              "operator": 0,
-                              "valueParam": "eventhubBeneficiary"
-                            }
-                          ],
-                          "gridSettings": {
-                            "formatters": [
-                              {
-                                "columnMatch": "Subscription",
-                                "formatter": 5
-                              },
-                              {
-                                "columnMatch": "Name",
-                                "formatter": 13,
-                                "formatOptions": {
-                                  "linkTarget": "Resource"
-                                }
-                              },
-                              {
-                                "columnMatch": "microsoft.eventhub/namespaces--IncomingMessages Timeline",
-                                "formatter": 5
-                              },
-                              {
-                                "columnMatch": "microsoft.eventhub/namespaces--IncomingMessages",
-                                "formatter": 1,
-                                "numberFormat": {
-                                  "unit": 0,
-                                  "options": null
-                                }
-                              },
-                              {
-                                "columnMatch": "microsoft.eventhub/namespaces--OutgoingMessages Timeline",
-                                "formatter": 5
-                              },
-                              {
-                                "columnMatch": "microsoft.eventhub/namespaces--OutgoingMessages",
-                                "formatter": 1,
-                                "numberFormat": {
-                                  "unit": 0,
-                                  "options": null
-                                }
-                              },
-                              {
-                                "columnMatch": "Metric",
-                                "formatter": 1
-                              },
-                              {
-                                "columnMatch": "Aggregation",
-                                "formatter": 5
-                              },
-                              {
-                                "columnMatch": "Value",
-                                "formatter": 1
-                              },
-                              {
-                                "columnMatch": "Timeline",
-                                "formatter": 9
-                              }
-                            ],
-                            "rowLimit": 10000
-                          }
+                          ]
                         },
-                        "name": "Eventhubs incoming-outgoing"
+                        "name": "group - 1"
                       },
                       {
                         "type": 12,
                         "content": {
                           "version": "NotebookGroup/1.0",
                           "groupType": "editable",
-                          "title": "idpay-evh-00-ns",
-                          "items": [
-                            {
-                              "type": 10,
-                              "content": {
-                                "chartId": "workbook3e41622d-4b0a-4f4f-b335-b65ef5c909d1",
-                                "version": "MetricsItem/2.0",
-                                "size": 0,
-                                "chartType": 2,
-                                "resourceType": "microsoft.eventhub/namespaces",
-                                "metricScope": 0,
-                                "resourceIds": [
-                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-00-ns"
-                                ],
-                                "timeContextFromParameter": "timeRangeAssetRegister",
-                                "timeContext": {
-                                  "durationMs": 86400000
-                                },
-                                "metrics": [
-                                  {
-                                    "namespace": "microsoft.eventhub/namespaces",
-                                    "metric": "microsoft.eventhub/namespaces--IncomingMessages",
-                                    "aggregation": 1,
-                                    "splitBy": "EntityName"
-                                  }
-                                ],
-                                "title": "Incoming Messages",
-                                "showOpenInMe": true,
-                                "filters": [
-                                  {
-                                    "id": "1",
-                                    "key": "EntityName",
-                                    "operator": 0,
-                                    "valueParam": "eventhubBeneficiary"
-                                  }
-                                ],
-                                "gridSettings": {
-                                  "rowLimit": 10000
-                                }
-                              },
-                              "customWidth": "50",
-                              "name": "Incoming Messages",
-                              "styleSettings": {
-                                "maxWidth": "50"
-                              }
-                            },
-                            {
-                              "type": 10,
-                              "content": {
-                                "chartId": "workbook95d246e7-53f0-4e0a-9c7b-b99deec02502",
-                                "version": "MetricsItem/2.0",
-                                "size": 0,
-                                "chartType": 2,
-                                "resourceType": "microsoft.eventhub/namespaces",
-                                "metricScope": 0,
-                                "resourceIds": [
-                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-00-ns"
-                                ],
-                                "timeContextFromParameter": "timeRangeAssetRegister",
-                                "timeContext": {
-                                  "durationMs": 86400000
-                                },
-                                "metrics": [
-                                  {
-                                    "namespace": "microsoft.eventhub/namespaces",
-                                    "metric": "microsoft.eventhub/namespaces--OutgoingMessages",
-                                    "aggregation": 1,
-                                    "splitBy": "EntityName"
-                                  }
-                                ],
-                                "title": "Outgoing Messages",
-                                "showOpenInMe": true,
-                                "filters": [
-                                  {
-                                    "id": "1",
-                                    "key": "EntityName",
-                                    "operator": 0,
-                                    "valueParam": "eventhubBeneficiary"
-                                  }
-                                ],
-                                "gridSettings": {
-                                  "rowLimit": 10000
-                                }
-                              },
-                              "customWidth": "50",
-                              "name": "Outgoing Messages",
-                              "styleSettings": {
-                                "maxWidth": "50"
-                              }
-                            }
-                          ]
+                          "items": []
                         },
-                        "name": "idpay-evh-00-ns"
-                      },
-                      {
-                        "type": 12,
-                        "content": {
-                          "version": "NotebookGroup/1.0",
-                          "groupType": "editable",
-                          "title": "idpay-evh-01-ns",
-                          "items": [
-                            {
-                              "type": 10,
-                              "content": {
-                                "chartId": "workbook3e41622d-4b0a-4f4f-b335-b65ef5c909d1",
-                                "version": "MetricsItem/2.0",
-                                "size": 0,
-                                "chartType": 2,
-                                "resourceType": "microsoft.eventhub/namespaces",
-                                "metricScope": 0,
-                                "resourceIds": [
-                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-01-ns"
-                                ],
-                                "timeContextFromParameter": "timeRangeAssetRegister",
-                                "timeContext": {
-                                  "durationMs": 86400000
-                                },
-                                "metrics": [
-                                  {
-                                    "namespace": "microsoft.eventhub/namespaces",
-                                    "metric": "microsoft.eventhub/namespaces--IncomingMessages",
-                                    "aggregation": 1,
-                                    "splitBy": "EntityName"
-                                  }
-                                ],
-                                "title": "Incoming Messages",
-                                "showOpenInMe": true,
-                                "filters": [
-                                  {
-                                    "id": "1",
-                                    "key": "EntityName",
-                                    "operator": 0,
-                                    "valueParam": "eventhubBeneficiary"
-                                  }
-                                ],
-                                "gridSettings": {
-                                  "rowLimit": 10000
-                                }
-                              },
-                              "customWidth": "50",
-                              "name": "Incoming Messages - Copy",
-                              "styleSettings": {
-                                "maxWidth": "50"
-                              }
-                            },
-                            {
-                              "type": 10,
-                              "content": {
-                                "chartId": "workbook95d246e7-53f0-4e0a-9c7b-b99deec02502",
-                                "version": "MetricsItem/2.0",
-                                "size": 0,
-                                "chartType": 2,
-                                "resourceType": "microsoft.eventhub/namespaces",
-                                "metricScope": 0,
-                                "resourceIds": [
-                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-01-ns"
-                                ],
-                                "timeContextFromParameter": "timeRangeAssetRegister",
-                                "timeContext": {
-                                  "durationMs": 86400000
-                                },
-                                "metrics": [
-                                  {
-                                    "namespace": "microsoft.eventhub/namespaces",
-                                    "metric": "microsoft.eventhub/namespaces--OutgoingMessages",
-                                    "aggregation": 1,
-                                    "splitBy": "EntityName"
-                                  }
-                                ],
-                                "title": "Outgoing Messages",
-                                "showOpenInMe": true,
-                                "filters": [
-                                  {
-                                    "id": "1",
-                                    "key": "EntityName",
-                                    "operator": 0,
-                                    "valueParam": "eventhubBeneficiary"
-                                  }
-                                ],
-                                "gridSettings": {
-                                  "rowLimit": 10000
-                                }
-                              },
-                              "customWidth": "50",
-                              "name": "Outgoing Messages - Copy",
-                              "styleSettings": {
-                                "maxWidth": "50"
-                              }
-                            }
-                          ]
-                        },
-                        "name": "idpay-evh-01-ns"
+                        "name": "DB"
                       }
                     ]
                   },
