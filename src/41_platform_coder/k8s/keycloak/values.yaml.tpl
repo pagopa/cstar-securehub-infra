@@ -3,6 +3,15 @@ forceDeployVersion: ${force_deploy_version}
 production: true
 proxy: "edge"
 
+global:
+  security:
+    allowInsecureImages: true
+
+image:
+  registry: ${image_registry}
+  repository: ${image_repository}
+  tag: ${image_tag}
+
 auth:
   adminUser: "${keycloak_admin_username}"
   existingSecret: "keycloak-admin-secret" #keycloak admin password is in this secret

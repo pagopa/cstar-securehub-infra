@@ -12,7 +12,6 @@ module "aks_user_node_pool_blue" {
   # IDH Resources
   idh_resource_tier = var.aks_nodepool_blue.vm_sku_name
 
-  # Storage Account Settings
   name           = "cs${var.env_short}blueusrit"
   node_count_min = var.aks_nodepool_blue.node_count_min
   node_count_max = var.aks_nodepool_blue.node_count_max
@@ -35,7 +34,6 @@ module "aks_user_node_pool_green" {
   # IDH Resources
   idh_resource_tier = var.aks_nodepool_green.vm_sku_name
 
-  # Storage Account Settings
   name = "cs${var.env_short}grenusrit"
 
   autoscale_enabled     = var.aks_nodepool_green.autoscale_enabled
