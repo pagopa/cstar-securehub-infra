@@ -27,12 +27,11 @@ data "azuread_group" "adgroup_idpay_externals" {
 }
 
 data "azuread_group" "adgroup_idpay_project_managers" {
-  count = var.env == "prod" ? 1 : 0
+  count        = var.env == "prod" ? 1 : 0
   display_name = "${local.project_entra}-adgroup-project-managers"
 }
 
 data "azuread_group" "adgroup_idpay_oncall" {
-  count = var.env == "prod" ? 1 : 0
+  count        = var.env == "prod" ? 1 : 0
   display_name = "${local.project_entra}-adgroup-oncall"
 }
-

@@ -32,9 +32,9 @@ keycloak_pgflex_params = {
 }
 
 keycloak_configuration = {
-  image_registry                             = "docker.io"
-  image_repository                           = "bitnamilegacy/keycloak"
-  image_tag                                  = "26.3.1-debian-12-r1"
+  image_registry                              = "docker.io"
+  image_repository                            = "bitnamilegacy/keycloak"
+  image_tag                                   = "26.3.1-debian-12-r1"
   chart_version                               = "24.7.7"
   replica_count_min                           = 2
   replica_count_max                           = 3

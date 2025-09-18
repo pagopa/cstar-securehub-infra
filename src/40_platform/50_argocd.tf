@@ -27,10 +27,10 @@ module "argocd" {
   ingress_load_balancer_ip              = var.ingress_load_balancer_ip
   dns_record_name_for_ingress           = local.argocd_dns_record_name
 
-  enable_admin_login                    = true
-  admin_password                        = data.azurerm_key_vault_secret.argocd_admin_password.value
+  enable_admin_login = true
+  admin_password     = data.azurerm_key_vault_secret.argocd_admin_password.value
 
-  tier                                  = "dev"
+  tier = "dev"
   global_affinity_match_expressions = [
     {
       key      = "node_type"

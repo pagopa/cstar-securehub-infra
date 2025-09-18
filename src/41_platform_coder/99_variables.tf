@@ -98,10 +98,10 @@ variable "keycloak_pgflex_params" {
 
 variable "keycloak_configuration" {
   type = object({
-    image_repository                           = string
-    image_tag                                = string
-    image_registry                             = string
-    chart_version = string
+    image_repository                            = string
+    image_tag                                   = string
+    image_registry                              = string
+    chart_version                               = string
     replica_count_min                           = number
     replica_count_max                           = number
     http_client_connection_ttl_millis           = number

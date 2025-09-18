@@ -145,21 +145,21 @@ resource "kubernetes_config_map" "keycloak_pagopa_theme" {
 
 
 resource "helm_release" "keycloak" {
-  name       = "keycloak"
-  namespace  = kubernetes_namespace.keycloak.metadata[0].name
+  name      = "keycloak"
+  namespace = kubernetes_namespace.keycloak.metadata[0].name
   #https://github.com/bitnami/charts/tree/main/bitnami/keycloak
   repository = "oci://registry-1.docker.io/bitnamicharts"
   #https://artifacthub.io/packages/helm/bitnami/keycloak/
   #https://hub.docker.com/r/keycloak/keycloak
   #https://hub.docker.com/r/bitnamilegacy/keycloak/tags
-  chart      = "keycloak"
-  version    = var.keycloak_configuration.chart_version
+  chart   = "keycloak"
+  version = var.keycloak_configuration.chart_version
 
   values = [
     templatefile("${path.module}/k8s/keycloak/values.yaml.tpl", {
-      image_registry                              = var.keycloak_configuration.image_registry
-      image_repository                              = var.keycloak_configuration.image_repository
-        image_tag                                   = var.keycloak_configuration.image_tag
+      image_registry                                  = var.keycloak_configuration.image_registry
+      image_repository                                = var.keycloak_configuration.image_repository
+      image_tag                                       = var.keycloak_configuration.image_tag
       postgres_db_host                                = module.keycloak_pgflex.fqdn
       postgres_db_port                                = "5432"
       postgres_db_username                            = module.keycloak_pgflex.administrator_login

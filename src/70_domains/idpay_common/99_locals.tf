@@ -4,7 +4,7 @@ locals {
   project           = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
   project_core      = "${var.prefix}-${var.env_short}-${var.location_short}-core"
   project_weu       = "${var.prefix}-${var.env_short}-${var.location_short_weu}-${var.domain}"
-  project_entra = "${var.prefix}-${var.env_short}-${var.domain}"
+  project_entra     = "${var.prefix}-${var.env_short}-${var.domain}"
 
   # Default Domain Resource Group
   data_rg     = "${local.project}-data-rg"
