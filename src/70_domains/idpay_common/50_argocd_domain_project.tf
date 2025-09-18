@@ -37,7 +37,7 @@ resource "argocd_project" "domain_project" {
   spec {
     description = local.argocd_project_name
 
-    source_namespaces = ["batch"]
+    source_namespaces = [var.domain]
     source_repos      = ["*"]
 
     destination {
