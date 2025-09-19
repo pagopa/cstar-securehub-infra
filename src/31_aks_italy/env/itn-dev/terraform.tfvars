@@ -44,14 +44,14 @@ aks_system_node_pool = {
 # AKS
 #----------------------------------------------------------------
 aks_nodepool_blue = {
-  vm_sku_name       = "Standard_B8ms_active"
+  vm_sku_name       = "Standard_B4ms_active"
   autoscale_enabled = true
   node_count_min    = 1
   node_count_max    = 3
 }
 
 aks_nodepool_green = {
-  vm_sku_name       = "Standard_B8ms_passive"
+  vm_sku_name       = "Standard_B4ms_passive"
   autoscale_enabled = false
   node_count_min    = 0
   node_count_max    = 0
