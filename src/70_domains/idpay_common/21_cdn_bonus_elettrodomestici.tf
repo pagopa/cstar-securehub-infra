@@ -229,7 +229,6 @@ locals {
 // Public CDN to serve frontend - main domain
 module "cdn_idpay_bonuselettrodomestici" {
   source = "./.terraform/modules/__v4__/cdn_frontdoor"
-  # source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//cdn_frontdoor?ref=PAYMCLOUD-477-v-4-creazione-modulo-cdn-front-door-per-sostituire-cdn-classic-deprecata"
 
   # Basic Configuration
   cdn_prefix_name     = "${local.project}-bonus"
