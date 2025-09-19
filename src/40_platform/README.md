@@ -23,8 +23,8 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | 8f5dbfc8d531ffd24057e3d45a875bd6d8ce17fa |
-| <a name="module_argocd"></a> [argocd](#module\_argocd) | git::https://github.com/pagopa/terraform-azurerm-v4.git//kubernetes_argocd_setup | PAYMCLOUD-231-argocd-creazione-modulo |
+| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | 72032dcc751b7f82af6948dfc3f4fafb4abfcaf1 |
+| <a name="module_argocd"></a> [argocd](#module\_argocd) | ./.terraform/modules/__v4__/kubernetes_argocd_setup | n/a |
 | <a name="module_argocd_cert_mounter_internal_domain_certificate"></a> [argocd\_cert\_mounter\_internal\_domain\_certificate](#module\_argocd\_cert\_mounter\_internal\_domain\_certificate) | ./.terraform/modules/__v4__/cert_mounter | n/a |
 | <a name="module_argocd_cert_mounter_workload_identity_configuration"></a> [argocd\_cert\_mounter\_workload\_identity\_configuration](#module\_argocd\_cert\_mounter\_workload\_identity\_configuration) | ./.terraform/modules/__v4__/kubernetes_workload_identity_configuration | n/a |
 | <a name="module_argocd_cert_mounter_workload_identity_init"></a> [argocd\_cert\_mounter\_workload\_identity\_init](#module\_argocd\_cert\_mounter\_workload\_identity\_init) | ./.terraform/modules/__v4__/kubernetes_workload_identity_init | n/a |
