@@ -466,7 +466,7 @@
                   "id": "3518e155-9bfb-4859-91a4-8a6cbc291254",
                   "cellValue": "selectedTab",
                   "linkTarget": "parameter",
-                  "linkLabel": "OPEX - REGISTRO DEI BENI",
+                  "linkLabel": "OPEX - EIE",
                   "subTarget": "assetRegistry",
                   "style": "link"
                 },
