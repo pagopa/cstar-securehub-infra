@@ -9,7 +9,7 @@ module "storage_idpay_audit" {
   tags                = module.tag_config.tags
 
   # IDH Resources
-  idh_resource_tier = "basic" #var.env_short != "prod" ? "basic" : "??"
+  idh_resource_tier = var.env_short != "p" ? "basic" : "basic_audit"
 
   # Storage Account Settings
   name   = replace("${local.project}-audit-sa", "-", "")
