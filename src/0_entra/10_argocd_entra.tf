@@ -9,7 +9,7 @@ module "argocd_entra" {
   name_identifier             = local.project
   argocd_hostname             = local.argocd_hostname
   entra_app_owners_object_ids = data.azuread_users.argocd_application_owners.object_ids
-  entra_group_display_names   = var.argocd_entra_groups_allowed
+  entra_sp_groups_with_user_role   = var.argocd_entra_groups_allowed
   aks_name                    = local.kubernetes_cluster_name
   aks_resource_group_name     = local.kubernetes_cluster_resource_group_name
   argocd_namespace            = local.argocd_namespace
