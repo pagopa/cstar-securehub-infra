@@ -1959,6 +1959,14 @@
                               "key": "customDimensions/Product Name",
                               "operator": 0,
                               "valueParam": "itnRegisterProduct"
+                            },
+                            {
+                                "id": "4",
+                                "key": "customDimensions/Operation Name",
+                                "operator": 1,
+                                "values": [
+                                ""
+                                ]
                             }
                           ],
                           "gridSettings": {
@@ -1999,6 +2007,14 @@
                               "key": "customDimensions/Product Name",
                               "operator": 0,
                               "valueParam": "itnRegisterProduct"
+                            },
+                            {
+                                "id": "4",
+                                "key": "customDimensions/Operation Name",
+                                "operator": 1,
+                                "values": [
+                                ""
+                                ]
                             },
                             {
                               "id": "2",
@@ -2052,6 +2068,14 @@
                               "valueParam": "itnRegisterProduct"
                             },
                             {
+                                "id": "4",
+                                "key": "customDimensions/Operation Name",
+                                "operator": 1,
+                                "values": [
+                                ""
+                                ]
+                            }
+                            {
                               "id": "2",
                               "key": "request/resultCode",
                               "operator": 0,
@@ -2104,6 +2128,14 @@
                               "valueParam": "itnRegisterProduct"
                             },
                             {
+                                "id": "4",
+                                "key": "customDimensions/Operation Name",
+                                "operator": 1,
+                                "values": [
+                                ""
+                                ]
+                            },
+                            {
                               "id": "2",
                               "key": "request/resultCode",
                               "operator": 0,
@@ -2153,6 +2185,14 @@
                               "key": "customDimensions/Product Name",
                               "operator": 0,
                               "valueParam": "itnRegisterProduct"
+                            },
+                            {
+                                 "id": "4",
+                                 "key": "customDimensions/Operation Name",
+                                 "operator": 1,
+                                 "values": [
+                                 ""
+                                 ]
                             }
                           ],
                           "gridSettings": {
