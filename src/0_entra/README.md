@@ -43,8 +43,8 @@ Re-enable all the resource, commented before to complete the procedure
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | 8f5dbfc8d531ffd24057e3d45a875bd6d8ce17fa |
-| <a name="module_argocd_entra"></a> [argocd\_entra](#module\_argocd\_entra) | git::https://github.com/pagopa/terraform-azurerm-v4.git//kubernetes_argocd_entra | PAYMCLOUD-231-argocd-creazione-modulo |
+| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | 72032dcc751b7f82af6948dfc3f4fafb4abfcaf1 |
+| <a name="module_argocd_entra"></a> [argocd\_entra](#module\_argocd\_entra) | ./.terraform/modules/__v4__/kubernetes_argocd_entra | n/a |
 
 ## Resources
 
