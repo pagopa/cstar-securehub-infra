@@ -2074,7 +2074,7 @@
                                 "values": [
                                 ""
                                 ]
-                            }
+                            },
                             {
                               "id": "2",
                               "key": "request/resultCode",
