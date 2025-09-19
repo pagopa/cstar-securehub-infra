@@ -8,7 +8,8 @@ resource "kubernetes_namespace" "namespace_argocd" {
 # Setup ArgoCD (module)
 #
 module "argocd" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//kubernetes_argocd_setup?ref=PAYMCLOUD-231-argocd-creazione-modulo"
+  source = "./.terraform/modules/__v4__/kubernetes_argocd_setup"
+  # source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//kubernetes_argocd_setup?ref=PAYMCLOUD-231-argocd-creazione-modulo"
 
   namespace                             = kubernetes_namespace.namespace_argocd.metadata[0].name
   argocd_helm_release_version           = var.argocd_helm_release_version

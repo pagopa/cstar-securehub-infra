@@ -4,7 +4,8 @@
 // App > API permissions > Microsoft Graph > User.Read > Grant admin consent
 
 module "argocd_entra" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//kubernetes_argocd_entra?ref=PAYMCLOUD-231-argocd-creazione-modulo"
+  source = "./.terraform/modules/__v4__/kubernetes_argocd_entra"
+  # source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//kubernetes_argocd_entra?ref=PAYMCLOUD-231-argocd-creazione-modulo"
 
   name_identifier             = local.project
   argocd_hostname             = local.argocd_hostname

@@ -1,6 +1,6 @@
 module "cdn_idpay_selfcare" {
-  # source = "./.terraform/modules/__v4__/cdn"
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//cdn_frontdoor?ref=PAYMCLOUD-477-v-4-creazione-modulo-cdn-front-door-per-sostituire-cdn-classic-deprecata"
+  source = "./.terraform/modules/__v4__/cdn_frontdoor"
+  # source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//cdn_frontdoor?ref=PAYMCLOUD-477-v-4-creazione-modulo-cdn-front-door-per-sostituire-cdn-classic-deprecata"
 
   cdn_prefix_name     = "${local.project}-selfcare"
   resource_group_name = data.azurerm_resource_group.idpay_data_rg.name
