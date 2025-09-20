@@ -36,7 +36,7 @@ variable "domain" {
 
 variable "location" {
   type        = string
-  description = "One of westeurope, northeurope"
+  description = "One of italynorth, westeurope"
 }
 
 variable "location_short" {
@@ -47,7 +47,7 @@ variable "location_short" {
     )
     error_message = "Length must be 3 chars."
   }
-  description = "One of wue, neu"
+  description = "One of itn, weu"
 }
 
 ### FEATURE FLAGS
@@ -68,7 +68,7 @@ variable "ingress_load_balancer_ip" {
 variable "dns_zone_prefix" {
   type        = string
   default     = null
-  description = "The mil dns subdomain."
+  description = "The mdc DNS subdomain."
 }
 
 variable "external_domain" {
@@ -80,28 +80,28 @@ variable "external_domain" {
 variable "dns_zone_internal_prefix" {
   type        = string
   default     = null
-  description = "The dns subdomain."
+  description = "The DNS subdomain."
 }
 
 ### NETWORK
-variable "cidr_subnet_cosmosdb_mil" {
+variable "cidr_subnet_cosmosdb_mdc" {
   type        = list(string)
-  description = "Cosmos DB address space for mil."
+  description = "Cosmos DB address space for mdc."
 }
 
-variable "cidr_subnet_eventhub_mil" {
+variable "cidr_subnet_eventhub_mdc" {
   type        = list(string)
-  description = "Eventhub address space for mil."
+  description = "Eventhub address space for mdc."
 }
 
-variable "cidr_subnet_storage_mil" {
+variable "cidr_subnet_storage_mdc" {
   type        = list(string)
-  description = "Azure storage DB address space for mil."
+  description = "Azure storage DB address space for mdc."
 }
 
-variable "cidr_subnet_redis_mil" {
+variable "cidr_subnet_redis_mdc" {
   type        = list(string)
-  description = "Azure redis address space for mil."
+  description = "Azure redis address space for mdc."
 }
 
 # CosmosDb
@@ -132,7 +132,7 @@ variable "cosmos_mongo_db_params" {
   })
 }
 
-variable "cosmos_mongo_db_mil_params" {
+variable "cosmos_mongo_db_mdc_params" {
   type = object({
     enable_serverless  = bool
     enable_autoscaling = bool

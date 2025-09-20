@@ -1,9 +1,9 @@
 prefix         = "cstar"
 env_short      = "d"
 env            = "dev"
-domain         = "mil"
-location       = "westeurope"
-location_short = "weu"
+domain         = "mdc"
+location       = "italynorth"
+location_short = "itn"
 
 ### FEATURES FLAGS
 is_feature_enabled = {
@@ -12,17 +12,17 @@ is_feature_enabled = {
 }
 
 # 🛜 Network
-cidr_subnet_cosmosdb_mil = ["10.1.140.0/27"]
-cidr_subnet_eventhub_mil = ["10.1.140.64/27"]
-cidr_subnet_storage_mil  = ["10.1.140.96/27"]
-cidr_subnet_redis_mil    = ["10.1.140.128/27"]
+cidr_subnet_cosmosdb_mdc = ["10.1.140.0/27"]
+cidr_subnet_eventhub_mdc = ["10.1.140.64/27"]
+cidr_subnet_storage_mdc  = ["10.1.140.96/27"]
+cidr_subnet_redis_mdc    = ["10.1.140.128/27"]
 
 # 🐳 Kubernetes
 ingress_load_balancer_ip = "10.11.100.250"
 
 # 🔎 DNS
 external_domain          = "pagopa.it"
-dns_zone_prefix          = "mil"
+dns_zone_prefix          = "mdc"
 dns_zone_internal_prefix = "internal.dev.cstar"
 
 ### Cosmos
@@ -52,7 +52,7 @@ cosmos_mongo_db_params = {
   ]
 }
 
-cosmos_mongo_db_mil_params = {
+cosmos_mongo_db_mdc_params = {
   enable_serverless  = true
   enable_autoscaling = true
   max_throughput     = 2000
@@ -122,8 +122,8 @@ ehns_metric_alerts = {
   },
 }
 
-aks_name                = "cstar-d-weu-dev01-aks"
-aks_resource_group_name = "cstar-d-weu-dev01-aks-rg"
+aks_name                = "cstar-d-itn-dev01-aks"
+aks_resource_group_name = "cstar-d-itn-dev01-aks-rg"
 
 # Redis
 redis_sku_name = "Basic"

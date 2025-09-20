@@ -1,4 +1,4 @@
 resource_group_name  = "terraform-state-rg"
 storage_account_name = "tfinfdevcstar"
 container_name       = "terraform-state"
-key                  = "mil-common-dev.terraform.tfstate"
+key                  = "mdc-common-dev.terraform.tfstate"

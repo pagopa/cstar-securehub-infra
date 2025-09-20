@@ -1,25 +1,16 @@
 locals {
-  product     = "${var.prefix}-${var.env_short}"
-  product_weu = "${var.prefix}-${var.env_short}-${var.location_short}"
-  project     = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
+  product          = "${var.prefix}-${var.env_short}"
+  project_location = "${var.prefix}-${var.env_short}-${var.location_short}"
+  project          = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
 
-  tags = {
-    CreatedBy   = "Terraform"
-    Environment = upper(var.env)
-    Owner       = "CSTAR"
-    Source      = "https://github.com/pagopa/cstar-infrastructure"
-    CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-    Folder      = basename(abspath(path.module))
-  }
+  tags = module.tag_config.tags
 
   # 📊 Monitoring
-  monitor_appinsights_name        = "${local.product}-appinsights"
-  monitor_action_group_slack_name = "SlackPagoPA"
-  monitor_action_group_email_name = "PagoPA"
-
-  monitor_weu_resource_group_name                 = "${local.product}-monitor-rg"
-  log_analytics_weu_workspace_name                = "${local.product}-law"
-  log_analytics_weu_workspace_resource_group_name = "${local.product}-monitor-rg"
+  monitor_appinsights_name     = "${local.product}-appinsights"
+  monitor_resource_group_name  = "${local.product}-monitor-rg"
+  log_analytics_workspace_name = "${local.product}-law"
+  monitor_action_group_slack   = "SlackPagoPA"
+  monitor_action_group_email   = "PagoPA"
 
   vnet_core_name                = "${local.product}-vnet"
   vnet_core_resource_group_name = "${local.product}-vnet-rg"
@@ -31,13 +22,9 @@ locals {
   cosmos_dns_zone_name                = "privatelink.mongo.cosmos.azure.com"
   cosmos_dns_zone_resource_group_name = "${local.product}-vnet-rg"
 
-  azdo_managed_identity_rg_name = "cstar-${var.env_short}-identity-rg"
-  azdo_iac_managed_identities   = toset(["azdo-${var.env}-cstar-iac-deploy", "azdo-${var.env}-cstar-iac-plan"])
-
   eventhub_resource_group_name = "${local.project}-evh-rg"
 
-  # KV
-  kv_domain_name    = "cstar-${var.env_short}-weu-mil-kv"
-  kv_domain_rg_name = "cstar-${var.env_short}-weu-mil-sec-rg"
-
+  # KV dominiale già esistente
+  kv_domain_name    = "${local.project}-kv"
+  kv_domain_rg_name = "${local.project}-sec-rg"
 }

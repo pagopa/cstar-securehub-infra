@@ -1,3 +1,68 @@
+module "private_endpoint_cosmos_snet" {
+  source = "./.terraform/modules/__v4__/IDH/subnet"
+
+  product_name        = var.prefix
+  env                 = var.env
+  resource_group_name = local.vnet_core_resource_group_name
+
+  name                 = "${local.project}-cosmos-prv-end-snet"
+  virtual_network_name = local.vnet_core_name
+
+  idh_resource_tier = "private_endpoint"
+
+  service_endpoints = [
+    "Microsoft.Web",
+    "Microsoft.AzureCosmosDB"
+  ]
+}
+
+module "private_endpoint_eventhub_snet" {
+  source = "./.terraform/modules/__v4__/IDH/subnet"
+
+  product_name        = var.prefix
+  env                 = var.env
+  resource_group_name = local.vnet_core_resource_group_name
+
+  name                 = "${local.project}-eventhub-prv-end-snet"
+  virtual_network_name = local.vnet_core_name
+
+  idh_resource_tier = "private_endpoint"
+
+  service_endpoints = [
+    "Microsoft.EventHub"
+  ]
+}
+
+module "private_endpoint_storage_snet" {
+  source = "./.terraform/modules/__v4__/IDH/subnet"
+
+  product_name        = var.prefix
+  env                 = var.env
+  resource_group_name = local.vnet_core_resource_group_name
+
+  name                 = "${local.project}-storage-prv-end-snet"
+  virtual_network_name = local.vnet_core_name
+
+  idh_resource_tier = "private_endpoint"
+
+  service_endpoints = [
+    "Microsoft.Storage"
+  ]
+}
+
+module "private_endpoint_redis_snet" {
+  source = "./.terraform/modules/__v4__/IDH/subnet"
+
+  product_name        = var.prefix
+  env                 = var.env
+  resource_group_name = local.vnet_core_resource_group_name
+
+  name                 = "${local.project}-redis-prv-end-snet"
+  virtual_network_name = local.vnet_core_name
+
+  idh_resource_tier = "private_endpoint"
+}
+
 resource "azurerm_private_dns_a_record" "ingress" {
   name                = "${var.domain}.${var.location_short}"
   zone_name           = data.azurerm_private_dns_zone.internal.name
@@ -7,61 +72,3 @@ resource "azurerm_private_dns_a_record" "ingress" {
 
   tags = local.tags
 }
-
-#
-# Subnets
-#
-
-module "cosmosdb_mil_snet" {
-  source               = "./.terraform/modules/__v4__/subnet"
-  name                 = "${local.project}-cosmosb-snet"
-  address_prefixes     = var.cidr_subnet_cosmosdb_mil
-  resource_group_name  = local.vnet_core_resource_group_name
-  virtual_network_name = local.vnet_core_name
-
-  private_endpoint_network_policies = "Enabled"
-
-  service_endpoints = [
-    "Microsoft.Web",
-    "Microsoft.AzureCosmosDB",
-  ]
-}
-
-module "evenhub_mil_snet" {
-  source = "./.terraform/modules/__v4__/subnet"
-
-  name                 = "${local.project}-evhub-snet"
-  address_prefixes     = var.cidr_subnet_eventhub_mil
-  resource_group_name  = local.vnet_core_resource_group_name
-  virtual_network_name = local.vnet_core_name
-
-  private_endpoint_network_policies = "Enabled"
-}
-
-module "storage_mil_snet" {
-  source = "./.terraform/modules/__v4__/subnet"
-
-
-  name                 = "${local.project}-storage-snet"
-  address_prefixes     = var.cidr_subnet_storage_mil
-  resource_group_name  = local.vnet_core_resource_group_name
-  virtual_network_name = local.vnet_core_name
-
-  private_endpoint_network_policies = "Enabled"
-
-  service_endpoints = [
-    "Microsoft.Storage",
-  ]
-}
-
-module "redis_mil_snet" {
-  source = "./.terraform/modules/__v4__/subnet"
-
-  name                 = "${local.project}-redis-snet"
-  address_prefixes     = var.cidr_subnet_redis_mil
-  resource_group_name  = local.vnet_core_resource_group_name
-  virtual_network_name = local.vnet_core_name
-
-  private_endpoint_network_policies = "Enabled"
-}
-
