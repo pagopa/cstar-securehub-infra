@@ -1,9 +1,20 @@
+# general
 prefix         = "cstar"
 env_short      = "u"
 env            = "uat"
-domain         = "mil"
-location       = "westeurope"
-location_short = "weu"
+domain         = "mdc"
+location       = "italynorth"
+location_short = "itn"
 
-### External resources
-enable_iac_pipeline = true
+# tags
+tags = {
+  CreatedBy    = "Terraform"
+  Environment  = "UAT"
+  Owner        = "CSTAR"
+  Source       = "https://github.com/pagopa/cstar-securehub-infra"
+  CostCenter   = "TS310 - PAGAMENTI & SERVIZI"
+  BusinessUnit = "CStar"
+  domain       = "mdc"
+}
+
+input_file = "./secret/itn-uat/configs.json"
