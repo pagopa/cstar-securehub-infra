@@ -9,4 +9,3 @@ This policy validate content and sign of MDC JWT token
     </issuers>
   </validate-jwt>
 </fragment>
-

@@ -48,4 +48,3 @@ variable "input_file" {
   type        = string
   description = "secret json file"
 }
-

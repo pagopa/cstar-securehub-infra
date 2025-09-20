@@ -35,7 +35,3 @@
         <base />
     </on-error>
 </policies>
-
-
-
-

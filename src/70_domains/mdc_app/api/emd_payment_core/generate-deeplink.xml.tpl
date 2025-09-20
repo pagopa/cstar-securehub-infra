@@ -26,7 +26,3 @@
         <base />
     </on-error>
 </policies>
-
-
-
-
