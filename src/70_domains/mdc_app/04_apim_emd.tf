@@ -19,7 +19,7 @@ module "emd_api_product" {
 
   subscriptions_limit = 0
 
-  policy_xml = templatefile("./api_product/emd/policy_emd.xml", {
+  policy_xml = templatefile("./api_product/emd/policy_mdc.xml", {
     rate_limit_emd = var.rate_limit_emd_message
     }
   )
@@ -27,13 +27,13 @@ module "emd_api_product" {
   groups = ["developers"]
 }
 
-module "emd_mil_api_product" {
+module "emd_mdc_api_product" {
   source = "./.terraform/modules/__v4__/api_management_product"
 
 
-  product_id   = "emd_mil_api_product"
-  display_name = "EMD_MIL_PRODUCT"
-  description  = "EMD_MIL_PRODUCT"
+  product_id   = "emd_mdc_api_product"
+  display_name = "EMD_MDC_PRODUCT"
+  description  = "EMD_MDC_PRODUCT"
 
   api_management_name = data.azurerm_api_management.apim_core.name
   resource_group_name = data.azurerm_api_management.apim_core.resource_group_name
@@ -44,7 +44,7 @@ module "emd_mil_api_product" {
 
   subscriptions_limit = 0
 
-  policy_xml = templatefile("./api_product/emd/mil/policy_emd.xml", {
+  policy_xml = templatefile("./api_product/emd/mdc/policy_mdc.xml", {
     rate_limit_emd = var.rate_limit_emd_product
     }
   )
@@ -69,7 +69,7 @@ module "emd_tpp_product" {
 
   subscriptions_limit = 0
 
-  policy_xml = templatefile("./api_product/emd/tpp/policy_emd.xml", {
+  policy_xml = templatefile("./api_product/emd/tpp/policy_mdc.xml", {
     rate_limit_emd = var.rate_limit_emd_product
     }
   )
@@ -94,7 +94,7 @@ module "emd_retrieval_api_product" {
 
   subscriptions_limit = 0
 
-  policy_xml = templatefile("./api_product/emd/retrieval/policy_emd.xml", {
+  policy_xml = templatefile("./api_product/emd/retrieval/policy_mdc.xml", {
     rate_limit_emd = var.rate_limit_emd_product
     }
   )
@@ -332,56 +332,56 @@ module "emd_payment_core" {
     }
   ]
 }
-## EMD MIL CITIZEN API ##
-module "emd_mil_citizen" {
+## EMD MDC CITIZEN API ##
+module "emd_mdc_citizen" {
   source = "./.terraform/modules/__v4__/api_management_api"
 
 
-  name                = "${var.env_short}-emd-mil-citizen"
+  name                = "${var.env_short}-emd-mdc-citizen"
   api_management_name = data.azurerm_api_management.apim_core.name
   resource_group_name = data.azurerm_api_management.apim_core.resource_group_name
 
   description  = "EMD CITIZEN OPERATION"
   display_name = "EMD CITIZEN OPERATION API"
-  path         = "emd/mil/citizen"
+  path         = "emd/mdc/citizen"
   protocols    = ["https"]
 
   service_url = "${local.ingress_load_balancer_https}/emdcitizen/emd/citizen"
 
   content_format = "openapi"
-  content_value  = file("./api/emd_mil_citizen/openapi.mil.citizen.yml")
+  content_value  = file("./api/emd_mdc_citizen/openapi.mdc.citizen.yml")
 
   xml_content = file("./api/base_policy.xml")
 
-  product_ids           = [module.emd_mil_api_product.product_id]
+  product_ids           = [module.emd_mdc_api_product.product_id]
   subscription_required = false
 
   api_operation_policies = [
     {
       operation_id = "saveCitizenConsent"
 
-      xml_content = templatefile("./api/emd_mil_citizen/post-insert-citizen-consent-policy.xml.tpl", {
+      xml_content = templatefile("./api/emd_mdc_citizen/post-insert-citizen-consent-policy.xml.tpl", {
         ingress_load_balancer_hostname = var.ingress_load_balancer_hostname
       })
     },
     {
       operation_id = "stateSwitch"
 
-      xml_content = templatefile("./api/emd_mil_citizen/put-update-citizen-consent-policy.xml.tpl", {
+      xml_content = templatefile("./api/emd_mdc_citizen/put-update-citizen-consent-policy.xml.tpl", {
         ingress_load_balancer_hostname = var.ingress_load_balancer_hostname
       })
     },
     {
       operation_id = "getCitizenConsentStatus"
 
-      xml_content = templatefile("./api/emd_mil_citizen/get-citizen-consent-status-policy.xml.tpl", {
+      xml_content = templatefile("./api/emd_mdc_citizen/get-citizen-consent-status-policy.xml.tpl", {
         ingress_load_balancer_hostname = var.ingress_load_balancer_hostname
       })
     },
     {
       operation_id = "getCitizenEnabled"
 
-      xml_content = templatefile("./api/emd_mil_citizen/get-citizen-consent-enabled-policy.xml.tpl", {
+      xml_content = templatefile("./api/emd_mdc_citizen/get-citizen-consent-enabled-policy.xml.tpl", {
         ingress_load_balancer_hostname = var.ingress_load_balancer_hostname
       })
     }
@@ -389,35 +389,35 @@ module "emd_mil_citizen" {
 
 }
 
-## EMD MIL TPP NETWORK TESTING ##
-module "emd_mil_tpp_testing" {
+## EMD MDC TPP NETWORK TESTING ##
+module "emd_mdc_tpp_testing" {
   source = "./.terraform/modules/__v4__/api_management_api"
 
 
-  name                = "${var.env_short}-emd-mil-tpp-testing"
+  name                = "${var.env_short}-emd-mdc-tpp-testing"
   api_management_name = data.azurerm_api_management.apim_core.name
   resource_group_name = data.azurerm_api_management.apim_core.resource_group_name
 
   description  = "EMD TPP NETWORK TESTING"
   display_name = "EMD TPP NETWORK TESTING API"
-  path         = "emd/mil/tpp"
+  path         = "emd/mdc/tpp"
   protocols    = ["https"]
 
   service_url = "${local.ingress_load_balancer_https}/emdtpp/emd/tpp"
 
   content_format = "openapi"
-  content_value  = file("./api/emd_mil_testing/openapi.mil.tpp.yml")
+  content_value  = file("./api/emd_mdc_testing/openapi.mdc.tpp.yml")
 
   xml_content = file("./api/base_policy.xml")
 
-  product_ids           = [module.emd_mil_api_product.product_id]
+  product_ids           = [module.emd_mdc_api_product.product_id]
   subscription_required = false
 
   api_operation_policies = [
     {
       operation_id = "getNetworkConnection"
 
-      xml_content = templatefile("./api/emd_mil_testing/get-network-connection.xml.tpl", {
+      xml_content = templatefile("./api/emd_mdc_testing/get-network-connection.xml.tpl", {
         ingress_load_balancer_hostname = var.ingress_load_balancer_hostname
       })
     }

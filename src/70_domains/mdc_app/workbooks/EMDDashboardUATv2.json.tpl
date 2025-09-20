@@ -170,7 +170,7 @@
             "type": 3,
             "content": {
               "version": "KqlItem/1.0",
-              "query": "AzureDiagnostics\n| where TimeGenerated {evaluation_window:query}\n| where requestUri_s has '/emd/mil/citizen/' and httpMethod_s != 'PUT'\n| where httpStatus_d == 200\n| extend fiscalCode = extract('/emd/mil/citizen/([^/]+)/', 1, requestUri_s)\n| summarize count() by fiscalCode, tostring(toint(httpStatus_d))",
+              "query": "AzureDiagnostics\n| where TimeGenerated {evaluation_window:query}\n| where requestUri_s has '/emd/mdc/citizen/' and httpMethod_s != 'PUT'\n| where httpStatus_d == 200\n| extend fiscalCode = extract('/emd/mdc/citizen/([^/]+)/', 1, requestUri_s)\n| summarize count() by fiscalCode, tostring(toint(httpStatus_d))",
               "size": 0,
               "title": "API Salvataggio Consenso Cittadino",
               "queryType": 0,
@@ -207,7 +207,7 @@
             "type": 3,
             "content": {
               "version": "KqlItem/1.0",
-              "query": "AzureDiagnostics\n| where TimeGenerated {evaluation_window:query}\n| where requestUri_s has '/emd/mil/citizen/' and httpMethod_s == 'PUT'\n| where httpStatus_d in (200,202)\n| extend fiscalCode = extract('/emd/mil/citizen/([^/]+)/', 1, requestUri_s)\n| summarize count() by fiscalCode, tostring(toint(httpStatus_d))",
+              "query": "AzureDiagnostics\n| where TimeGenerated {evaluation_window:query}\n| where requestUri_s has '/emd/mdc/citizen/' and httpMethod_s == 'PUT'\n| where httpStatus_d in (200,202)\n| extend fiscalCode = extract('/emd/mdc/citizen/([^/]+)/', 1, requestUri_s)\n| summarize count() by fiscalCode, tostring(toint(httpStatus_d))",
               "size": 0,
               "title": "API State Switch",
               "queryType": 0,
@@ -239,7 +239,7 @@
             "type": 3,
             "content": {
               "version": "KqlItem/1.0",
-              "query": "AzureDiagnostics\n| where TimeGenerated {evaluation_window:query}\n| where requestUri_s has \"emd/message-core/sendMessage\" or requestUri_s has \"emd/mil/citizen/\"\n| where httpStatus_d !in (200, 202)\n| summarize count() by tostring(httpStatus_d)\n",
+              "query": "AzureDiagnostics\n| where TimeGenerated {evaluation_window:query}\n| where requestUri_s has \"emd/message-core/sendMessage\" or requestUri_s has \"emd/mdc/citizen/\"\n| where httpStatus_d !in (200, 202)\n| summarize count() by tostring(httpStatus_d)\n",
               "size": 0,
               "title": "Errori Totali API",
               "queryType": 0,
@@ -323,7 +323,7 @@
             "type": 3,
             "content": {
               "version": "KqlItem/1.0",
-              "query": "AzureDiagnostics\n| where TimeGenerated {evaluation_window:query}\n| where requestUri_s has '/emd/mil/citizen/' and httpMethod_s != 'PUT'\n| where httpStatus_d !in (200, 202)\n| extend fiscalCode = extract('/emd/mil/citizen/([^/]+)/', 1, requestUri_s)\n| summarize count() by fiscalCode, tostring(toint(httpStatus_d))",
+              "query": "AzureDiagnostics\n| where TimeGenerated {evaluation_window:query}\n| where requestUri_s has '/emd/mdc/citizen/' and httpMethod_s != 'PUT'\n| where httpStatus_d !in (200, 202)\n| extend fiscalCode = extract('/emd/mdc/citizen/([^/]+)/', 1, requestUri_s)\n| summarize count() by fiscalCode, tostring(toint(httpStatus_d))",
               "size": 0,
               "title": "Errori API Salvataggio Consenso",
               "queryType": 0,
@@ -339,7 +339,7 @@
             "type": 3,
             "content": {
               "version": "KqlItem/1.0",
-              "query": "AzureDiagnostics\n| where TimeGenerated {evaluation_window:query}\n| where requestUri_s has '/emd/mil/citizen/' and httpMethod_s == 'PUT'\n| where httpStatus_d !in (200, 202)\n| extend fiscalCode = extract('/emd/mil/citizen/([^/]+)/', 1, requestUri_s)\n| summarize count() by fiscalCode, tostring(toint(httpStatus_d))",
+              "query": "AzureDiagnostics\n| where TimeGenerated {evaluation_window:query}\n| where requestUri_s has '/emd/mdc/citizen/' and httpMethod_s == 'PUT'\n| where httpStatus_d !in (200, 202)\n| extend fiscalCode = extract('/emd/mdc/citizen/([^/]+)/', 1, requestUri_s)\n| summarize count() by fiscalCode, tostring(toint(httpStatus_d))",
               "size": 0,
               "title": "Errori API State Switch",
               "queryType": 0,
@@ -384,7 +384,7 @@
             "type": 3,
             "content": {
               "version": "KqlItem/1.0",
-              "query": "AzureDiagnostics\n| where TimeGenerated {evaluation_window:query}\n| where requestUri_s has \"emd/message-core/sendMessage\" or requestUri_s has \"emd/mil/citizen/\"\n| summarize totalRequests = count() by bin(TimeGenerated, 1h), requestUri_s\n| order by bin(TimeGenerated, 1h)\n",
+              "query": "AzureDiagnostics\n| where TimeGenerated {evaluation_window:query}\n| where requestUri_s has \"emd/message-core/sendMessage\" or requestUri_s has \"emd/mdc/citizen/\"\n| summarize totalRequests = count() by bin(TimeGenerated, 1h), requestUri_s\n| order by bin(TimeGenerated, 1h)\n",
               "size": 0,
               "title": "Volume Richieste nel Tempo",
               "queryType": 0,
@@ -400,7 +400,7 @@
             "type": 3,
             "content": {
               "version": "KqlItem/1.0",
-              "query": "AzureDiagnostics\n| where TimeGenerated {evaluation_window:query}\n| where requestUri_s has \"emd/message-core/sendMessage\" or requestUri_s has \"emd/mil/citizen/\"\n| where httpStatus_d !in (200,202)\n| summarize errorCount = count() by clientIP_s\n| top 10 by errorCount\n",
+              "query": "AzureDiagnostics\n| where TimeGenerated {evaluation_window:query}\n| where requestUri_s has \"emd/message-core/sendMessage\" or requestUri_s has \"emd/mdc/citizen/\"\n| where httpStatus_d !in (200,202)\n| summarize errorCount = count() by clientIP_s\n| top 10 by errorCount\n",
               "size": 0,
               "title": "Top IP Client con Errori",
               "queryType": 0,
@@ -429,7 +429,7 @@
             "type": 3,
             "content": {
               "version": "KqlItem/1.0",
-              "query": "AzureDiagnostics\n| where TimeGenerated {evaluation_window:query}\n| where requestUri_s has \"emd/message-core/sendMessage\" or requestUri_s has \"emd/mil/citizen/\"\n| where httpStatus_d in (500)\n| summarize avgLatency = avg(timeTaken_d) by bin(TimeGenerated, 1h)\n",
+              "query": "AzureDiagnostics\n| where TimeGenerated {evaluation_window:query}\n| where requestUri_s has \"emd/message-core/sendMessage\" or requestUri_s has \"emd/mdc/citizen/\"\n| where httpStatus_d in (500)\n| summarize avgLatency = avg(timeTaken_d) by bin(TimeGenerated, 1h)\n",
               "size": 0,
               "title": "Correlazione Latenza Errori (HTTP 500)",
               "queryType": 0,

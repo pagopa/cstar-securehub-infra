@@ -6,12 +6,12 @@
       <when condition="@(context.Operation.Id.Equals("generateDeepLink"))">
       </when>
       <otherwise>
-        <include-fragment fragment-id="emd-validate-token-mil" />
+        <include-fragment fragment-id="emd-validate-token-mdc" />
         <choose>
-          <when condition="@(((Jwt)context.Variables["milToken"]).Claims.GetValueOrDefault("groups", "") == "emd-tpp" || ((Jwt)context.Variables["milToken"]).Claims.GetValueOrDefault("groups", "") == "send")">
+          <when condition="@(((Jwt)context.Variables["mdcToken"]).Claims.GetValueOrDefault("groups", "") == "emd-tpp" || ((Jwt)context.Variables["mdcToken"]).Claims.GetValueOrDefault("groups", "") == "send")">
               <!-- If 'groups' claim equals "emd-tpp", set your policy logic here -->
               <!-- For example, you can continue with your policy flow -->
-              <set-variable name="groups" value="@(((Jwt)context.Variables["milToken"]).Claims.GetValueOrDefault("groups", ""))" />
+              <set-variable name="groups" value="@(((Jwt)context.Variables["mdcToken"]).Claims.GetValueOrDefault("groups", ""))" />
           </when>
           <otherwise>
             <!-- Handle cases where 'groups' claim does not equal "emd-tpp" -->

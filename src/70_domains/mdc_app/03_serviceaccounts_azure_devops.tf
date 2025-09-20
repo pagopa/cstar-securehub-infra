@@ -7,6 +7,8 @@ resource "azurerm_key_vault_secret" "aks_apiserver_url" {
   content_type = "text/plain"
 
   key_vault_id = data.azurerm_key_vault.kv_domain.id
+
+  tags = local.tags
 }
 
 #tfsec:ignore:AZU023
@@ -17,6 +19,8 @@ resource "azurerm_key_vault_secret" "azure_devops_sa_token" {
   content_type = "text/plain"
 
   key_vault_id = data.azurerm_key_vault.kv_domain.id
+
+  tags = local.tags
 }
 
 #tfsec:ignore:AZU023
@@ -27,6 +31,8 @@ resource "azurerm_key_vault_secret" "azure_devops_sa_cacrt" {
   content_type = "text/plain"
 
   key_vault_id = data.azurerm_key_vault.kv_domain.id
+
+  tags = local.tags
 }
 
 module "kubernetes_service_account" {

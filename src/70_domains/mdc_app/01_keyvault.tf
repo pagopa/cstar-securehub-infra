@@ -4,4 +4,6 @@ resource "azurerm_key_vault_secret" "appinsights-instrumentation-key" {
   name         = "appinsights-instrumentation-key"
   value        = data.azurerm_application_insights.application_insights.connection_string
   content_type = "text/plain"
+
+  tags = local.tags
 }
