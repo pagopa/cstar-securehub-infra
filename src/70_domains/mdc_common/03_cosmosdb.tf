@@ -1,3 +1,20 @@
+locals {
+  cosmos_idh_resource_tier = (
+    var.env == "prod"
+    ? "cosmos_mongo6"
+    : contains(var.cosmos_mongo_db_params.capabilities, "EnableUniqueCompoundNestedDocs")
+    ? "cosmos_mongo7_unique_compound_nested_docs"
+    : "cosmos_mongo7"
+  )
+
+  cosmos_private_endpoint_config = {
+    enabled                       = var.cosmos_mongo_db_params.private_endpoint_enabled
+    name_mongo                    = "${local.project}-cosmos-pe"
+    service_connection_name_mongo = "${local.project}-cosmos-pe"
+    private_dns_zone_mongo_ids    = [data.azurerm_private_dns_zone.cosmos.id]
+  }
+}
+
 resource "azurerm_resource_group" "cosmos_rg" {
   name     = "${local.project}-cosmosdb-rg"
   location = var.location
@@ -5,36 +22,25 @@ resource "azurerm_resource_group" "cosmos_rg" {
   tags = local.tags
 }
 
-module "cosmosdb_account_mongodb" {
-  count  = var.is_feature_enabled.cosmos ? 1 : 0
-  source = "./.terraform/modules/__v4__/cosmosdb_account"
+module "cosmos_account" {
+  source = "./.terraform/modules/__v4__/IDH/cosmosdb_account"
 
-  name                = "${local.project}-cosmos-account"
+  product_name        = var.prefix
+  env                 = var.env
+  idh_resource_tier   = local.cosmos_idh_resource_tier
   location            = var.location
   resource_group_name = azurerm_resource_group.cosmos_rg.name
-  domain              = var.domain
+  tags                = local.tags
 
-  offer_type   = var.cosmos_mongo_db_params.offer_type
-  kind         = var.cosmos_mongo_db_params.kind
-  capabilities = var.cosmos_mongo_db_params.capabilities
-  # mongo_server_version = var.cosmos_mongo_db_params.server_version    Set 7.0 from console
-  enable_free_tier = var.cosmos_mongo_db_params.enable_free_tier
+  name   = "${local.project}-cosmos-account"
+  domain = var.domain
 
-  public_network_access_enabled     = var.cosmos_mongo_db_params.public_network_access_enabled
-  private_endpoint_enabled          = var.cosmos_mongo_db_params.private_endpoint_enabled
-  subnet_id                         = module.private_endpoint_cosmos_snet.subnet_id
-  private_dns_zone_mongo_ids        = [data.azurerm_private_dns_zone.cosmos.id]
-  is_virtual_network_filter_enabled = var.cosmos_mongo_db_params.is_virtual_network_filter_enabled
+  main_geo_location_location = azurerm_resource_group.cosmos_rg.location
+  additional_geo_locations   = var.cosmos_mongo_db_params.additional_geo_locations
+  ip_range                   = var.cosmos_mongo_db_params.ip_range_filter
 
-  consistency_policy               = var.cosmos_mongo_db_params.consistency_policy
-  main_geo_location_location       = azurerm_resource_group.cosmos_rg.location
-  main_geo_location_zone_redundant = var.cosmos_mongo_db_params.main_geo_location_zone_redundant
-  additional_geo_locations         = var.cosmos_mongo_db_params.additional_geo_locations
-
-  backup_continuous_enabled = var.cosmos_mongo_db_params.backup_continuous_enabled
-  ip_range                  = var.cosmos_mongo_db_params.ip_range_filter
-
-  tags = local.tags
+  subnet_id               = module.private_endpoint_cosmos_snet.id
+  private_endpoint_config = local.cosmos_private_endpoint_config
 }
 
 resource "azurerm_cosmosdb_mongo_database" "mdc" {
@@ -42,7 +48,7 @@ resource "azurerm_cosmosdb_mongo_database" "mdc" {
 
   name                = var.domain
   resource_group_name = azurerm_resource_group.cosmos_rg.name
-  account_name        = module.cosmosdb_account_mongodb[0].name
+  account_name        = module.cosmos_account.name
 
   throughput = var.cosmos_mongo_db_mdc_params.enable_autoscaling || var.cosmos_mongo_db_mdc_params.enable_serverless ? null : var.cosmos_mongo_db_mdc_params.throughput
 
@@ -160,18 +166,18 @@ module "cosmosdb_collections" {
   name                = each.value.name
   resource_group_name = azurerm_resource_group.cosmos_rg.name
 
-  cosmosdb_mongo_account_name  = module.cosmosdb_account_mongodb[0].name
+  cosmosdb_mongo_account_name  = module.cosmos_account.name
   cosmosdb_mongo_database_name = azurerm_cosmosdb_mongo_database.mdc[0].name
 
   indexes     = each.value.indexes
-  lock_enable = var.env_short != "p" ? false : true
+  lock_enable = var.env_short == "p"
 
   default_ttl_seconds = each.value.name == "retrieval" ? 1800 : null
 }
 
 resource "azurerm_key_vault_secret" "cosmosdb_account_mongodb_connection_strings" {
   name         = "mongodb-connection-string"
-  value        = module.cosmosdb_account_mongodb[0].primary_connection_strings
+  value        = module.cosmos_account.primary_connection_strings
   content_type = "text/plain"
 
   key_vault_id = data.azurerm_key_vault.kv_domain.id
@@ -182,9 +188,9 @@ resource "azurerm_key_vault_secret" "cosmosdb_account_mongodb_connection_strings
 resource "azurerm_monitor_metric_alert" "cosmos_db_normalized_ru_exceeded" {
   count = var.is_feature_enabled.cosmos && var.env_short == "p" ? 1 : 0
 
-  name                = "[${var.domain != null ? "${var.domain} | " : ""}${module.cosmosdb_account_mongodb[0].name}] Normalized RU Exceeded"
+  name                = "[${var.domain != null ? "${var.domain} | " : ""}${module.cosmos_account.name}] Normalized RU Exceeded"
   resource_group_name = azurerm_resource_group.cosmos_rg.name
-  scopes              = [module.cosmosdb_account_mongodb[0].id]
+  scopes              = [module.cosmos_account.id]
   description         = "A collection Normalized RU/s exceed provisioned throughput, and it's raising latency. Please, consider to increase RU."
   severity            = 0
   window_size         = "PT5M"
