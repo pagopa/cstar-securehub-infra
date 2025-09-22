@@ -800,6 +800,14 @@ locals {
           unique = false
         },
         {
+          keys   = ["brand"]
+          unique = false
+        },
+        {
+          keys   = ["model"]
+          unique = false
+        },
+        {
           keys   = ["organizationName"]
           unique = false
         },
