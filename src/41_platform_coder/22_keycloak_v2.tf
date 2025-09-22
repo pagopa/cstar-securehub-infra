@@ -19,6 +19,10 @@ locals {
 
   # Fixed volume mount
   fixed_volume_mounts = [
+    {
+      name      = "agent"
+      mountPath = "/opt/bitnami/keycloak/agent"
+    }
   ]
 
   # Create a volume mount for each file in configmap with subPath
@@ -174,6 +178,7 @@ resource "helm_release" "keycloak" {
       keycloak_extra_volume_mounts                    = yamlencode(local.keycloak_extra_volume_mounts)
       keycloak_http_client_connection_ttl_millis      = var.keycloak_configuration.http_client_connection_ttl_millis
       keycloak_http_client_connection_max_idle_millis = var.keycloak_configuration.http_client_connection_max_idle_time_millis
+      appinsights_connection_string                   = data.azurerm_application_insights.app_insights_core.connection_string
     })
   ]
   depends_on = [
