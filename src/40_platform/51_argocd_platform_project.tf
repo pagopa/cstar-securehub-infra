@@ -14,7 +14,7 @@ locals {
 #
 # Terraform argocd project
 #
-resource "argocd_project" "domain_project" {
+resource "argocd_project" "platform_project" {
   metadata {
     name      = local.argocd_project_name
     namespace = local.argocd_namespace
@@ -26,22 +26,16 @@ resource "argocd_project" "domain_project" {
   spec {
     description = local.argocd_project_name
 
-    source_namespaces = [var.domain]
+    source_namespaces = local.argocd_project_namespaces
     source_repos      = ["*"]
 
-    destination {
-      server    = "https://kubernetes.default.svc"
-      namespace = var.domain
+    dynamic "destination" {
+      for_each = toset(local.argocd_project_namespaces)
+      content {
+        server    = "https://kubernetes.default.svc"
+        namespace = destination.value
+      }
     }
-    destination {
-      server    = "https://kubernetes.default.svc"
-      namespace = local.argocd_namespace
-    }
-
-    #     cluster_resource_blacklist {
-    #       group = "*"
-    #       kind  = "*"
-    #     }
 
     cluster_resource_whitelist {
       group = "*"
@@ -57,9 +51,6 @@ resource "argocd_project" "domain_project" {
       warn = true
     }
 
-
-    # ──────────────────── ROLES ───────────────────────
-    # Admin → pieno controllo + modifica AppProject
     role {
       name   = "admin"
       groups = local.argocd_groups_admin
@@ -107,7 +98,5 @@ resource "argocd_project" "domain_project" {
         "p, proj:${local.argocd_project_name}:external, applications, sync, ${local.argocd_project_name}/*, allow",
       ]
     }
-
   }
 }
-
