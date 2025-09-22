@@ -66,8 +66,8 @@ locals {
         "Owner"        = "CStar"
         "Environment"  = var.env
         "CreatedBy"    = "Terraform"
-                "Source"      = "https://github.com/pagopa/cstar-securehub-infra/tree/main/src/${local.relative_folder}"
-        "Folder"     = local.relative_folder
+        "Source"       = "https://github.com/pagopa/cstar-securehub-infra/tree/main/src/${local.relative_folder}"
+        "Folder"       = local.relative_folder
         "domain"       = "platform"
       }
       additional_resource_groups = [
@@ -81,8 +81,8 @@ locals {
         "Owner"        = "CStar"
         "Environment"  = var.env
         "CreatedBy"    = "Terraform"
-                "Source"      = "https://github.com/pagopa/cstar-securehub-infra/tree/main/src/${local.relative_folder}"
-        "Folder"     = local.relative_folder
+        "Source"       = "https://github.com/pagopa/cstar-securehub-infra/tree/main/src/${local.relative_folder}"
+        "Folder"       = local.relative_folder
         "domain"       = "idpay"
       }
       additional_resource_groups = [
@@ -96,8 +96,8 @@ locals {
         "Owner"        = "CStar"
         "Environment"  = var.env
         "CreatedBy"    = "Terraform"
-                "Source"      = "https://github.com/pagopa/cstar-securehub-infra/tree/main/src/${local.relative_folder}"
-        "Folder"     = local.relative_folder
+        "Source"       = "https://github.com/pagopa/cstar-securehub-infra/tree/main/src/${local.relative_folder}"
+        "Folder"       = local.relative_folder
         "domain"       = "srtp"
       }
       additional_resource_groups = [
@@ -111,8 +111,8 @@ locals {
         "Owner"        = "CStar"
         "Environment"  = var.env
         "CreatedBy"    = "Terraform"
-                "Source"      = "https://github.com/pagopa/cstar-securehub-infra/tree/main/src/${local.relative_folder}"
-        "Folder"     = local.relative_folder
+        "Source"       = "https://github.com/pagopa/cstar-securehub-infra/tree/main/src/${local.relative_folder}"
+        "Folder"       = local.relative_folder
         "domain"       = "mcshared"
       }
       additional_resource_groups = []
@@ -125,8 +125,8 @@ locals {
         "Owner"        = "CStar"
         "Environment"  = var.env
         "CreatedBy"    = "Terraform"
-        "Source"      = "https://github.com/pagopa/cstar-securehub-infra/tree/main/src/${local.relative_folder}"
-        "Folder"     = local.relative_folder
+        "Source"       = "https://github.com/pagopa/cstar-securehub-infra/tree/main/src/${local.relative_folder}"
+        "Folder"       = local.relative_folder
         "domain"       = "mdc"
       }
       additional_resource_groups = []
