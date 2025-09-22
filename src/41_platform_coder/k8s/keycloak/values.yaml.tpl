@@ -3,6 +3,15 @@ forceDeployVersion: ${force_deploy_version}
 production: true
 proxy: "edge"
 
+global:
+  security:
+    allowInsecureImages: true
+
+image:
+  registry: ${image_registry}
+  repository: ${image_repository}
+  tag: ${image_tag}
+
 auth:
   adminUser: "${keycloak_admin_username}"
   existingSecret: "keycloak-admin-secret" #keycloak admin password is in this secret
@@ -39,9 +48,6 @@ externalDatabase:
 extraEnvVars:
   - name: KC_DB_URL_PROPERTIES
     value: "sslmode=require"
-# enable this option to import realm on startup. ATM it is disabled because it creates a new realm and the client is not usable by the terraform provider to create new realms
-#  - name: KEYCLOAK_EXTRA_ARGS
-#    value: "--import-realm"
   - name: KEYCLOAK_HOSTNAME
     value: ${keycloak_external_hostname}
   - name: KEYCLOAK_HOSTNAME_BACKCHANNEL_DYNAMIC
@@ -52,17 +58,14 @@ extraEnvVars:
     value: "true"
   - name: APPLICATIONINSIGHTS_CONNECTION_STRING
     value: "${appinsights_connection_string}"
-  - name: KC_SPI_CONNECTIONS_HTTP_CLIENT__DEFAULT__CONNECTION_TTL_MILLIS
+  - name: KC_SPI_CONNECTIONS_HTTP_CLIENT_DEFAULT_CONNECTION_TTL_MILLIS
     value: "${keycloak_http_client_connection_ttl_millis}"
-  - name: KC_SPI_CONNECTIONS_HTTP_CLIENT__DEFAULT__MAX_CONNECTION_IDLE_TIME_MILLIS
+  - name: KC_SPI_CONNECTIONS_HTTP_CLIENT_DEFAULT_MAX_CONNECTION_IDLE_TIME_MILLIS
     value: "${keycloak_http_client_connection_max_idle_millis}"
   - name: JAVA_OPTS
     value: "-javaagent:/opt/bitnami/keycloak/agent/applicationinsights-agent.jar"
 
 extraVolumes:
-  - name: realm-import
-    configMap:
-      name: keycloak-realm-import
   - name: pagopa-theme
     configMap:
       name: keycloak-pagopa-theme
@@ -131,3 +134,7 @@ rbac:
   create: true
 networkPolicy:
   enabled: false
+
+keycloakConfigCli:
+  enabled: true
+  existingConfigmap: "keycloak-terraform-client-config"

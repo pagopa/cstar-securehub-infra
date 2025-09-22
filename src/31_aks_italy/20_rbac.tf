@@ -11,8 +11,14 @@ resource "kubernetes_cluster_role" "system_cluster_deployer" {
 
   rule {
     api_groups = ["rbac.authorization.k8s.io"]
-    resources  = ["rolebindings", "clusterroles", "clusterrolebindings"]
+    resources  = ["rolebindings", "roles"]
     verbs      = ["get", "list", "watch", ]
+  }
+
+  rule {
+    api_groups = ["autoscaling"]
+    resources  = ["horizontalpodautoscalers"]
+    verbs      = ["create", "update", "delete", ]
   }
 
   depends_on = [
@@ -27,7 +33,7 @@ resource "kubernetes_cluster_role" "cluster_deployer" {
 
   rule {
     api_groups = [""]
-    resources  = ["services", "configmaps", "secrets", "pods"]
+    resources  = ["services", "configmaps", "secrets", "pods", "serviceaccounts"]
     verbs      = ["get", "list", "watch", "create", "update", "patch", "delete"]
   }
 
@@ -51,7 +57,7 @@ resource "kubernetes_cluster_role" "cluster_deployer" {
 
   rule {
     api_groups = ["apps"]
-    resources  = ["replicasets", "daemonsets"]
+    resources  = ["replicasets", "daemonsets", "statefulsets"]
     verbs      = ["get", "list", "watch", "create", "update", "patch", "delete"]
   }
 
@@ -96,6 +102,12 @@ resource "kubernetes_cluster_role" "cluster_deployer" {
   rule {
     api_groups = ["opentelemetry.io"]
     resources  = ["opentelemetrycollectors"]
+    verbs      = ["get", "list", "watch", "create", "update", "patch", "delete"]
+  }
+
+  rule {
+    api_groups = ["autoscaling"]
+    resources  = ["horizontalpodautoscalers"]
     verbs      = ["get", "list", "watch", "create", "update", "patch", "delete"]
   }
 

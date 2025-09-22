@@ -16,6 +16,12 @@ cidr_subnet_storage_private_endpoints       = ["10.99.5.0/27"]
 cidr_subnet_container_app_private_endpoints = ["10.99.5.32/27"]
 
 #
+# Dns
+#
+dns_zone_internal_prefix = "internal"
+external_domain          = "pagopa.it"
+
+#
 # Monitoring
 #
 monitoring_law_sku               = "PerGB2018"
@@ -32,3 +38,9 @@ synthetic_domain_tae_enabled    = true
 synthetic_domain_idpay_enabled  = false
 synthetic_domain_shared_enabled = false
 synthetic_domain_mc_enabled     = false
+
+### ArgoCD
+argocd_helm_release_version    = "8.3.7" #ArgoCD 3.1.5+
+argocd_application_namespaces  = ["argocd", "idpay", "keda"]
+argocd_force_reinstall_version = "v20250914_1"
+ingress_load_balancer_ip       = "10.10.1.250"

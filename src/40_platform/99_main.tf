@@ -31,7 +31,18 @@ data "azurerm_subscription" "current" {}
 
 data "azurerm_client_config" "current" {}
 
+provider "kubernetes" {
+  config_path = "${var.k8s_kube_config_path_prefix}/config-${local.aks_cluster_name}"
+}
+
+provider "helm" {
+  kubernetes {
+    config_path = "${var.k8s_kube_config_path_prefix}/config-${local.aks_cluster_name}"
+  }
+}
+
+
 module "__v4__" {
-  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v7.26.4
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=3b8a515b0fdd81a0cd219fb52de2ea769f97ac7f"
+  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v7.36.2
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=1b93c6b79180a2c28ac575ef85f9056f010c5ed2"
 }

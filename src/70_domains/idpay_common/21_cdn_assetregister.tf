@@ -1,5 +1,4 @@
 locals {
-  selfare_asset_temp_suffix = "-italy"
   spa_asset_rewrite = [
     for i, spa_asset in var.single_page_applications_asset_register_roots_dirs :
     {
@@ -39,8 +38,7 @@ locals {
  */
 // public_cstar storage used to serve FE
 module "cdn_idpay_assetregister" {
-  # source = "./.terraform/modules/__v4__/cdn"
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//cdn_frontdoor?ref=PAYMCLOUD-477-v-4-creazione-modulo-cdn-front-door-per-sostituire-cdn-classic-deprecata"
+  source = "./.terraform/modules/__v4__/cdn_frontdoor"
 
   cdn_prefix_name     = "${local.project}-asset-register"
   resource_group_name = data.azurerm_resource_group.idpay_data_rg.name
@@ -48,7 +46,7 @@ module "cdn_idpay_assetregister" {
 
   custom_domains = [
     {
-      domain_name             = "registrodeibeni.${data.azurerm_dns_zone.public_cstar.name}"
+      domain_name             = "eie.${data.azurerm_dns_zone.public_cstar.name}"
       dns_name                = data.azurerm_dns_zone.public_cstar.name
       dns_resource_group_name = data.azurerm_dns_zone.public_cstar.resource_group_name
       ttl                     = var.env != "p" ? 300 : 3600
@@ -75,7 +73,7 @@ module "cdn_idpay_assetregister" {
       {
         action = "Append"
         name   = contains(["d"], var.env_short) ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
-        value  = "script-src 'self'; style-src 'self' 'unsafe-inline' https://${local.selfare_subdomain}.pagopa.it/assets/font/selfhostedfonts.css; worker-src 'none'; font-src 'self' https://selfcare${local.selfare_asset_temp_suffix}.pagopa.it/assets/font/; "
+        value  = "script-src 'self'; style-src 'self' 'unsafe-inline' https://${local.selfare_subdomain}.pagopa.it/assets/font/selfhostedfonts.css; worker-src 'none'; font-src 'self' https://selfcare.pagopa.it/assets/font/; "
       },
       # {
       #   action = "Append"
@@ -119,7 +117,7 @@ module "cdn_idpay_assetregister" {
     }]
     url_rewrite_actions = [{
       source_pattern          = "/"
-      destination             = "/registro-dei-beni/index.html"
+      destination             = "/elenco-informatico-elettrodomestici/index.html"
       preserve_unmatched_path = false
     }]
     }],

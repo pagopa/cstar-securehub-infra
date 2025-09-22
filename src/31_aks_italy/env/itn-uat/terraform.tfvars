@@ -46,14 +46,14 @@ aks_system_node_pool = {
 # AKS
 #----------------------------------------------------------------
 aks_nodepool_blue = {
-  vm_sku_name       = "Standard_D8ads_v5_active"
+  vm_sku_name       = "Standard_D4ads_v5_active"
   autoscale_enabled = true
   node_count_min    = 1
   node_count_max    = 3
 }
 
 aks_nodepool_green = {
-  vm_sku_name       = "Standard_D8ads_v5_passive"
+  vm_sku_name       = "Standard_D4ads_v5_passive"
   autoscale_enabled = false
   node_count_min    = 0
   node_count_max    = 0
@@ -101,11 +101,3 @@ reloader_helm = {
   image_name    = "stakater/reloader"
   image_tag     = "v1.4.0@sha256:40e379c2b20350235aca2f0a43cc6f8a89397cef6869cb3a95db03390684390a"
 }
-
-### ARGOCD
-#https://github.com/argoproj/argo-helm/releases/tag/argo-cd-7.7.7
-argocd_helm_release_version    = "7.9.1" #2.13.1
-argocd_force_reinstall_version = "v20250710"
-argocd_pdb_enabled             = false
-argocd_min_replicas            = 1
-argocd_max_replicas            = 1

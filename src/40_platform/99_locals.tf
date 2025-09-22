@@ -7,11 +7,16 @@ locals {
   #
   # Network
   #
-  vnet_rg_name            = "${local.product_nodomain}-core-network-rg"
-  vnet_core_hub_name      = "${local.product_nodomain}-core-hub-vnet"
-  vnet_core_compute_name  = "${local.product_nodomain}-core-spoke-compute-vnet"
-  vnet_core_data_name     = "${local.product_nodomain}-core-spoke-data-vnet"
-  vnet_core_platform_name = "${local.product_nodomain}-core-spoke-platform-vnet"
+  vnet_rg_name           = "${local.product_nodomain}-core-network-rg"
+  vnet_core_hub_name     = "${local.product_nodomain}-core-hub-vnet"
+  vnet_core_compute_name = "${local.product_nodomain}-core-spoke-compute-vnet"
+  vnet_core_data_name    = "${local.product_nodomain}-core-spoke-data-vnet"
+
+  dns_private_internal_name    = "${var.dns_zone_internal_prefix}.${var.prefix}.${var.external_domain}"
+  dns_private_internal_rg_name = "${var.prefix}-${var.env_short}-vnet-rg"
+
+  ingress_load_balancer_ip = "10.10.1.250"
+
 
   # pagopa peered vnet
   pagopa_cstar_integration_vnet_name    = "pagopa-${var.env_short}-itn-cstar-integration-vnet"
@@ -37,6 +42,19 @@ locals {
   public_hostname           = var.env == "prod" ? "cstar.pagopa.it" : "${var.env}.cstar.pagopa.it"
   internal_private_hostname = var.env == "prod" ? "internal.cstar.pagopa.it" : "internal.${var.env}.cstar.pagopa.it"
 
+  ### AKS -----------------------------------------------------------------------
+  aks_cluster_name        = "cstar-${var.env_short}-itn-${var.env}-aks"
+  aks_resource_group_name = "cstar-${var.env_short}-itn-core-aks-rg"
+
+  ### ARGOCD
+  argocd_internal_url    = "argocd.${var.location_short}.${var.dns_zone_internal_prefix}.${var.prefix}.${var.external_domain}"
+  argocd_dns_record_name = "argocd.${var.location_short}"
+
+  ### tags
+  cwd_split       = split("/", path.cwd)
+  src_idx         = index(local.cwd_split, "src")
+  relative_folder = join("/", slice(local.cwd_split, local.src_idx + 1, length(local.cwd_split)))
+
   #
   # Domains to setup
   #
@@ -48,7 +66,8 @@ locals {
         "Owner"        = "CStar"
         "Environment"  = var.env
         "CreatedBy"    = "Terraform"
-        "Source"       = "https://github.com/pagopa/cstar-securehub-infra"
+        "Source"       = "https://github.com/pagopa/cstar-securehub-infra/tree/main/src/${local.relative_folder}"
+        "Folder"       = local.relative_folder
         "domain"       = "platform"
       }
       additional_resource_groups = [
@@ -62,7 +81,8 @@ locals {
         "Owner"        = "CStar"
         "Environment"  = var.env
         "CreatedBy"    = "Terraform"
-        "Source"       = "https://github.com/pagopa/cstar-securehub-infra"
+        "Source"       = "https://github.com/pagopa/cstar-securehub-infra/tree/main/src/${local.relative_folder}"
+        "Folder"       = local.relative_folder
         "domain"       = "idpay"
       }
       additional_resource_groups = [
@@ -76,7 +96,8 @@ locals {
         "Owner"        = "CStar"
         "Environment"  = var.env
         "CreatedBy"    = "Terraform"
-        "Source"       = "https://github.com/pagopa/cstar-securehub-infra"
+        "Source"       = "https://github.com/pagopa/cstar-securehub-infra/tree/main/src/${local.relative_folder}"
+        "Folder"       = local.relative_folder
         "domain"       = "srtp"
       }
       additional_resource_groups = [
@@ -90,8 +111,23 @@ locals {
         "Owner"        = "CStar"
         "Environment"  = var.env
         "CreatedBy"    = "Terraform"
-        "Source"       = "https://github.com/pagopa/cstar-securehub-infra"
+        "Source"       = "https://github.com/pagopa/cstar-securehub-infra/tree/main/src/${local.relative_folder}"
+        "Folder"       = local.relative_folder
         "domain"       = "mcshared"
+      }
+      additional_resource_groups = []
+    }
+    # Messaggi di Cortesia
+    "mdc" = {
+      tags = {
+        "CostCenter"   = "TS310 - PAGAMENTI & SERVIZI"
+        "BusinessUnit" = "CStar"
+        "Owner"        = "CStar"
+        "Environment"  = var.env
+        "CreatedBy"    = "Terraform"
+        "Source"       = "https://github.com/pagopa/cstar-securehub-infra/tree/main/src/${local.relative_folder}"
+        "Folder"       = local.relative_folder
+        "domain"       = "mdc"
       }
       additional_resource_groups = []
     }

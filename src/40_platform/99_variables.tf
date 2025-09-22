@@ -66,6 +66,20 @@ variable "cidr_subnet_container_app_private_endpoints" {
 }
 
 #
+# DNS
+#
+variable "dns_zone_internal_prefix" {
+  type        = string
+  default     = null
+  description = "The dns subdomain."
+}
+
+variable "external_domain" {
+  type        = string
+  description = "Domain for delegation"
+}
+
+#
 # Monitoring
 #
 variable "monitoring_law_sku" {
@@ -119,4 +133,32 @@ variable "synthetic_domain_mc_enabled" {
 variable "synthetic_domain_shared_enabled" {
   type        = bool
   description = "(Optional) Enables the synthetic monitoring for the Idpay"
+}
+
+### ARGO
+variable "argocd_helm_release_version" {
+  type        = string
+  description = "ArgoCD helm chart release version"
+}
+
+variable "argocd_force_reinstall_version" {
+  type        = string
+  description = "version to force reinstall ArgoCD"
+}
+
+variable "argocd_application_namespaces" {
+  type        = list(string)
+  description = "In which namespaces argocd can create applications"
+}
+
+#---------------------------------------------------------------
+# AKS
+#---------------------------------------------------------------
+variable "ingress_load_balancer_ip" {
+  type = string
+}
+
+variable "k8s_kube_config_path_prefix" {
+  type    = string
+  default = "~/.kube"
 }

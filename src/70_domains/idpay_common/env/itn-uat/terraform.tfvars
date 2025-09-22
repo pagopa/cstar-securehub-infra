@@ -55,7 +55,7 @@ single_page_applications_roots_dirs = [
 ]
 
 single_page_applications_asset_register_roots_dirs = [
-  "registro-dei-beni"
+  "elenco-informatico-elettrodomestici"
 ]
 
 single_page_applications_portal_merchants_operator_roots_dirs = [
@@ -82,7 +82,7 @@ aks_nodepool_green = {
 #Monitoring
 law_sku               = "PerGB2018"
 law_retention_in_days = 30
-law_daily_quota_gb    = 5
+law_daily_quota_gb    = 15
 
 mcshared_dns_zone_prefix = "api-mcshared.uat"
 
