@@ -14,6 +14,10 @@ terraform {
       source  = "hashicorp/null"
       version = "~> 3.0"
     }
+    argocd = {
+      source  = "argoproj-labs/argocd"
+      version = "~> 7.0"
+    }
   }
 
   backend "azurerm" {}
@@ -41,6 +45,14 @@ provider "helm" {
   }
 }
 
+provider "argocd" {
+  server_addr = local.argocd_internal_url
+  username    = data.azurerm_key_vault_secret.argocd_admin_username.value
+  password    = data.azurerm_key_vault_secret.argocd_admin_password.value
+  kubernetes {
+    config_context = "config-${local.aks_cluster_name}"
+  }
+}
 
 module "__v4__" {
   # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v7.36.2
