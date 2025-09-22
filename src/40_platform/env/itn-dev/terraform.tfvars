@@ -42,3 +42,12 @@ argocd_helm_release_version    = "8.3.7" #ArgoCD 3.1.5+
 argocd_application_namespaces  = ["argocd", "idpay", "keda"]
 argocd_force_reinstall_version = "v20250918_1"
 ingress_load_balancer_ip       = "10.10.1.250"
+
+### InfluxDB
+influxdb2_helm = {
+  chart_version = "2.1.0",
+  image = {
+    name = "influxdb",
+    tag  = "2.2.0-alpine@sha256:f3b54d91cae591fc3fde20299bd0b262f6f6d9a1f73b98d623b501e82c49d5fb"
+  }
+}

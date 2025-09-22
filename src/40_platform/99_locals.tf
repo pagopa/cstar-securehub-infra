@@ -55,6 +55,9 @@ locals {
     "influxdb"
   ]
 
+  ### InfluxDB
+  influxdb_url = "influxdb.${var.location_short}.${var.dns_zone_internal_prefix}.${var.prefix}.${var.external_domain}"
+
   ### tags
   cwd_split       = split("/", path.cwd)
   src_idx         = index(local.cwd_split, "src")

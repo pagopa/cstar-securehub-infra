@@ -1,0 +1,15 @@
+{
+          image = {
+            repository = var.influxdb2_helm.image.name
+            tag        = var.influxdb2_helm.image.tag
+          }
+          ingress = {
+            enabled  = true
+            tls      = true
+            hostname = local.influxdb_url
+            path     = "/(.*)"
+            annotations = {
+              "nginx.ingress.kubernetes.io/rewrite-target" = "/$1"
+            }
+          }
+        }
