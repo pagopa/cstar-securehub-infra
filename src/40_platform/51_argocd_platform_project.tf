@@ -2,7 +2,7 @@ locals {
   argocd_project_name = "${var.domain}-project"
 
   ### ArgoCD Groups ---------------------------------------------
-  argocd_groups_admin =  [
+  argocd_groups_admin = [
     data.azuread_group.adgroup_admin.object_id,
   ]
 

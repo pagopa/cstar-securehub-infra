@@ -12,19 +12,19 @@ locals {
 # password and token generation
 #-------------------------------------------------------------------------
 resource "random_password" "influxdb_admin_password" {
-  length           = 33
-  special          = false
+  length  = 33
+  special = false
 }
 
 resource "random_password" "influxdb_admin_token" {
-  length           = 33
-  special          = false
+  length  = 33
+  special = false
 }
 
 resource "azurerm_key_vault_secret" "influxdb_admin_username" {
   name         = "influxdb-admin-username"
   key_vault_id = data.azurerm_key_vault.cicd_kv.id
-  value =  "admin"
+  value        = "admin"
 
   tags = module.tag_config.tags
 }
@@ -78,12 +78,12 @@ resource "argocd_application" "influxdb2" {
       helm {
         release_name = "influxdb2"
         values = templatefile("${path.module}/aks/influxdb/values.yaml", {
-          repository  = var.influxdb2_helm.image.name
-          tag         = var.influxdb2_helm.image.tag
-          hostname    = local.influxdb_internal_url
+          repository      = var.influxdb2_helm.image.name
+          tag             = var.influxdb2_helm.image.tag
+          hostname        = local.influxdb_internal_url
           tls_secret_name = replace(local.influxdb_internal_url, ".", "-")
-          tolerations = try(var.influxdb2_helm.tolerations, [])
-          affinity    = try(var.influxdb2_helm.affinity, {})
+          tolerations     = try(var.influxdb2_helm.tolerations, [])
+          affinity        = try(var.influxdb2_helm.affinity, {})
           admin_user = {
             username = azurerm_key_vault_secret.influxdb_admin_username.value
             password = random_password.influxdb_admin_password.result
@@ -95,8 +95,8 @@ resource "argocd_application" "influxdb2" {
   }
 
   depends_on = [
-  argocd_project.platform_project,
-  module.argocd
+    argocd_project.platform_project,
+    module.argocd
   ]
 }
 
@@ -125,7 +125,7 @@ module "influxdb_cert_mounter_workload_identity_init" {
   workload_identity_location            = var.location
 
   depends_on = [
-  argocd_application.influxdb2
+    argocd_application.influxdb2
   ]
 }
 
@@ -178,4 +178,3 @@ resource "helm_release" "reloader_influxdb" {
     value = "false"
   }
 }
-
