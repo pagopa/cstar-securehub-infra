@@ -32,13 +32,9 @@
   <body>
     <div class="pageWrapper">
       <header>
+      <div style="padding-bottom: 2rem">
       <div style="height: 5.063rem">
-      <img
-          src="${url.resourcesPath}/images/logo.png"
-          width="119px"
-          height="33px"
-          alt="logo"
-        />
+      <img width="119px" height="33px" src="https://selfcare.pagopa.it/assets/logo_pagopacorp.png" alt="PagoPa logo"/>
       </div>
         <h1
             style="
@@ -46,11 +42,11 @@
               line-height: 40px;
               font-weight: 700;
               letter-spacing: 0;
-              padding-bottom: 2rem;
             "
           >
           Il tuo account su Bonus Elettrodomestici è stato attivato
         </h1>
+        </div>
       </header>
       <table class="content">
         <tbody>
@@ -94,7 +90,7 @@
             </td>
           </tr>
           <tr>
-            <td>A presto,</td>
+            <td style="padding-bottom: 0.5rem">A presto,</td>
           </tr>
           <tr>
             <td style="padding-bottom: 1.563rem">il team di Portale Bonus</td>
