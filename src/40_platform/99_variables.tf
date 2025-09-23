@@ -173,6 +173,8 @@ variable "influxdb2_helm" {
       name = string,
       tag  = string
     })
+    tolerations = optional(list(any), [])
+    affinity    = optional(map(any), {})
   })
   description = "influxdb2 helm chart configuration"
 }
