@@ -536,6 +536,10 @@ locals {
           keys   = ["userId"]
           unique = false
         },
+        {
+          keys = ["additionalProperties.productCategory"]
+          unique = false
+        }
       ]
     },
     {
@@ -711,7 +715,7 @@ locals {
           unique = false
         },
         {
-          keys   = ["address", "streetNumber"]
+          keys   = ["address"]
           unique = false
         },
         {
