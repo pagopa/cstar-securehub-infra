@@ -21,7 +21,7 @@
         font-size: 18px;
         line-height: 24px;
         font-weight: 400;
-        padding: 6.25rem;
+        padding: 10%;
       }
 
       .content {
@@ -49,7 +49,7 @@
               padding-bottom: 2rem;
             "
           >
-          Il tuo account su Bonus Elettrodomestici è stato attivato ${user.firstName}
+          Il tuo account su Bonus Elettrodomestici è stato attivato
         </h1>
       </header>
       <table class="content">
