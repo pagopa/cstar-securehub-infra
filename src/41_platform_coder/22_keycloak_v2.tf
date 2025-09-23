@@ -1,5 +1,5 @@
 locals {
-  theme_dir   = "${path.module}/k8s/keycloak/themes/pagopa/login"
+  theme_dir   = "${path.module}/k8s/keycloak/themes/pagopa"
   files       = fileset(local.theme_dir, "**")
   binary_exts = [".png", ".jpg", ".jpeg", ".ico", ".woff", ".woff2"]
 
@@ -29,7 +29,7 @@ locals {
   theme_volume_mounts = [
     for f in local.files : {
       name      = "pagopa-theme"
-      mountPath = "/opt/bitnami/keycloak/themes/pagopa/login/${f}"
+      mountPath = "/opt/bitnami/keycloak/themes/pagopa/${f}"
       subPath   = local.flattened_key[f]
       readOnly  = true
     }
