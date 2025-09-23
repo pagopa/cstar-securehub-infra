@@ -129,5 +129,8 @@ locals {
   # azdo_managed_identity_rg_name = "${var.prefix}-${var.env_short}-identity-rg"
   # azdo_iac_managed_identities   = toset(["azdo-${var.env}-${var.prefix}-iac-deploy-v2", "azdo-${var.env}-${var.prefix}-iac-plan-v2"])
 
-  keycloak_external_hostname = "https://${var.mcshared_dns_zone_prefix}.${var.prefix}.${var.external_domain}/auth-itn"
+  keycloak_external_hostname = "https://${var.mcshared_dns_zone_prefix}.${local.public_dns_zone_name}/auth-itn"
+
+  selfcare-issuer = var.env == "prod" ? "https://selfcare.pagopa.it" : "https://${var.env}.selfcare.pagopa.it"
+
 }
