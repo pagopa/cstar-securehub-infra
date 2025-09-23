@@ -11,9 +11,9 @@ locals {
   ]
 }
 
-#
+#-------------------------------------------------------------------------
 # Terraform argocd project
-#
+#-------------------------------------------------------------------------
 resource "argocd_project" "platform_project" {
   metadata {
     name      = local.argocd_project_name
