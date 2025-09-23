@@ -23,7 +23,7 @@ resource "random_password" "influxdb_admin_token" {
 
 resource "azurerm_key_vault_secret" "influxdb_admin_username" {
   name         = "influxdb-admin-username"
-  key_vault_id = data.azurerm_key_vault.core_kv.id
+  key_vault_id = data.azurerm_key_vault.cicd_kv.id
   value =  "admin"
 
   tags = module.tag_config.tags
@@ -31,7 +31,7 @@ resource "azurerm_key_vault_secret" "influxdb_admin_username" {
 
 resource "azurerm_key_vault_secret" "influxdb_admin_password" {
   name         = "influxdb-admin-password"
-  key_vault_id = data.azurerm_key_vault.core_kv.id
+  key_vault_id = data.azurerm_key_vault.cicd_kv.id
   value        = random_password.influxdb_admin_password.result
 
   tags = module.tag_config.tags
@@ -39,7 +39,7 @@ resource "azurerm_key_vault_secret" "influxdb_admin_password" {
 
 resource "azurerm_key_vault_secret" "influxdb_admin_token" {
   name         = "influxdb-admin-token"
-  key_vault_id = data.azurerm_key_vault.core_kv.id
+  key_vault_id = data.azurerm_key_vault.cicd_kv.id
   value        = random_password.influxdb_admin_token.result
 
   tags = module.tag_config.tags
@@ -77,19 +77,38 @@ resource "argocd_application" "influxdb2" {
 
       helm {
         release_name = "influxdb2"
-        values = yamlencode(templatefile("${path.module}/aks/influxdb/values.yaml", {
+        values = templatefile("${path.module}/aks/influxdb/values.yaml", {
           repository  = var.influxdb2_helm.image.name
           tag         = var.influxdb2_helm.image.tag
           hostname    = local.influxdb_url
-          # tolerations = try(var.influxdb2_helm.tolerations, [])
-          # affinity    = try(var.influxdb2_helm.affinity, {})
-          # admin_user = {
-          #   username = azurerm_key_vault_secret.influxdb_admin_username.value
-          #   password = random_password.influxdb_admin_password.result
-          #   token    = random_password.influxdb_admin_token.result
-          # }
-        }))
+          tls_secret_name = replace(local.influxdb_url, ".", "-")
+          tolerations = try(var.influxdb2_helm.tolerations, [])
+          affinity    = try(var.influxdb2_helm.affinity, {})
+          admin_user = {
+            username = ""
+            password = ""
+            token    = ""
+          }
+        })
       }
     }
   }
+
+  depends_on = [
+  argocd_project.platform_project,
+  module.argocd
+  ]
+}
+
+#-------------------------------------------------------------------------------
+# 🌐 Network
+#-------------------------------------------------------------------------------
+resource "azurerm_private_dns_a_record" "influxdb_ingress" {
+  name                = "influxdb.itn"
+  zone_name           = data.azurerm_private_dns_zone.internal.name
+  resource_group_name = data.azurerm_private_dns_zone.internal.resource_group_name
+  ttl                 = 3600
+  records             = [var.ingress_load_balancer_ip]
+
+  tags = module.tag_config.tags
 }
