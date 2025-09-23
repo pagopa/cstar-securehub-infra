@@ -537,7 +537,7 @@ locals {
           unique = false
         },
         {
-          keys = ["additionalProperties.productCategory"]
+          keys   = ["additionalProperties.productCategory"]
           unique = false
         }
       ]
