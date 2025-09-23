@@ -11,14 +11,6 @@ ingress:
   annotations:
 #    nginx.ingress.kubernetes.io/rewrite-target: "/$1"
 
-adminUser:
-  organization: "influxdata"
-  bucket: "default"
-  retentionPolicy: "0s"
-  user: ${admin_user.username}
-  password: ${admin_user.password}
-  token: ${admin_user.token}
-
 ### Tolerations
 %{ if length(tolerations) == 0 }
 tolerations: []

@@ -85,9 +85,9 @@ resource "argocd_application" "influxdb2" {
           tolerations = try(var.influxdb2_helm.tolerations, [])
           affinity    = try(var.influxdb2_helm.affinity, {})
           admin_user = {
-            username = ""
-            password = ""
-            token    = ""
+            username = azurerm_key_vault_secret.influxdb_admin_username.value
+            password = random_password.influxdb_admin_password.result
+            token    = random_password.influxdb_admin_token.result
           }
         })
       }
