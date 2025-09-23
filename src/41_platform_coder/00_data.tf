@@ -50,9 +50,13 @@ data "azurerm_resource_group" "monitoring_rg" {
   name = local.monitoring_rg_name
 }
 
-data "azurerm_application_insights" "app_insights" {
-  name                = local.app_insights_name
-  resource_group_name = data.azurerm_resource_group.monitoring_rg.name
+data "azurerm_resource_group" "core_monitor_rg" {
+  name = local.core_monitor_rg_name
+}
+
+data "azurerm_application_insights" "app_insights_core" {
+  name                = local.app_insights_core_name
+  resource_group_name = data.azurerm_resource_group.core_monitor_rg.name
 }
 
 data "azurerm_log_analytics_workspace" "logs_workspace" {

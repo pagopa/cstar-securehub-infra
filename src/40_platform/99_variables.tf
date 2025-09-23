@@ -162,3 +162,19 @@ variable "k8s_kube_config_path_prefix" {
   type    = string
   default = "~/.kube"
 }
+
+#---------------------------------------------------------------
+# InfluxDB & K6
+#---------------------------------------------------------------
+variable "influxdb2_helm" {
+  type = object({
+    chart_version = string,
+    image = object({
+      name = string,
+      tag  = string
+    })
+    tolerations = optional(list(any), [])
+    affinity    = optional(map(any), {})
+  })
+  description = "influxdb2 helm chart configuration"
+}

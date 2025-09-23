@@ -1,5 +1,5 @@
 locals {
-  theme_dir   = "${path.module}/k8s/keycloak/themes/pagopa/login"
+  theme_dir   = "${path.module}/k8s/keycloak/themes/pagopa"
   files       = fileset(local.theme_dir, "**")
   binary_exts = [".png", ".jpg", ".jpeg", ".ico", ".woff", ".woff2"]
 
@@ -19,13 +19,17 @@ locals {
 
   # Fixed volume mount
   fixed_volume_mounts = [
+    {
+      name      = "agent"
+      mountPath = "/opt/bitnami/keycloak/agent"
+    }
   ]
 
   # Create a volume mount for each file in configmap with subPath
   theme_volume_mounts = [
     for f in local.files : {
       name      = "pagopa-theme"
-      mountPath = "/opt/bitnami/keycloak/themes/pagopa/login/${f}"
+      mountPath = "/opt/bitnami/keycloak/themes/pagopa/${f}"
       subPath   = local.flattened_key[f]
       readOnly  = true
     }
@@ -174,6 +178,7 @@ resource "helm_release" "keycloak" {
       keycloak_extra_volume_mounts                    = yamlencode(local.keycloak_extra_volume_mounts)
       keycloak_http_client_connection_ttl_millis      = var.keycloak_configuration.http_client_connection_ttl_millis
       keycloak_http_client_connection_max_idle_millis = var.keycloak_configuration.http_client_connection_max_idle_time_millis
+      appinsights_connection_string                   = data.azurerm_application_insights.app_insights_core.connection_string
     })
   ]
   depends_on = [
