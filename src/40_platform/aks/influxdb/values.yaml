@@ -1,15 +1,36 @@
-{
-          image = {
-            repository = var.influxdb2_helm.image.name
-            tag        = var.influxdb2_helm.image.tag
-          }
-          ingress = {
-            enabled  = true
-            tls      = true
-            hostname = local.influxdb_url
-            path     = "/(.*)"
-            annotations = {
-              "nginx.ingress.kubernetes.io/rewrite-target" = "/$1"
-            }
-          }
-        }
+image:
+  repository: ${repository}
+  tag: ${tag}
+ingress:
+  enabled: true
+  tls: true
+  hostname: ${hostname}
+  path: "/(.*)"
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: "/$1"
+
+#adminUser:
+#${indent(2, yamlencode({
+#  organization    = "influxdata"
+#  bucket          =  "default"
+#  retentionPolicy = "0s"
+#  user            = admin_user.username
+#  password        = admin_user.password
+#  token           = admin_user.token
+#}))}
+#
+#### Tolerations
+#%{ if length(tolerations) == 0 }
+#tolerations: []
+#%{ else }
+#tolerations:
+#${indent(2, yamlencode(tolerations))}
+#%{ endif }
+#
+#### Affinity for pod assignment
+#%{ if length(keys(affinity)) == 0 }
+#affinity: {}
+#%{ else }
+#affinity:
+#${indent(2, yamlencode(affinity))}
+#%{ endif }
