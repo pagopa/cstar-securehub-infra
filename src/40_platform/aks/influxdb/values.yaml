@@ -1,0 +1,36 @@
+image:
+  repository: ${repository}
+  tag: ${tag}
+ingress:
+  enabled: true
+  className: nginx
+  tls: true
+  secretName: ${tls_secret_name}
+  hostname: ${hostname}
+  path: "/"
+  annotations:
+#    nginx.ingress.kubernetes.io/rewrite-target: "/$1"
+
+adminUser:
+  organization: "influxdata"
+  bucket: "default"
+  retentionPolicy: "0s"
+  user: ${admin_user.username}
+  password: ${admin_user.password}
+  token: ${admin_user.token}
+
+### Tolerations
+%{ if length(tolerations) == 0 }
+tolerations: []
+%{ else }
+tolerations:
+${indent(2, yamlencode(tolerations))}
+%{ endif }
+
+### Affinity for pod assignment
+%{ if length(keys(affinity)) == 0 }
+affinity: {}
+%{ else }
+affinity:
+${indent(2, yamlencode(affinity))}
+%{ endif }
