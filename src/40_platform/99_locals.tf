@@ -52,7 +52,7 @@ locals {
   argocd_namespace    = "argocd"
   argocd_project_namespaces = [
     "argocd",
-    "influxdb"
+    "platform-influxdb"
   ]
 
   ### InfluxDB
