@@ -29,10 +29,10 @@ initContainers:
 resources:
   requests:
     memory: "1Gi"
-    cpu: "500m"
+    cpu: "1"
   limits:
     memory: "2Gi"
-    cpu: "2"
+    cpu: "4"
 
 postgresql:
   enabled: false
@@ -54,8 +54,13 @@ extraEnvVars:
     value: "true"
   - name: KEYCLOAK_HOSTNAME_ADMIN
     value: "https://${keycloak_ingress_hostname}"
+  - name: KC_METRICS_ENABLED
+    value: "true"
   - name: KC_TRACING_ENABLED
     value: "true"
+    # suppress noisy logs from opentelemetry exporter - the export is handled by the app insights java agent
+  - name: KC_LOG_LEVEL_IO_QUARKUS_OPENTELEMETRY_RUNTIME_EXPORTER_OTLP
+    value: "ERROR"
   - name: APPLICATIONINSIGHTS_CONNECTION_STRING
     value: "${appinsights_connection_string}"
   - name: KC_SPI_CONNECTIONS_HTTP_CLIENT_DEFAULT_CONNECTION_TTL_MILLIS
