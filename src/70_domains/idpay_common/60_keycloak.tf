@@ -22,6 +22,7 @@ resource "keycloak_realm" "merchant_operator" {
     port = local.ses_smtp_port
     from = data.azurerm_key_vault_secret.ses_from_address.value
     ssl  = true
+    from_display_name = "Portale Bonus Elettrodomestici"
 
     auth {
       username = data.azurerm_key_vault_secret.ses_smtp_username.value
