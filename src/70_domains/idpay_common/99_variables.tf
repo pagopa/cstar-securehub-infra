@@ -206,11 +206,6 @@ variable "enable" {
   }
 }
 
-variable "idpay_cdn_sa_advanced_threat_protection_enabled" {
-  type = bool
-  # default = false
-}
-
 variable "idpay_cdn_storage_account_replication_type" {
   type        = string
   description = "Which replication must use the blob storage under cdn"
@@ -266,12 +261,6 @@ variable "law_daily_quota_gb" {
   type        = number
   description = "The workspace daily quota for ingestion in GB."
   default     = -1
-}
-
-variable "mcshared_dns_zone_prefix" {
-  type        = string
-  default     = null
-  description = "The dns subdomain for mcshared"
 }
 
 # OneIdentity

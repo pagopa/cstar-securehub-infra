@@ -220,6 +220,6 @@ resource "azurerm_storage_blob" "selfcare_oidc_configuration" {
   access_tier            = "Hot"
 
   source_content = templatefile("./cdn/openid-configuration.json.tpl", {
-    selfcare-issuer = local.selfcare-issuer
+    selfcare-issuer = local.selfcare_issuer
   })
 }

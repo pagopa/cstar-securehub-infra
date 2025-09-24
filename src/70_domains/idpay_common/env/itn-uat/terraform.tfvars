@@ -46,7 +46,6 @@ enable = {
 idpay_cdn_storage_account_replication_type            = "ZRS"
 selfcare_welfare_cdn_storage_account_replication_type = "ZRS"
 robots_indexed_paths                                  = []
-idpay_cdn_sa_advanced_threat_protection_enabled       = false
 single_page_applications_roots_dirs = [
   "portale-enti",
   "portale-esercenti",
@@ -83,8 +82,6 @@ aks_nodepool_green = {
 law_sku               = "PerGB2018"
 law_retention_in_days = 30
 law_daily_quota_gb    = 15
-
-mcshared_dns_zone_prefix = "api-mcshared.uat"
 
 #OneIdentity
 oneidentity_base_url = "https://uat.oneid.pagopa.it"
