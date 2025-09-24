@@ -18,10 +18,10 @@ resource "keycloak_realm" "merchant_operator" {
   email_theme = "pagopa"
 
   smtp_server {
-    host = data.azurerm_key_vault_secret.ses_smtp_host.value
-    port = local.ses_smtp_port
-    from = data.azurerm_key_vault_secret.ses_from_address.value
-    ssl  = true
+    host              = data.azurerm_key_vault_secret.ses_smtp_host.value
+    port              = local.ses_smtp_port
+    from              = data.azurerm_key_vault_secret.ses_from_address.value
+    ssl               = true
     from_display_name = "Portale Bonus Elettrodomestici"
 
     auth {
