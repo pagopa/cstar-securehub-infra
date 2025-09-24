@@ -167,6 +167,14 @@ locals {
         {
           keys   = ["initiatives"]
           unique = false
+        },
+        {
+          keys   = ["status"]
+          unique = false
+        },
+        {
+          keys   = ["additionalProperties.productCategory"]
+          unique = false
         }
       ]
     },
