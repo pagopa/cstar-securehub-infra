@@ -28,11 +28,11 @@ initContainers:
 
 resources:
   requests:
-    memory: "1Gi"
-    cpu: "1"
+    memory: ${memory_request}
+    cpu: ${cpu_request}
   limits:
-    memory: "2Gi"
-    cpu: "4"
+    memory: ${memory_limit}
+    cpu: ${cpu_limit}
 
 postgresql:
   enabled: false
