@@ -68,6 +68,24 @@ module "container_app_private_endpoint_snet" {
   address_prefixes = var.cidr_subnet_container_app_private_endpoints
 }
 
+module "adf_snet" {
+  source = "./.terraform/modules/__v4__/IDH/subnet"
+
+  # General
+  product_name        = var.prefix
+  env                 = var.env
+  resource_group_name = local.vnet_rg_name
+
+  # Network
+  name = "${local.project}-adf-snet"
+
+  # Set to the spoke compute VNet because it is the only one with peering to pagoPA integration VNet
+  virtual_network_name = local.vnet_core_data_name
+
+  # IDH Resources
+  idh_resource_tier = "private_endpoint"
+}
+
 module "data_postgres_flexible_snet" {
   source               = "./.terraform/modules/__v4__/IDH/subnet"
   name                 = "${local.project}-postgres-snet"
