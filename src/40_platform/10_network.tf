@@ -76,10 +76,8 @@ module "adf_snet" {
   env                 = var.env
   resource_group_name = local.vnet_rg_name
 
-  # Network
   name = "${local.project}-adf-snet"
 
-  # Set to the spoke compute VNet because it is the only one with peering to pagoPA integration VNet
   virtual_network_name = local.vnet_core_data_name
 
   # IDH Resources
