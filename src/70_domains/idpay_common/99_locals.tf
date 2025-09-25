@@ -4,6 +4,7 @@ locals {
   project           = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
   project_core      = "${var.prefix}-${var.env_short}-${var.location_short}-core"
   project_weu       = "${var.prefix}-${var.env_short}-${var.location_short_weu}-${var.domain}"
+  project_entra     = "${var.prefix}-${var.env_short}-${var.domain}"
 
   # Default Domain Resource Group
   data_rg     = "${local.project}-data-rg"
@@ -63,7 +64,7 @@ locals {
   #
   aks_name                = "${local.product_no_domain}-${var.env}-aks"
   aks_resource_group_name = "${local.product_no_domain}-core-aks-rg"
-  aks_api_url             = var.env_short == "d" ? data.azurerm_kubernetes_cluster.aks.fqdn : data.azurerm_kubernetes_cluster.aks.private_fqdn
+  aks_api_url             = data.azurerm_kubernetes_cluster.aks.private_fqdn
 
 
   ### ARGOCD
@@ -128,5 +129,8 @@ locals {
   # azdo_managed_identity_rg_name = "${var.prefix}-${var.env_short}-identity-rg"
   # azdo_iac_managed_identities   = toset(["azdo-${var.env}-${var.prefix}-iac-deploy-v2", "azdo-${var.env}-${var.prefix}-iac-plan-v2"])
 
-  keycloak_external_hostname = "https://${var.mcshared_dns_zone_prefix}.${var.prefix}.${var.external_domain}/auth-itn"
+  mcshared_api_url           = "https://api-mcshared.${local.public_dns_zone_name}"
+  keycloak_external_hostname = "${local.mcshared_api_url}/auth-itn"
+  selfcare_issuer            = var.env == "prod" ? "https://selfcare.${var.external_domain}" : "https://${var.env}.selfcare.${var.external_domain}"
+
 }

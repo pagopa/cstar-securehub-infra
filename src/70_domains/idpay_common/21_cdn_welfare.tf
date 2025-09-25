@@ -33,8 +33,7 @@ locals {
  */
 // public_cstar storage used to serve FE
 module "cdn_idpay_welfare" {
-
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//cdn_frontdoor?ref=PAYMCLOUD-477-v-4-creazione-modulo-cdn-front-door-per-sostituire-cdn-classic-deprecata"
+  source = "./.terraform/modules/__v4__/cdn_frontdoor"
 
   cdn_prefix_name     = "${local.project}-welfare"
   resource_group_name = data.azurerm_resource_group.idpay_data_rg.name
@@ -119,6 +118,24 @@ module "cdn_idpay_welfare" {
         }]
       }
     ],
+    [
+      {
+        name  = "RewriteOIDCConfiguration"
+        order = 20
+        // conditions
+        url_path_conditions = [{
+          operator         = "Equal"
+          match_values     = ["/selfcare/openid-configuration.json"]
+          negate_condition = false
+          transforms       = null
+        }]
+        url_rewrite_actions = [{
+          source_pattern          = "/selfcare"
+          destination             = "/selfcare/openid-configuration.json"
+          preserve_unmatched_path = false
+        }]
+      }
+    ],
     local.spa_rewrite_urls
   )
 
@@ -192,4 +209,17 @@ resource "azurerm_key_vault_secret" "idpay_welfare_cdn_storage_blob_connection_s
   content_type = "text/plain"
 
   key_vault_id = data.azurerm_key_vault.domain_kv.id
+}
+
+resource "azurerm_storage_blob" "selfcare_oidc_configuration" {
+  name                   = "selfcare/openid-configuration.json"
+  storage_account_name   = module.cdn_idpay_welfare.storage_name
+  storage_container_name = "$web"
+  type                   = "Block"
+  content_type           = "application/json"
+  access_tier            = "Hot"
+
+  source_content = templatefile("./cdn/openid-configuration.json.tpl", {
+    selfcare-issuer = local.selfcare_issuer
+  })
 }

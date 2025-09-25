@@ -63,7 +63,7 @@ locals {
         {
           action = "Overwrite"
           name   = contains(["d"], var.env_short) ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
-          value  = "default-src 'self'; object-src 'none'; frame-src 'self' https://api-io.${var.dns_zone_prefix}.${var.external_domain}/ https://${var.mcshared_dns_zone_prefix}.${var.prefix}.${var.external_domain}/; connect-src 'self' https://selfcare.pagopa.it https://api-io.${var.dns_zone_prefix}.${var.external_domain}/ https://${var.mcshared_dns_zone_prefix}.${var.prefix}.${var.external_domain}/ https://api-eu.mixpanel.com/track/;"
+          value  = "default-src 'self'; object-src 'none'; frame-src 'self' https://api-io.${var.dns_zone_prefix}.${var.external_domain}/ ${local.mcshared_api_url}/; connect-src 'self' https://selfcare.pagopa.it https://api-io.${var.dns_zone_prefix}.${var.external_domain}/ ${local.mcshared_api_url}/ https://api-eu.mixpanel.com/track/;"
         },
         {
           action = "Append"
@@ -228,8 +228,7 @@ locals {
 
 // Public CDN to serve frontend - main domain
 module "cdn_idpay_bonuselettrodomestici" {
-  # source = "./.terraform/modules/__v4__/cdn"
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//cdn_frontdoor?ref=PAYMCLOUD-477-v-4-creazione-modulo-cdn-front-door-per-sostituire-cdn-classic-deprecata"
+  source = "./.terraform/modules/__v4__/cdn_frontdoor"
 
   # Basic Configuration
   cdn_prefix_name     = "${local.project}-bonus"

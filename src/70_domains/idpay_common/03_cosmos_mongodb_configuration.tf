@@ -167,6 +167,14 @@ locals {
         {
           keys   = ["initiatives"]
           unique = false
+        },
+        {
+          keys   = ["status"]
+          unique = false
+        },
+        {
+          keys   = ["additionalProperties.productCategory"]
+          unique = false
         }
       ]
     },
@@ -536,6 +544,10 @@ locals {
           keys   = ["userId"]
           unique = false
         },
+        {
+          keys   = ["additionalProperties.productCategory"]
+          unique = false
+        }
       ]
     },
     {
@@ -711,7 +723,7 @@ locals {
           unique = false
         },
         {
-          keys   = ["address", "streetNumber"]
+          keys   = ["address"]
           unique = false
         },
         {
@@ -797,6 +809,14 @@ locals {
         },
         {
           keys   = ["productName"]
+          unique = false
+        },
+        {
+          keys   = ["brand"]
+          unique = false
+        },
+        {
+          keys   = ["model"]
           unique = false
         },
         {

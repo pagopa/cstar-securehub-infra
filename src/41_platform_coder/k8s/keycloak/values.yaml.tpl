@@ -3,11 +3,28 @@ forceDeployVersion: ${force_deploy_version}
 production: true
 proxy: "edge"
 
+global:
+  security:
+    allowInsecureImages: true
+
+image:
+  registry: ${image_registry}
+  repository: ${image_repository}
+  tag: ${image_tag}
+
 auth:
   adminUser: "${keycloak_admin_username}"
   existingSecret: "keycloak-admin-secret" #keycloak admin password is in this secret
 
 extraEnvVarsCM: "keycloak-config"
+
+initContainers:
+  - name: agent-downloader
+    image: curlimages/curl:latest
+    command: ["curl", "-L", "-o", "/opt/bitnami/keycloak/agent/applicationinsights-agent.jar", "https://github.com/microsoft/ApplicationInsights-Java/releases/download/3.7.4/applicationinsights-agent-3.7.4.jar"]
+    volumeMounts:
+      - name: agent
+        mountPath: "/opt/bitnami/keycloak/agent"
 
 resources:
   requests:
@@ -37,15 +54,23 @@ extraEnvVars:
     value: "true"
   - name: KEYCLOAK_HOSTNAME_ADMIN
     value: "https://${keycloak_ingress_hostname}"
-  - name: KC_SPI_CONNECTIONS_HTTP_CLIENT__DEFAULT__CONNECTION_TTL_MILLIS
+  - name: KC_TRACING_ENABLED
+    value: "true"
+  - name: APPLICATIONINSIGHTS_CONNECTION_STRING
+    value: "${appinsights_connection_string}"
+  - name: KC_SPI_CONNECTIONS_HTTP_CLIENT_DEFAULT_CONNECTION_TTL_MILLIS
     value: "${keycloak_http_client_connection_ttl_millis}"
-  - name: KC_SPI_CONNECTIONS_HTTP_CLIENT__DEFAULT__MAX_CONNECTION_IDLE_TIME_MILLIS
+  - name: KC_SPI_CONNECTIONS_HTTP_CLIENT_DEFAULT_MAX_CONNECTION_IDLE_TIME_MILLIS
     value: "${keycloak_http_client_connection_max_idle_millis}"
+  - name: JAVA_OPTS
+    value: "-javaagent:/opt/bitnami/keycloak/agent/applicationinsights-agent.jar"
 
 extraVolumes:
   - name: pagopa-theme
     configMap:
       name: keycloak-pagopa-theme
+  - name: agent
+    emptyDir: {}
 
 extraVolumeMounts:
 ${keycloak_extra_volume_mounts}

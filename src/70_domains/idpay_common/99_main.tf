@@ -47,11 +47,6 @@ provider "azurerm" {
   }
 }
 
-module "__v4__" {
-  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v7.28.0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=200dc075ed1f95628ac7177b3a129dc9f3e60631"
-}
-
 provider "kubernetes" {
   config_path = "${var.k8s_kube_config_path_prefix}/config-${local.aks_name}"
 }
@@ -76,4 +71,9 @@ provider "keycloak" {
   client_secret = data.azurerm_key_vault_secret.terraform_client_secret_for_keycloak.value
   url           = "https://${data.azurerm_key_vault_secret.keycloak_url.value}"
   realm         = "master"
+}
+
+module "__v4__" {
+  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v7.36.2
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=1b93c6b79180a2c28ac575ef85f9056f010c5ed2"
 }

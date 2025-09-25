@@ -43,13 +43,25 @@ locals {
   internal_private_hostname = var.env == "prod" ? "internal.cstar.pagopa.it" : "internal.${var.env}.cstar.pagopa.it"
 
   ### AKS -----------------------------------------------------------------------
-  aks_cluster_name        = "cstar-${var.env_short}-itn-dev-aks"
+  aks_cluster_name        = "cstar-${var.env_short}-itn-${var.env}-aks"
   aks_resource_group_name = "cstar-${var.env_short}-itn-core-aks-rg"
 
   ### ARGOCD
   argocd_internal_url    = "argocd.${var.location_short}.${var.dns_zone_internal_prefix}.${var.prefix}.${var.external_domain}"
-  argocd_dns_record_name = "argocd"
+  argocd_dns_record_name = "argocd.${var.location_short}"
+  argocd_namespace       = "argocd"
+  argocd_project_namespaces = [
+    "argocd",
+    "platform-influxdb"
+  ]
 
+  ### InfluxDB
+  influxdb_internal_url = "influxdb.${var.location_short}.${var.dns_zone_internal_prefix}.${var.prefix}.${var.external_domain}"
+
+  ### tags
+  cwd_split       = split("/", path.cwd)
+  src_idx         = index(local.cwd_split, "src")
+  relative_folder = join("/", slice(local.cwd_split, local.src_idx + 1, length(local.cwd_split)))
 
   #
   # Domains to setup
@@ -62,7 +74,8 @@ locals {
         "Owner"        = "CStar"
         "Environment"  = var.env
         "CreatedBy"    = "Terraform"
-        "Source"       = "https://github.com/pagopa/cstar-securehub-infra"
+        "Source"       = "https://github.com/pagopa/cstar-securehub-infra/tree/main/src/${local.relative_folder}"
+        "Folder"       = local.relative_folder
         "domain"       = "platform"
       }
       additional_resource_groups = [
@@ -76,7 +89,8 @@ locals {
         "Owner"        = "CStar"
         "Environment"  = var.env
         "CreatedBy"    = "Terraform"
-        "Source"       = "https://github.com/pagopa/cstar-securehub-infra"
+        "Source"       = "https://github.com/pagopa/cstar-securehub-infra/tree/main/src/${local.relative_folder}"
+        "Folder"       = local.relative_folder
         "domain"       = "idpay"
       }
       additional_resource_groups = [
@@ -90,7 +104,8 @@ locals {
         "Owner"        = "CStar"
         "Environment"  = var.env
         "CreatedBy"    = "Terraform"
-        "Source"       = "https://github.com/pagopa/cstar-securehub-infra"
+        "Source"       = "https://github.com/pagopa/cstar-securehub-infra/tree/main/src/${local.relative_folder}"
+        "Folder"       = local.relative_folder
         "domain"       = "srtp"
       }
       additional_resource_groups = [
@@ -104,8 +119,23 @@ locals {
         "Owner"        = "CStar"
         "Environment"  = var.env
         "CreatedBy"    = "Terraform"
-        "Source"       = "https://github.com/pagopa/cstar-securehub-infra"
+        "Source"       = "https://github.com/pagopa/cstar-securehub-infra/tree/main/src/${local.relative_folder}"
+        "Folder"       = local.relative_folder
         "domain"       = "mcshared"
+      }
+      additional_resource_groups = []
+    }
+    # Messaggi di Cortesia
+    "mdc" = {
+      tags = {
+        "CostCenter"   = "TS310 - PAGAMENTI & SERVIZI"
+        "BusinessUnit" = "CStar"
+        "Owner"        = "CStar"
+        "Environment"  = var.env
+        "CreatedBy"    = "Terraform"
+        "Source"       = "https://github.com/pagopa/cstar-securehub-infra/tree/main/src/${local.relative_folder}"
+        "Folder"       = local.relative_folder
+        "domain"       = "mdc"
       }
       additional_resource_groups = []
     }

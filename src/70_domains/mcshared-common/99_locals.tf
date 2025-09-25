@@ -42,8 +42,12 @@ locals {
 
   # AZDO
   azdo_managed_identity_rg_name = "${var.prefix}-${var.env_short}-identity-rg"
-  azdo_iac_managed_identities   = toset(["azdo-${var.env}-${var.prefix}-iac-deploy-v2", "azdo-${var.env}-${var.prefix}-iac-plan-v2"])
-
+  azdo_iac_managed_identities = toset([
+    "azdo-${var.env}-${var.prefix}-iac-deploy-v2",
+    "azdo-${var.env}-${var.prefix}-iac-plan-v2",
+    "azdo-${var.env}-${var.prefix}-app-plan-v2",
+    "azdo-${var.env}-${var.prefix}-app-deploy-v2"
+  ])
 
   kv_identity_list = flatten([
     for kv in [data.azurerm_key_vault.auth_general_kv, data.azurerm_key_vault.domain_general_kv] : [

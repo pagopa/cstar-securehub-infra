@@ -8,7 +8,7 @@ resource "kubernetes_namespace" "namespace_argocd" {
 # Setup ArgoCD (module)
 #
 module "argocd" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//kubernetes_argocd_setup?ref=PAYMCLOUD-231-argocd-creazione-modulo"
+  source = "./.terraform/modules/__v4__/kubernetes_argocd_setup"
 
   namespace                             = kubernetes_namespace.namespace_argocd.metadata[0].name
   argocd_helm_release_version           = var.argocd_helm_release_version
@@ -26,7 +26,22 @@ module "argocd" {
   internal_dns_zone_resource_group_name = data.azurerm_private_dns_zone.internal.resource_group_name
   ingress_load_balancer_ip              = var.ingress_load_balancer_ip
   dns_record_name_for_ingress           = local.argocd_dns_record_name
-  admin_password                        = data.azurerm_key_vault_secret.argocd_admin_password.value
+
+  enable_admin_login = true
+  admin_password     = data.azurerm_key_vault_secret.argocd_admin_password.value
+
+  tier = "dev"
+  global_affinity_match_expressions = [
+    {
+      key      = "node_type"
+      operator = "In"
+      values   = ["user"]
+    }
+  ]
+
+  entra_admin_group_object_ids = [data.azuread_group.adgroup_admin.object_id]
+
+  tags = module.tag_config.tags
 
 }
 

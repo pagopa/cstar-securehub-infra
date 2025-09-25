@@ -12,7 +12,7 @@ locals {
   ]
 
   ### Kubernetes
-  kubernetes_cluster_name                = "cstar-${var.env_short}-itn-dev-aks"
+  kubernetes_cluster_name                = "cstar-${var.env_short}-itn-${var.env}-aks"
   kubernetes_cluster_resource_group_name = "cstar-${var.env_short}-itn-core-aks-rg"
 
   ### KV
