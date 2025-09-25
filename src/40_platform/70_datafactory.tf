@@ -14,6 +14,6 @@ module "data_factory" {
       rg   = data.azurerm_private_dns_zone.datafactory.resource_group_name
     }
   }
-  resources_managed_private_enpoint = {}
-  tags                              = module.tag_config.tags
+
+  tags = module.tag_config.tags
 }
