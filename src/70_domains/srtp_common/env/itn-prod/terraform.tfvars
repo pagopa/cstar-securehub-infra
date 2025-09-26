@@ -13,3 +13,11 @@ enable_cdn                                       = false
 
 law_daily_quota_gb                          = 100
 cosmos_collections_autoscale_max_throughput = 1000
+
+tags = {
+  CreatedBy   = "Terraform"
+  Environment = "PROD"
+  Owner       = "CSTAR"
+  Source      = "https://github.com/pagopa/cstar-infrastructure"
+  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
+}
