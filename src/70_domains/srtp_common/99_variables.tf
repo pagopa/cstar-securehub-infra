@@ -13,13 +13,6 @@ variable "env" {
   description = "Environment"
 }
 
-variable "tags" {
-  type = map(any)
-  default = {
-    CreatedBy = "Terraform"
-  }
-}
-
 variable "env_short" {
   type = string
   validation {

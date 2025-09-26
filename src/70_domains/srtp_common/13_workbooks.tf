@@ -73,5 +73,5 @@ resource "azurerm_application_insights_workbook" "srtp_workbook" {
     items = local.workbook_items
   })
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
