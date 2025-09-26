@@ -17,3 +17,10 @@ module "data_factory" {
 
   tags = module.tag_config.tags
 }
+
+resource "azurerm_data_factory_integration_runtime_azure" "autoresolve" {
+  name                    = "AutoResolveIntegrationRuntime"
+  data_factory_id         = module.data_factory.id
+  location                = "AutoResolve"
+  virtual_network_enabled = true
+}

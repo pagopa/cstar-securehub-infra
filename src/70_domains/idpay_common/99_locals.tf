@@ -138,6 +138,7 @@ locals {
   data_factory_name    = "${local.product_no_domain}-platform-adf"
   data_factory_rg_name = "${local.product_no_domain}-platform-data-rg"
   adf_cosmosdb_linked_services = [
-    azurerm_cosmosdb_mongo_database.idpay.name
+    azurerm_cosmosdb_mongo_database.idpay.name,
+    azurerm_cosmosdb_mongo_database.rdb.name
   ]
 }
