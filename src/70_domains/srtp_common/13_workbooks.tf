@@ -75,4 +75,3 @@ resource "azurerm_application_insights_workbook" "srtp_workbook" {
 
   tags = var.tags
 }
-
