@@ -59,6 +59,6 @@ provider "argocd" {
 }
 
 module "__v4__" {
-  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v7.36.2
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=PAYMCLOUD-522/data-factory"
+  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v7.39.1
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=cfe447c5447ed70c94656ec192e9f5eec5050683"
 }
