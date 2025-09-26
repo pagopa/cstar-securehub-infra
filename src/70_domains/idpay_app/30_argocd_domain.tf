@@ -133,7 +133,7 @@ locals {
       "idpay-mock" = {
         name          = "idpay-mock"
         target_branch = "main"
-        env           = ["dev", "uat", "prod"]
+        env           = ["dev", "uat"]
       }
     }
   }

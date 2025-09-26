@@ -38,6 +38,10 @@ keycloak_configuration = {
   chart_version                               = "24.7.7"
   replica_count_min                           = 3
   replica_count_max                           = 5
+  cpu_request                                 = "1"
+  cpu_limit                                   = "2"
+  memory_request                              = "1Gi"
+  memory_limit                                = "2Gi"
   http_client_connection_ttl_millis           = 180000
   http_client_connection_max_idle_time_millis = 180000
 }
