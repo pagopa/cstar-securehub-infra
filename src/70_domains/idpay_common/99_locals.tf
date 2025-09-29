@@ -133,4 +133,12 @@ locals {
   keycloak_external_hostname = "${local.mcshared_api_url}/auth-itn"
   selfcare_issuer            = var.env == "prod" ? "https://selfcare.${var.external_domain}" : "https://${var.env}.selfcare.${var.external_domain}"
 
+
+  # Data Factory
+  data_factory_name    = "${local.product_no_domain}-platform-adf"
+  data_factory_rg_name = "${local.product_no_domain}-platform-data-rg"
+  adf_cosmosdb_linked_services = [
+    azurerm_cosmosdb_mongo_database.idpay,
+    azurerm_cosmosdb_mongo_database.rdb
+  ]
 }

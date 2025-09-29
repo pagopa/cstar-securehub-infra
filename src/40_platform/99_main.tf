@@ -59,6 +59,6 @@ provider "argocd" {
 }
 
 module "__v4__" {
-  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v7.36.2
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=1b93c6b79180a2c28ac575ef85f9056f010c5ed2"
+  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v7.40.1
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=7d823b19688558110a50ea48359bbe1e6f5ef649"
 }
