@@ -27,12 +27,14 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | 1b93c6b79180a2c28ac575ef85f9056f010c5ed2 |
+| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | 7d823b19688558110a50ea48359bbe1e6f5ef649 |
+| <a name="module_adf_snet"></a> [adf\_snet](#module\_adf\_snet) | ./.terraform/modules/__v4__/IDH/subnet | n/a |
 | <a name="module_argocd"></a> [argocd](#module\_argocd) | ./.terraform/modules/__v4__/kubernetes_argocd_setup | n/a |
 | <a name="module_argocd_cert_mounter_internal_domain_certificate"></a> [argocd\_cert\_mounter\_internal\_domain\_certificate](#module\_argocd\_cert\_mounter\_internal\_domain\_certificate) | ./.terraform/modules/__v4__/cert_mounter | n/a |
 | <a name="module_argocd_cert_mounter_workload_identity_configuration"></a> [argocd\_cert\_mounter\_workload\_identity\_configuration](#module\_argocd\_cert\_mounter\_workload\_identity\_configuration) | ./.terraform/modules/__v4__/kubernetes_workload_identity_configuration | n/a |
 | <a name="module_argocd_cert_mounter_workload_identity_init"></a> [argocd\_cert\_mounter\_workload\_identity\_init](#module\_argocd\_cert\_mounter\_workload\_identity\_init) | ./.terraform/modules/__v4__/kubernetes_workload_identity_init | n/a |
 | <a name="module_container_app_private_endpoint_snet"></a> [container\_app\_private\_endpoint\_snet](#module\_container\_app\_private\_endpoint\_snet) | ./.terraform/modules/__v4__/subnet | n/a |
+| <a name="module_data_factory"></a> [data\_factory](#module\_data\_factory) | ./.terraform/modules/__v4__/data_factory | n/a |
 | <a name="module_data_postgres_flexible_snet"></a> [data\_postgres\_flexible\_snet](#module\_data\_postgres\_flexible\_snet) | ./.terraform/modules/__v4__/IDH/subnet | n/a |
 | <a name="module_default_resource_groups"></a> [default\_resource\_groups](#module\_default\_resource\_groups) | ./.terraform/modules/__v4__/payments_default_resource_groups | n/a |
 | <a name="module_github_cae_snet"></a> [github\_cae\_snet](#module\_github\_cae\_snet) | ./.terraform/modules/__v4__/IDH/subnet | n/a |
@@ -55,6 +57,7 @@
 | [azurerm_application_insights.synthetic_application_insights](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/application_insights) | resource |
 | [azurerm_container_app_environment.synthetic_cae](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/container_app_environment) | resource |
 | [azurerm_dashboard_grafana.grafana_managed](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/dashboard_grafana) | resource |
+| [azurerm_data_factory_integration_runtime_azure.autoresolve](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/data_factory_integration_runtime_azure) | resource |
 | [azurerm_key_vault_secret.grafana_service_account_name](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.grafana_service_account_token](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.influxdb_admin_password](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
@@ -94,6 +97,7 @@
 | [azurerm_log_analytics_workspace.logs_workspace](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/log_analytics_workspace) | data source |
 | [azurerm_monitor_action_group.infra_opsgenie](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/monitor_action_group) | data source |
 | [azurerm_private_dns_zone.container_apps](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/private_dns_zone) | data source |
+| [azurerm_private_dns_zone.datafactory](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/private_dns_zone) | data source |
 | [azurerm_private_dns_zone.internal](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/private_dns_zone) | data source |
 | [azurerm_private_dns_zone.privatelink_servicebus_windows_net](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/private_dns_zone) | data source |
 | [azurerm_private_dns_zone.storage_account_table](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/private_dns_zone) | data source |
