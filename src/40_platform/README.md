@@ -27,7 +27,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | cfe447c5447ed70c94656ec192e9f5eec5050683 |
+| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | 7d823b19688558110a50ea48359bbe1e6f5ef649 |
 | <a name="module_adf_snet"></a> [adf\_snet](#module\_adf\_snet) | ./.terraform/modules/__v4__/IDH/subnet | n/a |
 | <a name="module_argocd"></a> [argocd](#module\_argocd) | ./.terraform/modules/__v4__/kubernetes_argocd_setup | n/a |
 | <a name="module_argocd_cert_mounter_internal_domain_certificate"></a> [argocd\_cert\_mounter\_internal\_domain\_certificate](#module\_argocd\_cert\_mounter\_internal\_domain\_certificate) | ./.terraform/modules/__v4__/cert_mounter | n/a |
