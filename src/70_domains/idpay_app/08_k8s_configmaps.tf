@@ -122,6 +122,7 @@ resource "kubernetes_config_map" "rest-client" {
     rest_client_schema               = "http"
     idpay_onboarding_host            = "http://idpay-onboarding-workflow-microservice-chart:8080"
     idpay_payment_instrument_host    = "http://idpay-payment-instrument-microservice-chart:8080"
+    idpay_payment_host               = "http://idpay-payment-microservice-chart:8080"
     idpay_group_host                 = "http://idpay-group-microservice-chart:8080"
     idpay_ranking_host               = "http://idpay-ranking-microservice-chart:8080"
     idpay_wallet_host                = "http://idpay-wallet-microservice-chart:8080"
