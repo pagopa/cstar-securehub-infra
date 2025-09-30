@@ -19,21 +19,22 @@ resource "azurerm_data_factory_managed_private_endpoint" "adf_dataexplore_mpe" {
   subresource_name   = "cluster"
 }
 
-data "external" "kusto_pe_connection" {
-  program = ["bash", "-c",
-    <<EOT
-      az network private-endpoint-connection list \
-        --id ${data.azurerm_kusto_cluster.kusto_cluster.id} \
-        -o json \
-        | jq --arg pe_prefix "${data.azurerm_data_factory.data_factory.name}.${azurerm_data_factory_managed_private_endpoint.adf_dataexplore_mpe.name}" '[.[] | select(.name | startswith($pe_prefix))][0].id | {id: .}'
-    EOT
+data "azapi_resource" "privatelink_private_endpoint_connection" {
+  type                   = "Microsoft.Kusto/clusters@2023-08-15"
+  resource_id            = data.azurerm_kusto_cluster.kusto_cluster.id
+  response_export_values = ["properties.privateEndpointConnections."]
+
+  depends_on = [
+    azurerm_data_factory_managed_private_endpoint.adf_dataexplore_mpe
   ]
-  depends_on = [azurerm_data_factory_managed_private_endpoint.adf_dataexplore_mpe]
 }
 
+locals {
+  privatelink_private_endpoint_connection_name = data.azapi_resource.privatelink_private_endpoint_connection.output.properties.privateEndpointConnections[0].id
+}
 resource "azapi_resource_action" "kusto_approve_pe" {
   type        = "Microsoft.Kusto/clusters/privateEndpointConnections@2024-04-13"
-  resource_id = data.external.kusto_pe_connection.result.id
+  resource_id = local.privatelink_private_endpoint_connection_name
   method      = "PUT"
 
   body = {
