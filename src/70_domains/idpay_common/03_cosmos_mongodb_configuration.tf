@@ -743,6 +743,19 @@ locals {
           unique = false
         }
       ]
+    },
+    {
+      name = "data_vault"
+      indexes = [
+        {
+          keys   = ["_id"]
+          unique = true
+        },
+        {
+          keys   = ["iv", "data"]
+          unique = true
+        }
+      ]
     }
   ]
   ###
