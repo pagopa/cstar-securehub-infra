@@ -118,7 +118,9 @@ locals {
 }
 
 resource "azurerm_kusto_database_principal_assignment" "kusto_ad_groups" {
-  for_each = { for i in local.db_group_flatten : "${i.db_key}-${i.ad_group_name}" => i }
+  for_each = {
+    for i in local.db_group_flatten : "${i.db_key}-${i.ad_group_name}" => i
+  }
 
   name                = "ad-group-${each.value.ad_group_name}"
   database_name       = azurerm_kusto_database.db[each.value.db_key].name

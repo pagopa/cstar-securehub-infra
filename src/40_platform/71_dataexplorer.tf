@@ -48,6 +48,7 @@ resource "azurerm_private_endpoint" "kusto" {
     is_manual_connection           = false
     subresource_names              = ["cluster"]
   }
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_private_dns_a_record" "kusto_record" {
@@ -56,4 +57,17 @@ resource "azurerm_private_dns_a_record" "kusto_record" {
   resource_group_name = data.azurerm_private_dns_zone.kusto.resource_group_name
   records             = [azurerm_private_endpoint.kusto.private_service_connection[0].private_ip_address]
   ttl                 = 300
+
+  tags = module.tag_config.tags
+}
+
+resource "azurerm_kusto_cluster_principal_assignment" "grafana_viewer" {
+  name                = "${local.project}-grafana-viewer"
+  resource_group_name = azurerm_kusto_cluster.data_explorer_cluster.resource_group_name
+  cluster_name        = azurerm_kusto_cluster.data_explorer_cluster.name
+
+  tenant_id      = data.azurerm_client_config.current.tenant_id
+  principal_id   = azurerm_dashboard_grafana.grafana_managed.identity[0].principal_id
+  principal_type = "App"
+  role           = "AllDatabasesAdmin"
 }
