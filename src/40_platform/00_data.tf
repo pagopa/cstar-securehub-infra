@@ -48,6 +48,11 @@ data "azurerm_private_dns_zone" "container_apps" {
   resource_group_name = local.vnet_rg_name
 }
 
+data "azurerm_private_dns_zone" "kusto" {
+  name                = "privatelink.${var.location}.kusto.windows.net"
+  resource_group_name = local.vnet_rg_name
+}
+
 data "azurerm_private_dns_zone" "internal" {
   name                = local.dns_private_internal_name
   resource_group_name = local.dns_private_internal_rg_name

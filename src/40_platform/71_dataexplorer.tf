@@ -35,3 +35,25 @@ resource "azurerm_kusto_cluster" "data_explorer_cluster" {
     ]
   }
 }
+
+resource "azurerm_private_endpoint" "kusto" {
+  name                = "${azurerm_kusto_cluster.data_explorer_cluster.name}-prv-endpoint-kusto"
+  location            = azurerm_kusto_cluster.data_explorer_cluster.location
+  resource_group_name = azurerm_kusto_cluster.data_explorer_cluster.resource_group_name
+  subnet_id           = module.adx_snet.subnet_id
+
+  private_service_connection {
+    name                           = "${azurerm_kusto_cluster.data_explorer_cluster.name}-private-endpoint-kusto"
+    private_connection_resource_id = azurerm_kusto_cluster.data_explorer_cluster.id
+    is_manual_connection           = false
+    subresource_names              = ["cluster"]
+  }
+}
+
+resource "azurerm_private_dns_a_record" "kusto_record" {
+  name                = azurerm_kusto_cluster.data_explorer_cluster.name
+  zone_name           = data.azurerm_private_dns_zone.kusto.name
+  resource_group_name = data.azurerm_private_dns_zone.kusto.resource_group_name
+  records             = [azurerm_private_endpoint.kusto.private_service_connection[0].private_ip_address]
+  ttl                 = 300
+}
