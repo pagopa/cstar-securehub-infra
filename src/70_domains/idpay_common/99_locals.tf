@@ -141,4 +141,8 @@ locals {
     azurerm_cosmosdb_mongo_database.idpay,
     azurerm_cosmosdb_mongo_database.rdb
   ]
+
+  # Data Explorer
+  kusto_cluster_name    = "${local.product_no_domain}-platform"
+  kusto_cluster_rg_name = "${local.product_no_domain}-platform-data-rg"
 }
