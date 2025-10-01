@@ -3,7 +3,7 @@ resource "azurerm_data_factory_linked_custom_service" "adf_cosmosdb_linked_servi
     for i in local.adf_cosmosdb_linked_services : i.name => i
   }
 
-  name            = "${each.key}DbMongoLinkedService"
+  name            = "${var.domain}-CosmosDB-${each.key}-ls"
   data_factory_id = data.azurerm_data_factory.data_factory.id
   type            = "CosmosDbMongoDbApi"
   type_properties_json = jsonencode({
