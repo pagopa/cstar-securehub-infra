@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aggiorna password - Bonus Elettrodomestici</title>
+    <title>Accedi - Portale Esercenti</title>
     <link href="${url.resourcesPath}/css/login.css" rel="stylesheet">
 </head>
 <body>
@@ -28,8 +28,7 @@
         <main class="main-content">
             <div class="login-wrapper">
                 <h1>Bonus Elettrodomestici</h1>
-                <p>Il portale dedicato agli esercenti per gestire bonus e sconti</p>
-
+                <p>Il portale dedicato agli esercenti per gestire bonus e sconti </p>
                 <form action="${url.loginAction}" method="post">
                     <div class="login-card">
                         <#if message?has_content>
@@ -39,10 +38,10 @@
                         </#if>
 
                         <div class="form-group">
-                            <input type="password" id="new-password" name="new-password" placeholder="Inserisci nuova password" required>
+                            <input type="password" id="password-new" name="password-new" placeholder="Inserisci nuova password" required>
                         </div>
                         <div class="form-group">
-                            <input type="password" id="confirm-password" name="confirm-password" placeholder="Conferma password" required>
+                            <input type="password" id="password-confirm" name="password-confirm" placeholder="Conferma password" required>
                         </div>
                     </div>
 
@@ -53,6 +52,7 @@
                     <input class="btn-primary" type="submit" value="Accedi" >
 
                 </form>
+                
             </div>
         </main>
 
