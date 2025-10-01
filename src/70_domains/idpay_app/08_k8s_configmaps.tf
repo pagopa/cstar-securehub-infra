@@ -135,7 +135,7 @@ resource "kubernetes_config_map" "rest-client" {
     idpay_mock_base_url              = "http://idpay-mock-microservice-chart:8080"
     checkiban_base_url               = var.checkiban_base_url
     checkiban_url                    = "/api/pagopa/banking/v4.0/utils/validate-account-holder"
-    pdv_decrypt_base_url             = var.pdv_tokenizer_url
+    pdv_decrypt_base_url             = "http://mcshared-datavault-microservice-chart:8080"
     one_trust_privacynotice_base_url = var.one_trust_privacynotice_base_url
     io_backend_message_url           = "/api/v1/messages"
     io_backend_profile_url           = "/api/v1/profiles"
