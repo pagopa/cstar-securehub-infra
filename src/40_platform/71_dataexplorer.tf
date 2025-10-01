@@ -69,5 +69,5 @@ resource "azurerm_kusto_cluster_principal_assignment" "grafana_viewer" {
   tenant_id      = data.azurerm_client_config.current.tenant_id
   principal_id   = azurerm_dashboard_grafana.grafana_managed.identity[0].principal_id
   principal_type = "App"
-  role           = "AllDatabasesAdmin"
+  role           = "AllDatabasesViewer"
 }
