@@ -199,3 +199,11 @@ data "azurerm_data_factory" "data_factory" {
   name                = local.data_factory_name
   resource_group_name = local.data_factory_rg_name
 }
+
+#
+# Azure Data Explorer
+#
+data "azurerm_kusto_cluster" "kusto_cluster" {
+  name                = local.kusto_cluster_name
+  resource_group_name = local.kusto_cluster_rg_name
+}
