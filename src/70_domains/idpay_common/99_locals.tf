@@ -150,5 +150,9 @@ locals {
       hot_cache_period   = "P5D"
       soft_delete_period = "P7D"
     }
+    rdb = {
+      hot_cache_period   = "P5D"
+      soft_delete_period = "P7D"
+    }
   }
 }

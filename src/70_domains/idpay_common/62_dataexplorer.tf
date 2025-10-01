@@ -102,7 +102,12 @@ locals {
         name = g.display_name
         role = "Admin"
       }
-    ]
+    ],
+    contains(["d"], var.env_short) ? [{
+      id   = data.azuread_group.adgroup_idpay_externals.object_id,
+      name = data.azuread_group.adgroup_idpay_externals.display_name
+      role = "Admin"
+    }] : []
   ])
 
   db_group_flatten = flatten([
