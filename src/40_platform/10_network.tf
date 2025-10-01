@@ -84,6 +84,22 @@ module "adf_snet" {
   idh_resource_tier = "private_endpoint"
 }
 
+module "adx_snet" {
+  source = "./.terraform/modules/__v4__/IDH/subnet"
+
+  # General
+  product_name        = var.prefix
+  env                 = var.env
+  resource_group_name = local.vnet_rg_name
+
+  name = "${local.project}-adx-snet"
+
+  virtual_network_name = local.vnet_core_data_name
+
+  # IDH Resources
+  idh_resource_tier = "private_endpoint"
+}
+
 module "data_postgres_flexible_snet" {
   source               = "./.terraform/modules/__v4__/IDH/subnet"
   name                 = "${local.project}-postgres-snet"

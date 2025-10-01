@@ -53,3 +53,21 @@ influxdb2_helm = {
     tag  = "2.2.0-alpine@sha256:f3b54d91cae591fc3fde20299bd0b262f6f6d9a1f73b98d623b501e82c49d5fb"
   }
 }
+
+# Data Explorer
+data_explorer_config = {
+  enabled = true
+  sku = {
+    name     = "Standard_D11_v2"
+    capacity = 2
+  }
+  autoscale = {
+    enabled       = true
+    min_instances = 2
+    max_instances = 3
+  }
+  public_network_access_enabled = false
+  double_encryption_enabled     = false
+  disk_encryption_enabled       = true
+  purge_enabled                 = false
+}
