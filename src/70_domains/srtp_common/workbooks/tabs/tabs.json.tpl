@@ -83,6 +83,14 @@
         "linkLabel": "Monitoraggio Service Providers",
         "subTarget": "sp",
         "style": "link"
+      },
+      {
+        "id": "76718917-a2fe-4c95-a389-cc0cbd37808c",
+        "cellValue": "tab",
+        "linkTarget": "parameter",
+        "linkLabel": "JKS",
+        "subTarget": "jks",
+        "style": "link"
       }
     ]
   },
