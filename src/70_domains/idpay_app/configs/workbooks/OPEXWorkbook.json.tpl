@@ -94,7 +94,7 @@
             "value": {
               "durationMs": 86400000
             },
-            "id": "616318ef-457b-43a9-a7d3-1e1c06fb8d83"
+            "id": "5fb91bed-6f51-430a-87da-b2938b408748"
           },
           {
             "version": "KqlParameterItem/1.0",
@@ -125,37 +125,6 @@
               "durationMs": 86400000
             },
             "id": "758d1979-c585-4692-b0c3-c97db96b52de"
-          },
-          {
-            "version": "KqlParameterItem/1.0",
-            "name": "timeRangeMerchant",
-            "type": 4,
-            "isRequired": true,
-            "typeSettings": {
-              "selectableValues": [
-                {
-                  "durationMs": 300000
-                },
-                {
-                  "durationMs": 900000
-                },
-                {
-                  "durationMs": 1800000
-                },
-                {
-                  "durationMs": 86400000
-                }
-              ],
-              "allowCustom": true
-            },
-            "timeContext": {
-              "durationMs": 86400000
-            },
-            "value": {
-              "durationMs": 432000000,
-              "endTime": "2023-09-14T10:59:00.000Z"
-            },
-            "id": "2cf67bf4-f445-4fe4-9375-bcbd19b9e8d7"
           },
           {
             "version": "KqlParameterItem/1.0",
@@ -235,18 +204,11 @@
             "value": "itn-register-operation"
           },
           {
-            "id": "eb754b6c-7517-4d6f-995d-301cd2fc97bf",
             "version": "KqlParameterItem/1.0",
             "name": "itnRegisterProduct",
             "type": 1,
-            "value": "idpay_itn_api_register_product"
-          },
-          {
-            "id": "e9aa872b-4fc8-4c21-bd2c-5b7c1194610c",
-            "version": "KqlParameterItem/1.0",
-            "name": "itnRegisterDbName",
-            "type": 1,
-            "value": "rdb"
+            "value": "idpay_itn_api_register_product",
+            "id": "2562b86b-91ed-46c0-b9db-866ab4be1415"
           },
           {
             "id": "789c75b9-40fe-4ad2-a3e3-1ad2a057bf08",
@@ -264,30 +226,6 @@
               "showDefault": false
             },
             "jsonData": "[\r\n    {\"value\": \"sendEmail\", \"selected\": true},\r\n    {\"value\": \"getInstitutionProductUserInfo\", \"selected\": true},\r\n    {\"value\": \"uploadGroupOfBeneficiary\", \"selected\": true},\r\n    {\"value\": \"getGroupOfBeneficiaryStatusAndDetails\", \"selected\": true},\r\n    {\"value\": \"getCitizenStatusForInitiative\", \"selected\": true},\r\n    {\"value\": \"getInitiativeBeneficiaryView\", \"selected\": true},\r\n    {\"value\": \"getListOfOrganization\", \"selected\": true},\r\n    {\"value\": \"getInitativeSummary\", \"selected\": true},\r\n    {\"value\": \"getBeneficiaryConfigRules\", \"selected\": true},\r\n    {\"value\": \"getTransactionConfigRules\", \"selected\": true},\r\n    {\"value\": \"getMccConfig\", \"selected\": true},\r\n    {\"value\": \"initiativeStatistics\", \"selected\": true},\r\n    {\"value\": \"getInitiativeDetail\", \"selected\": true},\r\n    {\"value\": \"getIban\", \"selected\": true},\r\n    {\"value\": \"getTimeline\", \"selected\": true},\r\n    {\"value\": \"getTimelineDetail\", \"selected\": true},\r\n    {\"value\": \"getWalletDetail\", \"selected\": true},\r\n    {\"value\": \"getInstrumentList\", \"selected\": true},\r\n    {\"value\": \"logicallyDeleteInitiative\", \"selected\": true},\r\n    {\"value\": \"uploadAndUpdateLogo\", \"selected\": true},\r\n    {\"value\": \"saveInitiativeServiceInfo\", \"selected\": true},\r\n    {\"value\": \"updateInitiativeServiceInfo\", \"selected\": true},\r\n    {\"value\": \"updateInitiativeGeneralInfo\", \"selected\": true},\r\n    {\"value\": \"updateInitiativeBeneficiary\", \"selected\": true},\r\n    {\"value\": \"updateTrxAndRewardRules\", \"selected\": true},\r\n    {\"value\": \"updateInitiativeRefundRule\", \"selected\": true},\r\n    {\"value\": \"updateInitiativeGeneralInfoDraft\", \"selected\": true},\r\n    {\"value\": \"updateInitiativeBeneficiaryDraft\", \"selected\": true},\r\n    {\"value\": \"updateTrxAndRewardRulesDraft\", \"selected\": true},\r\n    {\"value\": \"updateInitiativeRefundRuleDraft\", \"selected\": true},\r\n    {\"value\": \"updateInitiativeApprovedStatus\", \"selected\": true},\r\n    {\"value\": \"updateInitiativeToCheckStatus\", \"selected\": true},\r\n    {\"value\": \"updateInitiativePublishedStatus\", \"selected\": true},\r\n    {\"value\": \"getOnboardingStatus\", \"selected\": true},\r\n    {\"value\": \"getInitiativeOnboardingRankingStatusPaged\", \"selected\": true},\r\n    {\"value\": \"getRankingFileDownload\", \"selected\": true},\r\n    {\"value\": \"notifyCitizenRankings\", \"selected\": true},\r\n    {\"value\": \"getRewardNotificationExportsPaged\", \"selected\": true},\r\n    {\"value\": \"getRewardNotificationImportsPaged\", \"selected\": true},\r\n    {\"value\": \"getRewardFileDownload\", \"selected\": true},\r\n    {\"value\": \"putDispFileUpload\", \"selected\": true},\r\n    {\"value\": \"getDispFileErrors\", \"selected\": true},\r\n    {\"value\": \"getExportSummary\", \"selected\": true},\r\n    {\"value\": \"getExportRefundsListPaged\", \"selected\": true},\r\n    {\"value\": \"getRefundDetail\", \"selected\": true},\r\n    {\"value\": \"getPagoPaAdminToken\", \"selected\": true},\r\n    {\"value\": \"userPermission\", \"selected\": true},\r\n    {\"value\": \"saveConsent\", \"selected\": true},\r\n    {\"value\": \"retrieveConsent\", \"selected\": true}\r\n]",
-            "timeContext": {
-              "durationMs": 0
-            },
-            "timeContextFromParameter": "timeRange",
-            "value": [
-              "value::all"
-            ]
-          },
-          {
-            "id": "3afa2d0e-bc7c-415d-ab17-0ebe4b496fcc",
-            "version": "KqlParameterItem/1.0",
-            "name": "apiMerchant",
-            "type": 2,
-            "multiSelect": true,
-            "quote": "'",
-            "delimiter": ",",
-            "isHiddenWhenLocked": true,
-            "typeSettings": {
-              "additionalResourceOptions": [
-                "value::all"
-              ],
-              "showDefault": false
-            },
-            "jsonData": "[\r\n\t{\"value\": \"uploadMerchantList\", \"selected\": true},\r\n\t{\"value\": \"getMerchantList\", \"selected\": true},\r\n\t{\"value\": \"getMerchantInitiativeList\", \"selected\": true},\r\n\t{\"value\": \"getMerchantDetail\", \"selected\": true}\r\n]",
             "timeContext": {
               "durationMs": 0
             },
@@ -381,24 +319,6 @@
             "defaultValue": "value::all"
           },
           {
-            "id": "45bdb374-f242-4274-8169-32ea993c080a",
-            "version": "KqlParameterItem/1.0",
-            "name": "eventhubMerchant",
-            "type": 2,
-            "multiSelect": true,
-            "quote": "'",
-            "delimiter": ",",
-            "isHiddenWhenLocked": true,
-            "typeSettings": {
-              "additionalResourceOptions": [
-                "value::all"
-              ],
-              "showDefault": false
-            },
-            "jsonData": "[\r\n    \"idpay-reward-notification-storage-events\",\r\n    \"idpay-errors\"\r\n]",
-            "defaultValue": "value::all"
-          },
-          {
             "id": "cd0faec6-6915-4f4e-8aeb-d3a75c3aa691",
             "version": "KqlParameterItem/1.0",
             "name": "eventhubPayment",
@@ -417,6 +337,13 @@
             "defaultValue": "value::all"
           },
           {
+            "id": "e9aa872b-4fc8-4c21-bd2c-5b7c1194610c",
+            "version": "KqlParameterItem/1.0",
+            "name": "itnRegisterDbName",
+            "type": 1,
+            "value": "rdb"
+          },
+          {
             "id": "86ee2dd4-8da1-42e4-b58f-39d582fc0651",
             "version": "KqlParameterItem/1.0",
             "name": "eventhubs",
@@ -433,6 +360,81 @@
             },
             "jsonData": "[\r\n    \"idpay-onboarding-outcome\",\r\n    \"idpay-onboarding-ranking-request\",\r\n    \"idpay-onboarding-notification\",\r\n    \"idpay-notification-request\",\r\n    \"idpay-timeline\",\r\n    \"idpay-checkiban-evaluation\",\r\n    \"idpay-errors\",\r\n    \"idpay-hpan-update\",\r\n    \"idpay-hpan-update-outcome\",\r\n    \"idpay-transaction\",\r\n    \"idpay-reward-notification-response\",\r\n    \"idpay-onboarding-request\",\r\n    \"idpay-rule-update\",\r\n    \"idpay-reward-notification-storage-events\",\r\n    \"idpay-transaction\"\r\n]",
             "defaultValue": "value::all"
+          },
+          {
+            "version": "KqlParameterItem/1.0",
+            "name": "timeRangeMerchant",
+            "type": 4,
+            "isRequired": true,
+            "typeSettings": {
+              "selectableValues": [
+                {
+                  "durationMs": 300000
+                },
+                {
+                  "durationMs": 900000
+                },
+                {
+                  "durationMs": 1800000
+                },
+                {
+                  "durationMs": 86400000
+                }
+              ],
+              "allowCustom": true
+            },
+            "timeContext": {
+              "durationMs": 86400000
+            },
+            "value": {
+              "durationMs": 86400000
+            },
+            "id": "2cf67bf4-f445-4fe4-9375-bcbd19b9e8d7"
+          },
+          {
+            "id": "f465971b-1420-454e-ae30-dfd4e4c18f3d",
+            "version": "KqlParameterItem/1.0",
+            "name": "itnMerchantProduct",
+            "type": 1,
+            "value": "idpay_itn_api_portal_merchants_product"
+          },
+          {
+            "id": "274744a0-f781-450a-9509-bca5c33b1175",
+            "version": "KqlParameterItem/1.0",
+            "name": "itnMerchantOperation",
+            "type": 1,
+            "value": "itn-idpay-merchants"
+          },
+          {
+            "version": "KqlParameterItem/1.0",
+            "name": "itnMerchantDbName",
+            "type": 1,
+            "value": "idpay",
+            "id": "cce720fe-0e89-42d8-988e-477c858c92c3"
+          },
+          {
+            "id": "3afa2d0e-bc7c-415d-ab17-0ebe4b496fcc",
+            "version": "KqlParameterItem/1.0",
+            "name": "apiMerchant",
+            "type": 2,
+            "multiSelect": true,
+            "quote": "'",
+            "delimiter": ",",
+            "isHiddenWhenLocked": true,
+            "typeSettings": {
+              "additionalResourceOptions": [
+                "value::all"
+              ],
+              "showDefault": false
+            },
+            "jsonData": "[\r\n\t{\"value\": \"getPortalConsent\", \"selected\": true},\r\n\t{\"value\": \"userPermission\", \"selected\": true},\r\n\t{\"value\": \"getMerchantDetail\", \"selected\": true},\r\n\t{\"value\": \"getMerchantInitiativeStatistics\", \"selected\": true},\r\n\t{\"value\": \"putPointOfSales\", \"selected\": true},\r\n\t{\"value\": \"getMerchantList\", \"selected\": true}\r\n]",
+            "timeContext": {
+              "durationMs": 0
+            },
+            "timeContextFromParameter": "timeRange",
+            "value": [
+              "value::all"
+            ]
           }
         ],
         "style": "pills",
@@ -1101,7 +1103,9 @@
                               "namespace": "microsoft.insights/components/kusto",
                               "metric": "microsoft.insights/components/kusto-Server-requests/count",
                               "aggregation": 1,
-                              "splitBy": "customDimensions/Operation Name"
+                              "splitBy": [
+                                "customDimensions/Operation Name"
+                              ]
                             }
                           ],
                           "title": "Requests by API",
@@ -1141,7 +1145,9 @@
                               "namespace": "microsoft.insights/components/kusto",
                               "metric": "microsoft.insights/components/kusto-Server-requests/count",
                               "aggregation": 1,
-                              "splitBy": "request/resultCode"
+                              "splitBy": [
+                                "request/resultCode"
+                              ]
                             }
                           ],
                           "title": "Requests by code 2xx",
@@ -1192,7 +1198,9 @@
                               "namespace": "microsoft.insights/components/kusto",
                               "metric": "microsoft.insights/components/kusto-Server-requests/count",
                               "aggregation": 1,
-                              "splitBy": "request/resultCode"
+                              "splitBy": [
+                                "request/resultCode"
+                              ]
                             }
                           ],
                           "title": "Requests by code 4xx",
@@ -1244,7 +1252,9 @@
                               "namespace": "microsoft.insights/components/kusto",
                               "metric": "microsoft.insights/components/kusto-Server-requests/count",
                               "aggregation": 1,
-                              "splitBy": "request/resultCode"
+                              "splitBy": [
+                                "request/resultCode"
+                              ]
                             }
                           ],
                           "title": "Requests by code 5xx",
@@ -1295,7 +1305,9 @@
                               "namespace": "microsoft.insights/components/kusto",
                               "metric": "microsoft.insights/components/kusto-Server-requests/duration",
                               "aggregation": 4,
-                              "splitBy": "operation/name"
+                              "splitBy": [
+                                "operation/name"
+                              ]
                             }
                           ],
                           "title": "Requests response time",
@@ -1346,8 +1358,7 @@
                             {
                               "namespace": "microsoft.eventhub/namespaces",
                               "metric": "microsoft.eventhub/namespaces--IncomingMessages",
-                              "aggregation": 1,
-                              "splitBy": null
+                              "aggregation": 1
                             },
                             {
                               "namespace": "microsoft.eventhub/namespaces",
@@ -1453,7 +1464,9 @@
                                     "namespace": "microsoft.eventhub/namespaces",
                                     "metric": "microsoft.eventhub/namespaces--IncomingMessages",
                                     "aggregation": 1,
-                                    "splitBy": "EntityName"
+                                    "splitBy": [
+                                      "EntityName"
+                                    ]
                                   }
                                 ],
                                 "title": "Incoming Messages",
@@ -1497,7 +1510,9 @@
                                     "namespace": "microsoft.eventhub/namespaces",
                                     "metric": "microsoft.eventhub/namespaces--OutgoingMessages",
                                     "aggregation": 1,
-                                    "splitBy": "EntityName"
+                                    "splitBy": [
+                                      "EntityName"
+                                    ]
                                   }
                                 ],
                                 "title": "Outgoing Messages",
@@ -1552,7 +1567,9 @@
                                     "namespace": "microsoft.eventhub/namespaces",
                                     "metric": "microsoft.eventhub/namespaces--IncomingMessages",
                                     "aggregation": 1,
-                                    "splitBy": "EntityName"
+                                    "splitBy": [
+                                      "EntityName"
+                                    ]
                                   }
                                 ],
                                 "title": "Incoming Messages",
@@ -1596,7 +1613,9 @@
                                     "namespace": "microsoft.eventhub/namespaces",
                                     "metric": "microsoft.eventhub/namespaces--OutgoingMessages",
                                     "aggregation": 1,
-                                    "splitBy": "EntityName"
+                                    "splitBy": [
+                                      "EntityName"
+                                    ]
                                   }
                                 ],
                                 "title": "Outgoing Messages",
@@ -1961,12 +1980,12 @@
                               "valueParam": "itnRegisterProduct"
                             },
                             {
-                                "id": "4",
-                                "key": "customDimensions/Operation Name",
-                                "operator": 1,
-                                "values": [
+                              "id": "4",
+                              "key": "customDimensions/Operation Name",
+                              "operator": 1,
+                              "values": [
                                 ""
-                                ]
+                              ]
                             }
                           ],
                           "gridSettings": {
@@ -2009,12 +2028,12 @@
                               "valueParam": "itnRegisterProduct"
                             },
                             {
-                                "id": "4",
-                                "key": "customDimensions/Operation Name",
-                                "operator": 1,
-                                "values": [
+                              "id": "4",
+                              "key": "customDimensions/Operation Name",
+                              "operator": 1,
+                              "values": [
                                 ""
-                                ]
+                              ]
                             },
                             {
                               "id": "2",
@@ -2068,12 +2087,12 @@
                               "valueParam": "itnRegisterProduct"
                             },
                             {
-                                "id": "4",
-                                "key": "customDimensions/Operation Name",
-                                "operator": 1,
-                                "values": [
+                              "id": "4",
+                              "key": "customDimensions/Operation Name",
+                              "operator": 1,
+                              "values": [
                                 ""
-                                ]
+                              ]
                             },
                             {
                               "id": "2",
@@ -2128,12 +2147,12 @@
                               "valueParam": "itnRegisterProduct"
                             },
                             {
-                                "id": "4",
-                                "key": "customDimensions/Operation Name",
-                                "operator": 1,
-                                "values": [
+                              "id": "4",
+                              "key": "customDimensions/Operation Name",
+                              "operator": 1,
+                              "values": [
                                 ""
-                                ]
+                              ]
                             },
                             {
                               "id": "2",
@@ -2187,12 +2206,12 @@
                               "valueParam": "itnRegisterProduct"
                             },
                             {
-                                 "id": "4",
-                                 "key": "customDimensions/Operation Name",
-                                 "operator": 1,
-                                 "values": [
-                                 ""
-                                 ]
+                              "id": "4",
+                              "key": "customDimensions/Operation Name",
+                              "operator": 1,
+                              "values": [
+                                ""
+                              ]
                             }
                           ],
                           "gridSettings": {
@@ -3584,7 +3603,9 @@
                               "namespace": "microsoft.insights/components/kusto",
                               "metric": "microsoft.insights/components/kusto-Server-requests/count",
                               "aggregation": 1,
-                              "splitBy": "customDimensions/Operation Name"
+                              "splitBy": [
+                                "customDimensions/Operation Name"
+                              ]
                             }
                           ],
                           "title": "Requests by API",
@@ -3624,7 +3645,9 @@
                               "namespace": "microsoft.insights/components/kusto",
                               "metric": "microsoft.insights/components/kusto-Server-requests/count",
                               "aggregation": 1,
-                              "splitBy": "request/resultCode"
+                              "splitBy": [
+                                "request/resultCode"
+                              ]
                             }
                           ],
                           "title": "Requests by code 2xx",
@@ -3675,7 +3698,9 @@
                               "namespace": "microsoft.insights/components/kusto",
                               "metric": "microsoft.insights/components/kusto-Server-requests/count",
                               "aggregation": 1,
-                              "splitBy": "request/resultCode"
+                              "splitBy": [
+                                "request/resultCode"
+                              ]
                             }
                           ],
                           "title": "Requests by code 4xx",
@@ -3727,7 +3752,9 @@
                               "namespace": "microsoft.insights/components/kusto",
                               "metric": "microsoft.insights/components/kusto-Server-requests/count",
                               "aggregation": 1,
-                              "splitBy": "request/resultCode"
+                              "splitBy": [
+                                "request/resultCode"
+                              ]
                             }
                           ],
                           "title": "Requests by code 5xx",
@@ -3778,7 +3805,9 @@
                               "namespace": "microsoft.insights/components/kusto",
                               "metric": "microsoft.insights/components/kusto-Server-requests/duration",
                               "aggregation": 4,
-                              "splitBy": "operation/name"
+                              "splitBy": [
+                                "operation/name"
+                              ]
                             }
                           ],
                           "title": "Requests response time",
@@ -3829,8 +3858,7 @@
                             {
                               "namespace": "microsoft.eventhub/namespaces",
                               "metric": "microsoft.eventhub/namespaces--IncomingMessages",
-                              "aggregation": 1,
-                              "splitBy": null
+                              "aggregation": 1
                             },
                             {
                               "namespace": "microsoft.eventhub/namespaces",
@@ -3936,7 +3964,9 @@
                                     "namespace": "microsoft.eventhub/namespaces",
                                     "metric": "microsoft.eventhub/namespaces--IncomingMessages",
                                     "aggregation": 1,
-                                    "splitBy": "EntityName"
+                                    "splitBy": [
+                                      "EntityName"
+                                    ]
                                   }
                                 ],
                                 "title": "Incoming Messages",
@@ -3980,7 +4010,9 @@
                                     "namespace": "microsoft.eventhub/namespaces",
                                     "metric": "microsoft.eventhub/namespaces--OutgoingMessages",
                                     "aggregation": 1,
-                                    "splitBy": "EntityName"
+                                    "splitBy": [
+                                      "EntityName"
+                                    ]
                                   }
                                 ],
                                 "title": "Outgoing Messages",
@@ -4035,7 +4067,9 @@
                                     "namespace": "microsoft.eventhub/namespaces",
                                     "metric": "microsoft.eventhub/namespaces--IncomingMessages",
                                     "aggregation": 1,
-                                    "splitBy": "EntityName"
+                                    "splitBy": [
+                                      "EntityName"
+                                    ]
                                   }
                                 ],
                                 "title": "Incoming Messages",
@@ -4079,7 +4113,9 @@
                                     "namespace": "microsoft.eventhub/namespaces",
                                     "metric": "microsoft.eventhub/namespaces--OutgoingMessages",
                                     "aggregation": 1,
-                                    "splitBy": "EntityName"
+                                    "splitBy": [
+                                      "EntityName"
+                                    ]
                                   }
                                 ],
                                 "title": "Outgoing Messages",
@@ -4130,7 +4166,7 @@
                   "type": 3,
                   "content": {
                     "version": "KqlItem/1.0",
-                    "query": "let startTime = {timeRangeMerchant:start};\r\nlet endTime = {timeRangeMerchant:end};\r\nlet interval = endTime-startTime;\r\n\r\nlet totalCount = requests\r\n| where timestamp between (startTime .. endTime)\r\n| where operation_Name has_any ({apiMerchant})\r\n| summarize Total = count() by operation_Name;\r\nlet data = requests\r\n| where timestamp between (startTime .. endTime)\r\n| where operation_Name has_any ({apiMerchant});\r\ndata\r\n| join kind=inner totalCount on operation_Name\r\n| summarize Count = count(), Users = dcount(tostring(customDimensions[\"Request-X-Forwarded-For\"])) by operation_Name, resultCode, Total//, timestamp=bin(timestamp,interval)\r\n| project ['Request Name'] = operation_Name, ['Result Code'] = resultCode, ['Total Response'] = Count, ['Rate %'] = (Count*100)/Total, ['Users Affected'] = Users\r\n| sort by ['Request Name']",
+                    "query": "let startTime = {timeRangeAssetRegister:start};\r\nlet endTime = {timeRangeAssetRegister:end};\r\nlet interval = endTime-startTime;\r\n\r\nlet totalCount = requests\r\n| where timestamp between (startTime .. endTime)\r\n| where operation_Name  has '{itnMerchantOperation}' \r\n| summarize Total = count() by operation_Name;\r\nlet data = requests\r\n| where timestamp between (startTime .. endTime)\r\n| where operation_Name has '{itnMerchantOperation}';\r\ndata\r\n| join kind=inner totalCount on operation_Name\r\n| summarize Count = count(), Users = dcount(tostring(customDimensions[\"Request-X-Forwarded-For\"])) by operation_Name, resultCode, Total//, timestamp=bin(timestamp,interval)\r\n| project ['Request Name'] = operation_Name, ['Result Code'] = resultCode, ['Total Response'] = Count, ['Rate %'] = (Count*100)/Total, ['Users Affected'] = Users\r\n| sort by ['Request Name']",
                     "size": 0,
                     "showAnalytics": true,
                     "queryType": 0,
@@ -4286,9 +4322,20 @@
                             "palette": "redGreen"
                           }
                         }
+                      ],
+                      "sortBy": [
+                        {
+                          "itemKey": "$gen_heatmap_Total Response_2",
+                          "sortOrder": 2
+                        }
                       ]
                     },
-                    "sortBy": [],
+                    "sortBy": [
+                      {
+                        "itemKey": "$gen_heatmap_Total Response_2",
+                        "sortOrder": 2
+                      }
+                    ],
                     "tileSettings": {
                       "showBorder": false,
                       "titleContent": {
@@ -4370,7 +4417,7 @@
                   "type": 3,
                   "content": {
                     "version": "KqlItem/1.0",
-                    "query": "let startTime = {timeRangeMerchant:start};\nlet endTime = {timeRangeMerchant:end};\nlet interval = totimespan({timeSpan:label});\n\nrequests\n| where timestamp between (startTime .. endTime)\n| where operation_Name has_any ({apiMerchant})\n| summarize total = count(), n_ok = countif(resultCode startswith '2' or resultCode == '404') by bin(timestamp,interval)\n| project timestamp, availability = todouble(n_ok)/total\n| join kind=fullouter (range timestamp from startTime to endTime step interval) on timestamp\n| project timestamp=coalesce(timestamp,timestamp1), availability = coalesce(availability,1.0), watermark = 0.99",
+                    "query": "let startTime = {timeRangeAssetRegister:start};\nlet endTime = {timeRangeAssetRegister:end};\nlet interval = totimespan({timeSpan:label});\n\nrequests\n| where timestamp between (startTime .. endTime)\n| where operation_Name has '{itnMerchantOperation}'\n| summarize total = count(), n_ok = countif(resultCode startswith '2'  or resultCode == '404') by bin(timestamp,interval)\n| project timestamp, availability = todouble(n_ok)/total\n| join kind=fullouter (range timestamp from startTime to endTime step interval) on timestamp\n| project timestamp=coalesce(timestamp,timestamp1), availability = coalesce(availability,1.0), watermark=0.99",
                     "size": 0,
                     "aggregation": 3,
                     "title": "Availability",
@@ -4388,7 +4435,7 @@
                   "type": 3,
                   "content": {
                     "version": "KqlItem/1.0",
-                    "query": "let startTime = {timeRangeMerchant:start};\r\nlet endTime = {timeRangeMerchant:end};\r\nlet interval = totimespan({timeSpan:label});\r\n\r\nlet dataset = requests\r\n    // additional filters can be applied here\r\n    | where timestamp between (startTime .. endTime) \r\n        and operation_Name has_any ({apiMerchant})\r\n;\r\ndataset\r\n| summarize percentile_95=percentile(duration, 95) by bin(timestamp, interval)\r\n| project timestamp, percentile_95, watermark=1000\r\n| render timechart",
+                    "query": "let startTime = {timeRangeAssetRegister:start};\r\nlet endTime = {timeRangeAssetRegister:end};\r\nlet interval = totimespan({timeSpan:label});\r\n\r\nlet dataset = requests\r\n    // additional filters can be applied here\r\n    | where timestamp between (startTime .. endTime) \r\n        and operation_Name has '{itnMerchantOperation}'\r\n;\r\ndataset\r\n| summarize percentile_95=percentile(duration, 95) by bin(timestamp, interval)\r\n| project timestamp, percentile_95, watermark=1000\r\n| render timechart",
                     "size": 0,
                     "aggregation": 3,
                     "showAnalytics": true,
@@ -4423,24 +4470,26 @@
                           ],
                           "timeContextFromParameter": "timeRangeMerchant",
                           "timeContext": {
-                            "durationMs": 86400000
+                            "durationMs": 0
                           },
                           "metrics": [
                             {
                               "namespace": "microsoft.insights/components/kusto",
                               "metric": "microsoft.insights/components/kusto-Server-requests/count",
                               "aggregation": 1,
-                              "splitBy": "customDimensions/Operation Name"
+                              "splitBy": [
+                                "customDimensions/Operation Name"
+                              ]
                             }
                           ],
                           "title": "Requests by API",
                           "showOpenInMe": true,
                           "filters": [
                             {
-                              "id": "1",
-                              "key": "customDimensions/Operation Name",
+                              "id": "2",
+                              "key": "customDimensions/Product Name",
                               "operator": 0,
-                              "valueParam": "apiMerchant"
+                              "valueParam": "itnMerchantProduct"
                             }
                           ],
                           "gridSettings": {
@@ -4463,25 +4512,21 @@
                           ],
                           "timeContextFromParameter": "timeRangeMerchant",
                           "timeContext": {
-                            "durationMs": 86400000
+                            "durationMs": 0
                           },
                           "metrics": [
                             {
                               "namespace": "microsoft.insights/components/kusto",
                               "metric": "microsoft.insights/components/kusto-Server-requests/count",
                               "aggregation": 1,
-                              "splitBy": "request/resultCode"
+                              "splitBy": [
+                                "request/resultCode"
+                              ]
                             }
                           ],
                           "title": "Requests by code 2xx",
                           "showOpenInMe": true,
                           "filters": [
-                            {
-                              "id": "1",
-                              "key": "customDimensions/Operation Name",
-                              "operator": 0,
-                              "valueParam": "apiMerchant"
-                            },
                             {
                               "id": "2",
                               "key": "request/resultCode",
@@ -4492,6 +4537,12 @@
                                 "202",
                                 "204"
                               ]
+                            },
+                            {
+                              "id": "3",
+                              "key": "customDimensions/Product Name",
+                              "operator": 0,
+                              "valueParam": "itnMerchantProduct"
                             }
                           ],
                           "gridSettings": {
@@ -4514,25 +4565,21 @@
                           ],
                           "timeContextFromParameter": "timeRangeMerchant",
                           "timeContext": {
-                            "durationMs": 86400000
+                            "durationMs": 0
                           },
                           "metrics": [
                             {
                               "namespace": "microsoft.insights/components/kusto",
                               "metric": "microsoft.insights/components/kusto-Server-requests/count",
                               "aggregation": 1,
-                              "splitBy": "request/resultCode"
+                              "splitBy": [
+                                "request/resultCode"
+                              ]
                             }
                           ],
                           "title": "Requests by code 4xx",
                           "showOpenInMe": true,
                           "filters": [
-                            {
-                              "id": "1",
-                              "key": "customDimensions/Operation Name",
-                              "operator": 0,
-                              "valueParam": "apiMerchant"
-                            },
                             {
                               "id": "2",
                               "key": "request/resultCode",
@@ -4544,6 +4591,12 @@
                                 "404",
                                 "429"
                               ]
+                            },
+                            {
+                              "id": "3",
+                              "key": "customDimensions/Product Name",
+                              "operator": 0,
+                              "valueParam": "itnMerchantProduct"
                             }
                           ],
                           "gridSettings": {
@@ -4566,25 +4619,21 @@
                           ],
                           "timeContextFromParameter": "timeRangeMerchant",
                           "timeContext": {
-                            "durationMs": 86400000
+                            "durationMs": 0
                           },
                           "metrics": [
                             {
                               "namespace": "microsoft.insights/components/kusto",
                               "metric": "microsoft.insights/components/kusto-Server-requests/count",
                               "aggregation": 1,
-                              "splitBy": "request/resultCode"
+                              "splitBy": [
+                                "request/resultCode"
+                              ]
                             }
                           ],
                           "title": "Requests by code 5xx",
                           "showOpenInMe": true,
                           "filters": [
-                            {
-                              "id": "1",
-                              "key": "customDimensions/Operation Name",
-                              "operator": 0,
-                              "valueParam": "apiMerchant"
-                            },
                             {
                               "id": "2",
                               "key": "request/resultCode",
@@ -4595,6 +4644,12 @@
                                 "503",
                                 "504"
                               ]
+                            },
+                            {
+                              "id": "3",
+                              "key": "customDimensions/Product Name",
+                              "operator": 0,
+                              "valueParam": "itnMerchantProduct"
                             }
                           ],
                           "gridSettings": {
@@ -4617,14 +4672,16 @@
                           ],
                           "timeContextFromParameter": "timeRangeMerchant",
                           "timeContext": {
-                            "durationMs": 86400000
+                            "durationMs": 0
                           },
                           "metrics": [
                             {
                               "namespace": "microsoft.insights/components/kusto",
                               "metric": "microsoft.insights/components/kusto-Server-requests/duration",
                               "aggregation": 4,
-                              "splitBy": "operation/name"
+                              "splitBy": [
+                                "operation/name"
+                              ]
                             }
                           ],
                           "title": "Requests response time",
@@ -4632,9 +4689,17 @@
                           "filters": [
                             {
                               "id": "1",
-                              "key": "customDimensions/Operation Name",
+                              "key": "customDimensions/Product Name",
                               "operator": 0,
-                              "valueParam": "apiMerchant"
+                              "valueParam": "itnMerchantProduct"
+                            },
+                            {
+                              "id": "2",
+                              "key": "customDimensions/Operation Name",
+                              "operator": 1,
+                              "values": [
+                                ""
+                              ]
                             }
                           ],
                           "gridSettings": {
@@ -4668,7 +4733,7 @@
                           ],
                           "timeContextFromParameter": "timeRangeMerchant",
                           "timeContext": {
-                            "durationMs": 86400000
+                            "durationMs": 0
                           },
                           "metrics": [
                             {
@@ -4691,7 +4756,13 @@
                               "id": "1",
                               "key": "EntityName",
                               "operator": 0,
-                              "valueParam": "eventhubMerchant"
+                              "values": [
+                                "idpay-commands",
+                                "idpay-errors",
+                                "idpay-hpan-update",
+                                "idpay-rule-update",
+                                "idpay-timeline"
+                              ]
                             }
                           ],
                           "gridSettings": {
@@ -4774,14 +4845,16 @@
                                 ],
                                 "timeContextFromParameter": "timeRangeMerchant",
                                 "timeContext": {
-                                  "durationMs": 86400000
+                                  "durationMs": 0
                                 },
                                 "metrics": [
                                   {
                                     "namespace": "microsoft.eventhub/namespaces",
                                     "metric": "microsoft.eventhub/namespaces--IncomingMessages",
                                     "aggregation": 1,
-                                    "splitBy": "EntityName"
+                                    "splitBy": [
+                                      "EntityName"
+                                    ]
                                   }
                                 ],
                                 "title": "Incoming Messages",
@@ -4791,7 +4864,13 @@
                                     "id": "1",
                                     "key": "EntityName",
                                     "operator": 0,
-                                    "valueParam": "eventhubMerchant"
+                                    "values": [
+                                      "idpay-commands",
+                                      "idpay-errors",
+                                      "idpay-hpan-update",
+                                      "idpay-rule-update",
+                                      "idpay-timeline"
+                                    ]
                                   }
                                 ],
                                 "gridSettings": {
@@ -4818,24 +4897,32 @@
                                 ],
                                 "timeContextFromParameter": "timeRangeMerchant",
                                 "timeContext": {
-                                  "durationMs": 86400000
+                                  "durationMs": 0
                                 },
                                 "metrics": [
                                   {
                                     "namespace": "microsoft.eventhub/namespaces",
                                     "metric": "microsoft.eventhub/namespaces--OutgoingMessages",
                                     "aggregation": 1,
-                                    "splitBy": "EntityName"
+                                    "splitBy": [
+                                      "EntityName"
+                                    ]
                                   }
                                 ],
                                 "title": "Outgoing Messages",
                                 "showOpenInMe": true,
                                 "filters": [
                                   {
-                                    "id": "1",
+                                    "id": "2",
                                     "key": "EntityName",
                                     "operator": 0,
-                                    "valueParam": "eventhubMerchant"
+                                    "values": [
+                                      "idpay-commands",
+                                      "idpay-errors",
+                                      "idpay-hpan-update",
+                                      "idpay-rule-update",
+                                      "idpay-timeline"
+                                    ]
                                   }
                                 ],
                                 "gridSettings": {
@@ -4847,6 +4934,106 @@
                               "styleSettings": {
                                 "maxWidth": "50"
                               }
+                            },
+                            {
+                              "type": 12,
+                              "content": {
+                                "version": "NotebookGroup/1.0",
+                                "groupType": "editable",
+                                "items": [
+                                  {
+                                    "type": 10,
+                                    "content": {
+                                      "chartId": "workbookdd58c103-3609-4b7d-a165-c803a1519c71",
+                                      "version": "MetricsItem/2.0",
+                                      "size": 0,
+                                      "chartType": 2,
+                                      "resourceType": "microsoft.documentdb/databaseaccounts",
+                                      "metricScope": 0,
+                                      "resourceIds": [
+                                        "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.DocumentDB/databaseAccounts/${prefix}-idpay-mongodb-account"
+                                      ],
+                                      "timeContext": {
+                                        "durationMs": 604800000
+                                      },
+                                      "metrics": [
+                                        {
+                                          "namespace": "microsoft.documentdb/databaseaccounts",
+                                          "metric": "microsoft.documentdb/databaseaccounts-Requests-NormalizedRUConsumption",
+                                          "aggregation": 3,
+                                          "splitBy": [
+                                            "CollectionName"
+                                          ]
+                                        }
+                                      ],
+                                      "title": "DB - RU Avg",
+                                      "filters": [
+                                        {
+                                          "id": "2",
+                                          "key": "CollectionName",
+                                          "operator": 0,
+                                          "values": [
+                                            "merchant",
+                                            "merchant_file",
+                                            "merchant_initiative_counters",
+                                            "point_of_sales"
+                                          ]
+                                        }
+                                      ],
+                                      "gridSettings": {
+                                        "rowLimit": 10000
+                                      }
+                                    },
+                                    "name": "DB - RU Avg"
+                                  },
+                                  {
+                                    "type": 10,
+                                    "content": {
+                                      "chartId": "workbook4183e41f-264e-4287-b7ea-9b4d2da4abf9",
+                                      "version": "MetricsItem/2.0",
+                                      "size": 0,
+                                      "chartType": 2,
+                                      "resourceType": "microsoft.documentdb/databaseaccounts",
+                                      "metricScope": 0,
+                                      "resourceIds": [
+                                        "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.DocumentDB/databaseAccounts/${prefix}-idpay-mongodb-account"
+                                      ],
+                                      "timeContext": {
+                                        "durationMs": 2592000000
+                                      },
+                                      "metrics": [
+                                        {
+                                          "namespace": "microsoft.documentdb/databaseaccounts",
+                                          "metric": "microsoft.documentdb/databaseaccounts-Requests-ServerSideLatencyGateway",
+                                          "aggregation": 4,
+                                          "splitBy": [
+                                            "CollectionName"
+                                          ]
+                                        }
+                                      ],
+                                      "title": "DB - Server Side Latency",
+                                      "filters": [
+                                        {
+                                          "id": "2",
+                                          "key": "CollectionName",
+                                          "operator": 0,
+                                          "values": [
+                                            "Merchant",
+                                            "merchant_file",
+                                            "merchant_initiative_counters",
+                                            "point_of_sales"
+                                          ]
+                                        }
+                                      ],
+                                      "gridSettings": {
+                                        "rowLimit": 10000
+                                      }
+                                    },
+                                    "name": "DB - Server Side Latency"
+                                  }
+                                ]
+                              },
+                              "name": "idpay-itn-mongo-idpay"
                             }
                           ]
                         },
@@ -5632,8 +5819,7 @@
                 {
                   "namespace": "microsoft.containerservice/managedclusters",
                   "metric": "microsoft.containerservice/managedclusters-Nodes (PREVIEW)-node_cpu_usage_percentage",
-                  "aggregation": 4,
-                  "splitBy": null
+                  "aggregation": 4
                 }
               ],
               "title": "Cluster CPU Usage ",
@@ -5673,8 +5859,7 @@
                 {
                   "namespace": "microsoft.containerservice/managedclusters",
                   "metric": "microsoft.containerservice/managedclusters-Nodes (PREVIEW)-node_memory_working_set_percentage",
-                  "aggregation": 4,
-                  "splitBy": null
+                  "aggregation": 4
                 }
               ],
               "title": "Cluster Memory Usage",
