@@ -1967,7 +1967,9 @@
                               "namespace": "microsoft.insights/components/kusto",
                               "metric": "microsoft.insights/components/kusto-Server-requests/count",
                               "aggregation": 1,
-                              "splitBy": "customDimensions/Operation Name"
+                              "splitBy": [
+                                "customDimensions/Operation Name"
+                              ]
                             }
                           ],
                           "title": "Requests by API",
@@ -2015,7 +2017,9 @@
                               "namespace": "microsoft.insights/components/kusto",
                               "metric": "microsoft.insights/components/kusto-Server-requests/count",
                               "aggregation": 1,
-                              "splitBy": "request/resultCode"
+                              "splitBy": [
+                                "request/resultCode"
+                              ]
                             }
                           ],
                           "title": "Requests by code 2xx",
@@ -2074,7 +2078,9 @@
                               "namespace": "microsoft.insights/components/kusto",
                               "metric": "microsoft.insights/components/kusto-Server-requests/count",
                               "aggregation": 1,
-                              "splitBy": "request/resultCode"
+                              "splitBy": [
+                                "request/resultCode"
+                              ]
                             }
                           ],
                           "title": "Requests by code 4xx",
@@ -2134,7 +2140,9 @@
                               "namespace": "microsoft.insights/components/kusto",
                               "metric": "microsoft.insights/components/kusto-Server-requests/count",
                               "aggregation": 1,
-                              "splitBy": "request/resultCode"
+                              "splitBy": [
+                                "request/resultCode"
+                              ]
                             }
                           ],
                           "title": "Requests by code 5xx",
@@ -2193,7 +2201,9 @@
                               "namespace": "microsoft.insights/components/kusto",
                               "metric": "microsoft.insights/components/kusto-Server-requests/duration",
                               "aggregation": 4,
-                              "splitBy": "operation/name"
+                              "splitBy": [
+                                "operation/name"
+                              ]
                             }
                           ],
                           "title": "Requests response time",
@@ -4490,6 +4500,14 @@
                               "key": "customDimensions/Product Name",
                               "operator": 0,
                               "valueParam": "itnMerchantProduct"
+                            },
+                            {
+                              "id": "2",
+                              "key": "customDimensions/Operation Name",
+                              "operator": 1,
+                              "values": [
+                                ""
+                              ]
                             }
                           ],
                           "gridSettings": {
@@ -4739,8 +4757,7 @@
                             {
                               "namespace": "microsoft.eventhub/namespaces",
                               "metric": "microsoft.eventhub/namespaces--IncomingMessages",
-                              "aggregation": 1,
-                              "splitBy": null
+                              "aggregation": 1
                             },
                             {
                               "namespace": "microsoft.eventhub/namespaces",
