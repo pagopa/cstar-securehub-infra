@@ -72,7 +72,7 @@
             </td>
           </tr>
           <tr>
-            <td style="padding-bottom: 3rem">Il link per impostare la password sarà valido per i prossimi ${(linkExpiration / 24) / 60} giorni.</td>
+            <td style="padding-bottom: 3rem">Il link per impostare la password sarà valido per i prossimi ${linkExpirationFormatter(linkExpiration)}.</td>
           </tr>
           <tr>
             <td style="padding-bottom: 3rem">
