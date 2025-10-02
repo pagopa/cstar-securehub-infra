@@ -173,7 +173,7 @@ locals {
           unique = false
         },
         {
-          keys   = ["additionalProperties.productCategory"]
+          keys   = ["additionalProperties.productName"]
           unique = false
         }
       ]
@@ -545,7 +545,7 @@ locals {
           unique = false
         },
         {
-          keys   = ["additionalProperties.productCategory"]
+          keys   = ["additionalProperties.productName"]
           unique = false
         }
       ]
