@@ -12,3 +12,11 @@ azuread_service_principal_azure_cdn_frontdoor_id = "f3b3f72f-4770-47a5-8c1e-aa29
 enable_cdn                                       = true
 
 law_daily_quota_gb = 5
+
+# AKS
+aks_user_nodepool = {
+  vm_sku_name       = "Standard_B8ms_active"
+  autoscale_enabled = true
+  node_count_min    = 1
+  node_count_max    = 2
+}
