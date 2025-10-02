@@ -21,7 +21,7 @@ resource "keycloak_realm" "merchant_operator" {
     supported_locales = [
       "it"
     ]
-    default_locale    = "it"
+    default_locale = "it"
   }
 
   smtp_server {
