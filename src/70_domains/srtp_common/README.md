@@ -5,6 +5,7 @@
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.10.0 |
+| <a name="requirement_argocd"></a> [argocd](#requirement\_argocd) | ~> 7.0 |
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | ~> 2.53 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 4.0 |
 | <a name="requirement_external"></a> [external](#requirement\_external) | ~> 2.3 |
@@ -14,6 +15,8 @@
 
 | Name | Version |
 |------|---------|
+| <a name="provider_argocd"></a> [argocd](#provider\_argocd) | 7.11.0 |
+| <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 2.53.1 |
 | <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.38.1 |
 | <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | 2.38.0 |
 
@@ -21,7 +24,9 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | 1ed70549ce796e30c27d89bc6aabcb5f6eaaf925 |
+| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | 1b507dcbfc89880e17ff6722fb69b10dfda9368d |
+| <a name="module_aks_overlay_snet"></a> [aks\_overlay\_snet](#module\_aks\_overlay\_snet) | ./.terraform/modules/__v4__/IDH/subnet | n/a |
+| <a name="module_aks_user_node_pool"></a> [aks\_user\_node\_pool](#module\_aks\_user\_node\_pool) | ./.terraform/modules/__v4__/IDH/aks_node_pool | n/a |
 | <a name="module_cae_env_snet"></a> [cae\_env\_snet](#module\_cae\_env\_snet) | ./.terraform/modules/__v4__/IDH/subnet | n/a |
 | <a name="module_cdn"></a> [cdn](#module\_cdn) | ./.terraform/modules/__v4__/cdn | n/a |
 | <a name="module_cosmos_db_account"></a> [cosmos\_db\_account](#module\_cosmos\_db\_account) | ./.terraform/modules/__v4__/IDH/cosmosdb_account | n/a |
@@ -39,6 +44,7 @@
 
 | Name | Type |
 |------|------|
+| [argocd_project.domain_project](https://registry.terraform.io/providers/argoproj-labs/argocd/latest/docs/resources/project) | resource |
 | [azurerm_api_management_logger.apim_logger](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_logger) | resource |
 | [azurerm_application_insights.srtp_application_insights](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/application_insights) | resource |
 | [azurerm_application_insights_workbook.srtp_workbook](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/application_insights_workbook) | resource |
@@ -50,12 +56,14 @@
 | [azurerm_key_vault_access_policy.azdevops_iac_managed_identities](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
 | [azurerm_key_vault_secret.aks_apiserver_url](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.appinisights_connection_string_kv](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.argocd_server_url](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.azure_devops_sa_cacrt](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.azure_devops_sa_token](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.cosmosdb_account_rtp_primary_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.cosmosdb_account_rtp_secondary_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_log_analytics_workspace.log_analytics_workspace](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/log_analytics_workspace) | resource |
 | [azurerm_monitor_diagnostic_setting.container_app_environment_diagnostic](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_diagnostic_setting) | resource |
+| [azurerm_private_dns_a_record.ingress](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_a_record) | resource |
 | [azurerm_private_dns_a_record.ingress_qa](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_a_record) | resource |
 | [azurerm_private_endpoint.srtp_cae_private_endpoint](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
 | [azurerm_role_assignment.identity_role_assignment_cd](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
@@ -69,8 +77,18 @@
 | [kubernetes_role_binding.deployer_binding](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/role_binding) | resource |
 | [kubernetes_role_binding.kube_system_reader_binding](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/role_binding) | resource |
 | [kubernetes_role_binding.system_deployer_binding](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/role_binding) | resource |
+| [azuread_group.adgroup_admin](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
+| [azuread_group.adgroup_developers](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
+| [azuread_group.adgroup_domain_admin](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
+| [azuread_group.adgroup_domain_developers](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
+| [azuread_group.adgroup_domain_externals](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
+| [azuread_group.adgroup_domain_oncall](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
+| [azuread_group.adgroup_domain_project_managers](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
+| [azuread_group.adgroup_externals](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 | [azurerm_api_management.apim](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/api_management) | data source |
 | [azurerm_key_vault.domain_kv](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault) | data source |
+| [azurerm_key_vault_secret.argocd_admin_password](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.argocd_admin_username](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_kubernetes_cluster.aks](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/kubernetes_cluster) | data source |
 | [azurerm_nat_gateway.compute_nat_gateway](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/nat_gateway) | data source |
 | [azurerm_private_dns_zone.blob_storage](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/private_dns_zone) | data source |
@@ -86,6 +104,7 @@
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_aks_user_nodepool"></a> [aks\_user\_nodepool](#input\_aks\_user\_nodepool) | Paramters for node pool | <pre>object({<br/>    vm_sku_name       = string<br/>    autoscale_enabled = optional(bool, true)<br/>    node_count_min    = number<br/>    node_count_max    = number<br/>  })</pre> | n/a | yes |
 | <a name="input_azuread_service_principal_azure_cdn_frontdoor_id"></a> [azuread\_service\_principal\_azure\_cdn\_frontdoor\_id](#input\_azuread\_service\_principal\_azure\_cdn\_frontdoor\_id) | Azure CDN Front Door Principal ID - Microsoft.AzureFrontDoor-Cdn | `string` | n/a | yes |
 | <a name="input_cdn_location"></a> [cdn\_location](#input\_cdn\_location) | One of westeurope, northeurope | `string` | n/a | yes |
 | <a name="input_cosmos_collections_autoscale_max_throughput"></a> [cosmos\_collections\_autoscale\_max\_throughput](#input\_cosmos\_collections\_autoscale\_max\_throughput) | Max throughput for autoscale | `number` | `null` | no |

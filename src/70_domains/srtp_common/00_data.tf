@@ -6,6 +6,17 @@ data "azurerm_key_vault" "domain_kv" {
   resource_group_name = local.key_vault_rg_name
 }
 
+### ARGO
+data "azurerm_key_vault_secret" "argocd_admin_username" {
+  name         = "argocd-admin-username"
+  key_vault_id = data.azurerm_key_vault.domain_kv.id
+}
+
+data "azurerm_key_vault_secret" "argocd_admin_password" {
+  name         = "argocd-admin-password"
+  key_vault_id = data.azurerm_key_vault.domain_kv.id
+}
+
 #
 # RG
 #
