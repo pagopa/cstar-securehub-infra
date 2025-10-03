@@ -1,15 +1,15 @@
 {
-    "name": "DataExplorerIdpayMerchantCounters",
+    "name": "DataExplorerRdbProducts",
     "properties": {
         "linkedServiceName": {
-            "referenceName": "idpay-Kusto-idpay-ls",
+            "referenceName": "${linkedService_Kusto_idpay}",
             "type": "LinkedServiceReference"
         },
         "annotations": [],
         "type": "AzureDataExplorerTable",
         "schema": [],
         "typeProperties": {
-            "table": "merchant_initiative_counters"
+            "table": "products"
         }
     },
     "type": "Microsoft.DataFactory/factories/datasets"

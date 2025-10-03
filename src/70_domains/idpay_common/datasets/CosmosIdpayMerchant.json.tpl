@@ -2,7 +2,7 @@
     "name": "CosmosIdpayMerchant",
     "properties": {
         "linkedServiceName": {
-            "referenceName": "idpay-CosmosDB-idpay-ls",
+            "referenceName": "${linkedService_CosmosDb_idpay}",
             "type": "LinkedServiceReference"
         },
         "annotations": [],

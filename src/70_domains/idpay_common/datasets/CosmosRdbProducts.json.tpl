@@ -1,15 +1,15 @@
 {
-    "name": "DataExplorerIdpayMerchant",
+    "name": "CosmosRdbProducts",
     "properties": {
         "linkedServiceName": {
-            "referenceName": "idpay-Kusto-idpay-ls",
+            "referenceName": "${linkedService_CosmosDb_rdb}",
             "type": "LinkedServiceReference"
         },
         "annotations": [],
-        "type": "AzureDataExplorerTable",
+        "type": "CosmosDbMongoDbApiCollection",
         "schema": [],
         "typeProperties": {
-            "table": "merchant"
+            "collection": "product"
         }
     },
     "type": "Microsoft.DataFactory/factories/datasets"
