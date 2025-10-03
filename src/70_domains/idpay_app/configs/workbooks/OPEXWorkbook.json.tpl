@@ -403,7 +403,7 @@
             "version": "KqlParameterItem/1.0",
             "name": "itnMerchantOperation",
             "type": 1,
-            "value": "itn-idpay-merchants"
+            "value": "-merchants-portal"
           },
           {
             "version": "KqlParameterItem/1.0",
