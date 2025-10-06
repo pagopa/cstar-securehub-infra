@@ -101,8 +101,6 @@ locals {
           }
         ]
       }
-    }
-    otp = {
       otps = {
         autoscale_max_throughput          = var.cosmos_collections_autoscale_max_throughput
         cosmos_collections_max_throughput = var.cosmos_collections_max_throughput
