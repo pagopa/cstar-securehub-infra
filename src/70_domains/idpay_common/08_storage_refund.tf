@@ -69,17 +69,6 @@ resource "azurerm_key_vault_secret" "refund" {
 #
 # Roles + Identity
 #
-resource "azurerm_user_assigned_identity" "identity_blob_storage_refund" {
-  resource_group_name = local.data_rg
-  location            = var.location
-  name                = "${local.project}-service"
-
-  tags = module.tag_config.tags
-}
-
-
-
-# -------------------------------
 resource "azuread_application" "refund_service" {
   display_name = "${local.project}-refund-service"
 }
