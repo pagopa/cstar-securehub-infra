@@ -173,7 +173,7 @@ locals {
           unique = false
         },
         {
-          keys   = ["additionalProperties.productCategory"]
+          keys   = ["additionalProperties.productName"]
           unique = false
         }
       ]
@@ -545,7 +545,7 @@ locals {
           unique = false
         },
         {
-          keys   = ["additionalProperties.productCategory"]
+          keys   = ["additionalProperties.productName"]
           unique = false
         }
       ]
@@ -753,6 +753,19 @@ locals {
         },
         {
           keys   = ["iv", "data"]
+          unique = true
+        }
+      ]
+    },
+    {
+      name = "clear_data_vault"
+      indexes = [
+        {
+          keys   = ["_id"]
+          unique = true
+        },
+        {
+          keys   = ["data"]
           unique = true
         }
       ]
