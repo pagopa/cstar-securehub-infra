@@ -32,7 +32,7 @@ locals {
   aks_resource_group_name = "${local.product}-core-aks-rg"
 
   # 🔎 DNS
-  dns_zone_name     = "${var.env != "prod" ? "${var.env}." : ""}${var.prefix}.pagopa.it"
+  dns_zone_name     = var.env != "prod" ? "${var.env}.${var.prefix}.pagopa.it" : "${var.prefix}.pagopa.it"
   dns_zone_internal = "internal.${local.dns_zone_name}"
   ingress_hostname  = "${var.domain}.${var.location_short}.${local.dns_zone_internal}"
 
