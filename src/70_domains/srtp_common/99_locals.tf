@@ -112,10 +112,6 @@ locals {
             unique = true
           },
           {
-            keys   = ["otp"]
-            unique = true
-          },
-          {
             keys                 = ["_ts"]
             unique               = false
             expire_after_seconds = var.cosmos_otp_ttl
