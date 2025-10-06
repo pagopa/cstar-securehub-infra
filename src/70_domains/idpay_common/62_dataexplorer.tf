@@ -14,6 +14,22 @@ resource "azurerm_kusto_database" "db" {
   }
 }
 
+resource "azapi_resource" "create_tables_idpay" {
+  type      = "Microsoft.Kusto/clusters/databases/scripts@2023-08-15"
+  name      = "create-table-idpay"
+  parent_id = "${data.azurerm_kusto_cluster.kusto_cluster.id}/databases/idpay"
+
+  body = {
+    properties = {
+      scriptContent    = file("${path.module}/scripts/create_tables_idpay.kql")
+      continueOnErrors = false
+    }
+  }
+
+  response_export_values = ["properties.provisioningState"]
+  depends_on             = [azurerm_kusto_database.db]
+}
+
 resource "azurerm_data_factory_managed_private_endpoint" "adf_dataexplorer_mpe" {
   name               = "${local.project}-kusto-mpe"
   data_factory_id    = data.azurerm_data_factory.data_factory.id

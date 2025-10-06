@@ -1,18 +1,7 @@
 locals {
-  linked_service_placeholders = merge(
-    {
-      for db in local.adf_cosmosdb_linked_services :
-      "linkedService_CosmosDb_${db}" => "${var.domain}-CosmosDB-${db}-ls"
-    },
-    {
-      for db in keys(local.kusto_database) :
-      "linkedService_Kusto_${db}" => "${var.domain}-Kusto-${db}-ls"
-    }
-  )
-
   dataset_templates = {
-    for file in fileset("${path.module}/dataset_templates", "*.json.tpl") :
-    trimsuffix(file, ".json.tpl") => jsondecode(templatefile("${path.module}/dataset_templates/${file}", local.linked_service_placeholders))
+    for file in fileset("${path.module}/dataset", "*.json") :
+    trimsuffix(file, ".json") => jsondecode(file("${path.module}/dataset_templates/${file}"))
   }
 
   pipeline_templates = {
@@ -20,6 +9,7 @@ locals {
     trimsuffix(file, ".json") => jsondecode(file("${path.module}/pipeline_templates/${file}"))
   }
 }
+
 
 resource "azurerm_data_factory_custom_dataset" "datasets" {
   for_each = local.dataset_templates

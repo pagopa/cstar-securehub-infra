@@ -2,7 +2,7 @@
     "name": "CosmosIdpayPoS",
     "properties": {
         "linkedServiceName": {
-            "referenceName": "${linkedService_CosmosDb_idpay}",
+            "referenceName": "idpay-CosmosDB-idpay-ls",
             "type": "LinkedServiceReference"
         },
         "annotations": [],
