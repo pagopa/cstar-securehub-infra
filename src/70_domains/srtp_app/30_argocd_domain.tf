@@ -1,6 +1,12 @@
 locals {
   argocd_applications = {
-    "top" = {}
+    "top" = {
+      "one-color" = {
+        name          = "one-color"
+        target_branch = "feat/init-project"
+        env           = ["dev", "uat", "prod"]
+      }
+    }
     "mid" = {}
     "ext" = {}
   }
@@ -38,7 +44,7 @@ resource "argocd_application" "domain_argocd_applications" {
     }
 
     source {
-      repo_url        = "https://github.com/pagopa/idpay-deploy-aks"
+      repo_url        = "https://github.com/pagopa/${var.domain}-deploy-aks"
       target_revision = can(each.value.target_branch) ? each.value.target_branch : "main"
       path            = "helm/${var.env}/${each.value.class}/${each.value.name}"
 
