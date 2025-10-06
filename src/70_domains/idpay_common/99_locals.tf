@@ -129,5 +129,30 @@ locals {
   # azdo_managed_identity_rg_name = "${var.prefix}-${var.env_short}-identity-rg"
   # azdo_iac_managed_identities   = toset(["azdo-${var.env}-${var.prefix}-iac-deploy-v2", "azdo-${var.env}-${var.prefix}-iac-plan-v2"])
 
-  keycloak_external_hostname = "https://${var.mcshared_dns_zone_prefix}.${var.prefix}.${var.external_domain}/auth-itn"
+  mcshared_api_url           = "https://api-mcshared.${local.public_dns_zone_name}"
+  keycloak_external_hostname = "${local.mcshared_api_url}/auth-itn"
+  selfcare_issuer            = var.env == "prod" ? "https://selfcare.${var.external_domain}" : "https://${var.env}.selfcare.${var.external_domain}"
+
+
+  # Data Factory
+  data_factory_name    = "${local.product_no_domain}-platform-adf"
+  data_factory_rg_name = "${local.product_no_domain}-platform-data-rg"
+  adf_cosmosdb_linked_services = [
+    azurerm_cosmosdb_mongo_database.idpay,
+    azurerm_cosmosdb_mongo_database.rdb
+  ]
+
+  # Data Explorer
+  kusto_cluster_name    = "${local.product_no_domain}-platform"
+  kusto_cluster_rg_name = "${local.product_no_domain}-platform-data-rg"
+  kusto_database = {
+    (var.domain) = {
+      hot_cache_period   = "P5D"
+      soft_delete_period = "P7D"
+    }
+    rdb = {
+      hot_cache_period   = "P5D"
+      soft_delete_period = "P7D"
+    }
+  }
 }

@@ -116,3 +116,43 @@ resource "azurerm_key_vault_secret" "grafana_service_account_token" {
     ]
   }
 }
+
+resource "azurerm_dashboard_grafana_managed_private_endpoint" "kusto" {
+  grafana_id                   = azurerm_dashboard_grafana.grafana_managed.id
+  name                         = "${title(var.prefix)}${title(var.env)}${title(var.location_short)}GrafPam"
+  location                     = azurerm_dashboard_grafana.grafana_managed.location
+  private_link_resource_id     = azurerm_kusto_cluster.data_explorer_cluster.id
+  group_ids                    = ["cluster"]
+  private_link_resource_region = azurerm_dashboard_grafana.grafana_managed.location
+
+  tags = module.tag_config.tags
+}
+
+data "azapi_resource" "privatelink_private_endpoint_connection" {
+  type                   = "Microsoft.Kusto/clusters@2023-08-15"
+  resource_id            = azurerm_kusto_cluster.data_explorer_cluster.id
+  response_export_values = ["properties.privateEndpointConnections."]
+
+  depends_on = [
+    azurerm_dashboard_grafana_managed_private_endpoint.kusto
+  ]
+}
+
+locals {
+  privatelink_private_endpoint_connection_name = data.azapi_resource.privatelink_private_endpoint_connection.output.properties.privateEndpointConnections[2].id
+}
+
+resource "azapi_resource_action" "kusto_approve_pe" {
+  type        = "Microsoft.Kusto/clusters/privateEndpointConnections@2024-04-13"
+  resource_id = local.privatelink_private_endpoint_connection_name
+  method      = "PUT"
+
+  body = {
+    properties = {
+      privateLinkServiceConnectionState = {
+        description = "Approved via Terraform - ${azurerm_dashboard_grafana_managed_private_endpoint.kusto.name}"
+        status      = "Approved"
+      }
+    }
+  }
+}

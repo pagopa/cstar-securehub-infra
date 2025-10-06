@@ -164,16 +164,6 @@ data "azurerm_key_vault_secret" "ses_from_address" {
   key_vault_id = data.azurerm_key_vault.domain_kv.id
 }
 
-data "azurerm_key_vault_certificate" "bonus_elettrodomestici_cert_apex" {
-  for_each = toset([
-    for zone in local.public_dns_zone_bonus_elettrodomestici.zones :
-    join("-", split(".", zone))
-  ])
-
-  key_vault_id = data.azurerm_key_vault.domain_kv.id
-  name         = each.value
-}
-
 data "azurerm_key_vault_secret" "oneidentity-client-id" {
   name         = "oneidentity-client-id"
   key_vault_id = data.azurerm_key_vault.domain_kv.id
@@ -200,4 +190,20 @@ data "azurerm_user_assigned_identity" "iac_federated_azdo" {
 
   name                = each.key
   resource_group_name = local.azdo_managed_identity_rg_name
+}
+
+#
+# Azure Data Factory
+#
+data "azurerm_data_factory" "data_factory" {
+  name                = local.data_factory_name
+  resource_group_name = local.data_factory_rg_name
+}
+
+#
+# Azure Data Explorer
+#
+data "azurerm_kusto_cluster" "kusto_cluster" {
+  name                = local.kusto_cluster_name
+  resource_group_name = local.kusto_cluster_rg_name
 }

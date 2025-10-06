@@ -9,7 +9,12 @@ module "cosmos_db_account" {
   env                 = var.env
   location            = var.location
   resource_group_name = local.data_rg
-  tags                = module.tag_config.tags
+  tags = merge(
+    module.tag_config.tags,
+    {
+      "grafana" = "yes"
+    }
+  )
 
   # IDH Resources
   idh_resource_tier = "cosmos_mongo7"

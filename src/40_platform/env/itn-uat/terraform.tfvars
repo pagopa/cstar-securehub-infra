@@ -40,6 +40,33 @@ synthetic_domain_mc_enabled     = true
 
 ### ArgoCD
 argocd_helm_release_version    = "8.3.7" #ArgoCD 3.1.5+
-argocd_application_namespaces  = ["argocd", "idpay", "keda"]
+argocd_application_namespaces  = ["argocd", "idpay", "keda", "platform-influxdb"]
 argocd_force_reinstall_version = "v20250914_1"
 ingress_load_balancer_ip       = "10.10.1.250"
+
+### InfluxDB
+influxdb2_helm = {
+  chart_version = "2.1.0",
+  image = {
+    name = "influxdb",
+    tag  = "2.2.0-alpine@sha256:f3b54d91cae591fc3fde20299bd0b262f6f6d9a1f73b98d623b501e82c49d5fb"
+  }
+}
+
+# Data Explorer
+data_explorer_config = {
+  enabled = true
+  sku = {
+    name     = "Dev(No SLA)_Standard_E2a_v4"
+    capacity = 1
+  }
+  autoscale = {
+    enabled       = false
+    min_instances = 2
+    max_instances = 3
+  }
+  public_network_access_enabled = false
+  double_encryption_enabled     = false
+  disk_encryption_enabled       = true
+  purge_enabled                 = false
+}

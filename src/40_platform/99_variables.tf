@@ -178,3 +178,23 @@ variable "influxdb2_helm" {
   })
   description = "influxdb2 helm chart configuration"
 }
+
+variable "data_explorer_config" {
+  type = object({
+    sku = object({
+      name     = string
+      capacity = number
+    })
+    autoscale = object({
+      enabled       = bool
+      min_instances = number
+      max_instances = number
+    })
+    public_network_access_enabled = bool
+    double_encryption_enabled     = bool
+    disk_encryption_enabled       = bool
+    purge_enabled                 = bool
+  })
+  description = "Data explorer configuration"
+
+}

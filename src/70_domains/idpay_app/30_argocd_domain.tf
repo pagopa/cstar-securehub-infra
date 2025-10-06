@@ -55,6 +55,11 @@ locals {
         name          = "idpay-ranker"
         target_branch = "main"
         env           = ["dev", "uat", "prod"]
+      },
+      "mcshared-datavault" = {
+        name          = "mcshared-datavault"
+        target_branch = "main"
+        env           = ["dev", "uat", "prod"]
       }
     }
     "mid" = {
@@ -128,7 +133,7 @@ locals {
       "idpay-mock" = {
         name          = "idpay-mock"
         target_branch = "main"
-        env           = ["dev", "uat", "prod"]
+        env           = ["dev", "uat"]
       }
     }
   }

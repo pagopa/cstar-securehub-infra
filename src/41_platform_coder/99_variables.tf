@@ -104,6 +104,10 @@ variable "keycloak_configuration" {
     chart_version                               = string
     replica_count_min                           = number
     replica_count_max                           = number
+    cpu_request                                 = string
+    cpu_limit                                   = string
+    memory_request                              = string
+    memory_limit                                = string
     http_client_connection_ttl_millis           = number
     http_client_connection_max_idle_time_millis = number
   })

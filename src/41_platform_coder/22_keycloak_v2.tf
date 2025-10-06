@@ -174,6 +174,10 @@ resource "helm_release" "keycloak" {
       keycloak_external_hostname                      = local.keycloak_external_hostname
       replica_count_min                               = var.keycloak_configuration.replica_count_min
       replica_count_max                               = var.keycloak_configuration.replica_count_max
+      cpu_request                                     = var.keycloak_configuration.cpu_request
+      cpu_limit                                       = var.keycloak_configuration.cpu_limit
+      memory_request                                  = var.keycloak_configuration.memory_request
+      memory_limit                                    = var.keycloak_configuration.memory_limit
       force_deploy_version                            = "v2"
       keycloak_extra_volume_mounts                    = yamlencode(local.keycloak_extra_volume_mounts)
       keycloak_http_client_connection_ttl_millis      = var.keycloak_configuration.http_client_connection_ttl_millis
