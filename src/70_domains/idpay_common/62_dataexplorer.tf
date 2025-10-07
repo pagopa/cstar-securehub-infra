@@ -134,7 +134,7 @@ locals {
       for i in local.azdo_iac_managed_identities_write : {
         id             = data.azurerm_user_assigned_identity.iac_federated_azdo[i].principal_id
         name           = data.azurerm_user_assigned_identity.iac_federated_azdo[i].name
-        role           = "User"
+        role           = "Admin"
         principal_type = "App"
       }
     ]
