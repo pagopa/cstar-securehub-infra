@@ -64,6 +64,7 @@ locals {
       rtps = {
         autoscale_max_throughput          = var.cosmos_collections_autoscale_max_throughput
         cosmos_collections_max_throughput = var.cosmos_collections_max_throughput
+        default_ttl_seconds               = -1
         indexes = [
           {
             keys   = ["_id"]
@@ -80,6 +81,7 @@ locals {
       activations = {
         autoscale_max_throughput          = var.cosmos_collections_autoscale_max_throughput
         cosmos_collections_max_throughput = var.cosmos_collections_max_throughput
+        default_ttl_seconds               = -1
         indexes = [
           {
             keys   = ["_id"]
@@ -94,6 +96,7 @@ locals {
       deleted_activations = {
         autoscale_max_throughput          = var.cosmos_collections_autoscale_max_throughput
         cosmos_collections_max_throughput = var.cosmos_collections_max_throughput
+        default_ttl_seconds               = -1
         indexes = [
           {
             keys   = ["_id"]
@@ -104,15 +107,11 @@ locals {
       otps = {
         autoscale_max_throughput          = var.cosmos_collections_autoscale_max_throughput
         cosmos_collections_max_throughput = var.cosmos_collections_max_throughput
+        default_ttl_seconds               = var.cosmos_otp_ttl
         indexes = [
           {
             keys   = ["_id"]
             unique = true
-          },
-          {
-            keys                 = ["_ts"]
-            unique               = false
-            expire_after_seconds = var.cosmos_otp_ttl
           }
         ]
       }
@@ -126,6 +125,7 @@ locals {
         indexes                  = coll.indexes
         autoscale_max_throughput = coll.autoscale_max_throughput
         max_throughput           = coll.cosmos_collections_max_throughput
+        default_ttl_seconds      = coll.default_ttl_seconds
       }
     ]
   ])
