@@ -9,5 +9,5 @@ resource "azurerm_key_vault_key" "sops" {
     "encrypt",
   ]
 
-  tags = local.tags
+  tags = module.tag_config.tags
 }
