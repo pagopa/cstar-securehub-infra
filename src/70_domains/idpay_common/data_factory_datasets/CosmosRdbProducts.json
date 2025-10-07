@@ -1,0 +1,16 @@
+{
+    "name": "CosmosRdbProducts",
+    "properties": {
+        "linkedServiceName": {
+            "referenceName": "idpay-CosmosDB-rdb-ls",
+            "type": "LinkedServiceReference"
+        },
+        "annotations": [],
+        "type": "CosmosDbMongoDbApiCollection",
+        "schema": [],
+        "typeProperties": {
+            "collection": "product"
+        }
+    },
+    "type": "Microsoft.DataFactory/factories/datasets"
+}

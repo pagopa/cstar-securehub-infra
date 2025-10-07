@@ -1,0 +1,49 @@
+{
+    "name": "RdbProductCopy",
+    "properties": {
+        "activities": [
+            {
+                "name": "Copy data1",
+                "type": "Copy",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "source": {
+                        "type": "CosmosDbMongoDbApiSource",
+                        "batchSize": 100
+                    },
+                    "sink": {
+                        "type": "AzureDataExplorerSink"
+                    },
+                    "enableStaging": false,
+                    "translator": {
+                        "type": "TabularTranslator",
+                        "mapComplexValuesToString": true
+                    }
+                },
+                "inputs": [
+                    {
+                        "referenceName": "CosmosRdbProducts",
+                        "type": "DatasetReference"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "referenceName": "DataExplorerRdbProducts",
+                        "type": "DatasetReference"
+                    }
+                ]
+            }
+        ],
+        "annotations": [],
+        "lastPublishTime": "2025-10-02T09:09:03Z"
+    },
+    "type": "Microsoft.DataFactory/factories/pipelines"
+}

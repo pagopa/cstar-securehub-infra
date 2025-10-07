@@ -30,4 +30,17 @@ locals {
   # AKS
   aks_name                = "${local.product}-${var.env}-aks"
   aks_resource_group_name = "${local.product}-core-aks-rg"
+
+  # 🔎 DNS
+  dns_zone_name     = var.env != "prod" ? "${var.env}.${var.prefix}.pagopa.it" : "${var.prefix}.pagopa.it"
+  dns_zone_internal = "internal.${local.dns_zone_name}"
+  ingress_hostname  = "${var.domain}.${var.location_short}.${local.dns_zone_internal}"
+
+  # Workload Identity
+  secret_name_workload_identity_client_id            = "${var.domain}-${var.location_short}-workload-identity-client-id"
+  secret_name_workload_identity_service_account_name = "${var.domain}-${var.location_short}-workload-identity-service-account-name"
+
+  ### ARGOCD
+  argocd_namespace    = "argocd"
+  argocd_internal_url = "argocd.${var.location_short}.${local.dns_zone_internal}"
 }
