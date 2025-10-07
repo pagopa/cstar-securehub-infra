@@ -14,6 +14,8 @@ enable_cdn                                       = false
 law_daily_quota_gb                          = 100
 cosmos_collections_autoscale_max_throughput = 1000
 
+cosmos_otp_ttl = 120
+
 # AKS
 aks_user_nodepool = {
   vm_sku_name    = "Standard_D4ads_v5_passive" # CHANGE in Standard_D4ads_v5_active when PROD is ready

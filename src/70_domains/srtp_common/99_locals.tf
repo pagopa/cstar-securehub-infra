@@ -106,6 +106,21 @@ locals {
           }
         ]
       }
+      otps = {
+        autoscale_max_throughput          = var.cosmos_collections_autoscale_max_throughput
+        cosmos_collections_max_throughput = var.cosmos_collections_max_throughput
+        indexes = [
+          {
+            keys   = ["_id"]
+            unique = true
+          },
+          {
+            keys                 = ["_ts"]
+            unique               = false
+            expire_after_seconds = var.cosmos_otp_ttl
+          }
+        ]
+      }
     }
   }
   cosmos_collections = flatten([
