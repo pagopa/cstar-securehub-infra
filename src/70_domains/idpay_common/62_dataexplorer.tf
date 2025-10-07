@@ -8,10 +8,6 @@ resource "azurerm_kusto_database" "db" {
 
   hot_cache_period   = each.value.hot_cache_period
   soft_delete_period = each.value.soft_delete_period
-
-  lifecycle {
-    prevent_destroy = true
-  }
 }
 
 resource "azapi_resource" "create_tables_idpay" {
@@ -95,44 +91,59 @@ locals {
   ad_groups_adx = flatten([
     # General Group
     [{
-      id   = data.azuread_group.adgroup_admin.object_id
-      name = data.azuread_group.adgroup_admin.display_name
-      role = "Admin"
+      id             = data.azuread_group.adgroup_admin.object_id
+      name           = data.azuread_group.adgroup_admin.display_name
+      role           = "Admin"
+      principal_type = "Group"
     }],
     # IDPAY GROUP
     [{
-      id   = data.azuread_group.adgroup_idpay_admin.object_id,
-      name = data.azuread_group.adgroup_idpay_admin.display_name
-      role = "Admin"
+      id             = data.azuread_group.adgroup_idpay_admin.object_id,
+      name           = data.azuread_group.adgroup_idpay_admin.display_name
+      role           = "Admin"
+      principal_type = "Group"
     }],
     [
       {
-        id   = data.azuread_group.adgroup_idpay_developers.object_id,
-        name = data.azuread_group.adgroup_idpay_developers.display_name
-        role = var.env_short == "p" ? "Viewer" : "Admin"
+        id             = data.azuread_group.adgroup_idpay_developers.object_id,
+        name           = data.azuread_group.adgroup_idpay_developers.display_name
+        role           = var.env_short == "p" ? "Viewer" : "Admin"
+        principal_type = "Group"
       }
     ],
     [
       for g in data.azuread_group.adgroup_idpay_oncall[*] : {
-        id   = g.object_id,
-        name = g.display_name
-        role = "Admin"
+        id             = g.object_id,
+        name           = g.display_name
+        role           = "Admin"
+        principal_type = "Group"
       }
     ],
     contains(["d"], var.env_short) ? [{
-      id   = data.azuread_group.adgroup_idpay_externals.object_id,
-      name = data.azuread_group.adgroup_idpay_externals.display_name
-      role = "Admin"
-    }] : []
+      id             = data.azuread_group.adgroup_idpay_externals.object_id,
+      name           = data.azuread_group.adgroup_idpay_externals.display_name
+      role           = "Admin"
+      principal_type = "Group"
+    }] : [],
+    # IAC
+    [
+      for i in local.azdo_iac_managed_identities_write : {
+        id             = data.azurerm_user_assigned_identity.iac_federated_azdo[i].principal_id
+        name           = data.azurerm_user_assigned_identity.iac_federated_azdo[i].name
+        role           = "Admin"
+        principal_type = "App"
+      }
+    ]
   ])
 
   db_group_flatten = flatten([
     for db in keys(local.kusto_database) : [
       for ad_group in local.ad_groups_adx : {
-        db_key        = db
-        ad_group_id   = ad_group.id
-        ad_group_name = ad_group.name
-        role          = ad_group.role
+        db_key         = db
+        ad_group_id    = ad_group.id
+        ad_group_name  = ad_group.name
+        role           = ad_group.role
+        principal_type = ad_group.principal_type
       }
     ]
   ])
@@ -149,7 +160,7 @@ resource "azurerm_kusto_database_principal_assignment" "kusto_ad_groups" {
   resource_group_name = data.azurerm_kusto_cluster.kusto_cluster.resource_group_name
 
   principal_id   = each.value.ad_group_id
-  principal_type = "Group"
+  principal_type = each.value.principal_type
   tenant_id      = data.azurerm_client_config.current.tenant_id
   role           = each.value.role
 }
