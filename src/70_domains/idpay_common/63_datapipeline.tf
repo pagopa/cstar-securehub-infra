@@ -1,11 +1,11 @@
 locals {
   dataset_templates = {
-    for file in fileset("${path.module}/dataset", "*.json") :
+    for file in fileset("${path.module}/data_factory_dataset", "*.json") :
     trimsuffix(file, ".json") => jsondecode(file("${path.module}/dataset_templates/${file}"))
   }
 
   pipeline_templates = {
-    for file in fileset("${path.module}/pipeline", "*.json") :
+    for file in fileset("${path.module}/data_factory_pipeline", "*.json") :
     trimsuffix(file, ".json") => jsondecode(file("${path.module}/pipeline_templates/${file}"))
   }
 }

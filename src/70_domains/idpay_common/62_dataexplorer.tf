@@ -21,7 +21,7 @@ resource "azapi_resource" "create_tables_idpay" {
 
   body = {
     properties = {
-      scriptContent    = file("${path.module}/scripts/create_tables_idpay.kql")
+      scriptContent    = file("${path.module}/data_explorer_kql/create_tables_idpay.kql")
       continueOnErrors = false
     }
   }
