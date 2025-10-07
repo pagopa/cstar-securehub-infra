@@ -8,10 +8,6 @@ resource "azurerm_kusto_database" "db" {
 
   hot_cache_period   = each.value.hot_cache_period
   soft_delete_period = each.value.soft_delete_period
-
-  lifecycle {
-    prevent_destroy = true
-  }
 }
 
 resource "azapi_resource" "create_tables_idpay" {
