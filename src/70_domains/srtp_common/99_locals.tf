@@ -95,6 +95,10 @@ locals {
           {
             keys   = ["fiscalCode"]
             unique = true
+          },
+          {
+            keys   = ["serviceProviderDebtor", "_id"]
+            unique = false
           }
         ]
       }
