@@ -45,18 +45,3 @@ resource "azurerm_private_dns_a_record" "ingress_qa" {
   ttl                 = 3600
   records             = [local.ingress_private_load_balancer_ip]
 }
-
-moved {
-  from = kubernetes_namespace.namespace[0]
-  to   = kubernetes_namespace.namespace
-}
-
-moved {
-  from = module.workload_identity_configuration[0]
-  to   = module.workload_identity_configuration
-}
-
-moved {
-  from = module.workload_identity[0]
-  to   = module.workload_identity
-}

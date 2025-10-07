@@ -118,3 +118,8 @@ resource "helm_release" "reloader" {
     })
   ]
 }
+
+moved {
+  from = module.cert_mounter.helm_release.cert_mounter
+  to   = module.cert_mounter[0].helm_release.cert_mounter
+}
