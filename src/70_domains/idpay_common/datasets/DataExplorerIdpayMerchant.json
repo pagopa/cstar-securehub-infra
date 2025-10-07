@@ -2,7 +2,7 @@
     "name": "DataExplorerIdpayMerchant",
     "properties": {
         "linkedServiceName": {
-            "referenceName": "$idpay-Kusto-idpay-ls",
+            "referenceName": "idpay-Kusto-idpay-ls",
             "type": "LinkedServiceReference"
         },
         "annotations": [],
