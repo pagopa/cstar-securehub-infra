@@ -1,6 +1,7 @@
 ### Cert Mounter
 module "cert_mounter" {
   source = "./.terraform/modules/__v4__/cert_mounter"
+  count  = var.aks_enabled ? 1 : 0
 
   namespace        = var.domain
   certificate_name = replace(local.ingress_hostname, ".", "-")
@@ -57,6 +58,8 @@ module "cert_mounter" {
 
 # Reloader
 resource "helm_release" "reloader" {
+  count = var.aks_enabled ? 1 : 0
+
   name       = "reloader"
   repository = "https://stakater.github.io/stakater-charts"
   chart      = "reloader"

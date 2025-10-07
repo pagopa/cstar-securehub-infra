@@ -1,12 +1,16 @@
 locals {
   argocd_applications = {
-    "top" = {
-      "one-color" = {
-        name          = "one-color"
-        target_branch = "feat/init-project"
-        env           = ["dev", "uat", "prod"]
-      }
-    }
+    "top" = merge(
+      # To be removed as soon as the first real application is added.
+      var.env_short == "d" ? {
+        "one-color" = {
+          name          = "one-color"
+          target_branch = "main"
+          env           = ["dev", "uat", "prod"]
+        }
+      } : {},
+      {}
+    )
     "mid" = {}
     "ext" = {}
   }
