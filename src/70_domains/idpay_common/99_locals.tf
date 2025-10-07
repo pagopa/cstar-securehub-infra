@@ -18,7 +18,7 @@ locals {
   #
   # 🌐 Network
   #
-  vnet_core_rg_name       = "${local.product}-vnet-rg"
+  vnet_legacy_core_rg     = "${local.product}-vnet-rg"
   network_rg              = "${local.project_core}-network-rg"
   vnet_spoke_data_rg_name = "${local.project_core}-network-rg"
   vnet_spoke_data_name    = "${local.project_core}-spoke-data-vnet"
@@ -147,10 +147,6 @@ locals {
   kusto_cluster_rg_name = "${local.product_no_domain}-platform-data-rg"
   kusto_database = {
     (var.domain) = {
-      hot_cache_period   = "P5D"
-      soft_delete_period = "P7D"
-    }
-    rdb = {
       hot_cache_period   = "P5D"
       soft_delete_period = "P7D"
     }

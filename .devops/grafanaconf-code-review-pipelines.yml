@@ -6,8 +6,6 @@ pr:
   paths:
     include:
       - "src/49_grafanaconf"
-      - "src/49_grafanaconf"
-      - "src/49_grafanaconf"
     exclude:
       - '**/*.lock.hcl'
       - '**/*.md'

@@ -756,6 +756,19 @@ locals {
           unique = true
         }
       ]
+    },
+    {
+      name = "clear_data_vault"
+      indexes = [
+        {
+          keys   = ["_id"]
+          unique = true
+        },
+        {
+          keys   = ["data"]
+          unique = true
+        }
+      ]
     }
   ]
   ###

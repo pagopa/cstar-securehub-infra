@@ -13,6 +13,9 @@
     padding: 0;
 }
 
+.login-pf body {
+  background: var(--pagopa-light-grey-bg);
+}
 body {
     font-family: "Titillium Web", "Helvetica Neue", Helvetica, Arial, sans-serif;
     background-color: var(--pagopa-light-grey-bg);
@@ -295,4 +298,10 @@ a:hover {
 .pagopa-logo {
     width: 120px;
     fill: rgb(0, 197, 202);
+}
+
+.card-pf {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
