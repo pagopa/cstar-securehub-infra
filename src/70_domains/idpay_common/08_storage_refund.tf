@@ -69,51 +69,51 @@ resource "azurerm_key_vault_secret" "refund" {
 #
 # Roles + Identity
 #
-resource "azuread_application" "refund_service" {
-  display_name = "${local.project}-refund-service"
-}
-
-resource "azuread_service_principal" "refund_service" {
-  client_id = azuread_application.refund_service.client_id
-}
+# resource "azuread_application" "refund_service" {
+#   display_name = "${local.project}-refund-service"
+# }
+#
+# resource "azuread_service_principal" "refund_service" {
+#   client_id = azuread_application.refund_service.client_id
+# }
 
 resource "azurerm_role_assignment" "role_blob_storage_refund" {
   scope                = module.storage_idpay_refund.id
   role_definition_name = "Storage Blob Data Contributor"
-  principal_id         = azuread_service_principal.refund_service.object_id
+  principal_id         = module.workload_identity_configuration_v2.workload_identity_principal_id
 }
 
 resource "azurerm_role_assignment" "refund_service_delegator_role" {
   scope                = module.storage_idpay_refund.id
   role_definition_name = "Storage Blob Delegator"
-  principal_id         = azuread_service_principal.refund_service.object_id
+  principal_id         = module.workload_identity_configuration_v2.workload_identity_principal_id
 }
 
-resource "time_rotating" "refund_service_application" {
-  rotation_days = 300
-}
-
-resource "azuread_application_password" "refund_service" {
-  application_id    = azuread_application.refund_service.id
-  display_name      = "managed by terraform"
-  end_date_relative = "8640h" # 360 days
-  rotate_when_changed = {
-    rotation = time_rotating.refund_service_application.id
-  }
-}
-
-resource "azurerm_key_vault_secret" "refund_service_principal_client_id" {
-  name         = "refund-service-client-id"
-  value        = azuread_service_principal.refund_service.object_id
-  content_type = "text/plain"
-
-  key_vault_id = data.azurerm_key_vault.domain_kv.id
-}
-
-resource "azurerm_key_vault_secret" "refund_service_principal_client_secret" {
-  name         = "refund-service-client-secret"
-  value        = azuread_application_password.refund_service.value
-  content_type = "text/plain"
-
-  key_vault_id = data.azurerm_key_vault.domain_kv.id
-}
+# resource "time_rotating" "refund_service_application" {
+#   rotation_days = 300
+# }
+#
+# resource "azuread_application_password" "refund_service" {
+#   application_id    = azuread_application.refund_service.id
+#   display_name      = "managed by terraform"
+#   end_date_relative = "8640h" # 360 days
+#   rotate_when_changed = {
+#     rotation = time_rotating.refund_service_application.id
+#   }
+# }
+#
+# resource "azurerm_key_vault_secret" "refund_service_principal_client_id" {
+#   name         = "refund-service-client-id"
+#   value        = azuread_service_principal.refund_service.object_id
+#   content_type = "text/plain"
+#
+#   key_vault_id = data.azurerm_key_vault.domain_kv.id
+# }
+#
+# resource "azurerm_key_vault_secret" "refund_service_principal_client_secret" {
+#   name         = "refund-service-client-secret"
+#   value        = azuread_application_password.refund_service.value
+#   content_type = "text/plain"
+#
+#   key_vault_id = data.azurerm_key_vault.domain_kv.id
+# }
