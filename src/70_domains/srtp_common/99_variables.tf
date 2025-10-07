@@ -100,3 +100,13 @@ variable "k8s_kube_config_path_prefix" {
   type    = string
   default = "~/.kube"
 }
+
+variable "aks_user_nodepool" {
+  type = object({
+    vm_sku_name       = string
+    autoscale_enabled = optional(bool, true)
+    node_count_min    = number
+    node_count_max    = number
+  })
+  description = "Paramters for node pool"
+}

@@ -4,6 +4,7 @@ locals {
   project_core      = "${var.prefix}-${var.env_short}-${var.location_short}-core"
   project_no_domain = "${var.prefix}-${var.env_short}-${var.location_short}"
   product           = "${var.prefix}-${var.env_short}"
+  project_entra     = "${var.prefix}-${var.env_short}-${var.domain}"
 
   # Default Domain Resource Group
   data_rg_name     = "${local.project}-data-rg"
@@ -57,6 +58,10 @@ locals {
     "azdo-${var.env}-${var.prefix}-app-plan-v2",
     "azdo-${var.env}-${var.prefix}-app-deploy-v2"
   ])
+
+  ### ARGOCD
+  argocd_namespace    = "argocd"
+  argocd_internal_url = "argocd.${var.location_short}.${local.dns_zone_internal}"
 
   # 🍀 Cosmos DB Collection
   cosmos_db = {

@@ -18,6 +18,10 @@ terraform {
       source  = "hashicorp/kubernetes"
       version = "~> 2.36"
     }
+    argocd = {
+      source  = "argoproj-labs/argocd"
+      version = "~> 7.0"
+    }
   }
 
   backend "azurerm" {}
@@ -36,6 +40,16 @@ provider "kubernetes" {
 }
 
 module "__v4__" {
-  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v7.20.0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=1ed70549ce796e30c27d89bc6aabcb5f6eaaf925"
+  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v7.40.2
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=1b507dcbfc89880e17ff6722fb69b10dfda9368d"
+}
+
+
+provider "argocd" {
+  server_addr = local.argocd_internal_url
+  username    = data.azurerm_key_vault_secret.argocd_admin_username.value
+  password    = data.azurerm_key_vault_secret.argocd_admin_password.value
+  kubernetes {
+    config_context = "config-${local.aks_name}"
+  }
 }

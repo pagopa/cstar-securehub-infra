@@ -14,3 +14,11 @@ enable_cdn                                       = true
 law_daily_quota_gb = 5
 
 cosmos_otp_ttl = 120
+
+# AKS
+aks_user_nodepool = {
+  vm_sku_name       = "Standard_B8ms_active"
+  autoscale_enabled = true
+  node_count_min    = 1
+  node_count_max    = 2
+}
