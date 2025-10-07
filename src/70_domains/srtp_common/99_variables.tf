@@ -90,6 +90,12 @@ variable "cosmos_collections_max_throughput" {
   default     = null
 }
 
+variable "cosmos_otp_ttl" {
+  type        = number
+  description = "TTL for otps collection."
+  default     = null
+}
+
 variable "k8s_kube_config_path_prefix" {
   type    = string
   default = "~/.kube"
