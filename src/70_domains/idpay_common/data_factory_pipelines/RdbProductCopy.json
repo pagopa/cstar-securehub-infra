@@ -3,9 +3,37 @@
     "properties": {
         "activities": [
             {
-                "name": "Copy data1",
-                "type": "Copy",
+                "name": "Clear products table",
+                "type": "AzureDataExplorerCommand",
                 "dependsOn": [],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "command": ".clear table products data",
+                    "commandTimeout": "00:20:00"
+                },
+                "linkedServiceName": {
+                    "referenceName": "idpay-Kusto-idpay-ls",
+                    "type": "LinkedServiceReference"
+                }
+            },
+            {
+                "name": "Copy products collection",
+                "type": "Copy",
+                "dependsOn": [
+                    {
+                        "activity": "Clear products table",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
                 "policy": {
                     "timeout": "0.12:00:00",
                     "retry": 0,
@@ -43,7 +71,7 @@
             }
         ],
         "annotations": [],
-        "lastPublishTime": "2025-10-02T09:09:03Z"
+        "lastPublishTime": "2025-10-08T09:17:36Z"
     },
     "type": "Microsoft.DataFactory/factories/pipelines"
 }
