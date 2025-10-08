@@ -52,6 +52,7 @@ locals {
     "refund-storage-access-key"             = module.storage_idpay_refund.primary_access_key
     "refund-storage-connection-string"      = module.storage_idpay_refund.primary_connection_string
     "refund-storage-blob-connection-string" = module.storage_idpay_refund.primary_blob_connection_string
+    "refund-storage-account-name"           = module.storage_idpay_refund.name
   }
 }
 
