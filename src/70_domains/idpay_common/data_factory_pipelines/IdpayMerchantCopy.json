@@ -29,7 +29,116 @@
                     "sink": {
                         "type": "AzureDataExplorerSink"
                     },
-                    "enableStaging": false
+                    "enableStaging": false,
+                    "translator": {
+                        "type": "TabularTranslator",
+                        "mappings": [
+                            {
+                                "source": {
+                                    "path": "$['_id']"
+                                },
+                                "sink": {
+                                    "name": "_id"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['acquirerId']"
+                                },
+                                "sink": {
+                                    "name": "acquirerId"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['businessName']"
+                                },
+                                "sink": {
+                                    "name": "businessName"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['legalOfficeAddress']"
+                                },
+                                "sink": {
+                                    "name": "legalOfficeAddress"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['legalOfficeMunicipality']"
+                                },
+                                "sink": {
+                                    "name": "legalOfficeMunicipality"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['legalOfficeProvince']"
+                                },
+                                "sink": {
+                                    "name": "legalOfficeProvince"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['legalOfficeZipCode']"
+                                },
+                                "sink": {
+                                    "name": "legalOfficeZipCode"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['certifiedEmail']"
+                                },
+                                "sink": {
+                                    "name": "certifiedEmail"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['fiscalCode']"
+                                },
+                                "sink": {
+                                    "name": "fiscalCode"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['vatNumber']"
+                                },
+                                "sink": {
+                                    "name": "vatNumber"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['iban']"
+                                },
+                                "sink": {
+                                    "name": "iban"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['ibanHolder']"
+                                },
+                                "sink": {
+                                    "name": "ibanHolder"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['enabled']"
+                                },
+                                "sink": {
+                                    "name": "isEnabled"
+                                }
+                            }
+                        ]
+                    }
                 },
                 "inputs": [
                     {
@@ -67,7 +176,7 @@
             }
         ],
         "annotations": [],
-        "lastPublishTime": "2025-10-02T13:46:41Z"
+        "lastPublishTime": "2025-10-08T09:33:22Z"
     },
     "type": "Microsoft.DataFactory/factories/pipelines"
 }

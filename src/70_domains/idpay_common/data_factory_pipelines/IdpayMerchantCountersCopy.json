@@ -29,7 +29,52 @@
                     "sink": {
                         "type": "AzureDataExplorerSink"
                     },
-                    "enableStaging": false
+                    "enableStaging": false,
+                    "translator": {
+                        "type": "TabularTranslator",
+                        "mappings": [
+                            {
+                                "source": {
+                                    "path": "$['_id']"
+                                },
+                                "sink": {
+                                    "name": "_id"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['merchantId']"
+                                },
+                                "sink": {
+                                    "name": "merchantId"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['initiativeId']"
+                                },
+                                "sink": {
+                                    "name": "initiativeId"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['trxNumber']"
+                                },
+                                "sink": {
+                                    "name": "trxNumber"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['refundedNumber']"
+                                },
+                                "sink": {
+                                    "name": "refundedNumber"
+                                }
+                            }
+                        ]
+                    }
                 },
                 "inputs": [
                     {
@@ -67,7 +112,7 @@
             }
         ],
         "annotations": [],
-        "lastPublishTime": "2025-10-03T09:20:04Z"
+        "lastPublishTime": "2025-10-08T09:33:22Z"
     },
     "type": "Microsoft.DataFactory/factories/pipelines"
 }
