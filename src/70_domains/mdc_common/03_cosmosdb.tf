@@ -1,53 +1,42 @@
-locals {
-  cosmos_idh_resource_tier = (
-    var.env == "prod"
-    ? "cosmos_mongo6"
-    : contains(var.cosmos_mongo_db_params.capabilities, "EnableUniqueCompoundNestedDocs")
-    ? "cosmos_mongo7_unique_compound_nested_docs"
-    : "cosmos_mongo7"
+module "cosmos_account" {
+  source = "./.terraform/modules/__v4__/IDH/cosmosdb_account"
+
+  # General
+  product_name        = var.prefix
+  env                 = var.env
+  location            = var.location
+  resource_group_name = data.azurerm_resource_group.mdc_data_rg.name
+  tags = merge(
+    module.tag_config.tags,
+    {
+      "grafana" = "yes"
+    }
   )
 
-  cosmos_private_endpoint_config = {
+  # IDH Resources
+  idh_resource_tier   = "cosmos_mongo7"
+
+  # CosmosDB Account Settings
+  name   = "${local.project}-mongodb-account"
+  domain = var.domain
+
+  # Network
+  subnet_id               = module.private_endpoint_cosmos_snet.id
+  private_endpoint_config =  {
     enabled                       = var.cosmos_mongo_db_params.private_endpoint_enabled
     name_mongo                    = "${local.project}-cosmos-pe"
     service_connection_name_mongo = "${local.project}-cosmos-pe"
     private_dns_zone_mongo_ids    = [data.azurerm_private_dns_zone.cosmos.id]
   }
-}
 
-resource "azurerm_resource_group" "cosmos_rg" {
-  name     = "${local.project}-cosmosdb-rg"
-  location = var.location
-
-  tags = local.tags
-}
-
-module "cosmos_account" {
-  source = "./.terraform/modules/__v4__/IDH/cosmosdb_account"
-
-  product_name        = var.prefix
-  env                 = var.env
-  idh_resource_tier   = local.cosmos_idh_resource_tier
-  location            = var.location
-  resource_group_name = azurerm_resource_group.cosmos_rg.name
-  tags                = local.tags
-
-  name   = "${local.project}-cosmos-account"
-  domain = var.domain
-
-  main_geo_location_location = azurerm_resource_group.cosmos_rg.location
-  additional_geo_locations   = var.cosmos_mongo_db_params.additional_geo_locations
-  ip_range                   = var.cosmos_mongo_db_params.ip_range_filter
-
-  subnet_id               = module.private_endpoint_cosmos_snet.id
-  private_endpoint_config = local.cosmos_private_endpoint_config
+  main_geo_location_location = var.location
 }
 
 resource "azurerm_cosmosdb_mongo_database" "mdc" {
   count = var.is_feature_enabled.cosmos ? 1 : 0
 
   name                = var.domain
-  resource_group_name = azurerm_resource_group.cosmos_rg.name
+  resource_group_name = data.azurerm_resource_group.mdc_data_rg.name
   account_name        = module.cosmos_account.name
 
   throughput = var.cosmos_mongo_db_mdc_params.enable_autoscaling || var.cosmos_mongo_db_mdc_params.enable_serverless ? null : var.cosmos_mongo_db_mdc_params.throughput
@@ -164,7 +153,7 @@ module "cosmosdb_collections" {
   for_each = var.is_feature_enabled.cosmos ? { for index, coll in local.collections : coll.name => coll } : {}
 
   name                = each.value.name
-  resource_group_name = azurerm_resource_group.cosmos_rg.name
+  resource_group_name = data.azurerm_resource_group.mdc_data_rg.name
 
   cosmosdb_mongo_account_name  = module.cosmos_account.name
   cosmosdb_mongo_database_name = azurerm_cosmosdb_mongo_database.mdc[0].name
@@ -189,7 +178,7 @@ resource "azurerm_monitor_metric_alert" "cosmos_db_normalized_ru_exceeded" {
   count = var.is_feature_enabled.cosmos && var.env_short == "p" ? 1 : 0
 
   name                = "[${var.domain != null ? "${var.domain} | " : ""}${module.cosmos_account.name}] Normalized RU Exceeded"
-  resource_group_name = azurerm_resource_group.cosmos_rg.name
+  resource_group_name = data.azurerm_resource_group.mdc_data_rg.name
   scopes              = [module.cosmos_account.id]
   description         = "A collection Normalized RU/s exceed provisioned throughput, and it's raising latency. Please, consider to increase RU."
   severity            = 0
@@ -208,7 +197,7 @@ resource "azurerm_monitor_metric_alert" "cosmos_db_normalized_ru_exceeded" {
     dimension {
       name     = "Region"
       operator = "Include"
-      values   = [azurerm_resource_group.cosmos_rg.location]
+      values   = [data.azurerm_resource_group.mdc_data_rg.location]
     }
 
     dimension {

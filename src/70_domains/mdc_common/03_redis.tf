@@ -2,13 +2,6 @@ locals {
   redis_idh_resource_tier = var.redis_sku_name == "Premium" ? "premium" : var.redis_sku_name == "Standard" ? "standard" : "basic"
 }
 
-resource "azurerm_resource_group" "redis_rg" {
-  name     = "${local.project}-redis-rg"
-  location = var.location
-
-  tags = local.tags
-}
-
 module "redis" {
   source = "./.terraform/modules/__v4__/IDH/redis"
 
@@ -16,7 +9,7 @@ module "redis" {
   env                 = var.env
   idh_resource_tier   = local.redis_idh_resource_tier
   location            = var.location
-  resource_group_name = azurerm_resource_group.redis_rg.name
+  resource_group_name = data.azurerm_resource_group.mdc_data_rg.name
   tags                = local.tags
 
   name = "${local.project}-redis"

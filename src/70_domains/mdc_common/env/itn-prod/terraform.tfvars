@@ -127,9 +127,6 @@ ehns_metric_alerts = {
   },
 }
 
-aks_name                = "cstar-p-itn-prod01-aks"
-aks_resource_group_name = "cstar-p-itn-prod01-aks-rg"
-
 # Redis
 redis_sku_name = "Standard"
 redis_capacity = 0

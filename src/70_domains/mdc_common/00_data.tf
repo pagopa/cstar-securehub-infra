@@ -15,6 +15,17 @@ data "azuread_group" "adgroup_security" {
   display_name = "${local.product}-adgroup-security"
 }
 
+#
+# Azure Resource Groups
+#
+data "azurerm_resource_group" "mdc_data_rg" {
+  name = "${local.project}-data-rg"
+}
+
+data "azurerm_resource_group" "mdc_monitoring_rg" {
+  name = "${local.project}-monitoring-rg"
+}
+
 # 🔒 KV
 data "azurerm_key_vault" "kv_domain" {
   name                = local.kv_domain_name
@@ -75,6 +86,6 @@ data "azurerm_private_dns_zone" "privatelink_redis" {
 
 # 🐳 Kubernetes Cluster
 data "azurerm_kubernetes_cluster" "aks" {
-  name                = var.aks_name
-  resource_group_name = var.aks_resource_group_name
+  name                = local.aks_name
+  resource_group_name = local.aks_resource_group_name
 }

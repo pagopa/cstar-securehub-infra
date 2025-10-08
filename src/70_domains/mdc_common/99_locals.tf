@@ -26,5 +26,12 @@ locals {
 
   # KV dominiale già esistente
   kv_domain_name    = "${local.project}-kv"
-  kv_domain_rg_name = "${local.project}-sec-rg"
+  kv_domain_rg_name = "${local.project}-security-rg"
+
+  #
+  # AKS
+  #
+  aks_name                = "${local.product}-${var.location_short}-${var.env}-aks"
+  aks_resource_group_name = "${local.product}-${var.location_short}-core-aks-rg"
+
 }

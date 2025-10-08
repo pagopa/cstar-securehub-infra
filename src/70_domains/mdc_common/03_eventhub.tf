@@ -16,25 +16,17 @@ module "eventhub_namespace" {
 
   name                     = "${local.project}-evh"
   location                 = var.location
-  resource_group_name      = azurerm_resource_group.eventhub_rg.name
+  resource_group_name      = data.azurerm_resource_group.mdc_data_rg.name
   auto_inflate_enabled     = var.ehns_auto_inflate_enabled
   sku                      = var.ehns_sku_name
   capacity                 = var.ehns_capacity
   maximum_throughput_units = var.ehns_maximum_throughput_units
 
-  virtual_network_ids                  = [data.azurerm_virtual_network.vnet_core.id]
   private_endpoint_subnet_id           = module.private_endpoint_eventhub_snet.subnet_id
   private_endpoint_created             = var.ehns_private_endpoint_is_present
   private_endpoint_resource_group_name = module.private_endpoint_eventhub_snet.resource_group_name
-  private_dns_zones = {
-    id                  = [data.azurerm_private_dns_zone.eventhub.id]
-    name                = [data.azurerm_private_dns_zone.eventhub.name]
-    resource_group_name = local.vnet_core_resource_group_name
-  }
 
   public_network_access_enabled = var.ehns_public_network_access
-
-  private_dns_zone_record_A_name = "${var.domain}.${var.location_short}"
 
   action = [
     {
@@ -58,7 +50,7 @@ module "eventhub_configuration" {
   count  = var.is_feature_enabled.eventhub ? 1 : 0
 
   event_hub_namespace_name                = module.eventhub_namespace[0].name
-  event_hub_namespace_resource_group_name = azurerm_resource_group.eventhub_rg.name
+  event_hub_namespace_resource_group_name = data.azurerm_resource_group.mdc_data_rg.name
 
   eventhubs = [
     {

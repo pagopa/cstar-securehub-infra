@@ -49,7 +49,6 @@ cosmos_mongo_db_params = {
   is_virtual_network_filter_enabled = false
 
   backup_continuous_enabled = true
-  ip_range_filter           = ["104.42.195.92", "40.76.54.131", "52.176.6.30", "52.169.50.45", "52.187.184.26", "13.88.56.148", "40.91.218.243", "13.91.105.215", "4.210.172.107", "40.80.152.199", "13.95.130.121", "20.245.81.54", "40.118.23.126"]
 }
 
 cosmos_mongo_db_mdc_params = {
@@ -122,10 +121,7 @@ ehns_metric_alerts = {
   },
 }
 
-aks_name                = "cstar-u-itn-uat01-aks"
-aks_resource_group_name = "cstar-u-itn-uat01-aks-rg"
-
 # Redis
-redis_sku_name = "Standard"
+redis_sku_name = "Basic"
 redis_capacity = 0
 redis_family   = "C"
