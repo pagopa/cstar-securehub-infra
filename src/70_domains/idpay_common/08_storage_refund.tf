@@ -32,7 +32,8 @@ module "storage_idpay_refund" {
 locals {
   idpay_containers = [
     "refund",
-    "merchant"
+    "merchant",
+    "invoices"
   ]
 }
 
@@ -51,6 +52,7 @@ locals {
     "refund-storage-access-key"             = module.storage_idpay_refund.primary_access_key
     "refund-storage-connection-string"      = module.storage_idpay_refund.primary_connection_string
     "refund-storage-blob-connection-string" = module.storage_idpay_refund.primary_blob_connection_string
+    "refund-storage-account-name"           = module.storage_idpay_refund.name
   }
 }
 
@@ -63,4 +65,19 @@ resource "azurerm_key_vault_secret" "refund" {
   key_vault_id = data.azurerm_key_vault.domain_kv.id
 
   tags = module.tag_config.tags
+}
+
+#
+# Roles Assignments for Workload Identity
+#
+resource "azurerm_role_assignment" "role_blob_storage_refund" {
+  scope                = module.storage_idpay_refund.id
+  role_definition_name = "Storage Blob Data Contributor"
+  principal_id         = module.workload_identity_configuration_v2.workload_identity_principal_id
+}
+
+resource "azurerm_role_assignment" "refund_service_delegator_role" {
+  scope                = module.storage_idpay_refund.id
+  role_definition_name = "Storage Blob Delegator"
+  principal_id         = module.workload_identity_configuration_v2.workload_identity_principal_id
 }
