@@ -2,13 +2,6 @@ locals {
   jaas_config_template_emd = "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"$ConnectionString\" password=\"%s\";"
 }
 
-resource "azurerm_resource_group" "eventhub_rg" {
-  name     = local.eventhub_resource_group_name
-  location = var.location
-
-  tags = local.tags
-}
-
 module "eventhub_namespace" {
   source = "./.terraform/modules/__v4__/eventhub"
 
