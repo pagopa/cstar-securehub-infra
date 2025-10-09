@@ -50,7 +50,10 @@ resource "azurerm_api_management_logger" "apim_logger" {
     instrumentation_key = azurerm_application_insights.idpay_application_insights.instrumentation_key
   }
 }
+
+### Action Group
 data "azurerm_monitor_action_group" "email" {
+  count               = var.env_short == "p" ? 1 : 0
   resource_group_name = var.monitor_resource_group_name
   name                = local.monitor_action_group_email_name
 }
