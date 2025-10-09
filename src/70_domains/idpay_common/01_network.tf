@@ -118,7 +118,7 @@ resource "azurerm_subnet_nat_gateway_association" "nat_gateway_association" {
 resource "azurerm_private_dns_a_record" "ingress_idpay" {
   name                = "idpay.itn"
   zone_name           = "${var.dns_zone_internal_prefix}.${var.external_domain}"
-  resource_group_name = local.vnet_core_rg_name
+  resource_group_name = local.vnet_legacy_core_rg
   ttl                 = 3600
   records             = [local.ingress_private_load_balancer_ip]
 }

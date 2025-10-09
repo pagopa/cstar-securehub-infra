@@ -4,6 +4,7 @@ locals {
   project_core      = "${var.prefix}-${var.env_short}-${var.location_short}-core"
   project_no_domain = "${var.prefix}-${var.env_short}-${var.location_short}"
   product           = "${var.prefix}-${var.env_short}"
+  project_entra     = "${var.prefix}-${var.env_short}-${var.domain}"
 
   # Default Domain Resource Group
   data_rg_name     = "${local.project}-data-rg"
@@ -58,12 +59,17 @@ locals {
     "azdo-${var.env}-${var.prefix}-app-deploy-v2"
   ])
 
+  ### ARGOCD
+  argocd_namespace    = "argocd"
+  argocd_internal_url = "argocd.${var.location_short}.${local.dns_zone_internal}"
+
   # 🍀 Cosmos DB Collection
   cosmos_db = {
     rtp = {
       rtps = {
         autoscale_max_throughput          = var.cosmos_collections_autoscale_max_throughput
         cosmos_collections_max_throughput = var.cosmos_collections_max_throughput
+        default_ttl_seconds               = -1
         indexes = [
           {
             keys   = ["_id"]
@@ -80,6 +86,7 @@ locals {
       activations = {
         autoscale_max_throughput          = var.cosmos_collections_autoscale_max_throughput
         cosmos_collections_max_throughput = var.cosmos_collections_max_throughput
+        default_ttl_seconds               = -1
         indexes = [
           {
             keys   = ["_id"]
@@ -88,12 +95,28 @@ locals {
           {
             keys   = ["fiscalCode"]
             unique = true
+          },
+          {
+            keys   = ["serviceProviderDebtor", "_id"]
+            unique = false
           }
         ]
       }
       deleted_activations = {
         autoscale_max_throughput          = var.cosmos_collections_autoscale_max_throughput
         cosmos_collections_max_throughput = var.cosmos_collections_max_throughput
+        default_ttl_seconds               = -1
+        indexes = [
+          {
+            keys   = ["_id"]
+            unique = true
+          }
+        ]
+      }
+      otps = {
+        autoscale_max_throughput          = var.cosmos_collections_autoscale_max_throughput
+        cosmos_collections_max_throughput = var.cosmos_collections_max_throughput
+        default_ttl_seconds               = var.cosmos_otp_ttl
         indexes = [
           {
             keys   = ["_id"]
@@ -111,6 +134,7 @@ locals {
         indexes                  = coll.indexes
         autoscale_max_throughput = coll.autoscale_max_throughput
         max_throughput           = coll.cosmos_collections_max_throughput
+        default_ttl_seconds      = coll.default_ttl_seconds
       }
     ]
   ])

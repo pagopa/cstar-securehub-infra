@@ -1,0 +1,118 @@
+{
+    "name": "IdpayMerchantCountersCopy",
+    "properties": {
+        "activities": [
+            {
+                "name": "Copy merchant counters collection",
+                "type": "Copy",
+                "dependsOn": [
+                    {
+                        "activity": "Clear merchant counters table",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "source": {
+                        "type": "CosmosDbMongoDbApiSource",
+                        "batchSize": 100
+                    },
+                    "sink": {
+                        "type": "AzureDataExplorerSink"
+                    },
+                    "enableStaging": false,
+                    "translator": {
+                        "type": "TabularTranslator",
+                        "mappings": [
+                            {
+                                "source": {
+                                    "path": "$['_id']"
+                                },
+                                "sink": {
+                                    "name": "_id"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['merchantId']"
+                                },
+                                "sink": {
+                                    "name": "merchantId"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['initiativeId']"
+                                },
+                                "sink": {
+                                    "name": "initiativeId"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['trxNumber']"
+                                },
+                                "sink": {
+                                    "name": "trxNumber"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['refundedNumber']"
+                                },
+                                "sink": {
+                                    "name": "refundedNumber"
+                                }
+                            }
+                        ]
+                    }
+                },
+                "inputs": [
+                    {
+                        "referenceName": "CosmosIdpayMerchantCounters",
+                        "type": "DatasetReference"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "referenceName": "DataExplorerIdpayMerchantCounters",
+                        "type": "DatasetReference"
+                    }
+                ]
+            },
+            {
+                "name": "Clear merchant counters table",
+                "type": "AzureDataExplorerCommand",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "command": ".clear table merchant_initiative_counters data",
+                    "commandTimeout": "00:20:00"
+                },
+                "linkedServiceName": {
+                    "referenceName": "idpay-Kusto-idpay-ls",
+                    "type": "LinkedServiceReference"
+                }
+            }
+        ],
+        "annotations": [],
+        "lastPublishTime": "2025-10-08T09:33:22Z"
+    },
+    "type": "Microsoft.DataFactory/factories/pipelines"
+}

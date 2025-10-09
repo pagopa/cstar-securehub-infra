@@ -31,7 +31,7 @@
                 <p>Il portale dedicato agli esercenti per gestire bonus e sconti </p>
                 <form action="${url.loginAction}" method="post">
                     <div class="login-card">
-                        <#if message?has_content>
+                        <#if message?has_content && message.type != "warning">
                             <div id="kc-error-message">
                                 <p>${message.summary}</p>
                             </div>

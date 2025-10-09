@@ -23,7 +23,7 @@ data "azurerm_virtual_network" "vnet_spoke_data" {
 
 data "azurerm_dns_zone" "public_cstar" {
   name                = local.public_dns_zone_name
-  resource_group_name = local.vnet_core_rg_name
+  resource_group_name = local.vnet_legacy_core_rg
 }
 
 data "azurerm_nat_gateway" "compute_nat_gateway" {
@@ -43,34 +43,29 @@ data "azurerm_dns_zone" "bonus_elettrodomestici_apex" {
 # Cosmos MongoDB private dns zone
 data "azurerm_private_dns_zone" "cosmos_mongo" {
   name                = "privatelink.mongo.cosmos.azure.com"
-  resource_group_name = local.vnet_core_rg_name
+  resource_group_name = local.vnet_legacy_core_rg
 }
 
 # Eventhub private dns zone
 data "azurerm_private_dns_zone" "eventhub" {
   name                = "privatelink.servicebus.windows.net"
-  resource_group_name = local.vnet_core_rg_name
+  resource_group_name = local.vnet_legacy_core_rg
 }
 
 # Redis private dns zone
 data "azurerm_private_dns_zone" "redis" {
   name                = "privatelink.redis.cache.windows.net"
-  resource_group_name = local.vnet_core_rg_name
-}
-
-data "azurerm_private_dns_zone" "servicebus" {
-  name                = "privatelink.servicebus.windows.net"
-  resource_group_name = local.vnet_core_rg_name
+  resource_group_name = local.vnet_legacy_core_rg
 }
 
 data "azurerm_private_dns_zone" "blob_storage" {
   name                = "privatelink.blob.core.windows.net"
-  resource_group_name = local.vnet_core_rg_name
+  resource_group_name = local.vnet_legacy_core_rg
 }
 
 data "azurerm_private_dns_zone" "storage_account_table" {
   name                = "privatelink.table.core.windows.net"
-  resource_group_name = local.vnet_core_rg_name
+  resource_group_name = local.vnet_legacy_core_rg
 }
 
 #

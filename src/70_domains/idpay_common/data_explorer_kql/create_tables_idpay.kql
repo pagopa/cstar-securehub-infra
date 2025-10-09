@@ -1,0 +1,60 @@
+.create table products (
+    _id:string,
+    productFileId:string,
+    organizationId:string,
+    status:string,
+    model:string,
+    productGroup:string,
+    category:string,
+    brand:string,
+    eprelCode:int,
+    productCode:string,
+    countryOfProduction:string,
+    energyClass:string,
+    capacity:string,
+    productName:string,
+    organizationName:string
+)
+
+.create table merchant (
+    _id:string,
+    acquirerId:string,
+    businessName:string,
+    legalOfficeAddress:string,
+    legalOfficeMunicipality:string,
+    legalOfficeProvince:string,
+    legalOfficeZipCode:string,
+    certifiedEmail:string,
+    fiscalCode:string,
+    vatNumber:string,
+    iban:string,
+    ibanHolder:string,
+    isEnabled:bool
+)
+
+.create table merchant_initiative_counters (
+    _id:string,
+    merchantId:string,
+    initiativeId:string,
+    trxNumber:int,
+    refoundNumber:int
+)
+
+.create table point_of_sales (
+    _id:string,
+    type:string,
+    franchiseName:string,
+    region:string,
+    province:string,
+    city:string,
+    zipCode:string,
+    address:string,
+    contactEmail:string,
+    contactName:string,
+    contactSurname:string,
+    channelEmail:string,
+    channelPhone:string,
+    channelGeolink:string,
+    channelWebsite:string,
+    merchantId:string
+)
