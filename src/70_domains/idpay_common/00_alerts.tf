@@ -2,7 +2,7 @@
 # Resource group per alert PARI
 # =========================================
 resource "azurerm_resource_group" "rg_pari_alerts" {
-  count    = var.env_short == "p" ? 1 : 0
+  count = contains(["p", "u"], var.env_short) ? 1 : 0
   name     = "${local.project}-pari-alerts-rg"
   location = var.location
   tags     = module.tag_config.tags
@@ -12,7 +12,7 @@ resource "azurerm_resource_group" "rg_pari_alerts" {
 # Portal Consent – post (5xx, 401, 429 errors over 5 minutes)
 # =============================================================
 resource "azurerm_monitor_scheduled_query_rules_alert" "portal_consent_save_5m_rules" {
-  count               = var.env_short == "p" ? 1 : 0
+  count = contains(["p", "u"], var.env_short) ? 1 : 0
   name                = "portal-consent-save-5xx-401-429-alert"
   resource_group_name = azurerm_resource_group.idpay_monitoring_rg.name
   location            = var.location
@@ -48,7 +48,7 @@ QUERY
 # Portal Consent – post (400 errors over 10 minutes)
 # =============================================================
 resource "azurerm_monitor_scheduled_query_rules_alert" "portal_consent_save_10m_rule" {
-  count               = var.env_short == "p" ? 1 : 0
+  count = contains(["p", "u"], var.env_short) ? 1 : 0
   name                = "portal-consent-save-400-alert"
   resource_group_name = azurerm_resource_group.idpay_monitoring_rg.name
   location            = var.location
@@ -84,7 +84,7 @@ QUERY
 # Portal Consent – get (5xx, 401, 429 errors over 5 minutes)
 # =======================================================================
 resource "azurerm_monitor_scheduled_query_rules_alert" "pari_portal_consent_get_5m_rules_alert" {
-  count               = var.env_short == "p" ? 1 : 0
+  count = contains(["p", "u"], var.env_short) ? 1 : 0
   name                = "pari-portal-consent-get-5xx-401-429-alert"
   resource_group_name = azurerm_resource_group.rg_pari_alerts[0].name
   location            = var.location
@@ -120,7 +120,7 @@ QUERY
 # Portal Consent – get (400 errors over 10 minutes)
 # =======================================================================
 resource "azurerm_monitor_scheduled_query_rules_alert" "pari_portal_consent_get_10m_rule_alert" {
-  count               = var.env_short == "p" ? 1 : 0
+  count = contains(["p", "u"], var.env_short) ? 1 : 0
   name                = "pari-portal-consent-get-400-alert"
   resource_group_name = azurerm_resource_group.rg_pari_alerts[0].name
   location            = var.location
@@ -156,7 +156,7 @@ QUERY
 # Product files – upload (5xx, 401, 429 errors over 5 minutes)
 # =======================================================================
 resource "azurerm_monitor_scheduled_query_rules_alert" "pari_product_files_upload_5m_rules_alert" {
-  count               = var.env_short == "p" ? 1 : 0
+  count = contains(["p", "u"], var.env_short) ? 1 : 0
   name                = "pari-product-files-upload-5xx-401-429-alert"
   resource_group_name = azurerm_resource_group.rg_pari_alerts[0].name
   location            = var.location
@@ -192,7 +192,7 @@ QUERY
 # Product files – upload (400 errors over 10 minutes)
 # =======================================================================
 resource "azurerm_monitor_scheduled_query_rules_alert" "pari_product_files_upload_10m_rule_alert" {
-  count               = var.env_short == "p" ? 1 : 0
+  count = contains(["p", "u"], var.env_short) ? 1 : 0
   name                = "pari-product-files-upload-400-alert"
   resource_group_name = azurerm_resource_group.rg_pari_alerts[0].name
   location            = var.location
@@ -228,7 +228,7 @@ QUERY
 # Product files – verify
 # =========================================
 resource "azurerm_monitor_scheduled_query_rules_alert" "pari_product_files_verify_alert" {
-  count               = var.env_short == "p" ? 1 : 0
+  count = contains(["p", "u"], var.env_short) ? 1 : 0
   name                = "pari-product-files-verify-alert"
   resource_group_name = azurerm_resource_group.rg_pari_alerts[0].name
   location            = var.location
@@ -263,7 +263,7 @@ QUERY
 # Products – update status
 # =========================================
 resource "azurerm_monitor_scheduled_query_rules_alert" "pari_products_update_status_alert" {
-  count               = var.env_short == "p" ? 1 : 0
+  count = contains(["p", "u"], var.env_short) ? 1 : 0
   name                = "pari-products-update-status-alert"
   resource_group_name = azurerm_resource_group.rg_pari_alerts[0].name
   location            = var.location
@@ -304,7 +304,7 @@ QUERY
 # GET products - 5xx Error Count
 # =========================================
 resource "azurerm_monitor_scheduled_query_rules_alert" "pari_get_products_5xx_alert" {
-  count               = var.env_short == "p" ? 1 : 0
+  count = contains(["p", "u"], var.env_short) ? 1 : 0
   name                = "pari-get-products-5xx-alert"
   resource_group_name = azurerm_resource_group.rg_pari_alerts[0].name
   location            = var.location
@@ -339,7 +339,7 @@ QUERY
 # GET products - 400 Error Count
 # =========================================
 resource "azurerm_monitor_scheduled_query_rules_alert" "pari_get_products_400_alert" {
-  count               = var.env_short == "p" ? 1 : 0
+  count = contains(["p", "u"], var.env_short) ? 1 : 0
   name                = "pari-get-products-400-alert"
   resource_group_name = azurerm_resource_group.rg_pari_alerts[0].name
   location            = var.location
@@ -374,7 +374,7 @@ QUERY
 # GET products - Availability
 # =========================================
 resource "azurerm_monitor_scheduled_query_rules_alert" "pari_get_products_availability_alert" {
-  count               = var.env_short == "p" ? 1 : 0
+  count = contains(["p", "u"], var.env_short) ? 1 : 0
   name                = "pari-get-products-availability-alert"
   resource_group_name = azurerm_resource_group.rg_pari_alerts[0].name
   location            = var.location
@@ -411,7 +411,7 @@ QUERY
 # User Permissions - 5xx, 401, 429 errors over 5 minutes
 # =======================================================================
 resource "azurerm_monitor_scheduled_query_rules_alert" "pari_user_permissions_5m_rules_alert" {
-  count               = var.env_short == "p" ? 1 : 0
+  count = contains(["p", "u"], var.env_short) ? 1 : 0
   name                = "pari-user-permissions-5m-rules-alert"
   resource_group_name = azurerm_resource_group.rg_pari_alerts[0].name
   location            = var.location
@@ -447,7 +447,7 @@ QUERY
 # User Permissions - 400 errors over 10 minutes
 # =======================================================================
 resource "azurerm_monitor_scheduled_query_rules_alert" "pari_user_permissions_10m_rule_alert" {
-  count               = var.env_short == "p" ? 1 : 0
+  count = contains(["p", "u"], var.env_short) ? 1 : 0
   name                = "pari-user-permissions-400-alert"
   resource_group_name = azurerm_resource_group.rg_pari_alerts[0].name
   location            = var.location
@@ -483,7 +483,7 @@ QUERY
 # Product files – list
 # =========================================
 resource "azurerm_monitor_scheduled_query_rules_alert" "pari_product_files_list_alert" {
-  count               = var.env_short == "p" ? 1 : 0
+  count = contains(["p", "u"], var.env_short) ? 1 : 0
   name                = "pari-product-files-list-alert"
   resource_group_name = azurerm_resource_group.rg_pari_alerts[0].name
   location            = var.location
@@ -519,7 +519,7 @@ QUERY
 # Error report download
 # =========================================
 resource "azurerm_monitor_scheduled_query_rules_alert" "pari_error_report_download_alert" {
-  count               = var.env_short == "p" ? 1 : 0
+  count = contains(["p", "u"], var.env_short) ? 1 : 0
   name                = "pari-error-report-download-alert"
   resource_group_name = azurerm_resource_group.rg_pari_alerts[0].name
   location            = var.location
@@ -555,7 +555,7 @@ QUERY
 # Batch list
 # =========================================
 resource "azurerm_monitor_scheduled_query_rules_alert" "pari_batch_list_alert" {
-  count               = var.env_short == "p" ? 1 : 0
+  count = contains(["p", "u"], var.env_short) ? 1 : 0
   name                = "pari-batch-list-alert"
   resource_group_name = azurerm_resource_group.rg_pari_alerts[0].name
   location            = var.location
@@ -591,7 +591,7 @@ QUERY
 # Institution by ID
 # =========================================
 resource "azurerm_monitor_scheduled_query_rules_alert" "pari_institution_by_id_alert" {
-  count               = var.env_short == "p" ? 1 : 0
+  count = contains(["p", "u"], var.env_short) ? 1 : 0
   name                = "pari-institution-by-id-alert"
   resource_group_name = azurerm_resource_group.rg_pari_alerts[0].name
   location            = var.location
@@ -627,7 +627,7 @@ QUERY
 # Institutions list
 # =========================================
 resource "azurerm_monitor_scheduled_query_rules_alert" "pari_institutions_list_alert" {
-  count               = var.env_short == "p" ? 1 : 0
+  count = contains(["p", "u"], var.env_short) ? 1 : 0
   name                = "pari-institutions-list-alert"
   resource_group_name = azurerm_resource_group.rg_pari_alerts[0].name
   location            = var.location
@@ -663,7 +663,7 @@ QUERY
 # Kafka Consumer - Absent Consumer Alert (5 min)
 # =======================================================
 resource "azurerm_monitor_scheduled_query_rules_alert" "pari_kafka_consumer_absent_alert" {
-  count               = var.env_short == "p" ? 1 : 0
+  count = contains(["p", "u"], var.env_short) ? 1 : 0
   name                = "pari-kafka-consumer-absent-alert"
   resource_group_name = azurerm_resource_group.rg_pari_alerts[0].name
   location            = var.location
@@ -699,7 +699,7 @@ QUERY
 # Kafka Consumer - Average Lag Alert (10 min)
 # =======================================================
 resource "azurerm_monitor_scheduled_query_rules_alert" "pari_kafka_consumer_avg_lag_alert" {
-  count               = var.env_short == "p" ? 1 : 0
+  count = contains(["p", "u"], var.env_short) ? 1 : 0
   name                = "pari-kafka-consumer-avg-lag-alert"
   resource_group_name = azurerm_resource_group.rg_pari_alerts[0].name
   location            = var.location
@@ -738,7 +738,7 @@ QUERY
 # Internal dependency – E-mail service
 # =======================================================
 resource "azurerm_monitor_scheduled_query_rules_alert" "pari_email_dependency_alert" {
-  count               = var.env_short == "p" ? 1 : 0
+  count = contains(["p", "u"], var.env_short) ? 1 : 0
   name                = "pari-email-dependency-alert"
   resource_group_name = azurerm_resource_group.rg_pari_alerts[0].name
   location            = var.location
@@ -775,7 +775,7 @@ QUERY
 # External dependency  – EPREL
 # =========================================
 resource "azurerm_monitor_scheduled_query_rules_alert" "pari_eprel_dependency_alert" {
-  count               = var.env_short == "p" ? 1 : 0
+  count = contains(["p", "u"], var.env_short) ? 1 : 0
   name                = "pari-eprel-dependency-alert"
   resource_group_name = azurerm_resource_group.rg_pari_alerts[0].name
   location            = var.location
