@@ -14,7 +14,7 @@ module "redis" {
   tags                = local.tags
 
   private_endpoint = {
-    subnet_id            = module.private_endpoint_redis_snet.id
+    subnet_id            = module.redis_snet.id
     private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_redis.id]
   }
 }

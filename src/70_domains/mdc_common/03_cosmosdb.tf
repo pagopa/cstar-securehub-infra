@@ -21,7 +21,7 @@ module "cosmos_account" {
   domain = var.domain
 
   # Network
-  subnet_id               = module.private_endpoint_cosmos_snet.id
+  subnet_id               = module.cosmos_snet.id
   private_endpoint_config =  {
     enabled                       = var.cosmos_mongo_db_params.private_endpoint_enabled
     name_mongo                    = "${local.project}-cosmos-pe"

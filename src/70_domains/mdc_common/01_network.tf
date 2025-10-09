@@ -1,4 +1,4 @@
-module "private_endpoint_cosmos_snet" {
+module "cosmos_snet" {
   source = "./.terraform/modules/__v4__/IDH/subnet"
 
   product_name        = var.prefix
@@ -16,7 +16,7 @@ module "private_endpoint_cosmos_snet" {
   ]
 }
 
-module "private_endpoint_eventhub_snet" {
+module "eventhub_snet" {
   source = "./.terraform/modules/__v4__/IDH/subnet"
 
   product_name        = var.prefix
@@ -33,7 +33,7 @@ module "private_endpoint_eventhub_snet" {
   ]
 }
 
-module "private_endpoint_storage_snet" {
+module "storage_snet" {
   source = "./.terraform/modules/__v4__/IDH/subnet"
 
   product_name        = var.prefix
@@ -50,7 +50,7 @@ module "private_endpoint_storage_snet" {
   ]
 }
 
-module "private_endpoint_redis_snet" {
+module "redis_snet" {
   source = "./.terraform/modules/__v4__/IDH/subnet"
 
   product_name        = var.prefix

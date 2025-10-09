@@ -15,9 +15,9 @@ module "eventhub_namespace" {
   capacity                 = var.ehns_capacity
   maximum_throughput_units = var.ehns_maximum_throughput_units
 
-  private_endpoint_subnet_id           = module.private_endpoint_eventhub_snet.subnet_id
+  private_endpoint_subnet_id           = module.eventhub_snet.subnet_id
   private_endpoint_created             = var.ehns_private_endpoint_is_present
-  private_endpoint_resource_group_name = module.private_endpoint_eventhub_snet.resource_group_name
+  private_endpoint_resource_group_name = module.eventhub_snet.resource_group_name
 
   public_network_access_enabled = var.ehns_public_network_access
 
