@@ -24,4 +24,10 @@ resource "azurerm_data_factory_custom_dataset" "datasets" {
 
   parameters  = lookup(each.value, "parameters", null)
   schema_json = lookup(each.value, "schema", null)
+
+  depends_on = [
+    azurerm_data_factory_linked_custom_service.adf_cosmosdb_linked_service,
+    azurerm_data_factory_linked_service_kusto.kusto,
+  ]
+
 }
