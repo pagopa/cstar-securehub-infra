@@ -1,9 +1,11 @@
 locals {
   pipelines = {
-    trigger_products          = "RdbProductCopy"
-    trigger_merchant          = "IdpayMerchantCopy"
-    trigger_merchant_counters = "IdpayMerchantCountersCopy"
-    trigger_pos               = "IdpayPoSCopy"
+    trigger_products                = "RdbProductCopy"
+    trigger_merchant                = "IdpayMerchantCopy"
+    trigger_merchant_counters       = "IdpayMerchantCountersCopy"
+    trigger_pos                     = "IdpayPoSCopy"
+    trigger_transaction             = "IdpayTransactionCopy"
+    trigger_transaction_in_progress = "IdpayTransactionInProgressCopy"
   }
 }
 
@@ -25,4 +27,8 @@ resource "azurerm_data_factory_trigger_schedule" "daily_triggers" {
     hours   = [0]
     minutes = [0]
   }
+
+  depends_on = [
+    azurerm_data_factory_pipeline.pipelines
+  ]
 }
