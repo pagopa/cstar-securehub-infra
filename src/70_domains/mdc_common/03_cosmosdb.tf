@@ -38,15 +38,6 @@ resource "azurerm_cosmosdb_mongo_database" "mdc" {
   name                = var.domain
   resource_group_name = data.azurerm_resource_group.mdc_data_rg.name
   account_name        = module.cosmos_account.name
-
-  throughput = var.cosmos_mongo_db_mdc_params.enable_autoscaling || var.cosmos_mongo_db_mdc_params.enable_serverless ? null : var.cosmos_mongo_db_mdc_params.throughput
-
-  dynamic "autoscale_settings" {
-    for_each = var.cosmos_mongo_db_mdc_params.enable_autoscaling && !var.cosmos_mongo_db_mdc_params.enable_serverless ? [""] : []
-    content {
-      max_throughput = var.cosmos_mongo_db_mdc_params.max_throughput
-    }
-  }
 }
 
 locals {

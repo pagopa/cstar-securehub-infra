@@ -59,8 +59,8 @@ data "azurerm_monitor_action_group" "email" {
 
 # 🛜 VNET
 data "azurerm_virtual_network" "vnet_core" {
-  name                = local.vnet_core_name
-  resource_group_name = local.vnet_core_resource_group_name
+  name                = local.vnet_legacy_name
+  resource_group_name = local.vnet_legacy_resource_group_name
 }
 
 # 🔎 DNS
@@ -76,12 +76,12 @@ data "azurerm_private_dns_zone" "cosmos" {
 
 data "azurerm_private_dns_zone" "eventhub" {
   name                = "privatelink.servicebus.windows.net"
-  resource_group_name = local.vnet_core_resource_group_name
+  resource_group_name = local.vnet_legacy_resource_group_name
 }
 
 data "azurerm_private_dns_zone" "privatelink_redis" {
   name                = "privatelink.redis.cache.windows.net"
-  resource_group_name = local.vnet_core_resource_group_name
+  resource_group_name = local.vnet_legacy_resource_group_name
 }
 
 # 🐳 Kubernetes Cluster

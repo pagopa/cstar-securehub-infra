@@ -5,14 +5,13 @@ locals {
 module "redis" {
   source = "./.terraform/modules/__v4__/IDH/redis"
 
+  name = "${local.project}-redis"
   product_name        = var.prefix
   env                 = var.env
   idh_resource_tier   = local.redis_idh_resource_tier
   location            = var.location
   resource_group_name = data.azurerm_resource_group.mdc_data_rg.name
   tags                = local.tags
-
-  name = "${local.project}-redis"
 
   private_endpoint = {
     subnet_id            = module.private_endpoint_redis_snet.id

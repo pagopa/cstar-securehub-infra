@@ -59,7 +59,7 @@ variable "is_feature_enabled" {
   description = "Features enabled in this domain"
 }
 
-variable "ingress_load_balancer_ip" {
+variable "ingress_private_load_balancer_ip" {
   type = string
 }
 
@@ -129,15 +129,6 @@ variable "cosmos_mongo_db_params" {
     is_virtual_network_filter_enabled = bool
     backup_continuous_enabled         = bool
     ip_range_filter                   = optional(list(string), null)
-  })
-}
-
-variable "cosmos_mongo_db_mdc_params" {
-  type = object({
-    enable_serverless  = bool
-    enable_autoscaling = bool
-    throughput         = number
-    max_throughput     = number
   })
 }
 

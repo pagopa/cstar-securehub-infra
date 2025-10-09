@@ -18,7 +18,7 @@ cidr_subnet_storage_mdc  = ["10.1.140.96/27"]
 cidr_subnet_redis_mdc    = ["10.1.140.128/27"]
 
 # 🐳 Kubernetes
-ingress_load_balancer_ip = "10.11.100.250"
+ingress_private_load_balancer_ip = "10.11.100.250"
 
 # 🔎 DNS
 external_domain          = "pagopa.it"
@@ -55,13 +55,6 @@ cosmos_mongo_db_params = {
     "52.187.184.26", "13.88.56.148", "40.91.218.243", "13.91.105.215",
     "4.210.172.107", "40.80.152.199", "13.95.130.121", "20.245.81.54", "40.118.23.126"
   ]
-}
-
-cosmos_mongo_db_mdc_params = {
-  enable_serverless  = false
-  enable_autoscaling = true
-  max_throughput     = 10000
-  throughput         = 1000
 }
 
 #
