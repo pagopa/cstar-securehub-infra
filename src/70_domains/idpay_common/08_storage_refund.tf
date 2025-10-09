@@ -13,7 +13,7 @@ module "storage_idpay_refund" {
   tags                = module.tag_config.tags
 
   # IDH Resources
-  idh_resource_tier = var.env_short != "prod" ? "basic_public" : "basic_public"
+  idh_resource_tier = "basic_public"
 
   # Storage Account Settings
   name   = replace("${local.project}-refund-sa", "-", "")
