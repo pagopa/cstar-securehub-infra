@@ -151,4 +151,5 @@ locals {
       soft_delete_period = "P7D"
     }
   }
+  monitor_action_group_email_name       = "pari-alerts-email"
 }

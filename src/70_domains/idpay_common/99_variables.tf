@@ -269,3 +269,8 @@ variable "oneidentity_base_url" {
   default     = null
   description = "OneIdentity base Url"
 }
+
+variable "monitor_resource_group_name" {
+  type        = string
+  description = "Monitor resource group name"
+}
