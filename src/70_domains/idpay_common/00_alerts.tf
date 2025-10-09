@@ -12,6 +12,7 @@ resource "azurerm_resource_group" "rg_pari_alerts" {
 # Portal Consent – post (5xx, 401, 429 errors over 5 minutes)
 # =============================================================
 resource "azurerm_monitor_scheduled_query_rules_alert" "portal_consent_save_5m_rules" {
+  count               = var.env_short == "p" ? 1 : 0
   name                = "portal-consent-save-5xx-401-429-alert"
   resource_group_name = azurerm_resource_group.idpay_monitoring_rg.name
   location            = var.location
@@ -46,6 +47,7 @@ QUERY
 # Portal Consent – post (400 errors over 10 minutes)
 # =============================================================
 resource "azurerm_monitor_scheduled_query_rules_alert" "portal_consent_save_10m_rule" {
+  count               = var.env_short == "p" ? 1 : 0
   name                = "portal-consent-save-400-alert"
   resource_group_name = azurerm_resource_group.idpay_monitoring_rg.name
   location            = var.location
