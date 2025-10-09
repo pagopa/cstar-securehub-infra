@@ -3,9 +3,37 @@
     "properties": {
         "activities": [
             {
-                "name": "Copy data1",
-                "type": "Copy",
+                "name": "Clear products table",
+                "type": "AzureDataExplorerCommand",
                 "dependsOn": [],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "command": ".clear table products data",
+                    "commandTimeout": "00:20:00"
+                },
+                "linkedServiceName": {
+                    "referenceName": "idpay-Kusto-idpay-ls",
+                    "type": "LinkedServiceReference"
+                }
+            },
+            {
+                "name": "Copy products collection",
+                "type": "Copy",
+                "dependsOn": [
+                    {
+                        "activity": "Clear products table",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
                 "policy": {
                     "timeout": "0.12:00:00",
                     "retry": 0,
@@ -25,6 +53,143 @@
                     "enableStaging": false,
                     "translator": {
                         "type": "TabularTranslator",
+                        "mappings": [
+                            {
+                                "source": {
+                                    "path": "$['_id']"
+                                },
+                                "sink": {
+                                    "name": "_id",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['productFileId']"
+                                },
+                                "sink": {
+                                    "name": "productFileId",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['organizationId']"
+                                },
+                                "sink": {
+                                    "name": "organizationId",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['status']"
+                                },
+                                "sink": {
+                                    "name": "status",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['model']"
+                                },
+                                "sink": {
+                                    "name": "model",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['productGroup']"
+                                },
+                                "sink": {
+                                    "name": "productGroup",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['category']"
+                                },
+                                "sink": {
+                                    "name": "category",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['brand']"
+                                },
+                                "sink": {
+                                    "name": "brand",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['eprelCode']"
+                                },
+                                "sink": {
+                                    "name": "eprelCode",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['productCode']"
+                                },
+                                "sink": {
+                                    "name": "productCode",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['countryOfProduction']"
+                                },
+                                "sink": {
+                                    "name": "countryOfProduction",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['energyClass']"
+                                },
+                                "sink": {
+                                    "name": "energyClass",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['capacity']"
+                                },
+                                "sink": {
+                                    "name": "capacity",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['productName']"
+                                },
+                                "sink": {
+                                    "name": "productName",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['organizationName']"
+                                },
+                                "sink": {
+                                    "name": "organizationName",
+                                    "type": "String"
+                                }
+                            }
+                        ],
                         "mapComplexValuesToString": true
                     }
                 },
@@ -43,7 +208,7 @@
             }
         ],
         "annotations": [],
-        "lastPublishTime": "2025-10-02T09:09:03Z"
+        "lastPublishTime": "2025-10-08T09:22:11Z"
     },
     "type": "Microsoft.DataFactory/factories/pipelines"
 }
