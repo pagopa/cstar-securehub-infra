@@ -97,6 +97,9 @@ module "eventhub_configuration" {
   ]
 }
 
+#-----------------------------------------------------------------------------------------------------------------------
+# KV
+#-----------------------------------------------------------------------------------------------------------------------
 resource "azurerm_key_vault_secret" "eventhub_primary_connection_strings" {
   for_each = var.is_feature_enabled.eventhub ? module.eventhub_configuration[0].key_ids : {}
 

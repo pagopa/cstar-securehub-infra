@@ -83,27 +83,6 @@ variable "dns_zone_internal_prefix" {
   description = "The DNS subdomain."
 }
 
-### NETWORK
-variable "cidr_subnet_cosmosdb_mdc" {
-  type        = list(string)
-  description = "Cosmos DB address space for mdc."
-}
-
-variable "cidr_subnet_eventhub_mdc" {
-  type        = list(string)
-  description = "Eventhub address space for mdc."
-}
-
-variable "cidr_subnet_storage_mdc" {
-  type        = list(string)
-  description = "Azure storage DB address space for mdc."
-}
-
-variable "cidr_subnet_redis_mdc" {
-  type        = list(string)
-  description = "Azure redis address space for mdc."
-}
-
 # CosmosDb
 
 variable "cosmos_mongo_db_params" {

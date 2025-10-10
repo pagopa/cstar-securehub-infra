@@ -155,6 +155,9 @@ module "cosmosdb_collections" {
   default_ttl_seconds = each.value.name == "retrieval" ? 1800 : null
 }
 
+#-----------------------------------------------------------------------------------------------------------------------
+# KV
+#-----------------------------------------------------------------------------------------------------------------------
 resource "azurerm_key_vault_secret" "cosmosdb_account_mongodb_connection_strings" {
   name         = "mongodb-connection-string"
   value        = module.cosmos_account.primary_connection_strings
@@ -165,6 +168,9 @@ resource "azurerm_key_vault_secret" "cosmosdb_account_mongodb_connection_strings
   tags = local.tags
 }
 
+#-----------------------------------------------------------------------------------------------------------------------
+# Alerts
+#-----------------------------------------------------------------------------------------------------------------------
 resource "azurerm_monitor_metric_alert" "cosmos_db_normalized_ru_exceeded" {
   count = var.is_feature_enabled.cosmos && var.env_short == "p" ? 1 : 0
 

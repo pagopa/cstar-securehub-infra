@@ -11,15 +11,6 @@ is_feature_enabled = {
   eventhub = true
 }
 
-### External resources
-
-
-# 🛜 Network
-cidr_subnet_cosmosdb_mdc = ["10.1.140.0/27"]
-cidr_subnet_eventhub_mdc = ["10.1.140.64/27"]
-cidr_subnet_storage_mdc  = ["10.1.140.96/27"]
-cidr_subnet_redis_mdc    = ["10.1.140.128/27"]
-
 # 🐳 Kubernetes
 ingress_private_load_balancer_ip = "10.11.100.250"
 
