@@ -28,7 +28,7 @@ QUERY
   }
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email[0].id]
+    action_group           = [azurerm_monitor_action_group.email[0].id]
     email_subject          = "[PARI] Portal Consent – save API alert (5xx/401/429)"
     custom_webhook_payload = "{}"
   }
@@ -64,7 +64,7 @@ QUERY
   }
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email[0].id]
+    action_group           = [azurerm_monitor_action_group.email[0].id]
     email_subject          = "[PARI] Portal Consent – save API alert (400)"
     custom_webhook_payload = "{}"
   }
@@ -100,7 +100,7 @@ QUERY
   }
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email[0].id]
+    action_group           = [azurerm_monitor_action_group.email[0].id]
     email_subject          = "[PARI] Portal Consent GET /consent alert (5xx/401/429)"
     custom_webhook_payload = "{}"
   }
@@ -136,7 +136,7 @@ QUERY
   }
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email[0].id]
+    action_group           = [azurerm_monitor_action_group.email[0].id]
     email_subject          = "[PARI] Portal Consent GET /consent alert (400)"
     custom_webhook_payload = "{}"
   }
@@ -172,7 +172,7 @@ QUERY
   }
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email[0].id]
+    action_group           = [azurerm_monitor_action_group.email[0].id]
     email_subject          = "[PARI] Product files – upload API alert (5xx/401/429)"
     custom_webhook_payload = "{}"
   }
@@ -208,7 +208,7 @@ QUERY
   }
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email[0].id]
+    action_group           = [azurerm_monitor_action_group.email[0].id]
     email_subject          = "[PARI] Product files – upload API alert (400)"
     custom_webhook_payload = "{}"
   }
@@ -238,7 +238,7 @@ AppRequests
 QUERY
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email[0].id]
+    action_group           = [azurerm_monitor_action_group.email[0].id]
     email_subject          = "[PARI] Product files verify alert"
     custom_webhook_payload = "{}"
   }
@@ -279,7 +279,7 @@ AppRequests
 QUERY
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email[0].id]
+    action_group           = [azurerm_monitor_action_group.email[0].id]
     email_subject          = "[PARI] Products update status alert"
     custom_webhook_payload = "{}"
   }
@@ -319,7 +319,7 @@ QUERY
   }
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email[0].id]
+    action_group           = [azurerm_monitor_action_group.email[0].id]
     email_subject          = "[PARI][CRITICAL] GET /products alert: High 5xx errors"
     custom_webhook_payload = "{}"
   }
@@ -354,7 +354,7 @@ QUERY
   }
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email[0].id]
+    action_group           = [azurerm_monitor_action_group.email[0].id]
     email_subject          = "[PARI][CRITICAL] GET /products alert: High 400 errors"
     custom_webhook_payload = "{}"
   }
@@ -391,7 +391,7 @@ QUERY
   }
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email[0].id]
+    action_group           = [azurerm_monitor_action_group.email[0].id]
     email_subject          = "[PARI][CRITICAL] GET /products alert: Availability is below 99%"
     custom_webhook_payload = "{}"
   }
@@ -427,7 +427,7 @@ QUERY
   }
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email[0].id]
+    action_group           = [azurerm_monitor_action_group.email[0].id]
     email_subject          = "[PARI][HIGH] User Permissions alert (5xx or 401/429)"
     custom_webhook_payload = "{}"
   }
@@ -463,7 +463,7 @@ QUERY
   }
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email[0].id]
+    action_group           = [azurerm_monitor_action_group.email[0].id]
     email_subject          = "[PARI][HIGH] User Permissions alert (400)"
     custom_webhook_payload = "{}"
   }
@@ -499,7 +499,7 @@ QUERY
   }
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email[0].id]
+    action_group           = [azurerm_monitor_action_group.email[0].id]
     email_subject          = "[PARI] Product files – list API alert (5xx)"
     custom_webhook_payload = "{}"
   }
@@ -535,7 +535,7 @@ QUERY
   }
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email[0].id]
+    action_group           = [azurerm_monitor_action_group.email[0].id]
     email_subject          = "[PARI] Error report download API alert (5xx)"
     custom_webhook_payload = "{}"
   }
@@ -571,7 +571,7 @@ QUERY
   }
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email[0].id]
+    action_group           = [azurerm_monitor_action_group.email[0].id]
     email_subject          = "[PARI] Batch list API alert (5xx)"
     custom_webhook_payload = "{}"
   }
@@ -607,7 +607,7 @@ QUERY
   }
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email[0].id]
+    action_group           = [azurerm_monitor_action_group.email[0].id]
     email_subject          = "[PARI] Institution by ID API alert (5xx)"
     custom_webhook_payload = "{}"
   }
@@ -638,7 +638,7 @@ AppRequests
 QUERY
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email[0].id]
+    action_group           = [azurerm_monitor_action_group.email[0].id]
     email_subject          = "[PARI] Institutions list API alert (5xx)"
     custom_webhook_payload = "{}"
   }
@@ -679,7 +679,7 @@ QUERY
   }
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email[0].id]
+    action_group           = [azurerm_monitor_action_group.email[0].id]
     email_subject          = "[PARI][HIGH] Kafka Consumer Absent: idpay-checkiban-eval-consumer-group"
     custom_webhook_payload = "{}"
   }
@@ -718,7 +718,7 @@ QUERY
   }
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email[0].id]
+    action_group           = [azurerm_monitor_action_group.email[0].id]
     email_subject          = "[PARI][HIGH] Kafka Consumer Lag Alert"
     custom_webhook_payload = "{}"
   }
@@ -750,7 +750,7 @@ AppDependencies
 QUERY
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email[0].id]
+    action_group           = [azurerm_monitor_action_group.email[0].id]
     email_subject          = "[PARI] Internal Email microservice dependency alert"
     custom_webhook_payload = "{}"
   }
@@ -787,7 +787,7 @@ AppDependencies
 QUERY
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email[0].id]
+    action_group           = [azurerm_monitor_action_group.email[0].id]
     email_subject          = "[PARI][HIGH] EPREL external dependency alert"
     custom_webhook_payload = "{}"
   }
