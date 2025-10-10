@@ -185,6 +185,22 @@
                                     "name": "merchantId",
                                     "type": "String"
                                 }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['creationDate.$date.$numberLong']"
+                                },
+                                "sink": {
+                                    "name": "creationDate"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['updateDate.$date.$numberLong']"
+                                },
+                                "sink": {
+                                    "name": "updateDate"
+                                }
                             }
                         ]
                     }
@@ -225,7 +241,7 @@
             }
         ],
         "annotations": [],
-        "lastPublishTime": "2025-10-08T09:33:22Z"
+        "lastPublishTime": "2025-10-08T10:37:09Z"
     },
     "type": "Microsoft.DataFactory/factories/pipelines"
 }

@@ -72,6 +72,30 @@
                                 "sink": {
                                     "name": "refundedNumber"
                                 }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['totalProvidedCents']"
+                                },
+                                "sink": {
+                                    "name": "totalProvidedCents"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['totalRefundedCents']"
+                                },
+                                "sink": {
+                                    "name": "totalRefundedCents"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['totalRefundedCents.$date.$numberLong']"
+                                },
+                                "sink": {
+                                    "name": "totalRefundedCents "
+                                }
                             }
                         ]
                     }
@@ -112,7 +136,7 @@
             }
         ],
         "annotations": [],
-        "lastPublishTime": "2025-10-08T09:33:22Z"
+        "lastPublishTime": "2025-10-08T10:38:06Z"
     },
     "type": "Microsoft.DataFactory/factories/pipelines"
 }

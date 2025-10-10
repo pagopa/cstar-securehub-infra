@@ -9,7 +9,7 @@ locals {
 resource "azurerm_data_factory_custom_dataset" "datasets" {
   for_each = local.dataset_templates
 
-  name            = each.value.name
+  name            = each.key
   data_factory_id = data.azurerm_data_factory.data_factory.id
   type            = each.value.type
 

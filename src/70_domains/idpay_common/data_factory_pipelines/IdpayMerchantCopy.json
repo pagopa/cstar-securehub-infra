@@ -136,6 +136,22 @@
                                 "sink": {
                                     "name": "isEnabled"
                                 }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['merchantId']"
+                                },
+                                "sink": {
+                                    "name": "merchantId"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['activationDate.$date.$numberLong']"
+                                },
+                                "sink": {
+                                    "name": "activationDate"
+                                }
                             }
                         ]
                     }
@@ -176,7 +192,7 @@
             }
         ],
         "annotations": [],
-        "lastPublishTime": "2025-10-08T09:33:22Z"
+        "lastPublishTime": "2025-10-08T10:49:56Z"
     },
     "type": "Microsoft.DataFactory/factories/pipelines"
 }

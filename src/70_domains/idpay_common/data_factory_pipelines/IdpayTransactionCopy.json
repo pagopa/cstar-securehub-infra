@@ -38,7 +38,7 @@
                                     "path": "$['_id']"
                                 },
                                 "sink": {
-                                    "name": "_id",
+                                    "name": "id",
                                     "type": "String"
                                 }
                             },
@@ -62,11 +62,11 @@
                             },
                             {
                                 "source": {
-                                    "path": "trxDate.$date.$numberLong"
+                                    "path": "trxDate.$date"
                                 },
                                 "sink": {
-                                    "name": "trxDate",
-                                    "type": "Datetime"
+                                    "name": "trxDateString",
+                                    "type": "String"
                                 }
                             },
                             {
@@ -242,11 +242,20 @@
                             },
                             {
                                 "source": {
+                                    "path": "$['initiatives'][0]"
+                                },
+                                "sink": {
+                                    "name": "initiatives",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
                                     "path": "$['rejectionReasons']"
                                 },
                                 "sink": {
                                     "name": "rejectionReasons",
-                                    "type": "string"
+                                    "type": "String"
                                 }
                             },
                             {
@@ -255,25 +264,106 @@
                                 },
                                 "sink": {
                                     "name": "initiativeRejectionReasons",
-                                    "type": "string"
+                                    "type": "String"
                                 }
                             },
                             {
                                 "source": {
-                                    "path": "$['initiatives']"
+                                    "path": "$['rewards']['68dd003ccce8c534d1da22bc']['providedRewardCents']"
                                 },
                                 "sink": {
-                                    "name": "initiatives",
-                                    "type": "string"
+                                    "name": "rewardProvidedRewardCents",
+                                    "type": "Long"
                                 }
                             },
                             {
                                 "source": {
-                                    "path": "$['rewards']"
+                                    "path": "$['rewards']['68dd003ccce8c534d1da22bc']['accruedRewardCents']"
                                 },
                                 "sink": {
-                                    "name": "rewards",
-                                    "type": "string"
+                                    "name": "rewardAccruedRewardCents",
+                                    "type": "Long"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['rewards']['68dd003ccce8c534d1da22bc']['capped']"
+                                },
+                                "sink": {
+                                    "name": "rewardCapped",
+                                    "type": "Boolean"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['rewards']['68dd003ccce8c534d1da22bc']['dailyCapped']"
+                                },
+                                "sink": {
+                                    "name": "rewardDailyCapped",
+                                    "type": "Boolean"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['rewards']['68dd003ccce8c534d1da22bc']['monthlyCapped']"
+                                },
+                                "sink": {
+                                    "name": "rewardMonthlyCapped",
+                                    "type": "Boolean"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['rewards']['68dd003ccce8c534d1da22bc']['yearlyCapped']"
+                                },
+                                "sink": {
+                                    "name": "rewardYearlyCapped",
+                                    "type": "Boolean"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['rewards']['68dd003ccce8c534d1da22bc']['weeklyCapped']"
+                                },
+                                "sink": {
+                                    "name": "rewardWeeklyCapped",
+                                    "type": "Boolean"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['rewards']['68dd003ccce8c534d1da22bc']['refund']"
+                                },
+                                "sink": {
+                                    "name": "rewardRefund",
+                                    "type": "Boolean"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['rewards']['68dd003ccce8c534d1da22bc']['completeRefund']"
+                                },
+                                "sink": {
+                                    "name": "rewardCompleteRefund",
+                                    "type": "Boolean"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['rewards']['68dd003ccce8c534d1da22bc']['counters']['exhaustedBudget']"
+                                },
+                                "sink": {
+                                    "name": "rewardCountersExhaustedBudget",
+                                    "type": "Boolean"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['rewards']['68dd003ccce8c534d1da22bc']['counters']['initiativeBudgetCents']"
+                                },
+                                "sink": {
+                                    "name": "rewardCountersInitiativeBudgetCents",
+                                    "type": "Long"
                                 }
                             },
                             {
@@ -323,29 +413,20 @@
                             },
                             {
                                 "source": {
-                                    "path": "trxChargeDate.$date.$numberLong"
+                                    "path": "trxChargeDate.$date"
                                 },
                                 "sink": {
-                                    "name": "trxChargeDate",
-                                    "type": "Datetime"
+                                    "name": "trxChargeDateString",
+                                    "type": "String"
                                 }
                             },
                             {
                                 "source": {
-                                    "path": "$['refundInfo']"
+                                    "path": "elaborationDateTime.$date"
                                 },
                                 "sink": {
-                                    "name": "refundInfo",
-                                    "type": "string"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "elaborationDateTime.$date.$numberLong"
-                                },
-                                "sink": {
-                                    "name": "elaborationDateTime",
-                                    "type": "Datetime"
+                                    "name": "elaborationDateTimeString",
+                                    "type": "String"
                                 }
                             },
                             {
@@ -359,11 +440,20 @@
                             },
                             {
                                 "source": {
-                                    "path": "$['additionalProperties']"
+                                    "path": "$['additionalProperties']['productGtin']"
                                 },
                                 "sink": {
-                                    "name": "additionalProperties",
-                                    "type": "string"
+                                    "name": "additionalProductGtin",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['additionalProperties']['productName']"
+                                },
+                                "sink": {
+                                    "name": "additionalProductName",
+                                    "type": "String"
                                 }
                             }
                         ],
@@ -404,10 +494,90 @@
                     "referenceName": "idpay-Kusto-idpay-ls",
                     "type": "LinkedServiceReference"
                 }
+            },
+            {
+                "name": "Extract RejectionReasons",
+                "type": "AzureDataExplorerCommand",
+                "dependsOn": [
+                    {
+                        "activity": "Convert Date",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "command": ".set-or-replace transaction_rejection_reasons <|\ntransaction\n| extend rejectionArray = parse_json(rejectionReasons)\n| mv-expand rejectionArray\n| project transactionId = _id, rejectionReason = tostring(rejectionArray)",
+                    "commandTimeout": "00:20:00"
+                },
+                "linkedServiceName": {
+                    "referenceName": "idpay-Kusto-idpay-ls",
+                    "type": "LinkedServiceReference"
+                }
+            },
+            {
+                "name": "Extract InitiativeRejectionReasons",
+                "type": "AzureDataExplorerCommand",
+                "dependsOn": [
+                    {
+                        "activity": "Extract RejectionReasons",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "command": ".set-or-replace transaction_initiative_rejection_reasons <|\ntransaction\n| extend initiativeRejectionMap = parse_json(initiativeRejectionReasons)\n| mv-expand initiativeId = bag_keys(initiativeRejectionMap)\n| extend initiativeId = tostring(initiativeId)\n| extend rejectionList = initiativeRejectionMap[initiativeId]\n| mv-expand rejectionReason = rejectionList\n| project transactionId = _id, initiativeId, rejectionReason = tostring(rejectionReason)",
+                    "commandTimeout": "00:20:00"
+                },
+                "linkedServiceName": {
+                    "referenceName": "idpay-Kusto-idpay-ls",
+                    "type": "LinkedServiceReference"
+                }
+            },
+            {
+                "name": "Convert Date",
+                "type": "AzureDataExplorerCommand",
+                "dependsOn": [
+                    {
+                        "activity": "Copy transaction collection",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "command": ".set-or-replace transaction <|\ntransaction\n| extend \n    trxDate = unixtime_milliseconds_todatetime(tolong(trxDateString)),\n    trxChargeDate = unixtime_milliseconds_todatetime(tolong(trxChargeDateString)),\n    elaborationDateTime = unixtime_milliseconds_todatetime(tolong(elaborationDateTimeString))",
+                    "commandTimeout": "00:20:00"
+                },
+                "linkedServiceName": {
+                    "referenceName": "idpay-Kusto-idpay-ls",
+                    "type": "LinkedServiceReference"
+                }
             }
         ],
         "annotations": [],
-        "lastPublishTime": "2025-10-09T11:30:01Z"
+        "lastPublishTime": "2025-10-10T11:15:48Z"
     },
     "type": "Microsoft.DataFactory/factories/pipelines"
 }

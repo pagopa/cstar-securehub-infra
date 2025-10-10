@@ -8,7 +8,7 @@ locals {
 resource "azurerm_data_factory_pipeline" "pipelines" {
   for_each = local.pipeline_templates
 
-  name            = each.value.name
+  name            = each.key
   data_factory_id = data.azurerm_data_factory.data_factory.id
   annotations     = []
 
