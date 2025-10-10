@@ -1,7 +1,7 @@
 locals {
   pipeline_templates = {
-    for file in fileset("${path.module}/data_factory_pipeline", "*.json") :
-    trimsuffix(file, ".json") => jsondecode(file("${path.module}/pipeline_templates/${file}"))
+    for file in fileset("${path.module}/data_factory_pipelines", "*.json") :
+    jsondecode(file("${path.module}/data_factory_pipelines/${file}")).name => jsondecode(file("${path.module}/data_factory_pipelines/${file}"))
   }
 }
 
