@@ -46,7 +46,7 @@ resource "azurerm_api_management_logger" "apim_logger" {
 
 ### Action Group
 resource "azurerm_monitor_action_group" "email" {
-  count = contains(["p", "u"], var.env_short) ? 1 : 0
+  count               = contains(["p", "u"], var.env_short) ? 1 : 0
   name                = local.monitor_action_group_email_name
   resource_group_name = local.monitor_rg
   short_name          = "pari-email"
