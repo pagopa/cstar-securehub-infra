@@ -1,10 +1,3 @@
-resource "azurerm_resource_group" "idpay_monitoring_rg" {
-  name     = "${local.project}-monitor-rg"
-  location = var.location
-
-  tags = module.tag_config.tags
-}
-
 resource "azurerm_log_analytics_workspace" "log_analytics_workspace" {
   name                = "${local.project}-law"
   location            = data.azurerm_resource_group.idpay_monitoring_rg.location
