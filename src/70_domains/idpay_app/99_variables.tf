@@ -393,3 +393,14 @@ variable "rate_limit_merchants_portal_product" {
   description = "Rate limit for merchants portal product"
   default     = 2500
 }
+
+variable "namespace" {
+  type        = string
+  description = "Kubernetes namespace where the cancel-pending-transactions CronJob"
+}
+
+variable "service_name" {
+  type        = string
+  description = "Name of the Kubernetes Service"
+}
+

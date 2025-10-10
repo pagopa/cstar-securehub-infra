@@ -120,3 +120,7 @@ rate_limit_mil_merchant_product     = 2000
 rate_limit_minint_product           = 1000
 rate_limit_portal_product           = 2500
 rate_limit_merchants_portal_product = 2500
+
+namespace    = "dev"
+service_name = "serviceName"
+
