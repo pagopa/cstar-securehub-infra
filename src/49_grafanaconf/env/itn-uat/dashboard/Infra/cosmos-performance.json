@@ -101,16 +101,36 @@
       "targets": [
         {
           "azureMonitor": {
-            "alias": "{{ metric }} - {{ resourcename }}",
-            "allowedTimeGrainsMs": [],
-            "customNamespace": "$mongodb",
-            "dimensionFilters": [],
-            "metricNamespace": "Microsoft.DocumentDB/databaseAccounts",
-            "region": "",
+            "aggregation": "Maximum",
+            "alias": "{{CollectionName}}",
+            "allowedTimeGrainsMs": [
+              60000,
+              300000,
+              3600000,
+              86400000
+            ],
+            "customNamespace": "Microsoft.DocumentDB/DatabaseAccounts",
+            "dimensionFilters": [
+              {
+                "dimension": "DatabaseName",
+                "filters": [
+                  "idpay"
+                ],
+                "operator": "eq"
+              },
+              {
+                "dimension": "CollectionName",
+                "filters": [],
+                "operator": "eq"
+              }
+            ],
+            "metricName": "AutoscaledRU",
+            "metricNamespace": "microsoft.documentdb/databaseaccounts",
+            "region": "italynorth",
             "resources": [
               {
                 "metricNamespace": "Microsoft.DocumentDB/databaseAccounts",
-                "region": "",
+                "region": "italynorth",
                 "resourceGroup": "$mongodbrg",
                 "resourceName": "$mongodb",
                 "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
@@ -123,7 +143,8 @@
             "uid": "azure-monitor-oob"
           },
           "queryType": "Azure Monitor",
-          "refId": "A"
+          "refId": "A",
+          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
         }
       ],
       "title": "Max Autoscaled RU for $mongodb by CollectionName where DatabaseName = 'idpay'",
@@ -210,15 +231,35 @@
         {
           "azureMonitor": {
             "aggregation": "Maximum",
-            "alias": "{{ metric }} - {{ resourcename }}",
-            "customNamespace": "microsoft.documentdb/databaseaccounts",
+            "alias": "{{CollectionName}}",
+            "allowedTimeGrainsMs": [
+              60000,
+              300000,
+              3600000,
+              86400000
+            ],
+            "customNamespace": "Microsoft.DocumentDB/DatabaseAccounts",
+            "dimensionFilters": [
+              {
+                "dimension": "DatabaseName",
+                "filters": [
+                  "idpay"
+                ],
+                "operator": "eq"
+              },
+              {
+                "dimension": "CollectionName",
+                "filters": [],
+                "operator": "eq"
+              }
+            ],
             "metricName": "NormalizedRUConsumption",
-            "metricNamespace": "Microsoft.DocumentDB/databaseAccounts",
-            "region": "",
+            "metricNamespace": "microsoft.documentdb/databaseaccounts",
+            "region": "italynorth",
             "resources": [
               {
                 "metricNamespace": "Microsoft.DocumentDB/databaseAccounts",
-                "region": "",
+                "region": "italynorth",
                 "resourceGroup": "$mongodbrg",
                 "resourceName": "$mongodb",
                 "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
@@ -231,7 +272,8 @@
             "uid": "azure-monitor-oob"
           },
           "queryType": "Azure Monitor",
-          "refId": "A"
+          "refId": "A",
+          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
         }
       ],
       "title": "Max Normalized RU Consumption for $mongodb by Multiple Dimensions",
@@ -615,5 +657,5 @@
   "timezone": "browser",
   "title": "Cosmos monitoring for performance test",
   "uid": "af0mqao7rtmv4b",
-  "version": 17
+  "version": 19
 }
