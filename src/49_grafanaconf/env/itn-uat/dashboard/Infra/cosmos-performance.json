@@ -133,7 +133,7 @@
                 "region": "italynorth",
                 "resourceGroup": "$mongodbrg",
                 "resourceName": "$mongodb",
-                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+                "subscription": "$subscription"
               }
             ],
             "timeGrain": "auto"
@@ -144,7 +144,7 @@
           },
           "queryType": "Azure Monitor",
           "refId": "A",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "$subscription"
         }
       ],
       "title": "Max Autoscaled RU for $mongodb by CollectionName where DatabaseName = 'idpay'",
@@ -262,7 +262,7 @@
                 "region": "italynorth",
                 "resourceGroup": "$mongodbrg",
                 "resourceName": "$mongodb",
-                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+                "subscription": "$subscription"
               }
             ],
             "timeGrain": "auto"
@@ -273,7 +273,7 @@
           },
           "queryType": "Azure Monitor",
           "refId": "A",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "$subscription"
         }
       ],
       "title": "Max Normalized RU Consumption for $mongodb by Multiple Dimensions",
@@ -407,7 +407,7 @@
                 "region": "italynorth",
                 "resourceGroup": "$mongodbrg",
                 "resourceName": "$mongodb",
-                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+                "subscription": "$subscription"
               }
             ],
             "timeGrain": "auto"
@@ -418,7 +418,7 @@
           },
           "queryType": "Azure Monitor",
           "refId": "A",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "$subscription"
         }
       ],
       "title": "Count Mongo Requests for $mongodb by Multiple Dimensions where DatabaseName = 'idpay'",
@@ -553,7 +553,7 @@
                 "region": "italynorth",
                 "resourceGroup": "$mongodbrg",
                 "resourceName": "$mongodb",
-                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+                "subscription": "$subscription"
               }
             ],
             "timeGrain": "auto"
@@ -564,7 +564,7 @@
           },
           "queryType": "Azure Monitor",
           "refId": "A",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "$subscription"
         }
       ],
       "title": "Avg Mongo Request Charge for $mongodb by Multiple Dimensions where DatabaseName = 'idpay'",
