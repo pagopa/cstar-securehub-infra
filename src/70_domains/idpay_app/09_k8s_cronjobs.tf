@@ -8,7 +8,7 @@ resource "kubernetes_cron_job_v1" "cancel_pending_transactions" {
   }
 
   spec {
-    schedule = "0 4 * * *"  # ogni giorno alle 04:00 UTC
+    schedule           = "0 4 * * *" # ogni giorno alle 04:00 UTC
     concurrency_policy = "Forbid"
 
     job_template {
@@ -29,7 +29,7 @@ resource "kubernetes_cron_job_v1" "cancel_pending_transactions" {
             container {
               name  = "cancel-pending-transactions"
               image = "curlimages/curl:8.1.2"
-              args  = [
+              args = [
                 "-X", "DELETE",
                 "https://${local.idpay_ingress_url}/idpaypayment/idpay/payment/pendingTransactions"
               ]
