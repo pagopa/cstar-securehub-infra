@@ -555,10 +555,10 @@
           "refId": "A",
           "region": "italynorth",
           "resourceGroup": "$mongodbrg",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "$subscription"
         },
         "refresh": 1,
-        "regex": "",
+        "regex": "/.+mongodb.+/",
         "type": "query"
       },
       {
@@ -579,10 +579,30 @@
           "queryType": "Azure Resource Groups",
           "refId": "A",
           "region": "italynorth",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "$subscription"
         },
         "refresh": 1,
         "regex": "/.+idpay-data.+/",
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "DEV-CSTAR",
+          "value": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+        },
+        "definition": "",
+        "name": "subscription",
+        "options": [],
+        "query": {
+          "azureLogAnalytics": {
+            "query": "",
+            "resources": []
+          },
+          "queryType": "Azure Subscriptions",
+          "refId": "A"
+        },
+        "refresh": 1,
+        "regex": "",
         "type": "query"
       }
     ]
@@ -595,5 +615,5 @@
   "timezone": "browser",
   "title": "Cosmos monitoring for performance test",
   "uid": "af0mqao7rtmv4b",
-  "version": 14
+  "version": 17
 }
