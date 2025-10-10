@@ -302,9 +302,11 @@
       "options": {
         "graphMode": "none",
         "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
+          "calcs": [
+            "sum"
+          ],
+          "displayMode": "table",
+          "placement": "right",
           "showLegend": true
         },
         "tooltip": {
@@ -445,9 +447,12 @@
       "options": {
         "graphMode": "none",
         "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
+          "calcs": [
+            "mean",
+            "max"
+          ],
+          "displayMode": "table",
+          "placement": "right",
           "showLegend": true
         },
         "tooltip": {
@@ -577,7 +582,7 @@
           "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
         },
         "refresh": 1,
-        "regex": "/.+idpay-data.+",
+        "regex": "/.+idpay-data.+/",
         "type": "query"
       }
     ]
@@ -590,5 +595,5 @@
   "timezone": "browser",
   "title": "Cosmos monitoring for performance test",
   "uid": "af0mqao7rtmv4b",
-  "version": 10
+  "version": 14
 }
