@@ -8,7 +8,7 @@ resource "kubernetes_cron_job_v1" "cancel_pending_transactions" {
   }
 
   spec {
-    schedule           = "0 4 * * *" # ogni giorno alle 04:00 UTC
+    schedule           = "0 2 * * *" # ogni giorno alle 02:00 UTC
     concurrency_policy = "Forbid"
 
     job_template {
