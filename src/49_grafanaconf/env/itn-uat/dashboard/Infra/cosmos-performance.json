@@ -101,18 +101,18 @@
       "targets": [
         {
           "azureMonitor": {
-            "aggregation": "Maximum",
             "alias": "{{ metric }} - {{ resourcename }}",
-            "customNamespace": "microsoft.documentdb/databaseaccounts",
-            "metricName": "AutoscaledRU",
+            "allowedTimeGrainsMs": [],
+            "customNamespace": "$mongodb",
+            "dimensionFilters": [],
             "metricNamespace": "Microsoft.DocumentDB/databaseAccounts",
             "region": "",
             "resources": [
               {
                 "metricNamespace": "Microsoft.DocumentDB/databaseAccounts",
                 "region": "",
-                "resourceGroup": "cstar-d-itn-idpay-data-rg",
-                "resourceName": "cstar-d-itn-idpay-mongodb-account",
+                "resourceGroup": "$mongodbrg",
+                "resourceName": "$mongodb",
                 "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
               }
             ],
@@ -126,7 +126,7 @@
           "refId": "A"
         }
       ],
-      "title": "Max Autoscaled RU for cstar-d-itn-idpay-mongodb-account by CollectionName where DatabaseName = 'idpay'",
+      "title": "Max Autoscaled RU for $mongodb by CollectionName where DatabaseName = 'idpay'",
       "type": "timeseries"
     },
     {
@@ -219,8 +219,8 @@
               {
                 "metricNamespace": "Microsoft.DocumentDB/databaseAccounts",
                 "region": "",
-                "resourceGroup": "cstar-d-itn-idpay-data-rg",
-                "resourceName": "cstar-d-itn-idpay-mongodb-account",
+                "resourceGroup": "$mongodbrg",
+                "resourceName": "$mongodb",
                 "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
               }
             ],
@@ -234,7 +234,7 @@
           "refId": "A"
         }
       ],
-      "title": "Max Normalized RU Consumption for cstar-d-itn-idpay-mongodb-account by Multiple Dimensions",
+      "title": "Max Normalized RU Consumption for $mongodb by Multiple Dimensions",
       "type": "timeseries"
     },
     {
@@ -302,9 +302,11 @@
       "options": {
         "graphMode": "none",
         "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
+          "calcs": [
+            "sum"
+          ],
+          "displayMode": "table",
+          "placement": "right",
           "showLegend": true
         },
         "tooltip": {
@@ -318,17 +320,51 @@
         {
           "azureMonitor": {
             "aggregation": "Count",
-            "alias": "{{ metric }} - {{ resourcename }}",
-            "customNamespace": "microsoft.documentdb/databaseaccounts",
+            "alias": "{{CollectionName}} - {{CommandName}} - {{ErrorCode}}",
+            "allowedTimeGrainsMs": [
+              60000,
+              300000,
+              900000,
+              1800000,
+              3600000,
+              21600000,
+              43200000,
+              86400000
+            ],
+            "customNamespace": "Microsoft.DocumentDB/DatabaseAccounts",
+            "dimensionFilters": [
+              {
+                "dimension": "DatabaseName",
+                "filters": [
+                  "idpay"
+                ],
+                "operator": "eq"
+              },
+              {
+                "dimension": "CollectionName",
+                "filters": [],
+                "operator": "eq"
+              },
+              {
+                "dimension": "CommandName",
+                "filters": [],
+                "operator": "eq"
+              },
+              {
+                "dimension": "ErrorCode",
+                "filters": [],
+                "operator": "eq"
+              }
+            ],
             "metricName": "MongoRequests",
-            "metricNamespace": "Microsoft.DocumentDB/databaseAccounts",
-            "region": "",
+            "metricNamespace": "microsoft.documentdb/databaseaccounts",
+            "region": "italynorth",
             "resources": [
               {
-                "metricNamespace": "Microsoft.DocumentDB/databaseAccounts",
-                "region": "",
-                "resourceGroup": "cstar-d-itn-idpay-data-rg",
-                "resourceName": "cstar-d-itn-idpay-mongodb-account",
+                "metricNamespace": "microsoft.documentdb/databaseaccounts",
+                "region": "italynorth",
+                "resourceGroup": "$mongodbrg",
+                "resourceName": "$mongodb",
                 "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
               }
             ],
@@ -339,10 +375,11 @@
             "uid": "azure-monitor-oob"
           },
           "queryType": "Azure Monitor",
-          "refId": "A"
+          "refId": "A",
+          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
         }
       ],
-      "title": "Count Mongo Requests for cstar-d-itn-idpay-mongodb-account by Multiple Dimensions where DatabaseName = 'idpay'",
+      "title": "Count Mongo Requests for $mongodb by Multiple Dimensions where DatabaseName = 'idpay'",
       "type": "timeseries"
     },
     {
@@ -410,9 +447,12 @@
       "options": {
         "graphMode": "none",
         "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
+          "calcs": [
+            "mean",
+            "max"
+          ],
+          "displayMode": "table",
+          "placement": "right",
           "showLegend": true
         },
         "tooltip": {
@@ -426,17 +466,51 @@
         {
           "azureMonitor": {
             "aggregation": "Average",
-            "alias": "{{ metric }} - {{ resourcename }}",
-            "customNamespace": "microsoft.documentdb/databaseaccounts",
+            "alias": "{{CollectionName}} - {{CommandName}} - {{ErrorCode}}",
+            "allowedTimeGrainsMs": [
+              60000,
+              300000,
+              900000,
+              1800000,
+              3600000,
+              21600000,
+              43200000,
+              86400000
+            ],
+            "customNamespace": "Microsoft.DocumentDB/DatabaseAccounts",
+            "dimensionFilters": [
+              {
+                "dimension": "DatabaseName",
+                "filters": [
+                  "idpay"
+                ],
+                "operator": "eq"
+              },
+              {
+                "dimension": "CollectionName",
+                "filters": [],
+                "operator": "eq"
+              },
+              {
+                "dimension": "CommandName",
+                "filters": [],
+                "operator": "eq"
+              },
+              {
+                "dimension": "ErrorCode",
+                "filters": [],
+                "operator": "eq"
+              }
+            ],
             "metricName": "MongoRequestCharge",
-            "metricNamespace": "Microsoft.DocumentDB/databaseAccounts",
-            "region": "",
+            "metricNamespace": "microsoft.documentdb/databaseaccounts",
+            "region": "italynorth",
             "resources": [
               {
                 "metricNamespace": "Microsoft.DocumentDB/databaseAccounts",
-                "region": "",
-                "resourceGroup": "cstar-d-itn-idpay-data-rg",
-                "resourceName": "cstar-d-itn-idpay-mongodb-account",
+                "region": "italynorth",
+                "resourceGroup": "$mongodbrg",
+                "resourceName": "$mongodb",
                 "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
               }
             ],
@@ -447,10 +521,11 @@
             "uid": "azure-monitor-oob"
           },
           "queryType": "Azure Monitor",
-          "refId": "A"
+          "refId": "A",
+          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
         }
       ],
-      "title": "Avg Mongo Request Charge for cstar-d-itn-idpay-mongodb-account by Multiple Dimensions where DatabaseName = 'idpay'",
+      "title": "Avg Mongo Request Charge for $mongodb by Multiple Dimensions where DatabaseName = 'idpay'",
       "type": "timeseries"
     }
   ],
@@ -459,7 +534,58 @@
   "schemaVersion": 41,
   "tags": [],
   "templating": {
-    "list": []
+    "list": [
+      {
+        "current": {
+          "text": "cstar-d-itn-idpay-mongodb-account",
+          "value": "cstar-d-itn-idpay-mongodb-account"
+        },
+        "definition": "",
+        "name": "mongodb",
+        "options": [],
+        "query": {
+          "azureLogAnalytics": {
+            "query": "",
+            "resources": [
+              "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/cstar-d-itn-idpay-data-rg/providers/Microsoft.DocumentDB/databaseAccounts/cstar-d-itn-idpay-mongodb-account"
+            ]
+          },
+          "namespace": "microsoft.documentdb/databaseaccounts",
+          "queryType": "Azure Resource Names",
+          "refId": "A",
+          "region": "italynorth",
+          "resourceGroup": "$mongodbrg",
+          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+        },
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "cstar-d-itn-idpay-data-rg",
+          "value": "cstar-d-itn-idpay-data-rg"
+        },
+        "definition": "",
+        "name": "mongodbrg",
+        "options": [],
+        "query": {
+          "azureLogAnalytics": {
+            "query": "",
+            "resources": [
+              "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/cstar-d-itn-idpay-data-rg/providers/Microsoft.DocumentDB/databaseAccounts/cstar-d-itn-idpay-mongodb-account"
+            ]
+          },
+          "queryType": "Azure Resource Groups",
+          "refId": "A",
+          "region": "italynorth",
+          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+        },
+        "refresh": 1,
+        "regex": "/.+idpay-data.+/",
+        "type": "query"
+      }
+    ]
   },
   "time": {
     "from": "now-15m",
@@ -469,5 +595,5 @@
   "timezone": "browser",
   "title": "Cosmos monitoring for performance test",
   "uid": "af0mqao7rtmv4b",
-  "version": 2
+  "version": 14
 }
