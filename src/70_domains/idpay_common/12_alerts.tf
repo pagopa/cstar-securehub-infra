@@ -1,20 +1,10 @@
-# =========================================
-# Resource group per alert PARI
-# =========================================
-resource "azurerm_resource_group" "rg_pari_alerts" {
-  count    = contains(["p", "u"], var.env_short) ? 1 : 0
-  name     = "${local.project}-pari-alerts-rg"
-  location = var.location
-  tags     = module.tag_config.tags
-}
-
 # =============================================================
 # Portal Consent – post (5xx, 401, 429 errors over 5 minutes)
 # =============================================================
 resource "azurerm_monitor_scheduled_query_rules_alert" "portal_consent_save_5m_rules" {
   count               = contains(["p", "u"], var.env_short) ? 1 : 0
   name                = "portal-consent-save-5xx-401-429-alert"
-  resource_group_name = azurerm_resource_group.rg_pari_alerts[0].name
+  resource_group_name = azurerm_resource_group.idpay_monitoring_rg.name
   location            = var.location
 
   description = "Alert on POST /idpay-itn/register/consent errors (5xx > 5/5m; 401/429 > 5/5m)"
@@ -50,7 +40,7 @@ QUERY
 resource "azurerm_monitor_scheduled_query_rules_alert" "portal_consent_save_10m_rule" {
   count               = contains(["p", "u"], var.env_short) ? 1 : 0
   name                = "portal-consent-save-400-alert"
-  resource_group_name = azurerm_resource_group.rg_pari_alerts[0].name
+  resource_group_name = azurerm_resource_group.idpay_monitoring_rg.name
   location            = var.location
 
   description = "Alert on POST /idpay-itn/register/consent errors (400 > 50/10m)"
@@ -86,7 +76,7 @@ QUERY
 resource "azurerm_monitor_scheduled_query_rules_alert" "pari_portal_consent_get_5m_rules_alert" {
   count               = contains(["p", "u"], var.env_short) ? 1 : 0
   name                = "pari-portal-consent-get-5xx-401-429-alert"
-  resource_group_name = azurerm_resource_group.rg_pari_alerts[0].name
+  resource_group_name = azurerm_resource_group.idpay_monitoring_rg.name
   location            = var.location
 
   description = "Alert on GET /idpay-itn/register/consent errors (5xx > 5/5m; 401/429 > 5/5m)"
@@ -96,7 +86,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pari_portal_consent_get_
   frequency   = 5
   time_window = 5
 
-  data_source_id = data.azurerm_log_analytics_workspace.core_log_analytics.id
+  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -122,7 +112,7 @@ QUERY
 resource "azurerm_monitor_scheduled_query_rules_alert" "pari_portal_consent_get_10m_rule_alert" {
   count               = contains(["p", "u"], var.env_short) ? 1 : 0
   name                = "pari-portal-consent-get-400-alert"
-  resource_group_name = azurerm_resource_group.rg_pari_alerts[0].name
+  resource_group_name = azurerm_resource_group.idpay_monitoring_rg.name
   location            = var.location
 
   description = "Alert on GET /idpay-itn/register/consent errors (400 > 50/10m)"
@@ -132,7 +122,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pari_portal_consent_get_
   frequency   = 10
   time_window = 10
 
-  data_source_id = data.azurerm_log_analytics_workspace.core_log_analytics.id
+  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -158,7 +148,7 @@ QUERY
 resource "azurerm_monitor_scheduled_query_rules_alert" "pari_product_files_upload_5m_rules_alert" {
   count               = contains(["p", "u"], var.env_short) ? 1 : 0
   name                = "pari-product-files-upload-5xx-401-429-alert"
-  resource_group_name = azurerm_resource_group.rg_pari_alerts[0].name
+  resource_group_name = azurerm_resource_group.idpay_monitoring_rg.name
   location            = var.location
 
   description = "Product files upload API: 5xx/401/429 error threshold exceeded (> 5/5m)"
@@ -168,7 +158,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pari_product_files_uploa
   frequency   = 5
   time_window = 5
 
-  data_source_id = data.azurerm_log_analytics_workspace.core_log_analytics.id
+  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -194,7 +184,7 @@ QUERY
 resource "azurerm_monitor_scheduled_query_rules_alert" "pari_product_files_upload_10m_rule_alert" {
   count               = contains(["p", "u"], var.env_short) ? 1 : 0
   name                = "pari-product-files-upload-400-alert"
-  resource_group_name = azurerm_resource_group.rg_pari_alerts[0].name
+  resource_group_name = azurerm_resource_group.idpay_monitoring_rg.name
   location            = var.location
 
   description = "Product files upload API: 400 error threshold exceeded (> 50/10m)"
@@ -204,7 +194,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pari_product_files_uploa
   frequency   = 10
   time_window = 10
 
-  data_source_id = data.azurerm_log_analytics_workspace.core_log_analytics.id
+  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -230,7 +220,7 @@ QUERY
 resource "azurerm_monitor_scheduled_query_rules_alert" "pari_product_files_verify_alert" {
   count               = contains(["p", "u"], var.env_short) ? 1 : 0
   name                = "pari-product-files-verify-alert"
-  resource_group_name = azurerm_resource_group.rg_pari_alerts[0].name
+  resource_group_name = azurerm_resource_group.idpay_monitoring_rg.name
   location            = var.location
 
   description = "Product files verify API: error threshold exceeded (5xx > 3/5m)"
@@ -239,7 +229,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pari_product_files_verif
   frequency   = 5
   time_window = 5
 
-  data_source_id = data.azurerm_log_analytics_workspace.core_log_analytics.id
+  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -265,7 +255,7 @@ QUERY
 resource "azurerm_monitor_scheduled_query_rules_alert" "pari_products_update_status_alert" {
   count               = contains(["p", "u"], var.env_short) ? 1 : 0
   name                = "pari-products-update-status-alert"
-  resource_group_name = azurerm_resource_group.rg_pari_alerts[0].name
+  resource_group_name = azurerm_resource_group.idpay_monitoring_rg.name
   location            = var.location
 
   description = "Products update status API: error threshold exceeded (5xx > 3/5m per endpoint)"
@@ -274,7 +264,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pari_products_update_sta
   frequency   = 5
   time_window = 5
 
-  data_source_id = data.azurerm_log_analytics_workspace.core_log_analytics.id
+  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -306,7 +296,7 @@ QUERY
 resource "azurerm_monitor_scheduled_query_rules_alert" "pari_get_products_5xx_alert" {
   count               = contains(["p", "u"], var.env_short) ? 1 : 0
   name                = "pari-get-products-5xx-alert"
-  resource_group_name = azurerm_resource_group.rg_pari_alerts[0].name
+  resource_group_name = azurerm_resource_group.idpay_monitoring_rg.name
   location            = var.location
 
   description = "GET /products API: 5xx error count exceeded (> 5 in 5m)"
@@ -315,7 +305,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pari_get_products_5xx_al
   frequency   = 5
   time_window = 5
 
-  data_source_id = data.azurerm_log_analytics_workspace.core_log_analytics.id
+  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -341,7 +331,7 @@ QUERY
 resource "azurerm_monitor_scheduled_query_rules_alert" "pari_get_products_400_alert" {
   count               = contains(["p", "u"], var.env_short) ? 1 : 0
   name                = "pari-get-products-400-alert"
-  resource_group_name = azurerm_resource_group.rg_pari_alerts[0].name
+  resource_group_name = azurerm_resource_group.idpay_monitoring_rg.name
   location            = var.location
 
   description = "GET /products API: 400 error count exceeded (> 50 in 10m)"
@@ -350,7 +340,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pari_get_products_400_al
   frequency   = 5
   time_window = 10
 
-  data_source_id = data.azurerm_log_analytics_workspace.core_log_analytics.id
+  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -376,7 +366,7 @@ QUERY
 resource "azurerm_monitor_scheduled_query_rules_alert" "pari_get_products_availability_alert" {
   count               = contains(["p", "u"], var.env_short) ? 1 : 0
   name                = "pari-get-products-availability-alert"
-  resource_group_name = azurerm_resource_group.rg_pari_alerts[0].name
+  resource_group_name = azurerm_resource_group.idpay_monitoring_rg.name
   location            = var.location
 
   description = "GET /products API: Availability dropped below 99% in the last 10 minutes"
@@ -385,7 +375,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pari_get_products_availa
   frequency   = 5
   time_window = 10
 
-  data_source_id = data.azurerm_log_analytics_workspace.core_log_analytics.id
+  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -413,7 +403,7 @@ QUERY
 resource "azurerm_monitor_scheduled_query_rules_alert" "pari_user_permissions_5m_rules_alert" {
   count               = contains(["p", "u"], var.env_short) ? 1 : 0
   name                = "pari-user-permissions-5m-rules-alert"
-  resource_group_name = azurerm_resource_group.rg_pari_alerts[0].name
+  resource_group_name = azurerm_resource_group.idpay_monitoring_rg.name
   location            = var.location
 
   description = "User Permissions API: 5xx > 5/5m; 401/429 > 5/5m"
@@ -423,7 +413,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pari_user_permissions_5m
   frequency   = 5
   time_window = 5
 
-  data_source_id = data.azurerm_log_analytics_workspace.core_log_analytics.id
+  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -449,7 +439,7 @@ QUERY
 resource "azurerm_monitor_scheduled_query_rules_alert" "pari_user_permissions_10m_rule_alert" {
   count               = contains(["p", "u"], var.env_short) ? 1 : 0
   name                = "pari-user-permissions-400-alert"
-  resource_group_name = azurerm_resource_group.rg_pari_alerts[0].name
+  resource_group_name = azurerm_resource_group.idpay_monitoring_rg.name
   location            = var.location
 
   description = "User Permissions API: 400 > 50/10m"
@@ -459,7 +449,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pari_user_permissions_10
   frequency   = 5
   time_window = 10
 
-  data_source_id = data.azurerm_log_analytics_workspace.core_log_analytics.id
+  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -485,7 +475,7 @@ QUERY
 resource "azurerm_monitor_scheduled_query_rules_alert" "pari_product_files_list_alert" {
   count               = contains(["p", "u"], var.env_short) ? 1 : 0
   name                = "pari-product-files-list-alert"
-  resource_group_name = azurerm_resource_group.rg_pari_alerts[0].name
+  resource_group_name = azurerm_resource_group.idpay_monitoring_rg.name
   location            = var.location
 
   description = "Product files list API: 5xx error count exceeded (> 5 in 5m)"
@@ -495,7 +485,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pari_product_files_list_
   frequency   = 5
   time_window = 5
 
-  data_source_id = data.azurerm_log_analytics_workspace.core_log_analytics.id
+  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -521,7 +511,7 @@ QUERY
 resource "azurerm_monitor_scheduled_query_rules_alert" "pari_error_report_download_alert" {
   count               = contains(["p", "u"], var.env_short) ? 1 : 0
   name                = "pari-error-report-download-alert"
-  resource_group_name = azurerm_resource_group.rg_pari_alerts[0].name
+  resource_group_name = azurerm_resource_group.idpay_monitoring_rg.name
   location            = var.location
 
   description = "Error report download API: 5xx error count exceeded (> 5 in 5m)"
@@ -531,7 +521,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pari_error_report_downlo
   frequency   = 5
   time_window = 5
 
-  data_source_id = data.azurerm_log_analytics_workspace.core_log_analytics.id
+  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -557,7 +547,7 @@ QUERY
 resource "azurerm_monitor_scheduled_query_rules_alert" "pari_batch_list_alert" {
   count               = contains(["p", "u"], var.env_short) ? 1 : 0
   name                = "pari-batch-list-alert"
-  resource_group_name = azurerm_resource_group.rg_pari_alerts[0].name
+  resource_group_name = azurerm_resource_group.idpay_monitoring_rg.name
   location            = var.location
 
   description = "Batch list API: 5xx error count exceeded (> 5 in 5m)"
@@ -567,7 +557,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pari_batch_list_alert" {
   frequency   = 5
   time_window = 5
 
-  data_source_id = data.azurerm_log_analytics_workspace.core_log_analytics.id
+  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -593,7 +583,7 @@ QUERY
 resource "azurerm_monitor_scheduled_query_rules_alert" "pari_institution_by_id_alert" {
   count               = contains(["p", "u"], var.env_short) ? 1 : 0
   name                = "pari-institution-by-id-alert"
-  resource_group_name = azurerm_resource_group.rg_pari_alerts[0].name
+  resource_group_name = azurerm_resource_group.idpay_monitoring_rg.name
   location            = var.location
 
   description = "Institution by ID API: 5xx error count exceeded (> 5 in 5m)"
@@ -603,7 +593,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pari_institution_by_id_a
   frequency   = 5
   time_window = 5
 
-  data_source_id = data.azurerm_log_analytics_workspace.core_log_analytics.id
+  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -629,7 +619,7 @@ QUERY
 resource "azurerm_monitor_scheduled_query_rules_alert" "pari_institutions_list_alert" {
   count               = contains(["p", "u"], var.env_short) ? 1 : 0
   name                = "pari-institutions-list-alert"
-  resource_group_name = azurerm_resource_group.rg_pari_alerts[0].name
+  resource_group_name = azurerm_resource_group.idpay_monitoring_rg.name
   location            = var.location
 
   description = "Institutions list API: 5xx error count exceeded (> 5 in 5m)"
@@ -639,7 +629,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pari_institutions_list_a
   frequency   = 5
   time_window = 5
 
-  data_source_id = data.azurerm_log_analytics_workspace.core_log_analytics.id
+  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -665,7 +655,7 @@ QUERY
 resource "azurerm_monitor_scheduled_query_rules_alert" "pari_kafka_consumer_absent_alert" {
   count               = contains(["p", "u"], var.env_short) ? 1 : 0
   name                = "pari-kafka-consumer-absent-alert"
-  resource_group_name = azurerm_resource_group.rg_pari_alerts[0].name
+  resource_group_name = azurerm_resource_group.idpay_monitoring_rg.name
   location            = var.location
 
   description = "Kafka consumer 'idpay-checkiban-eval-consumer-group' has not sent any logs for the last 5 minutes."
@@ -675,7 +665,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pari_kafka_consumer_abse
   frequency   = 5
   time_window = 5
 
-  data_source_id = data.azurerm_log_analytics_workspace.core_log_analytics.id
+  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppTraces
@@ -701,7 +691,7 @@ QUERY
 resource "azurerm_monitor_scheduled_query_rules_alert" "pari_kafka_consumer_avg_lag_alert" {
   count               = contains(["p", "u"], var.env_short) ? 1 : 0
   name                = "pari-kafka-consumer-avg-lag-alert"
-  resource_group_name = azurerm_resource_group.rg_pari_alerts[0].name
+  resource_group_name = azurerm_resource_group.idpay_monitoring_rg.name
   location            = var.location
 
   description = "Kafka consumer average lag is greater than 15 over the last 10 minutes. Based on the 'kafka_consumer_fetch_manager_records_lag_max' metric."
@@ -711,7 +701,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pari_kafka_consumer_avg_
   frequency   = 5
   time_window = 10
 
-  data_source_id = data.azurerm_log_analytics_workspace.core_log_analytics.id
+  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppMetrics
@@ -740,7 +730,7 @@ QUERY
 resource "azurerm_monitor_scheduled_query_rules_alert" "pari_email_dependency_alert" {
   count               = contains(["p", "u"], var.env_short) ? 1 : 0
   name                = "pari-email-dependency-alert"
-  resource_group_name = azurerm_resource_group.rg_pari_alerts[0].name
+  resource_group_name = azurerm_resource_group.idpay_monitoring_rg.name
   location            = var.location
 
   description = "Internal email microservice: error count exceeded threshold (> 10 in 5m)"
@@ -750,7 +740,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pari_email_dependency_al
   frequency   = 5
   time_window = 5
 
-  data_source_id = data.azurerm_log_analytics_workspace.core_log_analytics.id
+  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppDependencies
@@ -777,7 +767,7 @@ QUERY
 resource "azurerm_monitor_scheduled_query_rules_alert" "pari_eprel_dependency_alert" {
   count               = contains(["p", "u"], var.env_short) ? 1 : 0
   name                = "pari-eprel-dependency-alert"
-  resource_group_name = azurerm_resource_group.rg_pari_alerts[0].name
+  resource_group_name = azurerm_resource_group.idpay_monitoring_rg.name
   location            = var.location
 
   description = "EPREL dependency: error count exceeded threshold (> 10 in 5m)"
@@ -787,7 +777,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pari_eprel_dependency_al
   frequency   = 5
   time_window = 5
 
-  data_source_id = data.azurerm_log_analytics_workspace.core_log_analytics.id
+  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppDependencies
