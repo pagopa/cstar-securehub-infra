@@ -86,9 +86,12 @@
       "options": {
         "graphMode": "none",
         "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
+          "calcs": [
+            "max",
+            "mean"
+          ],
+          "displayMode": "table",
+          "placement": "right",
           "showLegend": true
         },
         "tooltip": {
@@ -215,9 +218,12 @@
       "options": {
         "graphMode": "none",
         "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
+          "calcs": [
+            "max",
+            "mean"
+          ],
+          "displayMode": "table",
+          "placement": "right",
           "showLegend": true
         },
         "tooltip": {
@@ -657,5 +663,5 @@
   "timezone": "browser",
   "title": "Cosmos monitoring for performance test",
   "uid": "af0mqao7rtmv4b",
-  "version": 19
+  "version": 25
 }
