@@ -106,17 +106,6 @@ locals {
   core_application_insights_name    = "cstar-${var.env_short}-itn-core-appinsights"
 
   #
-  # Cosmos DB
-  #
-  cosmos_mongodb_accounts = toset([
-    "idpay-beneficiari",
-    "idpay-pagamenti",
-    "idpay-iniziative",
-    "rdb"
-  ])
-
-
-  #
   # APIM
   #
   apim_name    = "cstar-${var.env_short}-apim"

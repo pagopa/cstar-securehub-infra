@@ -1,8 +1,8 @@
 # ------------------------------------------------------------------------------
-# CosmosDB NoSQL accounts --> MongoDB
-module "cosmos_db_account_databases" {
-  for_each = local.cosmos_mongodb_accounts
-  source   = "./.terraform/modules/__v4__/IDH/cosmosdb_account"
+# CosmosDB NoSQL account --> MongoDB
+# ------------------------------------------------------------------------------
+module "cosmos_db_account" {
+  source = "./.terraform/modules/__v4__/IDH/cosmosdb_account"
 
   # General
   product_name        = var.prefix
@@ -20,15 +20,15 @@ module "cosmos_db_account_databases" {
   idh_resource_tier = "cosmos_mongo7"
 
   # CosmosDB Account Settings
-  name   = each.value
+  name   = "${local.project}-mongodb-account"
   domain = var.domain
 
   # Network
   subnet_id = module.private_endpoint_cosmos_snet.id
   private_endpoint_config = {
     enabled                       = true
-    name_mongo                    = "${each.value}-cosmos-private-endpoint"
-    service_connection_name_mongo = "${each.value}-cosmos-private-endpoint"
+    name_mongo                    = "${local.project}-cosmos-private-endpoint"
+    service_connection_name_mongo = "${local.project}-cosmos-private-endpoint"
     private_dns_zone_mongo_ids    = [data.azurerm_private_dns_zone.cosmos_mongo.id]
   }
 
@@ -39,11 +39,9 @@ module "cosmos_db_account_databases" {
 #
 # 🔑 Secrets
 #
-resource "azurerm_key_vault_secret" "cosmosdb_mongodb_primary_connection_strings_accounts" {
-  for_each = local.cosmos_mongodb_accounts
-
-  name         = "mongodb-${each.value}-primary-connection-string"
-  value        = module.cosmos_db_account_databases[each.value].primary_connection_strings
+resource "azurerm_key_vault_secret" "cosmosdb_account_mongodb_primary_connection_strings" {
+  name         = "mongodb-primary-connection-string"
+  value        = module.cosmos_db_account.primary_connection_strings
   content_type = "text/plain"
 
   key_vault_id = data.azurerm_key_vault.domain_kv.id
@@ -51,11 +49,9 @@ resource "azurerm_key_vault_secret" "cosmosdb_mongodb_primary_connection_strings
   tags = module.tag_config.tags
 }
 
-resource "azurerm_key_vault_secret" "cosmosdb_mongodb_secondary_connection_strings_accounts" {
-  for_each = local.cosmos_mongodb_accounts
-
-  name         = "mongodb-${each.value}-secondary-connection-string"
-  value        = module.cosmos_db_account_databases[each.value].secondary_connection_strings
+resource "azurerm_key_vault_secret" "cosmosdb_account_mongodb_secondary_connection_strings" {
+  name         = "mongodb-secondary-connection-string"
+  value        = module.cosmos_db_account.secondary_connection_strings
   content_type = "text/plain"
 
   key_vault_id = data.azurerm_key_vault.domain_kv.id
