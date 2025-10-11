@@ -42,7 +42,7 @@ module "cosmos_db_account_databases" {
 resource "azurerm_key_vault_secret" "cosmosdb_mongodb_primary_connection_strings_accounts" {
   for_each = local.cosmos_mongodb_accounts
 
-  name         = "mongodb-primary-connection-string-${each.value}"
+  name         = "mongodb-${each.value}-primary-connection-string"
   value        = module.cosmos_db_account_databases[each.value].primary_connection_strings
   content_type = "text/plain"
 
@@ -54,7 +54,7 @@ resource "azurerm_key_vault_secret" "cosmosdb_mongodb_primary_connection_strings
 resource "azurerm_key_vault_secret" "cosmosdb_mongodb_secondary_connection_strings_accounts" {
   for_each = local.cosmos_mongodb_accounts
 
-  name         = "mongodb-secondary-connection-string-${each.value}"
+  name         = "mongodb-${each.value}-secondary-connection-string"
   value        = module.cosmos_db_account_databases[each.value].secondary_connection_strings
   content_type = "text/plain"
 
