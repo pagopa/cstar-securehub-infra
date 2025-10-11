@@ -112,6 +112,7 @@ locals {
     "idpay-beneficiari",
     "idpay-pagamenti",
     "idpay-iniziative",
+    "rdb"
   ])
 
 
