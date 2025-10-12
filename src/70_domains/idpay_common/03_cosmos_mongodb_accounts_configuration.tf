@@ -120,11 +120,11 @@ locals {
     },
     {
       name                = "wallet"
-      shard_key           = "_id"
+      shard_key           = "userId"
       default_ttl_seconds = null
       indexes = [
         { keys = ["_id"], unique = true },
-        { keys = ["initiativeId", "userId"], unique = true },
+        { keys = ["userId", "initiativeId" ], unique = true },
         { keys = ["userId"], unique = false },
         { keys = ["familyId"], unique = false },
         { keys = ["initiativeId"], unique = false }
@@ -155,11 +155,11 @@ locals {
     },
     {
       name                = "anpr_info"
-      shard_key           = "_id"
+      shard_key           = "userId"
       default_ttl_seconds = null
       indexes = [
         { keys = ["_id"], unique = true },
-        { keys = ["initiativeId", "userId"], unique = true },
+        { keys = ["userId", "initiativeId"], unique = true },
         { keys = ["userId"], unique = false },
         { keys = ["familyId"], unique = false },
         { keys = ["initiativeId"], unique = false }
@@ -170,15 +170,6 @@ locals {
       shard_key           = "_id"
       default_ttl_seconds = null
       indexes             = [{ keys = ["_id"], unique = true }]
-    },
-    {
-      name                = "clear_data_vault"
-      shard_key           = "_id"
-      default_ttl_seconds = null
-      indexes = [
-        { keys = ["_id"], unique = true },
-        { keys = ["data"], unique = true }
-      ]
     },
     {
       name                = "self_declaration_text"
@@ -193,11 +184,12 @@ locals {
     },
     {
       name                = "data_vault"
-      shard_key           = "_id"
+      shard_key           = "page"
       default_ttl_seconds = null
       indexes = [
         { keys = ["_id"], unique = true },
-        { keys = ["iv", "data"], unique = true }
+        { keys = ["page", "_id"], unique = true },
+        { keys = ["page", "data"], unique = true },
       ]
     }
   ]
@@ -324,7 +316,7 @@ locals {
     },
     {
       name                = "merchant_file"
-      shard_key           = "_id"
+      shard_key           = "fileName"
       default_ttl_seconds = null
       indexes = [
         { keys = ["_id"], unique = true },
@@ -334,7 +326,7 @@ locals {
     },
     {
       name                = "merchant"
-      shard_key           = "_id"
+      shard_key           = "fiscalCode"
       default_ttl_seconds = null
       indexes = [
         { keys = ["_id"], unique = true },
@@ -355,7 +347,7 @@ locals {
     },
     {
       name                = "point_of_sales"
-      shard_key           = "_id"
+      shard_key           = "contactEmail"
       default_ttl_seconds = null
       indexes = [
         { keys = ["_id"], unique = true },
@@ -504,10 +496,10 @@ locals {
     "idpay-iniziative.${coll.name}" => merge(coll, { database_name = "idpay-iniziative" })
   }
 
-  # plan_rdb_shared = {
-  #   for coll in local.collections_rdb_shared :
-  #   "rdb.${coll.name}" => merge(coll, { database_name = "rdb" })
-  # }
+  plan_rdb_shared = {
+    for coll in local.collections_rdb_shared :
+    "rdb.${coll.name}" => merge(coll, { database_name = "rdb" })
+  }
 
   collections_plan = merge(
     local.plan_idpay_beneficiari,
@@ -532,18 +524,16 @@ resource "azurerm_cosmosdb_mongo_database" "databases" {
   resource_group_name = data.azurerm_resource_group.idpay_data_rg.name
   account_name        = module.cosmos_db_account.name
 
-  throughput = var.cosmos_mongo_db_idpay_params.throughput
+  throughput = null
 
-  dynamic "autoscale_settings" {
-    for_each = var.cosmos_mongo_db_idpay_params.max_throughput != null ? [""] : []
-    content {
-      max_throughput = var.cosmos_mongo_db_idpay_params.max_throughput
-    }
+  autoscale_settings {
+      max_throughput = 1000
   }
 
   lifecycle {
     ignore_changes = [
       autoscale_settings,
+      throughput
     ]
   }
 }
