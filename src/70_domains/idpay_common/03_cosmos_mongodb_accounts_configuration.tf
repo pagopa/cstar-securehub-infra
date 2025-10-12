@@ -124,7 +124,7 @@ locals {
       default_ttl_seconds = null
       indexes = [
         { keys = ["_id"], unique = true },
-        { keys = ["userId", "initiativeId" ], unique = true },
+        { keys = ["userId", "initiativeId"], unique = true },
         { keys = ["userId"], unique = false },
         { keys = ["familyId"], unique = false },
         { keys = ["initiativeId"], unique = false }
@@ -527,7 +527,7 @@ resource "azurerm_cosmosdb_mongo_database" "databases" {
   throughput = null
 
   autoscale_settings {
-      max_throughput = 1000
+    max_throughput = 1000
   }
 
   lifecycle {
