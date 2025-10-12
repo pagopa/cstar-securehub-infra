@@ -255,6 +255,9 @@ locals {
       indexes = [{
         keys   = ["_id"]
         unique = true
+        }, {
+        keys   = ["preallocationMap"]
+        unique = false
         }
       ]
     },
