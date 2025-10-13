@@ -8,9 +8,10 @@ locals {
 
   # Default Domain Resource Group
   data_rg     = "${local.project}-data-rg"
-  security_rg = "${local.project}}-security-rg"
-  compute_rg  = "${local.project}}-compute-rg"
-  cicd_rg     = "${local.project}}-cicd-rg"
+  security_rg = "${local.project}-security-rg"
+  compute_rg  = "${local.project}-compute-rg"
+  cicd_rg     = "${local.project}-cicd-rg"
+  monitor_rg  = "${local.project}-monitoring-rg"
 
   # SMTP
   ses_smtp_port = 465
@@ -104,7 +105,6 @@ locals {
   core_log_analytics_workspace_name = "cstar-${var.env_short}-itn-core-law"
   core_application_insights_name    = "cstar-${var.env_short}-itn-core-appinsights"
 
-
   #
   # APIM
   #
@@ -138,8 +138,10 @@ locals {
   data_factory_name    = "${local.product_no_domain}-platform-adf"
   data_factory_rg_name = "${local.product_no_domain}-platform-data-rg"
   adf_cosmosdb_linked_services = [
-    azurerm_cosmosdb_mongo_database.idpay,
-    azurerm_cosmosdb_mongo_database.rdb
+    azurerm_cosmosdb_mongo_database.databases["idpay-beneficiari"],
+    azurerm_cosmosdb_mongo_database.databases["idpay-pagamenti"],
+    azurerm_cosmosdb_mongo_database.databases["idpay-iniziative"],
+    azurerm_cosmosdb_mongo_database.databases["rdb"],
   ]
 
   # Data Explorer
@@ -151,4 +153,7 @@ locals {
       soft_delete_period = "P7D"
     }
   }
+
+  # Action Group
+  monitor_action_group_email_name = "pari-alerts-email"
 }

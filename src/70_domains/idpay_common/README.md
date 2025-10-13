@@ -37,6 +37,7 @@
 | <a name="module_cdn_idpay_selfcare"></a> [cdn\_idpay\_selfcare](#module\_cdn\_idpay\_selfcare) | ./.terraform/modules/__v4__/cdn | n/a |
 | <a name="module_cdn_idpay_welfare"></a> [cdn\_idpay\_welfare](#module\_cdn\_idpay\_welfare) | ./.terraform/modules/__v4__/cdn | n/a |
 | <a name="module_cosmos_db_account"></a> [cosmos\_db\_account](#module\_cosmos\_db\_account) | ./.terraform/modules/__v4__/IDH/cosmosdb_account | n/a |
+| <a name="module_cosmos_mongodb_collections"></a> [cosmos\_mongodb\_collections](#module\_cosmos\_mongodb\_collections) | git::https://github.com/pagopa/terraform-azurerm-v4.git//cosmosdb_mongodb_collection | a4b4d4eeb688973df4c4f70cb996086497d84bd4 |
 | <a name="module_event_hub_idpay_00_configuration"></a> [event\_hub\_idpay\_00\_configuration](#module\_event\_hub\_idpay\_00\_configuration) | ./.terraform/modules/__v4__/eventhub_configuration | n/a |
 | <a name="module_event_hub_idpay_01_configuration"></a> [event\_hub\_idpay\_01\_configuration](#module\_event\_hub\_idpay\_01\_configuration) | ./.terraform/modules/__v4__/eventhub_configuration | n/a |
 | <a name="module_event_hub_idpay_02_configuration"></a> [event\_hub\_idpay\_02\_configuration](#module\_event\_hub\_idpay\_02\_configuration) | ./.terraform/modules/__v4__/eventhub_configuration | n/a |
@@ -69,10 +70,7 @@
 | [azurerm_api_management_logger.apim_logger](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_logger) | resource |
 | [azurerm_application_insights.idpay_application_insights](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/application_insights) | resource |
 | [azurerm_cdn_endpoint_custom_domain.bonus_custom_domains](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cdn_endpoint_custom_domain) | resource |
-| [azurerm_cosmosdb_mongo_collection.mongodb_collections_idpay](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cosmosdb_mongo_collection) | resource |
-| [azurerm_cosmosdb_mongo_collection.mongodb_collections_rdb](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cosmosdb_mongo_collection) | resource |
-| [azurerm_cosmosdb_mongo_database.idpay](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cosmosdb_mongo_database) | resource |
-| [azurerm_cosmosdb_mongo_database.rdb](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cosmosdb_mongo_database) | resource |
+| [azurerm_cosmosdb_mongo_database.databases](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cosmosdb_mongo_database) | resource |
 | [azurerm_dns_a_record.bonus_all_zones_apex](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/dns_a_record) | resource |
 | [azurerm_dns_cname_record.bonus_all_zones_cdnverify](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/dns_cname_record) | resource |
 | [azurerm_eventgrid_system_topic.idpay_asset_register_storage_topic](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/eventgrid_system_topic) | resource |
