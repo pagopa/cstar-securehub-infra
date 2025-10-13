@@ -1,5 +1,5 @@
 {
-    "name": "IdpayMerchantCountersCopy",
+    "name": "idpay-merchant-counters-copy",
     "properties": {
         "activities": [
             {
@@ -102,13 +102,13 @@
                 },
                 "inputs": [
                     {
-                        "referenceName": "CosmosIdpayMerchantCounters",
+                        "referenceName": "cosmos-idpay-merchant-counters",
                         "type": "DatasetReference"
                     }
                 ],
                 "outputs": [
                     {
-                        "referenceName": "DataExplorerIdpayMerchantCounters",
+                        "referenceName": "data-explorer-idpay-merchant-counters",
                         "type": "DatasetReference"
                     }
                 ]

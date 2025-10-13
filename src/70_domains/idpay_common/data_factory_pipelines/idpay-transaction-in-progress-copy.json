@@ -1,13 +1,13 @@
 {
-    "name": "IdpayTransactionCopy",
+    "name": "idpay-transaction-in-progress-copy",
     "properties": {
         "activities": [
             {
-                "name": "Copy transaction collection",
+                "name": "Copy  transaction in progress collection",
                 "type": "Copy",
                 "dependsOn": [
                     {
-                        "activity": "Clear transaction table",
+                        "activity": "Clear transaction in progress table",
                         "dependencyConditions": [
                             "Succeeded"
                         ]
@@ -44,19 +44,19 @@
                             },
                             {
                                 "source": {
-                                    "path": "$['idTrxAcquirer']"
+                                    "path": "$['trxCode']"
                                 },
                                 "sink": {
-                                    "name": "idTrxAcquirer",
+                                    "name": "trxCode",
                                     "type": "String"
                                 }
                             },
                             {
                                 "source": {
-                                    "path": "$['acquirerCode']"
+                                    "path": "$['idTrxAcquirer']"
                                 },
                                 "sink": {
-                                    "name": "acquirerCode",
+                                    "name": "idTrxAcquirer",
                                     "type": "String"
                                 }
                             },
@@ -71,10 +71,46 @@
                             },
                             {
                                 "source": {
-                                    "path": "$['hpan']"
+                                    "path": "trxChargeDate.$date"
                                 },
                                 "sink": {
-                                    "name": "hpan",
+                                    "name": "trxChargeDateString",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "elaborationDateTime.$date"
+                                },
+                                "sink": {
+                                    "name": "elaborationDateTimeString",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "updateDate.$date"
+                                },
+                                "sink": {
+                                    "name": "updateDateString",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "trxEndDate.$date"
+                                },
+                                "sink": {
+                                    "name": "trxEndDateString",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "initiativeEndDate.$date"
+                                },
+                                "sink": {
+                                    "name": "initiativeEndDateString",
                                     "type": "String"
                                 }
                             },
@@ -89,10 +125,10 @@
                             },
                             {
                                 "source": {
-                                    "path": "$['circuitType']"
+                                    "path": "$['operationTypeTranscoded']"
                                 },
                                 "sink": {
-                                    "name": "circuitType",
+                                    "name": "operationTypeTranscoded",
                                     "type": "String"
                                 }
                             },
@@ -120,6 +156,15 @@
                                 },
                                 "sink": {
                                     "name": "amountCents",
+                                    "type": "Long"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['effectiveAmountCents']"
+                                },
+                                "sink": {
+                                    "name": "effectiveAmountCents",
                                     "type": "Long"
                                 }
                             },
@@ -170,37 +215,10 @@
                             },
                             {
                                 "source": {
-                                    "path": "$['terminalId']"
+                                    "path": "$['merchantFiscalCode']"
                                 },
                                 "sink": {
-                                    "name": "terminalId",
-                                    "type": "String"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['bin']"
-                                },
-                                "sink": {
-                                    "name": "bin",
-                                    "type": "String"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['senderCode']"
-                                },
-                                "sink": {
-                                    "name": "senderCode",
-                                    "type": "String"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['fiscalCode']"
-                                },
-                                "sink": {
-                                    "name": "fiscalCode",
+                                    "name": "merchantFiscalCode",
                                     "type": "String"
                                 }
                             },
@@ -215,19 +233,64 @@
                             },
                             {
                                 "source": {
-                                    "path": "$['posType']"
+                                    "path": "$['initiativeId']"
                                 },
                                 "sink": {
-                                    "name": "posType",
+                                    "name": "initiativeId",
                                     "type": "String"
                                 }
                             },
                             {
                                 "source": {
-                                    "path": "$['par']"
+                                    "path": "$['initiativeName']"
                                 },
                                 "sink": {
-                                    "name": "par",
+                                    "name": "initiativeName",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['businessName']"
+                                },
+                                "sink": {
+                                    "name": "businessName",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['rewardCents']"
+                                },
+                                "sink": {
+                                    "name": "rewardCents",
+                                    "type": "Long"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['counterVersion']"
+                                },
+                                "sink": {
+                                    "name": "counterVersion",
+                                    "type": "Long"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['rejectionReasons']"
+                                },
+                                "sink": {
+                                    "name": "rejectionReasons",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['userId']"
+                                },
+                                "sink": {
+                                    "name": "userId",
                                     "type": "String"
                                 }
                             },
@@ -242,6 +305,114 @@
                             },
                             {
                                 "source": {
+                                    "path": "$['channel']"
+                                },
+                                "sink": {
+                                    "name": "channel",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['rewards']['68dd003ccce8c534d1da22bc']['providedRewardCents']"
+                                },
+                                "sink": {
+                                    "name": "rewardsProvidedRewardCents",
+                                    "type": "Long"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['rewards']['68dd003ccce8c534d1da22bc']['accruedRewardCents']"
+                                },
+                                "sink": {
+                                    "name": "rewardsAccruedRewardCents",
+                                    "type": "Long"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['rewards']['68dd003ccce8c534d1da22bc']['capped']"
+                                },
+                                "sink": {
+                                    "name": "rewardsCapped",
+                                    "type": "Boolean"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['rewards']['68dd003ccce8c534d1da22bc']['dailyCapped']"
+                                },
+                                "sink": {
+                                    "name": "rewardsDailyCapped",
+                                    "type": "Boolean"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['rewards']['68dd003ccce8c534d1da22bc']['monthlyCapped']"
+                                },
+                                "sink": {
+                                    "name": "rewardsMonthlyCapped",
+                                    "type": "Boolean"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['rewards']['68dd003ccce8c534d1da22bc']['yearlyCapped']"
+                                },
+                                "sink": {
+                                    "name": "rewardsYearlyCapped",
+                                    "type": "Boolean"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['rewards']['68dd003ccce8c534d1da22bc']['weeklyCapped']"
+                                },
+                                "sink": {
+                                    "name": "rewardsWeeklyCapped",
+                                    "type": "Boolean"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['rewards']['68dd003ccce8c534d1da22bc']['refund']"
+                                },
+                                "sink": {
+                                    "name": "rewardsRefund",
+                                    "type": "Boolean"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['rewards']['68dd003ccce8c534d1da22bc']['completeRefund']"
+                                },
+                                "sink": {
+                                    "name": "rewardsCompleteRefund",
+                                    "type": "Boolean"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['rewards']['68dd003ccce8c534d1da22bc']['counters']['exhaustedBudget']"
+                                },
+                                "sink": {
+                                    "name": "rewardsCountersExhaustedBudget",
+                                    "type": "Boolean"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['rewards']['68dd003ccce8c534d1da22bc']['counters']['initiativeBudgetCents']"
+                                },
+                                "sink": {
+                                    "name": "rewardsCountersInitiativeBudgetCents",
+                                    "type": "Long"
+                                }
+                            },
+                            {
+                                "source": {
                                     "path": "$['initiatives'][0]"
                                 },
                                 "sink": {
@@ -251,190 +422,10 @@
                             },
                             {
                                 "source": {
-                                    "path": "$['rejectionReasons']"
-                                },
-                                "sink": {
-                                    "name": "rejectionReasons",
-                                    "type": "String"
-                                }
-                            },
-                            {
-                                "source": {
                                     "path": "$['initiativeRejectionReasons']"
                                 },
                                 "sink": {
                                     "name": "initiativeRejectionReasons",
-                                    "type": "String"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['rewards']['68dd003ccce8c534d1da22bc']['providedRewardCents']"
-                                },
-                                "sink": {
-                                    "name": "rewardProvidedRewardCents",
-                                    "type": "Long"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['rewards']['68dd003ccce8c534d1da22bc']['accruedRewardCents']"
-                                },
-                                "sink": {
-                                    "name": "rewardAccruedRewardCents",
-                                    "type": "Long"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['rewards']['68dd003ccce8c534d1da22bc']['capped']"
-                                },
-                                "sink": {
-                                    "name": "rewardCapped",
-                                    "type": "Boolean"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['rewards']['68dd003ccce8c534d1da22bc']['dailyCapped']"
-                                },
-                                "sink": {
-                                    "name": "rewardDailyCapped",
-                                    "type": "Boolean"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['rewards']['68dd003ccce8c534d1da22bc']['monthlyCapped']"
-                                },
-                                "sink": {
-                                    "name": "rewardMonthlyCapped",
-                                    "type": "Boolean"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['rewards']['68dd003ccce8c534d1da22bc']['yearlyCapped']"
-                                },
-                                "sink": {
-                                    "name": "rewardYearlyCapped",
-                                    "type": "Boolean"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['rewards']['68dd003ccce8c534d1da22bc']['weeklyCapped']"
-                                },
-                                "sink": {
-                                    "name": "rewardWeeklyCapped",
-                                    "type": "Boolean"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['rewards']['68dd003ccce8c534d1da22bc']['refund']"
-                                },
-                                "sink": {
-                                    "name": "rewardRefund",
-                                    "type": "Boolean"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['rewards']['68dd003ccce8c534d1da22bc']['completeRefund']"
-                                },
-                                "sink": {
-                                    "name": "rewardCompleteRefund",
-                                    "type": "Boolean"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['rewards']['68dd003ccce8c534d1da22bc']['counters']['exhaustedBudget']"
-                                },
-                                "sink": {
-                                    "name": "rewardCountersExhaustedBudget",
-                                    "type": "Boolean"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['rewards']['68dd003ccce8c534d1da22bc']['counters']['initiativeBudgetCents']"
-                                },
-                                "sink": {
-                                    "name": "rewardCountersInitiativeBudgetCents",
-                                    "type": "Long"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['userId']"
-                                },
-                                "sink": {
-                                    "name": "userId",
-                                    "type": "String"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['maskedPan']"
-                                },
-                                "sink": {
-                                    "name": "maskedPan",
-                                    "type": "String"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['brandLogo']"
-                                },
-                                "sink": {
-                                    "name": "brandLogo",
-                                    "type": "String"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['operationTypeTranscoded']"
-                                },
-                                "sink": {
-                                    "name": "operationTypeTranscoded",
-                                    "type": "String"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['effectiveAmountCents']"
-                                },
-                                "sink": {
-                                    "name": "effectiveAmountCents",
-                                    "type": "Long"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "trxChargeDate.$date"
-                                },
-                                "sink": {
-                                    "name": "trxChargeDateString",
-                                    "type": "String"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "elaborationDateTime.$date"
-                                },
-                                "sink": {
-                                    "name": "elaborationDateTimeString",
-                                    "type": "String"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['channel']"
-                                },
-                                "sink": {
-                                    "name": "channel",
                                     "type": "String"
                                 }
                             },
@@ -455,6 +446,24 @@
                                     "name": "additionalProductName",
                                     "type": "String"
                                 }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['extendedAuthorization']"
+                                },
+                                "sink": {
+                                    "name": "extendedAuthorization",
+                                    "type": "Boolean"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['voucherAmountCents']"
+                                },
+                                "sink": {
+                                    "name": "voucherAmountCents",
+                                    "type": "Long"
+                                }
                             }
                         ],
                         "collectionReference": "",
@@ -463,19 +472,19 @@
                 },
                 "inputs": [
                     {
-                        "referenceName": "CosmosIdpayTransaction",
+                        "referenceName": "cosmos-idpay-transaction-in-progress",
                         "type": "DatasetReference"
                     }
                 ],
                 "outputs": [
                     {
-                        "referenceName": "DataExplorerIdpayTransaction",
+                        "referenceName": "data-explorer-idpay-transaction-in-progress",
                         "type": "DatasetReference"
                     }
                 ]
             },
             {
-                "name": "Clear transaction table",
+                "name": "Clear transaction in progress table",
                 "type": "AzureDataExplorerCommand",
                 "dependsOn": [],
                 "policy": {
@@ -487,7 +496,35 @@
                 },
                 "userProperties": [],
                 "typeProperties": {
-                    "command": ".clear table transaction data",
+                    "command": ".clear table  transaction_in_progress data",
+                    "commandTimeout": "00:20:00"
+                },
+                "linkedServiceName": {
+                    "referenceName": "idpay-Kusto-idpay-ls",
+                    "type": "LinkedServiceReference"
+                }
+            },
+            {
+                "name": "Convert Date",
+                "type": "AzureDataExplorerCommand",
+                "dependsOn": [
+                    {
+                        "activity": "Copy  transaction in progress collection",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "command": ".set-or-replace transaction_in_progress <|\ntransaction_in_progress\n| extend \n    trxDate = unixtime_milliseconds_todatetime(tolong(trxDateString)),\n    trxChargeDate = unixtime_milliseconds_todatetime(tolong(trxChargeDateString)),\n    elaborationDateTime = unixtime_milliseconds_todatetime(tolong(elaborationDateTimeString)),\n    updateDate = unixtime_milliseconds_todatetime(tolong(updateDateString)),\n    trxEndDate = unixtime_milliseconds_todatetime(tolong(trxEndDateString)),\n    initiativeEndDate = unixtime_milliseconds_todatetime(tolong(initiativeEndDateString))",
                     "commandTimeout": "00:20:00"
                 },
                 "linkedServiceName": {
@@ -513,7 +550,7 @@
                 },
                 "userProperties": [],
                 "typeProperties": {
-                    "command": ".set-or-replace transaction_rejection_reasons <|\ntransaction\n| extend rejectionArray = parse_json(rejectionReasons)\n| mv-expand rejectionArray\n| project transactionId = _id, rejectionReason = tostring(rejectionArray)",
+                    "command": ".set-or-replace transaction_in_progress_rejection_reasons <|\ntransaction_in_progress\n| extend rejectionArray = parse_json(rejectionReasons)\n| mv-expand rejectionArray\n| project transactionId = id, rejectionReason = tostring(rejectionArray)",
                     "commandTimeout": "00:20:00"
                 },
                 "linkedServiceName": {
@@ -539,35 +576,7 @@
                 },
                 "userProperties": [],
                 "typeProperties": {
-                    "command": ".set-or-replace transaction_initiative_rejection_reasons <|\ntransaction\n| extend initiativeRejectionMap = parse_json(initiativeRejectionReasons)\n| mv-expand initiativeId = bag_keys(initiativeRejectionMap)\n| extend initiativeId = tostring(initiativeId)\n| extend rejectionList = initiativeRejectionMap[initiativeId]\n| mv-expand rejectionReason = rejectionList\n| project transactionId = _id, initiativeId, rejectionReason = tostring(rejectionReason)",
-                    "commandTimeout": "00:20:00"
-                },
-                "linkedServiceName": {
-                    "referenceName": "idpay-Kusto-idpay-ls",
-                    "type": "LinkedServiceReference"
-                }
-            },
-            {
-                "name": "Convert Date",
-                "type": "AzureDataExplorerCommand",
-                "dependsOn": [
-                    {
-                        "activity": "Copy transaction collection",
-                        "dependencyConditions": [
-                            "Succeeded"
-                        ]
-                    }
-                ],
-                "policy": {
-                    "timeout": "0.12:00:00",
-                    "retry": 0,
-                    "retryIntervalInSeconds": 30,
-                    "secureOutput": false,
-                    "secureInput": false
-                },
-                "userProperties": [],
-                "typeProperties": {
-                    "command": ".set-or-replace transaction <|\ntransaction\n| extend \n    trxDate = unixtime_milliseconds_todatetime(tolong(trxDateString)),\n    trxChargeDate = unixtime_milliseconds_todatetime(tolong(trxChargeDateString)),\n    elaborationDateTime = unixtime_milliseconds_todatetime(tolong(elaborationDateTimeString))",
+                    "command": ".set-or-replace transaction_in_progress_initiative_rejection_reasons <|\ntransaction_in_progress\n| extend initiativeRejectionMap = parse_json(initiativeRejectionReasons)\n| mv-expand initiativeId = bag_keys(initiativeRejectionMap)\n| extend initiativeId = tostring(initiativeId)\n| extend rejectionList = initiativeRejectionMap[initiativeId]\n| mv-expand rejectionReason = rejectionList\n| project transactionId = id, initiativeId, rejectionReason = tostring(rejectionReason)",
                     "commandTimeout": "00:20:00"
                 },
                 "linkedServiceName": {
@@ -577,7 +586,7 @@
             }
         ],
         "annotations": [],
-        "lastPublishTime": "2025-10-10T11:15:48Z"
+        "lastPublishTime": "2025-10-10T13:09:49Z"
     },
     "type": "Microsoft.DataFactory/factories/pipelines"
 }

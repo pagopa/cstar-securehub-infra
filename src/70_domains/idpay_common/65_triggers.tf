@@ -7,7 +7,7 @@ locals {
 
 resource "azurerm_data_factory_trigger_schedule" "daily_triggers" {
   for_each        = local.trigger_pipelines
-  name            = "Trigger-${each.key}"
+  name            = "trigger-${each.key}"
   data_factory_id = data.azurerm_data_factory.data_factory.id
   activated       = true
   interval        = 1

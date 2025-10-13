@@ -1,15 +1,15 @@
 {
-    "name": "DataExplorerIdpayTransactionInProgress",
+    "name": "cosmos-idpay-merchant-counters",
     "properties": {
         "linkedServiceName": {
-            "referenceName": "idpay-Kusto-idpay-ls",
+            "referenceName": "idpay-CosmosDB-idpay-ls",
             "type": "LinkedServiceReference"
         },
         "annotations": [],
-        "type": "AzureDataExplorerTable",
+        "type": "CosmosDbMongoDbApiCollection",
         "schema": [],
         "typeProperties": {
-            "table": "transaction_in_progress"
+            "collection": "merchant_initiative_counters"
         }
     },
     "type": "Microsoft.DataFactory/factories/datasets"

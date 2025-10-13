@@ -1,13 +1,13 @@
 {
-    "name": "IdpayPoSCopy",
+    "name": "idpay-merchant-copy",
     "properties": {
         "activities": [
             {
-                "name": "Copy pos collection",
+                "name": "Copy merchant collection",
                 "type": "Copy",
                 "dependsOn": [
                     {
-                        "activity": "Clear pos table",
+                        "activity": "Clear merchant table",
                         "dependencyConditions": [
                             "Succeeded"
                         ]
@@ -38,143 +38,103 @@
                                     "path": "$['_id']"
                                 },
                                 "sink": {
-                                    "name": "_id",
-                                    "type": "String"
+                                    "name": "_id"
                                 }
                             },
                             {
                                 "source": {
-                                    "path": "$['type']"
+                                    "path": "$['acquirerId']"
                                 },
                                 "sink": {
-                                    "name": "type",
-                                    "type": "String"
+                                    "name": "acquirerId"
                                 }
                             },
                             {
                                 "source": {
-                                    "path": "$['franchiseName']"
+                                    "path": "$['businessName']"
                                 },
                                 "sink": {
-                                    "name": "franchiseName",
-                                    "type": "String"
+                                    "name": "businessName"
                                 }
                             },
                             {
                                 "source": {
-                                    "path": "$['region']"
+                                    "path": "$['legalOfficeAddress']"
                                 },
                                 "sink": {
-                                    "name": "region",
-                                    "type": "String"
+                                    "name": "legalOfficeAddress"
                                 }
                             },
                             {
                                 "source": {
-                                    "path": "$['province']"
+                                    "path": "$['legalOfficeMunicipality']"
                                 },
                                 "sink": {
-                                    "name": "province",
-                                    "type": "String"
+                                    "name": "legalOfficeMunicipality"
                                 }
                             },
                             {
                                 "source": {
-                                    "path": "$['city']"
+                                    "path": "$['legalOfficeProvince']"
                                 },
                                 "sink": {
-                                    "name": "city",
-                                    "type": "String"
+                                    "name": "legalOfficeProvince"
                                 }
                             },
                             {
                                 "source": {
-                                    "path": "$['zipCode']"
+                                    "path": "$['legalOfficeZipCode']"
                                 },
                                 "sink": {
-                                    "name": "zipCode",
-                                    "type": "String"
+                                    "name": "legalOfficeZipCode"
                                 }
                             },
                             {
                                 "source": {
-                                    "path": "$['address']"
+                                    "path": "$['certifiedEmail']"
                                 },
                                 "sink": {
-                                    "name": "address",
-                                    "type": "String"
+                                    "name": "certifiedEmail"
                                 }
                             },
                             {
                                 "source": {
-                                    "path": "$['streetNumber']"
+                                    "path": "$['fiscalCode']"
                                 },
                                 "sink": {
-                                    "name": "streetNumber",
-                                    "type": "String"
+                                    "name": "fiscalCode"
                                 }
                             },
                             {
                                 "source": {
-                                    "path": "$['contactEmail']"
+                                    "path": "$['vatNumber']"
                                 },
                                 "sink": {
-                                    "name": "contactEmail",
-                                    "type": "String"
+                                    "name": "vatNumber"
                                 }
                             },
                             {
                                 "source": {
-                                    "path": "$['contactName']"
+                                    "path": "$['iban']"
                                 },
                                 "sink": {
-                                    "name": "contactName",
-                                    "type": "String"
+                                    "name": "iban"
                                 }
                             },
                             {
                                 "source": {
-                                    "path": "$['contactSurname']"
+                                    "path": "$['ibanHolder']"
                                 },
                                 "sink": {
-                                    "name": "contactSurname",
-                                    "type": "String"
+                                    "name": "ibanHolder"
                                 }
                             },
                             {
                                 "source": {
-                                    "path": "$['channelEmail']"
+                                    "path": "$['enabled']"
                                 },
                                 "sink": {
-                                    "name": "channelEmail",
-                                    "type": "String"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['channelPhone']"
-                                },
-                                "sink": {
-                                    "name": "channelPhone",
-                                    "type": "String"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['channelGeolink']"
-                                },
-                                "sink": {
-                                    "name": "channelGeolink",
-                                    "type": "String"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['channelWebsite']"
-                                },
-                                "sink": {
-                                    "name": "channelWebsite",
-                                    "type": "String"
+                                    "name": "isEnabled"
                                 }
                             },
                             {
@@ -182,24 +142,15 @@
                                     "path": "$['merchantId']"
                                 },
                                 "sink": {
-                                    "name": "merchantId",
-                                    "type": "String"
+                                    "name": "merchantId"
                                 }
                             },
                             {
                                 "source": {
-                                    "path": "$['creationDate.$date.$numberLong']"
+                                    "path": "$['activationDate.$date.$numberLong']"
                                 },
                                 "sink": {
-                                    "name": "creationDate"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['updateDate.$date.$numberLong']"
-                                },
-                                "sink": {
-                                    "name": "updateDate"
+                                    "name": "activationDate"
                                 }
                             }
                         ]
@@ -207,19 +158,19 @@
                 },
                 "inputs": [
                     {
-                        "referenceName": "CosmosIdpayPoS",
+                        "referenceName": "cosmos-idpay-merchant",
                         "type": "DatasetReference"
                     }
                 ],
                 "outputs": [
                     {
-                        "referenceName": "DataExplorerIdpayPoS",
+                        "referenceName": "data-explorer-idpay-merchant",
                         "type": "DatasetReference"
                     }
                 ]
             },
             {
-                "name": "Clear pos table",
+                "name": "Clear merchant table",
                 "type": "AzureDataExplorerCommand",
                 "dependsOn": [],
                 "policy": {
@@ -231,7 +182,7 @@
                 },
                 "userProperties": [],
                 "typeProperties": {
-                    "command": ".clear table point_of_sales data",
+                    "command": ".clear table merchant data",
                     "commandTimeout": "00:20:00"
                 },
                 "linkedServiceName": {
@@ -241,7 +192,7 @@
             }
         ],
         "annotations": [],
-        "lastPublishTime": "2025-10-08T10:37:09Z"
+        "lastPublishTime": "2025-10-08T10:49:56Z"
     },
     "type": "Microsoft.DataFactory/factories/pipelines"
 }
