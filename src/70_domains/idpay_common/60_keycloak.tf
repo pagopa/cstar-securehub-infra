@@ -547,3 +547,64 @@ resource "keycloak_openid_user_attribute_protocol_mapper" "date_of_birth_mapper"
 
   depends_on = [keycloak_realm_user_profile.user_profile, keycloak_openid_client_scope.date_of_birth_scope]
 }
+
+
+resource "random_password" "keycloak_perf_test_client_secret" {
+  length  = 32
+  special = false
+}
+
+resource "azurerm_key_vault_secret" "keycloak_perf_test_client_secret" {
+  name         = "keycloak-perf-test-client-secret"
+  value        = random_password.keycloak_perf_test_client_secret.result
+  key_vault_id = data.azurerm_key_vault.domain_kv.id
+}
+
+resource "keycloak_openid_client" "merchant_operator_perf_test" {
+  realm_id  = keycloak_realm.merchant_operator.id
+  client_id = "performance-test-client"
+  name      = "Performance Test Client"
+  enabled   = true
+
+  access_type = "PUBLIC"
+
+  standard_flow_enabled = true
+
+  direct_access_grants_enabled = true
+
+  client_secret_wo         = random_password.keycloak_perf_test_client_secret.result
+  client_secret_wo_version = 3
+
+  web_origins = flatten([
+    [
+      local.keycloak_external_hostname,
+      "http://localhost:5173",
+    ], formatlist("https://%s", local.public_dns_zone_bonus_elettrodomestici.zones)])
+
+  valid_redirect_uris = flatten([
+    [
+      "${local.keycloak_external_hostname}/*",
+      "http://localhost:5173/*",
+    ], formatlist("https://%s/*", local.public_dns_zone_bonus_elettrodomestici.zones)])
+
+  depends_on = [
+    keycloak_realm.merchant_operator,
+    random_password.keycloak_perf_test_client_secret
+  ]
+}
+
+resource "keycloak_openid_client_default_scopes" "merchant_operator_perf_test_defaults" {
+  realm_id  = keycloak_realm.merchant_operator.id
+  client_id = keycloak_openid_client.merchant_operator_perf_test.id
+
+  default_scopes = [
+    "web-origins",
+    "roles",
+    "profile",
+    "email",
+    "basic",
+    "acr",
+    keycloak_openid_client_scope.merchant_id_scope.name,
+    keycloak_openid_client_scope.point_of_sale_id_scope.name
+  ]
+}
