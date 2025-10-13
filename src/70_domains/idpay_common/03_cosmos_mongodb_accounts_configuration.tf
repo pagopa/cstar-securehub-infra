@@ -517,7 +517,7 @@ resource "azurerm_cosmosdb_mongo_database" "databases" {
     "idpay-beneficiari",
     "idpay-pagamenti",
     "idpay-iniziative",
-    # "rdb",
+    "rdb",
   ])
 
   name                = each.key
