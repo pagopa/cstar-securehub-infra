@@ -1,5 +1,5 @@
 {
-  "name": "DataExplorerRdbProducts",
+  "name": "data-explorer-rdb-products",
   "properties": {
     "linkedServiceName": {
       "referenceName": "idpay-Kusto-idpay-ls",

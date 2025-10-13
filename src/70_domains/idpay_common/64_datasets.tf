@@ -1,7 +1,7 @@
 locals {
   dataset_templates = {
-    for file in fileset("${path.module}/data_factory_dataset", "*.json") :
-    trimsuffix(file, ".json") => jsondecode(file("${path.module}/dataset_templates/${file}"))
+    for file in fileset("${path.module}/data_factory_datasets", "*.json") :
+    jsondecode(file("${path.module}/data_factory_datasets/${file}")).name => jsondecode(file("${path.module}/data_factory_datasets/${file}"))
   }
 }
 
@@ -9,9 +9,9 @@ locals {
 resource "azurerm_data_factory_custom_dataset" "datasets" {
   for_each = local.dataset_templates
 
-  name            = each.value.name
+  name            = each.key
   data_factory_id = data.azurerm_data_factory.data_factory.id
-  type            = each.value.type
+  type            = each.value.properties.type
 
   linked_service {
     name = each.value.properties.linkedServiceName.referenceName
