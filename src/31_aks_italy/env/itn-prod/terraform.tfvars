@@ -80,6 +80,7 @@ nginx_helm = {
     resources = {
       requests = {
         memory = "300Mi"
+        cpu    = "200m"
       }
     },
     config = {
