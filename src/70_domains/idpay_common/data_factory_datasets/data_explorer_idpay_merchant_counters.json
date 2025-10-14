@@ -1,5 +1,5 @@
 {
-    "name": "DataExplorerIdpayMerchantCounters",
+    "name": "data_explorer_idpay_merchant_counters",
     "properties": {
         "linkedServiceName": {
             "referenceName": "idpay-Kusto-idpay-ls",

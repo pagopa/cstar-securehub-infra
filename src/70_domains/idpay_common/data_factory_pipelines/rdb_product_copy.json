@@ -1,13 +1,34 @@
 {
-    "name": "IdpayMerchantCopy",
+    "name": "rdb_product_copy",
     "properties": {
         "activities": [
             {
-                "name": "Copy merchant collection",
+                "name": "Clear products table",
+                "type": "AzureDataExplorerCommand",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "command": ".clear table products data",
+                    "commandTimeout": "00:20:00"
+                },
+                "linkedServiceName": {
+                    "referenceName": "idpay-Kusto-idpay-ls",
+                    "type": "LinkedServiceReference"
+                }
+            },
+            {
+                "name": "Copy products collection",
                 "type": "Copy",
                 "dependsOn": [
                     {
-                        "activity": "Clear merchant table",
+                        "activity": "Clear products table",
                         "dependencyConditions": [
                             "Succeeded"
                         ]
@@ -38,145 +59,156 @@
                                     "path": "$['_id']"
                                 },
                                 "sink": {
-                                    "name": "_id"
+                                    "name": "_id",
+                                    "type": "String"
                                 }
                             },
                             {
                                 "source": {
-                                    "path": "$['acquirerId']"
+                                    "path": "$['productFileId']"
                                 },
                                 "sink": {
-                                    "name": "acquirerId"
+                                    "name": "productFileId",
+                                    "type": "String"
                                 }
                             },
                             {
                                 "source": {
-                                    "path": "$['businessName']"
+                                    "path": "$['organizationId']"
                                 },
                                 "sink": {
-                                    "name": "businessName"
+                                    "name": "organizationId",
+                                    "type": "String"
                                 }
                             },
                             {
                                 "source": {
-                                    "path": "$['legalOfficeAddress']"
+                                    "path": "$['status']"
                                 },
                                 "sink": {
-                                    "name": "legalOfficeAddress"
+                                    "name": "status",
+                                    "type": "String"
                                 }
                             },
                             {
                                 "source": {
-                                    "path": "$['legalOfficeMunicipality']"
+                                    "path": "$['model']"
                                 },
                                 "sink": {
-                                    "name": "legalOfficeMunicipality"
+                                    "name": "model",
+                                    "type": "String"
                                 }
                             },
                             {
                                 "source": {
-                                    "path": "$['legalOfficeProvince']"
+                                    "path": "$['productGroup']"
                                 },
                                 "sink": {
-                                    "name": "legalOfficeProvince"
+                                    "name": "productGroup",
+                                    "type": "String"
                                 }
                             },
                             {
                                 "source": {
-                                    "path": "$['legalOfficeZipCode']"
+                                    "path": "$['category']"
                                 },
                                 "sink": {
-                                    "name": "legalOfficeZipCode"
+                                    "name": "category",
+                                    "type": "String"
                                 }
                             },
                             {
                                 "source": {
-                                    "path": "$['certifiedEmail']"
+                                    "path": "$['brand']"
                                 },
                                 "sink": {
-                                    "name": "certifiedEmail"
+                                    "name": "brand",
+                                    "type": "String"
                                 }
                             },
                             {
                                 "source": {
-                                    "path": "$['fiscalCode']"
+                                    "path": "$['eprelCode']"
                                 },
                                 "sink": {
-                                    "name": "fiscalCode"
+                                    "name": "eprelCode",
+                                    "type": "String"
                                 }
                             },
                             {
                                 "source": {
-                                    "path": "$['vatNumber']"
+                                    "path": "$['productCode']"
                                 },
                                 "sink": {
-                                    "name": "vatNumber"
+                                    "name": "productCode",
+                                    "type": "String"
                                 }
                             },
                             {
                                 "source": {
-                                    "path": "$['iban']"
+                                    "path": "$['countryOfProduction']"
                                 },
                                 "sink": {
-                                    "name": "iban"
+                                    "name": "countryOfProduction",
+                                    "type": "String"
                                 }
                             },
                             {
                                 "source": {
-                                    "path": "$['ibanHolder']"
+                                    "path": "$['energyClass']"
                                 },
                                 "sink": {
-                                    "name": "ibanHolder"
+                                    "name": "energyClass",
+                                    "type": "String"
                                 }
                             },
                             {
                                 "source": {
-                                    "path": "$['enabled']"
+                                    "path": "$['capacity']"
                                 },
                                 "sink": {
-                                    "name": "isEnabled"
+                                    "name": "capacity",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['productName']"
+                                },
+                                "sink": {
+                                    "name": "productName",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['organizationName']"
+                                },
+                                "sink": {
+                                    "name": "organizationName",
+                                    "type": "String"
                                 }
                             }
-                        ]
+                        ],
+                        "mapComplexValuesToString": true
                     }
                 },
                 "inputs": [
                     {
-                        "referenceName": "CosmosIdpayMerchant",
+                        "referenceName": "cosmos_rdb_products",
                         "type": "DatasetReference"
                     }
                 ],
                 "outputs": [
                     {
-                        "referenceName": "DataExplorerIdpayMerchant",
+                        "referenceName": "data_explorer_rdb_products",
                         "type": "DatasetReference"
                     }
                 ]
-            },
-            {
-                "name": "Clear merchant table",
-                "type": "AzureDataExplorerCommand",
-                "dependsOn": [],
-                "policy": {
-                    "timeout": "0.12:00:00",
-                    "retry": 0,
-                    "retryIntervalInSeconds": 30,
-                    "secureOutput": false,
-                    "secureInput": false
-                },
-                "userProperties": [],
-                "typeProperties": {
-                    "command": ".clear table merchant data",
-                    "commandTimeout": "00:20:00"
-                },
-                "linkedServiceName": {
-                    "referenceName": "idpay-Kusto-idpay-ls",
-                    "type": "LinkedServiceReference"
-                }
             }
         ],
         "annotations": [],
-        "lastPublishTime": "2025-10-08T09:33:22Z"
+        "lastPublishTime": "2025-10-08T09:22:11Z"
     },
     "type": "Microsoft.DataFactory/factories/pipelines"
 }
