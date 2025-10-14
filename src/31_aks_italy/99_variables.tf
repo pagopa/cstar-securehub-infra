@@ -180,7 +180,7 @@ variable "nginx_helm" {
       resources = object({
         requests = object({
           memory : string
-          cpu    : string
+          cpu : string
         })
       }),
       config = object({
