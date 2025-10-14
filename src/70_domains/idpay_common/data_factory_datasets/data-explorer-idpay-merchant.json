@@ -1,5 +1,5 @@
 {
-    "name": "DataExplorerIdpayTransaction",
+    "name": "data-explorer-idpay-merchant",
     "properties": {
         "linkedServiceName": {
             "referenceName": "idpay-Kusto-idpay-ls",
@@ -9,7 +9,7 @@
         "type": "AzureDataExplorerTable",
         "schema": [],
         "typeProperties": {
-            "table": "transaction"
+            "table": "merchant"
         }
     },
     "type": "Microsoft.DataFactory/factories/datasets"

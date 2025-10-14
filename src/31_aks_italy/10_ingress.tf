@@ -74,6 +74,10 @@ module "nginx_ingress" {
       value = var.nginx_helm.controller.resources.requests.memory
     },
     {
+      name  = "controller.resources.requests.cpu"
+      value = var.nginx_helm.controller.resources.requests.cpu
+    },
+    {
       name  = "controller.service.annotations.service\\.beta\\.kubernetes\\.io/azure-load-balancer-health-probe-request-path"
       value = "/healthz"
     },

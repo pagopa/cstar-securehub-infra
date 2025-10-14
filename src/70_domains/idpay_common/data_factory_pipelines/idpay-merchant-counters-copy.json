@@ -1,13 +1,13 @@
 {
-    "name": "IdpayMerchantCopy",
+    "name": "idpay-merchant-counters-copy",
     "properties": {
         "activities": [
             {
-                "name": "Copy merchant collection",
+                "name": "Copy merchant counters collection",
                 "type": "Copy",
                 "dependsOn": [
                     {
-                        "activity": "Clear merchant table",
+                        "activity": "Clear merchant counters table",
                         "dependencyConditions": [
                             "Succeeded"
                         ]
@@ -43,98 +43,58 @@
                             },
                             {
                                 "source": {
-                                    "path": "$['acquirerId']"
+                                    "path": "$['merchantId']"
                                 },
                                 "sink": {
-                                    "name": "acquirerId"
+                                    "name": "merchantId"
                                 }
                             },
                             {
                                 "source": {
-                                    "path": "$['businessName']"
+                                    "path": "$['initiativeId']"
                                 },
                                 "sink": {
-                                    "name": "businessName"
+                                    "name": "initiativeId"
                                 }
                             },
                             {
                                 "source": {
-                                    "path": "$['legalOfficeAddress']"
+                                    "path": "$['trxNumber']"
                                 },
                                 "sink": {
-                                    "name": "legalOfficeAddress"
+                                    "name": "trxNumber"
                                 }
                             },
                             {
                                 "source": {
-                                    "path": "$['legalOfficeMunicipality']"
+                                    "path": "$['refundedNumber']"
                                 },
                                 "sink": {
-                                    "name": "legalOfficeMunicipality"
+                                    "name": "refundedNumber"
                                 }
                             },
                             {
                                 "source": {
-                                    "path": "$['legalOfficeProvince']"
+                                    "path": "$['totalProvidedCents']"
                                 },
                                 "sink": {
-                                    "name": "legalOfficeProvince"
+                                    "name": "totalProvidedCents"
                                 }
                             },
                             {
                                 "source": {
-                                    "path": "$['legalOfficeZipCode']"
+                                    "path": "$['totalRefundedCents']"
                                 },
                                 "sink": {
-                                    "name": "legalOfficeZipCode"
+                                    "name": "totalRefundedCents"
                                 }
                             },
                             {
                                 "source": {
-                                    "path": "$['certifiedEmail']"
+                                    "path": "$['totalRefundedCents.$date.$numberLong']"
                                 },
                                 "sink": {
-                                    "name": "certifiedEmail"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['fiscalCode']"
-                                },
-                                "sink": {
-                                    "name": "fiscalCode"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['vatNumber']"
-                                },
-                                "sink": {
-                                    "name": "vatNumber"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['iban']"
-                                },
-                                "sink": {
-                                    "name": "iban"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['ibanHolder']"
-                                },
-                                "sink": {
-                                    "name": "ibanHolder"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['enabled']"
-                                },
-                                "sink": {
-                                    "name": "isEnabled"
+                                    "name": "totalRefundedCents "
                                 }
                             }
                         ]
@@ -142,19 +102,19 @@
                 },
                 "inputs": [
                     {
-                        "referenceName": "CosmosIdpayMerchant",
+                        "referenceName": "cosmos-idpay-merchant-counters",
                         "type": "DatasetReference"
                     }
                 ],
                 "outputs": [
                     {
-                        "referenceName": "DataExplorerIdpayMerchant",
+                        "referenceName": "data-explorer-idpay-merchant-counters",
                         "type": "DatasetReference"
                     }
                 ]
             },
             {
-                "name": "Clear merchant table",
+                "name": "Clear merchant counters table",
                 "type": "AzureDataExplorerCommand",
                 "dependsOn": [],
                 "policy": {
@@ -166,7 +126,7 @@
                 },
                 "userProperties": [],
                 "typeProperties": {
-                    "command": ".clear table merchant data",
+                    "command": ".clear table merchant_initiative_counters data",
                     "commandTimeout": "00:20:00"
                 },
                 "linkedServiceName": {
@@ -176,7 +136,7 @@
             }
         ],
         "annotations": [],
-        "lastPublishTime": "2025-10-08T09:33:22Z"
+        "lastPublishTime": "2025-10-08T10:38:06Z"
     },
     "type": "Microsoft.DataFactory/factories/pipelines"
 }
