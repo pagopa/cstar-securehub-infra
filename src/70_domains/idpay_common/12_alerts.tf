@@ -658,7 +658,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pari_kafka_consumer_abse
   resource_group_name = local.monitor_rg
   location            = var.location
 
-  description = "Kafka consumer 'idpay-checkiban-eval-consumer-group' has not sent any logs for the last 5 minutes."
+  description = "Kafka consumer 'idpay-asset-register-consumer-group' has not reported its lag metric for the last 5 minutes."
   enabled     = true
   severity    = 1
 
@@ -668,9 +668,10 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pari_kafka_consumer_abse
   data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
-AppTraces
+AppMetrics
 | where TimeGenerated > ago(5m)
-| where Message has "groupId=idpay-asset-register-consumer-group"
+| where Name == "kafka_consumer_fetch_manager_records_lag_max"
+| where Properties has "idpay-asset-register-consumer-group"
 QUERY
 
   trigger {
@@ -680,7 +681,7 @@ QUERY
 
   action {
     action_group           = [azurerm_monitor_action_group.email[0].id]
-    email_subject          = "[PARI][HIGH] Kafka Consumer Absent: idpay-checkiban-eval-consumer-group"
+    email_subject          = "[PARI][HIGH] Kafka Consumer Absent: idpay-asset-register-consumer-group"
     custom_webhook_payload = "{}"
   }
 }
