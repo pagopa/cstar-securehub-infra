@@ -1,15 +1,15 @@
 {
-    "name": "cosmos-idpay-transaction",
-    "properties": {
+    "name": "cosmos_idpay_transaction_in_progress",
+        "properties": {
         "linkedServiceName": {
-            "referenceName": "idpay-CosmosDB-idpay-ls",
+            "referenceName": "idpay-CosmosDB-idpay-pagamenti-ls",
             "type": "LinkedServiceReference"
         },
         "annotations": [],
         "type": "CosmosDbMongoDbApiCollection",
         "schema": [],
         "typeProperties": {
-            "collection": "transaction"
+            "collection": "transaction_in_progress"
         }
     },
     "type": "Microsoft.DataFactory/factories/datasets"

@@ -1,5 +1,5 @@
 {
-    "name": "data-explorer-idpay-transaction-in-progress",
+    "name": "data_explorer_idpay_merchant_counters",
     "properties": {
         "linkedServiceName": {
             "referenceName": "idpay-Kusto-idpay-ls",
@@ -9,7 +9,7 @@
         "type": "AzureDataExplorerTable",
         "schema": [],
         "typeProperties": {
-            "table": "transaction_in_progress"
+            "table": "merchant_initiative_counters"
         }
     },
     "type": "Microsoft.DataFactory/factories/datasets"
