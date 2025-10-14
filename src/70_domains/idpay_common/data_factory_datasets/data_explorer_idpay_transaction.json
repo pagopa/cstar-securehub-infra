@@ -1,5 +1,5 @@
 {
-    "name": "data-explorer-idpay-transaction",
+    "name": "data_explorer_idpay_transaction",
     "properties": {
         "linkedServiceName": {
             "referenceName": "idpay-Kusto-idpay-ls",

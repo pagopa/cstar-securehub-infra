@@ -1,5 +1,5 @@
 {
-    "name": "cosmos-rdb-products",
+    "name": "cosmos_rdb_products",
     "properties": {
         "linkedServiceName": {
             "referenceName": "idpay-CosmosDB-rdb-ls",

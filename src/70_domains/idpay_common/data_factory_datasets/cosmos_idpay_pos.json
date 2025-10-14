@@ -1,5 +1,5 @@
 {
-    "name": "cosmos-idpay-pos",
+    "name": "cosmos_idpay_pos",
     "properties": {
         "linkedServiceName": {
             "referenceName": "idpay-CosmosDB-idpay-pagamenti-ls",
