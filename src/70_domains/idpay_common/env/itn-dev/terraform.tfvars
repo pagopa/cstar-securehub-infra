@@ -79,9 +79,10 @@ aks_nodepool_green = {
 }
 
 #Monitoring
-law_sku               = "PerGB2018"
-law_retention_in_days = 30
-law_daily_quota_gb    = 5
+law_sku                     = "PerGB2018"
+law_retention_in_days       = 30
+law_daily_quota_gb          = 5
+
 
 
 #OneIdentity
