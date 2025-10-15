@@ -838,6 +838,10 @@ locals {
           unique = false
         },
         {
+          keys   = ["fullProductName"]
+          unique = false
+        },
+        {
           keys   = ["brand"]
           unique = false
         },
