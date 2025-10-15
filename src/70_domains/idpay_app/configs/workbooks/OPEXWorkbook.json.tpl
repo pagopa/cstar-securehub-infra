@@ -6006,7 +6006,7 @@
                           "queryType": 0,
                           "resourceType": "microsoft.insights/components",
                           "crossComponentResources": [
-                            "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
+                            "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
                           ],
                           "gridSettings": {
                             "formatters": [
@@ -6259,7 +6259,7 @@
                           "queryType": 0,
                           "resourceType": "microsoft.insights/components",
                           "crossComponentResources": [
-                            "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
+                            "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
                           ],
                           "gridSettings": {
                             "formatters": [
@@ -6512,7 +6512,7 @@
                           "queryType": 0,
                           "resourceType": "microsoft.operationalinsights/workspaces",
                           "crossComponentResources": [
-                            "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${domain}-law"
+                            "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${domain}-law"
                           ],
                           "visualization": "timechart"
                         },
@@ -6531,7 +6531,7 @@
                           "queryType": 0,
                           "resourceType": "microsoft.insights/components",
                           "crossComponentResources": [
-                            "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
+                            "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
                           ],
                           "visualization": "timechart"
                         },
@@ -6555,7 +6555,7 @@
                                 "resourceType": "microsoft.insights/components",
                                 "metricScope": 0,
                                 "resourceIds": [
-                                  "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
+                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
                                 ],
                                 "timeContextFromParameter": "timeRangeOverall",
                                 "timeContext": {
@@ -6597,7 +6597,7 @@
                                 "resourceType": "microsoft.insights/components",
                                 "metricScope": 0,
                                 "resourceIds": [
-                                  "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
+                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
                                 ],
                                 "timeContextFromParameter": "timeRangeOverall",
                                 "timeContext": {
@@ -6650,7 +6650,7 @@
                                 "resourceType": "microsoft.insights/components",
                                 "metricScope": 0,
                                 "resourceIds": [
-                                  "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
+                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
                                 ],
                                 "timeContextFromParameter": "timeRangeOverall",
                                 "timeContext": {
@@ -6704,7 +6704,7 @@
                                 "resourceType": "microsoft.insights/components",
                                 "metricScope": 0,
                                 "resourceIds": [
-                                  "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
+                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
                                 ],
                                 "timeContextFromParameter": "timeRangeOverall",
                                 "timeContext": {
@@ -6757,7 +6757,7 @@
                                 "resourceType": "microsoft.insights/components",
                                 "metricScope": 0,
                                 "resourceIds": [
-                                  "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
+                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
                                 ],
                                 "timeContextFromParameter": "timeRangeOverall",
                                 "timeContext": {
@@ -6810,8 +6810,8 @@
                                 "resourceType": "microsoft.eventhub/namespaces",
                                 "metricScope": 0,
                                 "resourceIds": [
-                                  "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-${domain}-evh-01-ns",
-                                  "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-${domain}-evh-00-ns"
+                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-${domain}-evh-01-ns",
+                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-${domain}-evh-00-ns"
                                 ],
                                 "timeContextFromParameter": "timeRangeOverall",
                                 "timeContext": {
@@ -6916,7 +6916,7 @@
                                       "resourceType": "microsoft.eventhub/namespaces",
                                       "metricScope": 0,
                                       "resourceIds": [
-                                        "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-${domain}-evh-00-ns"
+                                        "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-${domain}-evh-00-ns"
                                       ],
                                       "timeContextFromParameter": "timeRangeOverall",
                                       "timeContext": {
@@ -6962,7 +6962,7 @@
                                       "resourceType": "microsoft.eventhub/namespaces",
                                       "metricScope": 0,
                                       "resourceIds": [
-                                        "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-${domain}-evh-00-ns"
+                                        "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-${domain}-evh-00-ns"
                                       ],
                                       "timeContextFromParameter": "timeRangeOverall",
                                       "timeContext": {
@@ -7019,7 +7019,7 @@
                                       "resourceType": "microsoft.eventhub/namespaces",
                                       "metricScope": 0,
                                       "resourceIds": [
-                                        "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-${domain}-evh-01-ns"
+                                        "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-${domain}-evh-01-ns"
                                       ],
                                       "timeContextFromParameter": "timeRangeOverall",
                                       "timeContext": {
@@ -7065,7 +7065,7 @@
                                       "resourceType": "microsoft.eventhub/namespaces",
                                       "metricScope": 0,
                                       "resourceIds": [
-                                        "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-${domain}-evh-01-ns"
+                                        "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-${domain}-evh-01-ns"
                                       ],
                                       "timeContextFromParameter": "timeRangeOverall",
                                       "timeContext": {
@@ -7135,7 +7135,7 @@
                           "queryType": 0,
                           "resourceType": "microsoft.insights/components",
                           "crossComponentResources": [
-                            "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
+                            "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
                           ],
                           "gridSettings": {
                             "formatters": [
@@ -7377,7 +7377,7 @@
                           "queryType": 0,
                           "resourceType": "microsoft.insights/components",
                           "crossComponentResources": [
-                            "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
+                            "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
                           ],
                           "visualization": "timechart"
                         },
@@ -7396,7 +7396,7 @@
                           "queryType": 0,
                           "resourceType": "microsoft.insights/components",
                           "crossComponentResources": [
-                            "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
+                            "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
                           ]
                         },
                         "customWidth": "50",
@@ -7419,7 +7419,7 @@
                                 "resourceType": "microsoft.insights/components",
                                 "metricScope": 0,
                                 "resourceIds": [
-                                  "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
+                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
                                 ],
                                 "timeContextFromParameter": "timeRangeAssetRegister",
                                 "timeContext": {
@@ -7469,7 +7469,7 @@
                                 "resourceType": "microsoft.insights/components",
                                 "metricScope": 0,
                                 "resourceIds": [
-                                  "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
+                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
                                 ],
                                 "timeContextFromParameter": "timeRangeAssetRegister",
                                 "timeContext": {
@@ -7530,7 +7530,7 @@
                                 "resourceType": "microsoft.insights/components",
                                 "metricScope": 0,
                                 "resourceIds": [
-                                  "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
+                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
                                 ],
                                 "timeContextFromParameter": "timeRangeAssetRegister",
                                 "timeContext": {
@@ -7592,7 +7592,7 @@
                                 "resourceType": "microsoft.insights/components",
                                 "metricScope": 0,
                                 "resourceIds": [
-                                  "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
+                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
                                 ],
                                 "timeContextFromParameter": "timeRangeAssetRegister",
                                 "timeContext": {
@@ -7653,7 +7653,7 @@
                                 "resourceType": "microsoft.insights/components",
                                 "metricScope": 0,
                                 "resourceIds": [
-                                  "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
+                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
                                 ],
                                 "timeContextFromParameter": "timeRangeAssetRegister",
                                 "timeContext": {
@@ -7733,7 +7733,7 @@
                                                   "resourceType": "microsoft.eventhub/namespaces",
                                                   "metricScope": 0,
                                                   "resourceIds": [
-                                                    "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-${domain}-evh-rdb-ns"
+                                                    "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-${domain}-evh-rdb-ns"
                                                   ],
                                                   "timeContextFromParameter": "timeRangeAssetRegister",
                                                   "timeContext": {
@@ -7767,7 +7767,7 @@
                                                   "resourceType": "microsoft.eventhub/namespaces",
                                                   "metricScope": 0,
                                                   "resourceIds": [
-                                                    "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-${domain}-evh-rdb-ns"
+                                                    "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-${domain}-evh-rdb-ns"
                                                   ],
                                                   "timeContextFromParameter": "timeRangeAssetRegister",
                                                   "timeContext": {
@@ -7812,7 +7812,7 @@
                                                   "resourceType": "microsoft.documentdb/databaseaccounts",
                                                   "metricScope": 0,
                                                   "resourceIds": [
-                                                    "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-data-rg/providers/Microsoft.DocumentDB/databaseAccounts/${prefix}-${domain}-mongodb-account"
+                                                    "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-data-rg/providers/Microsoft.DocumentDB/databaseAccounts/${prefix}-${domain}-mongodb-account"
                                                   ],
                                                   "timeContextFromParameter": "timeRangeAssetRegister",
                                                   "timeContext": {
@@ -7853,7 +7853,7 @@
                                                   "resourceType": "microsoft.documentdb/databaseaccounts",
                                                   "metricScope": 0,
                                                   "resourceIds": [
-                                                    "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-data-rg/providers/Microsoft.DocumentDB/databaseAccounts/${prefix}-${domain}-mongodb-account"
+                                                    "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-data-rg/providers/Microsoft.DocumentDB/databaseAccounts/${prefix}-${domain}-mongodb-account"
                                                   ],
                                                   "timeContextFromParameter": "timeRangeAssetRegister",
                                                   "timeContext": {
@@ -7935,7 +7935,7 @@
                           "queryType": 0,
                           "resourceType": "microsoft.insights/components",
                           "crossComponentResources": [
-                            "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
+                            "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
                           ],
                           "gridSettings": {
                             "formatters": [
@@ -8177,7 +8177,7 @@
                           "queryType": 0,
                           "resourceType": "microsoft.insights/components",
                           "crossComponentResources": [
-                            "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
+                            "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
                           ],
                           "visualization": "timechart"
                         },
@@ -8196,7 +8196,7 @@
                           "queryType": 0,
                           "resourceType": "microsoft.insights/components",
                           "crossComponentResources": [
-                            "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
+                            "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
                           ]
                         },
                         "customWidth": "50",
@@ -8219,7 +8219,7 @@
                                 "resourceType": "microsoft.insights/components",
                                 "metricScope": 0,
                                 "resourceIds": [
-                                  "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
+                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
                                 ],
                                 "timeContextFromParameter": "timeRangeBeneficiary",
                                 "timeContext": {
@@ -8259,7 +8259,7 @@
                                 "resourceType": "microsoft.insights/components",
                                 "metricScope": 0,
                                 "resourceIds": [
-                                  "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
+                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
                                 ],
                                 "timeContextFromParameter": "timeRangeBeneficiary",
                                 "timeContext": {
@@ -8310,7 +8310,7 @@
                                 "resourceType": "microsoft.insights/components",
                                 "metricScope": 0,
                                 "resourceIds": [
-                                  "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
+                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
                                 ],
                                 "timeContextFromParameter": "timeRangeBeneficiary",
                                 "timeContext": {
@@ -8362,7 +8362,7 @@
                                 "resourceType": "microsoft.insights/components",
                                 "metricScope": 0,
                                 "resourceIds": [
-                                  "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
+                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
                                 ],
                                 "timeContextFromParameter": "timeRangeBeneficiary",
                                 "timeContext": {
@@ -8413,7 +8413,7 @@
                                 "resourceType": "microsoft.insights/components",
                                 "metricScope": 0,
                                 "resourceIds": [
-                                  "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
+                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
                                 ],
                                 "timeContextFromParameter": "timeRangeBeneficiary",
                                 "timeContext": {
@@ -8464,8 +8464,8 @@
                                 "resourceType": "microsoft.eventhub/namespaces",
                                 "metricScope": 0,
                                 "resourceIds": [
-                                  "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-${domain}-evh-01-ns",
-                                  "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-${domain}-evh-00-ns"
+                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-${domain}-evh-01-ns",
+                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-${domain}-evh-00-ns"
                                 ],
                                 "timeContextFromParameter": "timeRangeBeneficiary",
                                 "timeContext": {
@@ -8571,7 +8571,7 @@
                                       "resourceType": "microsoft.eventhub/namespaces",
                                       "metricScope": 0,
                                       "resourceIds": [
-                                        "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-${domain}-evh-00-ns"
+                                        "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-${domain}-evh-00-ns"
                                       ],
                                       "timeContextFromParameter": "timeRangeBeneficiary",
                                       "timeContext": {
@@ -8615,7 +8615,7 @@
                                       "resourceType": "microsoft.eventhub/namespaces",
                                       "metricScope": 0,
                                       "resourceIds": [
-                                        "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-${domain}-evh-00-ns"
+                                        "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-${domain}-evh-00-ns"
                                       ],
                                       "timeContextFromParameter": "timeRangeBeneficiary",
                                       "timeContext": {
@@ -8670,7 +8670,7 @@
                                       "resourceType": "microsoft.eventhub/namespaces",
                                       "metricScope": 0,
                                       "resourceIds": [
-                                        "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-${domain}-evh-01-ns"
+                                        "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-${domain}-evh-01-ns"
                                       ],
                                       "timeContextFromParameter": "timeRangeBeneficiary",
                                       "timeContext": {
@@ -8714,7 +8714,7 @@
                                       "resourceType": "microsoft.eventhub/namespaces",
                                       "metricScope": 0,
                                       "resourceIds": [
-                                        "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-${domain}-evh-01-ns"
+                                        "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-${domain}-evh-01-ns"
                                       ],
                                       "timeContextFromParameter": "timeRangeBeneficiary",
                                       "timeContext": {
@@ -8782,7 +8782,7 @@
                           "queryType": 0,
                           "resourceType": "microsoft.insights/components",
                           "crossComponentResources": [
-                            "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
+                            "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
                           ],
                           "gridSettings": {
                             "formatters": [
@@ -9023,7 +9023,7 @@
                           "queryType": 0,
                           "resourceType": "microsoft.insights/components",
                           "crossComponentResources": [
-                            "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
+                            "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
                           ],
                           "visualization": "timechart"
                         },
@@ -9042,7 +9042,7 @@
                           "queryType": 0,
                           "resourceType": "microsoft.insights/components",
                           "crossComponentResources": [
-                            "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
+                            "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
                           ]
                         },
                         "customWidth": "50",
@@ -9065,7 +9065,7 @@
                                 "resourceType": "microsoft.insights/components",
                                 "metricScope": 0,
                                 "resourceIds": [
-                                  "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
+                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
                                 ],
                                 "timeContextFromParameter": "timeRangeEnte",
                                 "timeContext": {
@@ -9107,7 +9107,7 @@
                                 "resourceType": "microsoft.insights/components",
                                 "metricScope": 0,
                                 "resourceIds": [
-                                  "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
+                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
                                 ],
                                 "timeContextFromParameter": "timeRangeEnte",
                                 "timeContext": {
@@ -9160,7 +9160,7 @@
                                 "resourceType": "microsoft.insights/components",
                                 "metricScope": 0,
                                 "resourceIds": [
-                                  "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
+                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
                                 ],
                                 "timeContextFromParameter": "timeRangeEnte",
                                 "timeContext": {
@@ -9214,7 +9214,7 @@
                                 "resourceType": "microsoft.insights/components",
                                 "metricScope": 0,
                                 "resourceIds": [
-                                  "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
+                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
                                 ],
                                 "timeContextFromParameter": "timeRangeEnte",
                                 "timeContext": {
@@ -9267,7 +9267,7 @@
                                 "resourceType": "microsoft.insights/components",
                                 "metricScope": 0,
                                 "resourceIds": [
-                                  "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
+                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
                                 ],
                                 "timeContextFromParameter": "timeRangeEnte",
                                 "timeContext": {
@@ -9320,8 +9320,8 @@
                                 "resourceType": "microsoft.eventhub/namespaces",
                                 "metricScope": 0,
                                 "resourceIds": [
-                                  "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-${domain}-evh-01-ns",
-                                  "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-${domain}-evh-00-ns"
+                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-${domain}-evh-01-ns",
+                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-${domain}-evh-00-ns"
                                 ],
                                 "timeContextFromParameter": "timeRangeEnte",
                                 "timeContext": {
@@ -9426,7 +9426,7 @@
                                       "resourceType": "microsoft.eventhub/namespaces",
                                       "metricScope": 0,
                                       "resourceIds": [
-                                        "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-${domain}-evh-00-ns"
+                                        "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-${domain}-evh-00-ns"
                                       ],
                                       "timeContextFromParameter": "timeRangeEnte",
                                       "timeContext": {
@@ -9472,7 +9472,7 @@
                                       "resourceType": "microsoft.eventhub/namespaces",
                                       "metricScope": 0,
                                       "resourceIds": [
-                                        "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-${domain}-evh-00-ns"
+                                        "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-${domain}-evh-00-ns"
                                       ],
                                       "timeContextFromParameter": "timeRangeEnte",
                                       "timeContext": {
@@ -9529,7 +9529,7 @@
                                       "resourceType": "microsoft.eventhub/namespaces",
                                       "metricScope": 0,
                                       "resourceIds": [
-                                        "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-${domain}-evh-01-ns"
+                                        "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-${domain}-evh-01-ns"
                                       ],
                                       "timeContextFromParameter": "timeRangeEnte",
                                       "timeContext": {
@@ -9575,7 +9575,7 @@
                                       "resourceType": "microsoft.eventhub/namespaces",
                                       "metricScope": 0,
                                       "resourceIds": [
-                                        "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-${domain}-evh-01-ns"
+                                        "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-${domain}-evh-01-ns"
                                       ],
                                       "timeContextFromParameter": "timeRangeEnte",
                                       "timeContext": {
@@ -9645,7 +9645,7 @@
                           "queryType": 0,
                           "resourceType": "microsoft.insights/components",
                           "crossComponentResources": [
-                            "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
+                            "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
                           ],
                           "gridSettings": {
                             "formatters": [
@@ -9897,7 +9897,7 @@
                           "queryType": 0,
                           "resourceType": "microsoft.insights/components",
                           "crossComponentResources": [
-                            "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
+                            "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
                           ],
                           "visualization": "timechart"
                         },
@@ -9916,7 +9916,7 @@
                           "queryType": 0,
                           "resourceType": "microsoft.insights/components",
                           "crossComponentResources": [
-                            "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
+                            "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
                           ]
                         },
                         "customWidth": "50",
@@ -9939,7 +9939,7 @@
                                 "resourceType": "microsoft.insights/components",
                                 "metricScope": 0,
                                 "resourceIds": [
-                                  "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
+                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
                                 ],
                                 "timeContextFromParameter": "timeRangeUsers",
                                 "timeContext": {
@@ -9989,7 +9989,7 @@
                                 "resourceType": "microsoft.insights/components",
                                 "metricScope": 0,
                                 "resourceIds": [
-                                  "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
+                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
                                 ],
                                 "timeContextFromParameter": "timeRangeUsers",
                                 "timeContext": {
@@ -10042,7 +10042,7 @@
                                 "resourceType": "microsoft.insights/components",
                                 "metricScope": 0,
                                 "resourceIds": [
-                                  "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
+                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
                                 ],
                                 "timeContextFromParameter": "timeRangeUsers",
                                 "timeContext": {
@@ -10096,7 +10096,7 @@
                                 "resourceType": "microsoft.insights/components",
                                 "metricScope": 0,
                                 "resourceIds": [
-                                  "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
+                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
                                 ],
                                 "timeContextFromParameter": "timeRangeUsers",
                                 "timeContext": {
@@ -10149,7 +10149,7 @@
                                 "resourceType": "microsoft.insights/components",
                                 "metricScope": 0,
                                 "resourceIds": [
-                                  "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
+                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
                                 ],
                                 "timeContextFromParameter": "timeRangeUsers",
                                 "timeContext": {
@@ -10210,7 +10210,7 @@
                                 "resourceType": "microsoft.eventhub/namespaces",
                                 "metricScope": 0,
                                 "resourceIds": [
-                                  "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-${domain}-evh-01-ns"
+                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-${domain}-evh-01-ns"
                                 ],
                                 "timeContextFromParameter": "timeRangeUsers",
                                 "timeContext": {
@@ -10321,7 +10321,7 @@
                                       "resourceType": "microsoft.eventhub/namespaces",
                                       "metricScope": 0,
                                       "resourceIds": [
-                                        "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-${domain}-evh-01-ns"
+                                        "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-${domain}-evh-01-ns"
                                       ],
                                       "timeContextFromParameter": "timeRangeUsers",
                                       "timeContext": {
@@ -10373,7 +10373,7 @@
                                       "resourceType": "microsoft.eventhub/namespaces",
                                       "metricScope": 0,
                                       "resourceIds": [
-                                        "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-${domain}-evh-01-ns"
+                                        "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-${domain}-evh-01-ns"
                                       ],
                                       "timeContextFromParameter": "timeRangeUsers",
                                       "timeContext": {
@@ -10431,7 +10431,7 @@
                                             "resourceType": "microsoft.documentdb/databaseaccounts",
                                             "metricScope": 0,
                                             "resourceIds": [
-                                              "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-data-rg/providers/Microsoft.DocumentDB/databaseAccounts/${prefix}-${domain}-mongodb-account"
+                                              "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-data-rg/providers/Microsoft.DocumentDB/databaseAccounts/${prefix}-${domain}-mongodb-account"
                                             ],
                                             "timeContext": {
                                               "durationMs": 604800000
@@ -10484,7 +10484,7 @@
                                             "resourceType": "microsoft.documentdb/databaseaccounts",
                                             "metricScope": 0,
                                             "resourceIds": [
-                                              "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-data-rg/providers/Microsoft.DocumentDB/databaseAccounts/${prefix}-${domain}-mongodb-account"
+                                              "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-data-rg/providers/Microsoft.DocumentDB/databaseAccounts/${prefix}-${domain}-mongodb-account"
                                             ],
                                             "timeContext": {
                                               "durationMs": 2592000000
@@ -10565,7 +10565,7 @@
                           "queryType": 0,
                           "resourceType": "microsoft.insights/components",
                           "crossComponentResources": [
-                            "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
+                            "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
                           ],
                           "gridSettings": {
                             "formatters": [
@@ -10806,7 +10806,7 @@
                           "queryType": 0,
                           "resourceType": "microsoft.insights/components",
                           "crossComponentResources": [
-                            "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
+                            "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
                           ],
                           "visualization": "timechart"
                         },
@@ -10825,7 +10825,7 @@
                           "queryType": 0,
                           "resourceType": "microsoft.insights/components",
                           "crossComponentResources": [
-                            "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
+                            "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
                           ]
                         },
                         "customWidth": "50",
@@ -10848,7 +10848,7 @@
                                 "resourceType": "microsoft.insights/components",
                                 "metricScope": 0,
                                 "resourceIds": [
-                                  "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
+                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
                                 ],
                                 "timeContextFromParameter": "timeRangePayment",
                                 "timeContext": {
@@ -10891,7 +10891,7 @@
                                 "resourceType": "microsoft.insights/components",
                                 "metricScope": 0,
                                 "resourceIds": [
-                                  "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
+                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
                                 ],
                                 "timeContextFromParameter": "timeRangePayment",
                                 "timeContext": {
@@ -10945,7 +10945,7 @@
                                 "resourceType": "microsoft.insights/components",
                                 "metricScope": 0,
                                 "resourceIds": [
-                                  "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
+                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
                                 ],
                                 "timeContextFromParameter": "timeRangePayment",
                                 "timeContext": {
@@ -11000,7 +11000,7 @@
                                 "resourceType": "microsoft.insights/components",
                                 "metricScope": 0,
                                 "resourceIds": [
-                                  "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
+                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
                                 ],
                                 "timeContextFromParameter": "timeRangePayment",
                                 "timeContext": {
@@ -11054,7 +11054,7 @@
                                 "resourceType": "microsoft.insights/components",
                                 "metricScope": 0,
                                 "resourceIds": [
-                                  "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
+                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
                                 ],
                                 "timeContextFromParameter": "timeRangePayment",
                                 "timeContext": {
@@ -11108,7 +11108,7 @@
                                 "resourceType": "microsoft.eventhub/namespaces",
                                 "metricScope": 0,
                                 "resourceIds": [
-                                  "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-${domain}-evh-01-ns"
+                                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-${domain}-evh-01-ns"
                                 ],
                                 "timeContextFromParameter": "timeRangePayment",
                                 "timeContext": {
@@ -11214,7 +11214,7 @@
                                       "resourceType": "microsoft.eventhub/namespaces",
                                       "metricScope": 0,
                                       "resourceIds": [
-                                        "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-${domain}-evh-01-ns"
+                                        "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-${domain}-evh-01-ns"
                                       ],
                                       "timeContextFromParameter": "timeRangePayment",
                                       "timeContext": {
@@ -11261,7 +11261,7 @@
                                       "resourceType": "microsoft.eventhub/namespaces",
                                       "metricScope": 0,
                                       "resourceIds": [
-                                        "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-${domain}-evh-01-ns"
+                                        "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-${domain}-evh-01-ns"
                                       ],
                                       "timeContextFromParameter": "timeRangePayment",
                                       "timeContext": {
@@ -11326,7 +11326,7 @@
                     "resourceType": "microsoft.containerservice/managedclusters",
                     "metricScope": 0,
                     "resourceIds": [
-                      "/subscriptions/${subscriptions_id}/resourceGroups/cstar-d-itn-core-aks-rg/providers/Microsoft.ContainerService/managedClusters/cstar-d-itn-dev-aks"
+                      "/subscriptions/${subscription_id}/resourceGroups/cstar-d-itn-core-aks-rg/providers/Microsoft.ContainerService/managedClusters/cstar-d-itn-dev-aks"
                     ],
                     "timeContextFromParameter": "timeRangeOverall",
                     "timeContext": {
@@ -11366,7 +11366,7 @@
                     "resourceType": "microsoft.containerservice/managedclusters",
                     "metricScope": 0,
                     "resourceIds": [
-                      "/subscriptions/${subscriptions_id}/resourceGroups/cstar-d-itn-core-aks-rg/providers/Microsoft.ContainerService/managedClusters/cstar-d-itn-dev-aks"
+                      "/subscriptions/${subscription_id}/resourceGroups/cstar-d-itn-core-aks-rg/providers/Microsoft.ContainerService/managedClusters/cstar-d-itn-dev-aks"
                     ],
                     "timeContextFromParameter": "timeRangeOverall",
                     "timeContext": {
@@ -11487,7 +11487,7 @@
                     "queryType": 0,
                     "resourceType": "microsoft.insights/components",
                     "crossComponentResources": [
-                      "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
+                      "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
                     ]
                   },
                   "customWidth": "50",
@@ -11510,7 +11510,7 @@
                     "queryType": 0,
                     "resourceType": "microsoft.insights/components",
                     "crossComponentResources": [
-                      "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
+                      "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
                     ]
                   },
                   "customWidth": "50",
@@ -11533,7 +11533,7 @@
                     "queryType": 0,
                     "resourceType": "microsoft.insights/components",
                     "crossComponentResources": [
-                      "/subscriptions/${subscriptions_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
+                      "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${domain}-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-${domain}-appinsights"
                     ],
                     "visualization": "timechart",
                     "chartSettings": {
