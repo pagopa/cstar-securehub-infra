@@ -473,6 +473,7 @@ locals {
         { keys = ["eprelCode"], unique = false },
         { keys = ["status"], unique = false },
         { keys = ["productName"], unique = false },
+        { keys = ["fullProductName"], unique = false },
         { keys = ["brand"], unique = false },
         { keys = ["model"], unique = false },
         { keys = ["organizationName"], unique = false },
@@ -517,7 +518,6 @@ resource "azurerm_cosmosdb_mongo_database" "databases" {
     "idpay-beneficiari",
     "idpay-pagamenti",
     "idpay-iniziative",
-    "rdb",
   ])
 
   name                = each.key
@@ -526,8 +526,11 @@ resource "azurerm_cosmosdb_mongo_database" "databases" {
 
   throughput = null
 
-  autoscale_settings {
-    max_throughput = 1000
+  dynamic "autoscale_settings" {
+    for_each = var.env == "dev" ? [] : [1]
+    content {
+      max_throughput = 1000
+    }
   }
 
   lifecycle {
