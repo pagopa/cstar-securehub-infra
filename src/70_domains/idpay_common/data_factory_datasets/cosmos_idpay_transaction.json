@@ -1,15 +1,15 @@
 {
-    "name": "DataExplorerIdpayTransactionInProgress",
+    "name": "cosmos_idpay_transaction",
     "properties": {
         "linkedServiceName": {
-            "referenceName": "idpay-Kusto-idpay-ls",
+            "referenceName": "idpay-CosmosDB-idpay-pagamenti-ls",
             "type": "LinkedServiceReference"
         },
         "annotations": [],
-        "type": "AzureDataExplorerTable",
+        "type": "CosmosDbMongoDbApiCollection",
         "schema": [],
         "typeProperties": {
-            "table": "transaction_in_progress"
+            "collection": "transaction"
         }
     },
     "type": "Microsoft.DataFactory/factories/datasets"

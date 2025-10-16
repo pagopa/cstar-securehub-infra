@@ -1,17 +1,13 @@
 locals {
-  pipelines = {
-    trigger_products                = "RdbProductCopy"
-    trigger_merchant                = "IdpayMerchantCopy"
-    trigger_merchant_counters       = "IdpayMerchantCountersCopy"
-    trigger_pos                     = "IdpayPoSCopy"
-    trigger_transaction             = "IdpayTransactionCopy"
-    trigger_transaction_in_progress = "IdpayTransactionInProgressCopy"
+  trigger_pipelines = {
+    for key, tmpl in local.pipeline_templates :
+    key => key
   }
 }
 
 resource "azurerm_data_factory_trigger_schedule" "daily_triggers" {
-  for_each        = local.pipelines
-  name            = "Trigger-${each.value}"
+  for_each        = local.trigger_pipelines
+  name            = "trigger-${each.key}"
   data_factory_id = data.azurerm_data_factory.data_factory.id
   activated       = true
   interval        = 1
@@ -20,7 +16,7 @@ resource "azurerm_data_factory_trigger_schedule" "daily_triggers" {
   time_zone       = "W. Europe Standard Time"
 
   pipeline {
-    name = each.value
+    name = each.key
   }
 
   schedule {

@@ -52,6 +52,9 @@
 | [kubernetes_config_map.notification-email](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/config_map) | resource |
 | [kubernetes_config_map.rest-client](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/config_map) | resource |
 | [kubernetes_config_map.rtd-eventhub](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/config_map) | resource |
+| [kubernetes_cron_job_v1.cancel_expired_vouchers](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/cron_job_v1) | resource |
+| [kubernetes_cron_job_v1.cancel_pending_transactions](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/cron_job_v1) | resource |
+| [kubernetes_cron_job_v1.reminder_voucher_expiration](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/cron_job_v1) | resource |
 | [null_resource.transaction_in_progress_connector](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [azuread_group.adgroup_admin](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_developers](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
@@ -85,6 +88,7 @@
 | <a name="input_event_hub_port"></a> [event\_hub\_port](#input\_event\_hub\_port) | n/a | `number` | `9093` | no |
 | <a name="input_external_domain"></a> [external\_domain](#input\_external\_domain) | Domain for delegation | `string` | n/a | yes |
 | <a name="input_idpay_alert_enabled"></a> [idpay\_alert\_enabled](#input\_idpay\_alert\_enabled) | n/a | `bool` | `false` | no |
+| <a name="input_idpay_bel_initiative_id"></a> [idpay\_bel\_initiative\_id](#input\_idpay\_bel\_initiative\_id) | Initiative id for Bonus Elettrodomestici | `string` | n/a | yes |
 | <a name="input_idpay_mocked_acquirer_apim_user_id"></a> [idpay\_mocked\_acquirer\_apim\_user\_id](#input\_idpay\_mocked\_acquirer\_apim\_user\_id) | APIm user id of mocked acquirer | `string` | `null` | no |
 | <a name="input_idpay_mocked_merchant_enable"></a> [idpay\_mocked\_merchant\_enable](#input\_idpay\_mocked\_merchant\_enable) | Enable mocked merchant APIs | `bool` | `false` | no |
 | <a name="input_ingress_domain_hostname"></a> [ingress\_domain\_hostname](#input\_ingress\_domain\_hostname) | n/a | `string` | n/a | yes |

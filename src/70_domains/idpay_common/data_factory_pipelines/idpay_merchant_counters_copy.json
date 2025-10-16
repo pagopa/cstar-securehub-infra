@@ -1,5 +1,5 @@
 {
-    "name": "IdpayMerchantCountersCopy",
+    "name": "idpay_merchant_counters_copy",
     "properties": {
         "activities": [
             {
@@ -72,19 +72,43 @@
                                 "sink": {
                                     "name": "refundedNumber"
                                 }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['totalProvidedCents']"
+                                },
+                                "sink": {
+                                    "name": "totalProvidedCents"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['totalRefundedCents']"
+                                },
+                                "sink": {
+                                    "name": "totalRefundedCents"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['totalRefundedCents.$date.$numberLong']"
+                                },
+                                "sink": {
+                                    "name": "totalRefundedCents "
+                                }
                             }
                         ]
                     }
                 },
                 "inputs": [
                     {
-                        "referenceName": "CosmosIdpayMerchantCounters",
+                        "referenceName": "cosmos_idpay_merchant_counters",
                         "type": "DatasetReference"
                     }
                 ],
                 "outputs": [
                     {
-                        "referenceName": "DataExplorerIdpayMerchantCounters",
+                        "referenceName": "data_explorer_idpay_merchant_counters",
                         "type": "DatasetReference"
                     }
                 ]
@@ -112,7 +136,7 @@
             }
         ],
         "annotations": [],
-        "lastPublishTime": "2025-10-08T09:33:22Z"
+        "lastPublishTime": "2025-10-08T10:38:06Z"
     },
     "type": "Microsoft.DataFactory/factories/pipelines"
 }

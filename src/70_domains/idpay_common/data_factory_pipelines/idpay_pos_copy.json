@@ -1,5 +1,5 @@
 {
-    "name": "IdpayPoSCopy",
+    "name": "idpay_pos_copy",
     "properties": {
         "activities": [
             {
@@ -185,19 +185,35 @@
                                     "name": "merchantId",
                                     "type": "String"
                                 }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['creationDate.$date.$numberLong']"
+                                },
+                                "sink": {
+                                    "name": "creationDate"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['updateDate.$date.$numberLong']"
+                                },
+                                "sink": {
+                                    "name": "updateDate"
+                                }
                             }
                         ]
                     }
                 },
                 "inputs": [
                     {
-                        "referenceName": "CosmosIdpayPoS",
+                        "referenceName": "cosmos_idpay_pos",
                         "type": "DatasetReference"
                     }
                 ],
                 "outputs": [
                     {
-                        "referenceName": "DataExplorerIdpayPoS",
+                        "referenceName": "data_explorer_idpay_pos",
                         "type": "DatasetReference"
                     }
                 ]
@@ -225,7 +241,7 @@
             }
         ],
         "annotations": [],
-        "lastPublishTime": "2025-10-08T09:33:22Z"
+        "lastPublishTime": "2025-10-08T10:37:09Z"
     },
     "type": "Microsoft.DataFactory/factories/pipelines"
 }
