@@ -5079,9 +5079,9 @@
 																				"/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.DocumentDB/databaseAccounts/${prefix}-idpay-mongodb-account"
 																			],
                                                                             "timeContextFromParameter": "timeRangeMerchant",
-                                                                            "timeContext": {
-                                                                               "durationMs": 0
-                                                                            },
+																			"timeContext":{
+																				"durationMs": 0
+																			},
 																			"metrics":[
 																				{
 																					"namespace":"microsoft.documentdb/databaseaccounts",
@@ -5123,12 +5123,10 @@
 																			"metricScope":0,
 																			"resourceIds":[
 																				"/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.DocumentDB/databaseAccounts/${prefix}-idpay-mongodb-account"
-																			]
-																			},
+																			],
                                                                             "timeContextFromParameter": "timeRangeMerchant",
-                                                                            "timeContext": {
+                                                                                "timeContext": {
                                                                                 "durationMs": 0
-                                                                            }
                                                                             },
 																			"metrics":[
 																				{
@@ -5985,12 +5983,11 @@
 																			"metricScope":0,
 																			"resourceIds":[
 																				"/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.DocumentDB/databaseAccounts/${prefix}-idpay-mongodb-account"
-																			]
-																			},
+																			],
                                                                             "timeContextFromParameter": "timeRangeUsers",
-                                                                            "timeContext": {
-                                                                              "durationMs": 0
-                                                                            },
+																			"timeContext":{
+																				"durationMs": 0
+																			},
 																			"metrics":[
 																				{
 																					"namespace":"microsoft.documentdb/databaseaccounts",
@@ -6042,11 +6039,10 @@
 																			"metricScope":0,
 																			"resourceIds":[
 																				"/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.DocumentDB/databaseAccounts/${prefix}-idpay-mongodb-account"
-																			]
-																			},
+																			],
                                                                             "timeContextFromParameter": "timeRangeUsers",
-                                                                            "timeContext": {
-                                                                              "durationMs": 0
+                                                                                "timeContext": {
+                                                                                "durationMs": 0
                                                                             },
 																			"metrics":[
 																				{
