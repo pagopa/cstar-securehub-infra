@@ -1,4 +1,8 @@
 # =============================================================
+# Alert API EIE
+# =============================================================
+
+# =============================================================
 # Portal Consent – post (5xx, 401, 429 errors over 5 minutes)
 # =============================================================
 resource "azurerm_monitor_scheduled_query_rules_alert" "portal_consent_save_5m_rules" {
@@ -646,82 +650,6 @@ QUERY
   trigger {
     operator  = "GreaterThanOrEqual"
     threshold = 5
-  }
-}
-
-# =======================================================
-# Kafka Consumer - Absent Consumer Alert (5 min)
-# =======================================================
-resource "azurerm_monitor_scheduled_query_rules_alert" "pari_kafka_consumer_absent_alert" {
-  count               = contains(["p", "u"], var.env_short) ? 1 : 0
-  name                = "pari-kafka-consumer-absent-alert"
-  resource_group_name = local.monitor_rg
-  location            = var.location
-
-  description = "Kafka consumer 'idpay-asset-register-consumer-group' has not reported its lag metric for the last 5 minutes."
-  enabled     = true
-  severity    = 1
-
-  frequency   = 5
-  time_window = 5
-
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
-
-  query = <<QUERY
-AppMetrics
-| where TimeGenerated > ago(5m)
-| where Name == "kafka_consumer_fetch_manager_records_lag_max"
-| where Properties has "idpay-asset-register-consumer-group"
-QUERY
-
-  trigger {
-    operator  = "Equal"
-    threshold = 0
-  }
-
-  action {
-    action_group           = [azurerm_monitor_action_group.email[0].id]
-    email_subject          = "[PARI][HIGH] Kafka Consumer Absent: idpay-asset-register-consumer-group"
-    custom_webhook_payload = "{}"
-  }
-}
-
-# =======================================================
-# Kafka Consumer - Average Lag Alert (10 min)
-# =======================================================
-resource "azurerm_monitor_scheduled_query_rules_alert" "pari_kafka_consumer_avg_lag_alert" {
-  count               = contains(["p", "u"], var.env_short) ? 1 : 0
-  name                = "pari-kafka-consumer-avg-lag-alert"
-  resource_group_name = local.monitor_rg
-  location            = var.location
-
-  description = "Kafka consumer average lag is greater than 15 over the last 10 minutes. Based on the 'kafka_consumer_fetch_manager_records_lag_max' metric."
-  enabled     = true
-  severity    = 1
-
-  frequency   = 5
-  time_window = 10
-
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
-
-  query = <<QUERY
-AppMetrics
-| where TimeGenerated > ago(10m)
-| where Name == "kafka_consumer_fetch_manager_records_lag_max"
-| where Properties has "idpay-asset-register-consumer-group"
-| summarize AvgLag = avg(Value)
-| where AvgLag > 15
-QUERY
-
-  trigger {
-    operator  = "GreaterThanOrEqual"
-    threshold = 1
-  }
-
-  action {
-    action_group           = [azurerm_monitor_action_group.email[0].id]
-    email_subject          = "[PARI][HIGH] Kafka Consumer Lag Alert"
-    custom_webhook_payload = "{}"
   }
 }
 
