@@ -9,7 +9,7 @@
         "type": 3,
         "content": {
           "version": "KqlItem/1.0",
-          "query": "AppTraces\n| where AppRoleName == 'rtp-sender'\n| where TimeGenerated {evaluation_window:query}\n| where Message startswith \"RTP cancellation sent to\"\n| summarize errorCount = count()\n| extend totalRequestsString = tostring(errorCount)",
+          "query": "AppTraces\n| where AppRoleName == 'rtp-sender'\n| where TimeGenerated {evaluation_window:query}\n| where Message startswith \"Successfully cancelled RTP to service provider debtor\"\n| summarize errorCount = count()\n| extend totalRequestsString = tostring(errorCount)",
           "size": 0,
           "title": "✅ Cancellazioni totali con successo",
           "queryType": 0,
@@ -44,7 +44,7 @@
         "type": 3,
         "content": {
           "version": "KqlItem/1.0",
-          "query": "AppTraces\n| where AppRoleName == 'rtp-sender'\n| where TimeGenerated {evaluation_window:query}\n| where Message startswith \"Error cancel RTP:\"\n| summarize errorCount = count()\n| extend totalRequestsString = tostring(errorCount)",
+          "query": "AppTraces\n| where AppRoleName == 'rtp-sender'\n| where TimeGenerated {evaluation_window:query}\n| where Message startswith \"Error cancel RTP:\" or Message startswith \"Error retrieving RTP:\"\n| summarize errorCount = count()\n| extend totalRequestsString = tostring(errorCount)",
           "size": 0,
           "title": "❌ Cancellazioni totali falliti",
           "queryType": 0,
@@ -110,7 +110,7 @@
         "type": 3,
         "content": {
           "version": "KqlItem/1.0",
-          "query": "AppTraces\n| where TimeGenerated {evaluation_window:query}\n| where AppRoleName == \"rtp-sender\"\n| summarize\n    Successo   = countif(Message hasprefix \"RTP cancellation sent to\"),\n    Fallimento = countif(Message hasprefix \"Error cancel RTP:\")\n  by bin(TimeGenerated, 1h)\n| project TimeGenerated, Successo, Fallimento\n| render timechart",
+          "query": "AppTraces\n| where TimeGenerated {evaluation_window:query}\n| where AppRoleName == \"rtp-sender\"\n| summarize\n    Successo   = countif(Message hasprefix \"Successfully cancelled RTP to service provider debtor\"),\n    Fallimento = countif(Message hasprefix \"Error cancel RTP:\")\n  by bin(TimeGenerated, 1h)\n| project TimeGenerated, Successo, Fallimento\n| render timechart",
           "size": 0,
           "title": "Cancellazioni nel tempo (Successi vs Fallimenti)",
           "queryType": 0,
