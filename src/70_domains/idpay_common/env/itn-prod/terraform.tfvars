@@ -27,6 +27,8 @@ redis_idh_resource_tier       = "standard_C2_v6"
 ### Service bus
 service_bus_namespace = {
   sku = "Premium"
+  capacity = 1
+  premium_messaging_partitions = 1
 }
 
 ## Eventhub
