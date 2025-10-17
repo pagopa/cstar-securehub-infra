@@ -191,7 +191,8 @@
                                     "path": "$['creationDate.$date.$numberLong']"
                                 },
                                 "sink": {
-                                    "name": "creationDate"
+                                    "name": "creationDate",
+                                    "type": "String"
                                 }
                             },
                             {
@@ -199,7 +200,8 @@
                                     "path": "$['updateDate.$date.$numberLong']"
                                 },
                                 "sink": {
-                                    "name": "updateDate"
+                                    "name": "updateDate",
+                                    "type": "String"
                                 }
                             }
                         ]

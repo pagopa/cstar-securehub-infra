@@ -413,15 +413,6 @@
                             },
                             {
                                 "source": {
-                                    "path": "$['initiatives'][0]"
-                                },
-                                "sink": {
-                                    "name": "initiatives",
-                                    "type": "String"
-                                }
-                            },
-                            {
-                                "source": {
                                     "path": "$['initiativeRejectionReasons']"
                                 },
                                 "sink": {

@@ -2,7 +2,7 @@
     "name": "cosmos_idpay_transaction_in_progress",
         "properties": {
         "linkedServiceName": {
-            "referenceName": "idpay-CosmosDB-idpay-pagamenti-ls",
+            "referenceName": "idpay-CosmosDB-idpay-ls",
             "type": "LinkedServiceReference"
         },
         "annotations": [],
