@@ -62,6 +62,7 @@ module "keycloak_pgflex" {
   pg_bouncer_enabled          = var.keycloak_pgflex_params.pgres_flex_pgbouncer_enabled
   zone                        = var.keycloak_pgflex_params.zone
 
+  auto_grow_enabled =
   # Geo-replication configuration for disaster recovery
   geo_replication = {
     enabled                     = var.keycloak_pgflex_params.geo_replication_enabled
