@@ -8,9 +8,10 @@ locals {
 
   # Default Domain Resource Group
   data_rg     = "${local.project}-data-rg"
-  security_rg = "${local.project}}-security-rg"
-  compute_rg  = "${local.project}}-compute-rg"
-  cicd_rg     = "${local.project}}-cicd-rg"
+  security_rg = "${local.project}-security-rg"
+  compute_rg  = "${local.project}-compute-rg"
+  cicd_rg     = "${local.project}-cicd-rg"
+  monitor_rg  = "${local.project}-monitoring-rg"
 
   # SMTP
   ses_smtp_port = 465
@@ -18,7 +19,7 @@ locals {
   #
   # 🌐 Network
   #
-  vnet_core_rg_name       = "${local.product}-vnet-rg"
+  vnet_legacy_core_rg     = "${local.product}-vnet-rg"
   network_rg              = "${local.project_core}-network-rg"
   vnet_spoke_data_rg_name = "${local.project_core}-network-rg"
   vnet_spoke_data_name    = "${local.project_core}-spoke-data-vnet"
@@ -104,7 +105,6 @@ locals {
   core_log_analytics_workspace_name = "cstar-${var.env_short}-itn-core-law"
   core_application_insights_name    = "cstar-${var.env_short}-itn-core-appinsights"
 
-
   #
   # APIM
   #
@@ -138,8 +138,9 @@ locals {
   data_factory_name    = "${local.product_no_domain}-platform-adf"
   data_factory_rg_name = "${local.product_no_domain}-platform-data-rg"
   adf_cosmosdb_linked_services = [
-    azurerm_cosmosdb_mongo_database.idpay,
-    azurerm_cosmosdb_mongo_database.rdb
+    azurerm_cosmosdb_mongo_database.databases["idpay-beneficiari"],
+    azurerm_cosmosdb_mongo_database.databases["idpay-pagamenti"],
+    azurerm_cosmosdb_mongo_database.databases["idpay-iniziative"],
   ]
 
   # Data Explorer
@@ -150,9 +151,8 @@ locals {
       hot_cache_period   = "P5D"
       soft_delete_period = "P7D"
     }
-    rdb = {
-      hot_cache_period   = "P5D"
-      soft_delete_period = "P7D"
-    }
   }
+
+  # Action Group
+  monitor_action_group_email_name = "pari-alerts-email"
 }

@@ -1,0 +1,16 @@
+{
+    "name": "data_explorer_idpay_transaction_in_progress",
+    "properties": {
+        "linkedServiceName": {
+            "referenceName": "idpay-Kusto-idpay-ls",
+            "type": "LinkedServiceReference"
+        },
+        "annotations": [],
+        "type": "AzureDataExplorerTable",
+        "schema": [],
+        "typeProperties": {
+            "table": "transaction_in_progress"
+        }
+    },
+    "type": "Microsoft.DataFactory/factories/datasets"
+}
