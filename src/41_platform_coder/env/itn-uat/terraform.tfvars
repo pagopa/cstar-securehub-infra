@@ -29,6 +29,8 @@ keycloak_pgflex_params = {
   zone                                   = 1
   pgres_flex_pgbouncer_enabled           = false
   pgres_flex_diagnostic_settings_enabled = false
+  auto_grow_enabled                     = false
+
 }
 
 keycloak_configuration = {
