@@ -169,6 +169,12 @@ data "azurerm_key_vault_secret" "oneidentity-client-secret" {
   key_vault_id = data.azurerm_key_vault.domain_kv.id
 }
 
+data "azurerm_key_vault_secret" "opsgenie-idpay-apy-key-client-secret" {
+  count        = var.env_short == "p" ? 1 : 0
+  name         = "opsgenie-idpay-api-key"
+  key_vault_id = data.azurerm_key_vault.domain_kv.id
+}
+
 # APIM
 #
 
