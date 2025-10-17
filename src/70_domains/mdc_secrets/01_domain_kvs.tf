@@ -58,18 +58,3 @@ module "externals_policy" {
   tenant_id         = data.azurerm_client_config.current.tenant_id
   object_id         = data.azuread_group.adgroup_externals.object_id
 }
-
-#
-# Managed identities
-#
-module "apim_managed_identity_policy" {
-  source   = "./.terraform/modules/__v4__/IDH/key_vault_access_policy"
-  for_each = toset(local.secrets_folders_kv)
-
-  product_name      = "cstar"
-  idh_resource_tier = "reader" # or developer, external
-  env               = var.env
-  key_vault_id      = module.key_vault[each.key].id
-  tenant_id         = data.azurerm_client_config.current.tenant_id
-  object_id         = data.azurerm_api_management.apim.identity[0].principal_id
-}
