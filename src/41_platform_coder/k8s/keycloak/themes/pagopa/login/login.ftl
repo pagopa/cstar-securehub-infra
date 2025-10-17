@@ -14,7 +14,7 @@
                 <p class="text-dark">PagoPA S.p.A.</p>
             </div>
             <nav class="header-nav">
-                <a href="https://docs.pagopa.it/area-riservata/" class="text-dark-light">
+                <a href="https://developer.pagopa.it/app-io/guides" class="text-dark-light">
                     <img src="${url.resourcesPath}/img/book.png"/>
                     Manuale operativo
                 </a>
