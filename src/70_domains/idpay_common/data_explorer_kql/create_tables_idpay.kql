@@ -13,6 +13,7 @@
     energyClass:string,
     capacity:string,
     productName:string,
+    fullProductName:string,
     organizationName:string
 )
 

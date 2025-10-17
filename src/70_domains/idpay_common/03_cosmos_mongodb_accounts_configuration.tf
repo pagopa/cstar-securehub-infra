@@ -473,6 +473,7 @@ locals {
         { keys = ["eprelCode"], unique = false },
         { keys = ["status"], unique = false },
         { keys = ["productName"], unique = false },
+        { keys = ["fullProductName"], unique = false },
         { keys = ["brand"], unique = false },
         { keys = ["model"], unique = false },
         { keys = ["organizationName"], unique = false },

@@ -47,6 +47,10 @@ locals {
     {
       name     = "Monitoraggio Service Providers"
       filePath = "${path.module}/workbooks/tabs/monitoraggio-service-providers.json.tpl"
+    },
+    {
+      name     = "Subentro"
+      filePath = "${path.module}/workbooks/tabs/subentro.json.tpl"
     }
   ]
 
