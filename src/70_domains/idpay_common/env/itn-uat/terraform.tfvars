@@ -20,7 +20,7 @@ cosmos_mongo_db_idpay_params = {
 }
 
 ### Redis Cache
-redis_idh_resource_tier       = "basic"
+redis_idh_resource_tier = "basic"
 
 #
 # Service bus
