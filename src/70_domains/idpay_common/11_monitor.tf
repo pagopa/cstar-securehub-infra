@@ -61,3 +61,18 @@ resource "azurerm_monitor_action_group" "email" {
     }
   }
 }
+
+resource "azurerm_monitor_action_group" "idpay_opsgenie" { #
+  count               = var.env_short == "p" ? 1 : 0
+  name                = "IdpayOpsgenie"
+  resource_group_name = local.monitor_rg
+  short_name          = "Idpaygenie" # -> Max 12 char
+
+  webhook_receiver {
+    name                    = "IdpayOpsgenieWebhook"
+    service_uri             = "https://api.opsgenie.com/v1/json/azure?apiKey=${data.azurerm_key_vault_secret.opsgenie-idpay-apy-key-client-secret[0].value}"
+    use_common_alert_schema = true
+  }
+
+  tags = module.tag_config.tags
+}
