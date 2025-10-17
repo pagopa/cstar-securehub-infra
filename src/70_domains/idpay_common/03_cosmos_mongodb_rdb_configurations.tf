@@ -1,6 +1,6 @@
 locals {
 
-    collections_rdb = [
+  collections_rdb = [
     {
       name = "role_permission"
       indexes = [
@@ -154,4 +154,3 @@ resource "azurerm_cosmosdb_mongo_collection" "mongodb_collections_rdb" {
   timeouts {
   }
 }
-

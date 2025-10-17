@@ -45,4 +45,3 @@ module "fake_cosmos_mongodb_collections" {
   throughput          = null
   max_throughput      = null
 }
-

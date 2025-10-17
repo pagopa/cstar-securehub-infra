@@ -58,4 +58,3 @@ resource "azurerm_key_vault_secret" "fake_cosmosdb_account_mongodb_secondary_con
 
   tags = module.tag_config.tags
 }
-

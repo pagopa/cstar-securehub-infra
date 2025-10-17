@@ -63,4 +63,3 @@ resource "azurerm_cosmosdb_mongo_collection" "fake_mongodb_collections_rdb" {
   timeouts {
   }
 }
-
