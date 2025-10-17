@@ -1,5 +1,6 @@
 module "redis" {
-  source = "./.terraform/modules/__v4__/IDH/redis"
+  # source = "./.terraform/modules/__v4__/IDH/redis"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//IDH/redis?ref=RTD-2663-bonus-elettrodomestici-hardening-infra"
 
   # General
   product_name        = var.prefix
@@ -9,7 +10,7 @@ module "redis" {
   tags                = module.tag_config.tags
 
   # IDH Resources
-  idh_resource_tier = contains(["d", "u"], var.env_short) ? "basic" : "standard"
+  idh_resource_tier = var.redis_idh_resource_tier
 
   # Redis Settings
   name = "${local.project}-redis"

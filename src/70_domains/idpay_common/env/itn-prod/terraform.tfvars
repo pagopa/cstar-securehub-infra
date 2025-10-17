@@ -15,26 +15,21 @@ dns_zone_internal_prefix = "internal.cstar"
 
 external_domain = "pagopa.it"
 
-#
-# CIDRs
-#
-cidr_idpay_data_eventhub = ["10.20.10.32/27"] # 10.20.10.32 -> 10.20.10.63
-cidr_idpay_data_redis    = ["10.20.10.64/27"] # 10.20.10.64 -> 10.20.10.95
-cidr_idpay_data_storage  = ["10.20.10.96/27"] # 10.20.10.96 -> 10.20.10.127
-
+### Cosmos DB
 cosmos_mongo_db_idpay_params = {
   throughput     = null
   max_throughput = 1000
 }
 
-#
-# Service bus
-#
+### Redis Cache
+redis_idh_resource_tier       = "standard_C2_v6"
+
+### Service bus
 service_bus_namespace = {
   sku = "Premium"
 }
 
-##Eventhub
+## Eventhub
 ehns_sku_name                 = "Standard"
 ehns_capacity                 = 1
 ehns_maximum_throughput_units = 25
@@ -86,10 +81,10 @@ aks_nodepool_green = {
   node_count_max    = 0
 }
 
-#Monitoring
+### Monitoring
 law_sku               = "PerGB2018"
 law_retention_in_days = 30
 law_daily_quota_gb    = 200
 
-#OneIdentity
+### OneIdentity
 oneidentity_base_url = "https://oneid.pagopa.it"
