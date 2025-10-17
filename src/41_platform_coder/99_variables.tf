@@ -93,7 +93,7 @@ variable "keycloak_pgflex_params" {
     geo_replication_enabled                = bool
     pgres_flex_pgbouncer_enabled           = bool
     pgres_flex_diagnostic_settings_enabled = bool
-    auto_grow_enabled                     = bool
+    auto_grow_enabled                      = bool
   })
 }
 
