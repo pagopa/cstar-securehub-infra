@@ -253,6 +253,21 @@
         "styleSettings": {
           "showBorder": true
         }
+      },
+      {
+        "type": 3,
+        "content": {
+          "version": "KqlItem/1.0",
+          "query": "AppTraces\n| where AppRoleName == \"rtp-activator\"\n| where TimeGenerated {evaluation_window:query}\n| where Message hasprefix \"Error during activation process Authenticated user doesn't have permission to perform this action\"\n| extend tokenSpId = extract(@\"tokenSpId:\\s*([^\\s]+)\", 1, Message),\n         serviceProvider = extract(@\"service_provider=\"\"([^\"\"]+)\"\"\", 1, Message)\n| where isnotempty(tokenSpId) and isnotempty(serviceProvider)\n| summarize ['Error Count'] = count(), ['Service Providers'] = make_set(serviceProvider, 100)\n    by ['Token SP ID'] = tostring(tokenSpId)\n| order by ['Error Count'] desc\n",
+          "size": 0,
+          "noDataMessageStyle": 3,
+          "queryType": 0,
+          "resourceType": "microsoft.operationalinsights/workspaces",
+          "crossComponentResources": [
+            "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-law"
+          ]
+        },
+        "name": "query - 8"
       }
     ]
   },
