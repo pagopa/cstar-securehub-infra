@@ -1,0 +1,198 @@
+{
+    "name": "idpay_merchant_copy",
+    "properties": {
+        "activities": [
+            {
+                "name": "Copy merchant collection",
+                "type": "Copy",
+                "dependsOn": [
+                    {
+                        "activity": "Clear merchant table",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "source": {
+                        "type": "CosmosDbMongoDbApiSource",
+                        "batchSize": 100
+                    },
+                    "sink": {
+                        "type": "AzureDataExplorerSink"
+                    },
+                    "enableStaging": false,
+                    "translator": {
+                        "type": "TabularTranslator",
+                        "mappings": [
+                            {
+                                "source": {
+                                    "path": "$['_id']"
+                                },
+                                "sink": {
+                                    "name": "_id"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['acquirerId']"
+                                },
+                                "sink": {
+                                    "name": "acquirerId"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['businessName']"
+                                },
+                                "sink": {
+                                    "name": "businessName"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['legalOfficeAddress']"
+                                },
+                                "sink": {
+                                    "name": "legalOfficeAddress"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['legalOfficeMunicipality']"
+                                },
+                                "sink": {
+                                    "name": "legalOfficeMunicipality"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['legalOfficeProvince']"
+                                },
+                                "sink": {
+                                    "name": "legalOfficeProvince"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['legalOfficeZipCode']"
+                                },
+                                "sink": {
+                                    "name": "legalOfficeZipCode"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['certifiedEmail']"
+                                },
+                                "sink": {
+                                    "name": "certifiedEmail"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['fiscalCode']"
+                                },
+                                "sink": {
+                                    "name": "fiscalCode"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['vatNumber']"
+                                },
+                                "sink": {
+                                    "name": "vatNumber"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['iban']"
+                                },
+                                "sink": {
+                                    "name": "iban"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['ibanHolder']"
+                                },
+                                "sink": {
+                                    "name": "ibanHolder"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['enabled']"
+                                },
+                                "sink": {
+                                    "name": "isEnabled"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['merchantId']"
+                                },
+                                "sink": {
+                                    "name": "merchantId"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['activationDate.$date.$numberLong']"
+                                },
+                                "sink": {
+                                    "name": "activationDate"
+                                }
+                            }
+                        ]
+                    }
+                },
+                "inputs": [
+                    {
+                        "referenceName": "cosmos_idpay_merchant",
+                        "type": "DatasetReference"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "referenceName": "data_explorer_idpay_merchant",
+                        "type": "DatasetReference"
+                    }
+                ]
+            },
+            {
+                "name": "Clear merchant table",
+                "type": "AzureDataExplorerCommand",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "command": ".clear table merchant data",
+                    "commandTimeout": "00:20:00"
+                },
+                "linkedServiceName": {
+                    "referenceName": "idpay-Kusto-idpay-ls",
+                    "type": "LinkedServiceReference"
+                }
+            }
+        ],
+        "annotations": [],
+        "lastPublishTime": "2025-10-08T10:49:56Z"
+    },
+    "type": "Microsoft.DataFactory/factories/pipelines"
+}

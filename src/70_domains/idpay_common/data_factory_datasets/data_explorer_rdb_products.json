@@ -1,0 +1,16 @@
+{
+  "name": "data_explorer_rdb_products",
+  "properties": {
+    "linkedServiceName": {
+      "referenceName": "idpay-Kusto-idpay-ls",
+      "type": "LinkedServiceReference"
+    },
+    "annotations": [],
+    "type": "AzureDataExplorerTable",
+    "schema": [],
+    "typeProperties": {
+      "table": "products"
+    }
+  },
+  "type": "Microsoft.DataFactory/factories/datasets"
+}
