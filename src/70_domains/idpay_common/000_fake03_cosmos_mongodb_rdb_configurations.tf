@@ -2,9 +2,10 @@
 # Fake database rdb
 #
 resource "azurerm_cosmosdb_mongo_database" "fake_rdb" {
+  count               = var.env == "prod" ? 1 : 0
   name                = "rdb"
   resource_group_name = data.azurerm_resource_group.idpay_data_rg.name
-  account_name        = module.fake_cosmos_db_account.name
+  account_name        = module.fake_cosmos_db_account[0].name
 
   throughput = var.cosmos_mongo_db_idpay_params.throughput
 
@@ -26,16 +27,16 @@ resource "azurerm_cosmosdb_mongo_database" "fake_rdb" {
 # Fake collection rdb
 #
 resource "azurerm_cosmosdb_mongo_collection" "fake_mongodb_collections_rdb" {
-  for_each = {
+  for_each = var.env == "prod" ? {
     for index, coll in local.collections_rdb :
     coll.name => coll
-  }
+  } : {}
 
   name                = each.value.name
   resource_group_name = data.azurerm_resource_group.idpay_data_rg.name
 
-  account_name  = module.fake_cosmos_db_account.name
-  database_name = azurerm_cosmosdb_mongo_database.fake_rdb.name
+  account_name  = module.fake_cosmos_db_account[0].name
+  database_name = azurerm_cosmosdb_mongo_database.fake_rdb[0].name
 
   dynamic "index" {
     for_each = each.value.indexes
