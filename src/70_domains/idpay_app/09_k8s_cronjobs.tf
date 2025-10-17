@@ -29,7 +29,7 @@ resource "kubernetes_cron_job_v1" "cancel_pending_transactions" {
           spec {
             container {
               name  = "cancel-pending-transactions"
-              image = "curlimages/curl:8.1.2"
+              image = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
               args = [
                 "-X", "DELETE",
                 "https://${local.idpay_ingress_url}/idpaypayment/idpay/payment/pendingTransactions"
@@ -75,7 +75,7 @@ resource "kubernetes_cron_job_v1" "cancel_expired_vouchers" {
           spec {
             container {
               name  = "cancel-expired-vouchers"
-              image = "curlimages/curl:8.1.2"
+              image = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
               args = [
                 "-X", "POST",
                 "https://${local.idpay_ingress_url}/idpaypayment/idpay/transactions/expired/initiatives/${var.idpay_bel_initiative_id}/update-status"
@@ -120,7 +120,7 @@ resource "kubernetes_cron_job_v1" "reminder_voucher_expiration" {
           spec {
             container {
               name  = "reminder-voucher-expiration"
-              image = "curlimages/curl:8.1.2"
+              image = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
               args = [
                 "-X", "PUT",
                 "https://${local.idpay_ingress_url}/idpaywallet/idpay/wallet/batch/run/${var.idpay_bel_initiative_id}"
