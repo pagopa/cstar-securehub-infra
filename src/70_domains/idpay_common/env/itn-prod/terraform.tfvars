@@ -31,7 +31,7 @@ cosmos_mongo_db_idpay_params = {
 # Service bus
 #
 service_bus_namespace = {
-  sku = "Standard"
+  sku = "Premium"
 }
 
 ##Eventhub
