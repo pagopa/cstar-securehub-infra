@@ -2,7 +2,11 @@ locals {
 
   dataset_templates = {
     for file in fileset("${path.module}/data_factory_datasets", "*.json") :
-    jsondecode(file("${path.module}/data_factory_datasets/${file}")).name => jsondecode(file("${path.module}/data_factory_datasets/${file}"))
+    jsondecode(templatefile("${path.module}/data_factory_datasets/${file}", {
+      domain = var.domain
+    })).name => jsondecode(templatefile("${path.module}/data_factory_datasets/${file}", {
+      domain = var.domain
+    }))
   }
 
 }
