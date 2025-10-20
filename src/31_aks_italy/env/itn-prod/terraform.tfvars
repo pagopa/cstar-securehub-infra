@@ -34,8 +34,8 @@ aks_system_node_pool = {
   vm_size                      = "Standard_D2ads_v5"
   os_disk_type                 = "Managed"
   os_disk_size_gb              = "64"
-  node_count_min               = "1"
-  node_count_max               = "3"
+  node_count_min               = "3"
+  node_count_max               = "6"
   only_critical_addons_enabled = true
   node_labels                  = { node_name : "aks-system-01", node_type : "system" },
   node_tags                    = { node_tag_1 : "1" },
@@ -47,8 +47,8 @@ aks_system_node_pool = {
 aks_nodepool_blue = {
   vm_sku_name       = "Standard_D4ads_v5_active"
   autoscale_enabled = true
-  node_count_min    = 3
-  node_count_max    = 3
+  node_count_min    = 5
+  node_count_max    = 12
 }
 
 aks_nodepool_green = {
