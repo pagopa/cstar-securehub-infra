@@ -141,6 +141,7 @@ locals {
     azurerm_cosmosdb_mongo_database.databases["idpay-beneficiari"],
     azurerm_cosmosdb_mongo_database.databases["idpay-pagamenti"],
     azurerm_cosmosdb_mongo_database.databases["idpay-iniziative"],
+    azurerm_cosmosdb_mongo_database.rdb
   ]
 
   # Data Explorer

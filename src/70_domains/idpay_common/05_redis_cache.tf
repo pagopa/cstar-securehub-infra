@@ -1,6 +1,6 @@
 module "redis" {
-  # source = "./.terraform/modules/__v4__/IDH/redis"
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//IDH/redis?ref=v7.41.0"
+  source = "./.terraform/modules/__v4__/IDH/redis"
+  # source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//IDH/redis?ref=RTD-2663-bonus-elettrodomestici-hardening-infra"
 
   # General
   product_name        = var.prefix
