@@ -717,6 +717,12 @@ locals {
         {
           keys   = ["franchiseName"]
           unique = false
+          options = {
+            collation = {
+              locale = "en"
+              strength = 2
+            }
+          }
         },
         {
           keys   = ["type"]
@@ -729,6 +735,12 @@ locals {
         {
           keys   = ["website"]
           unique = false
+          options = {
+            collation = {
+              locale = "en"
+              strength = 2
+            }
+          }
         },
         {
           keys   = ["city"]
@@ -737,10 +749,22 @@ locals {
         {
           keys   = ["contactEmail"]
           unique = true
+          options = {
+            collation = {
+              locale = "en"
+              strength = 2
+            }
+          }
         },
         {
           keys   = ["contactName", "contactSurname"]
           unique = false
+          options = {
+            collation = {
+              locale = "en"
+              strength = 2
+            }
+          }
         }
       ]
     },
