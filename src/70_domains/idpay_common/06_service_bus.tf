@@ -143,3 +143,27 @@ resource "azurerm_key_vault_secret" "queue_auth_secrets" {
 
   tags = module.tag_config.tags
 }
+
+# ONLY FOR PROD (Premium)
+
+resource "azurerm_private_endpoint" "service_bus" {
+  count = var.env_short != "p" ? 0 : 1
+
+  name                = "${local.project}-srv-bus-private-endpoint"
+  location            = var.location
+  resource_group_name = module.private_endpoint_service_bus_snet[count.index].resource_group_name
+  subnet_id           = module.private_endpoint_service_bus_snet[count.index].subnet_id
+
+  private_dns_zone_group {
+    name                 = "${local.project}-private-dns-zone-group"
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.service_bus[count.index].id]
+  }
+
+  private_service_connection {
+    name                           = "${local.project}-private-service-connection"
+    private_connection_resource_id = azurerm_servicebus_namespace.idpay_service_bus_ns.id
+    is_manual_connection           = false
+    subresource_names              = ["namespace"]
+  }
+  tags = module.tag_config.tags
+}
