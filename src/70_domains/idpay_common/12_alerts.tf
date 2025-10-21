@@ -32,8 +32,15 @@ QUERY
   }
 
   action {
-    action_group           = [azurerm_monitor_action_group.email[0].id]
-    email_subject          = "[PARI][EIE][HIGH] Portal Consent – save API alert (5xx/401/429)"
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
+    email_subject          = "[PARI] Portal Consent – save API alert (5xx/401/429)"
     custom_webhook_payload = "{}"
   }
 }
@@ -68,8 +75,15 @@ QUERY
   }
 
   action {
-    action_group           = [azurerm_monitor_action_group.email[0].id]
-    email_subject          = "[PARI][EIE][HIGH] Portal Consent – save API alert (400)"
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
+    email_subject          = "[PARI] Portal Consent – save API alert (400)"
     custom_webhook_payload = "{}"
   }
 }
@@ -104,8 +118,15 @@ QUERY
   }
 
   action {
-    action_group           = [azurerm_monitor_action_group.email[0].id]
-    email_subject          = "[PARI][EIE][HIGH] Portal Consent GET /consent alert (5xx/401/429)"
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
+    email_subject          = "[PARI] Portal Consent GET /consent alert (5xx/401/429)"
     custom_webhook_payload = "{}"
   }
 }
@@ -140,8 +161,15 @@ QUERY
   }
 
   action {
-    action_group           = [azurerm_monitor_action_group.email[0].id]
-    email_subject          = "[PARI][EIE][HIGH] Portal Consent GET /consent alert (400)"
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
+    email_subject          = "[PARI] Portal Consent GET /consent alert (400)"
     custom_webhook_payload = "{}"
   }
 }
@@ -176,8 +204,15 @@ QUERY
   }
 
   action {
-    action_group           = [azurerm_monitor_action_group.email[0].id]
-    email_subject          = "[PARI][EIE][MEDIUM] Product files – upload API alert (5xx/401/429)"
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
+    email_subject          = "[PARI] Product files – upload API alert (5xx/401/429)"
     custom_webhook_payload = "{}"
   }
 }
@@ -212,8 +247,15 @@ QUERY
   }
 
   action {
-    action_group           = [azurerm_monitor_action_group.email[0].id]
-    email_subject          = "[PARI][EIE][MEDIUM] Product files – upload API alert (400)"
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
+    email_subject          = "[PARI] Product files – upload API alert (400)"
     custom_webhook_payload = "{}"
   }
 }
@@ -242,8 +284,15 @@ AppRequests
 QUERY
 
   action {
-    action_group           = [azurerm_monitor_action_group.email[0].id]
-    email_subject          = "[PARI][EIE][MEDIUM] Product files verify alert"
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
+    email_subject          = "[PARI] Product files verify alert"
     custom_webhook_payload = "{}"
   }
 
@@ -283,8 +332,15 @@ AppRequests
 QUERY
 
   action {
-    action_group           = [azurerm_monitor_action_group.email[0].id]
-    email_subject          = "[PARI][EIE][LOW] Products update status alert"
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
+    email_subject          = "[PARI] Products update status alert"
     custom_webhook_payload = "{}"
   }
 
@@ -323,8 +379,15 @@ QUERY
   }
 
   action {
-    action_group           = [azurerm_monitor_action_group.email[0].id]
-    email_subject          = "[PARI][EIE][CRITICAL] GET /products alert: High 5xx errors"
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
+    email_subject          = "[PARI][CRITICAL] GET /products alert: High 5xx errors"
     custom_webhook_payload = "{}"
   }
 }
@@ -358,8 +421,15 @@ QUERY
   }
 
   action {
-    action_group           = [azurerm_monitor_action_group.email[0].id]
-    email_subject          = "[PARI][EIE][CRITICAL] GET /products alert: High 400 errors"
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
+    email_subject          = "[PARI][CRITICAL] GET /products alert: High 400 errors"
     custom_webhook_payload = "{}"
   }
 }
@@ -395,8 +465,15 @@ QUERY
   }
 
   action {
-    action_group           = [azurerm_monitor_action_group.email[0].id]
-    email_subject          = "[PARI][EIE][CRITICAL] GET /products alert: Availability is below 99%"
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
+    email_subject          = "[PARI][CRITICAL] GET /products alert: Availability is below 99%"
     custom_webhook_payload = "{}"
   }
 }
@@ -431,8 +508,15 @@ QUERY
   }
 
   action {
-    action_group           = [azurerm_monitor_action_group.email[0].id]
-    email_subject          = "[PARI][EIE][HIGH] User Permissions alert (5xx or 401/429)"
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
+    email_subject          = "[PARI][HIGH] User Permissions alert (5xx or 401/429)"
     custom_webhook_payload = "{}"
   }
 }
@@ -467,8 +551,15 @@ QUERY
   }
 
   action {
-    action_group           = [azurerm_monitor_action_group.email[0].id]
-    email_subject          = "[PARI][EIE][HIGH] User Permissions alert (400)"
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
+    email_subject          = "[PARI][HIGH] User Permissions alert (400)"
     custom_webhook_payload = "{}"
   }
 }
@@ -503,8 +594,15 @@ QUERY
   }
 
   action {
-    action_group           = [azurerm_monitor_action_group.email[0].id]
-    email_subject          = "[PARI][EIE][MEDIUM] Product files – list API alert (5xx)"
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
+    email_subject          = "[PARI] Product files – list API alert (5xx)"
     custom_webhook_payload = "{}"
   }
 }
@@ -529,7 +627,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pari_error_report_downlo
 
   query = <<QUERY
 AppRequests
-| where Name matches regex @"^GET /idpay-itn/register/product-files/[^/]+/report$"
+| where Name == "GET /idpay-itn/register/product-files/*/report"
 | where ResultCode startswith "5"
 QUERY
 
@@ -539,8 +637,15 @@ QUERY
   }
 
   action {
-    action_group           = [azurerm_monitor_action_group.email[0].id]
-    email_subject          = "[PARI][EIE][LOW] Error report download API alert (5xx)"
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
+    email_subject          = "[PARI] Error report download API alert (5xx)"
     custom_webhook_payload = "{}"
   }
 }
@@ -575,8 +680,15 @@ QUERY
   }
 
   action {
-    action_group           = [azurerm_monitor_action_group.email[0].id]
-    email_subject          = "[PARI][EIE][LOW] Batch list API alert (5xx)"
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
+    email_subject          = "[PARI] Batch list API alert (5xx)"
     custom_webhook_payload = "{}"
   }
 }
@@ -601,7 +713,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pari_institution_by_id_a
 
   query = <<QUERY
 AppRequests
-| where Name matches regex @"^GET /idpay-itn/register/institutions/[^/]+$"
+| where Name == "GET /idpay-itn/register/institutions/*"
 | where ResultCode startswith "5"
 QUERY
 
@@ -611,8 +723,15 @@ QUERY
   }
 
   action {
-    action_group           = [azurerm_monitor_action_group.email[0].id]
-    email_subject          = "[PARI][EIE][LOW] Institution by ID API alert (5xx)"
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
+    email_subject          = "[PARI] Institution by ID API alert (5xx)"
     custom_webhook_payload = "{}"
   }
 }
@@ -642,8 +761,15 @@ AppRequests
 QUERY
 
   action {
-    action_group           = [azurerm_monitor_action_group.email[0].id]
-    email_subject          = "[PARI][EIE][LOW] Institutions list API alert (5xx)"
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
+    email_subject          = "[PARI] Institutions list API alert (5xx)"
     custom_webhook_payload = "{}"
   }
 
@@ -679,8 +805,15 @@ AppDependencies
 QUERY
 
   action {
-    action_group           = [azurerm_monitor_action_group.email[0].id]
-    email_subject          = "[PARI][EIE][MEDIUM] Internal Email microservice dependency alert"
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
+    email_subject          = "[PARI] Internal Email microservice dependency alert"
     custom_webhook_payload = "{}"
   }
 
@@ -716,8 +849,15 @@ AppDependencies
 QUERY
 
   action {
-    action_group           = [azurerm_monitor_action_group.email[0].id]
-    email_subject          = "[PARI][EIE][HIGH] EPREL external dependency alert"
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
+    email_subject          = "[PARI][HIGH] EPREL external dependency alert"
     custom_webhook_payload = "{}"
   }
 
@@ -761,7 +901,14 @@ QUERY
   }
 
   action {
-    action_group           = [azurerm_monitor_action_group.email[0].id]
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
     email_subject          = "[PARI][ESE][HIGH] Capture Transaction API Alert (5xx)"
     custom_webhook_payload = "{}"
   }
@@ -797,7 +944,14 @@ QUERY
   }
 
   action {
-    action_group           = [azurerm_monitor_action_group.email[0].id]
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
     email_subject          = "[PARI][ESE][HIGH] Capture Transaction API Alert (4xx)"
     custom_webhook_payload = "{}"
   }
@@ -833,7 +987,14 @@ QUERY
   }
 
   action {
-    action_group           = [azurerm_monitor_action_group.email[0].id]
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
     email_subject          = "[PARI][ESE][HIGH] Preview Payment API Alert (5xx)"
     custom_webhook_payload = "{}"
   }
@@ -869,7 +1030,14 @@ QUERY
   }
 
   action {
-    action_group           = [azurerm_monitor_action_group.email[0].id]
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
     email_subject          = "[PARI][ESE][HIGH] Preview Payment API Alert (4xx)"
     custom_webhook_payload = "{}"
   }
@@ -905,7 +1073,14 @@ QUERY
   }
 
   action {
-    action_group           = [azurerm_monitor_action_group.email[0].id]
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
     email_subject          = "[PARI][ESE][HIGH] Authorize Payment API Alert (5xx)"
     custom_webhook_payload = "{}"
   }
@@ -941,7 +1116,14 @@ QUERY
   }
 
   action {
-    action_group           = [azurerm_monitor_action_group.email[0].id]
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
     email_subject          = "[PARI][ESE][HIGH] Authorize Payment API Alert (4xx)"
     custom_webhook_payload = "{}"
   }
@@ -977,7 +1159,14 @@ QUERY
   }
 
   action {
-    action_group           = [azurerm_monitor_action_group.email[0].id]
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
     email_subject          = "[PARI][ESE][LOW] Download Invoice File API Alert (5xx)"
     custom_webhook_payload = "{}"
   }
@@ -1013,7 +1202,14 @@ QUERY
   }
 
   action {
-    action_group           = [azurerm_monitor_action_group.email[0].id]
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
     email_subject          = "[PARI][ESE][LOW] Download Invoice File API Alert (4xx)"
     custom_webhook_payload = "{}"
   }
@@ -1049,7 +1245,14 @@ QUERY
   }
 
   action {
-    action_group           = [azurerm_monitor_action_group.email[0].id]
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
     email_subject          = "[PARI][ESE][HIGH] POS In Progress Transactions List API Alert (5xx)"
     custom_webhook_payload = "{}"
   }
@@ -1085,7 +1288,14 @@ QUERY
   }
 
   action {
-    action_group           = [azurerm_monitor_action_group.email[0].id]
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
     email_subject          = "[PARI][ESE][HIGH] POS In Progress Transactions List API Alert (4xx)"
     custom_webhook_payload = "{}"
   }
@@ -1121,7 +1331,14 @@ QUERY
   }
 
   action {
-    action_group           = [azurerm_monitor_action_group.email[0].id]
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
     email_subject          = "[PARI][ESE][HIGH] POS Processed Transactions List API Alert (5xx)"
     custom_webhook_payload = "{}"
   }
@@ -1157,7 +1374,14 @@ QUERY
   }
 
   action {
-    action_group           = [azurerm_monitor_action_group.email[0].id]
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
     email_subject          = "[PARI][ESE][HIGH] POS Processed Transactions List API Alert (4xx)"
     custom_webhook_payload = "{}"
   }
@@ -1193,7 +1417,14 @@ QUERY
   }
 
   action {
-    action_group           = [azurerm_monitor_action_group.email[0].id]
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
     email_subject          = "[PARI][ESE][LOW] Delete Transaction API Alert (5xx)"
     custom_webhook_payload = "{}"
   }
@@ -1229,7 +1460,14 @@ QUERY
   }
 
   action {
-    action_group           = [azurerm_monitor_action_group.email[0].id]
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
     email_subject          = "[PARI][ESE][LOW] Delete Transaction API Alert (4xx)"
     custom_webhook_payload = "{}"
   }
@@ -1265,7 +1503,14 @@ QUERY
   }
 
   action {
-    action_group           = [azurerm_monitor_action_group.email[0].id]
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
     email_subject          = "[PARI][ESE][HIGH] Reversal Transaction API Alert (5xx)"
     custom_webhook_payload = "{}"
   }
@@ -1301,7 +1546,14 @@ QUERY
   }
 
   action {
-    action_group           = [azurerm_monitor_action_group.email[0].id]
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
     email_subject          = "[PARI][ESE][HIGH] Reward Transaction API Alert (5xx)"
     custom_webhook_payload = "{}"
   }
@@ -1337,7 +1589,14 @@ QUERY
   }
 
   action {
-    action_group           = [azurerm_monitor_action_group.email[0].id]
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
     email_subject          = "[PARI][ESE][LOW] Retrieve a point of sale API Alert (5xx)"
     custom_webhook_payload = "{}"
   }
@@ -1373,7 +1632,14 @@ QUERY
   }
 
   action {
-    action_group           = [azurerm_monitor_action_group.email[0].id]
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
     email_subject          = "[PARI][ESE][LOW] Retrieve a point of sale API Alert (4xx)"
     custom_webhook_payload = "{}"
   }
@@ -1409,7 +1675,14 @@ QUERY
   }
 
   action {
-    action_group           = [azurerm_monitor_action_group.email[0].id]
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
     email_subject          = "[PARI][ESE][HIGH] Products List API Alert (5xx)"
     custom_webhook_payload = "{}"
   }
@@ -1445,7 +1718,14 @@ QUERY
   }
 
   action {
-    action_group           = [azurerm_monitor_action_group.email[0].id]
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
     email_subject          = "[PARI][ESE][HIGH] Products List API Alert (4xx)"
     custom_webhook_payload = "{}"
   }
