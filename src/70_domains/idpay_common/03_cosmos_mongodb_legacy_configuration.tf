@@ -719,7 +719,7 @@ locals {
           unique = false
           options = {
             collation = {
-              locale = "en"
+              locale   = "en"
               strength = 2
             }
           }
@@ -737,7 +737,7 @@ locals {
           unique = false
           options = {
             collation = {
-              locale = "en"
+              locale   = "en"
               strength = 2
             }
           }
@@ -751,7 +751,7 @@ locals {
           unique = true
           options = {
             collation = {
-              locale = "en"
+              locale   = "en"
               strength = 2
             }
           }
@@ -761,7 +761,7 @@ locals {
           unique = false
           options = {
             collation = {
-              locale = "en"
+              locale   = "en"
               strength = 2
             }
           }
