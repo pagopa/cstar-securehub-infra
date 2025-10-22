@@ -14,11 +14,11 @@
                 <p class="text-dark">PagoPA S.p.A.</p>
             </div>
             <nav class="header-nav">
-                <a href="https://developer.pagopa.it/app-io/guides" class="text-dark-light">
+                <a href="https://developer.pagopa.it/pari/guides/manuale-tecnico-venditore" class="text-dark-light">
                     <img src="${url.resourcesPath}/img/book.png"/>
                     Manuale operativo
                 </a>
-                <a href="https://dev.selfcare.pagopa.it/assistenza" class="text-dark-light">
+                <a href="https://developer.pagopa.it/pari/guides/manuale-tecnico-venditore/contatti" class="text-dark-light">
                     <img src="${url.resourcesPath}/img/info.png"/>
                     Assistenza
                 </a>
@@ -46,7 +46,7 @@
                     </div>
 
                     <div class="terms-notice">
-                        <span>Accedendo accetti i <a href="https://dev.selfcare.pagopa.it/auth/termini-di-servizio">Termini e condizioni d'uso</a> del servizio e confermi di avere letto l'<a href="https://dev.selfcare.pagopa.it/auth/informativa-privacy">Informativa Privacy</a></span>
+                        <span>Accedendo accetti i <a href="https://selfcare.pagopa.it/auth/termini-di-servizio">Termini e condizioni d'uso</a> del servizio e confermi di avere letto l'<a href="https://selfcare.pagopa.it/auth/informativa-privacy">Informativa Privacy</a></span>
                     </div>
 
                     <input class="btn-primary" type="submit" value="Accedi" >
@@ -67,18 +67,18 @@
                             </a>
                         </div>
                         <ul>
-                            <li><a href="https://www.pagopa.it/it/societa/chi-siamo">PagoPA S.p.A.</a></li>
+                            <li><a href="https://www.pagopa.it/it/societa/chi-siamo/">PagoPA S.p.A.</a></li>
                             <li><a href="#">PNRR</a></li>
-                            <li><a href="https://www.pagopa.it/it/media/">Media</a></li>
-                            <li><a href="https://www.pagopa.it/it/lavora-con-noi">Lavora con noi</a></li>
+                            <li><a href="https://www.pagopa.it/it/">Media</a></li>
+                            <li><a href="https://www.pagopa.it/it/lavora-con-noi/">Lavora con noi</a></li>
                         </ul>
                     </div>
                     <div class="footer-column">
                         <h4>PRODOTTI E SERVIZI</h4>
                         <ul>
                             <li><a href="https://www.pagopa.it/it/prodotti-e-servizi/app-io">App IO</a></li>
-                            <li><a href="https://www.pagopa.it/it/prodotti-e-servizi/piattaforma-pagopa/">Piattaforma pagoPA</a></li>
-                            <li><a href="https://www.pagopa.it/it/prodotti-e-servizi/centro-stella-pagamenti-elettronici/">Centro stella</a></li>
+                            <li><a href="https://www.pagopa.it/it/prodotti-e-servizi/piattaforma-pagopa">Piattaforma pagoPA</a></li>
+                            <li><a href="https://www.pagopa.it/it/prodotti-e-servizi/centro-stella-pagamenti-elettronici">Centro stella</a></li>
                             <li><a href="https://www.pagopa.it/it/prodotti-e-servizi/check-iban">Check IBAN</a></li>
                             <li><a href="https://www.pagopa.it/it/prodotti-e-servizi/piattaforma-notifiche-digitali">Piattaforma Notifiche Digitali</a></li>
                             <li><a href="#">Piattaforma Digitale Nazionale Dati - <br />Interoperabilità</a></li>
@@ -88,10 +88,10 @@
                     <div class="footer-column">
                         <h4>RISORSE</h4>
                         <ul>
-                            <li><a href="https://dev.selfcare.pagopa.it/auth/informativa-privacy">Informativa Privacy</a></li>
-                            <li><a href="https://dev.selfcare.pagopa.it/auth/termini-di-servizio">Termini e Condizioni</a></li>
+                            <li><a href="https://selfcare.pagopa.it/auth/informativa-privacy">Informativa Privacy</a></li>
+                            <li><a href="https://selfcare.pagopa.it/auth/termini-di-servizio">Termini e Condizioni</a></li>
                             <li><a href="https://www.pagopa.it/it/certificazioni/">Certificazioni</a></li>
-                            <li><a href="#">Sicurezza delle informazioni</a></li>
+                            <li><a href="https://oneid.pagopa.it/login?response_type=CODE&scope=openid&client_id=0GemhuNwzjygMbWHJjYCMInHkYInwDjax7xQ-lFqiUs&state=145f2339797f4ce&nonce=e2a3b40c1238439&redirect_uri=https%3A%2F%2Fuat.selfcare.pagopa.it%2Fauth%2Flogin%2Fcallback">Sicurezza delle informazioni</a></li>
                             <li><a href="https://privacyportal-de.onetrust.com/webform/77f17844-04c3-4969-a11d-462ee77acbe1/9ab6533d-be4a-482e-929a-0d8d2ab29df8">Diritto alla protezione dei dati personali</a></li>
                             <li><a href="https://www.pagopa.it/it/">Preferenze Cookie</a></li>
                             <li><a href="https://pagopa.portaleamministrazionetrasparente.it/">Società trasparente</a></li>
