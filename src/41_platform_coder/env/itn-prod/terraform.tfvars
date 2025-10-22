@@ -24,11 +24,12 @@ mcshared_dns_zone_prefix = "api-mcshared"
 ## Postgres
 keycloak_pgflex_params = {
   enabled                                = true
-  idh_resource_tier                      = "pgflex2"
+  idh_resource_tier                      = "pgflex8"
   geo_replication_enabled                = false
   zone                                   = 1
   pgres_flex_pgbouncer_enabled           = false
   pgres_flex_diagnostic_settings_enabled = false
+  auto_grow_enabled                      = true
 }
 
 keycloak_configuration = {

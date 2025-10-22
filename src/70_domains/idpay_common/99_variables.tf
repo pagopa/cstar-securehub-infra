@@ -269,3 +269,11 @@ variable "oneidentity_base_url" {
   default     = null
   description = "OneIdentity base Url"
 }
+
+#----------------------------------------------------------------------
+# Redis
+#----------------------------------------------------------------------
+variable "redis_idh_resource_tier" {
+  type        = string
+  description = "The SKU of the Redis Cache to deploy"
+}

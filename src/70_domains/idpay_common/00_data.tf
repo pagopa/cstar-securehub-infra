@@ -68,6 +68,14 @@ data "azurerm_private_dns_zone" "storage_account_table" {
   resource_group_name = local.vnet_legacy_core_rg
 }
 
+# Service Bus
+data "azurerm_private_dns_zone" "service_bus" {
+  count = var.service_bus_namespace.sku == "Premium" ? 1 : 0
+
+  name                = "privatelink.servicebus.windows.net"
+  resource_group_name = local.vnet_legacy_core_rg
+}
+
 #
 # KeyVault
 #

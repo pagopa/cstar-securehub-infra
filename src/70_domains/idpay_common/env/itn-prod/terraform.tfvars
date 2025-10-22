@@ -15,29 +15,26 @@ dns_zone_internal_prefix = "internal.cstar"
 
 external_domain = "pagopa.it"
 
-#
-# CIDRs
-#
-cidr_idpay_data_eventhub = ["10.20.10.32/27"] # 10.20.10.32 -> 10.20.10.63
-cidr_idpay_data_redis    = ["10.20.10.64/27"] # 10.20.10.64 -> 10.20.10.95
-cidr_idpay_data_storage  = ["10.20.10.96/27"] # 10.20.10.96 -> 10.20.10.127
-
+### Cosmos DB
 cosmos_mongo_db_idpay_params = {
   throughput     = null
   max_throughput = 1000
 }
 
-#
-# Service bus
-#
+### Redis Cache
+redis_idh_resource_tier = "standard_C2_v6"
+
+### Service bus
 service_bus_namespace = {
-  sku = "Standard"
+  sku                          = "Premium"
+  capacity                     = 1
+  premium_messaging_partitions = 1
 }
 
-##Eventhub
+## Eventhub
 ehns_sku_name                 = "Standard"
 ehns_capacity                 = 1
-ehns_maximum_throughput_units = 5
+ehns_maximum_throughput_units = 25
 ehns_auto_inflate_enabled     = true
 ehns_alerts_enabled           = true
 
@@ -75,8 +72,8 @@ single_page_applications_portal_merchants_operator_roots_dirs = [
 aks_nodepool_blue = {
   vm_sku_name       = "Standard_D8ads_v5_active"
   autoscale_enabled = true
-  node_count_min    = 3
-  node_count_max    = 4
+  node_count_min    = 4
+  node_count_max    = 16
 }
 
 aks_nodepool_green = {
@@ -86,10 +83,10 @@ aks_nodepool_green = {
   node_count_max    = 0
 }
 
-#Monitoring
+### Monitoring
 law_sku               = "PerGB2018"
 law_retention_in_days = 30
 law_daily_quota_gb    = 200
 
-#OneIdentity
+### OneIdentity
 oneidentity_base_url = "https://oneid.pagopa.it"
