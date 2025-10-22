@@ -83,7 +83,7 @@
                             <li><a href="https://www.pagopa.it/it/prodotti-e-servizi/check-iban">Check IBAN</a></li>
                             <li><a href="https://www.pagopa.it/it/prodotti-e-servizi/piattaforma-notifiche-digitali">Piattaforma Notifiche Digitali</a></li>
                             <li><a href="#">Piattaforma Digitale Nazionale Dati - <br />Interoperabilità</a></li>
-                            <li><a href="https://docs.pagopa.it/area-riservata/">Area Riservata</a></li>
+                            <li><a href="https://selfcare.pagopa.it">Area Riservata</a></li>
                         </ul>
                     </div>
                     <div class="footer-column">
