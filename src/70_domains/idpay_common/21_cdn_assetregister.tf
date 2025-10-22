@@ -68,7 +68,7 @@ module "cdn_idpay_assetregister" {
       {
         action = "Append"
         name   = contains(["d"], var.env_short) ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
-        value  = "default-src 'self'; object-src 'none'; connect-src 'self' https://api-io.${var.dns_zone_prefix}.${var.external_domain}/ https://api-eu.mixpanel.com/track/ https://cdn.cookielaw.org https://privacyportal-de.onetrust.com; script-src 'self' https://cdn.cookielaw.org https://privacyportal-de.onetrust.com;"
+        value  = "default-src 'self'; object-src 'none'; connect-src 'self' https://api-io.${var.dns_zone_prefix}.${var.external_domain}/ https://api-eu.mixpanel.com/track/ https://cdn.cookielaw.org https://privacyportal-de.onetrust.com https://privacyportalde-cdn.onetrust.com; script-src 'self' https://cdn.cookielaw.org https://privacyportal-de.onetrust.com https://privacyportalde-cdn.onetrust.com;"
       },
       {
         action = "Append"
