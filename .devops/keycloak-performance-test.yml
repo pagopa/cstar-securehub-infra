@@ -1,0 +1,119 @@
+pr: none
+trigger: none
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+parameters:
+  - name: env
+    displayName: Environment
+    type: string
+    default: dev
+    values:
+      - dev
+      - uat
+      - prd
+  - name: keycloak_realm
+    displayName: Keycloak Realm
+    type: string
+  - name: keycloak_url
+    displayName: Keycloak URL
+    type: string
+  - name: kcb_use_all_local_addresses
+    displayName: KCB Use all local addresses
+    type: boolean
+    default: false
+  - name: kcb_share_connections
+    displayName: KCB Share connections
+    type: boolean
+    default: false
+  - name: kcb_increment
+    displayName: KCB Increment
+    type: number
+    default: 32
+  - name: kcb_users_per_second
+    displayName: KCB Users per second
+    type: number
+    default: 1
+  - name: kcb_ramp_up
+    displayName: KCB Ramp up time
+    type: number
+    default: 5
+  - name: kcb_additional_parameters
+    displayName: KCB Additional Parameters
+    type: string
+    default: ""
+  - name: kcb_scenario
+    displayName: Test Scenario
+    type: string
+    default: keycloak.scenario.authentication.AuthorizationCode
+    values:
+      - keycloak.scenario.authentication.AuthorizationCode
+      - keycloak.scenario.authentication.LoginUserPassword
+      - keycloak.scenario.authentication.ClientSecret
+      - keycloak.scenario.admin.CreateDeleteClients
+      - keycloak.scenario.admin.CreateClients
+      - keycloak.scenario.admin.CreateDeleteUsers
+      - keycloak.scenario.admin.CreateUsers
+      - keycloak.scenario.admin.CreateDeleteRoles
+      - keycloak.scenario.admin.CreateRoles
+      - keycloak.scenario.admin.CreateDeleteGroups
+      - keycloak.scenario.admin.CreateGroups
+      - keycloak.scenario.admin.CreateDeleteClientScopes
+      - keycloak.scenario.admin.CreateClientScopes
+      - keycloak.scenario.admin.UserCrawl
+      - keycloak.scenario.admin.ListSessions
+      - keycloak.scenario.admin.CreateRealms
+      - keycloak.scenario.admin.CreateDeleteRealms
+      - keycloak.scenario.basic.Get
+
+variables:
+  ${{ if eq(parameters.env, 'dev') }}:
+    AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_DEV)'
+    poolImage: $(TF_POOL_NAME_DEV)
+  ${{ elseif eq(parameters.env, 'uat') }}:
+    AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_UAT)'
+    poolImage: $(TF_POOL_NAME_UAT)
+  ${{ elseif eq(parameters.env, 'prd') }}:
+    AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_PROD)'
+    poolImage: $(TF_POOL_NAME_PROD)
+
+stages:
+  - stage: keycloak_performance
+    displayName: "Liquibase status"
+    jobs:
+      - job: setup_environment
+        pool: $(poolImage)
+        displayName: "Setup running environment"
+        steps:
+          - checkout: self
+          - script: |
+              cd $(Pipeline.Workspace)
+              mkdir kcb
+              wget -c https://github.com/keycloak/keycloak-benchmark/releases/download/0.7/kcb-0.7.tar.gz
+              tar -xzf kcb-0.7.tar.gz -C kcb
+              rm -rf kcb-0.7.tar.gz
+              ls -la kcb
+              echo "##vso[task.prependpath]$(Pipeline.Workspace)/kcb"
+            displayName: "Install KeyCloak Benchmark"
+          - script: |
+              cd $(Pipeline.Workspace)
+              mkdir java
+              wget -c https://download.java.net/java/GA/jdk11/9/GPL/openjdk-11.0.2_linux-x64_bin.tar.gz
+              tar -xzf openjdk-11.0.2_linux-x64_bin.tar.gz -C java
+              rm -rf openjdk-11.0.2_linux-x64_bin.tar.gz
+              ls -la java
+              echo "##vso[task.prependpath]$(Pipeline.Workspace)/java/jdk-11.0.2/bin"
+              echo "##vso[task.setvariable variable=JAVA_HOME;]$(Pipeline.Workspace)/java/jdk-11.0.2"
+            displayName: "Install Java"
+          - script: |
+              cd $(Pipeline.Workspace)/kcb
+              ./kcb.sh --scenario=${{parameters.kcb_scenario}} --server-url=${{parameters.keycloak_url}} --realm-name=${{parameters.keycloak_realm}} \
+                --use-all-local-addresses=${{parameters.kcb_use_all_local_addresses}} \
+                --share-connections=${{parameters.kcb_share_connections}} \
+                --increment=${{parameters.kcb_increment}} \
+                --users-per-second=${{parameters.kcb_users_per_second}} \
+                --ramp-up=${{parameters.kcb_ramp_up}} \
+                ${{parameters.kcb_additional_parameters}}
+            displayName: "Run KeyCloakBenchmark"
+
