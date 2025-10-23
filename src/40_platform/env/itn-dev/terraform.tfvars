@@ -42,6 +42,7 @@ argocd_helm_release_version    = "8.3.7" #ArgoCD 3.1.5+
 argocd_application_namespaces  = ["argocd", "idpay", "keda", "platform-influxdb", "srtp"]
 argocd_force_reinstall_version = "v20250918_1"
 ingress_load_balancer_ip       = "10.10.1.250"
+argocd_terraform_module_tier = "dev"
 
 ### InfluxDB
 influxdb2_helm = {
