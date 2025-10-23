@@ -14,11 +14,11 @@
                 <p class="text-dark">PagoPA S.p.A.</p>
             </div>
             <nav class="header-nav">
-                <a href="https://developer.pagopa.it/pari/guides/manuale-tecnico-venditore" class="text-dark-light">
+                <a href="https://developer.pagopa.it/pari/guides/bonuselettrodomestici-manuale-tecnico-venditore" class="text-dark-light">
                     <img src="${url.resourcesPath}/img/book.png"/>
                     Manuale operativo
                 </a>
-                <a href="https://developer.pagopa.it/pari/guides/manuale-tecnico-venditore/contatti" class="text-dark-light">
+                <a href="https://developer.pagopa.it/pari/guides/bonuselettrodomestici-manuale-tecnico-venditore/contatti" class="text-dark-light">
                     <img src="${url.resourcesPath}/img/info.png"/>
                     Assistenza
                 </a>
