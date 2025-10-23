@@ -16,7 +16,7 @@ locals {
     },
     {
       name                = "onboarding_ranking_requests"
-      shard_key           = "_id"
+      shard_key           = null
       default_ttl_seconds = null
       indexes = [
         { keys = ["_id"], unique = true },
@@ -29,7 +29,7 @@ locals {
     },
     {
       name                = "onboarding_ranking_rule"
-      shard_key           = "_id"
+      shard_key           = null
       default_ttl_seconds = null
       indexes = [
         { keys = ["_id"], unique = true },
@@ -38,7 +38,7 @@ locals {
     },
     {
       name                = "onboarding_families"
-      shard_key           = "_id"
+      shard_key           = null
       default_ttl_seconds = null
       indexes = [
         { keys = ["_id"], unique = true },
@@ -48,7 +48,7 @@ locals {
     },
     {
       name                = "mocked_families"
-      shard_key           = "_id"
+      shard_key           = null
       default_ttl_seconds = null
       indexes = [
         { keys = ["_id"], unique = true },
@@ -57,13 +57,13 @@ locals {
     },
     {
       name                = "mocked_isee"
-      shard_key           = "_id"
+      shard_key           = null
       default_ttl_seconds = null
       indexes             = [{ keys = ["_id"], unique = true }]
     },
     {
       name                = "hpan_initiatives_lookup"
-      shard_key           = "_id"
+      shard_key           = null
       default_ttl_seconds = null
       indexes = [
         { keys = ["_id"], unique = true },
@@ -74,7 +74,7 @@ locals {
     },
     {
       name                = "payment_instrument"
-      shard_key           = "_id"
+      shard_key           = null
       default_ttl_seconds = null
       indexes = [
         { keys = ["_id"], unique = true },
@@ -86,13 +86,13 @@ locals {
     },
     {
       name                = "payment_instrument_code"
-      shard_key           = "_id"
+      shard_key           = null
       default_ttl_seconds = null
       indexes             = [{ keys = ["_id"], unique = true }]
     },
     {
       name                = "group"
-      shard_key           = "_id"
+      shard_key           = null
       default_ttl_seconds = null
       indexes = [
         { keys = ["_id"], unique = true },
@@ -101,7 +101,7 @@ locals {
     },
     {
       name                = "group_user_whitelist"
-      shard_key           = "_id"
+      shard_key           = null
       default_ttl_seconds = null
       indexes = [
         { keys = ["_id"], unique = true },
@@ -111,7 +111,7 @@ locals {
     },
     {
       name                = "iban"
-      shard_key           = "_id"
+      shard_key           = null
       default_ttl_seconds = null
       indexes = [
         { keys = ["_id"], unique = true },
@@ -132,7 +132,7 @@ locals {
     },
     {
       name                = "timeline"
-      shard_key           = "_id"
+      shard_key           = "userId"
       default_ttl_seconds = null
       indexes = [
         { keys = ["_id"], unique = true },
@@ -143,7 +143,7 @@ locals {
     },
     {
       name                = "notification"
-      shard_key           = "_id"
+      shard_key           = null
       default_ttl_seconds = null
       indexes = [
         { keys = ["_id"], unique = true },
@@ -167,13 +167,13 @@ locals {
     },
     {
       name                = "custom_sequence"
-      shard_key           = "_id"
+      shard_key           = null
       default_ttl_seconds = null
       indexes             = [{ keys = ["_id"], unique = true }]
     },
     {
       name                = "self_declaration_text"
-      shard_key           = "_id"
+      shard_key           = null
       default_ttl_seconds = null
       indexes = [
         { keys = ["_id"], unique = true },
@@ -197,7 +197,7 @@ locals {
   collections_idpay_pagamenti = [
     {
       name                = "transaction"
-      shard_key           = "_id"
+      shard_key           = null
       default_ttl_seconds = null
       indexes = [
         { keys = ["_id"], unique = true },
@@ -213,7 +213,7 @@ locals {
     },
     {
       name                = "transactions_processed"
-      shard_key           = "_id"
+      shard_key           = null
       default_ttl_seconds = null
       indexes = [
         { keys = ["_id"], unique = true },
@@ -225,7 +225,7 @@ locals {
     },
     {
       name                = "transaction_in_progress"
-      shard_key           = "_id"
+      shard_key           = null
       default_ttl_seconds = null
       indexes = [
         { keys = ["_id"], unique = true },
@@ -252,13 +252,13 @@ locals {
     },
     {
       name                = "reward_notification_rule"
-      shard_key           = "_id"
+      shard_key           = null
       default_ttl_seconds = null
       indexes             = [{ keys = ["_id"], unique = true }]
     },
     {
       name                = "rewards_iban"
-      shard_key           = "_id"
+      shard_key           = null
       default_ttl_seconds = null
       indexes = [
         { keys = ["_id"], unique = true },
@@ -267,7 +267,7 @@ locals {
     },
     {
       name                = "rewards"
-      shard_key           = "_id"
+      shard_key           = null
       default_ttl_seconds = null
       indexes = [
         { keys = ["_id"], unique = true },
@@ -277,7 +277,7 @@ locals {
     },
     {
       name                = "rewards_notification"
-      shard_key           = "_id"
+      shard_key           = null
       default_ttl_seconds = null
       indexes = [
         { keys = ["_id"], unique = true },
@@ -292,7 +292,7 @@ locals {
     },
     {
       name                = "rewards_organization_exports"
-      shard_key           = "_id"
+      shard_key           = null
       default_ttl_seconds = null
       indexes = [
         { keys = ["_id"], unique = true },
@@ -305,7 +305,7 @@ locals {
     },
     {
       name                = "rewards_organization_imports"
-      shard_key           = "_id"
+      shard_key           = null
       default_ttl_seconds = null
       indexes = [
         { keys = ["_id"], unique = true },
@@ -338,7 +338,7 @@ locals {
     },
     {
       name                = "merchant_initiative_counters"
-      shard_key           = "_id"
+      shard_key           = null
       default_ttl_seconds = null
       indexes = [
         { keys = ["_id"], unique = true },
@@ -362,7 +362,7 @@ locals {
     },
     {
       name                = "expense_data"
-      shard_key           = "_id"
+      shard_key           = null
       default_ttl_seconds = null
       indexes = [
         { keys = ["_id"], unique = true },
@@ -373,7 +373,7 @@ locals {
     },
     {
       name                = "rewards_suspended_users"
-      shard_key           = "_id"
+      shard_key           = null
       default_ttl_seconds = null
       indexes = [
         { keys = ["_id"], unique = true },
@@ -385,55 +385,55 @@ locals {
   collections_idpay_iniziative = [
     {
       name                = "initiative"
-      shard_key           = "_id"
+      shard_key           = null
       default_ttl_seconds = null
       indexes             = [{ keys = ["_id"], unique = true }]
     },
     {
       name                = "beneficiary_rule"
-      shard_key           = "_id"
+      shard_key           = null
       default_ttl_seconds = null
       indexes             = [{ keys = ["_id"], unique = true }]
     },
     {
       name                = "initiative_counters"
-      shard_key           = "_id"
+      shard_key           = null
       default_ttl_seconds = null
       indexes             = [{ keys = ["_id"], unique = true }]
     },
     {
       name                = "initiative_statistics"
-      shard_key           = "_id"
+      shard_key           = null
       default_ttl_seconds = null
       indexes             = [{ keys = ["_id"], unique = true }]
     },
     {
       name                = "reward_rule"
-      shard_key           = "_id"
+      shard_key           = null
       default_ttl_seconds = null
       indexes             = [{ keys = ["_id"], unique = true }]
     },
     {
       name                = "role_permission"
-      shard_key           = "_id"
+      shard_key           = null
       default_ttl_seconds = null
       indexes             = [{ keys = ["_id"], unique = true }]
     },
     {
       name                = "portal_consent"
-      shard_key           = "_id"
+      shard_key           = null
       default_ttl_seconds = null
       indexes             = [{ keys = ["_id"], unique = true }]
     },
     {
       name                = "config_mcc"
-      shard_key           = "_id"
+      shard_key           = null
       default_ttl_seconds = null
       indexes             = [{ keys = ["_id"], unique = true }]
     },
     {
       name                = "config_trx_rule"
-      shard_key           = "_id"
+      shard_key           = null
       default_ttl_seconds = null
       indexes             = [{ keys = ["_id"], unique = true }]
     }
@@ -442,19 +442,19 @@ locals {
   collections_rdb_shared = [
     {
       name                = "role_permission"
-      shard_key           = "_id"
+      shard_key           = null
       default_ttl_seconds = null
       indexes             = [{ keys = ["_id"], unique = true }]
     },
     {
       name                = "portal_consent"
-      shard_key           = "_id"
+      shard_key           = null
       default_ttl_seconds = null
       indexes             = [{ keys = ["_id"], unique = true }]
     },
     {
       name                = "product_file"
-      shard_key           = "_id"
+      shard_key           = null
       default_ttl_seconds = null
       indexes = [
         { keys = ["_id"], unique = true },
@@ -463,7 +463,7 @@ locals {
     },
     {
       name                = "product"
-      shard_key           = "_id"
+      shard_key           = null
       default_ttl_seconds = null
       indexes = [
         { keys = ["_id"], unique = true },
