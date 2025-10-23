@@ -135,7 +135,7 @@ stages:
 #               ./initialize-benchmark-entities.sh -r ${{parameters.keycloak_realm}} -c gatling -u user-0 -k $(Pipeline.Workspace)/kc/keycloak-26.4.2
 #            displayName: "Initialize KeyCloak Benchmark entities"
           - script: |
-              cd $(Pipeline.Workspace)/kcb/${{variables.KCB_VERSION}}/bin
+              cd $(Pipeline.Workspace)/kcb/keycloak-benchmark-${{variables.KCB_VERSION}}/bin
               ./kcb.sh --scenario=${{parameters.kcb_scenario}} --server-url=${{variables.KEYCLOAK_URL}} --realm-name=${{parameters.keycloak_realm}} \
                 --use-all-local-addresses=${{parameters.kcb_use_all_local_addresses}} \
                 --share-connections=${{parameters.kcb_share_connections}} \
