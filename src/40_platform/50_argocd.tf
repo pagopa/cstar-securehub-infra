@@ -30,7 +30,7 @@ module "argocd" {
   enable_admin_login = true
   admin_password     = data.azurerm_key_vault_secret.argocd_admin_password.value
 
-  tier = "prod"
+  tier = var.argocd_terraform_module_tier
   global_affinity_match_expressions = [
     {
       key      = "node_type"
