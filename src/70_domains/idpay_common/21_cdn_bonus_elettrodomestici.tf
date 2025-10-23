@@ -54,7 +54,7 @@ locals {
           redirect_type = "Found"
           protocol      = "Https"
           hostname      = "ioapp.it"
-          path          = "/"
+          path          = "/bonus-elettrodomestici"
           fragment      = ""
           query_string  = ""
         }
@@ -233,7 +233,7 @@ locals {
             redirect_type = "Found"
             protocol      = "Https"
             hostname      = "ioapp.it"
-            path          = "/"
+            path          = "/bonus-elettrodomestici"
             fragment      = ""
             query_string  = ""
           }
