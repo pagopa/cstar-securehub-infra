@@ -109,7 +109,7 @@ stages:
             displayName: "Install Java"
           - script: |
                cd $(Pipeline.Workspace)/kcb/keycloak-benchmark-${{variables.KCB_VERSION}}/bin
-              ./initialize-benchmark-entities.sh -r test-realm -c gatling -u user-0
+               ./initialize-benchmark-entities.sh -r test-realm -c gatling -u user-0
             displayName: "Initialize KeyCloak Benchmark entities"
           - script: |
               cd $(Pipeline.Workspace)/kcb/${{variables.KCB_VERSION}}/bin
