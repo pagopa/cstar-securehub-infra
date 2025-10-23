@@ -108,8 +108,18 @@ stages:
               echo "##vso[task.setvariable variable=JAVA_HOME;]$(Pipeline.Workspace)/java/jdk-21.0.9"
             displayName: "Install Java"
           - script: |
+              cd $(Pipeline.Workspace)
+              mkdir java
+              wget -c https://github.com/keycloak/keycloak/releases/download/26.4.2/keycloak-26.4.2.zip
+              tar -xzf keycloak-26.4.2.zip -C kc
+              rm -rf keycloak-26.4.2.zip
+              ls -la kc
+              echo "##vso[task.prependpath]$(Pipeline.Workspace)/kc/keycloak-26.4.2/bin"
+              echo "##vso[task.setvariable variable=KEYCLOAK_HOME;]$(Pipeline.Workspace)/kc/keycloak-26.4.2"
+            displayName: "Install Java"
+          - script: |
                cd $(Pipeline.Workspace)/kcb/keycloak-benchmark-${{variables.KCB_VERSION}}/bin
-               ./initialize-benchmark-entities.sh -r test-realm -c gatling -u user-0
+               ./initialize-benchmark-entities.sh -r ${{parameters.keycloak_realm}} -c gatling -u user-0
             displayName: "Initialize KeyCloak Benchmark entities"
           - script: |
               cd $(Pipeline.Workspace)/kcb/${{variables.KCB_VERSION}}/bin
