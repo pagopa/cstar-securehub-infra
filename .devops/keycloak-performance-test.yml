@@ -111,7 +111,7 @@ stages:
               cd $(Pipeline.Workspace)
               mkdir kc
               wget -c https://github.com/keycloak/keycloak/releases/download/26.4.2/keycloak-26.4.2.zip
-              tar -xzf keycloak-26.4.2.zip -C kc
+              tar -xf keycloak-26.4.2.zip -C kc
               rm -rf keycloak-26.4.2.zip
               ls -la kc
               echo "##vso[task.prependpath]$(Pipeline.Workspace)/kc/keycloak-26.4.2/bin"
