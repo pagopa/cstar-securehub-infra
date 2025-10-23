@@ -2,7 +2,14 @@
 # CosmosDB MongoDB databases and collections
 # ------------------------------------------------------------------------------
 locals {
-  collections_idpay_beneficiari = [
+  idpay_beneficiari_collections = [
+
+    {
+      name                = "initiative_counters"
+      shard_key           = null
+      default_ttl_seconds = null
+      indexes             = [{ keys = ["_id"], unique = true }]
+    },
     {
       name                = "anpr_info"
       shard_key           = "userId"
@@ -209,17 +216,6 @@ locals {
       ]
     },
     {
-      name                = "user_initiative_counters"
-      shard_key           = "_id"
-      default_ttl_seconds = null
-      indexes = [
-        { keys = ["_id"], unique = true },
-        { keys = ["entityId"], unique = false },
-        { keys = ["initiativeId"], unique = false },
-        { keys = ["pendingTrx.id"], unique = false }
-      ]
-    },
-    {
       name                = "wallet"
       shard_key           = "userId"
       default_ttl_seconds = null
@@ -233,7 +229,19 @@ locals {
     }
   ]
 
-  collections_idpay_pagamenti = [
+  idpay_pagamenti_collections = [
+    
+    {
+      name                = "user_initiative_counters"
+      shard_key           = "_id"
+      default_ttl_seconds = null
+      indexes = [
+        { keys = ["_id"], unique = true },
+        { keys = ["entityId"], unique = false },
+        { keys = ["initiativeId"], unique = false },
+        { keys = ["pendingTrx.id"], unique = false }
+      ]
+    },
     {
       name                = "expense_data"
       shard_key           = null
@@ -385,7 +393,7 @@ locals {
     }
   ]
 
-  collections_idpay_iniziative = [
+  idpay_iniziative_collections = [
     {
       name                = "config_mcc"
       shard_key           = null
@@ -400,12 +408,6 @@ locals {
     },
     {
       name                = "initiative"
-      shard_key           = null
-      default_ttl_seconds = null
-      indexes             = [{ keys = ["_id"], unique = true }]
-    },
-    {
-      name                = "initiative_counters"
       shard_key           = null
       default_ttl_seconds = null
       indexes             = [{ keys = ["_id"], unique = true }]
@@ -441,17 +443,17 @@ locals {
 
   # Le restanti definizioni rimangono invariate
   plan_idpay_beneficiari = {
-    for coll in local.collections_idpay_beneficiari :
+    for coll in local.idpay_beneficiari_collections :
     "idpay-beneficiari.${coll.name}" => merge(coll, { database_name = "idpay-beneficiari" })
   }
 
   plan_idpay_pagamenti = {
-    for coll in local.collections_idpay_pagamenti :
+    for coll in local.idpay_pagamenti_collections :
     "idpay-pagamenti.${coll.name}" => merge(coll, { database_name = "idpay-pagamenti" })
   }
 
   plan_idpay_iniziative = {
-    for coll in local.collections_idpay_iniziative :
+    for coll in local.idpay_iniziative_collections :
     "idpay-iniziative.${coll.name}" => merge(coll, { database_name = "idpay-iniziative" })
   }
 
