@@ -152,8 +152,8 @@ variable "argocd_application_namespaces" {
 }
 
 variable "argocd_terraform_module_tier" {
-    type        = string
-    description = "Tier for argocd terraform module"
+  type        = string
+  description = "Tier for argocd terraform module"
 }
 
 #---------------------------------------------------------------
