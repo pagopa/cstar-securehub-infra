@@ -99,12 +99,12 @@ stages:
           - script: |
               cd $(Pipeline.Workspace)
               mkdir java
-              wget -c https://download.java.net/java/GA/jdk11/9/GPL/openjdk-11.0.2_linux-x64_bin.tar.gz
-              tar -xzf openjdk-11.0.2_linux-x64_bin.tar.gz -C java
-              rm -rf openjdk-11.0.2_linux-x64_bin.tar.gz
+              wget -c https://download.oracle.com/java/21/latest/jdk-21_linux-x64_bin.tar.gz 
+              tar -xzf jdk-21_linux-x64_bin.tar.gz -C java
+              rm -rf jdk-21_linux-x64_bin.tar.gz
               ls -la java
-              echo "##vso[task.prependpath]$(Pipeline.Workspace)/java/jdk-11.0.2/bin"
-              echo "##vso[task.setvariable variable=JAVA_HOME;]$(Pipeline.Workspace)/java/jdk-11.0.2"
+              echo "##vso[task.prependpath]$(Pipeline.Workspace)/java/jdk-21.0.9/bin"
+              echo "##vso[task.setvariable variable=JAVA_HOME;]$(Pipeline.Workspace)/java/jdk-21.0.9"
             displayName: "Install Java"
           - script: |
               cd $(Pipeline.Workspace)/kcb/keycloak-benchmark-0.7
@@ -121,6 +121,8 @@ stages:
                 cd $(Pipeline.Workspace)/kcb/keycloak-benchmark-0.7/results
                 zip -r results.zip *
             displayName: "Compress results"
+            condition: always()
           - publish: $(Pipeline.Workspace)/kcb/keycloak-benchmark-0.7/results/results.zip
             artifact: Results
+            condition: always()
 
