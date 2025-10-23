@@ -165,4 +165,9 @@ stages:
           - publish: $(Pipeline.Workspace)/kcb/keycloak-benchmark-${{variables.KCB_VERSION}}/results/results-$(Build.BuildId).zip
             artifact: Results
             condition: always()
+          - script: |
+              cd $(Pipeline.Workspace)/kcb/keycloak-benchmark-${{variables.KCB_VERSION}}/results
+              rm -rf *
+            displayName: "Cleanup results"
+            condition: always()
 
