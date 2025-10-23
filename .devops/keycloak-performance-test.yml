@@ -16,9 +16,6 @@ parameters:
   - name: keycloak_realm
     displayName: Keycloak Realm
     type: string
-  - name: keycloak_url
-    displayName: Keycloak URL
-    type: string
   - name: kcb_use_all_local_addresses
     displayName: KCB Use all local addresses
     type: boolean
@@ -69,14 +66,17 @@ parameters:
 
 variables:
   ${{ if eq(parameters.env, 'dev') }}:
-    AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_DEV)'
+    AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_DEV)'
     poolImage: $(TF_POOL_NAME_DEV)
+    KEYCLOAK_URL: "https://api-mcshared.dev.cstar.pagopa.it/auth-itn"
   ${{ elseif eq(parameters.env, 'uat') }}:
-    AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_UAT)'
+    AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_UAT)'
     poolImage: $(TF_POOL_NAME_UAT)
+    KEYCLOAK_URL: "https://api-mcshared.uat.cstar.pagopa.it/auth-itn"
   ${{ elseif eq(parameters.env, 'prd') }}:
-    AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_PROD)'
+    AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_PROD)'
     poolImage: $(TF_POOL_NAME_PROD)
+    KEYCLOAK_URL: "https://api-mcshared.cstar.pagopa.it/auth-itn"
 
 stages:
   - stage: keycloak_performance
@@ -108,7 +108,7 @@ stages:
             displayName: "Install Java"
           - script: |
               cd $(Pipeline.Workspace)/kcb
-              ./kcb.sh --scenario=${{parameters.kcb_scenario}} --server-url=${{parameters.keycloak_url}} --realm-name=${{parameters.keycloak_realm}} \
+              ./kcb.sh --scenario=${{parameters.kcb_scenario}} --server-url=${{variables.KEYCLOAK_URL}} --realm-name=${{parameters.keycloak_realm}} \
                 --use-all-local-addresses=${{parameters.kcb_use_all_local_addresses}} \
                 --share-connections=${{parameters.kcb_share_connections}} \
                 --increment=${{parameters.kcb_increment}} \
