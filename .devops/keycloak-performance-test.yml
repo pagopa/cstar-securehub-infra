@@ -39,7 +39,7 @@ parameters:
   - name: kcb_additional_parameters
     displayName: KCB Additional Parameters
     type: string
-    default: ""
+    default: " "
   - name: kcb_scenario
     displayName: Test Scenario
     type: string
