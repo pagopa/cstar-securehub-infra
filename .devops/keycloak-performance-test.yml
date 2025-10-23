@@ -131,7 +131,7 @@ stages:
           - script: |
                cd $(Pipeline.Workspace)/kcb/keycloak-benchmark-${{variables.KCB_VERSION}}/bin
                kcadm.sh config credentials --server ${{variables.KEYCLOAK_URL}} --realm master --user $(keycloak-admin-username) --password $(keycloak-admin-password)
-               ./initialize-benchmark-entities.sh -r ${{parameters.keycloak_realm}} -c gatling -u user-0
+               ./initialize-benchmark-entities.sh -r ${{parameters.keycloak_realm}} -c gatling -u user-0 -k $(Pipeline.Workspace)/kc/keycloak-26.4.2
             displayName: "Initialize KeyCloak Benchmark entities"
           - script: |
               cd $(Pipeline.Workspace)/kcb/${{variables.KCB_VERSION}}/bin
