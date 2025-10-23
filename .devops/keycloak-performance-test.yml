@@ -108,7 +108,7 @@ stages:
             displayName: "Install Java"
           - script: |
               cd $(Pipeline.Workspace)/kcb/keycloak-benchmark-0.7
-              ./kcb.sh --scenario=${{parameters.kcb_scenario}} --server-url=${{variables.KEYCLOAK_URL}} --realm-name=${{parameters.keycloak_realm}} \
+              ./bin/kcb.sh --scenario=${{parameters.kcb_scenario}} --server-url=${{variables.KEYCLOAK_URL}} --realm-name=${{parameters.keycloak_realm}} \
                 --use-all-local-addresses=${{parameters.kcb_use_all_local_addresses}} \
                 --share-connections=${{parameters.kcb_share_connections}} \
                 --increment=${{parameters.kcb_increment}} \
