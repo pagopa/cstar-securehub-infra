@@ -1,7 +1,6 @@
 {
-    "name": "idpay_procudt_export_daily",
+    "name": "idpay_product_export_daily",
     "properties": {
-        "description": "Export EIE Product on daily schedule",
         "activities": [
             {
                 "name": "idpay_product_export_daily",
@@ -19,7 +18,11 @@
                 "typeProperties": {
                     "source": {
                         "type": "CosmosDbMongoDbApiSource",
-                        "batchSize": 500
+                        "batchSize": 500,
+                        "filter": "{status: \"APPROVED\"}",
+                        "cursorMethods": {
+                            "project": "{ \"_id\": 1, \"model\": 1, \"brand\": 1, \"eprelCode\": 1, \"countryOfProduction\": 1, \"energyClass\": 1, \"capacity\": 1, \"productName\": 1, \"category\": 1, \"productGroup\": 1 }"
+                        }
                     },
                     "sink": {
                         "type": "JsonSink",
@@ -31,7 +34,92 @@
                             "filePattern": "arrayOfObjects"
                         }
                     },
-                    "enableStaging": false
+                    "enableStaging": false,
+                    "translator": {
+                        "type": "TabularTranslator",
+                        "mappings": [
+                            {
+                                "source": {
+                                    "path": "$['_id']"
+                                },
+                                "sink": {
+                                    "path": "gtin"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['model']"
+                                },
+                                "sink": {
+                                    "path": "model"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['brand']"
+                                },
+                                "sink": {
+                                    "path": "brand"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['eprelCode']"
+                                },
+                                "sink": {
+                                    "path": "eprelCode"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['countryOfProduction']"
+                                },
+                                "sink": {
+                                    "path": "countryOfProduction"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['energyClass']"
+                                },
+                                "sink": {
+                                    "path": "energyClass"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['capacity']"
+                                },
+                                "sink": {
+                                    "path": "capacity"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['productName']"
+                                },
+                                "sink": {
+                                    "path": "productName"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['category']"
+                                },
+                                "sink": {
+                                    "path": "category"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['Column_1']"
+                                },
+                                "sink": {
+                                    "path": "productGroup"
+                                }
+                            }
+                        ]
+                    }
                 },
                 "inputs": [
                     {
@@ -47,10 +135,8 @@
                 ]
             }
         ],
-        "annotations": [
-            "Products Export",
-            "IdPay",
-            "EIE"
-        ]
-    }
+        "annotations": [],
+        "lastPublishTime": "2025-10-23T11:51:16Z"
+    },
+    "type": "Microsoft.DataFactory/factories/pipelines"
 }

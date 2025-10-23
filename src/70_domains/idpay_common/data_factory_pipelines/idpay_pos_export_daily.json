@@ -1,0 +1,57 @@
+{
+    "name": "idpay_pos_export_daily",
+    "properties": {
+        "description": "Export Point of Sales on daily schedule",
+        "activities": [
+            {
+                "name": "idpay_pos_export_daily",
+                "description": "Export Point of Sales on daily schedule",
+                "type": "Copy",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "source": {
+                        "type": "CosmosDbMongoDbApiSource",
+                        "batchSize": 500
+                    },
+                    "sink": {
+                        "type": "JsonSink",
+                        "storeSettings": {
+                            "type": "AzureBlobStorageWriteSettings"
+                        },
+                        "formatSettings": {
+                            "type": "JsonWriteSettings",
+                            "filePattern": "arrayOfObjects"
+                        }
+                    },
+                    "enableStaging": false
+                },
+                "inputs": [
+                    {
+                        "referenceName": "cosmos_idpay_pos",
+                        "type": "DatasetReference"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "referenceName": "blob_pos_export_daily",
+                        "type": "DatasetReference"
+                    }
+                ]
+            }
+        ],
+        "annotations": [
+            "Point of Sales Export",
+            "IdPay",
+            "Merchant",
+            "Bonus Elettrodomestici"
+        ]
+    }
+}

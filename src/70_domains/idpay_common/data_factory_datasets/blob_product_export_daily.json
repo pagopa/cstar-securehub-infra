@@ -8,7 +8,8 @@
         "annotations": [
             "Products Export",
             "IdPay",
-            "EIE"
+            "EIE",
+            "Bonus Elettrodomestici"
         ],
         "type": "Json",
         "typeProperties": {
