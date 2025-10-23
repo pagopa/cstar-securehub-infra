@@ -116,4 +116,11 @@ stages:
                 --ramp-up=${{parameters.kcb_ramp_up}} \
                 ${{parameters.kcb_additional_parameters}}
             displayName: "Run KeyCloakBenchmark"
+          - script: |
+              # compress files in results directory
+                cd $(Pipeline.Workspace)/kcb/keycloak-benchmark-0.7/results
+                zip -r results.zip *
+            displayName: "Compress results"
+          - publish: $(Pipeline.Workspace)/kcb/keycloak-benchmark-0.7/results/results.zip
+            artifact: Results
 
