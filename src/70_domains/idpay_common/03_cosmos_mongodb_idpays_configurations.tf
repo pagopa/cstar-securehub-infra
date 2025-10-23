@@ -3,13 +3,6 @@
 # ------------------------------------------------------------------------------
 locals {
   idpay_beneficiari_collections = [
-
-    {
-      name                = "initiative_counters"
-      shard_key           = null
-      default_ttl_seconds = null
-      indexes             = [{ keys = ["_id"], unique = true }]
-    },
     {
       name                = "anpr_info"
       shard_key           = "userId"
@@ -82,6 +75,12 @@ locals {
         { keys = ["_id"], unique = true },
         { keys = ["userId"], unique = false }
       ]
+    },
+    {
+      name                = "initiative_counters"
+      shard_key           = null
+      default_ttl_seconds = null
+      indexes             = [{ keys = ["_id"], unique = true }]
     },
     {
       name                = "mocked_families"
@@ -230,18 +229,6 @@ locals {
   ]
 
   idpay_pagamenti_collections = [
-    
-    {
-      name                = "user_initiative_counters"
-      shard_key           = "_id"
-      default_ttl_seconds = null
-      indexes = [
-        { keys = ["_id"], unique = true },
-        { keys = ["entityId"], unique = false },
-        { keys = ["initiativeId"], unique = false },
-        { keys = ["pendingTrx.id"], unique = false }
-      ]
-    },
     {
       name                = "expense_data"
       shard_key           = null
@@ -389,6 +376,17 @@ locals {
         { keys = ["correlationId"], unique = false },
         { keys = ["acquirerId"], unique = false },
         { keys = ["initiatives"], unique = false }
+      ]
+    },
+    {
+      name                = "user_initiative_counters"
+      shard_key           = "_id"
+      default_ttl_seconds = null
+      indexes = [
+        { keys = ["_id"], unique = true },
+        { keys = ["entityId"], unique = false },
+        { keys = ["initiativeId"], unique = false },
+        { keys = ["pendingTrx.id"], unique = false }
       ]
     }
   ]
