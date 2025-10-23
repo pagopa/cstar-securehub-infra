@@ -337,15 +337,6 @@ locals {
       ]
     },
     {
-      name                = "merchant_initiative_counters"
-      shard_key           = null
-      default_ttl_seconds = null
-      indexes = [
-        { keys = ["_id"], unique = true },
-        { keys = ["initiativeId"], unique = false }
-      ]
-    },
-    {
       name                = "point_of_sales"
       shard_key           = "contactEmail"
       default_ttl_seconds = null
@@ -383,14 +374,27 @@ locals {
   ]
 
   collections_idpay_iniziative = [
+
     {
-      name                = "initiative"
+      name                = "beneficiary_rule"
+      shard_key           = null
+      default_ttl_seconds = null
+      indexes             = [{ keys = ["_id"], unique = true }]
+    } ,
+    {
+      name                = "config_mcc"
       shard_key           = null
       default_ttl_seconds = null
       indexes             = [{ keys = ["_id"], unique = true }]
     },
     {
-      name                = "beneficiary_rule"
+      name                = "config_trx_rule"
+      shard_key           = null
+      default_ttl_seconds = null
+      indexes             = [{ keys = ["_id"], unique = true }]
+    },
+    {
+      name                = "initiative"
       shard_key           = null
       default_ttl_seconds = null
       indexes             = [{ keys = ["_id"], unique = true }]
@@ -406,6 +410,15 @@ locals {
       shard_key           = null
       default_ttl_seconds = null
       indexes             = [{ keys = ["_id"], unique = true }]
+    },
+    {
+      name                = "merchant_initiative_counters"
+      shard_key           = null
+      default_ttl_seconds = null
+      indexes = [
+        { keys = ["_id"], unique = true },
+        { keys = ["initiativeId"], unique = false }
+      ]
     },
     {
       name                = "reward_rule"
@@ -425,18 +438,7 @@ locals {
       default_ttl_seconds = null
       indexes             = [{ keys = ["_id"], unique = true }]
     },
-    {
-      name                = "config_mcc"
-      shard_key           = null
-      default_ttl_seconds = null
-      indexes             = [{ keys = ["_id"], unique = true }]
-    },
-    {
-      name                = "config_trx_rule"
-      shard_key           = null
-      default_ttl_seconds = null
-      indexes             = [{ keys = ["_id"], unique = true }]
-    }
+
   ]
 
   collections_rdb_shared = [
