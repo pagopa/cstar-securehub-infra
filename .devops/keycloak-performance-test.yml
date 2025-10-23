@@ -159,10 +159,10 @@ stages:
             displayName: "Run KeyCloakBenchmark"
           - script: |
               cd $(Pipeline.Workspace)/kcb/keycloak-benchmark-${{variables.KCB_VERSION}}/results
-              zip -r results.zip *
+              zip -r results-$(Build.BuildId).zip *
             displayName: "Compress results"
             condition: always()
-          - publish: $(Pipeline.Workspace)/kcb/keycloak-benchmark-${{variables.KCB_VERSION}}/results/results.zip
+          - publish: $(Pipeline.Workspace)/kcb/keycloak-benchmark-${{variables.KCB_VERSION}}/results/results-$(Build.BuildId).zip
             artifact: Results
             condition: always()
 
