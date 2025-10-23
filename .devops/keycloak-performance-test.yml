@@ -114,7 +114,8 @@ stages:
           - script: |
               cd $(Pipeline.Workspace)
               mkdir kc
-              wget -c https://github.com/keycloak/keycloak/releases/download/26.4.2/keycloak-26.4.2.zip
+              #wget -c https://github.com/keycloak/keycloak/releases/download/26.4.2/keycloak-26.4.2.zip
+              curl -o keycloak-26.4.2.zip  https://github.com/keycloak/keycloak/releases/download/26.4.2/keycloak-26.4.2.zip  -L
               unzip  keycloak-26.4.2.zip -d kc
               rm -rf keycloak-26.4.2.zip
               ls -la kc
