@@ -1,0 +1,131 @@
+{
+    "name": "export_flow_csv",
+    "properties": {
+        "type": "MappingDataFlow",
+        "typeProperties": {
+            "sources": [
+                {
+                    "dataset": {
+                        "referenceName": "data_export_csv",
+                        "type": "DatasetReference"
+                    },
+                    "name": "ImportCSV"
+                }
+            ],
+            "sinks": [
+                {
+                    "dataset": {
+                        "referenceName": "data_export_csv",
+                        "type": "DatasetReference"
+                    },
+                    "name": "CSVTrasformed"
+                }
+            ],
+            "transformations": [
+                {
+                    "name": "UpdateColumn"
+                },
+                {
+                    "name": "select1"
+                }
+            ],
+            "scriptLines": [
+                "source(output(",
+                "          {_id} as string,",
+                "          model as string,",
+                "          brand as string,",
+                "          eprelCode as string,",
+                "          countryOfProduction as string,",
+                "          energyClass as string,",
+                "          capacity as string,",
+                "          productName as string,",
+                "          category as string,",
+                "          productGroup as string",
+                "     ),",
+                "     allowSchemaDrift: true,",
+                "     validateSchema: false,",
+                "     ignoreNoFilesFound: false) ~> ImportCSV",
+                "ImportCSV derive({Link Eprel} = iif(",
+                "  isNull(byName('eprelCode'))",
+                "  || trim(toString(byName('eprelCode'))) == ''",
+                "  || lower(trim(toString(byName('eprelCode')))) == 'null'",
+                "  || lower(trim(toString(byName('eprelCode')))) == 'n/a'",
+                "  || lower(trim(toString(byName('eprelCode')))) == 'n\\\\a'",
+                "  || trim(toString(byName('eprelCode'))) == '-',",
+                "  '/',",
+                "  'https://eprel.ec.europa.eu/screen/product/'",
+                "  + iif(",
+                "      isNull(byName('productGroup'))",
+                "      || trim(toString(byName('productGroup'))) == ''",
+                "      || lower(trim(toString(byName('productGroup')))) == 'null'",
+                "      || lower(trim(toString(byName('productGroup')))) == 'n/a'",
+                "      || lower(trim(toString(byName('productGroup')))) == 'n\\\\a'",
+                "      || trim(toString(byName('productGroup'))) == '-',",
+                "      '',",
+                "      toString(byName('productGroup'))",
+                "    )",
+                "  + '/'",
+                "  + toString(byName('eprelCode'))",
+                "),",
+                "          energyClass = iif(",
+                "  isNull(byName('energyClass'))",
+                "  || lower(trim(toString(byName('energyClass')))) == 'null'",
+                "  || lower(trim(toString(byName('energyClass')))) == 'n\\\\a'",
+                "  || lower(trim(toString(byName('energyClass')))) == 'n\\\\a'",
+                "  || trim(toString(byName('energyClass'))) == '-',",
+                "  '/',",
+                "  toString(byName('energyClass'))",
+                "),",
+                "          eprelCode = iif(",
+                "  isNull(byName('eprelCode'))",
+                "  || lower(trim(toString(byName('eprelCode')))) == 'null'",
+                "  || lower(trim(toString(byName('eprelCode')))) == 'n\\\\a'",
+                "  || lower(trim(toString(byName('eprelCode')))) == 'n\\\\a'",
+                "  || trim(toString(byName('eprelCode'))) == '-',",
+                "  '/',",
+                "  toString(byName('eprelCode'))",
+                "),",
+                "          productGroup = iif(",
+                "  isNull(byName('productGroup'))",
+                "  || lower(trim(toString(byName('productGroup')))) == 'null'",
+                "  || lower(trim(toString(byName('productGroup')))) == 'n\\\\a'",
+                "  || lower(trim(toString(byName('productGroup')))) == 'n\\\\a'",
+                "  || trim(toString(byName('productGroup'))) == '-',",
+                "  '/',",
+                "  toString(byName('productGroup'))",
+                "),",
+                "          category = case(",
+                "  toString(byName('category')) == 'WASHINGMACHINES', 'Lavatrice',",
+                "  toString(byName('category')) == 'WASHERDRIERS', 'Lavasciuga',",
+                "  toString(byName('category')) == 'OVENS', 'Forno',",
+                "  toString(byName('category')) == 'RANGEHOODS', 'Cappa da cucina',",
+                "  toString(byName('category')) == 'DISHWASHERS', 'Lavastoviglie',",
+                "  toString(byName('category')) == 'TUMBLEDRYERS', 'Asciugatrice',",
+                "  toString(byName('category')) == 'REFRIGERATINGAPPL', 'Apparecchio di refrigerazione',",
+                "  toString(byName('category')) == 'COOKINGHOBS', 'Piano cottura',",
+                "  toString(byName('category'))  /* default: lascia il valore originale */",
+                ")) ~> UpdateColumn",
+                "UpdateColumn select(mapColumn(",
+                "          GTIN = {_id},",
+                "          Categoria = category,",
+                "          {Nome del prodotto} = productName,",
+                "          Marca = brand,",
+                "          Modello = model,",
+                "          {Capacità} = capacity,",
+                "          {Paese di Produzione} = countryOfProduction,",
+                "          {Classe Energetica} = energyClass,",
+                "          {Codice Eprel} = eprelCode,",
+                "          {Link Eprel}",
+                "     ),",
+                "     skipDuplicateMapInputs: true,",
+                "     skipDuplicateMapOutputs: true) ~> select1",
+                "select1 sink(allowSchemaDrift: true,",
+                "     validateSchema: false,",
+                "     partitionFileNames:[('expert_weekly_' + toString(currentUTC(), 'yyyy-MM-dd') + '.csv')],",
+                "     skipDuplicateMapInputs: true,",
+                "     skipDuplicateMapOutputs: true,",
+                "     partitionBy('hash', 1)) ~> CSVTrasformed"
+            ]
+        }
+    }
+}
