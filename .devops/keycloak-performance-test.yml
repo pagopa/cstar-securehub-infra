@@ -65,6 +65,7 @@ parameters:
       - keycloak.scenario.basic.Get
 
 variables:
+  KCB_VERSION: "26.0-SNAPSHOT"
   ${{ if eq(parameters.env, 'dev') }}:
     AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_DEV)'
     poolImage: $(TF_POOL_NAME_DEV)
@@ -80,7 +81,7 @@ variables:
 
 stages:
   - stage: keycloak_performance
-    displayName: "Liquibase status"
+    displayName: "Keycloak Performance test"
     jobs:
       - job: setup_environment
         pool: $(poolImage)
@@ -90,9 +91,9 @@ stages:
           - script: |
               cd $(Pipeline.Workspace)
               mkdir kcb
-              wget -c https://github.com/keycloak/keycloak-benchmark/releases/download/0.7/kcb-0.7.tar.gz
-              tar -xzf kcb-0.7.tar.gz -C kcb
-              rm -rf kcb-0.7.tar.gz
+              wget -c https://github.com/keycloak/keycloak-benchmark/releases/download/${{variables.KCB_VERSION}}/keycloak-benchmark-${{variables.KCB_VERSION}}.tar.gz
+              tar -xzf keycloak-benchmark-${{variables.KCB_VERSION}}.tar.gz -C kcb
+              rm -rf keycloak-benchmark-${{variables.KCB_VERSION}}.tar.gz
               ls -la kcb
               echo "##vso[task.prependpath]$(Pipeline.Workspace)/kcb"
             displayName: "Install KeyCloak Benchmark"
@@ -107,8 +108,12 @@ stages:
               echo "##vso[task.setvariable variable=JAVA_HOME;]$(Pipeline.Workspace)/java/jdk-21.0.9"
             displayName: "Install Java"
           - script: |
-              cd $(Pipeline.Workspace)/kcb/keycloak-benchmark-0.7
-              ./bin/kcb.sh --scenario=${{parameters.kcb_scenario}} --server-url=${{variables.KEYCLOAK_URL}} --realm-name=${{parameters.keycloak_realm}} \
+               cd $(Pipeline.Workspace)/kcb/keycloak-benchmark-${{variables.KCB_VERSION}}/bin
+              ./initialize-benchmark-entities.sh -r test-realm -c gatling -u user-0
+            displayName: "Initialize KeyCloak Benchmark entities"
+          - script: |
+              cd $(Pipeline.Workspace)/kcb/${{variables.KCB_VERSION}}/bin
+              ./kcb.sh --scenario=${{parameters.kcb_scenario}} --server-url=${{variables.KEYCLOAK_URL}} --realm-name=${{parameters.keycloak_realm}} \
                 --use-all-local-addresses=${{parameters.kcb_use_all_local_addresses}} \
                 --share-connections=${{parameters.kcb_share_connections}} \
                 --increment=${{parameters.kcb_increment}} \
@@ -117,12 +122,11 @@ stages:
                 ${{parameters.kcb_additional_parameters}}
             displayName: "Run KeyCloakBenchmark"
           - script: |
-              # compress files in results directory
-                cd $(Pipeline.Workspace)/kcb/keycloak-benchmark-0.7/results
-                zip -r results.zip *
+              cd $(Pipeline.Workspace)/kcb/keycloak-benchmark-${{variables.KCB_VERSION}}/results
+              zip -r results.zip *
             displayName: "Compress results"
-            condition: always()
-          - publish: $(Pipeline.Workspace)/kcb/keycloak-benchmark-0.7/results/results.zip
+#            condition: always()
+          - publish: $(Pipeline.Workspace)/kcb/keycloak-benchmark-${{variables.KCB_VERSION}}/results/results.zip
             artifact: Results
-            condition: always()
+#            condition: always()
 
