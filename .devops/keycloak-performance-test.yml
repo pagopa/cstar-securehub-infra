@@ -107,7 +107,7 @@ stages:
               echo "##vso[task.setvariable variable=JAVA_HOME;]$(Pipeline.Workspace)/java/jdk-11.0.2"
             displayName: "Install Java"
           - script: |
-              cd $(Pipeline.Workspace)/kcb
+              cd $(Pipeline.Workspace)/kcb/keycloak-benchmark-0.7
               ./kcb.sh --scenario=${{parameters.kcb_scenario}} --server-url=${{variables.KEYCLOAK_URL}} --realm-name=${{parameters.keycloak_realm}} \
                 --use-all-local-addresses=${{parameters.kcb_use_all_local_addresses}} \
                 --share-connections=${{parameters.kcb_share_connections}} \
