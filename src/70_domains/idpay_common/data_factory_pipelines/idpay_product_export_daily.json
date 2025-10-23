@@ -112,7 +112,7 @@
                             },
                             {
                                 "source": {
-                                    "path": "$['Column_1']"
+                                    "path": "$['productGroup']"
                                 },
                                 "sink": {
                                     "path": "productGroup"
@@ -136,7 +136,7 @@
             }
         ],
         "annotations": [],
-        "lastPublishTime": "2025-10-23T11:51:16Z"
+        "lastPublishTime": "2025-10-23T13:47:41Z"
     },
     "type": "Microsoft.DataFactory/factories/pipelines"
 }
