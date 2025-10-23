@@ -1730,3 +1730,721 @@ QUERY
     custom_webhook_payload = "{}"
   }
 }
+
+# =============================================================
+# Alert API UPBE
+# =============================================================
+
+# =======================================================
+# Get Initiative ID (Onboarding Service) - 5xx Error Count
+# =======================================================
+resource "azurerm_monitor_scheduled_query_rules_alert" "get_initiative_id_5xx_alert" {
+  count               = contains(["p", "u"], var.env_short) ? 1 : 0
+  name                = "get-initiative-id-5xx-alert"
+  resource_group_name = local.monitor_rg
+  location            = var.location
+  description         = "API Get Initiative ID: 5xx error count exceeded (> 2 in 5m)"
+  enabled             = true
+  severity            = 1
+
+  frequency   = 5
+  time_window = 5
+
+  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+
+  query = <<QUERY
+AppRequests
+| where Name matches regex @"^GET /idpay-itn/onboarding/service/[^/]+$"
+| where ResultCode startswith "5"
+QUERY
+
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 2
+  }
+
+  action {
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
+    email_subject          = "[PARI][UPBE][HIGH] Get Initiative ID API Alert (5xx)"
+    custom_webhook_payload = "{}"
+  }
+}
+
+# =======================================================
+# Get Initiative ID (Onboarding Service) - 400 Error Count
+# =======================================================
+resource "azurerm_monitor_scheduled_query_rules_alert" "get_initiative_id_400_alert" {
+  count               = contains(["p", "u"], var.env_short) ? 1 : 0
+  name                = "get-initiative-id-400-alert"
+  resource_group_name = local.monitor_rg
+  location            = var.location
+  description         = "API Get Initiative ID: 400 error count exceeded (> 50 in 10m)"
+  enabled             = true
+  severity            = 1
+
+  frequency   = 5
+  time_window = 10
+
+  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+
+  query = <<QUERY
+AppRequests
+| where Name matches regex @"^GET /idpay-itn/onboarding/service/[^/]+$"
+| where ResultCode == "400"
+QUERY
+
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 50
+  }
+
+  action {
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
+    email_subject          = "[PARI][UPBE][HIGH] Get Initiative ID API Alert (400)"
+    custom_webhook_payload = "{}"
+  }
+}
+
+# =======================================================
+# Get Initiative ID (Onboarding Service) - 401/429 Error Count
+# =======================================================
+resource "azurerm_monitor_scheduled_query_rules_alert" "get_initiative_id_4xx_auth_alert" {
+  count               = contains(["p", "u"], var.env_short) ? 1 : 0
+  name                = "get-initiative-id-4xx-auth-alert"
+  resource_group_name = local.monitor_rg
+  location            = var.location
+  description         = "API Get Initiative ID: 401/429 error count exceeded (> 5 in 5m)"
+  enabled             = true
+  severity            = 1
+
+  frequency   = 5
+  time_window = 5
+
+  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+
+  query = <<QUERY
+AppRequests
+| where Name matches regex @"^GET /idpay-itn/onboarding/service/[^/]+$"
+| where ResultCode in ("401", "429")
+QUERY
+
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 5
+  }
+
+  action {
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
+    email_subject          = "[PARI][UPBE][HIGH] Get Initiative ID API Alert (401/429)"
+    custom_webhook_payload = "{}"
+  }
+}
+
+# =======================================================
+# Get Initiative Detail (Onboarding Service) - 5xx Error Count
+# =======================================================
+resource "azurerm_monitor_scheduled_query_rules_alert" "get_initiative_detail_5xx_alert" {
+  count               = contains(["p", "u"], var.env_short) ? 1 : 0
+  name                = "get-initiative-detail-5xx-alert"
+  resource_group_name = local.monitor_rg
+  location            = var.location
+  description         = "API Get Initiative Detail: 5xx error count exceeded (> 2 in 5m)"
+  enabled             = true
+  severity            = 1
+
+  frequency   = 5
+  time_window = 5
+
+  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+
+  query = <<QUERY
+AppRequests
+| where Name matches regex @"^GET /idpay-itn/onboarding/[^/]+/detail$"
+| where ResultCode startswith "5"
+QUERY
+
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 2
+  }
+
+  action {
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
+    email_subject          = "[PARI][UPBE][HIGH] Get Initiative Detail API Alert (5xx)"
+    custom_webhook_payload = "{}"
+  }
+}
+
+# =======================================================
+# Get Initiative Detail (Onboarding Service) - 400 Error Count
+# =======================================================
+resource "azurerm_monitor_scheduled_query_rules_alert" "get_initiative_detail_400_alert" {
+  count               = contains(["p", "u"], var.env_short) ? 1 : 0
+  name                = "get-initiative-detail-400-alert"
+  resource_group_name = local.monitor_rg
+  location            = var.location
+  description         = "API Get Initiative Detail: 400 error count exceeded (> 50 in 10m)"
+  enabled             = true
+  severity            = 1
+
+  frequency   = 5
+  time_window = 10
+
+  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+
+  query = <<QUERY
+AppRequests
+| where Name matches regex @"^GET /idpay-itn/onboarding/[^/]+/detail$"
+| where ResultCode == "400"
+QUERY
+
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 50
+  }
+
+  action {
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
+    email_subject          = "[PARI][UPBE][HIGH] Get Initiative Detail API Alert (400)"
+    custom_webhook_payload = "{}"
+  }
+}
+
+# =======================================================
+# Get Initiative Detail (Onboarding Service) - 401/429 Error Count
+# =======================================================
+resource "azurerm_monitor_scheduled_query_rules_alert" "get_initiative_detail_4xx_auth_alert" {
+  count               = contains(["p", "u"], var.env_short) ? 1 : 0
+  name                = "get-initiative-detail-4xx-auth-alert"
+  resource_group_name = local.monitor_rg
+  location            = var.location
+  description         = "API Get Initiative Detail: 401/429 error count exceeded (> 5 in 5m)"
+  enabled             = true
+  severity            = 1
+
+  frequency   = 5
+  time_window = 5
+
+  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+
+  query = <<QUERY
+AppRequests
+| where Name matches regex @"^GET /idpay-itn/onboarding/[^/]+/detail$"
+| where ResultCode in ("401", "429")
+QUERY
+
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 5
+  }
+
+  action {
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
+    email_subject          = "[PARI][UPBE][HIGH] Get Initiative Detail API Alert (401/429)"
+    custom_webhook_payload = "{}"
+  }
+}
+
+# =======================================================
+# Save Onboarding - 5xx Error Count
+# =======================================================
+resource "azurerm_monitor_scheduled_query_rules_alert" "save_onboarding_5xx_alert" {
+  count               = contains(["p", "u"], var.env_short) ? 1 : 0
+  name                = "save-onboarding-5xx-alert"
+  resource_group_name = local.monitor_rg
+  location            = var.location
+  description         = "API Save Onboarding: 5xx error count exceeded (> 5 in 5m)"
+  enabled             = true
+  severity            = 1
+
+  frequency   = 5
+  time_window = 5
+
+  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+
+  query = <<QUERY
+AppRequests
+| where Name == "PUT /idpay-itn/onboarding/"
+| where ResultCode startswith "5"
+QUERY
+
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 5
+  }
+
+  action {
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
+    email_subject          = "[PARI][UPBE][HIGH] Save Onboarding API Alert (5xx)"
+    custom_webhook_payload = "{}"
+  }
+}
+
+# =======================================================
+# Save Onboarding - 400 Error Count
+# =======================================================
+resource "azurerm_monitor_scheduled_query_rules_alert" "save_onboarding_400_alert" {
+  count               = contains(["p", "u"], var.env_short) ? 1 : 0
+  name                = "save-onboarding-400-alert"
+  resource_group_name = local.monitor_rg
+  location            = var.location
+  description         = "API Save Onboarding: 400 error count exceeded (> 50 in 10m)"
+  enabled             = true
+  severity            = 1
+
+  frequency   = 5
+  time_window = 10
+
+  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+
+  query = <<QUERY
+AppRequests
+| where Name == "PUT /idpay-itn/onboarding/"
+| where ResultCode == "400"
+QUERY
+
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 50
+  }
+
+  action {
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
+    email_subject          = "[PARI][UPBE][HIGH] Save Onboarding API Alert (400)"
+    custom_webhook_payload = "{}"
+  }
+}
+
+# =======================================================
+# Save Onboarding - 401/429 Error Count
+# =======================================================
+resource "azurerm_monitor_scheduled_query_rules_alert" "save_onboarding_4xx_auth_alert" {
+  count               = contains(["p", "u"], var.env_short) ? 1 : 0
+  name                = "save-onboarding-4xx-auth-alert"
+  resource_group_name = local.monitor_rg
+  location            = var.location
+  description         = "API Save Onboarding: 401/429 error count exceeded (> 5 in 5m)"
+  enabled             = true
+  severity            = 1
+
+  frequency   = 5
+  time_window = 5
+
+  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+
+  query = <<QUERY
+AppRequests
+| where Name == "PUT /idpay-itn/onboarding/"
+| where ResultCode in ("401", "429")
+QUERY
+
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 5
+  }
+
+  action {
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
+    email_subject          = "[PARI][UPBE][HIGH] Save Onboarding API Alert (401/429)"
+    custom_webhook_payload = "{}"
+  }
+}
+
+# =======================================================
+# Onboarding Status - 5xx Error Count
+# =======================================================
+resource "azurerm_monitor_scheduled_query_rules_alert" "onboarding_status_5xx_alert" {
+  count               = contains(["p", "u"], var.env_short) ? 1 : 0
+  name                = "onboarding-status-5xx-alert"
+  resource_group_name = local.monitor_rg
+  location            = var.location
+  description         = "API Onboarding Status: 5xx error count exceeded (> 5 in 5m)"
+  enabled             = true
+  severity            = 1
+
+  frequency   = 5
+  time_window = 5
+
+  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+
+  query = <<QUERY
+AppRequests
+| where Name matches regex @"^GET /idpay-itn/onboarding/[^/]+/status$"
+| where ResultCode startswith "5"
+QUERY
+
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 5
+  }
+
+  action {
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
+    email_subject          = "[PARI][UPBE][HIGH] Onboarding Status API Alert (5xx)"
+    custom_webhook_payload = "{}"
+  }
+}
+
+# =======================================================
+# Onboarding Status - 400 Error Count
+# =======================================================
+resource "azurerm_monitor_scheduled_query_rules_alert" "onboarding_status_400_alert" {
+  count               = contains(["p", "u"], var.env_short) ? 1 : 0
+  name                = "onboarding-status-400-alert"
+  resource_group_name = local.monitor_rg
+  location            = var.location
+  description         = "API Onboarding Status: 400 error count exceeded (> 50 in 10m). Note: Some 400s might be expected statuses."
+  enabled             = true
+  severity            = 1
+
+  frequency   = 5
+  time_window = 10
+
+  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+
+  query = <<QUERY
+AppRequests
+| where Name matches regex @"^GET /idpay-itn/onboarding/[^/]+/status$"
+| where ResultCode == "400"
+QUERY
+
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 50
+  }
+
+  action {
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
+    email_subject          = "[PARI][UPBE][HIGH] Onboarding Status API Alert (400)"
+    custom_webhook_payload = "{}"
+  }
+}
+
+# =======================================================
+# Onboarding Status - 401/429 Error Count
+# =======================================================
+resource "azurerm_monitor_scheduled_query_rules_alert" "onboarding_status_4xx_auth_alert" {
+  count               = contains(["p", "u"], var.env_short) ? 1 : 0
+  name                = "onboarding-status-4xx-auth-alert"
+  resource_group_name = local.monitor_rg
+  location            = var.location
+  description         = "API Onboarding Status: 401/429 error count exceeded (> 5 in 5m)"
+  enabled             = true
+  severity            = 1
+
+  frequency   = 5
+  time_window = 5
+
+  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+
+  query = <<QUERY
+AppRequests
+| where Name matches regex @"^GET /idpay-itn/onboarding/[^/]+/status$"
+| where ResultCode in ("401", "429")
+QUERY
+
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 5
+  }
+
+  action {
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
+    email_subject          = "[PARI][UPBE][HIGH] Onboarding Status API Alert (401/429)"
+    custom_webhook_payload = "{}"
+  }
+}
+
+# =======================================================
+# Onboarding Initiative User Status - 5xx Error Count
+# =======================================================
+resource "azurerm_monitor_scheduled_query_rules_alert" "onboarding_initiative_user_status_5xx_alert" {
+  count               = contains(["p", "u"], var.env_short) ? 1 : 0
+  name                = "onboarding-initiative-user-status-5xx-alert"
+  resource_group_name = local.monitor_rg
+  location            = var.location
+  description         = "API Onboarding Initiative User Status: 5xx error count exceeded (> 2 in 5m)"
+  enabled             = true
+  severity            = 1
+
+  frequency   = 5
+  time_window = 5
+
+  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+
+  query = <<QUERY
+AppRequests
+| where Name == "GET /idpay-itn/onboarding/user/initiative/status"
+| where ResultCode startswith "5"
+QUERY
+
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 2
+  }
+
+  action {
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
+    email_subject          = "[PARI][UPBE][HIGH] Onboarding Initiative User Status API Alert (5xx)"
+    custom_webhook_payload = "{}"
+  }
+}
+
+# =======================================================
+# Onboarding Initiative User Status - 400 Error Count
+# =======================================================
+resource "azurerm_monitor_scheduled_query_rules_alert" "onboarding_initiative_user_status_400_alert" {
+  count               = contains(["p", "u"], var.env_short) ? 1 : 0
+  name                = "onboarding-initiative-user-status-400-alert"
+  resource_group_name = local.monitor_rg
+  location            = var.location
+  description         = "API Onboarding Initiative User Status: 400 error count exceeded (> 50 in 10m)"
+  enabled             = true
+  severity            = 1
+
+  frequency   = 5
+  time_window = 10
+
+  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+
+  query = <<QUERY
+AppRequests
+| where Name == "GET /idpay-itn/onboarding/user/initiative/status"
+| where ResultCode == "400"
+QUERY
+
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 50
+  }
+
+  action {
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
+    email_subject          = "[PARI][UPBE][HIGH] Onboarding Initiative User Status API Alert (400)"
+    custom_webhook_payload = "{}"
+  }
+}
+
+# =======================================================
+# Onboarding Initiative User Status - 401/429 Error Count
+# =======================================================
+resource "azurerm_monitor_scheduled_query_rules_alert" "onboarding_initiative_user_status_4xx_auth_alert" {
+  count               = contains(["p", "u"], var.env_short) ? 1 : 0
+  name                = "onboarding-initiative-user-status-4xx-auth-alert"
+  resource_group_name = local.monitor_rg
+  location            = var.location
+  description         = "API Onboarding Initiative User Status: 401/429 error count exceeded (> 5 in 5m)"
+  enabled             = true
+  severity            = 1
+
+  frequency   = 5
+  time_window = 5
+
+  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+
+  query = <<QUERY
+AppRequests
+| where Name == "GET /idpay-itn/onboarding/user/initiative/status"
+| where ResultCode in ("401", "429")
+QUERY
+
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 5
+  }
+
+  action {
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
+    email_subject          = "[PARI][UPBE][HIGH] Onboarding Initiative User Status API Alert (401/429)"
+    custom_webhook_payload = "{}"
+  }
+}
+
+# =======================================================
+# Get Timeline - 5xx Error Count
+# =======================================================
+resource "azurerm_monitor_scheduled_query_rules_alert" "get_timeline_5xx_alert" {
+  count               = contains(["p", "u"], var.env_short) ? 1 : 0
+  name                = "get-timeline-5xx-alert"
+  resource_group_name = local.monitor_rg
+  location            = var.location
+  description         = "API Get Timeline: 5xx error count exceeded (> 3 in 5m)"
+  enabled             = true
+  severity            = 2
+
+  frequency   = 5
+  time_window = 5
+
+  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+
+  query = <<QUERY
+AppRequests
+| where Name matches regex @"^GET /idpay-itn/timeline/[^/]+$"
+| where ResultCode startswith "5"
+QUERY
+
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 3
+  }
+
+  action {
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
+    email_subject          = "[PARI][UPBE][MEDIUM] Get Timeline API Alert (5xx)"
+    custom_webhook_payload = "{}"
+  }
+}
+
+# =======================================================
+# Get Wallet - 5xx Error Count
+# =======================================================
+resource "azurerm_monitor_scheduled_query_rules_alert" "get_wallet_5xx_alert" {
+  count               = contains(["p", "u"], var.env_short) ? 1 : 0
+  name                = "get-wallet-5xx-alert"
+  resource_group_name = local.monitor_rg
+  location            = var.location
+  description         = "API Get Wallet: 5xx error count exceeded (> 3 in 5m)"
+  enabled             = true
+  severity            = 2
+
+  frequency   = 5
+  time_window = 5
+
+  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+
+  query = <<QUERY
+AppRequests
+| where Name == "GET /idpay-itn/wallet/"
+| where ResultCode startswith "5"
+QUERY
+
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 3
+  }
+
+  action {
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
+    email_subject          = "[PARI][UPBE][MEDIUM] Get Wallet API Alert (5xx)"
+    custom_webhook_payload = "{}"
+  }
+}
