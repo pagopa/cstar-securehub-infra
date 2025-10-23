@@ -69,7 +69,7 @@
                         </div>
                         <ul>
                             <li><a href="https://www.pagopa.it/it/societa/chi-siamo/">PagoPA S.p.A.</a></li>
-                            <li><a href="#">PNRR</a></li>
+                            <li><a href="https://www.pagopa.it/it/opportunita/pnrr/progetti/">PNRR</a></li>
                             <li><a href="https://www.pagopa.it/it/">Media</a></li>
                             <li><a href="https://www.pagopa.it/it/lavora-con-noi/">Lavora con noi</a></li>
                         </ul>
