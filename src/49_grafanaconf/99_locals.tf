@@ -31,7 +31,6 @@ locals {
   kv_core_name                = "${local.product_nodomain}-core-kv"
   kv_core_resource_group_name = "${local.product_nodomain}-core-sec-rg"
 
-
   # Configuration for different team products and their AKS clusters
   # Contains settings for each team's environment including:
   # - location_short: Geographic location code
@@ -39,6 +38,7 @@ locals {
   # - aks_name: Name of the AKS cluster
   team_product = {
     idpay = {
+      groups = lookup(var.team_groups, "idpay", {})
       aks = {
         location_short       = "itn",
         monitor_workspace_id = data.azurerm_log_analytics_workspace.law_core_itn.id,
@@ -46,6 +46,7 @@ locals {
       },
     }
     mil = {
+      groups = lookup(var.team_groups, "mil", {})
       aks = {
         location_short       = "weu",
         monitor_workspace_id = data.azurerm_log_analytics_workspace.law_core.id,
@@ -53,6 +54,7 @@ locals {
       }
     },
     rtd = {
+      groups = lookup(var.team_groups, "rtd", {})
       aks = {
         location_short       = "weu",
         monitor_workspace_id = data.azurerm_log_analytics_workspace.law_core.id,
@@ -60,12 +62,14 @@ locals {
       }
     },
     srtp = {
+      groups = lookup(var.team_groups, "srtp", {})
       aca = {
         location_short       = "itn",
         monitor_workspace_id = data.azurerm_log_analytics_workspace.law_srtp.id,
       }
     },
     mcshared = {
+      groups = lookup(var.team_groups, "mcshared", {})
       aca = {
         location_short       = "itn",
         monitor_workspace_id = data.azurerm_log_analytics_workspace.law_mcshared.id,
