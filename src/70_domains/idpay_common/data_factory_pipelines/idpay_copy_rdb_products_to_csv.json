@@ -60,9 +60,7 @@
         "dependsOn": [
           {
             "activity": "Copy_Cosmos_to_CSV",
-            "dependencyConditions": [
-              "Succeeded"
-            ]
+            "dependencyConditions": ["Succeeded"]
           }
         ],
         "policy": {
@@ -74,7 +72,7 @@
         },
         "userProperties": [],
         "typeProperties": {
-          "dataflow": {
+          "dataFlow": {
             "referenceName": "export_flow_csv",
             "type": "DataFlowReference"
           },
@@ -85,9 +83,7 @@
           "traceLevel": "Fine"
         }
       }
-    ],
-    "annotations": [],
-    "lastPublishTime": "2025-10-23T13:21:36Z"
+    ]
   },
   "type": "Microsoft.DataFactory/factories/pipelines"
 }

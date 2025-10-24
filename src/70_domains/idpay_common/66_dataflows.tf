@@ -36,7 +36,6 @@ resource "azurerm_data_factory_data_flow" "dataflows" {
   name            = each.key
   data_factory_id = data.azurerm_data_factory.data_factory.id
 
-  # azurerm 4.41.0: usa `script` (non `json`, non `script_lines`)
   script = join("\n", compact(try(each.value.properties.typeProperties.scriptLines, [])))
 
   dynamic "source" {
@@ -62,7 +61,7 @@ resource "azurerm_data_factory_data_flow" "dataflows" {
     }
   }
 
-  # <<<— lista statica di risorse
+  # <<<— static lists of resource
   depends_on = [
     azurerm_data_factory_custom_dataset.datasets,
     azurerm_data_factory_linked_custom_service.adf_cosmosdb_linked_service,
