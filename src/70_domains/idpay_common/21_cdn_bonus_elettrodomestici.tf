@@ -279,6 +279,12 @@ locals {
       ]
     }]
   )
+
+  ## Static content for Bonus Elettrodomestici
+  ## Elenco Informatico Elettrodomesici
+  upload_eie_files = fileset("${path.module}/cdn/bonus-el-products", "**")
+  ## Point of Sales
+  upload_pos_files = fileset("${path.module}/cdn/bonus-el-pos", "**")
 }
 
 // Public CDN to serve frontend - main domain
@@ -319,4 +325,17 @@ module "cdn_idpay_bonuselettrodomestici" {
   custom_domains = local.custom_domains
 
   tags = module.tag_config.tags
+}
+
+## Upload sttatic content for Bonus Elettrodomesici
+resource "azurerm_storage_blob" "eie_static_files" {
+  for_each = toset(local.upload_eie_files)
+
+  name                   = "elenco-informatico-elettrodomestici/${each.value}"
+  storage_account_name   = module.cdn_idpay_bonuselettrodomestici.storage_name
+  storage_container_name = "$web"
+  type                   = "Block"
+  source                 = "${path.module}/cdn/bonus-el-products/${each.value}"
+
+  depends_on = [module.cdn_idpay_bonuselettrodomestici]
 }
