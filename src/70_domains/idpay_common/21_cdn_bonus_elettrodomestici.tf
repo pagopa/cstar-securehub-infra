@@ -275,20 +275,6 @@ locals {
           transforms       = null
         }
       ]
-      url_path_conditions = [
-        {
-          operator         = "BeginsWith"
-          match_values     = ["/utente/assets"]
-          negate_condition = true
-          transforms       = null
-        },
-        {
-          operator         = "BeginsWith"
-          match_values     = ["/utente"]
-          negate_condition = false
-          transforms       = null
-        }
-      ]
 
       url_redirect_actions = [
         {
