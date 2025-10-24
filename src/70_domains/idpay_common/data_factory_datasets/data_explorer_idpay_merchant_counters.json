@@ -7,7 +7,6 @@
         },
         "annotations": [],
         "type": "AzureDataExplorerTable",
-        "schema": [],
         "typeProperties": {
             "table": "merchant_initiative_counters"
         }

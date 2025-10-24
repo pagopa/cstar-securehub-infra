@@ -1,14 +1,14 @@
 {
-    "name": "cosmos_idpay_pos",
+    "name": "cosmos_idpay_wallet",
     "properties": {
         "linkedServiceName": {
-            "referenceName": "idpay-CosmosDB-idpay-ls",
+            "referenceName": "idpay_CosmosDB_idpay_ls",
             "type": "LinkedServiceReference"
         },
         "annotations": [],
         "type": "CosmosDbMongoDbApiCollection",
         "typeProperties": {
-            "collection": "point_of_sales"
+            "collection": "wallet"
         }
     },
     "type": "Microsoft.DataFactory/factories/datasets"

@@ -199,3 +199,152 @@
     initiativeId:string,
     rejectionReason:string
 )
+
+.create table wallet (
+    id: string,
+    userId: string,
+    familyId: string,
+    initiativeId: string,
+    initiativeName: string,
+    organizationId: string,
+    organizationName: string,
+    status: string,
+    voucherStatus: string,
+    acceptanceDate: datetime,
+    acceptanceDateString: string,
+    initiativeEndDate: datetime,
+    initiativeEndDateString: string,
+    voucherStartDate: datetime,
+    voucherStartDateString: string,
+    voucherEndDate: datetime,
+    voucherEndDateString: string,
+    iban: string,
+    amountCents: long,
+    accruedCents: long,
+    refundedCents: long,
+    refundHistory: dynamic,
+    nTrx: long,
+    nInstr: int,
+    requestUnsubscribeDate: datetime,
+    requestUnsubscribeDateString: string,
+    updateDate: datetime,
+    updateDateString: string,
+    lastCounterUpdate: datetime,
+    lastCounterUpdateString: string,
+    suspensionDate: datetime,
+    suspensionDateString: string,
+    initiativeRewardType: string,
+    isLogoPresent: bool,
+    maxTrx: long,
+    counterVersion: long,
+    counterHistory: string,
+    serviceId: string,
+    userMail: string,
+    channel: string,
+    name: string,
+    surname: string
+)
+
+.create table wallet_refund_history (
+    walletId: string,
+    key: string,
+    feedbackProgressive: long
+)
+
+
+
+.create table notification (
+    id: string,
+    notificationId: string,
+    notificationStatus: string,
+    notificationDate: datetime,
+    notificationDateString: string,
+    statusKoTimestamp: datetime,
+    statusKoTimestampDateString: string,
+    operationType: string,
+    userId: string,
+    initiativeId: string,
+    initiativeName: string,
+    organizationName: string,
+    authority: string,
+    onboardingOutcome: string,
+    rejectReasons: dynamic,
+    retryDate: datetime,
+    retryDateString: string,
+    retry: int,
+    refundReward: real,
+    refundStatus: string,
+    channel: string,
+    templateName: string,
+    templateValues: dynamic,
+    subject: string,
+    content: string,
+    senderEmail: string,
+    recipientEmail: string
+)
+
+.create table notification_reject_reasons (
+    notificationId: string,
+    rejectionReason: string
+)
+
+.create table notification_template_values (
+    notificationId: string,
+    key: string,
+    value: string
+)
+
+.create table timeline (
+    operationId: string,
+    userId: string,
+    initiativeId: string,
+    operationType: string,
+    eventId: string,
+    brandLogo: string,
+    brand: string,
+    maskedPan: string,
+    instrumentId: string,
+    circuitType: string,
+    iban: string,
+    channel: string,
+    instrumentType: string,
+    rewardNotificationId: string,
+    cro: string,
+    rewardFeedbackProgressive: long,
+    operationDate: datetime,
+    operationDateString: string,
+    amountCents: long,
+    effectiveAmountCents: long,
+    accruedCents: long,
+    idTrxIssuer: string,
+    idTrxAcquirer: string,
+    status: string,
+    refundType: string,
+    startDate: datetime,
+    startDateString: string,
+    endDate: datetime,
+    endDateString: string,
+    transferDate: datetime,
+    transferDateString: string,
+    userNotificationDate: datetime,
+    userNotificationDateString: string,
+    businessName: string
+)
+
+.create table initiative_counters (
+    _id: string,
+    initiativeId: string,
+    userId: string,
+    initiativeBudgetCents: long,
+    onboarded: long,
+    spentInitiativeBudgetCents: long,
+    reservedInitiativeBudgetCents: long,
+    residualInitiativeBudgetCents: long,
+    status: string,
+    createdAt: datetime,
+    createdAtDateString: string,
+    sequenceNumber: long,
+    enqueuedTime: datetime,
+    enqueuedTimeDateString: string,
+    preallocatedAmountCents: long
+)
