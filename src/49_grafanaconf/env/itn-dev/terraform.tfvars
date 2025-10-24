@@ -12,10 +12,10 @@ team_groups = {
       permission = "Admin"
     }
     "cstar-d-idpay-adgroup-developers" = {
-      permission = "View"
+      permission = "Edit"
     }
     "cstar-d-idpay-adgroup-externals" = {
-      permission = "View"
+      permission = "Edit"
     }
   }
   srtp = {
@@ -23,10 +23,10 @@ team_groups = {
       permission = "Admin"
     }
     "cstar-d-srtp-adgroup-developers" = {
-      permission = "View"
+      permission = "Edit"
     }
     "cstar-d-srtp-adgroup-externals" = {
-      permission = "View"
+      permission = "Edit"
     }
   }
 }
