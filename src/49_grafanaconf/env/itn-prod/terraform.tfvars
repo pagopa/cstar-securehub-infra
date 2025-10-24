@@ -6,6 +6,34 @@ location_display_name = "Italy North"
 location_short        = "itn"
 domain                = "platform"
 
+team_groups = {
+  idpay = {
+    "cstar-p-idpay-adgroup-admin" = {
+      permission = "Admin"
+    }
+    "cstar-p-idpay-adgroup-developers" = {
+      permission = "View"
+    }
+    "cstar-p-idpay-adgroup-externals" = {
+      permission = "View"
+    }
+    "cstar-p-idpay-adgroup-oncall" = {
+      permission = "View"
+    }
+  }
+  srtp = {
+    "cstar-p-srtp-adgroup-admin" = {
+      permission = "Admin"
+    }
+    "cstar-p-srtp-adgroup-developers" = {
+      permission = "View"
+    }
+    "cstar-p-srtp-adgroup-externals" = {
+      permission = "View"
+    }
+  }
+}
+
 tags = {
   CreatedBy   = "Terraform"
   Environment = "PROD"

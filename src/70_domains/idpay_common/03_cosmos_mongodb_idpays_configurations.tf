@@ -5,7 +5,7 @@ locals {
   idpay_beneficiari_collections = [
     {
       name                = "anpr_info"
-      shard_key           = "userId"
+      shard_key           = null
       default_ttl_seconds = null
       indexes = [
         { keys = ["_id"], unique = true },
@@ -200,7 +200,7 @@ locals {
     },
     {
       name                = "transaction_in_progress"
-      shard_key           = null
+      shard_key           = "_id"
       default_ttl_seconds = null
       indexes = [
         { keys = ["_id"], unique = true },
@@ -242,7 +242,7 @@ locals {
     },
     {
       name                = "merchant"
-      shard_key           = "fiscalCode"
+      shard_key           = null
       default_ttl_seconds = null
       indexes = [
         { keys = ["_id"], unique = true },
@@ -254,7 +254,7 @@ locals {
     },
     {
       name                = "merchant_file"
-      shard_key           = "fileName"
+      shard_key           = null
       default_ttl_seconds = null
       indexes = [
         { keys = ["_id"], unique = true },
@@ -264,7 +264,7 @@ locals {
     },
     {
       name                = "point_of_sales"
-      shard_key           = "contactEmail"
+      shard_key           = null
       default_ttl_seconds = null
       indexes = [
         { keys = ["_id"], unique = true },
@@ -352,7 +352,7 @@ locals {
     },
     {
       name                = "transaction"
-      shard_key           = null
+      shard_key           = "_id"
       default_ttl_seconds = null
       indexes = [
         { keys = ["_id"], unique = true },
