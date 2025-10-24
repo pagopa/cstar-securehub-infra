@@ -1,0 +1,26 @@
+{
+    "name": "blob_pos_export_daily",
+    "properties": {
+        "linkedServiceName": {
+            "referenceName": "${domain}-bonus-blob-storage-ls",
+            "type": "LinkedServiceReference"
+        },
+        "annotations": [
+            "Point of Sales Export",
+            "IdPay",
+            "Merchant",
+            "Bonus Elettrodomestici"
+        ],
+        "type": "Json",
+        "typeProperties": {
+            "location": {
+                "type": "AzureBlobStorageLocation",
+                "fileName": "pos_export.json",
+                "folderPath": "lista-punti-vendita/data",
+                "container": "$web"
+            },
+            "encodingName": "UTF-8"
+        }
+    },
+    "type": "Microsoft.DataFactory/factories/datasets"
+}

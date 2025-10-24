@@ -1,0 +1,58 @@
+{
+    "name": "blob_product_export_daily",
+    "properties": {
+        "linkedServiceName": {
+            "referenceName": "${domain}-bonus-blob-storage-ls",
+            "type": "LinkedServiceReference"
+        },
+        "annotations": [
+            "Products Export",
+            "IdPay",
+            "EIE",
+            "Bonus Elettrodomestici"
+        ],
+        "type": "Json",
+        "typeProperties": {
+            "location": {
+                "type": "AzureBlobStorageLocation",
+                "fileName": "product_export.json",
+                "folderPath": "elenco-informatico-elettrodomestici/data",
+                "container": "$web"
+            },
+            "encodingName": "UTF-8"
+        },
+        "schema": {
+            "type": "object",
+            "properties": {
+                "gtin": {
+                    "type": "string"
+                },
+                "model": {
+                    "type": "string"
+                },
+                "category": {
+                    "type": "string"
+                },
+                "brand": {
+                    "type": "string"
+                },
+                "eprelCode": {
+                    "type": "string"
+                },
+                "countryOfProduction": {
+                    "type": "string"
+                },
+                "energyClass": {
+                    "type": "string"
+                },
+                "capacity": {
+                    "type": "string"
+                },
+                "productName": {
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "type": "Microsoft.DataFactory/factories/datasets"
+}
