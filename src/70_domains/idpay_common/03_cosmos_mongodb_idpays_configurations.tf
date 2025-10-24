@@ -2,157 +2,7 @@
 # CosmosDB MongoDB databases and collections
 # ------------------------------------------------------------------------------
 locals {
-  collections_idpay_beneficiari = [
-    {
-      name                = "onboarding_citizen"
-      shard_key           = "_id"
-      default_ttl_seconds = null
-      indexes = [
-        { keys = ["_id"], unique = true },
-        { keys = ["updateDate"], unique = false },
-        { keys = ["initiativeId"], unique = false },
-        { keys = ["userId"], unique = false }
-      ]
-    },
-    {
-      name                = "onboarding_ranking_requests"
-      shard_key           = "_id"
-      default_ttl_seconds = null
-      indexes = [
-        { keys = ["_id"], unique = true },
-        { keys = ["initiativeId", "rankingValue", "criteriaConsensusTimestamp"], unique = false },
-        { keys = ["initiativeId", "rank"], unique = false },
-        { keys = ["organizationId"], unique = false },
-        { keys = ["userId"], unique = false },
-        { keys = ["initiativeId"], unique = false }
-      ]
-    },
-    {
-      name                = "onboarding_ranking_rule"
-      shard_key           = "_id"
-      default_ttl_seconds = null
-      indexes = [
-        { keys = ["_id"], unique = true },
-        { keys = ["rankingEndDate"], unique = false }
-      ]
-    },
-    {
-      name                = "onboarding_families"
-      shard_key           = "_id"
-      default_ttl_seconds = null
-      indexes = [
-        { keys = ["_id"], unique = true },
-        { keys = ["memberIds"], unique = false },
-        { keys = ["initiativeId"], unique = false }
-      ]
-    },
-    {
-      name                = "mocked_families"
-      shard_key           = "_id"
-      default_ttl_seconds = null
-      indexes = [
-        { keys = ["_id"], unique = true },
-        { keys = ["memberIds"], unique = false }
-      ]
-    },
-    {
-      name                = "mocked_isee"
-      shard_key           = "_id"
-      default_ttl_seconds = null
-      indexes             = [{ keys = ["_id"], unique = true }]
-    },
-    {
-      name                = "hpan_initiatives_lookup"
-      shard_key           = "_id"
-      default_ttl_seconds = null
-      indexes = [
-        { keys = ["_id"], unique = true },
-        { keys = ["onboardedInitiatives.initiativeId"], unique = false },
-        { keys = ["userId"], unique = false },
-        { keys = ["onboardedInitiatives"], unique = false }
-      ]
-    },
-    {
-      name                = "payment_instrument"
-      shard_key           = "_id"
-      default_ttl_seconds = null
-      indexes = [
-        { keys = ["_id"], unique = true },
-        { keys = ["initiativeId"], unique = false },
-        { keys = ["userId"], unique = false },
-        { keys = ["status"], unique = false },
-        { keys = ["hpan"], unique = false }
-      ]
-    },
-    {
-      name                = "payment_instrument_code"
-      shard_key           = "_id"
-      default_ttl_seconds = null
-      indexes             = [{ keys = ["_id"], unique = true }]
-    },
-    {
-      name                = "group"
-      shard_key           = "_id"
-      default_ttl_seconds = null
-      indexes = [
-        { keys = ["_id"], unique = true },
-        { keys = ["initiativeId"], unique = false }
-      ]
-    },
-    {
-      name                = "group_user_whitelist"
-      shard_key           = "_id"
-      default_ttl_seconds = null
-      indexes = [
-        { keys = ["_id"], unique = true },
-        { keys = ["groupId"], unique = false },
-        { keys = ["initiativeId"], unique = false }
-      ]
-    },
-    {
-      name                = "iban"
-      shard_key           = "_id"
-      default_ttl_seconds = null
-      indexes = [
-        { keys = ["_id"], unique = true },
-        { keys = ["userId"], unique = false }
-      ]
-    },
-    {
-      name                = "wallet"
-      shard_key           = "userId"
-      default_ttl_seconds = null
-      indexes = [
-        { keys = ["_id"], unique = true },
-        { keys = ["userId", "initiativeId"], unique = true },
-        { keys = ["userId"], unique = false },
-        { keys = ["familyId"], unique = false },
-        { keys = ["initiativeId"], unique = false }
-      ]
-    },
-    {
-      name                = "timeline"
-      shard_key           = "_id"
-      default_ttl_seconds = null
-      indexes = [
-        { keys = ["_id"], unique = true },
-        { keys = ["initiativeId", "userId", "operationDate"], unique = false },
-        { keys = ["eventId"], unique = false },
-        { keys = ["initiativeId"], unique = false }
-      ]
-    },
-    {
-      name                = "notification"
-      shard_key           = "_id"
-      default_ttl_seconds = null
-      indexes = [
-        { keys = ["_id"], unique = true },
-        { keys = ["notificationStatus"], unique = false },
-        { keys = ["retry"], unique = false },
-        { keys = ["retryDate"], unique = false },
-        { keys = ["initiativeId"], unique = false }
-      ]
-    },
+  idpay_beneficiari_collections = [
     {
       name                = "anpr_info"
       shard_key           = "userId"
@@ -166,21 +16,16 @@ locals {
       ]
     },
     {
-      name                = "custom_sequence"
-      shard_key           = "_id"
+      name                = "beneficiary_rule"
+      shard_key           = null
       default_ttl_seconds = null
       indexes             = [{ keys = ["_id"], unique = true }]
     },
     {
-      name                = "self_declaration_text"
-      shard_key           = "_id"
+      name                = "custom_sequence"
+      shard_key           = null
       default_ttl_seconds = null
-      indexes = [
-        { keys = ["_id"], unique = true },
-        { keys = ["initiativeId", "userId"], unique = false },
-        { keys = ["userId"], unique = false },
-        { keys = ["initiativeId"], unique = false }
-      ]
+      indexes             = [{ keys = ["_id"], unique = true }]
     },
     {
       name                = "data_vault"
@@ -191,41 +36,171 @@ locals {
         { keys = ["page", "_id"], unique = true },
         { keys = ["page", "data"], unique = true },
       ]
-    }
-  ]
-
-  collections_idpay_pagamenti = [
+    },
     {
-      name                = "transaction"
-      shard_key           = "_id"
+      name                = "group"
+      shard_key           = null
       default_ttl_seconds = null
       indexes = [
         { keys = ["_id"], unique = true },
-        { keys = ["idTrxIssuer"], unique = false },
-        { keys = ["userId"], unique = false },
-        { keys = ["trxDate"], unique = false },
-        { keys = ["merchantId"], unique = false },
-        { keys = ["elaborationDateTime"], unique = false },
-        { keys = ["initiatives"], unique = false },
-        { keys = ["status"], unique = false },
-        { keys = ["additionalProperties.productName"], unique = false }
+        { keys = ["initiativeId"], unique = false }
       ]
     },
     {
-      name                = "transactions_processed"
+      name                = "group_user_whitelist"
+      shard_key           = null
+      default_ttl_seconds = null
+      indexes = [
+        { keys = ["_id"], unique = true },
+        { keys = ["groupId"], unique = false },
+        { keys = ["initiativeId"], unique = false }
+      ]
+    },
+    {
+      name                = "hpan_initiatives_lookup"
+      shard_key           = null
+      default_ttl_seconds = null
+      indexes = [
+        { keys = ["_id"], unique = true },
+        { keys = ["onboardedInitiatives.initiativeId"], unique = false },
+        { keys = ["userId"], unique = false },
+        { keys = ["onboardedInitiatives"], unique = false }
+      ]
+    },
+    {
+      name                = "iban"
+      shard_key           = null
+      default_ttl_seconds = null
+      indexes = [
+        { keys = ["_id"], unique = true },
+        { keys = ["userId"], unique = false }
+      ]
+    },
+    {
+      name                = "initiative_counters"
+      shard_key           = null
+      default_ttl_seconds = null
+      indexes             = [{ keys = ["_id"], unique = true }]
+    },
+    {
+      name                = "mocked_families"
+      shard_key           = null
+      default_ttl_seconds = null
+      indexes = [
+        { keys = ["_id"], unique = true },
+        { keys = ["memberIds"], unique = false }
+      ]
+    },
+    {
+      name                = "mocked_isee"
+      shard_key           = null
+      default_ttl_seconds = null
+      indexes             = [{ keys = ["_id"], unique = true }]
+    },
+    {
+      name                = "notification"
+      shard_key           = null
+      default_ttl_seconds = null
+      indexes = [
+        { keys = ["_id"], unique = true },
+        { keys = ["notificationStatus"], unique = false },
+        { keys = ["retry"], unique = false },
+        { keys = ["retryDate"], unique = false },
+        { keys = ["initiativeId"], unique = false }
+      ]
+    },
+    {
+      name                = "onboarding_citizen"
       shard_key           = "_id"
       default_ttl_seconds = null
       indexes = [
         { keys = ["_id"], unique = true },
+        { keys = ["updateDate"], unique = false },
+        { keys = ["initiativeId"], unique = false },
+        { keys = ["userId"], unique = false }
+      ]
+    },
+    {
+      name                = "onboarding_families"
+      shard_key           = null
+      default_ttl_seconds = null
+      indexes = [
+        { keys = ["_id"], unique = true },
+        { keys = ["memberIds"], unique = false },
+        { keys = ["initiativeId"], unique = false }
+      ]
+    },
+    {
+      name                = "onboarding_ranking_requests"
+      shard_key           = null
+      default_ttl_seconds = null
+      indexes = [
+        { keys = ["_id"], unique = true },
+        { keys = ["initiativeId", "rankingValue", "criteriaConsensusTimestamp"], unique = false },
+        { keys = ["initiativeId", "rank"], unique = false },
+        { keys = ["organizationId"], unique = false },
         { keys = ["userId"], unique = false },
-        { keys = ["correlationId"], unique = false },
-        { keys = ["acquirerId"], unique = false },
-        { keys = ["initiatives"], unique = false }
+        { keys = ["initiativeId"], unique = false }
+      ]
+    },
+    {
+      name                = "onboarding_ranking_rule"
+      shard_key           = null
+      default_ttl_seconds = null
+      indexes = [
+        { keys = ["_id"], unique = true },
+        { keys = ["rankingEndDate"], unique = false }
+      ]
+    },
+    {
+      name                = "payment_instrument"
+      shard_key           = null
+      default_ttl_seconds = null
+      indexes = [
+        { keys = ["_id"], unique = true },
+        { keys = ["initiativeId"], unique = false },
+        { keys = ["userId"], unique = false },
+        { keys = ["status"], unique = false },
+        { keys = ["hpan"], unique = false }
+      ]
+    },
+    {
+      name                = "payment_instrument_code"
+      shard_key           = null
+      default_ttl_seconds = null
+      indexes             = [{ keys = ["_id"], unique = true }]
+    },
+    {
+      name                = "reward_rule"
+      shard_key           = null
+      default_ttl_seconds = null
+      indexes             = [{ keys = ["_id"], unique = true }]
+    },
+    {
+      name                = "self_declaration_text"
+      shard_key           = null
+      default_ttl_seconds = null
+      indexes = [
+        { keys = ["_id"], unique = true },
+        { keys = ["initiativeId", "userId"], unique = false },
+        { keys = ["userId"], unique = false },
+        { keys = ["initiativeId"], unique = false }
+      ]
+    },
+    {
+      name                = "timeline"
+      shard_key           = "userId"
+      default_ttl_seconds = null
+      indexes = [
+        { keys = ["_id"], unique = true },
+        { keys = ["initiativeId", "userId", "operationDate"], unique = false },
+        { keys = ["eventId"], unique = false },
+        { keys = ["initiativeId"], unique = false }
       ]
     },
     {
       name                = "transaction_in_progress"
-      shard_key           = "_id"
+      shard_key           = null
       default_ttl_seconds = null
       indexes = [
         { keys = ["_id"], unique = true },
@@ -240,88 +215,29 @@ locals {
       ]
     },
     {
-      name                = "user_initiative_counters"
-      shard_key           = "_id"
+      name                = "wallet"
+      shard_key           = "userId"
       default_ttl_seconds = null
       indexes = [
         { keys = ["_id"], unique = true },
-        { keys = ["entityId"], unique = false },
-        { keys = ["initiativeId"], unique = false },
-        { keys = ["pendingTrx.id"], unique = false }
-      ]
-    },
-    {
-      name                = "reward_notification_rule"
-      shard_key           = "_id"
-      default_ttl_seconds = null
-      indexes             = [{ keys = ["_id"], unique = true }]
-    },
-    {
-      name                = "rewards_iban"
-      shard_key           = "_id"
-      default_ttl_seconds = null
-      indexes = [
-        { keys = ["_id"], unique = true },
-        { keys = ["initiativeId"], unique = false }
-      ]
-    },
-    {
-      name                = "rewards"
-      shard_key           = "_id"
-      default_ttl_seconds = null
-      indexes = [
-        { keys = ["_id"], unique = true },
+        { keys = ["userId", "initiativeId"], unique = true },
         { keys = ["userId"], unique = false },
+        { keys = ["familyId"], unique = false },
         { keys = ["initiativeId"], unique = false }
       ]
-    },
+    }
+  ]
+
+  idpay_pagamenti_collections = [
     {
-      name                = "rewards_notification"
-      shard_key           = "_id"
+      name                = "expense_data"
+      shard_key           = null
       default_ttl_seconds = null
       indexes = [
         { keys = ["_id"], unique = true },
-        { keys = ["beneficiaryId"], unique = false },
-        { keys = ["externalId"], unique = false },
-        { keys = ["exportId"], unique = false },
-        { keys = ["initiativeId"], unique = false },
-        { keys = ["notificationDate"], unique = false },
-        { keys = ["status"], unique = false },
-        { keys = ["cro"], unique = false }
-      ]
-    },
-    {
-      name                = "rewards_organization_exports"
-      shard_key           = "_id"
-      default_ttl_seconds = null
-      indexes = [
-        { keys = ["_id"], unique = true },
-        { keys = ["initiativeId"], unique = false },
-        { keys = ["organizationId"], unique = false },
-        { keys = ["notificationDate"], unique = false },
-        { keys = ["exportDate"], unique = false },
-        { keys = ["status"], unique = false }
-      ]
-    },
-    {
-      name                = "rewards_organization_imports"
-      shard_key           = "_id"
-      default_ttl_seconds = null
-      indexes = [
-        { keys = ["_id"], unique = true },
-        { keys = ["initiativeId"], unique = false },
-        { keys = ["organizationId"], unique = false },
-        { keys = ["feedbackDate"], unique = false }
-      ]
-    },
-    {
-      name                = "merchant_file"
-      shard_key           = "fileName"
-      default_ttl_seconds = null
-      indexes = [
-        { keys = ["_id"], unique = true },
-        { keys = ["fileName", "initiativeId"], unique = true },
-        { keys = ["initiativeId"], unique = false }
+        { keys = ["userId", "entityId"], unique = false },
+        { keys = ["userId"], unique = false },
+        { keys = ["entityId"], unique = false }
       ]
     },
     {
@@ -337,11 +253,12 @@ locals {
       ]
     },
     {
-      name                = "merchant_initiative_counters"
-      shard_key           = "_id"
+      name                = "merchant_file"
+      shard_key           = "fileName"
       default_ttl_seconds = null
       indexes = [
         { keys = ["_id"], unique = true },
+        { keys = ["fileName", "initiativeId"], unique = true },
         { keys = ["initiativeId"], unique = false }
       ]
     },
@@ -361,154 +278,191 @@ locals {
       ]
     },
     {
-      name                = "expense_data"
-      shard_key           = "_id"
+      name                = "reward_notification_rule"
+      shard_key           = null
+      default_ttl_seconds = null
+      indexes             = [{ keys = ["_id"], unique = true }]
+    },
+    {
+      name                = "rewards"
+      shard_key           = null
       default_ttl_seconds = null
       indexes = [
         { keys = ["_id"], unique = true },
-        { keys = ["userId", "entityId"], unique = false },
         { keys = ["userId"], unique = false },
-        { keys = ["entityId"], unique = false }
+        { keys = ["initiativeId"], unique = false }
       ]
     },
     {
-      name                = "rewards_suspended_users"
-      shard_key           = "_id"
+      name                = "rewards_iban"
+      shard_key           = null
       default_ttl_seconds = null
       indexes = [
         { keys = ["_id"], unique = true },
         { keys = ["initiativeId"], unique = false }
       ]
+    },
+    {
+      name                = "rewards_notification"
+      shard_key           = null
+      default_ttl_seconds = null
+      indexes = [
+        { keys = ["_id"], unique = true },
+        { keys = ["beneficiaryId"], unique = false },
+        { keys = ["externalId"], unique = false },
+        { keys = ["exportId"], unique = false },
+        { keys = ["initiativeId"], unique = false },
+        { keys = ["notificationDate"], unique = false },
+        { keys = ["status"], unique = false },
+        { keys = ["cro"], unique = false }
+      ]
+    },
+    {
+      name                = "rewards_organization_exports"
+      shard_key           = null
+      default_ttl_seconds = null
+      indexes = [
+        { keys = ["_id"], unique = true },
+        { keys = ["initiativeId"], unique = false },
+        { keys = ["organizationId"], unique = false },
+        { keys = ["notificationDate"], unique = false },
+        { keys = ["exportDate"], unique = false },
+        { keys = ["status"], unique = false }
+      ]
+    },
+    {
+      name                = "rewards_organization_imports"
+      shard_key           = null
+      default_ttl_seconds = null
+      indexes = [
+        { keys = ["_id"], unique = true },
+        { keys = ["initiativeId"], unique = false },
+        { keys = ["organizationId"], unique = false },
+        { keys = ["feedbackDate"], unique = false }
+      ]
+    },
+    {
+      name                = "rewards_suspended_users"
+      shard_key           = null
+      default_ttl_seconds = null
+      indexes = [
+        { keys = ["_id"], unique = true },
+        { keys = ["initiativeId"], unique = false }
+      ]
+    },
+    {
+      name                = "transaction"
+      shard_key           = null
+      default_ttl_seconds = null
+      indexes = [
+        { keys = ["_id"], unique = true },
+        { keys = ["idTrxIssuer"], unique = false },
+        { keys = ["userId"], unique = false },
+        { keys = ["trxDate"], unique = false },
+        { keys = ["merchantId"], unique = false },
+        { keys = ["elaborationDateTime"], unique = false },
+        { keys = ["initiatives"], unique = false },
+        { keys = ["status"], unique = false },
+        { keys = ["additionalProperties.productName"], unique = false }
+      ]
+    },
+    {
+      name                = "transactions_processed"
+      shard_key           = null
+      default_ttl_seconds = null
+      indexes = [
+        { keys = ["_id"], unique = true },
+        { keys = ["userId"], unique = false },
+        { keys = ["correlationId"], unique = false },
+        { keys = ["acquirerId"], unique = false },
+        { keys = ["initiatives"], unique = false }
+      ]
+    },
+    {
+      name                = "user_initiative_counters"
+      shard_key           = "_id"
+      default_ttl_seconds = null
+      indexes = [
+        { keys = ["_id"], unique = true },
+        { keys = ["entityId"], unique = false },
+        { keys = ["initiativeId"], unique = false },
+        { keys = ["pendingTrx.id"], unique = false }
+      ]
     }
   ]
 
-  collections_idpay_iniziative = [
-    {
-      name                = "initiative"
-      shard_key           = "_id"
-      default_ttl_seconds = null
-      indexes             = [{ keys = ["_id"], unique = true }]
-    },
-    {
-      name                = "beneficiary_rule"
-      shard_key           = "_id"
-      default_ttl_seconds = null
-      indexes             = [{ keys = ["_id"], unique = true }]
-    },
-    {
-      name                = "initiative_counters"
-      shard_key           = "_id"
-      default_ttl_seconds = null
-      indexes             = [{ keys = ["_id"], unique = true }]
-    },
-    {
-      name                = "initiative_statistics"
-      shard_key           = "_id"
-      default_ttl_seconds = null
-      indexes             = [{ keys = ["_id"], unique = true }]
-    },
-    {
-      name                = "reward_rule"
-      shard_key           = "_id"
-      default_ttl_seconds = null
-      indexes             = [{ keys = ["_id"], unique = true }]
-    },
-    {
-      name                = "role_permission"
-      shard_key           = "_id"
-      default_ttl_seconds = null
-      indexes             = [{ keys = ["_id"], unique = true }]
-    },
-    {
-      name                = "portal_consent"
-      shard_key           = "_id"
-      default_ttl_seconds = null
-      indexes             = [{ keys = ["_id"], unique = true }]
-    },
+  idpay_iniziative_collections = [
     {
       name                = "config_mcc"
-      shard_key           = "_id"
+      shard_key           = null
       default_ttl_seconds = null
       indexes             = [{ keys = ["_id"], unique = true }]
     },
     {
       name                = "config_trx_rule"
-      shard_key           = "_id"
+      shard_key           = null
       default_ttl_seconds = null
       indexes             = [{ keys = ["_id"], unique = true }]
-    }
-  ]
-
-  collections_rdb_shared = [
+    },
     {
-      name                = "role_permission"
-      shard_key           = "_id"
+      name                = "initiative"
+      shard_key           = null
       default_ttl_seconds = null
       indexes             = [{ keys = ["_id"], unique = true }]
+    },
+    {
+      name                = "initiative_statistics"
+      shard_key           = null
+      default_ttl_seconds = null
+      indexes             = [{ keys = ["_id"], unique = true }]
+    },
+    {
+      name                = "merchant_initiative_counters"
+      shard_key           = null
+      default_ttl_seconds = null
+      indexes = [
+        { keys = ["_id"], unique = true },
+        { keys = ["initiativeId"], unique = false }
+      ]
     },
     {
       name                = "portal_consent"
-      shard_key           = "_id"
+      shard_key           = null
       default_ttl_seconds = null
       indexes             = [{ keys = ["_id"], unique = true }]
     },
     {
-      name                = "product_file"
-      shard_key           = "_id"
+      name                = "role_permission"
+      shard_key           = null
       default_ttl_seconds = null
-      indexes = [
-        { keys = ["_id"], unique = true },
-        { keys = ["dateUpload"], unique = false }
-      ]
-    },
-    {
-      name                = "product"
-      shard_key           = "_id"
-      default_ttl_seconds = null
-      indexes = [
-        { keys = ["_id"], unique = true },
-        { keys = ["registrationDate"], unique = false },
-        { keys = ["category"], unique = false },
-        { keys = ["energyClass"], unique = false },
-        { keys = ["eprelCode"], unique = false },
-        { keys = ["status"], unique = false },
-        { keys = ["productName"], unique = false },
-        { keys = ["fullProductName"], unique = false },
-        { keys = ["brand"], unique = false },
-        { keys = ["model"], unique = false },
-        { keys = ["organizationName"], unique = false },
-        { keys = ["category", "productFileId"], unique = false }
-      ]
+      indexes             = [{ keys = ["_id"], unique = true }]
     }
   ]
 
+  # Le restanti definizioni rimangono invariate
   plan_idpay_beneficiari = {
-    for coll in local.collections_idpay_beneficiari :
+    for coll in local.idpay_beneficiari_collections :
     "idpay-beneficiari.${coll.name}" => merge(coll, { database_name = "idpay-beneficiari" })
   }
 
   plan_idpay_pagamenti = {
-    for coll in local.collections_idpay_pagamenti :
+    for coll in local.idpay_pagamenti_collections :
     "idpay-pagamenti.${coll.name}" => merge(coll, { database_name = "idpay-pagamenti" })
   }
 
   plan_idpay_iniziative = {
-    for coll in local.collections_idpay_iniziative :
+    for coll in local.idpay_iniziative_collections :
     "idpay-iniziative.${coll.name}" => merge(coll, { database_name = "idpay-iniziative" })
   }
 
-  plan_rdb_shared = {
-    for coll in local.collections_rdb_shared :
-    "rdb.${coll.name}" => merge(coll, { database_name = "rdb" })
-  }
 
   collections_plan = merge(
     local.plan_idpay_beneficiari,
     local.plan_idpay_pagamenti,
     local.plan_idpay_iniziative,
-    # local.plan_rdb_shared,
   )
 }
+
 
 # ------------------------------------------------------------------------------
 # Databases
