@@ -19,7 +19,7 @@ cosmos_otp_ttl = 120
 # AKS
 aks_nodepool_blue = {
   vm_sku_name    = "Standard_D4ads_v5_passive" # CHANGE in Standard_D4ads_v5_active when PROD is ready
-  node_count_min = 1                           # CHANGE in 3 when PROD is ready
+  node_count_min = 0                           # CHANGE in 3 when PROD is ready
   node_count_max = 2
 }
 
