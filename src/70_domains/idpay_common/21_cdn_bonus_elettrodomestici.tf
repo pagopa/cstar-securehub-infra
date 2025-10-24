@@ -29,10 +29,7 @@ locals {
     local.all_www_bonus_zones
   ])
 
-  #--------------------------------------------------
-  # ⚠️ Redirect Rules - Handles root URL redirection to main domain
-  #--------------------------------------------------
-  bonus_redirect_urls = [
+  only_one_redirect = [
     {
       name              = "RootRedirect"
       order             = 0
@@ -41,9 +38,9 @@ locals {
       // conditions
       url_path_conditions = [
         {
-          operator         = "Equal"
-          match_values     = ["/"]
-          negate_condition = false
+          operator         = "Any"
+          match_values     = null
+          negate_condition = null
           transforms       = null
         }
       ]
@@ -61,6 +58,39 @@ locals {
       ]
     }
   ]
+
+  bonus_redirect_local = [{
+    name              = "RootRedirect"
+    order             = 0
+    behavior_on_match = "Stop"
+
+    // conditions
+    url_path_conditions = [
+      {
+        operator         = "Equal"
+        match_values     = ["/"]
+        negate_condition = false
+        transforms       = null
+      }
+    ]
+
+    // actions
+    url_redirect_actions = [
+      {
+        redirect_type = "Found"
+        protocol      = "Https"
+        hostname      = "ioapp.it"
+        path          = "/bonus-elettrodomestici"
+        fragment      = ""
+        query_string  = ""
+      }
+    ] }
+  ]
+
+  #--------------------------------------------------
+  # ⚠️ Redirect Rules - Handles root URL redirection to main domain
+  #--------------------------------------------------
+  bonus_redirect_urls = var.enable_only_one_redirect ? local.only_one_redirect : local.bonus_redirect_local
 
   # Security Headers - Applied globally to all responses
   # These headers enhance security by preventing common attacks
@@ -110,6 +140,40 @@ locals {
   # These rules handle routing for different frontend applications
   # by rewriting URLs to serve the correct index.html files
   app_delivery_rules = concat([
+    # Cittadino Application Rule - Handles citizen portal routing
+    {
+      name              = "RewriteUtenteCittadinoApplication"
+      order             = 10
+      behavior_on_match = "Stop"
+
+      url_path_conditions = [
+        {
+          operator         = "BeginsWith"
+          match_values     = ["/utente/assets/"]
+          negate_condition = true
+          transforms       = null
+        },
+        {
+          operator         = "BeginsWith"
+          match_values     = ["/utente/"]
+          negate_condition = false
+          transforms       = null
+        }
+      ]
+
+      url_file_extension_conditions = [{
+        operator         = "LessThanOrEqual"
+        match_values     = ["0"]
+        negate_condition = false
+        transforms       = []
+      }]
+
+      url_rewrite_actions = [{
+        source_pattern          = "/utente"
+        destination             = "/utente/index.html"
+        preserve_unmatched_path = false
+      }]
+    },
     # Esercenti Application Rule - Handles merchant portal routing
     {
       name              = "RewritePortaleEsercentiApplication"
@@ -119,13 +183,13 @@ locals {
       url_path_conditions = [
         {
           operator         = "BeginsWith"
-          match_values     = ["/esercente/assets"]
+          match_values     = ["/esercente/assets/"]
           negate_condition = true
           transforms       = []
         },
         {
           operator         = "BeginsWith"
-          match_values     = ["/esercente"]
+          match_values     = ["/esercente/"]
           negate_condition = false
           transforms       = null
         }
@@ -150,7 +214,7 @@ locals {
   total_rewrite_rules = length(local.app_delivery_rules)
 
   # Additional Delivery Rules - Non-rewrite rules (redirects, headers, caching)
-  delivery_custom_rules = concat([
+  delivery_custom_rules = flatten([
     {
       name  = "robotsNoIndex"
       order = 20 + local.total_rewrite_rules + 2
@@ -197,51 +261,10 @@ locals {
           value  = "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0"
         }
       ]
-    }],
-    [
-      # Cittadino Application Rule - Handles citizen portal routing
-      {
-        name              = "RewriteUtenteCittadinoApplication"
-        order             = 20 + local.total_rewrite_rules + 4
-        behavior_on_match = "Stop"
-
-        url_path_conditions = [
-          {
-            operator         = "BeginsWith"
-            match_values     = ["/utente/assets"]
-            negate_condition = true
-            transforms       = null
-          },
-          {
-            operator         = "BeginsWith"
-            match_values     = ["/utente"]
-            negate_condition = false
-            transforms       = null
-          }
-        ]
-
-        url_file_extension_conditions = [{
-          operator         = "LessThanOrEqual"
-          match_values     = ["0"]
-          negate_condition = false
-          transforms       = []
-        }]
-
-        // actions
-        url_redirect_actions = [
-          {
-            redirect_type = "Found"
-            protocol      = "Https"
-            hostname      = "ioapp.it"
-            path          = "/bonus-elettrodomestici"
-            fragment      = ""
-            query_string  = ""
-          }
-        ]
-    }],
+    },
     [for i in local.public_dns_zone_bonus_elettrodomestici.zones : {
-      name              = "www${replace(i, ".", "")}"
-      order             = 5 + index(local.public_dns_zone_bonus_elettrodomestici.zones, i)
+      name              = format("www%s", join("", [for p in split(".", i) : title(p)]))
+      order             = 3 + index(local.public_dns_zone_bonus_elettrodomestici.zones, i)
       behavior_on_match = "Stop"
 
       host_name_condition = [
@@ -272,13 +295,13 @@ locals {
           redirect_type = "Found"
           protocol      = "Https"
           hostname      = i
-          path          = "/"
-          fragment      = ""
-          query_string  = ""
+          path          = null
+          fragment      = null
+          query_string  = null
         }
       ]
     }]
-  )
+  ])
 
   ## Static content for Bonus Elettrodomestici
   ## Elenco Informatico Elettrodomesici
