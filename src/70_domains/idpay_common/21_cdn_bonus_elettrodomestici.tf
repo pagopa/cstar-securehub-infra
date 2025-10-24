@@ -342,7 +342,7 @@ resource "azurerm_storage_blob" "eie_static_files" {
 
 ## Upload static content for Bonus Elettrodomesici - point of sales
 resource "azurerm_storage_blob" "pos_static_files" {
-  for_each = toset(local.upload_eie_files)
+  for_each = toset(local.upload_pos_files)
 
   name                   = "lista-punti-vendita/${each.value}"
   storage_account_name   = module.cdn_idpay_bonuselettrodomestici.storage_name
