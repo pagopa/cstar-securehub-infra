@@ -12,7 +12,7 @@ module "cosmos_db_account" {
   tags                = module.tag_config.tags
 
   # IDH Resources
-  idh_resource_tier = "cosmos_mongo7_unique_compound_nested_docs"
+  idh_resource_tier = "cosmos_mongo7_consistency_eventual"
 
   # CosmosDB Account Settings
   name   = "${local.project}-mongodb-account"
@@ -29,6 +29,7 @@ module "cosmos_db_account" {
 
   # Geo-location and Zone Settings
   main_geo_location_location = var.location
+  capabilities_additional    = ["EnableUniqueCompoundNestedDocs"]
 }
 
 #
