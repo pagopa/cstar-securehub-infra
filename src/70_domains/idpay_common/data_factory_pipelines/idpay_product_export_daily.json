@@ -21,7 +21,7 @@
                         "batchSize": 500,
                         "filter": "{status: \"APPROVED\"}",
                         "cursorMethods": {
-                            "project": "{ \"_id\": 1, \"model\": 1, \"brand\": 1, \"eprelCode\": 1, \"countryOfProduction\": 1, \"energyClass\": 1, \"capacity\": 1, \"productName\": 1, \"category\": 1, \"productGroup\": 1 }"
+                            "project": "{ \"_id\": 1, \"model\": 1, \"brand\": 1, \"eprelCode\": 1, \"countryOfProduction\": 1, \"energyClass\": 1, \"capacity\": 1, \"productName\": 1, \"category\": 1, \"productGroup\": 1, \"productCode\":1 }"
                         }
                     },
                     "sink": {
@@ -117,6 +117,14 @@
                                 "sink": {
                                     "path": "productGroup"
                                 }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['productCode']"
+                                },
+                                "sink": {
+                                    "path": "productCode"
+                                }
                             }
                         ]
                     }
@@ -136,7 +144,7 @@
             }
         ],
         "annotations": [],
-        "lastPublishTime": "2025-10-23T13:47:41Z"
+        "lastPublishTime": "2025-10-23T15:59:15Z"
     },
     "type": "Microsoft.DataFactory/factories/pipelines"
 }
