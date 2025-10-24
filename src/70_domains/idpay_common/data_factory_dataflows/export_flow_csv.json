@@ -121,7 +121,7 @@
                 "     skipDuplicateMapOutputs: true) ~> select1",
                 "select1 sink(allowSchemaDrift: true,",
                 "     validateSchema: false,",
-                "     partitionFileNames:[('expert_weekly_' + toString(currentUTC(), 'yyyy-MM-dd') + '.csv')],",
+                "     partitionFileNames:[('export_weekly_' + toString(currentUTC(), 'yyyy-MM-dd') + '.csv')],",
                 "     skipDuplicateMapInputs: true,",
                 "     skipDuplicateMapOutputs: true,",
                 "     partitionBy('hash', 1)) ~> CSVTrasformed"
