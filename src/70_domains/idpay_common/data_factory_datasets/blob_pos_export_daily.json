@@ -16,7 +16,7 @@
             "location": {
                 "type": "AzureBlobStorageLocation",
                 "fileName": "pos_export.json",
-                "folderPath": "punti-vendita/data",
+                "folderPath": "lista-punti-vendita/data",
                 "container": "$web"
             },
             "encodingName": "UTF-8"

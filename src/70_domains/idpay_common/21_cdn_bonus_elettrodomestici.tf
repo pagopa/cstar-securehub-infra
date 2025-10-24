@@ -327,7 +327,7 @@ module "cdn_idpay_bonuselettrodomestici" {
   tags = module.tag_config.tags
 }
 
-## Upload sttatic content for Bonus Elettrodomesici
+## Upload static content for Bonus Elettrodomesici - products
 resource "azurerm_storage_blob" "eie_static_files" {
   for_each = toset(local.upload_eie_files)
 
@@ -336,6 +336,19 @@ resource "azurerm_storage_blob" "eie_static_files" {
   storage_container_name = "$web"
   type                   = "Block"
   source                 = "${path.module}/cdn/bonus-el-products/${each.value}"
+
+  depends_on = [module.cdn_idpay_bonuselettrodomestici]
+}
+
+## Upload static content for Bonus Elettrodomesici - point of sales
+resource "azurerm_storage_blob" "pos_static_files" {
+  for_each = toset(local.upload_eie_files)
+
+  name                   = "lista-punti-vendita/${each.value}"
+  storage_account_name   = module.cdn_idpay_bonuselettrodomestici.storage_name
+  storage_container_name = "$web"
+  type                   = "Block"
+  source                 = "${path.module}/cdn/bonus-el-pos/${each.value}"
 
   depends_on = [module.cdn_idpay_bonuselettrodomestici]
 }
