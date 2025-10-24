@@ -7,7 +7,6 @@
         },
         "annotations": [],
         "type": "CosmosDbMongoDbApiCollection",
-        "schema": [],
         "typeProperties": {
             "collection": "transaction_in_progress"
         }

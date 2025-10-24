@@ -1,0 +1,429 @@
+{
+    "name": "idpay_wallet_copy",
+    "properties": {
+        "activities": [
+            {
+                "name": "Copy wallet collection",
+                "type": "Copy",
+                "dependsOn": [
+                    {
+                        "activity": "Clear wallet table",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "source": {
+                        "type": "CosmosDbMongoDbApiSource",
+                        "batchSize": 100
+                    },
+                    "sink": {
+                        "type": "AzureDataExplorerSink"
+                    },
+                    "enableStaging": false,
+                    "translator": {
+                        "type": "TabularTranslator",
+                        "mappings": [
+                            {
+                                "source": {
+                                    "path": "$['_id']"
+                                },
+                                "sink": {
+                                    "name": "id",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['userId']"
+                                },
+                                "sink": {
+                                    "name": "userId",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['familyId']"
+                                },
+                                "sink": {
+                                    "name": "familyId",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['initiativeId']"
+                                },
+                                "sink": {
+                                    "name": "initiativeId",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['initiativeName']"
+                                },
+                                "sink": {
+                                    "name": "initiativeName",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['organizationId']"
+                                },
+                                "sink": {
+                                    "name": "organizationId",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['organizationName']"
+                                },
+                                "sink": {
+                                    "name": "organizationName",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['status']"
+                                },
+                                "sink": {
+                                    "name": "status",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['voucherStatus']"
+                                },
+                                "sink": {
+                                    "name": "voucherStatus",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "acceptanceDate.$date"
+                                },
+                                "sink": {
+                                    "name": "acceptanceDateString",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "initiativeEndDate.$date"
+                                },
+                                "sink": {
+                                    "name": "initiativeEndDateString",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "voucherStartDate.$date"
+                                },
+                                "sink": {
+                                    "name": "voucherStartDateString",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "voucherEndDate.$date"
+                                },
+                                "sink": {
+                                    "name": "voucherEndDateString",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['iban']"
+                                },
+                                "sink": {
+                                    "name": "iban",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['amountCents']"
+                                },
+                                "sink": {
+                                    "name": "amountCents",
+                                    "type": "Int64"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['accruedCents']"
+                                },
+                                "sink": {
+                                    "name": "accruedCents",
+                                    "type": "Int64"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['refundedCents']"
+                                },
+                                "sink": {
+                                    "name": "refundedCents",
+                                    "type": "Int64"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['refundHistory']"
+                                },
+                                "sink": {
+                                    "name": "refundHistory",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['nTrx']"
+                                },
+                                "sink": {
+                                    "name": "nTrx",
+                                    "type": "Int64"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['nInstr']"
+                                },
+                                "sink": {
+                                    "name": "nInstr",
+                                    "type": "Int32"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "requestUnsubscribeDate.$date"
+                                },
+                                "sink": {
+                                    "name": "requestUnsubscribeDateString",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "updateDate.$date"
+                                },
+                                "sink": {
+                                    "name": "updateDateString",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "lastCounterUpdate.$date"
+                                },
+                                "sink": {
+                                    "name": "lastCounterUpdateString",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "suspensionDate.$date"
+                                },
+                                "sink": {
+                                    "name": "suspensionDateString",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['initiativeRewardType']"
+                                },
+                                "sink": {
+                                    "name": "initiativeRewardType",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['isLogoPresent']"
+                                },
+                                "sink": {
+                                    "name": "isLogoPresent",
+                                    "type": "Boolean"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['maxTrx']"
+                                },
+                                "sink": {
+                                    "name": "maxTrx",
+                                    "type": "Int64"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['counterVersion']"
+                                },
+                                "sink": {
+                                    "name": "counterVersion",
+                                    "type": "Int64"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['serviceId']"
+                                },
+                                "sink": {
+                                    "name": "serviceId",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['userMail']"
+                                },
+                                "sink": {
+                                    "name": "userMail",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['channel']"
+                                },
+                                "sink": {
+                                    "name": "channel",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['name']"
+                                },
+                                "sink": {
+                                    "name": "name",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['surname']"
+                                },
+                                "sink": {
+                                    "name": "surname",
+                                    "type": "String"
+                                }
+                            }
+                        ]
+                    }
+                },
+                "inputs": [
+                    {
+                        "referenceName": "cosmos_idpay_wallet",
+                        "type": "DatasetReference"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "referenceName": "data_explorer_idpay_wallet",
+                        "type": "DatasetReference"
+                    }
+                ]
+            },
+            {
+                "name": "Clear wallet table",
+                "type": "AzureDataExplorerCommand",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "command": ".clear table wallet data",
+                    "commandTimeout": "00:20:00"
+                },
+                "linkedServiceName": {
+                    "referenceName": "idpay-Kusto-idpay-ls",
+                    "type": "LinkedServiceReference"
+                }
+            },
+            {
+                "name": "Convert Date",
+                "type": "AzureDataExplorerCommand",
+                "dependsOn": [
+                    {
+                        "activity": "Copy wallet collection",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "command": ".set-or-replace wallet<|\nwallet\n| extend \n    acceptanceDate= unixtime_milliseconds_todatetime(tolong(acceptanceDateString)),\n    initiativeEndDate= unixtime_milliseconds_todatetime(tolong(initiativeEndDateString)),\n    voucherStartDate= unixtime_milliseconds_todatetime(tolong(voucherStartDateString)),\n    voucherEndDate= unixtime_milliseconds_todatetime(tolong(    voucherEndDateString)),\n    requestUnsubscribeDate= unixtime_milliseconds_todatetime(tolong(requestUnsubscribeDateString)),\n    updateDate= unixtime_milliseconds_todatetime(tolong(updateDateString)),\n    lastCounterUpdate= unixtime_milliseconds_todatetime(tolong(lastCounterUpdateString)),\n   suspensionDate= unixtime_milliseconds_todatetime(tolong(suspensionDateString))",
+                    "commandTimeout": "00:20:00"
+                },
+                "linkedServiceName": {
+                    "referenceName": "idpay-Kusto-idpay-ls",
+                    "type": "LinkedServiceReference"
+                }
+            },
+            {
+                "name": "Extract RefoundHistory",
+                "type": "AzureDataExplorerCommand",
+                "dependsOn": [
+                    {
+                        "activity": "Convert Date",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "command": ".set-or-replace wallet_refund_history <|\nwallet\n| extend refundMap = parse_json(refundHistory)\n| mv-expand key = bag_keys(refundMap)\n| extend key = tostring(key)\n| extend refundData = refundMap[key]\n| project walletId = id, key, feedbackProgressive = tolong(refundData.feedbackProgressive)",
+                    "commandTimeout": "00:20:00"
+                },
+                "linkedServiceName": {
+                    "referenceName": "idpay-Kusto-idpay-ls",
+                    "type": "LinkedServiceReference"
+                }
+            }
+        ],
+        "annotations": [],
+        "lastPublishTime": "2025-10-23T13:15:41Z"
+    },
+    "type": "Microsoft.DataFactory/factories/pipelines"
+}

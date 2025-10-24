@@ -1,5 +1,5 @@
 {
-    "name": "cosmos_idpay_pos",
+    "name": "cosmos_idpay_initiative_counters",
     "properties": {
         "linkedServiceName": {
             "referenceName": "idpay-CosmosDB-idpay-ls",
@@ -8,7 +8,7 @@
         "annotations": [],
         "type": "CosmosDbMongoDbApiCollection",
         "typeProperties": {
-            "collection": "point_of_sales"
+            "collection": "initiative_counters"
         }
     },
     "type": "Microsoft.DataFactory/factories/datasets"
