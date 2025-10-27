@@ -1,5 +1,5 @@
 {
-    "name": "cosmos_idpay_initiative_counters",
+    "name": "cosmos_idpay_timeline",
     "properties": {
         "linkedServiceName": {
             "referenceName": "idpay-CosmosDB-idpay-ls",
