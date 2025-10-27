@@ -1,4 +1,8 @@
 # =============================================================
+# Alert API EIE
+# =============================================================
+
+# =============================================================
 # Portal Consent – post (5xx, 401, 429 errors over 5 minutes)
 # =============================================================
 resource "azurerm_monitor_scheduled_query_rules_alert" "portal_consent_save_5m_rules" {
@@ -28,7 +32,14 @@ QUERY
   }
 
   action {
-    action_group           = [azurerm_monitor_action_group.email[0].id]
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
     email_subject          = "[PARI] Portal Consent – save API alert (5xx/401/429)"
     custom_webhook_payload = "{}"
   }
@@ -64,7 +75,14 @@ QUERY
   }
 
   action {
-    action_group           = [azurerm_monitor_action_group.email[0].id]
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
     email_subject          = "[PARI] Portal Consent – save API alert (400)"
     custom_webhook_payload = "{}"
   }
@@ -100,7 +118,14 @@ QUERY
   }
 
   action {
-    action_group           = [azurerm_monitor_action_group.email[0].id]
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
     email_subject          = "[PARI] Portal Consent GET /consent alert (5xx/401/429)"
     custom_webhook_payload = "{}"
   }
@@ -136,7 +161,14 @@ QUERY
   }
 
   action {
-    action_group           = [azurerm_monitor_action_group.email[0].id]
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
     email_subject          = "[PARI] Portal Consent GET /consent alert (400)"
     custom_webhook_payload = "{}"
   }
@@ -172,7 +204,14 @@ QUERY
   }
 
   action {
-    action_group           = [azurerm_monitor_action_group.email[0].id]
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
     email_subject          = "[PARI] Product files – upload API alert (5xx/401/429)"
     custom_webhook_payload = "{}"
   }
@@ -208,7 +247,14 @@ QUERY
   }
 
   action {
-    action_group           = [azurerm_monitor_action_group.email[0].id]
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
     email_subject          = "[PARI] Product files – upload API alert (400)"
     custom_webhook_payload = "{}"
   }
@@ -238,7 +284,14 @@ AppRequests
 QUERY
 
   action {
-    action_group           = [azurerm_monitor_action_group.email[0].id]
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
     email_subject          = "[PARI] Product files verify alert"
     custom_webhook_payload = "{}"
   }
@@ -279,7 +332,14 @@ AppRequests
 QUERY
 
   action {
-    action_group           = [azurerm_monitor_action_group.email[0].id]
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
     email_subject          = "[PARI] Products update status alert"
     custom_webhook_payload = "{}"
   }
@@ -319,7 +379,14 @@ QUERY
   }
 
   action {
-    action_group           = [azurerm_monitor_action_group.email[0].id]
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
     email_subject          = "[PARI][CRITICAL] GET /products alert: High 5xx errors"
     custom_webhook_payload = "{}"
   }
@@ -354,7 +421,14 @@ QUERY
   }
 
   action {
-    action_group           = [azurerm_monitor_action_group.email[0].id]
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
     email_subject          = "[PARI][CRITICAL] GET /products alert: High 400 errors"
     custom_webhook_payload = "{}"
   }
@@ -391,7 +465,14 @@ QUERY
   }
 
   action {
-    action_group           = [azurerm_monitor_action_group.email[0].id]
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
     email_subject          = "[PARI][CRITICAL] GET /products alert: Availability is below 99%"
     custom_webhook_payload = "{}"
   }
@@ -427,7 +508,14 @@ QUERY
   }
 
   action {
-    action_group           = [azurerm_monitor_action_group.email[0].id]
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
     email_subject          = "[PARI][HIGH] User Permissions alert (5xx or 401/429)"
     custom_webhook_payload = "{}"
   }
@@ -463,7 +551,14 @@ QUERY
   }
 
   action {
-    action_group           = [azurerm_monitor_action_group.email[0].id]
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
     email_subject          = "[PARI][HIGH] User Permissions alert (400)"
     custom_webhook_payload = "{}"
   }
@@ -499,7 +594,14 @@ QUERY
   }
 
   action {
-    action_group           = [azurerm_monitor_action_group.email[0].id]
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
     email_subject          = "[PARI] Product files – list API alert (5xx)"
     custom_webhook_payload = "{}"
   }
@@ -535,7 +637,14 @@ QUERY
   }
 
   action {
-    action_group           = [azurerm_monitor_action_group.email[0].id]
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
     email_subject          = "[PARI] Error report download API alert (5xx)"
     custom_webhook_payload = "{}"
   }
@@ -571,7 +680,14 @@ QUERY
   }
 
   action {
-    action_group           = [azurerm_monitor_action_group.email[0].id]
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
     email_subject          = "[PARI] Batch list API alert (5xx)"
     custom_webhook_payload = "{}"
   }
@@ -607,7 +723,14 @@ QUERY
   }
 
   action {
-    action_group           = [azurerm_monitor_action_group.email[0].id]
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
     email_subject          = "[PARI] Institution by ID API alert (5xx)"
     custom_webhook_payload = "{}"
   }
@@ -638,7 +761,14 @@ AppRequests
 QUERY
 
   action {
-    action_group           = [azurerm_monitor_action_group.email[0].id]
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
     email_subject          = "[PARI] Institutions list API alert (5xx)"
     custom_webhook_payload = "{}"
   }
@@ -646,81 +776,6 @@ QUERY
   trigger {
     operator  = "GreaterThanOrEqual"
     threshold = 5
-  }
-}
-
-# =======================================================
-# Kafka Consumer - Absent Consumer Alert (5 min)
-# =======================================================
-resource "azurerm_monitor_scheduled_query_rules_alert" "pari_kafka_consumer_absent_alert" {
-  count               = contains(["p", "u"], var.env_short) ? 1 : 0
-  name                = "pari-kafka-consumer-absent-alert"
-  resource_group_name = local.monitor_rg
-  location            = var.location
-
-  description = "Kafka consumer 'idpay-checkiban-eval-consumer-group' has not sent any logs for the last 5 minutes."
-  enabled     = true
-  severity    = 1
-
-  frequency   = 5
-  time_window = 5
-
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
-
-  query = <<QUERY
-AppTraces
-| where TimeGenerated > ago(5m)
-| where Message has "groupId=idpay-asset-register-consumer-group"
-QUERY
-
-  trigger {
-    operator  = "Equal"
-    threshold = 0
-  }
-
-  action {
-    action_group           = [azurerm_monitor_action_group.email[0].id]
-    email_subject          = "[PARI][HIGH] Kafka Consumer Absent: idpay-checkiban-eval-consumer-group"
-    custom_webhook_payload = "{}"
-  }
-}
-
-# =======================================================
-# Kafka Consumer - Average Lag Alert (10 min)
-# =======================================================
-resource "azurerm_monitor_scheduled_query_rules_alert" "pari_kafka_consumer_avg_lag_alert" {
-  count               = contains(["p", "u"], var.env_short) ? 1 : 0
-  name                = "pari-kafka-consumer-avg-lag-alert"
-  resource_group_name = local.monitor_rg
-  location            = var.location
-
-  description = "Kafka consumer average lag is greater than 15 over the last 10 minutes. Based on the 'kafka_consumer_fetch_manager_records_lag_max' metric."
-  enabled     = true
-  severity    = 1
-
-  frequency   = 5
-  time_window = 10
-
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
-
-  query = <<QUERY
-AppMetrics
-| where TimeGenerated > ago(10m)
-| where Name == "kafka_consumer_fetch_manager_records_lag_max"
-| where Properties has "idpay-asset-register-consumer-group"
-| summarize AvgLag = avg(Value)
-| where AvgLag > 15
-QUERY
-
-  trigger {
-    operator  = "GreaterThanOrEqual"
-    threshold = 1
-  }
-
-  action {
-    action_group           = [azurerm_monitor_action_group.email[0].id]
-    email_subject          = "[PARI][HIGH] Kafka Consumer Lag Alert"
-    custom_webhook_payload = "{}"
   }
 }
 
@@ -750,7 +805,14 @@ AppDependencies
 QUERY
 
   action {
-    action_group           = [azurerm_monitor_action_group.email[0].id]
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
     email_subject          = "[PARI] Internal Email microservice dependency alert"
     custom_webhook_payload = "{}"
   }
@@ -787,7 +849,14 @@ AppDependencies
 QUERY
 
   action {
-    action_group           = [azurerm_monitor_action_group.email[0].id]
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
     email_subject          = "[PARI][HIGH] EPREL external dependency alert"
     custom_webhook_payload = "{}"
   }
@@ -795,5 +864,869 @@ QUERY
   trigger {
     operator  = "GreaterThanOrEqual"
     threshold = 10
+  }
+}
+
+# =============================================================
+# Alert API ESE
+# =============================================================
+
+# =======================================================
+# Capture the transaction - 5xx Error Count
+# =======================================================
+resource "azurerm_monitor_scheduled_query_rules_alert" "capture_transaction_5xx_alert" {
+  count               = contains(["p", "u"], var.env_short) ? 1 : 0
+  name                = "capture-transaction-5xx-alert"
+  resource_group_name = local.monitor_rg
+  location            = var.location
+
+  description = "API Capture Transaction: 5xx error count exceeded (> 2 in 5m)"
+  enabled     = true
+  severity    = 1
+
+  frequency   = 5
+  time_window = 5
+
+  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+
+  query = <<QUERY
+AppRequests
+| where Name matches regex @"^PUT /idpay-itn/merchant-op/transactions/bar-code/[^/]+/capture$"
+| where ResultCode startswith "5"
+QUERY
+
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 2
+  }
+
+  action {
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
+    email_subject          = "[PARI][ESE][HIGH] Capture Transaction API Alert (5xx)"
+    custom_webhook_payload = "{}"
+  }
+}
+
+# =======================================================
+# Capture the transaction - 401/404/429 Error Count
+# =======================================================
+resource "azurerm_monitor_scheduled_query_rules_alert" "capture_transaction_4xx_alert" {
+  count               = contains(["p", "u"], var.env_short) ? 1 : 0
+  name                = "capture-transaction-4xx-auth-alert"
+  resource_group_name = local.monitor_rg
+  location            = var.location
+
+  description = "API Capture Transaction: 401/404/429 error count exceeded (> 20 in 5m)"
+  enabled     = true
+  severity    = 1
+
+  frequency   = 5
+  time_window = 5
+
+  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+
+  query = <<QUERY
+AppRequests
+| where Name matches regex @"^PUT /idpay-itn/merchant-op/transactions/bar-code/[^/]+/capture$"
+| where ResultCode in ("401", "404", "429")
+QUERY
+
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 20
+  }
+
+  action {
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
+    email_subject          = "[PARI][ESE][HIGH] Capture Transaction API Alert (4xx)"
+    custom_webhook_payload = "{}"
+  }
+}
+
+# =======================================================
+# Preview Payment - 5xx Error Count
+# =======================================================
+resource "azurerm_monitor_scheduled_query_rules_alert" "preview_payment_5xx_alert" {
+  count               = contains(["p", "u"], var.env_short) ? 1 : 0
+  name                = "preview-payment-5xx-alert"
+  resource_group_name = local.monitor_rg
+  location            = var.location
+
+  description = "API Preview Payment: 5xx error count exceeded (> 2 in 5m)"
+  enabled     = true
+  severity    = 1
+
+  frequency   = 5
+  time_window = 5
+
+  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+
+  query = <<QUERY
+AppRequests
+| where Name matches regex @"^PUT /idpay-itn/merchant-op/transactions/bar-code/[^/]+/preview$"
+| where ResultCode startswith "5"
+QUERY
+
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 2
+  }
+
+  action {
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
+    email_subject          = "[PARI][ESE][HIGH] Preview Payment API Alert (5xx)"
+    custom_webhook_payload = "{}"
+  }
+}
+
+# =======================================================
+# Preview Payment - 401/429 Error Count
+# =======================================================
+resource "azurerm_monitor_scheduled_query_rules_alert" "preview_payment_4xx_alert" {
+  count               = contains(["p", "u"], var.env_short) ? 1 : 0
+  name                = "preview-payment-4xx-auth-alert"
+  resource_group_name = local.monitor_rg
+  location            = var.location
+
+  description = "API Preview Payment: 401/429 error count exceeded (> 20 in 5m)"
+  enabled     = true
+  severity    = 1
+
+  frequency   = 5
+  time_window = 5
+
+  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+
+  query = <<QUERY
+AppRequests
+| where Name matches regex @"^PUT /idpay-itn/merchant-op/transactions/bar-code/[^/]+/preview$"
+| where ResultCode in ("401", "429")
+QUERY
+
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 20
+  }
+
+  action {
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
+    email_subject          = "[PARI][ESE][HIGH] Preview Payment API Alert (4xx)"
+    custom_webhook_payload = "{}"
+  }
+}
+
+# =======================================================
+# Authorize payment - 5xx Error Count
+# =======================================================
+resource "azurerm_monitor_scheduled_query_rules_alert" "authorize_payment_5xx_alert" {
+  count               = contains(["p", "u"], var.env_short) ? 1 : 0
+  name                = "authorize-payment-5xx-alert"
+  resource_group_name = local.monitor_rg
+  location            = var.location
+
+  description = "API Authorize Payment: 5xx error count exceeded (> 2 in 5m)"
+  enabled     = true
+  severity    = 1
+
+  frequency   = 5
+  time_window = 5
+
+  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+
+  query = <<QUERY
+AppRequests
+| where Name matches regex @"^PUT /idpay-itn/merchant-op/transactions/bar-code/[^/]+/authorize$"
+| where ResultCode startswith "5"
+QUERY
+
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 2
+  }
+
+  action {
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
+    email_subject          = "[PARI][ESE][HIGH] Authorize Payment API Alert (5xx)"
+    custom_webhook_payload = "{}"
+  }
+}
+
+# =======================================================
+# Authorize payment - 4xx Error Count
+# =======================================================
+resource "azurerm_monitor_scheduled_query_rules_alert" "authorize_payment_4xx_alert" {
+  count               = contains(["p", "u"], var.env_short) ? 1 : 0
+  name                = "authorize-payment-4xx-auth-alert"
+  resource_group_name = local.monitor_rg
+  location            = var.location
+
+  description = "API Authorize Payment: 401/403/404/429 error count exceeded (> 20 in 5m)"
+  enabled     = true
+  severity    = 1
+
+  frequency   = 5
+  time_window = 5
+
+  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+
+  query = <<QUERY
+AppRequests
+| where Name matches regex @"^PUT /idpay-itn/merchant-op/transactions/bar-code/[^/]+/authorize$"
+| where ResultCode in ("401", "403", "404", "429")
+QUERY
+
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 20
+  }
+
+  action {
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
+    email_subject          = "[PARI][ESE][HIGH] Authorize Payment API Alert (4xx)"
+    custom_webhook_payload = "{}"
+  }
+}
+
+# =======================================================
+# Download invoice file - 5xx Error Count
+# =======================================================
+resource "azurerm_monitor_scheduled_query_rules_alert" "download_invoice_5xx_alert" {
+  count               = contains(["p", "u"], var.env_short) ? 1 : 0
+  name                = "download-invoice-file-5xx-alert"
+  resource_group_name = local.monitor_rg
+  location            = var.location
+
+  description = "API Download Invoice File: 5xx error count exceeded (> 2 in 5m)"
+  enabled     = true
+  severity    = 3
+
+  frequency   = 5
+  time_window = 5
+
+  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+
+  query = <<QUERY
+AppRequests
+| where Name matches regex @"^GET /idpay-itn/merchant/portal/[^/]+/transactions/[^/]+/download$"
+| where ResultCode startswith "5"
+QUERY
+
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 2
+  }
+
+  action {
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
+    email_subject          = "[PARI][ESE][LOW] Download Invoice File API Alert (5xx)"
+    custom_webhook_payload = "{}"
+  }
+}
+
+# =======================================================
+# Download invoice file - 4xx Error Count
+# =======================================================
+resource "azurerm_monitor_scheduled_query_rules_alert" "download_invoice_4xx_alert" {
+  count               = contains(["p", "u"], var.env_short) ? 1 : 0
+  name                = "download-invoice-file-4xx-alert"
+  resource_group_name = local.monitor_rg
+  location            = var.location
+
+  description = "API Download Invoice File: 400/401/429 error count exceeded (> 1 in 5m)"
+  enabled     = true
+  severity    = 3
+
+  frequency   = 5
+  time_window = 5
+
+  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+
+  query = <<QUERY
+AppRequests
+| where Name matches regex @"^GET /idpay-itn/merchant/portal/[^/]+/transactions/[^/]+/download$"
+| where ResultCode in ("400", "401", "429")
+QUERY
+
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 1
+  }
+
+  action {
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
+    email_subject          = "[PARI][ESE][LOW] Download Invoice File API Alert (4xx)"
+    custom_webhook_payload = "{}"
+  }
+}
+
+# =======================================================
+# POS In Progress Transactions List - 5xx Error Count
+# =======================================================
+resource "azurerm_monitor_scheduled_query_rules_alert" "pos_transactions_list_5xx_alert" {
+  count               = contains(["p", "u"], var.env_short) ? 1 : 0
+  name                = "pos-transactions-inprogress-list-5xx-alert"
+  resource_group_name = local.monitor_rg
+  location            = var.location
+
+  description = "API POS In Progress Transactions List: 5xx error count exceeded (> 2 in 5m)"
+  enabled     = true
+  severity    = 1
+
+  frequency   = 5
+  time_window = 5
+
+  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+
+  query = <<QUERY
+AppRequests
+| where Name matches regex @"^GET /idpay-itn/merchant-op/initiatives/[^/]+/point-of-sales/[^/]+/transactions$"
+| where ResultCode startswith "5"
+QUERY
+
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 2
+  }
+
+  action {
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
+    email_subject          = "[PARI][ESE][HIGH] POS In Progress Transactions List API Alert (5xx)"
+    custom_webhook_payload = "{}"
+  }
+}
+
+# =======================================================
+# POS In Progress Transactions List - 4xx Error Count
+# =======================================================
+resource "azurerm_monitor_scheduled_query_rules_alert" "pos_transactions_list_4xx_alert" {
+  count               = contains(["p", "u"], var.env_short) ? 1 : 0
+  name                = "pos-transactions-inprogress-list-4xx-alert"
+  resource_group_name = local.monitor_rg
+  location            = var.location
+
+  description = "API POS In Progress Transactions List: 401/404/429 error count exceeded (> 5 in 5m)"
+  enabled     = true
+  severity    = 1
+
+  frequency   = 5
+  time_window = 5
+
+  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+
+  query = <<QUERY
+AppRequests
+| where Name matches regex @"^GET /idpay-itn/merchant-op/initiatives/[^/]+/point-of-sales/[^/]+/transactions$"
+| where ResultCode in ("401", "404", "429")
+QUERY
+
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 5
+  }
+
+  action {
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
+    email_subject          = "[PARI][ESE][HIGH] POS In Progress Transactions List API Alert (4xx)"
+    custom_webhook_payload = "{}"
+  }
+}
+
+# =======================================================
+# POS Processed Transactions List - 5xx Error Count
+# =======================================================
+resource "azurerm_monitor_scheduled_query_rules_alert" "pos_transactions_processed_5xx_alert" {
+  count               = contains(["p", "u"], var.env_short) ? 1 : 0
+  name                = "pos-transactions-processed-5xx-alert"
+  resource_group_name = local.monitor_rg
+  location            = var.location
+
+  description = "API POS Processed Transactions List: 5xx error count exceeded (> 2 in 5m)"
+  enabled     = true
+  severity    = 1
+
+  frequency   = 5
+  time_window = 5
+
+  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+
+  query = <<QUERY
+AppRequests
+| where Name matches regex @"^GET /idpay-itn/merchant-op/initiatives/[^/]+/point-of-sales/[^/]+/transactions/processed$"
+| where ResultCode startswith "5"
+QUERY
+
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 2
+  }
+
+  action {
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
+    email_subject          = "[PARI][ESE][HIGH] POS Processed Transactions List API Alert (5xx)"
+    custom_webhook_payload = "{}"
+  }
+}
+
+# =======================================================
+# POS Processed Transactions List - 4xx Error Count
+# =======================================================
+resource "azurerm_monitor_scheduled_query_rules_alert" "pos_transactions_processed_4xx_alert" {
+  count               = contains(["p", "u"], var.env_short) ? 1 : 0
+  name                = "pos-transactions-processed-4xx-alert"
+  resource_group_name = local.monitor_rg
+  location            = var.location
+
+  description = "API POS Processed Transactions List: 401/404/429 error count exceeded (> 5 in 5m)"
+  enabled     = true
+  severity    = 1
+
+  frequency   = 5
+  time_window = 5
+
+  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+
+  query = <<QUERY
+AppRequests
+| where Name matches regex @"^GET /idpay-itn/merchant-op/initiatives/[^/]+/point-of-sales/[^/]+/transactions/processed$"
+| where ResultCode in ("401", "404", "429")
+QUERY
+
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 5
+  }
+
+  action {
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
+    email_subject          = "[PARI][ESE][HIGH] POS Processed Transactions List API Alert (4xx)"
+    custom_webhook_payload = "{}"
+  }
+}
+
+# =======================================================
+# Delete Transaction - 5xx Error Count
+# =======================================================
+resource "azurerm_monitor_scheduled_query_rules_alert" "delete_transaction_5xx_alert" {
+  count               = contains(["p", "u"], var.env_short) ? 1 : 0
+  name                = "delete-transaction-5xx-alert"
+  resource_group_name = local.monitor_rg
+  location            = var.location
+
+  description = "API Delete Transaction: 5xx error count exceeded (> 2 in 5m)"
+  enabled     = true
+  severity    = 3
+
+  frequency   = 5
+  time_window = 5
+
+  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+
+  query = <<QUERY
+AppRequests
+| where Name matches regex @"^DELETE /idpay-itn/merchant-op/transactions/[^/]+$"
+| where ResultCode startswith "5"
+QUERY
+
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 2
+  }
+
+  action {
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
+    email_subject          = "[PARI][ESE][LOW] Delete Transaction API Alert (5xx)"
+    custom_webhook_payload = "{}"
+  }
+}
+
+# =======================================================
+# Delete Transaction - 4xx Error Count
+# =======================================================
+resource "azurerm_monitor_scheduled_query_rules_alert" "delete_transaction_4xx_alert" {
+  count               = contains(["p", "u"], var.env_short) ? 1 : 0
+  name                = "delete-transaction-4xx-alert"
+  resource_group_name = local.monitor_rg
+  location            = var.location
+
+  description = "API Delete Transaction: 401/403/404/429 error count exceeded (> 5 in 5m)"
+  enabled     = true
+  severity    = 3
+
+  frequency   = 5
+  time_window = 5
+
+  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+
+  query = <<QUERY
+AppRequests
+| where Name matches regex @"^DELETE /idpay-itn/merchant-op/transactions/[^/]+$"
+| where ResultCode in ("401", "403", "404", "429")
+QUERY
+
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 5
+  }
+
+  action {
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
+    email_subject          = "[PARI][ESE][LOW] Delete Transaction API Alert (4xx)"
+    custom_webhook_payload = "{}"
+  }
+}
+
+# =======================================================
+# Reversal Transaction - 5xx Error Count
+# =======================================================
+resource "azurerm_monitor_scheduled_query_rules_alert" "reversal_transaction_5xx_alert" {
+  count               = contains(["p", "u"], var.env_short) ? 1 : 0
+  name                = "reversal-transaction-5xx-alert"
+  resource_group_name = local.monitor_rg
+  location            = var.location
+
+  description = "API Reversal Transaction: 5xx error count exceeded (> 2 in 5m)"
+  enabled     = true
+  severity    = 1
+
+  frequency   = 5
+  time_window = 5
+
+  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+
+  query = <<QUERY
+AppRequests
+| where Name matches regex @"^POST /idpay-itn/merchant-op/transactions/[^/]+/reversal$"
+| where ResultCode startswith "5"
+QUERY
+
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 2
+  }
+
+  action {
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
+    email_subject          = "[PARI][ESE][HIGH] Reversal Transaction API Alert (5xx)"
+    custom_webhook_payload = "{}"
+  }
+}
+
+# =======================================================
+# Reward Transaction - 5xx Error Count
+# =======================================================
+resource "azurerm_monitor_scheduled_query_rules_alert" "reward_transaction_5xx_alert" {
+  count               = contains(["p", "u"], var.env_short) ? 1 : 0
+  name                = "reward-transaction-5xx-alert"
+  resource_group_name = local.monitor_rg
+  location            = var.location
+
+  description = "API Reward Transaction: 5xx error count exceeded (> 2 in 5m)"
+  enabled     = true
+  severity    = 1
+
+  frequency   = 5
+  time_window = 5
+
+  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+
+  query = <<QUERY
+AppRequests
+| where Name matches regex @"^POST /idpay-itn/merchant-op/transactions/[^/]+/reward$"
+| where ResultCode startswith "5"
+QUERY
+
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 2
+  }
+
+  action {
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
+    email_subject          = "[PARI][ESE][HIGH] Reward Transaction API Alert (5xx)"
+    custom_webhook_payload = "{}"
+  }
+}
+
+# =======================================================
+# Retrieve a point of sale - 5xx Error Count
+# =======================================================
+resource "azurerm_monitor_scheduled_query_rules_alert" "retrieve_pos_5xx_alert" {
+  count               = contains(["p", "u"], var.env_short) ? 1 : 0
+  name                = "retrieve-point-of-sale-5xx-alert"
+  resource_group_name = local.monitor_rg
+  location            = var.location
+
+  description = "API Retrieve a point of sale: 5xx error count exceeded (> 2 in 5m)"
+  enabled     = true
+  severity    = 3
+
+  frequency   = 5
+  time_window = 5
+
+  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+
+  query = <<QUERY
+AppRequests
+| where Name matches regex @"^GET /idpay-itn/merchant/portal/[^/]+/point-of-sales/[^/]+$"
+| where ResultCode startswith "5"
+QUERY
+
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 2
+  }
+
+  action {
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
+    email_subject          = "[PARI][ESE][LOW] Retrieve a point of sale API Alert (5xx)"
+    custom_webhook_payload = "{}"
+  }
+}
+
+# =======================================================
+# Retrieve a point of sale - 4xx Error Count
+# =======================================================
+resource "azurerm_monitor_scheduled_query_rules_alert" "retrieve_pos_4xx_alert" {
+  count               = contains(["p", "u"], var.env_short) ? 1 : 0
+  name                = "retrieve-point-of-sale-4xx-alert"
+  resource_group_name = local.monitor_rg
+  location            = var.location
+
+  description = "API Retrieve a point of sale: 401/404/429 error count exceeded (> 3 in 5m)"
+  enabled     = true
+  severity    = 3
+
+  frequency   = 5
+  time_window = 5
+
+  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+
+  query = <<QUERY
+AppRequests
+| where Name matches regex @"^GET /idpay-itn/merchant/portal/[^/]+/point-of-sales/[^/]+$"
+| where ResultCode in ("401", "404", "429")
+QUERY
+
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 3
+  }
+
+  action {
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
+    email_subject          = "[PARI][ESE][LOW] Retrieve a point of sale API Alert (4xx)"
+    custom_webhook_payload = "{}"
+  }
+}
+
+# =======================================================
+# Products List - 5xx Error Count
+# =======================================================
+resource "azurerm_monitor_scheduled_query_rules_alert" "products_list_5xx_alert" {
+  count               = contains(["p", "u"], var.env_short) ? 1 : 0
+  name                = "products-list-5xx-alert"
+  resource_group_name = local.monitor_rg
+  location            = var.location
+
+  description = "API Products List: 5xx error count exceeded (> 2 in 5m)"
+  enabled     = true
+  severity    = 1
+
+  frequency   = 5
+  time_window = 5
+
+  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+
+  query = <<QUERY
+AppRequests
+| where Name == "GET /idpay-itn/merchant-op/products"
+| where ResultCode startswith "5"
+QUERY
+
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 2
+  }
+
+  action {
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
+    email_subject          = "[PARI][ESE][HIGH] Products List API Alert (5xx)"
+    custom_webhook_payload = "{}"
+  }
+}
+
+# =======================================================
+# Products List - 4xx Error Count
+# =======================================================
+resource "azurerm_monitor_scheduled_query_rules_alert" "products_list_4xx_alert" {
+  count               = contains(["p", "u"], var.env_short) ? 1 : 0
+  name                = "products-list-4xx-alert"
+  resource_group_name = local.monitor_rg
+  location            = var.location
+
+  description = "API Products List: 401/404/429 error count exceeded (> 15 in 5m)"
+  enabled     = true
+  severity    = 1
+
+  frequency   = 5
+  time_window = 5
+
+  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+
+  query = <<QUERY
+AppRequests
+| where Name == "GET /idpay-itn/merchant-op/products"
+| where ResultCode in ("401", "404", "429")
+QUERY
+
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 15
+  }
+
+  action {
+    action_group = flatten([
+      [
+        azurerm_monitor_action_group.email[0].id
+      ],
+      (var.env == "prod" ? [
+        azurerm_monitor_action_group.idpay_opsgenie[0].id
+      ] : [])
+    ])
+    email_subject          = "[PARI][ESE][HIGH] Products List API Alert (4xx)"
+    custom_webhook_payload = "{}"
   }
 }

@@ -118,6 +118,12 @@ variable "single_page_applications_portal_merchants_operator_roots_dirs" {
   description = "spa root dirs"
 }
 
+variable "enable_only_one_redirect" {
+  default     = false
+  type        = bool
+  description = "Enable one single redirect to ioapp.it/bonus-elettrodomestici"
+}
+
 
 ## Event hub
 variable "ehns_sku_name" {
@@ -268,4 +274,12 @@ variable "oneidentity_base_url" {
   type        = string
   default     = null
   description = "OneIdentity base Url"
+}
+
+#----------------------------------------------------------------------
+# Redis
+#----------------------------------------------------------------------
+variable "redis_idh_resource_tier" {
+  type        = string
+  description = "The SKU of the Redis Cache to deploy"
 }

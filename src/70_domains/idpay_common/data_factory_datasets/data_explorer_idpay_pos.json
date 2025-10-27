@@ -1,5 +1,5 @@
 {
-    "name": "data-explorer-idpay-transaction-in-progress",
+    "name": "data_explorer_idpay_pos",
     "properties": {
         "linkedServiceName": {
             "referenceName": "idpay-Kusto-idpay-ls",
@@ -9,7 +9,7 @@
         "type": "AzureDataExplorerTable",
         "schema": [],
         "typeProperties": {
-            "table": "transaction_in_progress"
+            "table": "point_of_sales"
         }
     },
     "type": "Microsoft.DataFactory/factories/datasets"

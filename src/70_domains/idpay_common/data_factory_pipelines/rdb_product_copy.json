@@ -1,13 +1,34 @@
 {
-    "name": "idpay-pos-copy",
+    "name": "rdb_product_copy",
     "properties": {
         "activities": [
             {
-                "name": "Copy pos collection",
+                "name": "Clear products table",
+                "type": "AzureDataExplorerCommand",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "command": ".clear table products data",
+                    "commandTimeout": "00:20:00"
+                },
+                "linkedServiceName": {
+                    "referenceName": "idpay-Kusto-idpay-ls",
+                    "type": "LinkedServiceReference"
+                }
+            },
+            {
+                "name": "Copy products collection",
                 "type": "Copy",
                 "dependsOn": [
                     {
-                        "activity": "Clear pos table",
+                        "activity": "Clear products table",
                         "dependencyConditions": [
                             "Succeeded"
                         ]
@@ -44,204 +65,150 @@
                             },
                             {
                                 "source": {
-                                    "path": "$['type']"
+                                    "path": "$['productFileId']"
                                 },
                                 "sink": {
-                                    "name": "type",
+                                    "name": "productFileId",
                                     "type": "String"
                                 }
                             },
                             {
                                 "source": {
-                                    "path": "$['franchiseName']"
+                                    "path": "$['organizationId']"
                                 },
                                 "sink": {
-                                    "name": "franchiseName",
+                                    "name": "organizationId",
                                     "type": "String"
                                 }
                             },
                             {
                                 "source": {
-                                    "path": "$['region']"
+                                    "path": "$['status']"
                                 },
                                 "sink": {
-                                    "name": "region",
+                                    "name": "status",
                                     "type": "String"
                                 }
                             },
                             {
                                 "source": {
-                                    "path": "$['province']"
+                                    "path": "$['model']"
                                 },
                                 "sink": {
-                                    "name": "province",
+                                    "name": "model",
                                     "type": "String"
                                 }
                             },
                             {
                                 "source": {
-                                    "path": "$['city']"
+                                    "path": "$['productGroup']"
                                 },
                                 "sink": {
-                                    "name": "city",
+                                    "name": "productGroup",
                                     "type": "String"
                                 }
                             },
                             {
                                 "source": {
-                                    "path": "$['zipCode']"
+                                    "path": "$['category']"
                                 },
                                 "sink": {
-                                    "name": "zipCode",
+                                    "name": "category",
                                     "type": "String"
                                 }
                             },
                             {
                                 "source": {
-                                    "path": "$['address']"
+                                    "path": "$['brand']"
                                 },
                                 "sink": {
-                                    "name": "address",
+                                    "name": "brand",
                                     "type": "String"
                                 }
                             },
                             {
                                 "source": {
-                                    "path": "$['streetNumber']"
+                                    "path": "$['eprelCode']"
                                 },
                                 "sink": {
-                                    "name": "streetNumber",
+                                    "name": "eprelCode",
                                     "type": "String"
                                 }
                             },
                             {
                                 "source": {
-                                    "path": "$['contactEmail']"
+                                    "path": "$['productCode']"
                                 },
                                 "sink": {
-                                    "name": "contactEmail",
+                                    "name": "productCode",
                                     "type": "String"
                                 }
                             },
                             {
                                 "source": {
-                                    "path": "$['contactName']"
+                                    "path": "$['countryOfProduction']"
                                 },
                                 "sink": {
-                                    "name": "contactName",
+                                    "name": "countryOfProduction",
                                     "type": "String"
                                 }
                             },
                             {
                                 "source": {
-                                    "path": "$['contactSurname']"
+                                    "path": "$['energyClass']"
                                 },
                                 "sink": {
-                                    "name": "contactSurname",
+                                    "name": "energyClass",
                                     "type": "String"
                                 }
                             },
                             {
                                 "source": {
-                                    "path": "$['channelEmail']"
+                                    "path": "$['capacity']"
                                 },
                                 "sink": {
-                                    "name": "channelEmail",
+                                    "name": "capacity",
                                     "type": "String"
                                 }
                             },
                             {
                                 "source": {
-                                    "path": "$['channelPhone']"
+                                    "path": "$['productName']"
                                 },
                                 "sink": {
-                                    "name": "channelPhone",
+                                    "name": "productName",
                                     "type": "String"
                                 }
                             },
                             {
                                 "source": {
-                                    "path": "$['channelGeolink']"
+                                    "path": "$['organizationName']"
                                 },
                                 "sink": {
-                                    "name": "channelGeolink",
+                                    "name": "organizationName",
                                     "type": "String"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['channelWebsite']"
-                                },
-                                "sink": {
-                                    "name": "channelWebsite",
-                                    "type": "String"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['merchantId']"
-                                },
-                                "sink": {
-                                    "name": "merchantId",
-                                    "type": "String"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['creationDate.$date.$numberLong']"
-                                },
-                                "sink": {
-                                    "name": "creationDate"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['updateDate.$date.$numberLong']"
-                                },
-                                "sink": {
-                                    "name": "updateDate"
                                 }
                             }
-                        ]
+                        ],
+                        "mapComplexValuesToString": true
                     }
                 },
                 "inputs": [
                     {
-                        "referenceName": "cosmos-idpay-pos",
+                        "referenceName": "cosmos_rdb_products",
                         "type": "DatasetReference"
                     }
                 ],
                 "outputs": [
                     {
-                        "referenceName": "data-explorer-idpay-pos",
+                        "referenceName": "data_explorer_rdb_products",
                         "type": "DatasetReference"
                     }
                 ]
-            },
-            {
-                "name": "Clear pos table",
-                "type": "AzureDataExplorerCommand",
-                "dependsOn": [],
-                "policy": {
-                    "timeout": "0.12:00:00",
-                    "retry": 0,
-                    "retryIntervalInSeconds": 30,
-                    "secureOutput": false,
-                    "secureInput": false
-                },
-                "userProperties": [],
-                "typeProperties": {
-                    "command": ".clear table point_of_sales data",
-                    "commandTimeout": "00:20:00"
-                },
-                "linkedServiceName": {
-                    "referenceName": "idpay-Kusto-idpay-ls",
-                    "type": "LinkedServiceReference"
-                }
             }
         ],
         "annotations": [],
-        "lastPublishTime": "2025-10-08T10:37:09Z"
+        "lastPublishTime": "2025-10-08T09:22:11Z"
     },
     "type": "Microsoft.DataFactory/factories/pipelines"
 }

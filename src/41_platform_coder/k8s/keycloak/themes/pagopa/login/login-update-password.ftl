@@ -14,11 +14,11 @@
                 <p class="text-dark">PagoPA S.p.A.</p>
             </div>
             <nav class="header-nav">
-                <a href="https://docs.pagopa.it/area-riservata/" class="text-dark-light">
+                <a href="https://developer.pagopa.it/pari/guides/bonuselettrodomestici-manuale-tecnico-venditore" class="text-dark-light">
                     <img src="${url.resourcesPath}/img/book.png"/>
                     Manuale operativo
                 </a>
-                <a href="https://dev.selfcare.pagopa.it/assistenza" class="text-dark-light">
+                <a href="https://developer.pagopa.it/pari/guides/bonuselettrodomestici-manuale-tecnico-venditore/contatti" class="text-dark-light">
                     <img src="${url.resourcesPath}/img/info.png"/>
                     Assistenza
                 </a>
@@ -46,7 +46,7 @@
                     </div>
 
                     <div class="terms-notice">
-                        <span>Accedendo accetti i <a href="https://dev.selfcare.pagopa.it/auth/termini-di-servizio">Termini e condizioni d'uso</a> del servizio e confermi di avere letto l'<a href="https://dev.selfcare.pagopa.it/auth/informativa-privacy">Informativa Privacy</a></span>
+                        <span>Accedendo accetti i <a href="https://selfcare.pagopa.it/auth/termini-di-servizio">Termini e condizioni d'uso</a> del servizio e confermi di avere letto l'<a href="https://selfcare.pagopa.it/auth/informativa-privacy">Informativa Privacy</a></span>
                     </div>
 
                     <input class="btn-primary" type="submit" value="Accedi" >
@@ -67,31 +67,31 @@
                             </a>
                         </div>
                         <ul>
-                            <li><a href="https://www.pagopa.it/it/societa/chi-siamo">PagoPA S.p.A.</a></li>
-                            <li><a href="#">PNRR</a></li>
-                            <li><a href="https://www.pagopa.it/it/media/">Media</a></li>
-                            <li><a href="https://www.pagopa.it/it/lavora-con-noi">Lavora con noi</a></li>
+                            <li><a href="https://www.pagopa.it/it/societa/chi-siamo/">PagoPA S.p.A.</a></li>
+                            <li><a href="https://www.pagopa.it/it/opportunita/pnrr/progetti/">PNRR</a></li>
+                            <li><a href="https://www.pagopa.it/it/">Media</a></li>
+                            <li><a href="https://www.pagopa.it/it/lavora-con-noi/">Lavora con noi</a></li>
                         </ul>
                     </div>
                     <div class="footer-column">
                         <h4>PRODOTTI E SERVIZI</h4>
                         <ul>
                             <li><a href="https://www.pagopa.it/it/prodotti-e-servizi/app-io">App IO</a></li>
-                            <li><a href="https://www.pagopa.it/it/prodotti-e-servizi/piattaforma-pagopa/">Piattaforma pagoPA</a></li>
-                            <li><a href="https://www.pagopa.it/it/prodotti-e-servizi/centro-stella-pagamenti-elettronici/">Centro stella</a></li>
+                            <li><a href="https://www.pagopa.it/it/prodotti-e-servizi/piattaforma-pagopa">Piattaforma pagoPA</a></li>
+                            <li><a href="https://www.pagopa.it/it/prodotti-e-servizi/centro-stella-pagamenti-elettronici">Centro stella</a></li>
                             <li><a href="https://www.pagopa.it/it/prodotti-e-servizi/check-iban">Check IBAN</a></li>
                             <li><a href="https://www.pagopa.it/it/prodotti-e-servizi/piattaforma-notifiche-digitali">Piattaforma Notifiche Digitali</a></li>
-                            <li><a href="#">Piattaforma Digitale Nazionale Dati - <br />Interoperabilità</a></li>
-                            <li><a href="https://docs.pagopa.it/area-riservata/">Area Riservata</a></li>
+                            <li><a href="https://www.pagopa.it/it/prodotti-e-servizi/piattaforma-digitale-nazionale-dati/">Piattaforma Digitale Nazionale Dati - <br />Interoperabilità</a></li>
+                            <li><a href="https://selfcare.pagopa.it">Area Riservata</a></li>
                         </ul>
                     </div>
                     <div class="footer-column">
                         <h4>RISORSE</h4>
                         <ul>
-                            <li><a href="https://dev.selfcare.pagopa.it/auth/informativa-privacy">Informativa Privacy</a></li>
-                            <li><a href="https://dev.selfcare.pagopa.it/auth/termini-di-servizio">Termini e Condizioni</a></li>
+                            <li><a href="https://selfcare.pagopa.it/auth/informativa-privacy">Informativa Privacy</a></li>
+                            <li><a href="https://selfcare.pagopa.it/auth/termini-di-servizio">Termini e Condizioni</a></li>
                             <li><a href="https://www.pagopa.it/it/certificazioni/">Certificazioni</a></li>
-                            <li><a href="#">Sicurezza delle informazioni</a></li>
+                            <li><a href="https://oneid.pagopa.it/login?response_type=CODE&scope=openid&client_id=0GemhuNwzjygMbWHJjYCMInHkYInwDjax7xQ-lFqiUs&state=145f2339797f4ce&nonce=e2a3b40c1238439&redirect_uri=https%3A%2F%2Fuat.selfcare.pagopa.it%2Fauth%2Flogin%2Fcallback">Sicurezza delle informazioni</a></li>
                             <li><a href="https://privacyportal-de.onetrust.com/webform/77f17844-04c3-4969-a11d-462ee77acbe1/9ab6533d-be4a-482e-929a-0d8d2ab29df8">Diritto alla protezione dei dati personali</a></li>
                             <li><a href="https://www.pagopa.it/it/">Preferenze Cookie</a></li>
                             <li><a href="https://pagopa.portaleamministrazionetrasparente.it/">Società trasparente</a></li>
@@ -102,7 +102,7 @@
                     <div class="footer-column">
                         <h4>SEGUICI SU</h4>
                         <div class="social-icons">
-                          <a href="https://www.linkedin.com/company/pagopa/mycompany/" target="_blank" rel="noopener noreferrer">
+                          <a href="https://www.linkedin.com/company/pagopa/" target="_blank" rel="noopener noreferrer">
 
                               <svg class="social-icon-svg MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-14yq2cq" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="LinkedInIcon"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.79M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"></path></svg>
                           </a>

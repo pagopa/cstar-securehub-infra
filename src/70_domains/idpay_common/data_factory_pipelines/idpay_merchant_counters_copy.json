@@ -1,5 +1,5 @@
 {
-    "name": "idpay-merchant-counters-copy",
+    "name": "idpay_merchant_counters_copy",
     "properties": {
         "activities": [
             {
@@ -38,7 +38,8 @@
                                     "path": "$['_id']"
                                 },
                                 "sink": {
-                                    "name": "_id"
+                                    "name": "_id",
+                                    "type": "String"
                                 }
                             },
                             {
@@ -46,7 +47,8 @@
                                     "path": "$['merchantId']"
                                 },
                                 "sink": {
-                                    "name": "merchantId"
+                                    "name": "merchantId",
+                                    "type": "String"
                                 }
                             },
                             {
@@ -54,7 +56,8 @@
                                     "path": "$['initiativeId']"
                                 },
                                 "sink": {
-                                    "name": "initiativeId"
+                                    "name": "initiativeId",
+                                    "type": "String"
                                 }
                             },
                             {
@@ -62,7 +65,8 @@
                                     "path": "$['trxNumber']"
                                 },
                                 "sink": {
-                                    "name": "trxNumber"
+                                    "name": "trxNumber",
+                                    "type": "String"
                                 }
                             },
                             {
@@ -70,7 +74,8 @@
                                     "path": "$['refundedNumber']"
                                 },
                                 "sink": {
-                                    "name": "refundedNumber"
+                                    "name": "refundedNumber",
+                                    "type": "String"
                                 }
                             },
                             {
@@ -78,7 +83,8 @@
                                     "path": "$['totalProvidedCents']"
                                 },
                                 "sink": {
-                                    "name": "totalProvidedCents"
+                                    "name": "totalProvidedCents",
+                                    "type": "String"
                                 }
                             },
                             {
@@ -86,15 +92,17 @@
                                     "path": "$['totalRefundedCents']"
                                 },
                                 "sink": {
-                                    "name": "totalRefundedCents"
+                                    "name": "totalRefundedCents",
+                                    "type": "Long"
                                 }
                             },
                             {
                                 "source": {
-                                    "path": "$['totalRefundedCents.$date.$numberLong']"
+                                    "path": "$['lastUpdatedDateTime.$date.$numberLong']"
                                 },
                                 "sink": {
-                                    "name": "totalRefundedCents "
+                                    "name": "lastUpdatedDateTime",
+                                    "type": "String"
                                 }
                             }
                         ]
@@ -102,13 +110,13 @@
                 },
                 "inputs": [
                     {
-                        "referenceName": "cosmos-idpay-merchant-counters",
+                        "referenceName": "cosmos_idpay_merchant_counters",
                         "type": "DatasetReference"
                     }
                 ],
                 "outputs": [
                     {
-                        "referenceName": "data-explorer-idpay-merchant-counters",
+                        "referenceName": "data_explorer_idpay_merchant_counters",
                         "type": "DatasetReference"
                     }
                 ]

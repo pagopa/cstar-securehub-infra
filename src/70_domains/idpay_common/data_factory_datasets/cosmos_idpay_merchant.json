@@ -1,15 +1,15 @@
 {
-    "name": "cosmos-rdb-products",
+    "name": "cosmos_idpay_merchant",
     "properties": {
         "linkedServiceName": {
-            "referenceName": "idpay-CosmosDB-rdb-ls",
+            "referenceName": "idpay-CosmosDB-idpay-ls",
             "type": "LinkedServiceReference"
         },
         "annotations": [],
         "type": "CosmosDbMongoDbApiCollection",
         "schema": [],
         "typeProperties": {
-            "collection": "product"
+            "collection": "merchant"
         }
     },
     "type": "Microsoft.DataFactory/factories/datasets"

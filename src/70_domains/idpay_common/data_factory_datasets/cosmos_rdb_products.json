@@ -1,15 +1,15 @@
 {
-    "name": "cosmos-idpay-merchant-counters",
+    "name": "cosmos_rdb_products",
     "properties": {
         "linkedServiceName": {
-            "referenceName": "idpay-CosmosDB-idpay-ls",
+            "referenceName": "idpay-CosmosDB-rdb-ls",
             "type": "LinkedServiceReference"
         },
         "annotations": [],
         "type": "CosmosDbMongoDbApiCollection",
         "schema": [],
         "typeProperties": {
-            "collection": "merchant_initiative_counters"
+            "collection": "product"
         }
     },
     "type": "Microsoft.DataFactory/factories/datasets"

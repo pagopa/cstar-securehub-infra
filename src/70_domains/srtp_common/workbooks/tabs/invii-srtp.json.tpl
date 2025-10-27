@@ -455,7 +455,7 @@
         "type": 3,
         "content": {
           "version": "KqlItem/1.0",
-          "query": "AppTraces\n| where AppRoleName == 'rtp-sender'\n| where TimeGenerated {evaluation_window:query}\n| where Message startswith \"Message discarded due to out of order timestamp\"\n| parse Message with \"Message discarded due to out of order timestamp: timestamp=\" timestamp \", status=\" status \", operation=\" operation \", id=\" id \", ultimoTimestamp=\" ultimoTimestamp\n| summarize errorCount = count() by timestamp, status, operation, id, ultimoTimestamp\n| extend totalRequestsString = tostring(errorCount)",
+          "query": "AppTraces\n| where AppRoleName == \"rtp-sender\"\n| where TimeGenerated {evaluation_window:query}\n| where Message contains \"Message discarded due to out of order timestamp\"\n| parse Message with * \"messageTimestamp: \" messageTimestamp \n                       \", lastProcessedTimestamp: \" lastProcessedTimestamp \n                       \", status: \" status \n                       \", operation: \" operation \n                       \", id: \" id\n| extend \n    message_time = unixtime_milliseconds_todatetime(tolong(messageTimestamp)),\n    last_processed_time = unixtime_milliseconds_todatetime(tolong(lastProcessedTimestamp)),\n    time_difference = tolong(lastProcessedTimestamp) - tolong(messageTimestamp)\n| project \n    ['Log Time'] = TimeGenerated,\n    ['Message Time'] = message_time, \n    ['Last Processed Time'] = last_processed_time, \n    ['Time Difference Milliseconds'] = time_difference,\n    ['Time Difference Days'] = time_difference / (1000 * 60 * 60 * 24),\n    ['Message Timestamp'] = messageTimestamp, \n    ['Last Processed Timestamp'] = lastProcessedTimestamp,\n    ['Status'] = status, \n    ['Operation'] = operation, \n    ['Message Id'] = id\n| order by ['Log Time'] desc\n",
           "size": 0,
           "title": "❌ Messaggi scartati per Out-of-order Timestamp",
           "noDataMessageStyle": 3,
@@ -471,23 +471,28 @@
         "type": 3,
         "content": {
           "version": "KqlItem/1.0",
-          "query": "AppTraces\n| where AppRoleName == 'rtp-sender'\n| where TimeGenerated {evaluation_window:query}\n| where Message startswith \"Error getting payee name from payee registry for the payee id\"\n| summarize errorCount = count()\n| extend totalRequestsString = tostring(errorCount)",
+          "query": "AppTraces\n| where AppRoleName == \"rtp-sender\"\n| where TimeGenerated {evaluation_window:query}\n| where Message startswith \"Error getting payee name from payee registry for the payee id\"\n| extend payeeId = tostring(Properties[\"payee_id\"])\n| summarize ['Error Count'] = count() by ['Payee Id'] = payeeId\n| extend ['Total Requests'] = tostring(['Error Count'])\n",
           "size": 0,
           "title": "❌ Errore nel recupero del payee ID dal payee registry",
+          "noDataMessageStyle": 3,
           "queryType": 0,
           "resourceType": "microsoft.operationalinsights/workspaces",
           "crossComponentResources": [
             "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
           ],
-          "visualization": "stat"
+          "visualization": "table"
         },
-        "name": "❌ Errore nel recupero del payee ID dal payee registry"
+        "customWidth": "50",
+        "name": "❌ Errore nel recupero del payee ID dal payee registry",
+        "styleSettings": {
+          "showBorder": true
+        }
       },
       {
         "type": 3,
         "content": {
           "version": "KqlItem/1.0",
-          "query": "AppTraces\n| where AppRoleName == \"rtp-sender\"\n| where TimeGenerated {evaluation_window:query}\n| where Message hasprefix \"Successfully got payee name\"\n| parse Message with \"Successfully got payee name \" payeeName \" for the payee id \" payeeId\n| summarize rtpCount = count(), ids = make_set(payeeId, 100) by tostring(payeeName)\n| order by rtpCount desc\n",
+          "query": "AppTraces\n| where AppRoleName == \"rtp-sender\"\n| where TimeGenerated {evaluation_window:query}\n| where Message hasprefix \"Successfully got payee name\"\n| parse Message with \"Successfully got payee name \" payeeName \" for the payee id \" payeeId\n| summarize ['RTP Count'] = count(), ['Payee Ids'] = make_set(payeeId, 100) by ['Payee Name'] = tostring(payeeName)\n| order by ['RTP Count'] desc\n",
           "size": 0,
           "title": "✅ Successo nel recupero del payee name per payee ID",
           "queryType": 0,
@@ -496,7 +501,27 @@
             "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
           ]
         },
-        "name": "✅ Successo nel recupero del payee name per payee ID"
+        "customWidth": "50",
+        "name": "✅ Successo nel recupero del payee name per payee ID",
+        "styleSettings": {
+          "showBorder": true
+        }
+      },
+      {
+        "type": 3,
+        "content": {
+          "version": "KqlItem/1.0",
+          "query": "AppTraces\n| where AppRoleName == \"rtp-sender\"\n| where TimeGenerated {evaluation_window:query}\n| where Message startswith_cs \"DELETE_GDP_RTP_NOT_FOUND\"\n| summarize ErrorCount = count() by bin(TimeGenerated, 5m)\n| order by TimeGenerated asc\n",
+          "size": 0,
+          "title": "❌ Delete fallite su RTP non presenti a DB",
+          "noDataMessageStyle": 3,
+          "queryType": 0,
+          "resourceType": "microsoft.operationalinsights/workspaces",
+          "crossComponentResources": [
+            "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
+          ]
+        },
+        "name": "query - 18"
       }
     ]
   },
