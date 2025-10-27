@@ -61,6 +61,7 @@ resource "azurerm_data_factory_trigger_schedule" "weekly_triggers" {
     name = each.key
   }
   schedule {
+    days_of_week = ["Monday"]
     hours   = [2]
     minutes = [0]
   }
