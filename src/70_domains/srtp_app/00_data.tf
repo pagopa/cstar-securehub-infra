@@ -38,6 +38,10 @@ data "azurerm_key_vault_secret" "workload_identity_service_account_name" {
   key_vault_id = data.azurerm_key_vault.domain_kv.id
 }
 
+data "azurerm_user_assigned_identity" "workload_identity_aks" {
+  name                = local.secret_name_workload_identity
+  resource_group_name = local.aks_resource_group_name
+}
 
 ### ARGO
 data "azurerm_key_vault_secret" "argocd_admin_username" {
