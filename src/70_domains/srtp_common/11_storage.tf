@@ -61,25 +61,3 @@ resource "azurerm_storage_share" "rtp_jks_file_share" {
   name               = "${local.project}-jks-file-share"
   quota              = 1
 }
-
-resource "azurerm_role_assignment" "aks_access_to_share_storage" {
-  scope                = module.share_storage_account.id
-  role_definition_name = "Storage File Data SMB Share Reader"
-  principal_id         = data.azurerm_kubernetes_cluster.aks.kubelet_identity[0].object_id
-}
-
-resource "kubernetes_secret" "azure_files_secret" {
-  metadata {
-    name      = "azure-files-secret"
-    namespace = "srtp"
-  }
-
-  data = {
-    azurestorageaccountname = module.share_storage_account.name
-    azurestorageaccountkey  = module.share_storage_account.primary_access_key
-  }
-
-  type = "Opaque"
-}
-
-

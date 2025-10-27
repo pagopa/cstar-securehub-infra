@@ -52,9 +52,17 @@ resource "azurerm_role_assignment" "storage_account_to_sender_identity" {
 # Identity role for srtp microservices.
 # ------------------------------------------------------------------------------
 
+# Access to Blob Storage
 resource "azurerm_role_assignment" "storage_account_to_namespace_identity" {
   scope                = data.azurerm_storage_account.rtp_storage_account.id
   role_definition_name = "Storage Blob Data Reader"
+  principal_id         = data.azurerm_user_assigned_identity.workload_identity_aks.principal_id
+}
+
+# Access to File Share Storage
+resource "azurerm_role_assignment" "aks_access_to_file_share" {
+  scope                = data.azurerm_storage_account.rtp_jks_storage_account.id
+  role_definition_name = "Storage File Data SMB Share Reader"
   principal_id         = data.azurerm_user_assigned_identity.workload_identity_aks.principal_id
 }
 

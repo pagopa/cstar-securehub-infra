@@ -18,6 +18,7 @@ locals {
 
   # Storage Account
   srtp_storage_account_name = "${local.project}-sa"
+  srtp-jks-storage-account-name = "${local.project}-share-sa"
 
   # APIM
   apim_rg_name = "cstar-${var.env_short}-api-rg"
