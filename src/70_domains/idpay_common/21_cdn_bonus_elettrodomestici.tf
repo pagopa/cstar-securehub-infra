@@ -454,7 +454,6 @@ resource "azurerm_storage_blob" "eie_static_files" {
     try(lower(regex("\\.[^.]+$", each.value)), ""),
     "application/octet-stream"
   )
-  depends_on = [module.cdn_idpay_bonuselettrodomestici]
 }
 
 ## Upload static content for Bonus Elettrodomesici - point of sales
@@ -471,5 +470,4 @@ resource "azurerm_storage_blob" "pos_static_files" {
     try(lower(regex("\\.[^.]+$", each.value)), ""),
     "application/octet-stream"
   )
-  depends_on = [module.cdn_idpay_bonuselettrodomestici]
 }
