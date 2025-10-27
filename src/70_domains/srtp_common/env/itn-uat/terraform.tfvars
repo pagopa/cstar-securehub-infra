@@ -17,8 +17,15 @@ cosmos_collections_autoscale_max_throughput = 1000
 cosmos_otp_ttl = 120
 
 # AKS
-aks_user_nodepool = {
-  vm_sku_name    = "Standard_D4ads_v5_passive" # CHANGE in Standard_D4ads_v5_active when UAT is ready
-  node_count_min = 0                           # 1 # CHANGE in 1 when UAT is ready
-  node_count_max = 3                           # 3
+aks_nodepool_blue = {
+  vm_sku_name    = "Standard_D4ads_v5_active"
+  node_count_min = 1
+  node_count_max = 2
+}
+
+aks_nodepool_green = {
+  vm_sku_name       = "Standard_D4ads_v5_passive"
+  autoscale_enabled = false
+  node_count_min    = 0
+  node_count_max    = 0
 }

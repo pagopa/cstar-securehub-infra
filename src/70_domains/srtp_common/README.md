@@ -24,9 +24,10 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | 1b507dcbfc89880e17ff6722fb69b10dfda9368d |
+| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | 93e664b57bd5f0576c4271ea66564c5c17aafc61 |
 | <a name="module_aks_overlay_snet"></a> [aks\_overlay\_snet](#module\_aks\_overlay\_snet) | ./.terraform/modules/__v4__/IDH/subnet | n/a |
-| <a name="module_aks_user_node_pool"></a> [aks\_user\_node\_pool](#module\_aks\_user\_node\_pool) | ./.terraform/modules/__v4__/IDH/aks_node_pool | n/a |
+| <a name="module_aks_srtp_node_pool_blue"></a> [aks\_srtp\_node\_pool\_blue](#module\_aks\_srtp\_node\_pool\_blue) | ./.terraform/modules/__v4__/IDH/aks_node_pool | n/a |
+| <a name="module_aks_srtp_node_pool_green"></a> [aks\_srtp\_node\_pool\_green](#module\_aks\_srtp\_node\_pool\_green) | ./.terraform/modules/__v4__/IDH/aks_node_pool | n/a |
 | <a name="module_cae_env_snet"></a> [cae\_env\_snet](#module\_cae\_env\_snet) | ./.terraform/modules/__v4__/IDH/subnet | n/a |
 | <a name="module_cdn"></a> [cdn](#module\_cdn) | ./.terraform/modules/__v4__/cdn | n/a |
 | <a name="module_cosmos_db_account"></a> [cosmos\_db\_account](#module\_cosmos\_db\_account) | ./.terraform/modules/__v4__/IDH/cosmosdb_account | n/a |
@@ -104,7 +105,8 @@
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_aks_user_nodepool"></a> [aks\_user\_nodepool](#input\_aks\_user\_nodepool) | Paramters for node pool | <pre>object({<br/>    vm_sku_name       = string<br/>    autoscale_enabled = optional(bool, true)<br/>    node_count_min    = number<br/>    node_count_max    = number<br/>  })</pre> | n/a | yes |
+| <a name="input_aks_nodepool_blue"></a> [aks\_nodepool\_blue](#input\_aks\_nodepool\_blue) | Parameters for blue node pool | <pre>object({<br/>    vm_sku_name       = string<br/>    autoscale_enabled = optional(bool, true)<br/>    node_count_min    = number<br/>    node_count_max    = number<br/>  })</pre> | n/a | yes |
+| <a name="input_aks_nodepool_green"></a> [aks\_nodepool\_green](#input\_aks\_nodepool\_green) | Parameters for green node pool | <pre>object({<br/>    vm_sku_name       = string<br/>    autoscale_enabled = optional(bool, true)<br/>    node_count_min    = number<br/>    node_count_max    = number<br/>  })</pre> | n/a | yes |
 | <a name="input_azuread_service_principal_azure_cdn_frontdoor_id"></a> [azuread\_service\_principal\_azure\_cdn\_frontdoor\_id](#input\_azuread\_service\_principal\_azure\_cdn\_frontdoor\_id) | Azure CDN Front Door Principal ID - Microsoft.AzureFrontDoor-Cdn | `string` | n/a | yes |
 | <a name="input_cdn_location"></a> [cdn\_location](#input\_cdn\_location) | One of westeurope, northeurope | `string` | n/a | yes |
 | <a name="input_cosmos_collections_autoscale_max_throughput"></a> [cosmos\_collections\_autoscale\_max\_throughput](#input\_cosmos\_collections\_autoscale\_max\_throughput) | Max throughput for autoscale | `number` | `null` | no |
