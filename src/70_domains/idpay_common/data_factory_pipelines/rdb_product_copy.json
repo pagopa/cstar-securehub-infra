@@ -1,5 +1,5 @@
 {
-    "name": "RdbProductCopy",
+    "name": "rdb_product_copy",
     "properties": {
         "activities": [
             {
@@ -195,13 +195,13 @@
                 },
                 "inputs": [
                     {
-                        "referenceName": "CosmosRdbProducts",
+                        "referenceName": "cosmos_rdb_products",
                         "type": "DatasetReference"
                     }
                 ],
                 "outputs": [
                     {
-                        "referenceName": "DataExplorerRdbProducts",
+                        "referenceName": "data_explorer_rdb_products",
                         "type": "DatasetReference"
                     }
                 ]

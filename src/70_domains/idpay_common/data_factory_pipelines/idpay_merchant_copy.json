@@ -1,5 +1,5 @@
 {
-    "name": "IdpayMerchantCopy",
+    "name": "idpay_merchant_copy",
     "properties": {
         "activities": [
             {
@@ -38,15 +38,18 @@
                                     "path": "$['_id']"
                                 },
                                 "sink": {
-                                    "name": "_id"
+                                    "name": "_id",
+                                    "type": "String"
                                 }
                             },
                             {
                                 "source": {
-                                    "path": "$['acquirerId']"
+                                    "path": "$['acquirerId']",
+                                    "type": "String"
                                 },
                                 "sink": {
-                                    "name": "acquirerId"
+                                    "name": "acquirerId",
+                                    "type": "String"
                                 }
                             },
                             {
@@ -54,7 +57,8 @@
                                     "path": "$['businessName']"
                                 },
                                 "sink": {
-                                    "name": "businessName"
+                                    "name": "businessName",
+                                    "type": "String"
                                 }
                             },
                             {
@@ -62,7 +66,8 @@
                                     "path": "$['legalOfficeAddress']"
                                 },
                                 "sink": {
-                                    "name": "legalOfficeAddress"
+                                    "name": "legalOfficeAddress",
+                                    "type": "String"
                                 }
                             },
                             {
@@ -70,7 +75,8 @@
                                     "path": "$['legalOfficeMunicipality']"
                                 },
                                 "sink": {
-                                    "name": "legalOfficeMunicipality"
+                                    "name": "legalOfficeMunicipality",
+                                    "type": "String"
                                 }
                             },
                             {
@@ -78,7 +84,8 @@
                                     "path": "$['legalOfficeProvince']"
                                 },
                                 "sink": {
-                                    "name": "legalOfficeProvince"
+                                    "name": "legalOfficeProvince",
+                                    "type": "String"
                                 }
                             },
                             {
@@ -86,7 +93,8 @@
                                     "path": "$['legalOfficeZipCode']"
                                 },
                                 "sink": {
-                                    "name": "legalOfficeZipCode"
+                                    "name": "legalOfficeZipCode",
+                                    "type": "String"
                                 }
                             },
                             {
@@ -94,7 +102,8 @@
                                     "path": "$['certifiedEmail']"
                                 },
                                 "sink": {
-                                    "name": "certifiedEmail"
+                                    "name": "certifiedEmail",
+                                    "type": "String"
                                 }
                             },
                             {
@@ -102,7 +111,8 @@
                                     "path": "$['fiscalCode']"
                                 },
                                 "sink": {
-                                    "name": "fiscalCode"
+                                    "name": "fiscalCode",
+                                    "type": "String"
                                 }
                             },
                             {
@@ -110,7 +120,8 @@
                                     "path": "$['vatNumber']"
                                 },
                                 "sink": {
-                                    "name": "vatNumber"
+                                    "name": "vatNumber",
+                                    "type": "String"
                                 }
                             },
                             {
@@ -118,7 +129,8 @@
                                     "path": "$['iban']"
                                 },
                                 "sink": {
-                                    "name": "iban"
+                                    "name": "iban",
+                                    "type": "String"
                                 }
                             },
                             {
@@ -126,7 +138,8 @@
                                     "path": "$['ibanHolder']"
                                 },
                                 "sink": {
-                                    "name": "ibanHolder"
+                                    "name": "ibanHolder",
+                                    "type": "String"
                                 }
                             },
                             {
@@ -134,7 +147,26 @@
                                     "path": "$['enabled']"
                                 },
                                 "sink": {
-                                    "name": "isEnabled"
+                                    "name": "isEnabled",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['merchantId']"
+                                },
+                                "sink": {
+                                    "name": "merchantId",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['activationDate.$date.$numberLong']"
+                                },
+                                "sink": {
+                                    "name": "activationDate",
+                                    "type": "String"
                                 }
                             }
                         ]
@@ -142,13 +174,13 @@
                 },
                 "inputs": [
                     {
-                        "referenceName": "CosmosIdpayMerchant",
+                        "referenceName": "cosmos_idpay_merchant",
                         "type": "DatasetReference"
                     }
                 ],
                 "outputs": [
                     {
-                        "referenceName": "DataExplorerIdpayMerchant",
+                        "referenceName": "data_explorer_idpay_merchant",
                         "type": "DatasetReference"
                     }
                 ]
@@ -176,7 +208,7 @@
             }
         ],
         "annotations": [],
-        "lastPublishTime": "2025-10-08T09:33:22Z"
+        "lastPublishTime": "2025-10-08T10:49:56Z"
     },
     "type": "Microsoft.DataFactory/factories/pipelines"
 }

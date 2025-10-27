@@ -13,6 +13,14 @@
         "style": "link"
       },
       {
+        "id": "854ac761-df9d-465c-a503-6ee9bfc7d5ce",
+        "cellValue": "tab",
+        "linkTarget": "parameter",
+        "linkLabel": "Subentro",
+        "subTarget": "takeover",
+        "style": "link"
+      },
+      {
         "id": "c4773476-5d1f-413b-aa2e-b0f3ab6d96af",
         "cellValue": "tab",
         "linkTarget": "parameter",
@@ -24,7 +32,7 @@
         "id": "3c0d8201-7d21-4cbb-8d18-53a5b14500e3",
         "cellValue": "tab",
         "linkTarget": "parameter",
-        "linkLabel": "Invii SRTP",
+        "linkLabel": "Invii RTP",
         "subTarget": "invii",
         "style": "link"
       },
@@ -32,7 +40,7 @@
         "id": "07d1ffe5-e677-455f-86e1-6d75f3409bc9",
         "cellValue": "tab",
         "linkTarget": "parameter",
-        "linkLabel": "Cancellazioni",
+        "linkLabel": "Cancellazioni RTP",
         "subTarget": "cancellazione",
         "style": "link"
       },
@@ -40,7 +48,7 @@
         "id": "49f84314-e3cf-4c13-80d2-fd8a5c143283",
         "cellValue": "tab",
         "linkTarget": "parameter",
-        "linkLabel": "Callback",
+        "linkLabel": "Callback RTP",
         "subTarget": "callback",
         "style": "link"
       },
@@ -56,7 +64,7 @@
         "id": "962860b7-7ab0-407b-8893-436851775e83",
         "cellValue": "tab",
         "linkTarget": "parameter",
-        "linkLabel": "Activator",
+        "linkLabel": "Activator Health Status",
         "subTarget": "activator",
         "style": "link"
       },
@@ -64,7 +72,7 @@
         "id": "e5d18498-a18c-48f7-9f42-e442d53a829f",
         "cellValue": "tab",
         "linkTarget": "parameter",
-        "linkLabel": "Sender",
+        "linkLabel": "Sender Health Status",
         "subTarget": "sender",
         "style": "link"
       },
@@ -82,6 +90,14 @@
         "linkTarget": "parameter",
         "linkLabel": "Monitoraggio Service Providers",
         "subTarget": "sp",
+        "style": "link"
+      },
+      {
+        "id": "76718917-a2fe-4c95-a389-cc0cbd37808c",
+        "cellValue": "tab",
+        "linkTarget": "parameter",
+        "linkLabel": "JKS",
+        "subTarget": "jks",
         "style": "link"
       }
     ]

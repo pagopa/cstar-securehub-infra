@@ -1,5 +1,5 @@
 {
-    "name": "DataExplorerIdpayMerchantCounters",
+    "name": "data_explorer_idpay_pos",
     "properties": {
         "linkedServiceName": {
             "referenceName": "idpay-Kusto-idpay-ls",
@@ -9,7 +9,7 @@
         "type": "AzureDataExplorerTable",
         "schema": [],
         "typeProperties": {
-            "table": "merchant_initiative_counters"
+            "table": "point_of_sales"
         }
     },
     "type": "Microsoft.DataFactory/factories/datasets"

@@ -19,9 +19,10 @@ cosmos_mongo_db_idpay_params = {
   max_throughput = null
 }
 
-#
-# Service bus
-#
+### Redis Cache
+redis_idh_resource_tier = "basic"
+
+### Service bus
 service_bus_namespace = {
   sku = "Standard"
 }
@@ -82,6 +83,8 @@ aks_nodepool_green = {
 law_sku               = "PerGB2018"
 law_retention_in_days = 30
 law_daily_quota_gb    = 5
+
+
 
 #OneIdentity
 oneidentity_base_url = "https://uat.oneid.pagopa.it"

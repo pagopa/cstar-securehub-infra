@@ -8,9 +8,10 @@ locals {
 
   # Default Domain Resource Group
   data_rg     = "${local.project}-data-rg"
-  security_rg = "${local.project}}-security-rg"
-  compute_rg  = "${local.project}}-compute-rg"
-  cicd_rg     = "${local.project}}-cicd-rg"
+  security_rg = "${local.project}-security-rg"
+  compute_rg  = "${local.project}-compute-rg"
+  cicd_rg     = "${local.project}-cicd-rg"
+  monitor_rg  = "${local.project}-monitoring-rg"
 
   # SMTP
   ses_smtp_port = 465
@@ -104,7 +105,6 @@ locals {
   core_log_analytics_workspace_name = "cstar-${var.env_short}-itn-core-law"
   core_application_insights_name    = "cstar-${var.env_short}-itn-core-appinsights"
 
-
   #
   # APIM
   #
@@ -151,4 +151,7 @@ locals {
       soft_delete_period = "P7D"
     }
   }
+
+  # Action Group
+  monitor_action_group_email_name = "pari-alerts-email"
 }

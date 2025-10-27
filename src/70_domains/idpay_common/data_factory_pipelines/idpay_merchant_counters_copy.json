@@ -1,5 +1,5 @@
 {
-    "name": "IdpayMerchantCountersCopy",
+    "name": "idpay_merchant_counters_copy",
     "properties": {
         "activities": [
             {
@@ -38,7 +38,8 @@
                                     "path": "$['_id']"
                                 },
                                 "sink": {
-                                    "name": "_id"
+                                    "name": "_id",
+                                    "type": "String"
                                 }
                             },
                             {
@@ -46,7 +47,8 @@
                                     "path": "$['merchantId']"
                                 },
                                 "sink": {
-                                    "name": "merchantId"
+                                    "name": "merchantId",
+                                    "type": "String"
                                 }
                             },
                             {
@@ -54,7 +56,8 @@
                                     "path": "$['initiativeId']"
                                 },
                                 "sink": {
-                                    "name": "initiativeId"
+                                    "name": "initiativeId",
+                                    "type": "String"
                                 }
                             },
                             {
@@ -62,7 +65,8 @@
                                     "path": "$['trxNumber']"
                                 },
                                 "sink": {
-                                    "name": "trxNumber"
+                                    "name": "trxNumber",
+                                    "type": "String"
                                 }
                             },
                             {
@@ -70,7 +74,35 @@
                                     "path": "$['refundedNumber']"
                                 },
                                 "sink": {
-                                    "name": "refundedNumber"
+                                    "name": "refundedNumber",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['totalProvidedCents']"
+                                },
+                                "sink": {
+                                    "name": "totalProvidedCents",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['totalRefundedCents']"
+                                },
+                                "sink": {
+                                    "name": "totalRefundedCents",
+                                    "type": "Long"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['lastUpdatedDateTime.$date.$numberLong']"
+                                },
+                                "sink": {
+                                    "name": "lastUpdatedDateTime",
+                                    "type": "String"
                                 }
                             }
                         ]
@@ -78,13 +110,13 @@
                 },
                 "inputs": [
                     {
-                        "referenceName": "CosmosIdpayMerchantCounters",
+                        "referenceName": "cosmos_idpay_merchant_counters",
                         "type": "DatasetReference"
                     }
                 ],
                 "outputs": [
                     {
-                        "referenceName": "DataExplorerIdpayMerchantCounters",
+                        "referenceName": "data_explorer_idpay_merchant_counters",
                         "type": "DatasetReference"
                     }
                 ]
@@ -112,7 +144,7 @@
             }
         ],
         "annotations": [],
-        "lastPublishTime": "2025-10-08T09:33:22Z"
+        "lastPublishTime": "2025-10-08T10:38:06Z"
     },
     "type": "Microsoft.DataFactory/factories/pipelines"
 }

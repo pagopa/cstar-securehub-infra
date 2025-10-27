@@ -45,12 +45,13 @@
 | [grafana_folder.team_dashboard_folder](https://registry.terraform.io/providers/grafana/grafana/latest/docs/resources/folder) | resource |
 | [grafana_folder.teams](https://registry.terraform.io/providers/grafana/grafana/latest/docs/resources/folder) | resource |
 | [grafana_folder_permission.admin_permission](https://registry.terraform.io/providers/grafana/grafana/latest/docs/resources/folder_permission) | resource |
-| [grafana_folder_permission.aks_container_logs_reader](https://registry.terraform.io/providers/grafana/grafana/latest/docs/resources/folder_permission) | resource |
-| [grafana_team.teams](https://registry.terraform.io/providers/grafana/grafana/latest/docs/resources/team) | resource |
+| [grafana_folder_permission.team_role_permissions](https://registry.terraform.io/providers/grafana/grafana/latest/docs/resources/folder_permission) | resource |
+| [grafana_team.team_roles](https://registry.terraform.io/providers/grafana/grafana/latest/docs/resources/team) | resource |
 | [azuread_group.adgroup_admin](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_developers](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_externals](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_security](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
+| [azuread_group.ref_by_display_name](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 | [azuread_user.adgroup_cstar_users_developer](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/user) | data source |
 | [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) | data source |
 | [azurerm_dashboard_grafana.grafana_managed](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/dashboard_grafana) | data source |
@@ -76,6 +77,7 @@
 | <a name="input_location_short"></a> [location\_short](#input\_location\_short) | Location short like eg: neu, weu.. | `string` | n/a | yes |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br/>  "CreatedBy": "Terraform"<br/>}</pre> | no |
+| <a name="input_team_groups"></a> [team\_groups](#input\_team\_groups) | Map of groups per team: each key is the team, value is a map 'group\_name' -> { role, users } | <pre>map(map(object({<br/>    permission = string<br/>  })))</pre> | `{}` | no |
 
 ## Outputs
 

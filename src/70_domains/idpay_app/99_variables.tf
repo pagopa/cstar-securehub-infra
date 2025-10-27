@@ -393,3 +393,8 @@ variable "rate_limit_merchants_portal_product" {
   description = "Rate limit for merchants portal product"
   default     = 2500
 }
+
+variable "idpay_bel_initiative_id" {
+  type        = string
+  description = "Initiative id for Bonus Elettrodomestici"
+}

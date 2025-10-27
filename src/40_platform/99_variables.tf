@@ -151,6 +151,11 @@ variable "argocd_application_namespaces" {
   description = "In which namespaces argocd can create applications"
 }
 
+variable "argocd_terraform_module_tier" {
+  type        = string
+  description = "Tier for argocd terraform module"
+}
+
 #---------------------------------------------------------------
 # AKS
 #---------------------------------------------------------------

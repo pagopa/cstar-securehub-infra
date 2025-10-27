@@ -68,6 +68,14 @@ data "azurerm_private_dns_zone" "storage_account_table" {
   resource_group_name = local.vnet_legacy_core_rg
 }
 
+# Service Bus
+data "azurerm_private_dns_zone" "service_bus" {
+  count = var.service_bus_namespace.sku == "Premium" ? 1 : 0
+
+  name                = "privatelink.servicebus.windows.net"
+  resource_group_name = local.vnet_legacy_core_rg
+}
+
 #
 # KeyVault
 #
@@ -166,6 +174,12 @@ data "azurerm_key_vault_secret" "oneidentity-client-id" {
 
 data "azurerm_key_vault_secret" "oneidentity-client-secret" {
   name         = "oneidentity-client-secret"
+  key_vault_id = data.azurerm_key_vault.domain_kv.id
+}
+
+data "azurerm_key_vault_secret" "opsgenie-idpay-apy-key-client-secret" {
+  count        = var.env_short == "p" ? 1 : 0
+  name         = "opsgenie-idpay-api-key"
   key_vault_id = data.azurerm_key_vault.domain_kv.id
 }
 

@@ -13,18 +13,23 @@ locals {
 
   # All bonus elettrodomestici zones apex
   all_bonus_zones_apex = data.azurerm_dns_zone.bonus_elettrodomestici_apex
-
-  custom_domains = [for z in local.all_bonus_zones_apex : {
-    domain_name             = z.name
+  all_www_bonus_zones = [for z in local.all_bonus_zones_apex : {
+    domain_name             = "www.${z.name}"
     dns_name                = z.name
     dns_resource_group_name = z.resource_group_name
     ttl                     = var.env != "p" ? 300 : 3600
   }]
 
-  #--------------------------------------------------
-  # ⚠️ Redirect Rules - Handles root URL redirection to main domain
-  #--------------------------------------------------
-  bonus_redirect_urls = [
+  custom_domains = flatten([[for z in local.all_bonus_zones_apex : {
+    domain_name             = z.name
+    dns_name                = z.name
+    dns_resource_group_name = z.resource_group_name
+    ttl                     = var.env != "p" ? 300 : 3600
+    }],
+    local.all_www_bonus_zones
+  ])
+
+  only_one_redirect = [
     {
       name              = "RootRedirect"
       order             = 0
@@ -33,9 +38,9 @@ locals {
       // conditions
       url_path_conditions = [
         {
-          operator         = "Equal"
-          match_values     = ["/"]
-          negate_condition = false
+          operator         = "Any"
+          match_values     = null
+          negate_condition = null
           transforms       = null
         }
       ]
@@ -46,13 +51,46 @@ locals {
           redirect_type = "Found"
           protocol      = "Https"
           hostname      = "ioapp.it"
-          path          = "/"
+          path          = "/bonus-elettrodomestici"
           fragment      = ""
           query_string  = ""
         }
       ]
     }
   ]
+
+  bonus_redirect_local = [{
+    name              = "RootRedirect"
+    order             = 0
+    behavior_on_match = "Stop"
+
+    // conditions
+    url_path_conditions = [
+      {
+        operator         = "Equal"
+        match_values     = ["/"]
+        negate_condition = false
+        transforms       = null
+      }
+    ]
+
+    // actions
+    url_redirect_actions = [
+      {
+        redirect_type = "Found"
+        protocol      = "Https"
+        hostname      = "ioapp.it"
+        path          = "/bonus-elettrodomestici"
+        fragment      = ""
+        query_string  = ""
+      }
+    ] }
+  ]
+
+  #--------------------------------------------------
+  # ⚠️ Redirect Rules - Handles root URL redirection to main domain
+  #--------------------------------------------------
+  bonus_redirect_urls = var.enable_only_one_redirect ? local.only_one_redirect : local.bonus_redirect_local
 
   # Security Headers - Applied globally to all responses
   # These headers enhance security by preventing common attacks
@@ -104,19 +142,20 @@ locals {
   app_delivery_rules = concat([
     # Cittadino Application Rule - Handles citizen portal routing
     {
-      name  = "RewriteUtenteCittadinoApplication"
-      order = 10
+      name              = "RewriteUtenteCittadinoApplication"
+      order             = 10
+      behavior_on_match = "Stop"
 
       url_path_conditions = [
         {
           operator         = "BeginsWith"
-          match_values     = ["/utente/assets"]
+          match_values     = ["/utente/assets/"]
           negate_condition = true
           transforms       = null
         },
         {
           operator         = "BeginsWith"
-          match_values     = ["/utente"]
+          match_values     = ["/utente/"]
           negate_condition = false
           transforms       = null
         }
@@ -137,19 +176,20 @@ locals {
     },
     # Esercenti Application Rule - Handles merchant portal routing
     {
-      name  = "RewritePortaleEsercentiApplication"
-      order = 15
+      name              = "RewritePortaleEsercentiApplication"
+      order             = 15
+      behavior_on_match = "Stop"
 
       url_path_conditions = [
         {
           operator         = "BeginsWith"
-          match_values     = ["/esercente/assets"]
+          match_values     = ["/esercente/assets/"]
           negate_condition = true
           transforms       = []
         },
         {
           operator         = "BeginsWith"
-          match_values     = ["/esercente"]
+          match_values     = ["/esercente/"]
           negate_condition = false
           transforms       = null
         }
@@ -167,15 +207,14 @@ locals {
         destination             = "/esercente/index.html"
         preserve_unmatched_path = false
       }]
-    }
-    ],
+    }],
   )
 
   # Calculate the total number of rewrite rules for subsequent order calculations
   total_rewrite_rules = length(local.app_delivery_rules)
 
   # Additional Delivery Rules - Non-rewrite rules (redirects, headers, caching)
-  delivery_custom_rules = [
+  delivery_custom_rules = flatten([
     {
       name  = "robotsNoIndex"
       order = 20 + local.total_rewrite_rules + 2
@@ -223,7 +262,32 @@ locals {
         }
       ]
     },
-  ]
+    [for i in local.public_dns_zone_bonus_elettrodomestici.zones : {
+      name              = format("www%s", join("", [for p in split(".", i) : title(p)]))
+      order             = 3 + index(local.public_dns_zone_bonus_elettrodomestici.zones, i)
+      behavior_on_match = "Stop"
+
+      host_name_condition = [
+        {
+          operator         = "Equal"
+          match_values     = ["www.${i}"]
+          negate_condition = false
+          transforms       = null
+        }
+      ]
+
+      url_redirect_actions = [
+        {
+          redirect_type = "Found"
+          protocol      = "Https"
+          hostname      = i
+          path          = null
+          fragment      = null
+          query_string  = null
+        }
+      ]
+    }]
+  ])
 }
 
 // Public CDN to serve frontend - main domain

@@ -1,15 +1,13 @@
 locals {
   argocd_applications = {
     "top" = merge(
-      # To be removed as soon as the first real application is added.
-      var.env_short == "d" ? {
-        "one-color" = {
-          name          = "one-color"
+      {
+        "rtp-activator" = {
+          name          = "rtp-activator"
           target_branch = "main"
           env           = ["dev", "uat", "prod"]
         }
-      } : {},
-      {}
+      }
     )
     "mid" = {}
     "ext" = {}

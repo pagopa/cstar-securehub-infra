@@ -1,10 +1,3 @@
-resource "azurerm_resource_group" "idpay_monitoring_rg" {
-  name     = "${local.project}-monitor-rg"
-  location = var.location
-
-  tags = module.tag_config.tags
-}
-
 resource "azurerm_log_analytics_workspace" "log_analytics_workspace" {
   name                = "${local.project}-law"
   location            = data.azurerm_resource_group.idpay_monitoring_rg.location
@@ -49,4 +42,37 @@ resource "azurerm_api_management_logger" "apim_logger" {
   application_insights {
     instrumentation_key = azurerm_application_insights.idpay_application_insights.instrumentation_key
   }
+}
+
+### Action Group
+resource "azurerm_monitor_action_group" "email" {
+  count               = contains(["p", "u"], var.env_short) ? 1 : 0
+  name                = local.monitor_action_group_email_name
+  resource_group_name = local.monitor_rg
+  short_name          = "pari-email"
+  enabled             = true
+
+  dynamic "email_receiver" {
+    for_each = var.env_short == "u" ? [1] : []
+    content {
+      name                    = "pari-alerts-email_-EmailAction-"
+      email_address           = "pari.alert.test@gmail.com"
+      use_common_alert_schema = false
+    }
+  }
+}
+
+resource "azurerm_monitor_action_group" "idpay_opsgenie" { #
+  count               = var.env_short == "p" ? 1 : 0
+  name                = "IdpayOpsgenie"
+  resource_group_name = local.monitor_rg
+  short_name          = "Idpaygenie" # -> Max 12 char
+
+  webhook_receiver {
+    name                    = "IdpayOpsgenieWebhook"
+    service_uri             = "https://api.opsgenie.com/v1/json/azure?apiKey=${data.azurerm_key_vault_secret.opsgenie-idpay-apy-key-client-secret[0].value}"
+    use_common_alert_schema = true
+  }
+
+  tags = module.tag_config.tags
 }

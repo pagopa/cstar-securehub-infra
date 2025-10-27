@@ -1,46 +1,60 @@
+locals {
+  influxdb_enabled = var.env != "prod"
+}
+
 resource "kubernetes_namespace" "influxdb_namespace" {
+  count = local.influxdb_enabled ? 1 : 0
+
   metadata {
     name = "platform-influxdb"
   }
 }
 
 locals {
-  influxdb_namespace = kubernetes_namespace.influxdb_namespace.metadata[0].name
+  influxdb_namespace      = try(kubernetes_namespace.influxdb_namespace[0].metadata[0].name, null)
+  influxdb_admin_username = "admin"
+  influxdb_admin_password = try(random_password.influxdb_admin_password[0].result, null)
+  influxdb_admin_token    = try(random_password.influxdb_admin_token[0].result, null)
 }
 
 #-------------------------------------------------------------------------
 # password and token generation
 #-------------------------------------------------------------------------
 resource "random_password" "influxdb_admin_password" {
+  count   = local.influxdb_enabled ? 1 : 0
   length  = 33
   special = false
 }
 
 resource "random_password" "influxdb_admin_token" {
+  count   = local.influxdb_enabled ? 1 : 0
   length  = 33
   special = false
 }
 
 resource "azurerm_key_vault_secret" "influxdb_admin_username" {
+  count        = local.influxdb_enabled ? 1 : 0
   name         = "influxdb-admin-username"
   key_vault_id = data.azurerm_key_vault.cicd_kv.id
-  value        = "admin"
+  value        = local.influxdb_admin_username
 
   tags = module.tag_config.tags
 }
 
 resource "azurerm_key_vault_secret" "influxdb_admin_password" {
+  count        = local.influxdb_enabled ? 1 : 0
   name         = "influxdb-admin-password"
   key_vault_id = data.azurerm_key_vault.cicd_kv.id
-  value        = random_password.influxdb_admin_password.result
+  value        = local.influxdb_admin_password
 
   tags = module.tag_config.tags
 }
 
 resource "azurerm_key_vault_secret" "influxdb_admin_token" {
+  count        = local.influxdb_enabled ? 1 : 0
   name         = "influxdb-admin-token"
   key_vault_id = data.azurerm_key_vault.cicd_kv.id
-  value        = random_password.influxdb_admin_token.result
+  value        = local.influxdb_admin_token
 
   tags = module.tag_config.tags
 }
@@ -49,7 +63,7 @@ resource "azurerm_key_vault_secret" "influxdb_admin_token" {
 # 📦 ArgoCD Application - InfluxDB2
 #-------------------------------------------------------------------------
 resource "argocd_application" "influxdb2" {
-  count = var.env_short != "p" ? 1 : 0
+  count = local.influxdb_enabled ? 1 : 0
 
   metadata {
     name      = "influxdb2"
@@ -85,9 +99,9 @@ resource "argocd_application" "influxdb2" {
           tolerations     = try(var.influxdb2_helm.tolerations, [])
           affinity        = try(var.influxdb2_helm.affinity, {})
           admin_user = {
-            username = azurerm_key_vault_secret.influxdb_admin_username.value
-            password = random_password.influxdb_admin_password.result
-            token    = random_password.influxdb_admin_token.result
+            username = local.influxdb_admin_username
+            password = local.influxdb_admin_password
+            token    = local.influxdb_admin_token
           }
         })
       }
@@ -104,6 +118,7 @@ resource "argocd_application" "influxdb2" {
 # 🌐 Network
 #-------------------------------------------------------------------------------
 resource "azurerm_private_dns_a_record" "influxdb_ingress" {
+  count               = local.influxdb_enabled ? 1 : 0
   name                = "influxdb.itn"
   zone_name           = data.azurerm_private_dns_zone.internal.name
   resource_group_name = data.azurerm_private_dns_zone.internal.resource_group_name
@@ -118,6 +133,7 @@ resource "azurerm_private_dns_a_record" "influxdb_ingress" {
 #---------------------------------------------------------------
 
 module "influxdb_cert_mounter_workload_identity_init" {
+  count  = local.influxdb_enabled ? 1 : 0
   source = "./.terraform/modules/__v4__/kubernetes_workload_identity_init"
 
   workload_identity_name_prefix         = "influxdb-cert-mounter"
@@ -130,6 +146,7 @@ module "influxdb_cert_mounter_workload_identity_init" {
 }
 
 module "influxdb_cert_mounter_workload_identity_configuration" {
+  count  = local.influxdb_enabled ? 1 : 0
   source = "./.terraform/modules/__v4__/kubernetes_workload_identity_configuration"
 
   workload_identity_name_prefix         = "influxdb-cert-mounter"
@@ -151,14 +168,15 @@ module "influxdb_cert_mounter_workload_identity_configuration" {
 }
 
 module "influxdb_cert_mounter_internal_domain_certificate" {
+  count            = local.influxdb_enabled ? 1 : 0
   source           = "./.terraform/modules/__v4__/cert_mounter"
   namespace        = local.influxdb_namespace
   certificate_name = replace(local.influxdb_internal_url, ".", "-")
   kv_name          = data.azurerm_key_vault.core_kv.name
   tenant_id        = data.azurerm_subscription.current.tenant_id
 
-  workload_identity_service_account_name = module.influxdb_cert_mounter_workload_identity_configuration.workload_identity_service_account_name
-  workload_identity_client_id            = module.influxdb_cert_mounter_workload_identity_configuration.workload_identity_client_id
+  workload_identity_service_account_name = module.influxdb_cert_mounter_workload_identity_configuration[count.index].workload_identity_service_account_name
+  workload_identity_client_id            = module.influxdb_cert_mounter_workload_identity_configuration[count.index].workload_identity_client_id
 
   depends_on = [
     argocd_application.influxdb2,
@@ -167,6 +185,7 @@ module "influxdb_cert_mounter_internal_domain_certificate" {
 }
 
 resource "helm_release" "reloader_influxdb" {
+  count      = local.influxdb_enabled ? 1 : 0
   name       = "reloader"
   repository = "https://stakater.github.io/stakater-charts"
   chart      = "reloader"
