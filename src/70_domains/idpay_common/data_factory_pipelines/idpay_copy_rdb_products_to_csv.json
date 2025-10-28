@@ -60,7 +60,9 @@
         "dependsOn": [
           {
             "activity": "Copy_Cosmos_to_CSV",
-            "dependencyConditions": ["Succeeded"]
+            "dependencyConditions": [
+              "Succeeded"
+            ]
           }
         ],
         "policy": {
