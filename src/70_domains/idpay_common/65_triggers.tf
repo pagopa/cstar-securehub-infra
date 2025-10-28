@@ -62,8 +62,8 @@ resource "azurerm_data_factory_trigger_schedule" "weekly_triggers" {
   }
   schedule {
     days_of_week = ["Monday"]
-    hours   = [2]
-    minutes = [0]
+    hours        = [2]
+    minutes      = [0]
   }
 
   depends_on = [azurerm_data_factory_pipeline.pipelines]
