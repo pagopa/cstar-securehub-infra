@@ -2,7 +2,7 @@
   "name": "data_export_csv",
   "properties": {
     "linkedServiceName": {
-      "referenceName": "EstrazioneProdotti",
+      "referenceName": "idpay-bonus-blob-storage-ls",
       "type": "LinkedServiceReference"
     },
     "annotations": [],
