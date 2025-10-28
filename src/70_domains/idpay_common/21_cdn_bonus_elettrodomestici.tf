@@ -358,7 +358,7 @@ locals {
   ])
 
   ## Static content for Bonus Elettrodomestici
-  ## Elenco Informatico Elettrodomesici
+  ## Elenco Informatico Elettrodomestici
   upload_eie_files = fileset("${path.module}/cdn/bonus-el-products", "**")
   ## Point of Sales
   upload_pos_files = fileset("${path.module}/cdn/bonus-el-pos", "**")
