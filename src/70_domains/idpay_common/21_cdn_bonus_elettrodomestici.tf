@@ -29,68 +29,69 @@ locals {
     local.all_www_bonus_zones
   ])
 
-  only_one_redirect = [
-    {
-      name              = "RootRedirect"
-      order             = 0
-      behavior_on_match = "Stop"
-
-      // conditions
-      url_path_conditions = [
-        {
-          operator         = "Any"
-          match_values     = null
-          negate_condition = null
-          transforms       = null
-        }
-      ]
-
-      // actions
-      url_redirect_actions = [
-        {
-          redirect_type = "Found"
-          protocol      = "Https"
-          hostname      = "ioapp.it"
-          path          = "/bonus-elettrodomestici"
-          fragment      = ""
-          query_string  = ""
-        }
-      ]
-    }
-  ]
-
-  bonus_redirect_local = [{
-    name              = "RootRedirect"
-    order             = 0
-    behavior_on_match = "Stop"
-
-    // conditions
-    url_path_conditions = [
+  bonus_redirect = flatten([
+    [
       {
-        operator         = "Equal"
-        match_values     = ["/"]
-        negate_condition = false
-        transforms       = null
-      }
-    ]
+        name              = "RootRedirect"
+        order             = 0
+        behavior_on_match = "Stop"
 
-    // actions
-    url_redirect_actions = [
-      {
-        redirect_type = "Found"
-        protocol      = "Https"
-        hostname      = "ioapp.it"
-        path          = "/bonus-elettrodomestici"
-        fragment      = ""
-        query_string  = ""
+        url_path_conditions = [
+          {
+            operator         = "Equal"
+            match_values     = ["/"]
+            negate_condition = false
+            transforms       = null
+          }
+        ]
+
+        url_redirect_actions = [
+          {
+            redirect_type = "Found"
+            protocol      = "Https"
+            hostname      = "ioapp.it"
+            path          = "/bonus-elettrodomestici"
+            fragment      = ""
+            query_string  = ""
+          }
+        ]
       }
-    ] }
-  ]
+    ],
+
+    var.cdn_rewrite_disable_cittadino ? [
+      {
+        name              = "UtenteRedirect"
+        order             = 50
+        behavior_on_match = "Continue"
+
+        // conditions
+        url_path_conditions = [
+          {
+            operator         = "BeginsWith"
+            match_values     = ["/utente"]
+            negate_condition = false
+            transforms       = null
+          }
+        ]
+
+        // actions
+        url_redirect_actions = [
+          {
+            redirect_type = "Found"
+            protocol      = "Https"
+            hostname      = "ioapp.it"
+            path          = "/bonus-elettrodomestici"
+            fragment      = ""
+            query_string  = ""
+          }
+        ]
+      }
+    ] : []
+  ])
 
   #--------------------------------------------------
   # ⚠️ Redirect Rules - Handles root URL redirection to main domain
   #--------------------------------------------------
-  bonus_redirect_urls = var.enable_only_one_redirect ? local.only_one_redirect : local.bonus_redirect_local
 
   # Security Headers - Applied globally to all responses
   # These headers enhance security by preventing common attacks
@@ -139,9 +140,9 @@ locals {
   # Application Delivery Rules - URL Rewrite Rules
   # These rules handle routing for different frontend applications
   # by rewriting URLs to serve the correct index.html files
-  app_delivery_rules = concat([
+  app_delivery_rules = flatten([
     # Cittadino Application Rule - Handles citizen portal routing
-    {
+    var.cdn_rewrite_disable_cittadino ? [] : [{
       name              = "RewriteUtenteCittadinoApplication"
       order             = 10
       behavior_on_match = "Stop"
@@ -173,7 +174,7 @@ locals {
         destination             = "/utente/index.html"
         preserve_unmatched_path = false
       }]
-    },
+    }],
     # Esercenti Application Rule - Handles merchant portal routing
     {
       name              = "RewritePortaleEsercentiApplication"
@@ -313,7 +314,7 @@ module "cdn_idpay_bonuselettrodomestici" {
   querystring_caching_behaviour = "IgnoreQueryString"
   log_analytics_workspace_id    = data.azurerm_log_analytics_workspace.core_log_analytics.id
 
-  delivery_rule_redirects = local.bonus_redirect_urls
+  delivery_rule_redirects = local.bonus_redirect
 
   # Global Delivery Rules
   global_delivery_rules = local.global_delivery_rules
