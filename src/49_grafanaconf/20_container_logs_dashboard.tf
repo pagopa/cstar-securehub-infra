@@ -2,20 +2,22 @@ locals {
   ref_group_names_by_team = {
     for team, groups in var.team_groups :
     team => {
-      admin      = try(element(compact([for k in keys(groups) : endswith(k, "-adgroup-admin") ? k : ""]), 0), null)
-      developers = try(element(compact([for k in keys(groups) : endswith(k, "-adgroup-developers") ? k : ""]), 0), null)
-      externals  = try(element(compact([for k in keys(groups) : endswith(k, "-adgroup-externals") ? k : ""]), 0), null)
-      oncall     = try(element(compact([for k in keys(groups) : endswith(k, "-adgroup-oncall") ? k : ""]), 0), null)
+      admin            = try(element(compact([for k in keys(groups) : endswith(k, "-adgroup-admin") ? k : ""]), 0), null)
+      developers       = try(element(compact([for k in keys(groups) : endswith(k, "-adgroup-developers") ? k : ""]), 0), null)
+      externals        = try(element(compact([for k in keys(groups) : endswith(k, "-adgroup-externals") ? k : ""]), 0), null)
+      oncall           = try(element(compact([for k in keys(groups) : endswith(k, "-adgroup-oncall") ? k : ""]), 0), null)
+      project-managers = try(element(compact([for k in keys(groups) : endswith(k, "-adgroup-project-managers") ? k : ""]), 0), null)
     }
   }
 
   role_permissions_by_team = {
     for team, refs in local.ref_group_names_by_team :
     team => {
-      admin      = try(var.team_groups[team][refs.admin].permission, null)
-      developers = try(var.team_groups[team][refs.developers].permission, null)
-      externals  = try(var.team_groups[team][refs.externals].permission, null)
-      oncall     = try(var.team_groups[team][refs.oncall].permission, null)
+      admin            = try(var.team_groups[team][refs.admin].permission, null)
+      developers       = try(var.team_groups[team][refs.developers].permission, null)
+      externals        = try(var.team_groups[team][refs.externals].permission, null)
+      oncall           = try(var.team_groups[team][refs.oncall].permission, null)
+      project-managers = try(var.team_groups[team][refs.project-managers].permission, null)
     }
   }
 
@@ -26,10 +28,11 @@ locals {
 
   team_role_defs = merge([
     for team, _ in local.teams_with_groups : {
-      "${team}:admin"  = { team = team, name = "${team}-admin", role = "admin" }
-      "${team}:dev"    = { team = team, name = "${team}-developers", role = "developers" }
-      "${team}:ext"    = { team = team, name = "${team}-externals", role = "externals" }
-      "${team}:oncall" = { team = team, name = "${team}-oncall", role = "oncall" }
+      "${team}:admin"            = { team = team, name = "${team}-admin", role = "admin" }
+      "${team}:dev"              = { team = team, name = "${team}-developers", role = "developers" }
+      "${team}:ext"              = { team = team, name = "${team}-externals", role = "externals" }
+      "${team}:oncall"           = { team = team, name = "${team}-oncall", role = "oncall" }
+      "${team}:project-managers" = { team = team, name = "${team}-project-managers", role = "project-managers" }
     }
   ]...)
 
@@ -39,7 +42,8 @@ locals {
       perms.admin != null ? { admin = perms.admin } : {},
       perms.developers != null ? { dev = perms.developers } : {},
       perms.externals != null ? { ext = perms.externals } : {},
-      perms.oncall != null ? { ext = perms.oncall } : {}
+      perms.oncall != null ? { ext = perms.oncall } : {},
+      perms.project-managers != null ? { ext = perms.project-managers } : {}
     )
   }
 
@@ -49,7 +53,8 @@ locals {
       try({ admin = grafana_team.team_roles["${team}:admin"].id }, {}),
       try({ dev = grafana_team.team_roles["${team}:dev"].id }, {}),
       try({ ext = grafana_team.team_roles["${team}:ext"].id }, {}),
-      try({ oncall = grafana_team.team_roles["${team}:oncall"].id }, {})
+      try({ oncall = grafana_team.team_roles["${team}:oncall"].id }, {}),
+      try({ project-managers = grafana_team.team_roles["${team}:project-managers"].id }, {})
     )
   }
 }
@@ -61,7 +66,8 @@ data "azuread_group" "ref_by_display_name" {
         { key = "${team}:admin", name = refs.admin },
         { key = "${team}:developers", name = refs.developers },
         { key = "${team}:externals", name = refs.externals },
-        { key = "${team}:oncall", name = refs.oncall }
+        { key = "${team}:oncall", name = refs.oncall },
+        { key = "${team}:project-managers", name = refs.project-managers }
       ] : pair.key => pair if pair.name != null
     }
   ]...)
