@@ -2,7 +2,7 @@
     "name": "cosmos_idpay_wallet",
     "properties": {
         "linkedServiceName": {
-            "referenceName": "idpay_CosmosDB_idpay_ls",
+            "referenceName": "idpay-CosmosDB-idpay-beneficiari-ls",
             "type": "LinkedServiceReference"
         },
         "annotations": [],
