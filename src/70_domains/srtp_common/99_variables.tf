@@ -101,12 +101,22 @@ variable "k8s_kube_config_path_prefix" {
   default = "~/.kube"
 }
 
-variable "aks_user_nodepool" {
+variable "aks_nodepool_blue" {
   type = object({
     vm_sku_name       = string
     autoscale_enabled = optional(bool, true)
     node_count_min    = number
     node_count_max    = number
   })
-  description = "Paramters for node pool"
+  description = "Parameters for blue node pool"
+}
+
+variable "aks_nodepool_green" {
+  type = object({
+    vm_sku_name       = string
+    autoscale_enabled = optional(bool, true)
+    node_count_min    = number
+    node_count_max    = number
+  })
+  description = "Parameters for green node pool"
 }
