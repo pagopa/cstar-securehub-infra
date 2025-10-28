@@ -242,7 +242,7 @@ locals {
         preserve_unmatched_path = false
       }]
     },
-    # Lista punta vendita statica Rule - Handles Point Of Sales portal routing
+    # Lista punti vendita statica Rule - Handles Point Of Sales portal routing
     {
       name              = "RewritePOSStaticApplication"
       order             = 17
