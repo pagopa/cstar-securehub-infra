@@ -18,7 +18,7 @@
                         "referenceName": "data_export_csv",
                         "type": "DatasetReference"
                     },
-                    "name": "CSVTrasformed"
+                    "name": "CSVTransformed"
                 }
             ],
             "transformations": [
@@ -70,7 +70,7 @@
                 "          energyClass = iif(",
                 "  isNull(byName('energyClass'))",
                 "  || lower(trim(toString(byName('energyClass')))) == 'null'",
-                "  || lower(trim(toString(byName('energyClass')))) == 'n\\\\a'",
+                "  || lower(trim(toString(byName('energyClass')))) == 'n/a'",
                 "  || lower(trim(toString(byName('energyClass')))) == 'n\\\\a'",
                 "  || trim(toString(byName('energyClass'))) == '-',",
                 "  '/',",
@@ -79,7 +79,7 @@
                 "          eprelCode = iif(",
                 "  isNull(byName('eprelCode'))",
                 "  || lower(trim(toString(byName('eprelCode')))) == 'null'",
-                "  || lower(trim(toString(byName('eprelCode')))) == 'n\\\\a'",
+                "  || lower(trim(toString(byName('eprelCode')))) == 'n/a'",
                 "  || lower(trim(toString(byName('eprelCode')))) == 'n\\\\a'",
                 "  || trim(toString(byName('eprelCode'))) == '-',",
                 "  '/',",
@@ -88,7 +88,6 @@
                 "          productGroup = iif(",
                 "  isNull(byName('productGroup'))",
                 "  || lower(trim(toString(byName('productGroup')))) == 'null'",
-                "  || lower(trim(toString(byName('productGroup')))) == 'n\\\\a'",
                 "  || lower(trim(toString(byName('productGroup')))) == 'n\\\\a'",
                 "  || trim(toString(byName('productGroup'))) == '-',",
                 "  '/',",
@@ -124,7 +123,7 @@
                 "     partitionFileNames:[('export_weekly_' + toString(currentUTC(), 'yyyy-MM-dd') + '.csv')],",
                 "     skipDuplicateMapInputs: true,",
                 "     skipDuplicateMapOutputs: true,",
-                "     partitionBy('hash', 1)) ~> CSVTrasformed"
+                "     partitionBy('hash', 1)) ~> CSVTransformed"
             ]
         }
     }
