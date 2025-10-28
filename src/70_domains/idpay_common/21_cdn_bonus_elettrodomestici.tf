@@ -207,8 +207,76 @@ locals {
         destination             = "/esercente/index.html"
         preserve_unmatched_path = false
       }]
-    }],
-  )
+    },
+    # Elenco informatico elettrodomestici statico Rule - Handles EIE portal routing
+    {
+      name              = "RewriteEIEStaticApplication"
+      order             = 16
+      behavior_on_match = "Stop"
+
+      url_path_conditions = [
+        {
+          operator         = "BeginsWith"
+          match_values     = ["/elenco-informatico-elettrodomestici/assets/"]
+          negate_condition = true
+          transforms       = []
+        },
+        {
+          operator         = "BeginsWith"
+          match_values     = ["/elenco-informatico-elettrodomestici/"]
+          negate_condition = false
+          transforms       = null
+        }
+      ]
+
+      url_file_extension_conditions = [{
+        operator         = "LessThanOrEqual"
+        match_values     = ["0"]
+        negate_condition = false
+        transforms       = []
+      }]
+
+      url_rewrite_actions = [{
+        source_pattern          = "/elenco-informatico-elettrodomestici"
+        destination             = "/elenco-informatico-elettrodomestici/index.html"
+        preserve_unmatched_path = false
+      }]
+    },
+    # Lista punti vendita statica Rule - Handles Point Of Sales portal routing
+    {
+      name              = "RewritePOSStaticApplication"
+      order             = 17
+      behavior_on_match = "Stop"
+
+      url_path_conditions = [
+        {
+          operator         = "BeginsWith"
+          match_values     = ["/lista-punti-vendita/assets/"]
+          negate_condition = true
+          transforms       = []
+        },
+        {
+          operator         = "BeginsWith"
+          match_values     = ["/lista-punti-vendita/"]
+          negate_condition = false
+          transforms       = null
+        }
+      ]
+
+      url_file_extension_conditions = [{
+        operator         = "LessThanOrEqual"
+        match_values     = ["0"]
+        negate_condition = false
+        transforms       = []
+      }]
+
+      url_rewrite_actions = [{
+        source_pattern          = "/lista-punti-vendita"
+        destination             = "/lista-punti-vendita/index.html"
+        preserve_unmatched_path = false
+      }]
+    },
+  ])
 
   # Calculate the total number of rewrite rules for subsequent order calculations
   total_rewrite_rules = length(local.app_delivery_rules)
@@ -288,6 +356,48 @@ locals {
       ]
     }]
   ])
+
+  ## Static content for Bonus Elettrodomestici
+  ## Elenco Informatico Elettrodomestici
+  upload_eie_files = fileset("${path.module}/cdn/bonus-el-products", "**")
+  ## Point of Sales
+  upload_pos_files = fileset("${path.module}/cdn/bonus-el-pos", "**")
+
+  content_type_map = {
+    ".html"  = "text/html"
+    ".htm"   = "text/html"
+    ".css"   = "text/css"
+    ".js"    = "application/javascript"
+    ".mjs"   = "application/javascript"
+    ".json"  = "application/json"
+    ".map"   = "application/json"
+    ".png"   = "image/png"
+    ".jpg"   = "image/jpeg"
+    ".jpeg"  = "image/jpeg"
+    ".gif"   = "image/gif"
+    ".svg"   = "image/svg+xml"
+    ".ico"   = "image/x-icon"
+    ".webp"  = "image/webp"
+    ".avif"  = "image/avif"
+    ".txt"   = "text/plain"
+    ".xml"   = "application/xml"
+    ".pdf"   = "application/pdf"
+    ".csv"   = "text/csv"
+    ".mp4"   = "video/mp4"
+    ".webm"  = "video/webm"
+    ".ogg"   = "audio/ogg"
+    ".mp3"   = "audio/mpeg"
+    ".wav"   = "audio/wav"
+    ".woff"  = "font/woff"
+    ".woff2" = "font/woff2"
+    ".ttf"   = "font/ttf"
+    ".otf"   = "font/otf"
+    ".eot"   = "application/vnd.ms-fontobject"
+    ".wasm"  = "application/wasm"
+    ".zip"   = "application/zip"
+    ".gz"    = "application/gzip"
+  }
+
 }
 
 // Public CDN to serve frontend - main domain
@@ -328,4 +438,36 @@ module "cdn_idpay_bonuselettrodomestici" {
   custom_domains = local.custom_domains
 
   tags = module.tag_config.tags
+}
+
+## Upload static content for Bonus Elettrodomesici - products
+resource "azurerm_storage_blob" "eie_static_files" {
+  for_each = toset(local.upload_eie_files)
+
+  name                   = "elenco-informatico-elettrodomestici/${each.value}"
+  storage_account_name   = module.cdn_idpay_bonuselettrodomestici.storage_name
+  storage_container_name = "$web"
+  type                   = "Block"
+  source                 = "${path.module}/cdn/bonus-el-products/${each.value}"
+  content_type = lookup(
+    local.content_type_map,
+    try(lower(regex("\\.[^.]+$", each.value)), ""),
+    "application/octet-stream"
+  )
+}
+
+## Upload static content for Bonus Elettrodomesici - point of sales
+resource "azurerm_storage_blob" "pos_static_files" {
+  for_each = toset(local.upload_pos_files)
+
+  name                   = "lista-punti-vendita/${each.value}"
+  storage_account_name   = module.cdn_idpay_bonuselettrodomestici.storage_name
+  storage_container_name = "$web"
+  type                   = "Block"
+  source                 = "${path.module}/cdn/bonus-el-pos/${each.value}"
+  content_type = lookup(
+    local.content_type_map,
+    try(lower(regex("\\.[^.]+$", each.value)), ""),
+    "application/octet-stream"
+  )
 }

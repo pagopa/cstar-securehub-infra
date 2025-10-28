@@ -93,3 +93,10 @@ oneidentity_base_url = "https://oneid.pagopa.it"
 
 ### CDN
 enable_only_one_redirect = true
+
+### CosmosDB
+additional_geo_locations = [{
+  location          = "germanywestcentral"
+  failover_priority = 1
+  zone_redundant    = false
+}]
