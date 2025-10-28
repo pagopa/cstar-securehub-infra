@@ -1,5 +1,5 @@
 locals {
-  # Tutte le pipeline
+  # All pipelines
   trigger_pipelines = {
     for key, tmpl in local.pipeline_templates : key => key
   }
