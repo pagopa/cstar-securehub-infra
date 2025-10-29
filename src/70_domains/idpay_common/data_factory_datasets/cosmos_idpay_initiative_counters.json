@@ -1,14 +1,14 @@
 {
-    "name": "cosmos_idpay_transaction",
+    "name": "cosmos_idpay_initiative_counters",
     "properties": {
         "linkedServiceName": {
-            "referenceName": "idpay-CosmosDB-idpay-pagamenti-ls",
+            "referenceName": "idpay-CosmosDB-idpay-beneficiari-ls",
             "type": "LinkedServiceReference"
         },
         "annotations": [],
         "type": "CosmosDbMongoDbApiCollection",
         "typeProperties": {
-            "collection": "transaction"
+            "collection": "initiative_counters"
         }
     },
     "type": "Microsoft.DataFactory/factories/datasets"
