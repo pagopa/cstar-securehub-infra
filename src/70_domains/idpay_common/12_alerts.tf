@@ -40,7 +40,7 @@ QUERY
         azurerm_monitor_action_group.idpay_opsgenie[0].id
       ] : [])
     ])
-    email_subject          = "[PARI] Portal Consent – save API alert (5xx/401/429)"
+    email_subject = "[PARI] Portal Consent – save API alert (5xx/401/429)"
   }
 }
 
@@ -82,7 +82,7 @@ QUERY
         azurerm_monitor_action_group.idpay_opsgenie[0].id
       ] : [])
     ])
-    email_subject          = "[PARI] Portal Consent – save API alert (400)"
+    email_subject = "[PARI] Portal Consent – save API alert (400)"
   }
 }
 
@@ -124,7 +124,7 @@ QUERY
         azurerm_monitor_action_group.idpay_opsgenie[0].id
       ] : [])
     ])
-    email_subject          = "[PARI] Portal Consent GET /consent alert (5xx/401/429)"
+    email_subject = "[PARI] Portal Consent GET /consent alert (5xx/401/429)"
   }
 }
 
@@ -166,7 +166,7 @@ QUERY
         azurerm_monitor_action_group.idpay_opsgenie[0].id
       ] : [])
     ])
-    email_subject          = "[PARI] Portal Consent GET /consent alert (400)"
+    email_subject = "[PARI] Portal Consent GET /consent alert (400)"
   }
 }
 
@@ -208,7 +208,7 @@ QUERY
         azurerm_monitor_action_group.idpay_opsgenie[0].id
       ] : [])
     ])
-    email_subject          = "[PARI] Product files – upload API alert (5xx/401/429)"
+    email_subject = "[PARI] Product files – upload API alert (5xx/401/429)"
   }
 }
 
@@ -250,7 +250,7 @@ QUERY
         azurerm_monitor_action_group.idpay_opsgenie[0].id
       ] : [])
     ])
-    email_subject          = "[PARI] Product files – upload API alert (400)"
+    email_subject = "[PARI] Product files – upload API alert (400)"
   }
 }
 
@@ -286,7 +286,7 @@ QUERY
         azurerm_monitor_action_group.idpay_opsgenie[0].id
       ] : [])
     ])
-    email_subject          = "[PARI] Product files verify alert"
+    email_subject = "[PARI] Product files verify alert"
   }
 
   trigger {
@@ -333,7 +333,7 @@ QUERY
         azurerm_monitor_action_group.idpay_opsgenie[0].id
       ] : [])
     ])
-    email_subject          = "[PARI] Products update status alert"
+    email_subject = "[PARI] Products update status alert"
   }
 
   trigger {
@@ -379,7 +379,7 @@ QUERY
         azurerm_monitor_action_group.idpay_opsgenie[0].id
       ] : [])
     ])
-    email_subject          = "[PARI][CRITICAL] GET /products alert: High 5xx errors"
+    email_subject = "[PARI][CRITICAL] GET /products alert: High 5xx errors"
   }
 }
 
@@ -420,7 +420,7 @@ QUERY
         azurerm_monitor_action_group.idpay_opsgenie[0].id
       ] : [])
     ])
-    email_subject          = "[PARI][CRITICAL] GET /products alert: High 400 errors"
+    email_subject = "[PARI][CRITICAL] GET /products alert: High 400 errors"
   }
 }
 
@@ -463,7 +463,7 @@ QUERY
         azurerm_monitor_action_group.idpay_opsgenie[0].id
       ] : [])
     ])
-    email_subject          = "[PARI][CRITICAL] GET /products alert: Availability is below 99%"
+    email_subject = "[PARI][CRITICAL] GET /products alert: Availability is below 99%"
   }
 }
 
@@ -505,7 +505,7 @@ QUERY
         azurerm_monitor_action_group.idpay_opsgenie[0].id
       ] : [])
     ])
-    email_subject          = "[PARI][HIGH] User Permissions alert (5xx or 401/429)"
+    email_subject = "[PARI][HIGH] User Permissions alert (5xx or 401/429)"
   }
 }
 
@@ -547,7 +547,7 @@ QUERY
         azurerm_monitor_action_group.idpay_opsgenie[0].id
       ] : [])
     ])
-    email_subject          = "[PARI][HIGH] User Permissions alert (400)"
+    email_subject = "[PARI][HIGH] User Permissions alert (400)"
   }
 }
 
@@ -589,7 +589,7 @@ QUERY
         azurerm_monitor_action_group.idpay_opsgenie[0].id
       ] : [])
     ])
-    email_subject          = "[PARI] Product files – list API alert (5xx)"
+    email_subject = "[PARI] Product files – list API alert (5xx)"
   }
 }
 
@@ -631,7 +631,7 @@ QUERY
         azurerm_monitor_action_group.idpay_opsgenie[0].id
       ] : [])
     ])
-    email_subject          = "[PARI] Error report download API alert (5xx)"
+    email_subject = "[PARI] Error report download API alert (5xx)"
   }
 }
 
@@ -673,7 +673,7 @@ QUERY
         azurerm_monitor_action_group.idpay_opsgenie[0].id
       ] : [])
     ])
-    email_subject          = "[PARI] Batch list API alert (5xx)"
+    email_subject = "[PARI] Batch list API alert (5xx)"
   }
 }
 
@@ -715,7 +715,7 @@ QUERY
         azurerm_monitor_action_group.idpay_opsgenie[0].id
       ] : [])
     ])
-    email_subject          = "[PARI] Institution by ID API alert (5xx)"
+    email_subject = "[PARI] Institution by ID API alert (5xx)"
   }
 }
 
@@ -752,7 +752,7 @@ QUERY
         azurerm_monitor_action_group.idpay_opsgenie[0].id
       ] : [])
     ])
-    email_subject          = "[PARI] Institutions list API alert (5xx)"
+    email_subject = "[PARI] Institutions list API alert (5xx)"
   }
 
   trigger {
@@ -795,7 +795,7 @@ QUERY
         azurerm_monitor_action_group.idpay_opsgenie[0].id
       ] : [])
     ])
-    email_subject          = "[PARI] Internal Email microservice dependency alert"
+    email_subject = "[PARI] Internal Email microservice dependency alert"
   }
 
   trigger {
@@ -838,7 +838,7 @@ QUERY
         azurerm_monitor_action_group.idpay_opsgenie[0].id
       ] : [])
     ])
-    email_subject          = "[PARI][HIGH] EPREL external dependency alert"
+    email_subject = "[PARI][HIGH] EPREL external dependency alert"
   }
 
   trigger {
@@ -889,7 +889,7 @@ QUERY
         azurerm_monitor_action_group.idpay_opsgenie[0].id
       ] : [])
     ])
-    email_subject          = "[PARI][ESE][HIGH] Capture Transaction API Alert (5xx)"
+    email_subject = "[PARI][ESE][HIGH] Capture Transaction API Alert (5xx)"
   }
 }
 
@@ -931,7 +931,7 @@ QUERY
         azurerm_monitor_action_group.idpay_opsgenie[0].id
       ] : [])
     ])
-    email_subject          = "[PARI][ESE][HIGH] Capture Transaction API Alert (4xx)"
+    email_subject = "[PARI][ESE][HIGH] Capture Transaction API Alert (4xx)"
   }
 }
 
@@ -973,7 +973,7 @@ QUERY
         azurerm_monitor_action_group.idpay_opsgenie[0].id
       ] : [])
     ])
-    email_subject          = "[PARI][ESE][HIGH] Preview Payment API Alert (5xx)"
+    email_subject = "[PARI][ESE][HIGH] Preview Payment API Alert (5xx)"
   }
 }
 
@@ -1015,7 +1015,7 @@ QUERY
         azurerm_monitor_action_group.idpay_opsgenie[0].id
       ] : [])
     ])
-    email_subject          = "[PARI][ESE][HIGH] Preview Payment API Alert (4xx)"
+    email_subject = "[PARI][ESE][HIGH] Preview Payment API Alert (4xx)"
   }
 }
 
@@ -1057,7 +1057,7 @@ QUERY
         azurerm_monitor_action_group.idpay_opsgenie[0].id
       ] : [])
     ])
-    email_subject          = "[PARI][ESE][HIGH] Authorize Payment API Alert (5xx)"
+    email_subject = "[PARI][ESE][HIGH] Authorize Payment API Alert (5xx)"
   }
 }
 
@@ -1099,7 +1099,7 @@ QUERY
         azurerm_monitor_action_group.idpay_opsgenie[0].id
       ] : [])
     ])
-    email_subject          = "[PARI][ESE][HIGH] Authorize Payment API Alert (4xx)"
+    email_subject = "[PARI][ESE][HIGH] Authorize Payment API Alert (4xx)"
   }
 }
 
@@ -1141,7 +1141,7 @@ QUERY
         azurerm_monitor_action_group.idpay_opsgenie[0].id
       ] : [])
     ])
-    email_subject          = "[PARI][ESE][LOW] Download Invoice File API Alert (5xx)"
+    email_subject = "[PARI][ESE][LOW] Download Invoice File API Alert (5xx)"
   }
 }
 
@@ -1183,7 +1183,7 @@ QUERY
         azurerm_monitor_action_group.idpay_opsgenie[0].id
       ] : [])
     ])
-    email_subject          = "[PARI][ESE][LOW] Download Invoice File API Alert (4xx)"
+    email_subject = "[PARI][ESE][LOW] Download Invoice File API Alert (4xx)"
   }
 }
 
@@ -1225,7 +1225,7 @@ QUERY
         azurerm_monitor_action_group.idpay_opsgenie[0].id
       ] : [])
     ])
-    email_subject          = "[PARI][ESE][HIGH] POS In Progress Transactions List API Alert (5xx)"
+    email_subject = "[PARI][ESE][HIGH] POS In Progress Transactions List API Alert (5xx)"
   }
 }
 
@@ -1267,7 +1267,7 @@ QUERY
         azurerm_monitor_action_group.idpay_opsgenie[0].id
       ] : [])
     ])
-    email_subject          = "[PARI][ESE][HIGH] POS In Progress Transactions List API Alert (4xx)"
+    email_subject = "[PARI][ESE][HIGH] POS In Progress Transactions List API Alert (4xx)"
   }
 }
 
@@ -1309,7 +1309,7 @@ QUERY
         azurerm_monitor_action_group.idpay_opsgenie[0].id
       ] : [])
     ])
-    email_subject          = "[PARI][ESE][HIGH] POS Processed Transactions List API Alert (5xx)"
+    email_subject = "[PARI][ESE][HIGH] POS Processed Transactions List API Alert (5xx)"
   }
 }
 
@@ -1351,7 +1351,7 @@ QUERY
         azurerm_monitor_action_group.idpay_opsgenie[0].id
       ] : [])
     ])
-    email_subject          = "[PARI][ESE][HIGH] POS Processed Transactions List API Alert (4xx)"
+    email_subject = "[PARI][ESE][HIGH] POS Processed Transactions List API Alert (4xx)"
   }
 }
 
@@ -1393,7 +1393,7 @@ QUERY
         azurerm_monitor_action_group.idpay_opsgenie[0].id
       ] : [])
     ])
-    email_subject          = "[PARI][ESE][LOW] Delete Transaction API Alert (5xx)"
+    email_subject = "[PARI][ESE][LOW] Delete Transaction API Alert (5xx)"
   }
 }
 
@@ -1435,7 +1435,7 @@ QUERY
         azurerm_monitor_action_group.idpay_opsgenie[0].id
       ] : [])
     ])
-    email_subject          = "[PARI][ESE][LOW] Delete Transaction API Alert (4xx)"
+    email_subject = "[PARI][ESE][LOW] Delete Transaction API Alert (4xx)"
   }
 }
 
@@ -1477,7 +1477,7 @@ QUERY
         azurerm_monitor_action_group.idpay_opsgenie[0].id
       ] : [])
     ])
-    email_subject          = "[PARI][ESE][HIGH] Reversal Transaction API Alert (5xx)"
+    email_subject = "[PARI][ESE][HIGH] Reversal Transaction API Alert (5xx)"
   }
 }
 
@@ -1519,7 +1519,7 @@ QUERY
         azurerm_monitor_action_group.idpay_opsgenie[0].id
       ] : [])
     ])
-    email_subject          = "[PARI][ESE][HIGH] Reward Transaction API Alert (5xx)"
+    email_subject = "[PARI][ESE][HIGH] Reward Transaction API Alert (5xx)"
   }
 }
 
@@ -1561,7 +1561,7 @@ QUERY
         azurerm_monitor_action_group.idpay_opsgenie[0].id
       ] : [])
     ])
-    email_subject          = "[PARI][ESE][LOW] Retrieve a point of sale API Alert (5xx)"
+    email_subject = "[PARI][ESE][LOW] Retrieve a point of sale API Alert (5xx)"
   }
 }
 
@@ -1603,7 +1603,7 @@ QUERY
         azurerm_monitor_action_group.idpay_opsgenie[0].id
       ] : [])
     ])
-    email_subject          = "[PARI][ESE][LOW] Retrieve a point of sale API Alert (4xx)"
+    email_subject = "[PARI][ESE][LOW] Retrieve a point of sale API Alert (4xx)"
   }
 }
 
@@ -1645,7 +1645,7 @@ QUERY
         azurerm_monitor_action_group.idpay_opsgenie[0].id
       ] : [])
     ])
-    email_subject          = "[PARI][ESE][HIGH] Products List API Alert (5xx)"
+    email_subject = "[PARI][ESE][HIGH] Products List API Alert (5xx)"
   }
 }
 
@@ -1687,7 +1687,7 @@ QUERY
         azurerm_monitor_action_group.idpay_opsgenie[0].id
       ] : [])
     ])
-    email_subject          = "[PARI][ESE][HIGH] Products List API Alert (4xx)"
+    email_subject = "[PARI][ESE][HIGH] Products List API Alert (4xx)"
   }
 }
 
@@ -1732,7 +1732,7 @@ QUERY
         azurerm_monitor_action_group.idpay_opsgenie[0].id
       ] : [])
     ])
-    email_subject          = "[PARI][UPBE][HIGH] Get Initiative ID API Alert (5xx)"
+    email_subject = "[PARI][UPBE][HIGH] Get Initiative ID API Alert (5xx)"
   }
 }
 
@@ -1773,7 +1773,7 @@ QUERY
         azurerm_monitor_action_group.idpay_opsgenie[0].id
       ] : [])
     ])
-    email_subject          = "[PARI][UPBE][HIGH] Get Initiative ID API Alert (400)"
+    email_subject = "[PARI][UPBE][HIGH] Get Initiative ID API Alert (400)"
   }
 }
 
@@ -1814,7 +1814,7 @@ QUERY
         azurerm_monitor_action_group.idpay_opsgenie[0].id
       ] : [])
     ])
-    email_subject          = "[PARI][UPBE][HIGH] Get Initiative ID API Alert (401/429)"
+    email_subject = "[PARI][UPBE][HIGH] Get Initiative ID API Alert (401/429)"
   }
 }
 
@@ -1855,7 +1855,7 @@ QUERY
         azurerm_monitor_action_group.idpay_opsgenie[0].id
       ] : [])
     ])
-    email_subject          = "[PARI][UPBE][HIGH] Get Initiative Detail API Alert (5xx)"
+    email_subject = "[PARI][UPBE][HIGH] Get Initiative Detail API Alert (5xx)"
   }
 }
 
@@ -1896,7 +1896,7 @@ QUERY
         azurerm_monitor_action_group.idpay_opsgenie[0].id
       ] : [])
     ])
-    email_subject          = "[PARI][UPBE][HIGH] Get Initiative Detail API Alert (400)"
+    email_subject = "[PARI][UPBE][HIGH] Get Initiative Detail API Alert (400)"
   }
 }
 
@@ -1937,7 +1937,7 @@ QUERY
         azurerm_monitor_action_group.idpay_opsgenie[0].id
       ] : [])
     ])
-    email_subject          = "[PARI][UPBE][HIGH] Get Initiative Detail API Alert (401/429)"
+    email_subject = "[PARI][UPBE][HIGH] Get Initiative Detail API Alert (401/429)"
   }
 }
 
@@ -1978,7 +1978,7 @@ QUERY
         azurerm_monitor_action_group.idpay_opsgenie[0].id
       ] : [])
     ])
-    email_subject          = "[PARI][UPBE][HIGH] Save Onboarding API Alert (5xx)"
+    email_subject = "[PARI][UPBE][HIGH] Save Onboarding API Alert (5xx)"
   }
 }
 
@@ -2019,7 +2019,7 @@ QUERY
         azurerm_monitor_action_group.idpay_opsgenie[0].id
       ] : [])
     ])
-    email_subject          = "[PARI][UPBE][HIGH] Save Onboarding API Alert (400)"
+    email_subject = "[PARI][UPBE][HIGH] Save Onboarding API Alert (400)"
   }
 }
 
@@ -2060,7 +2060,7 @@ QUERY
         azurerm_monitor_action_group.idpay_opsgenie[0].id
       ] : [])
     ])
-    email_subject          = "[PARI][UPBE][HIGH] Save Onboarding API Alert (401/429)"
+    email_subject = "[PARI][UPBE][HIGH] Save Onboarding API Alert (401/429)"
   }
 }
 
@@ -2101,7 +2101,7 @@ QUERY
         azurerm_monitor_action_group.idpay_opsgenie[0].id
       ] : [])
     ])
-    email_subject          = "[PARI][UPBE][HIGH] Onboarding Status API Alert (5xx)"
+    email_subject = "[PARI][UPBE][HIGH] Onboarding Status API Alert (5xx)"
   }
 }
 
@@ -2142,7 +2142,7 @@ QUERY
         azurerm_monitor_action_group.idpay_opsgenie[0].id
       ] : [])
     ])
-    email_subject          = "[PARI][UPBE][HIGH] Onboarding Status API Alert (401/429)"
+    email_subject = "[PARI][UPBE][HIGH] Onboarding Status API Alert (401/429)"
   }
 }
 
@@ -2183,7 +2183,7 @@ QUERY
         azurerm_monitor_action_group.idpay_opsgenie[0].id
       ] : [])
     ])
-    email_subject          = "[PARI][UPBE][HIGH] Onboarding Initiative User Status API Alert (5xx)"
+    email_subject = "[PARI][UPBE][HIGH] Onboarding Initiative User Status API Alert (5xx)"
   }
 }
 
@@ -2224,7 +2224,7 @@ QUERY
         azurerm_monitor_action_group.idpay_opsgenie[0].id
       ] : [])
     ])
-    email_subject          = "[PARI][UPBE][HIGH] Onboarding Initiative User Status API Alert (400)"
+    email_subject = "[PARI][UPBE][HIGH] Onboarding Initiative User Status API Alert (400)"
   }
 }
 
@@ -2265,7 +2265,7 @@ QUERY
         azurerm_monitor_action_group.idpay_opsgenie[0].id
       ] : [])
     ])
-    email_subject          = "[PARI][UPBE][HIGH] Onboarding Initiative User Status API Alert (401/429)"
+    email_subject = "[PARI][UPBE][HIGH] Onboarding Initiative User Status API Alert (401/429)"
   }
 }
 
@@ -2306,7 +2306,7 @@ QUERY
         azurerm_monitor_action_group.idpay_opsgenie[0].id
       ] : [])
     ])
-    email_subject          = "[PARI][UPBE][MEDIUM] Get Timeline API Alert (5xx)"
+    email_subject = "[PARI][UPBE][MEDIUM] Get Timeline API Alert (5xx)"
   }
 }
 
@@ -2347,7 +2347,7 @@ QUERY
         azurerm_monitor_action_group.idpay_opsgenie[0].id
       ] : [])
     ])
-    email_subject          = "[PARI][UPBE][MEDIUM] Get Wallet API Alert (5xx)"
+    email_subject = "[PARI][UPBE][MEDIUM] Get Wallet API Alert (5xx)"
   }
 }
 
@@ -2388,7 +2388,7 @@ QUERY
         azurerm_monitor_action_group.idpay_opsgenie[0].id
       ] : [])
     ])
-    email_subject          = "[PARI][UPBE][MEDIUM] Get Initiative Beneficiary Detail API Alert (5xx)"
+    email_subject = "[PARI][UPBE][MEDIUM] Get Initiative Beneficiary Detail API Alert (5xx)"
   }
 }
 
@@ -2429,7 +2429,7 @@ QUERY
         azurerm_monitor_action_group.idpay_opsgenie[0].id
       ] : [])
     ])
-    email_subject          = "[PARI][UPBE][MEDIUM] Get Initiative Beneficiary Detail API Alert (400)"
+    email_subject = "[PARI][UPBE][MEDIUM] Get Initiative Beneficiary Detail API Alert (400)"
   }
 }
 
@@ -2470,7 +2470,7 @@ QUERY
         azurerm_monitor_action_group.idpay_opsgenie[0].id
       ] : [])
     ])
-    email_subject          = "[PARI][UPBE][MEDIUM] Get Initiative Beneficiary Detail API Alert (401/429)"
+    email_subject = "[PARI][UPBE][MEDIUM] Get Initiative Beneficiary Detail API Alert (401/429)"
   }
 }
 
@@ -2511,7 +2511,7 @@ QUERY
         azurerm_monitor_action_group.idpay_opsgenie[0].id
       ] : [])
     ])
-    email_subject          = "[PARI][UPBE][HIGH] Get Wallet Detail API Alert (5xx)"
+    email_subject = "[PARI][UPBE][HIGH] Get Wallet Detail API Alert (5xx)"
   }
 }
 
@@ -2552,7 +2552,7 @@ QUERY
         azurerm_monitor_action_group.idpay_opsgenie[0].id
       ] : [])
     ])
-    email_subject          = "[PARI][UPBE][HIGH] Get Wallet Detail API Alert (400)"
+    email_subject = "[PARI][UPBE][HIGH] Get Wallet Detail API Alert (400)"
   }
 }
 
@@ -2593,7 +2593,7 @@ QUERY
         azurerm_monitor_action_group.idpay_opsgenie[0].id
       ] : [])
     ])
-    email_subject          = "[PARI][UPBE][HIGH] Get Wallet Detail API Alert (401/429)"
+    email_subject = "[PARI][UPBE][HIGH] Get Wallet Detail API Alert (401/429)"
   }
 }
 
@@ -2634,7 +2634,7 @@ QUERY
         azurerm_monitor_action_group.idpay_opsgenie[0].id
       ] : [])
     ])
-    email_subject          = "[PARI][UPBE][HIGH] Create Barcode Transaction API Alert (5xx)"
+    email_subject = "[PARI][UPBE][HIGH] Create Barcode Transaction API Alert (5xx)"
   }
 }
 
@@ -2675,7 +2675,7 @@ QUERY
         azurerm_monitor_action_group.idpay_opsgenie[0].id
       ] : [])
     ])
-    email_subject          = "[PARI][UPBE][HIGH] Create Barcode Transaction API Alert (400)"
+    email_subject = "[PARI][UPBE][HIGH] Create Barcode Transaction API Alert (400)"
   }
 }
 
@@ -2716,7 +2716,7 @@ QUERY
         azurerm_monitor_action_group.idpay_opsgenie[0].id
       ] : [])
     ])
-    email_subject          = "[PARI][UPBE][HIGH] Create Barcode Transaction API Alert (401/429)"
+    email_subject = "[PARI][UPBE][HIGH] Create Barcode Transaction API Alert (401/429)"
   }
 }
 
@@ -2757,7 +2757,7 @@ QUERY
         azurerm_monitor_action_group.idpay_opsgenie[0].id
       ] : [])
     ])
-    email_subject          = "[PARI][UPBE][HIGH] Retrieve Active Barcode Transaction API Alert (5xx)"
+    email_subject = "[PARI][UPBE][HIGH] Retrieve Active Barcode Transaction API Alert (5xx)"
   }
 }
 
@@ -2798,7 +2798,7 @@ QUERY
         azurerm_monitor_action_group.idpay_opsgenie[0].id
       ] : [])
     ])
-    email_subject          = "[PARI][UPBE][HIGH] Retrieve Active Barcode Transaction API Alert (400)"
+    email_subject = "[PARI][UPBE][HIGH] Retrieve Active Barcode Transaction API Alert (400)"
   }
 }
 
@@ -2839,7 +2839,7 @@ QUERY
         azurerm_monitor_action_group.idpay_opsgenie[0].id
       ] : [])
     ])
-    email_subject          = "[PARI][UPBE][HIGH] Retrieve Active Barcode Transaction API Alert (401/429)"
+    email_subject = "[PARI][UPBE][HIGH] Retrieve Active Barcode Transaction API Alert (401/429)"
   }
 }
 
@@ -2880,7 +2880,7 @@ QUERY
         azurerm_monitor_action_group.idpay_opsgenie[0].id
       ] : [])
     ])
-    email_subject          = "[PARI][UPBE][HIGH] Get Transaction PDF API Alert (5xx)"
+    email_subject = "[PARI][UPBE][HIGH] Get Transaction PDF API Alert (5xx)"
   }
 }
 
@@ -2921,7 +2921,7 @@ QUERY
         azurerm_monitor_action_group.idpay_opsgenie[0].id
       ] : [])
     ])
-    email_subject          = "[PARI][UPBE][HIGH] Get Transaction PDF API Alert (400)"
+    email_subject = "[PARI][UPBE][HIGH] Get Transaction PDF API Alert (400)"
   }
 }
 
@@ -2962,6 +2962,6 @@ QUERY
         azurerm_monitor_action_group.idpay_opsgenie[0].id
       ] : [])
     ])
-    email_subject          = "[PARI][UPBE][HIGH] Get Transaction PDF API Alert (401/429)"
+    email_subject = "[PARI][UPBE][HIGH] Get Transaction PDF API Alert (401/429)"
   }
 }
