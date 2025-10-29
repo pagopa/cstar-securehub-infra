@@ -18,7 +18,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "portal_consent_save_5m_r
   frequency   = 5
   time_window = 5
 
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -34,10 +34,10 @@ QUERY
   action {
     action_group = flatten([
       [
-        azurerm_monitor_action_group.email[0].id
+        data.azurerm_monitor_action_group.alerts_email[0].id
       ],
       (var.env == "prod" ? [
-        azurerm_monitor_action_group.idpay_opsgenie[0].id
+        data.azurerm_monitor_action_group.alerts_opsgenie[0].id
       ] : [])
     ])
     email_subject = "[PARI] Portal Consent – save API alert (5xx/401/429)"
@@ -60,7 +60,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "portal_consent_save_10m_
   frequency   = 10
   time_window = 10
 
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -76,10 +76,10 @@ QUERY
   action {
     action_group = flatten([
       [
-        azurerm_monitor_action_group.email[0].id
+        data.azurerm_monitor_action_group.alerts_email[0].id
       ],
       (var.env == "prod" ? [
-        azurerm_monitor_action_group.idpay_opsgenie[0].id
+        data.azurerm_monitor_action_group.alerts_opsgenie[0].id
       ] : [])
     ])
     email_subject = "[PARI] Portal Consent – save API alert (400)"
@@ -102,7 +102,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pari_portal_consent_get_
   frequency   = 5
   time_window = 5
 
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -118,10 +118,10 @@ QUERY
   action {
     action_group = flatten([
       [
-        azurerm_monitor_action_group.email[0].id
+        data.azurerm_monitor_action_group.alerts_email[0].id
       ],
       (var.env == "prod" ? [
-        azurerm_monitor_action_group.idpay_opsgenie[0].id
+        data.azurerm_monitor_action_group.alerts_opsgenie[0].id
       ] : [])
     ])
     email_subject = "[PARI] Portal Consent GET /consent alert (5xx/401/429)"
@@ -144,7 +144,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pari_portal_consent_get_
   frequency   = 10
   time_window = 10
 
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -160,10 +160,10 @@ QUERY
   action {
     action_group = flatten([
       [
-        azurerm_monitor_action_group.email[0].id
+        data.azurerm_monitor_action_group.alerts_email[0].id
       ],
       (var.env == "prod" ? [
-        azurerm_monitor_action_group.idpay_opsgenie[0].id
+        data.azurerm_monitor_action_group.alerts_opsgenie[0].id
       ] : [])
     ])
     email_subject = "[PARI] Portal Consent GET /consent alert (400)"
@@ -186,7 +186,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pari_product_files_uploa
   frequency   = 5
   time_window = 5
 
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -202,10 +202,10 @@ QUERY
   action {
     action_group = flatten([
       [
-        azurerm_monitor_action_group.email[0].id
+        data.azurerm_monitor_action_group.alerts_email[0].id
       ],
       (var.env == "prod" ? [
-        azurerm_monitor_action_group.idpay_opsgenie[0].id
+        data.azurerm_monitor_action_group.alerts_opsgenie[0].id
       ] : [])
     ])
     email_subject = "[PARI] Product files – upload API alert (5xx/401/429)"
@@ -228,7 +228,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pari_product_files_uploa
   frequency   = 10
   time_window = 10
 
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -244,10 +244,10 @@ QUERY
   action {
     action_group = flatten([
       [
-        azurerm_monitor_action_group.email[0].id
+        data.azurerm_monitor_action_group.alerts_email[0].id
       ],
       (var.env == "prod" ? [
-        azurerm_monitor_action_group.idpay_opsgenie[0].id
+        data.azurerm_monitor_action_group.alerts_opsgenie[0].id
       ] : [])
     ])
     email_subject = "[PARI] Product files – upload API alert (400)"
@@ -269,7 +269,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pari_product_files_verif
   frequency   = 5
   time_window = 5
 
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -280,10 +280,10 @@ QUERY
   action {
     action_group = flatten([
       [
-        azurerm_monitor_action_group.email[0].id
+        data.azurerm_monitor_action_group.alerts_email[0].id
       ],
       (var.env == "prod" ? [
-        azurerm_monitor_action_group.idpay_opsgenie[0].id
+        data.azurerm_monitor_action_group.alerts_opsgenie[0].id
       ] : [])
     ])
     email_subject = "[PARI] Product files verify alert"
@@ -310,7 +310,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pari_products_update_sta
   frequency   = 5
   time_window = 5
 
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -327,10 +327,10 @@ QUERY
   action {
     action_group = flatten([
       [
-        azurerm_monitor_action_group.email[0].id
+        data.azurerm_monitor_action_group.alerts_email[0].id
       ],
       (var.env == "prod" ? [
-        azurerm_monitor_action_group.idpay_opsgenie[0].id
+        data.azurerm_monitor_action_group.alerts_opsgenie[0].id
       ] : [])
     ])
     email_subject = "[PARI] Products update status alert"
@@ -357,7 +357,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pari_get_products_5xx_al
   frequency   = 5
   time_window = 5
 
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -373,10 +373,10 @@ QUERY
   action {
     action_group = flatten([
       [
-        azurerm_monitor_action_group.email[0].id
+        data.azurerm_monitor_action_group.alerts_email[0].id
       ],
       (var.env == "prod" ? [
-        azurerm_monitor_action_group.idpay_opsgenie[0].id
+        data.azurerm_monitor_action_group.alerts_opsgenie[0].id
       ] : [])
     ])
     email_subject = "[PARI][CRITICAL] GET /products alert: High 5xx errors"
@@ -398,7 +398,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pari_get_products_400_al
   frequency   = 5
   time_window = 10
 
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -414,10 +414,10 @@ QUERY
   action {
     action_group = flatten([
       [
-        azurerm_monitor_action_group.email[0].id
+        data.azurerm_monitor_action_group.alerts_email[0].id
       ],
       (var.env == "prod" ? [
-        azurerm_monitor_action_group.idpay_opsgenie[0].id
+        data.azurerm_monitor_action_group.alerts_opsgenie[0].id
       ] : [])
     ])
     email_subject = "[PARI][CRITICAL] GET /products alert: High 400 errors"
@@ -439,7 +439,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pari_get_products_availa
   frequency   = 5
   time_window = 10
 
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -457,10 +457,10 @@ QUERY
   action {
     action_group = flatten([
       [
-        azurerm_monitor_action_group.email[0].id
+        data.azurerm_monitor_action_group.alerts_email[0].id
       ],
       (var.env == "prod" ? [
-        azurerm_monitor_action_group.idpay_opsgenie[0].id
+        data.azurerm_monitor_action_group.alerts_opsgenie[0].id
       ] : [])
     ])
     email_subject = "[PARI][CRITICAL] GET /products alert: Availability is below 99%"
@@ -483,7 +483,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pari_user_permissions_5m
   frequency   = 5
   time_window = 5
 
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -499,10 +499,10 @@ QUERY
   action {
     action_group = flatten([
       [
-        azurerm_monitor_action_group.email[0].id
+        data.azurerm_monitor_action_group.alerts_email[0].id
       ],
       (var.env == "prod" ? [
-        azurerm_monitor_action_group.idpay_opsgenie[0].id
+        data.azurerm_monitor_action_group.alerts_opsgenie[0].id
       ] : [])
     ])
     email_subject = "[PARI][HIGH] User Permissions alert (5xx or 401/429)"
@@ -525,7 +525,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pari_user_permissions_10
   frequency   = 5
   time_window = 10
 
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -541,10 +541,10 @@ QUERY
   action {
     action_group = flatten([
       [
-        azurerm_monitor_action_group.email[0].id
+        data.azurerm_monitor_action_group.alerts_email[0].id
       ],
       (var.env == "prod" ? [
-        azurerm_monitor_action_group.idpay_opsgenie[0].id
+        data.azurerm_monitor_action_group.alerts_opsgenie[0].id
       ] : [])
     ])
     email_subject = "[PARI][HIGH] User Permissions alert (400)"
@@ -567,7 +567,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pari_product_files_list_
   frequency   = 5
   time_window = 5
 
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -583,10 +583,10 @@ QUERY
   action {
     action_group = flatten([
       [
-        azurerm_monitor_action_group.email[0].id
+        data.azurerm_monitor_action_group.alerts_email[0].id
       ],
       (var.env == "prod" ? [
-        azurerm_monitor_action_group.idpay_opsgenie[0].id
+        data.azurerm_monitor_action_group.alerts_opsgenie[0].id
       ] : [])
     ])
     email_subject = "[PARI] Product files – list API alert (5xx)"
@@ -609,7 +609,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pari_error_report_downlo
   frequency   = 5
   time_window = 5
 
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -625,10 +625,10 @@ QUERY
   action {
     action_group = flatten([
       [
-        azurerm_monitor_action_group.email[0].id
+        data.azurerm_monitor_action_group.alerts_email[0].id
       ],
       (var.env == "prod" ? [
-        azurerm_monitor_action_group.idpay_opsgenie[0].id
+        data.azurerm_monitor_action_group.alerts_opsgenie[0].id
       ] : [])
     ])
     email_subject = "[PARI] Error report download API alert (5xx)"
@@ -651,7 +651,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pari_batch_list_alert" {
   frequency   = 5
   time_window = 5
 
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -667,10 +667,10 @@ QUERY
   action {
     action_group = flatten([
       [
-        azurerm_monitor_action_group.email[0].id
+        data.azurerm_monitor_action_group.alerts_email[0].id
       ],
       (var.env == "prod" ? [
-        azurerm_monitor_action_group.idpay_opsgenie[0].id
+        data.azurerm_monitor_action_group.alerts_opsgenie[0].id
       ] : [])
     ])
     email_subject = "[PARI] Batch list API alert (5xx)"
@@ -693,7 +693,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pari_institution_by_id_a
   frequency   = 5
   time_window = 5
 
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -709,10 +709,10 @@ QUERY
   action {
     action_group = flatten([
       [
-        azurerm_monitor_action_group.email[0].id
+        data.azurerm_monitor_action_group.alerts_email[0].id
       ],
       (var.env == "prod" ? [
-        azurerm_monitor_action_group.idpay_opsgenie[0].id
+        data.azurerm_monitor_action_group.alerts_opsgenie[0].id
       ] : [])
     ])
     email_subject = "[PARI] Institution by ID API alert (5xx)"
@@ -735,7 +735,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pari_institutions_list_a
   frequency   = 5
   time_window = 5
 
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -746,10 +746,10 @@ QUERY
   action {
     action_group = flatten([
       [
-        azurerm_monitor_action_group.email[0].id
+        data.azurerm_monitor_action_group.alerts_email[0].id
       ],
       (var.env == "prod" ? [
-        azurerm_monitor_action_group.idpay_opsgenie[0].id
+        data.azurerm_monitor_action_group.alerts_opsgenie[0].id
       ] : [])
     ])
     email_subject = "[PARI] Institutions list API alert (5xx)"
@@ -777,7 +777,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pari_email_dependency_al
   frequency   = 5
   time_window = 5
 
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppDependencies
@@ -789,10 +789,10 @@ QUERY
   action {
     action_group = flatten([
       [
-        azurerm_monitor_action_group.email[0].id
+        data.azurerm_monitor_action_group.alerts_email[0].id
       ],
       (var.env == "prod" ? [
-        azurerm_monitor_action_group.idpay_opsgenie[0].id
+        data.azurerm_monitor_action_group.alerts_opsgenie[0].id
       ] : [])
     ])
     email_subject = "[PARI] Internal Email microservice dependency alert"
@@ -820,7 +820,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pari_eprel_dependency_al
   frequency   = 5
   time_window = 5
 
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppDependencies
@@ -832,10 +832,10 @@ QUERY
   action {
     action_group = flatten([
       [
-        azurerm_monitor_action_group.email[0].id
+        data.azurerm_monitor_action_group.alerts_email[0].id
       ],
       (var.env == "prod" ? [
-        azurerm_monitor_action_group.idpay_opsgenie[0].id
+        data.azurerm_monitor_action_group.alerts_opsgenie[0].id
       ] : [])
     ])
     email_subject = "[PARI][HIGH] EPREL external dependency alert"
@@ -867,7 +867,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "capture_transaction_5xx_
   frequency   = 5
   time_window = 5
 
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -883,10 +883,10 @@ QUERY
   action {
     action_group = flatten([
       [
-        azurerm_monitor_action_group.email[0].id
+        data.azurerm_monitor_action_group.alerts_email[0].id
       ],
       (var.env == "prod" ? [
-        azurerm_monitor_action_group.idpay_opsgenie[0].id
+        data.azurerm_monitor_action_group.alerts_opsgenie[0].id
       ] : [])
     ])
     email_subject = "[PARI][ESE][HIGH] Capture Transaction API Alert (5xx)"
@@ -909,7 +909,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "capture_transaction_4xx_
   frequency   = 5
   time_window = 5
 
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -925,10 +925,10 @@ QUERY
   action {
     action_group = flatten([
       [
-        azurerm_monitor_action_group.email[0].id
+        data.azurerm_monitor_action_group.alerts_email[0].id
       ],
       (var.env == "prod" ? [
-        azurerm_monitor_action_group.idpay_opsgenie[0].id
+        data.azurerm_monitor_action_group.alerts_opsgenie[0].id
       ] : [])
     ])
     email_subject = "[PARI][ESE][HIGH] Capture Transaction API Alert (4xx)"
@@ -951,7 +951,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "preview_payment_5xx_aler
   frequency   = 5
   time_window = 5
 
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -967,10 +967,10 @@ QUERY
   action {
     action_group = flatten([
       [
-        azurerm_monitor_action_group.email[0].id
+        data.azurerm_monitor_action_group.alerts_email[0].id
       ],
       (var.env == "prod" ? [
-        azurerm_monitor_action_group.idpay_opsgenie[0].id
+        data.azurerm_monitor_action_group.alerts_opsgenie[0].id
       ] : [])
     ])
     email_subject = "[PARI][ESE][HIGH] Preview Payment API Alert (5xx)"
@@ -993,7 +993,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "preview_payment_4xx_aler
   frequency   = 5
   time_window = 5
 
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -1009,10 +1009,10 @@ QUERY
   action {
     action_group = flatten([
       [
-        azurerm_monitor_action_group.email[0].id
+        data.azurerm_monitor_action_group.alerts_email[0].id
       ],
       (var.env == "prod" ? [
-        azurerm_monitor_action_group.idpay_opsgenie[0].id
+        data.azurerm_monitor_action_group.alerts_opsgenie[0].id
       ] : [])
     ])
     email_subject = "[PARI][ESE][HIGH] Preview Payment API Alert (4xx)"
@@ -1035,7 +1035,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "authorize_payment_5xx_al
   frequency   = 5
   time_window = 5
 
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -1051,10 +1051,10 @@ QUERY
   action {
     action_group = flatten([
       [
-        azurerm_monitor_action_group.email[0].id
+        data.azurerm_monitor_action_group.alerts_email[0].id
       ],
       (var.env == "prod" ? [
-        azurerm_monitor_action_group.idpay_opsgenie[0].id
+        data.azurerm_monitor_action_group.alerts_opsgenie[0].id
       ] : [])
     ])
     email_subject = "[PARI][ESE][HIGH] Authorize Payment API Alert (5xx)"
@@ -1077,7 +1077,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "authorize_payment_4xx_al
   frequency   = 5
   time_window = 5
 
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -1093,10 +1093,10 @@ QUERY
   action {
     action_group = flatten([
       [
-        azurerm_monitor_action_group.email[0].id
+        data.azurerm_monitor_action_group.alerts_email[0].id
       ],
       (var.env == "prod" ? [
-        azurerm_monitor_action_group.idpay_opsgenie[0].id
+        data.azurerm_monitor_action_group.alerts_opsgenie[0].id
       ] : [])
     ])
     email_subject = "[PARI][ESE][HIGH] Authorize Payment API Alert (4xx)"
@@ -1119,7 +1119,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "download_invoice_5xx_ale
   frequency   = 5
   time_window = 5
 
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -1135,10 +1135,10 @@ QUERY
   action {
     action_group = flatten([
       [
-        azurerm_monitor_action_group.email[0].id
+        data.azurerm_monitor_action_group.alerts_email[0].id
       ],
       (var.env == "prod" ? [
-        azurerm_monitor_action_group.idpay_opsgenie[0].id
+        data.azurerm_monitor_action_group.alerts_opsgenie[0].id
       ] : [])
     ])
     email_subject = "[PARI][ESE][LOW] Download Invoice File API Alert (5xx)"
@@ -1161,7 +1161,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "download_invoice_4xx_ale
   frequency   = 5
   time_window = 5
 
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -1177,10 +1177,10 @@ QUERY
   action {
     action_group = flatten([
       [
-        azurerm_monitor_action_group.email[0].id
+        data.azurerm_monitor_action_group.alerts_email[0].id
       ],
       (var.env == "prod" ? [
-        azurerm_monitor_action_group.idpay_opsgenie[0].id
+        data.azurerm_monitor_action_group.alerts_opsgenie[0].id
       ] : [])
     ])
     email_subject = "[PARI][ESE][LOW] Download Invoice File API Alert (4xx)"
@@ -1203,7 +1203,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pos_transactions_list_5x
   frequency   = 5
   time_window = 5
 
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -1219,10 +1219,10 @@ QUERY
   action {
     action_group = flatten([
       [
-        azurerm_monitor_action_group.email[0].id
+        data.azurerm_monitor_action_group.alerts_email[0].id
       ],
       (var.env == "prod" ? [
-        azurerm_monitor_action_group.idpay_opsgenie[0].id
+        data.azurerm_monitor_action_group.alerts_opsgenie[0].id
       ] : [])
     ])
     email_subject = "[PARI][ESE][HIGH] POS In Progress Transactions List API Alert (5xx)"
@@ -1245,7 +1245,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pos_transactions_list_4x
   frequency   = 5
   time_window = 5
 
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -1261,10 +1261,10 @@ QUERY
   action {
     action_group = flatten([
       [
-        azurerm_monitor_action_group.email[0].id
+        data.azurerm_monitor_action_group.alerts_email[0].id
       ],
       (var.env == "prod" ? [
-        azurerm_monitor_action_group.idpay_opsgenie[0].id
+        data.azurerm_monitor_action_group.alerts_opsgenie[0].id
       ] : [])
     ])
     email_subject = "[PARI][ESE][HIGH] POS In Progress Transactions List API Alert (4xx)"
@@ -1287,7 +1287,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pos_transactions_process
   frequency   = 5
   time_window = 5
 
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -1303,10 +1303,10 @@ QUERY
   action {
     action_group = flatten([
       [
-        azurerm_monitor_action_group.email[0].id
+        data.azurerm_monitor_action_group.alerts_email[0].id
       ],
       (var.env == "prod" ? [
-        azurerm_monitor_action_group.idpay_opsgenie[0].id
+        data.azurerm_monitor_action_group.alerts_opsgenie[0].id
       ] : [])
     ])
     email_subject = "[PARI][ESE][HIGH] POS Processed Transactions List API Alert (5xx)"
@@ -1329,7 +1329,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pos_transactions_process
   frequency   = 5
   time_window = 5
 
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -1345,10 +1345,10 @@ QUERY
   action {
     action_group = flatten([
       [
-        azurerm_monitor_action_group.email[0].id
+        data.azurerm_monitor_action_group.alerts_email[0].id
       ],
       (var.env == "prod" ? [
-        azurerm_monitor_action_group.idpay_opsgenie[0].id
+        data.azurerm_monitor_action_group.alerts_opsgenie[0].id
       ] : [])
     ])
     email_subject = "[PARI][ESE][HIGH] POS Processed Transactions List API Alert (4xx)"
@@ -1371,7 +1371,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "delete_transaction_5xx_a
   frequency   = 5
   time_window = 5
 
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -1387,10 +1387,10 @@ QUERY
   action {
     action_group = flatten([
       [
-        azurerm_monitor_action_group.email[0].id
+        data.azurerm_monitor_action_group.alerts_email[0].id
       ],
       (var.env == "prod" ? [
-        azurerm_monitor_action_group.idpay_opsgenie[0].id
+        data.azurerm_monitor_action_group.alerts_opsgenie[0].id
       ] : [])
     ])
     email_subject = "[PARI][ESE][LOW] Delete Transaction API Alert (5xx)"
@@ -1413,7 +1413,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "delete_transaction_4xx_a
   frequency   = 5
   time_window = 5
 
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -1429,10 +1429,10 @@ QUERY
   action {
     action_group = flatten([
       [
-        azurerm_monitor_action_group.email[0].id
+        data.azurerm_monitor_action_group.alerts_email[0].id
       ],
       (var.env == "prod" ? [
-        azurerm_monitor_action_group.idpay_opsgenie[0].id
+        data.azurerm_monitor_action_group.alerts_opsgenie[0].id
       ] : [])
     ])
     email_subject = "[PARI][ESE][LOW] Delete Transaction API Alert (4xx)"
@@ -1455,7 +1455,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "reversal_transaction_5xx
   frequency   = 5
   time_window = 5
 
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -1471,10 +1471,10 @@ QUERY
   action {
     action_group = flatten([
       [
-        azurerm_monitor_action_group.email[0].id
+        data.azurerm_monitor_action_group.alerts_email[0].id
       ],
       (var.env == "prod" ? [
-        azurerm_monitor_action_group.idpay_opsgenie[0].id
+        data.azurerm_monitor_action_group.alerts_opsgenie[0].id
       ] : [])
     ])
     email_subject = "[PARI][ESE][HIGH] Reversal Transaction API Alert (5xx)"
@@ -1497,7 +1497,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "reward_transaction_5xx_a
   frequency   = 5
   time_window = 5
 
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -1513,10 +1513,10 @@ QUERY
   action {
     action_group = flatten([
       [
-        azurerm_monitor_action_group.email[0].id
+        data.azurerm_monitor_action_group.alerts_email[0].id
       ],
       (var.env == "prod" ? [
-        azurerm_monitor_action_group.idpay_opsgenie[0].id
+        data.azurerm_monitor_action_group.alerts_opsgenie[0].id
       ] : [])
     ])
     email_subject = "[PARI][ESE][HIGH] Reward Transaction API Alert (5xx)"
@@ -1539,7 +1539,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "retrieve_pos_5xx_alert" 
   frequency   = 5
   time_window = 5
 
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -1555,10 +1555,10 @@ QUERY
   action {
     action_group = flatten([
       [
-        azurerm_monitor_action_group.email[0].id
+        data.azurerm_monitor_action_group.alerts_email[0].id
       ],
       (var.env == "prod" ? [
-        azurerm_monitor_action_group.idpay_opsgenie[0].id
+        data.azurerm_monitor_action_group.alerts_opsgenie[0].id
       ] : [])
     ])
     email_subject = "[PARI][ESE][LOW] Retrieve a point of sale API Alert (5xx)"
@@ -1581,7 +1581,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "retrieve_pos_4xx_alert" 
   frequency   = 5
   time_window = 5
 
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -1597,10 +1597,10 @@ QUERY
   action {
     action_group = flatten([
       [
-        azurerm_monitor_action_group.email[0].id
+        data.azurerm_monitor_action_group.alerts_email[0].id
       ],
       (var.env == "prod" ? [
-        azurerm_monitor_action_group.idpay_opsgenie[0].id
+        data.azurerm_monitor_action_group.alerts_opsgenie[0].id
       ] : [])
     ])
     email_subject = "[PARI][ESE][LOW] Retrieve a point of sale API Alert (4xx)"
@@ -1623,7 +1623,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "products_list_5xx_alert"
   frequency   = 5
   time_window = 5
 
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -1639,10 +1639,10 @@ QUERY
   action {
     action_group = flatten([
       [
-        azurerm_monitor_action_group.email[0].id
+        data.azurerm_monitor_action_group.alerts_email[0].id
       ],
       (var.env == "prod" ? [
-        azurerm_monitor_action_group.idpay_opsgenie[0].id
+        data.azurerm_monitor_action_group.alerts_opsgenie[0].id
       ] : [])
     ])
     email_subject = "[PARI][ESE][HIGH] Products List API Alert (5xx)"
@@ -1665,7 +1665,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "products_list_4xx_alert"
   frequency   = 5
   time_window = 5
 
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -1681,10 +1681,10 @@ QUERY
   action {
     action_group = flatten([
       [
-        azurerm_monitor_action_group.email[0].id
+        data.azurerm_monitor_action_group.alerts_email[0].id
       ],
       (var.env == "prod" ? [
-        azurerm_monitor_action_group.idpay_opsgenie[0].id
+        data.azurerm_monitor_action_group.alerts_opsgenie[0].id
       ] : [])
     ])
     email_subject = "[PARI][ESE][HIGH] Products List API Alert (4xx)"
@@ -1710,7 +1710,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "get_initiative_id_5xx_al
   frequency   = 5
   time_window = 5
 
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -1726,10 +1726,10 @@ QUERY
   action {
     action_group = flatten([
       [
-        azurerm_monitor_action_group.email[0].id
+        data.azurerm_monitor_action_group.alerts_email[0].id
       ],
       (var.env == "prod" ? [
-        azurerm_monitor_action_group.idpay_opsgenie[0].id
+        data.azurerm_monitor_action_group.alerts_opsgenie[0].id
       ] : [])
     ])
     email_subject = "[PARI][UPBE][HIGH] Get Initiative ID API Alert (5xx)"
@@ -1751,7 +1751,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "get_initiative_id_400_al
   frequency   = 5
   time_window = 10
 
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -1767,10 +1767,10 @@ QUERY
   action {
     action_group = flatten([
       [
-        azurerm_monitor_action_group.email[0].id
+        data.azurerm_monitor_action_group.alerts_email[0].id
       ],
       (var.env == "prod" ? [
-        azurerm_monitor_action_group.idpay_opsgenie[0].id
+        data.azurerm_monitor_action_group.alerts_opsgenie[0].id
       ] : [])
     ])
     email_subject = "[PARI][UPBE][HIGH] Get Initiative ID API Alert (400)"
@@ -1792,7 +1792,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "get_initiative_id_4xx_au
   frequency   = 5
   time_window = 5
 
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -1808,10 +1808,10 @@ QUERY
   action {
     action_group = flatten([
       [
-        azurerm_monitor_action_group.email[0].id
+        data.azurerm_monitor_action_group.alerts_email[0].id
       ],
       (var.env == "prod" ? [
-        azurerm_monitor_action_group.idpay_opsgenie[0].id
+        data.azurerm_monitor_action_group.alerts_opsgenie[0].id
       ] : [])
     ])
     email_subject = "[PARI][UPBE][HIGH] Get Initiative ID API Alert (401/429)"
@@ -1833,7 +1833,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "get_initiative_detail_5x
   frequency   = 5
   time_window = 5
 
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -1849,10 +1849,10 @@ QUERY
   action {
     action_group = flatten([
       [
-        azurerm_monitor_action_group.email[0].id
+        data.azurerm_monitor_action_group.alerts_email[0].id
       ],
       (var.env == "prod" ? [
-        azurerm_monitor_action_group.idpay_opsgenie[0].id
+        data.azurerm_monitor_action_group.alerts_opsgenie[0].id
       ] : [])
     ])
     email_subject = "[PARI][UPBE][HIGH] Get Initiative Detail API Alert (5xx)"
@@ -1874,7 +1874,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "get_initiative_detail_40
   frequency   = 5
   time_window = 10
 
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -1890,10 +1890,10 @@ QUERY
   action {
     action_group = flatten([
       [
-        azurerm_monitor_action_group.email[0].id
+        data.azurerm_monitor_action_group.alerts_email[0].id
       ],
       (var.env == "prod" ? [
-        azurerm_monitor_action_group.idpay_opsgenie[0].id
+        data.azurerm_monitor_action_group.alerts_opsgenie[0].id
       ] : [])
     ])
     email_subject = "[PARI][UPBE][HIGH] Get Initiative Detail API Alert (400)"
@@ -1915,7 +1915,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "get_initiative_detail_4x
   frequency   = 5
   time_window = 5
 
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -1931,10 +1931,10 @@ QUERY
   action {
     action_group = flatten([
       [
-        azurerm_monitor_action_group.email[0].id
+        data.azurerm_monitor_action_group.alerts_email[0].id
       ],
       (var.env == "prod" ? [
-        azurerm_monitor_action_group.idpay_opsgenie[0].id
+        data.azurerm_monitor_action_group.alerts_opsgenie[0].id
       ] : [])
     ])
     email_subject = "[PARI][UPBE][HIGH] Get Initiative Detail API Alert (401/429)"
@@ -1956,7 +1956,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "save_onboarding_5xx_aler
   frequency   = 5
   time_window = 5
 
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -1972,10 +1972,10 @@ QUERY
   action {
     action_group = flatten([
       [
-        azurerm_monitor_action_group.email[0].id
+        data.azurerm_monitor_action_group.alerts_email[0].id
       ],
       (var.env == "prod" ? [
-        azurerm_monitor_action_group.idpay_opsgenie[0].id
+        data.azurerm_monitor_action_group.alerts_opsgenie[0].id
       ] : [])
     ])
     email_subject = "[PARI][UPBE][HIGH] Save Onboarding API Alert (5xx)"
@@ -1997,7 +1997,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "save_onboarding_400_aler
   frequency   = 5
   time_window = 10
 
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -2013,10 +2013,10 @@ QUERY
   action {
     action_group = flatten([
       [
-        azurerm_monitor_action_group.email[0].id
+        data.azurerm_monitor_action_group.alerts_email[0].id
       ],
       (var.env == "prod" ? [
-        azurerm_monitor_action_group.idpay_opsgenie[0].id
+        data.azurerm_monitor_action_group.alerts_opsgenie[0].id
       ] : [])
     ])
     email_subject = "[PARI][UPBE][HIGH] Save Onboarding API Alert (400)"
@@ -2038,7 +2038,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "save_onboarding_4xx_auth
   frequency   = 5
   time_window = 5
 
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -2054,10 +2054,10 @@ QUERY
   action {
     action_group = flatten([
       [
-        azurerm_monitor_action_group.email[0].id
+        data.azurerm_monitor_action_group.alerts_email[0].id
       ],
       (var.env == "prod" ? [
-        azurerm_monitor_action_group.idpay_opsgenie[0].id
+        data.azurerm_monitor_action_group.alerts_opsgenie[0].id
       ] : [])
     ])
     email_subject = "[PARI][UPBE][HIGH] Save Onboarding API Alert (401/429)"
@@ -2079,7 +2079,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "onboarding_status_5xx_al
   frequency   = 5
   time_window = 5
 
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -2095,10 +2095,10 @@ QUERY
   action {
     action_group = flatten([
       [
-        azurerm_monitor_action_group.email[0].id
+        data.azurerm_monitor_action_group.alerts_email[0].id
       ],
       (var.env == "prod" ? [
-        azurerm_monitor_action_group.idpay_opsgenie[0].id
+        data.azurerm_monitor_action_group.alerts_opsgenie[0].id
       ] : [])
     ])
     email_subject = "[PARI][UPBE][HIGH] Onboarding Status API Alert (5xx)"
@@ -2120,7 +2120,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "onboarding_status_4xx_au
   frequency   = 5
   time_window = 5
 
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -2136,10 +2136,10 @@ QUERY
   action {
     action_group = flatten([
       [
-        azurerm_monitor_action_group.email[0].id
+        data.azurerm_monitor_action_group.alerts_email[0].id
       ],
       (var.env == "prod" ? [
-        azurerm_monitor_action_group.idpay_opsgenie[0].id
+        data.azurerm_monitor_action_group.alerts_opsgenie[0].id
       ] : [])
     ])
     email_subject = "[PARI][UPBE][HIGH] Onboarding Status API Alert (401/429)"
@@ -2161,7 +2161,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "onboarding_initiative_us
   frequency   = 5
   time_window = 5
 
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -2177,10 +2177,10 @@ QUERY
   action {
     action_group = flatten([
       [
-        azurerm_monitor_action_group.email[0].id
+        data.azurerm_monitor_action_group.alerts_email[0].id
       ],
       (var.env == "prod" ? [
-        azurerm_monitor_action_group.idpay_opsgenie[0].id
+        data.azurerm_monitor_action_group.alerts_opsgenie[0].id
       ] : [])
     ])
     email_subject = "[PARI][UPBE][HIGH] Onboarding Initiative User Status API Alert (5xx)"
@@ -2202,7 +2202,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "onboarding_initiative_us
   frequency   = 5
   time_window = 10
 
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -2218,10 +2218,10 @@ QUERY
   action {
     action_group = flatten([
       [
-        azurerm_monitor_action_group.email[0].id
+        data.azurerm_monitor_action_group.alerts_email[0].id
       ],
       (var.env == "prod" ? [
-        azurerm_monitor_action_group.idpay_opsgenie[0].id
+        data.azurerm_monitor_action_group.alerts_opsgenie[0].id
       ] : [])
     ])
     email_subject = "[PARI][UPBE][HIGH] Onboarding Initiative User Status API Alert (400)"
@@ -2243,7 +2243,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "onboarding_initiative_us
   frequency   = 5
   time_window = 5
 
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -2259,10 +2259,10 @@ QUERY
   action {
     action_group = flatten([
       [
-        azurerm_monitor_action_group.email[0].id
+        data.azurerm_monitor_action_group.alerts_email[0].id
       ],
       (var.env == "prod" ? [
-        azurerm_monitor_action_group.idpay_opsgenie[0].id
+        data.azurerm_monitor_action_group.alerts_opsgenie[0].id
       ] : [])
     ])
     email_subject = "[PARI][UPBE][HIGH] Onboarding Initiative User Status API Alert (401/429)"
@@ -2284,7 +2284,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "get_timeline_5xx_alert" 
   frequency   = 5
   time_window = 5
 
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -2300,10 +2300,10 @@ QUERY
   action {
     action_group = flatten([
       [
-        azurerm_monitor_action_group.email[0].id
+        data.azurerm_monitor_action_group.alerts_email[0].id
       ],
       (var.env == "prod" ? [
-        azurerm_monitor_action_group.idpay_opsgenie[0].id
+        data.azurerm_monitor_action_group.alerts_opsgenie[0].id
       ] : [])
     ])
     email_subject = "[PARI][UPBE][MEDIUM] Get Timeline API Alert (5xx)"
@@ -2325,7 +2325,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "get_wallet_5xx_alert" {
   frequency   = 5
   time_window = 5
 
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -2341,10 +2341,10 @@ QUERY
   action {
     action_group = flatten([
       [
-        azurerm_monitor_action_group.email[0].id
+        data.azurerm_monitor_action_group.alerts_email[0].id
       ],
       (var.env == "prod" ? [
-        azurerm_monitor_action_group.idpay_opsgenie[0].id
+        data.azurerm_monitor_action_group.alerts_opsgenie[0].id
       ] : [])
     ])
     email_subject = "[PARI][UPBE][MEDIUM] Get Wallet API Alert (5xx)"
@@ -2366,7 +2366,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "get_initiative_beneficia
   frequency   = 5
   time_window = 5
 
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -2382,10 +2382,10 @@ QUERY
   action {
     action_group = flatten([
       [
-        azurerm_monitor_action_group.email[0].id
+        data.azurerm_monitor_action_group.alerts_email[0].id
       ],
       (var.env == "prod" ? [
-        azurerm_monitor_action_group.idpay_opsgenie[0].id
+        data.azurerm_monitor_action_group.alerts_opsgenie[0].id
       ] : [])
     ])
     email_subject = "[PARI][UPBE][MEDIUM] Get Initiative Beneficiary Detail API Alert (5xx)"
@@ -2407,7 +2407,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "get_initiative_beneficia
   frequency   = 5
   time_window = 10
 
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -2423,10 +2423,10 @@ QUERY
   action {
     action_group = flatten([
       [
-        azurerm_monitor_action_group.email[0].id
+        data.azurerm_monitor_action_group.alerts_email[0].id
       ],
       (var.env == "prod" ? [
-        azurerm_monitor_action_group.idpay_opsgenie[0].id
+        data.azurerm_monitor_action_group.alerts_opsgenie[0].id
       ] : [])
     ])
     email_subject = "[PARI][UPBE][MEDIUM] Get Initiative Beneficiary Detail API Alert (400)"
@@ -2448,7 +2448,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "get_initiative_beneficia
   frequency   = 5
   time_window = 5
 
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -2464,10 +2464,10 @@ QUERY
   action {
     action_group = flatten([
       [
-        azurerm_monitor_action_group.email[0].id
+        data.azurerm_monitor_action_group.alerts_email[0].id
       ],
       (var.env == "prod" ? [
-        azurerm_monitor_action_group.idpay_opsgenie[0].id
+        data.azurerm_monitor_action_group.alerts_opsgenie[0].id
       ] : [])
     ])
     email_subject = "[PARI][UPBE][MEDIUM] Get Initiative Beneficiary Detail API Alert (401/429)"
@@ -2489,7 +2489,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "get_wallet_detail_5xx_al
   frequency   = 5
   time_window = 5
 
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -2505,10 +2505,10 @@ QUERY
   action {
     action_group = flatten([
       [
-        azurerm_monitor_action_group.email[0].id
+        data.azurerm_monitor_action_group.alerts_email[0].id
       ],
       (var.env == "prod" ? [
-        azurerm_monitor_action_group.idpay_opsgenie[0].id
+        data.azurerm_monitor_action_group.alerts_opsgenie[0].id
       ] : [])
     ])
     email_subject = "[PARI][UPBE][HIGH] Get Wallet Detail API Alert (5xx)"
@@ -2530,7 +2530,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "get_wallet_detail_400_al
   frequency   = 5
   time_window = 10
 
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -2546,10 +2546,10 @@ QUERY
   action {
     action_group = flatten([
       [
-        azurerm_monitor_action_group.email[0].id
+        data.azurerm_monitor_action_group.alerts_email[0].id
       ],
       (var.env == "prod" ? [
-        azurerm_monitor_action_group.idpay_opsgenie[0].id
+        data.azurerm_monitor_action_group.alerts_opsgenie[0].id
       ] : [])
     ])
     email_subject = "[PARI][UPBE][HIGH] Get Wallet Detail API Alert (400)"
@@ -2571,7 +2571,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "get_wallet_detail_4xx_au
   frequency   = 5
   time_window = 5
 
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -2587,10 +2587,10 @@ QUERY
   action {
     action_group = flatten([
       [
-        azurerm_monitor_action_group.email[0].id
+        data.azurerm_monitor_action_group.alerts_email[0].id
       ],
       (var.env == "prod" ? [
-        azurerm_monitor_action_group.idpay_opsgenie[0].id
+        data.azurerm_monitor_action_group.alerts_opsgenie[0].id
       ] : [])
     ])
     email_subject = "[PARI][UPBE][HIGH] Get Wallet Detail API Alert (401/429)"
@@ -2612,7 +2612,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "create_barcode_transacti
   frequency   = 5
   time_window = 5
 
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -2628,10 +2628,10 @@ QUERY
   action {
     action_group = flatten([
       [
-        azurerm_monitor_action_group.email[0].id
+        data.azurerm_monitor_action_group.alerts_email[0].id
       ],
       (var.env == "prod" ? [
-        azurerm_monitor_action_group.idpay_opsgenie[0].id
+        data.azurerm_monitor_action_group.alerts_opsgenie[0].id
       ] : [])
     ])
     email_subject = "[PARI][UPBE][HIGH] Create Barcode Transaction API Alert (5xx)"
@@ -2653,7 +2653,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "create_barcode_transacti
   frequency   = 5
   time_window = 10
 
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -2669,10 +2669,10 @@ QUERY
   action {
     action_group = flatten([
       [
-        azurerm_monitor_action_group.email[0].id
+        data.azurerm_monitor_action_group.alerts_email[0].id
       ],
       (var.env == "prod" ? [
-        azurerm_monitor_action_group.idpay_opsgenie[0].id
+        data.azurerm_monitor_action_group.alerts_opsgenie[0].id
       ] : [])
     ])
     email_subject = "[PARI][UPBE][HIGH] Create Barcode Transaction API Alert (400)"
@@ -2694,7 +2694,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "create_barcode_transacti
   frequency   = 5
   time_window = 5
 
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -2710,10 +2710,10 @@ QUERY
   action {
     action_group = flatten([
       [
-        azurerm_monitor_action_group.email[0].id
+        data.azurerm_monitor_action_group.alerts_email[0].id
       ],
       (var.env == "prod" ? [
-        azurerm_monitor_action_group.idpay_opsgenie[0].id
+        data.azurerm_monitor_action_group.alerts_opsgenie[0].id
       ] : [])
     ])
     email_subject = "[PARI][UPBE][HIGH] Create Barcode Transaction API Alert (401/429)"
@@ -2735,7 +2735,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "retrieve_active_barcode_
   frequency   = 5
   time_window = 5
 
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -2751,10 +2751,10 @@ QUERY
   action {
     action_group = flatten([
       [
-        azurerm_monitor_action_group.email[0].id
+        data.azurerm_monitor_action_group.alerts_email[0].id
       ],
       (var.env == "prod" ? [
-        azurerm_monitor_action_group.idpay_opsgenie[0].id
+        data.azurerm_monitor_action_group.alerts_opsgenie[0].id
       ] : [])
     ])
     email_subject = "[PARI][UPBE][HIGH] Retrieve Active Barcode Transaction API Alert (5xx)"
@@ -2776,7 +2776,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "retrieve_active_barcode_
   frequency   = 5
   time_window = 10
 
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -2792,10 +2792,10 @@ QUERY
   action {
     action_group = flatten([
       [
-        azurerm_monitor_action_group.email[0].id
+        data.azurerm_monitor_action_group.alerts_email[0].id
       ],
       (var.env == "prod" ? [
-        azurerm_monitor_action_group.idpay_opsgenie[0].id
+        data.azurerm_monitor_action_group.alerts_opsgenie[0].id
       ] : [])
     ])
     email_subject = "[PARI][UPBE][HIGH] Retrieve Active Barcode Transaction API Alert (400)"
@@ -2817,7 +2817,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "retrieve_active_barcode_
   frequency   = 5
   time_window = 5
 
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -2833,10 +2833,10 @@ QUERY
   action {
     action_group = flatten([
       [
-        azurerm_monitor_action_group.email[0].id
+        data.azurerm_monitor_action_group.alerts_email[0].id
       ],
       (var.env == "prod" ? [
-        azurerm_monitor_action_group.idpay_opsgenie[0].id
+        data.azurerm_monitor_action_group.alerts_opsgenie[0].id
       ] : [])
     ])
     email_subject = "[PARI][UPBE][HIGH] Retrieve Active Barcode Transaction API Alert (401/429)"
@@ -2858,7 +2858,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "get_transaction_pdf_5xx_
   frequency   = 5
   time_window = 5
 
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -2874,10 +2874,10 @@ QUERY
   action {
     action_group = flatten([
       [
-        azurerm_monitor_action_group.email[0].id
+        data.azurerm_monitor_action_group.alerts_email[0].id
       ],
       (var.env == "prod" ? [
-        azurerm_monitor_action_group.idpay_opsgenie[0].id
+        data.azurerm_monitor_action_group.alerts_opsgenie[0].id
       ] : [])
     ])
     email_subject = "[PARI][UPBE][HIGH] Get Transaction PDF API Alert (5xx)"
@@ -2899,7 +2899,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "get_transaction_pdf_400_
   frequency   = 5
   time_window = 10
 
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -2915,10 +2915,10 @@ QUERY
   action {
     action_group = flatten([
       [
-        azurerm_monitor_action_group.email[0].id
+        data.azurerm_monitor_action_group.alerts_email[0].id
       ],
       (var.env == "prod" ? [
-        azurerm_monitor_action_group.idpay_opsgenie[0].id
+        data.azurerm_monitor_action_group.alerts_opsgenie[0].id
       ] : [])
     ])
     email_subject = "[PARI][UPBE][HIGH] Get Transaction PDF API Alert (400)"
@@ -2940,7 +2940,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "get_transaction_pdf_4xx_
   frequency   = 5
   time_window = 5
 
-  data_source_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
 
   query = <<QUERY
 AppRequests
@@ -2956,10 +2956,10 @@ QUERY
   action {
     action_group = flatten([
       [
-        azurerm_monitor_action_group.email[0].id
+        data.azurerm_monitor_action_group.alerts_email[0].id
       ],
       (var.env == "prod" ? [
-        azurerm_monitor_action_group.idpay_opsgenie[0].id
+        data.azurerm_monitor_action_group.alerts_opsgenie[0].id
       ] : [])
     ])
     email_subject = "[PARI][UPBE][HIGH] Get Transaction PDF API Alert (401/429)"

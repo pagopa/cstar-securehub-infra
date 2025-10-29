@@ -61,7 +61,10 @@ locals {
   #
   # Monitoring
   #
-  monitoring_rg_name = "${local.project}-monitoring-rg"
+  monitoring_rg_name              = "${local.project}-monitoring-rg"
+  monitor_rg                      = local.monitoring_rg_name
+  monitor_alert_email_group_name  = "pari-alerts-email"
+  monitor_alert_opsgenie_group_name = "IdpayOpsgenie"
 
   #ORIGINS (used for CORS on IDPAY Welfare Portal)
   origins = {
