@@ -29,68 +29,69 @@ locals {
     local.all_www_bonus_zones
   ])
 
-  only_one_redirect = [
-    {
-      name              = "RootRedirect"
-      order             = 0
-      behavior_on_match = "Stop"
-
-      // conditions
-      url_path_conditions = [
-        {
-          operator         = "Any"
-          match_values     = null
-          negate_condition = null
-          transforms       = null
-        }
-      ]
-
-      // actions
-      url_redirect_actions = [
-        {
-          redirect_type = "Found"
-          protocol      = "Https"
-          hostname      = "ioapp.it"
-          path          = "/bonus-elettrodomestici"
-          fragment      = ""
-          query_string  = ""
-        }
-      ]
-    }
-  ]
-
-  bonus_redirect_local = [{
-    name              = "RootRedirect"
-    order             = 0
-    behavior_on_match = "Stop"
-
-    // conditions
-    url_path_conditions = [
+  bonus_redirect = flatten([
+    [
       {
-        operator         = "Equal"
-        match_values     = ["/"]
-        negate_condition = false
-        transforms       = null
-      }
-    ]
+        name              = "RootRedirect"
+        order             = 0
+        behavior_on_match = "Stop"
 
-    // actions
-    url_redirect_actions = [
-      {
-        redirect_type = "Found"
-        protocol      = "Https"
-        hostname      = "ioapp.it"
-        path          = "/bonus-elettrodomestici"
-        fragment      = ""
-        query_string  = ""
+        url_path_conditions = [
+          {
+            operator         = "Equal"
+            match_values     = ["/"]
+            negate_condition = false
+            transforms       = null
+          }
+        ]
+
+        url_redirect_actions = [
+          {
+            redirect_type = "Found"
+            protocol      = "Https"
+            hostname      = "ioapp.it"
+            path          = "/bonus-elettrodomestici"
+            fragment      = ""
+            query_string  = ""
+          }
+        ]
       }
-    ] }
-  ]
+    ],
+
+    var.cdn_rewrite_disable_cittadino ? [
+      {
+        name              = "UtenteRedirect"
+        order             = 50
+        behavior_on_match = "Continue"
+
+        // conditions
+        url_path_conditions = [
+          {
+            operator         = "BeginsWith"
+            match_values     = ["/utente"]
+            negate_condition = false
+            transforms       = null
+          }
+        ]
+
+        // actions
+        url_redirect_actions = [
+          {
+            redirect_type = "Found"
+            protocol      = "Https"
+            hostname      = "ioapp.it"
+            path          = "/bonus-elettrodomestici"
+            fragment      = ""
+            query_string  = ""
+          }
+        ]
+      }
+    ] : []
+  ])
 
   #--------------------------------------------------
   # ⚠️ Redirect Rules - Handles root URL redirection to main domain
   #--------------------------------------------------
-  bonus_redirect_urls = var.enable_only_one_redirect ? local.only_one_redirect : local.bonus_redirect_local
 
   # Security Headers - Applied globally to all responses
   # These headers enhance security by preventing common attacks
@@ -139,9 +140,9 @@ locals {
   # Application Delivery Rules - URL Rewrite Rules
   # These rules handle routing for different frontend applications
   # by rewriting URLs to serve the correct index.html files
-  app_delivery_rules = concat([
+  app_delivery_rules = flatten([
     # Cittadino Application Rule - Handles citizen portal routing
-    {
+    var.cdn_rewrite_disable_cittadino ? [] : [{
       name              = "RewriteUtenteCittadinoApplication"
       order             = 10
       behavior_on_match = "Stop"
@@ -173,7 +174,7 @@ locals {
         destination             = "/utente/index.html"
         preserve_unmatched_path = false
       }]
-    },
+    }],
     # Esercenti Application Rule - Handles merchant portal routing
     {
       name              = "RewritePortaleEsercentiApplication"
@@ -207,8 +208,76 @@ locals {
         destination             = "/esercente/index.html"
         preserve_unmatched_path = false
       }]
-    }],
-  )
+    },
+    # Elenco informatico elettrodomestici statico Rule - Handles EIE portal routing
+    {
+      name              = "RewriteEIEStaticApplication"
+      order             = 16
+      behavior_on_match = "Stop"
+
+      url_path_conditions = [
+        {
+          operator         = "BeginsWith"
+          match_values     = ["/elenco-informatico-elettrodomestici/assets/"]
+          negate_condition = true
+          transforms       = []
+        },
+        {
+          operator         = "BeginsWith"
+          match_values     = ["/elenco-informatico-elettrodomestici/"]
+          negate_condition = false
+          transforms       = null
+        }
+      ]
+
+      url_file_extension_conditions = [{
+        operator         = "LessThanOrEqual"
+        match_values     = ["0"]
+        negate_condition = false
+        transforms       = []
+      }]
+
+      url_rewrite_actions = [{
+        source_pattern          = "/elenco-informatico-elettrodomestici"
+        destination             = "/elenco-informatico-elettrodomestici/index.html"
+        preserve_unmatched_path = false
+      }]
+    },
+    # Lista punti vendita statica Rule - Handles Point Of Sales portal routing
+    {
+      name              = "RewritePOSStaticApplication"
+      order             = 17
+      behavior_on_match = "Stop"
+
+      url_path_conditions = [
+        {
+          operator         = "BeginsWith"
+          match_values     = ["/lista-punti-vendita/assets/"]
+          negate_condition = true
+          transforms       = []
+        },
+        {
+          operator         = "BeginsWith"
+          match_values     = ["/lista-punti-vendita/"]
+          negate_condition = false
+          transforms       = null
+        }
+      ]
+
+      url_file_extension_conditions = [{
+        operator         = "LessThanOrEqual"
+        match_values     = ["0"]
+        negate_condition = false
+        transforms       = []
+      }]
+
+      url_rewrite_actions = [{
+        source_pattern          = "/lista-punti-vendita"
+        destination             = "/lista-punti-vendita/index.html"
+        preserve_unmatched_path = false
+      }]
+    },
+  ])
 
   # Calculate the total number of rewrite rules for subsequent order calculations
   total_rewrite_rules = length(local.app_delivery_rules)
@@ -288,6 +357,48 @@ locals {
       ]
     }]
   ])
+
+  ## Static content for Bonus Elettrodomestici
+  ## Elenco Informatico Elettrodomestici
+  upload_eie_files = fileset("${path.module}/cdn/bonus-el-products", "**")
+  ## Point of Sales
+  upload_pos_files = fileset("${path.module}/cdn/bonus-el-pos", "**")
+
+  content_type_map = {
+    ".html"  = "text/html"
+    ".htm"   = "text/html"
+    ".css"   = "text/css"
+    ".js"    = "application/javascript"
+    ".mjs"   = "application/javascript"
+    ".json"  = "application/json"
+    ".map"   = "application/json"
+    ".png"   = "image/png"
+    ".jpg"   = "image/jpeg"
+    ".jpeg"  = "image/jpeg"
+    ".gif"   = "image/gif"
+    ".svg"   = "image/svg+xml"
+    ".ico"   = "image/x-icon"
+    ".webp"  = "image/webp"
+    ".avif"  = "image/avif"
+    ".txt"   = "text/plain"
+    ".xml"   = "application/xml"
+    ".pdf"   = "application/pdf"
+    ".csv"   = "text/csv"
+    ".mp4"   = "video/mp4"
+    ".webm"  = "video/webm"
+    ".ogg"   = "audio/ogg"
+    ".mp3"   = "audio/mpeg"
+    ".wav"   = "audio/wav"
+    ".woff"  = "font/woff"
+    ".woff2" = "font/woff2"
+    ".ttf"   = "font/ttf"
+    ".otf"   = "font/otf"
+    ".eot"   = "application/vnd.ms-fontobject"
+    ".wasm"  = "application/wasm"
+    ".zip"   = "application/zip"
+    ".gz"    = "application/gzip"
+  }
+
 }
 
 // Public CDN to serve frontend - main domain
@@ -313,7 +424,7 @@ module "cdn_idpay_bonuselettrodomestici" {
   querystring_caching_behaviour = "IgnoreQueryString"
   log_analytics_workspace_id    = data.azurerm_log_analytics_workspace.core_log_analytics.id
 
-  delivery_rule_redirects = local.bonus_redirect_urls
+  delivery_rule_redirects = local.bonus_redirect
 
   # Global Delivery Rules
   global_delivery_rules = local.global_delivery_rules
@@ -328,4 +439,36 @@ module "cdn_idpay_bonuselettrodomestici" {
   custom_domains = local.custom_domains
 
   tags = module.tag_config.tags
+}
+
+## Upload static content for Bonus Elettrodomesici - products
+resource "azurerm_storage_blob" "eie_static_files" {
+  for_each = toset(local.upload_eie_files)
+
+  name                   = "elenco-informatico-elettrodomestici/${each.value}"
+  storage_account_name   = module.cdn_idpay_bonuselettrodomestici.storage_name
+  storage_container_name = "$web"
+  type                   = "Block"
+  source                 = "${path.module}/cdn/bonus-el-products/${each.value}"
+  content_type = lookup(
+    local.content_type_map,
+    try(lower(regex("\\.[^.]+$", each.value)), ""),
+    "application/octet-stream"
+  )
+}
+
+## Upload static content for Bonus Elettrodomesici - point of sales
+resource "azurerm_storage_blob" "pos_static_files" {
+  for_each = toset(local.upload_pos_files)
+
+  name                   = "lista-punti-vendita/${each.value}"
+  storage_account_name   = module.cdn_idpay_bonuselettrodomestici.storage_name
+  storage_container_name = "$web"
+  type                   = "Block"
+  source                 = "${path.module}/cdn/bonus-el-pos/${each.value}"
+  content_type = lookup(
+    local.content_type_map,
+    try(lower(regex("\\.[^.]+$", each.value)), ""),
+    "application/octet-stream"
+  )
 }
