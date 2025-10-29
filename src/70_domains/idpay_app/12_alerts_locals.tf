@@ -4,8 +4,8 @@
 
 locals {
   alert_action_group = compact([
-    data.azurerm_monitor_action_group.alerts_email[0].id,
-    var.env == "prod" ? data.azurerm_monitor_action_group.alerts_opsgenie[0].id : null
+    try(data.azurerm_monitor_action_group.alerts_email[0].id, null),
+    var.env_short == "p" ? try(data.azurerm_monitor_action_group.alerts_opsgenie[0].id, null) : null
   ])
 
   alert_defaults = {
