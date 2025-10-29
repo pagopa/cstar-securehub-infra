@@ -128,7 +128,7 @@ variable "single_page_applications_portal_merchants_operator_roots_dirs" {
   description = "spa root dirs"
 }
 
-variable "enable_only_one_redirect" {
+variable "cdn_rewrite_disable_cittadino" {
   default     = false
   type        = bool
   description = "Enable one single redirect to ioapp.it/bonus-elettrodomestici"
