@@ -33,6 +33,32 @@ resource "azurerm_data_factory_linked_custom_service" "bonus_blob_storage_linked
   }
 }
 
+locals {
+  exports_sa_name = try(
+    module.storage_idpay_exports.name,
+    element(split("/", module.storage_idpay_exports.id), 8)
+  )
+}
+
+# LS ADLS Gen2 (BlobFS) via Managed Identity
+resource "azurerm_data_factory_linked_custom_service" "idpay_exports_blobfs_ls" {
+  name            = "${var.domain}-exports-blobfs-ls"
+  data_factory_id = data.azurerm_data_factory.data_factory.id
+  type            = "AzureBlobFS"
+  description     = "Exports Storage (ADLS Gen2) via Managed Identity"
+
+  type_properties_json = jsonencode({
+    url            = "https://${local.exports_sa_name}.dfs.core.windows.net"
+    authentication = "ManagedIdentity"
+  })
+
+  integration_runtime {
+    name = "AutoResolveIntegrationRuntime"
+  }
+
+  depends_on = [azurerm_role_assignment.adf_can_access_exports_storage]
+}
+
 resource "azurerm_data_factory_managed_private_endpoint" "adf_cosmosdb_mpe" {
   name               = "${local.product}-cosmosdb-mongo-mpe"
   data_factory_id    = data.azurerm_data_factory.data_factory.id

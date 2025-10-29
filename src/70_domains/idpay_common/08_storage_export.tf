@@ -21,3 +21,15 @@ resource "azurerm_storage_container" "idpay_export_products_container" {
   storage_account_id    = module.storage_idpay_exports.id
   container_access_type = "private"
 }
+
+########################################
+# RBAC - ADF permission for read/write on storage
+########################################
+
+resource "azurerm_role_assignment" "adf_can_access_exports_storage" {
+  scope                = module.storage_idpay_exports.id
+  role_definition_name = "Storage Blob Data Contributor"
+  principal_id         = data.azurerm_data_factory.data_factory.identity[0].principal_id
+
+  depends_on = [module.storage_idpay_exports]
+}
