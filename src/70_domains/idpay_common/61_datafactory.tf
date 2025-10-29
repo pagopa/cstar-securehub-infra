@@ -18,6 +18,21 @@ resource "azurerm_data_factory_linked_custom_service" "adf_cosmosdb_linked_servi
   }
 }
 
+resource "azurerm_data_factory_linked_custom_service" "bonus_blob_storage_linked_service" {
+
+  name            = "${var.domain}-bonus-blob-storage-ls"
+  data_factory_id = data.azurerm_data_factory.data_factory.id
+  type            = "AzureBlobStorage"
+  description     = "Bonus Blob Storage Account linked service for IdPay"
+  type_properties_json = jsonencode({
+    connectionString = module.cdn_idpay_bonuselettrodomestici.storage_primary_connection_string
+  })
+
+  integration_runtime {
+    name = "AutoResolveIntegrationRuntime"
+  }
+}
+
 resource "azurerm_data_factory_managed_private_endpoint" "adf_cosmosdb_mpe" {
   name               = "${local.product}-cosmosdb-mongo-mpe"
   data_factory_id    = data.azurerm_data_factory.data_factory.id
