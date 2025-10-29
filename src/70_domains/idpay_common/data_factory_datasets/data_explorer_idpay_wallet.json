@@ -1,14 +1,14 @@
 {
-    "name": "cosmos_idpay_transaction",
+    "name": "data_explorer_idpay_wallet",
     "properties": {
         "linkedServiceName": {
-            "referenceName": "idpay-CosmosDB-idpay-pagamenti-ls",
+            "referenceName": "idpay-Kusto-idpay-ls",
             "type": "LinkedServiceReference"
         },
         "annotations": [],
-        "type": "CosmosDbMongoDbApiCollection",
+        "type": "AzureDataExplorerTable",
         "typeProperties": {
-            "collection": "transaction"
+            "table": "wallet"
         }
     },
     "type": "Microsoft.DataFactory/factories/datasets"

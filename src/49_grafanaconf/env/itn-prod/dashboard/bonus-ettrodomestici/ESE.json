@@ -24,7 +24,7 @@
     {
       "datasource": {
         "type": "grafana-azure-data-explorer-datasource",
-        "uid": "aezn6luqall34b"
+        "uid": "ef2bw8859i6tcd"
       },
       "fieldConfig": {
         "defaults": {
@@ -80,7 +80,7 @@
           "database": "idpay",
           "datasource": {
             "type": "grafana-azure-data-explorer-datasource",
-            "uid": "aezn6luqall34b"
+            "uid": "ef2bw8859i6tcd"
           },
           "expression": {
             "groupBy": {
@@ -123,7 +123,7 @@
     {
       "datasource": {
         "type": "grafana-azure-data-explorer-datasource",
-        "uid": "aezn6luqall34b"
+        "uid": "ef2bw8859i6tcd"
       },
       "fieldConfig": {
         "defaults": {
@@ -180,7 +180,7 @@
           "database": "idpay",
           "datasource": {
             "type": "grafana-azure-data-explorer-datasource",
-            "uid": "aezn6luqall34b"
+            "uid": "ef2bw8859i6tcd"
           },
           "expression": {
             "groupBy": {
@@ -223,7 +223,7 @@
     {
       "datasource": {
         "type": "grafana-azure-data-explorer-datasource",
-        "uid": "aezn6luqall34b"
+        "uid": "ef2bw8859i6tcd"
       },
       "fieldConfig": {
         "defaults": {
@@ -287,11 +287,11 @@
       "targets": [
         {
           "OpenAI": false,
-          "clusterUri": "https://cstar-d-itn-platform.italynorth.kusto.windows.net",
+          "clusterUri": "https://cstar-p-itn-platform.italynorth.kusto.windows.net",
           "database": "idpay",
           "datasource": {
             "type": "grafana-azure-data-explorer-datasource",
-            "uid": "aezn6luqall34b"
+            "uid": "ef2bw8859i6tcd"
           },
           "expression": {
             "groupBy": {
@@ -337,7 +337,7 @@
     {
       "datasource": {
         "type": "grafana-azure-data-explorer-datasource",
-        "uid": "aezn6luqall34b"
+        "uid": "ef2bw8859i6tcd"
       },
       "fieldConfig": {
         "defaults": {
@@ -394,7 +394,7 @@
           "database": "idpay",
           "datasource": {
             "type": "grafana-azure-data-explorer-datasource",
-            "uid": "aezn6luqall34b"
+            "uid": "ef2bw8859i6tcd"
           },
           "expression": {
             "groupBy": {
