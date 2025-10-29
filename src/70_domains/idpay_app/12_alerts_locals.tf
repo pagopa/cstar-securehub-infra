@@ -15,7 +15,8 @@ locals {
     time_window = 5
   }
 
-  alert_microservices = {
+  ### Alerts by microservice
+  alerts_microservices = {
     # Register
     register = {
       label = "Register"
@@ -1464,7 +1465,7 @@ locals {
   }
 
   alert_definitions = merge([
-    for service in values(local.alert_microservices) : merge([
+    for service in values(local.alerts_microservices) : merge([
       for category in values(service.categories) : category.alerts
     ]...)
   ]...)
