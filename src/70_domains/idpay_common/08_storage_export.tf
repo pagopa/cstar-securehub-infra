@@ -6,7 +6,7 @@ module "storage_idpay_exports" {
   resource_group_name = local.data_rg
   tags                = module.tag_config.tags
 
-  idh_resource_tier   = var.env_short != "prod" ? "basic" : "standard"
+  idh_resource_tier = var.env_short != "prod" ? "basic" : "standard"
 
   name   = replace("${local.project}-exports-sa", "-", "")
   domain = var.domain
