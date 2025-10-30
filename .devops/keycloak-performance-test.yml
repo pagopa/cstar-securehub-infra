@@ -142,7 +142,7 @@ stages:
               cd $(Pipeline.Workspace)/kcb/keycloak-benchmark-${{variables.KCB_VERSION}}/bin
 
               ./kcb.sh --scenario=${{parameters.kcb_scenario}} \
-                --server-url=${{variables.KEYCLOK_URL}} \
+                --server-url=${{variables.KEYCLOAK_URL}} \
                 --realm-name=${{parameters.keycloak_realm}} \
                 --use-all-local-addresses=false \
                 --share-connections=false \
