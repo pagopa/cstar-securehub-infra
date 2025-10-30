@@ -1,15 +1,6 @@
 {
   "name": "idpay_copy_rdb_products_to_csv",
   "properties": {
-    "parameters": {
-      "funcUrl": {
-        "type": "String",
-        "defaultValue": "https://fa-idpay-ses-mailer.azurewebsites.net/api/send_email"
-      },
-      "funcKey": {
-        "type": "SecureString"
-      }
-    },
     "activities": [
       {
         "name": "Copy_Cosmos_to_CSV",
@@ -75,28 +66,6 @@
           "dataFlow": { "referenceName": "export_flow_csv", "type": "DataFlowReference" },
           "compute": { "coreCount": 8, "computeType": "General" },
           "traceLevel": "Fine"
-        }
-      },
-      {
-        "name": "Send_Email_via_Function",
-        "type": "WebActivity",
-        "dependsOn": [
-          { "activity": "FlussoExportCSV", "dependencyConditions": ["Succeeded"] }
-        ],
-        "typeProperties": {
-          "url": "@{pipeline().parameters.funcUrl}",
-          "method": "POST",
-          "headers": {
-            "Content-Type": "application/json",
-            "x-functions-key": "@{pipeline().parameters.funcKey}"
-          },
-          "body": {
-            "to": "stefano.delia@pagopa.it",
-            "subject": "Esportazione settimanale @{formatDateTime(utcNow(),'yyyy-MM-dd')}",
-            "body": "Ciao,\\nIn allegato trovi il CSV generato automaticamente.",
-            "container": "export",
-            "blob_path": "@{concat('data/export_weekly_', formatDateTime(utcNow(), 'yyyy-MM-dd'), '.csv')}"
-          }
         }
       }
     ]

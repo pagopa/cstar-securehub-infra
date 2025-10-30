@@ -216,16 +216,3 @@ data "azurerm_kusto_cluster" "kusto_cluster" {
   name                = local.kusto_cluster_name
   resource_group_name = local.kusto_cluster_rg_name
 }
-
-# === Additions needed by the SES mailer Function ===
-# Raw IAM keys stored in Key Vault (you already populate them in ses_smtp_secrets.tf)
-
-data "azurerm_key_vault_secret" "ses_access_key" {
-  key_vault_id = data.azurerm_key_vault.domain_kv.id
-  name         = "aws-ses-mail-user-access-key"
-}
-
-data "azurerm_key_vault_secret" "ses_secret_key" {
-  key_vault_id = data.azurerm_key_vault.domain_kv.id
-  name         = "aws-ses-mail-user-secret-key"
-}

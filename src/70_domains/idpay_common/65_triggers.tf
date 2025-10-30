@@ -59,12 +59,6 @@ resource "azurerm_data_factory_trigger_schedule" "weekly_triggers" {
 
   pipeline {
     name = each.key
-    parameters = {
-      funcUrl = "https://${azurerm_linux_function_app.ses.default_hostname}/api/send_email"
-      funcKey = data.azurerm_function_app_host_keys.ses_keys.default_function_key
-      # In alternativa:
-      # funcKey = data.azurerm_key_vault_secret.ses_function_key.value
-    }
   }
   schedule {
     days_of_week = ["Monday"]
