@@ -33,7 +33,7 @@ resource "azurerm_service_plan" "ses_plan" {
 /* === Codice Function: usa MSI per leggere Blob e SES per inviare mail === */
 /* __init__.py */
 resource "local_file" "fa_init" {
-  filename = "${local.ses_src_dir}/__init__.py"
+  filename = "${local.ses_src_dir}/send_email/__init__.py"
   content  = <<-PY
     import os, json, base64, boto3
     from azure.identity import DefaultAzureCredential
@@ -99,7 +99,7 @@ resource "local_file" "fa_init" {
 
 /* function.json */
 resource "local_file" "fa_function_json" {
-  filename = "${local.ses_src_dir}/function.json"
+  filename = "${local.ses_src_dir}/send_email/function.json"
   content  = <<-JSON
     {
       "scriptFile": "__init__.py",
