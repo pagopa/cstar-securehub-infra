@@ -32,18 +32,18 @@ keycloak_pgflex_params = {
   auto_grow_enabled                      = false
 
 }
-
+# TODO restore replicas to 2-3 after load test
 keycloak_configuration = {
   image_registry                              = "docker.io"
   image_repository                            = "bitnamilegacy/keycloak"
   image_tag                                   = "26.3.1-debian-12-r1"
   chart_version                               = "24.7.7"
-  replica_count_min                           = 2
-  replica_count_max                           = 3
+  replica_count_min                           = 3
+  replica_count_max                           = 6
   cpu_request                                 = "1"
   cpu_limit                                   = "2"
-  memory_request                              = "1Gi"
-  memory_limit                                = "2Gi"
+  memory_request                              = "1.5Gi"
+  memory_limit                                = "3Gi"
   http_client_connection_ttl_millis           = 180000
   http_client_connection_max_idle_time_millis = 180000
 }

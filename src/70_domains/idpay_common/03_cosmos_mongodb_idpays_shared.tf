@@ -2,6 +2,7 @@
 # CosmosDB MongoDB databases and collections
 # ------------------------------------------------------------------------------
 locals {
+
   idpay_beneficiari_collections = [
     {
       name                = "anpr_info"
@@ -458,7 +459,6 @@ locals {
     "idpay-iniziative.${coll.name}" => merge(coll, { database_name = "idpay-iniziative" })
   }
 
-
   collections_plan = merge(
     local.plan_idpay_beneficiari,
     local.plan_idpay_pagamenti,
@@ -473,8 +473,8 @@ locals {
 resource "azurerm_cosmosdb_mongo_database" "databases" {
   for_each = toset([
     "idpay-beneficiari",
-    "idpay-pagamenti",
     "idpay-iniziative",
+    "idpay-pagamenti",
   ])
 
   name                = each.key
