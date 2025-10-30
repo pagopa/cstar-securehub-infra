@@ -67,7 +67,7 @@
                             </a>
                         </div>
                         <ul>
-                            <li><a href="http://pagopa.it/societa/chi-siamo/">PagoPA S.p.A.</a></li>
+                            <li><a href="https://pagopa.it/societa/chi-siamo/">PagoPA S.p.A.</a></li>
                             <li><a href="https://www.pagopa.it/it/opportunita/pnrr/progetti/">PNRR</a></li>
                             <li><a href="https://www.pagopa.it/it/media/">Media</a></li>
                             <li><a href="https://www.pagopa.it/it/lavora-con-noi/">Lavora con noi</a></li>
@@ -81,7 +81,6 @@
                             <li><a href="https://www.pagopa.it/it/prodotti-e-servizi/centro-stella-pagamenti-elettronici/">Centro stella</a></li>
                             <li><a href="https://www.pagopa.it/it/prodotti-e-servizi/check-iban/">Check IBAN</a></li>
                             <li><a href="https://www.pagopa.it/it/prodotti-e-servizi/piattaforma-notifiche-digitali/">Piattaforma Notifiche Digitali</a></li>
-                            <li><a href="https://www.pagopa.it/it/prodotti-e-servizi/piattaforma-digitale-nazionale-dati/">Piattaforma Digitale Nazionale Dati - <br />Interoperabilità</a></li>
                             <li><a href="https://oneid.pagopa.it/login?response_type=CODE&scope=openid&client_id=XNmG922uM31xCm4vaomrWoSBSaXvMeD99pDqIjD2Eh8&state=0fc630961d5d4df&nonce=f029fdb08e9c4f7&redirect_uri=https%3A%2F%2Fselfcare.pagopa.it%2Fauth%2Flogin%2Fcallback">Area Riservata</a></li>
                         </ul>
                     </div>
