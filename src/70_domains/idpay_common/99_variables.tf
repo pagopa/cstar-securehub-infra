@@ -82,6 +82,16 @@ variable "cosmos_mongo_db_idpay_params" {
   })
 }
 
+variable "additional_geo_locations" {
+  type = list(object({
+    location          = string
+    failover_priority = number
+    zone_redundant    = bool
+  }))
+  default     = []
+  description = "Specifies a list of additional geo_location resources, used to define where data should be replicated."
+}
+
 # DNS
 variable "external_domain" {
   type        = string
@@ -116,6 +126,12 @@ variable "single_page_applications_asset_register_roots_dirs" {
 variable "single_page_applications_portal_merchants_operator_roots_dirs" {
   type        = list(string)
   description = "spa root dirs"
+}
+
+variable "cdn_rewrite_disable_cittadino" {
+  default     = false
+  type        = bool
+  description = "Enable one single redirect to ioapp.it/bonus-elettrodomestici"
 }
 
 

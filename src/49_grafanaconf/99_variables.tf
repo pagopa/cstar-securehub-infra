@@ -53,3 +53,14 @@ variable "domain" {
     error_message = "Max length is 12 chars."
   }
 }
+
+# team_groups
+# Purpose: Defines, per team, the Azure AD groups used to manage access in the platform.
+# Structure: map(team) -> map(group_name) -> { role, users }
+variable "team_groups" {
+  description = "Map of groups per team: each key is the team, value is a map 'group_name' -> { role, users }"
+  type = map(map(object({
+    permission = string
+  })))
+  default = {}
+}

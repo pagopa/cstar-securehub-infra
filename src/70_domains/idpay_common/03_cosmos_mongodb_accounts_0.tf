@@ -34,7 +34,10 @@ module "cosmos_db_account" {
 
   # Geo-location and Zone Settings
   main_geo_location_location = var.location
+  additional_geo_locations   = var.additional_geo_locations
 }
+
+
 
 #
 # 🔑 Secrets

@@ -7,7 +7,6 @@
         },
         "annotations": [],
         "type": "AzureDataExplorerTable",
-        "schema": [],
         "typeProperties": {
             "table": "point_of_sales"
         }
