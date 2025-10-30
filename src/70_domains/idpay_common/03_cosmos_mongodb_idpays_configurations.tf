@@ -80,8 +80,10 @@ locals {
       name                = "initiative_counters"
       shard_key           = null
       default_ttl_seconds = null
-      indexes             = [{ keys = ["_id"], unique = true }]
-      indexes             = [{ keys = ["userId"], unique = true }]
+      indexes = [
+        { keys = ["_id"], unique = true },
+        { keys = ["userId"], unique = false }
+      ]
     },
     {
       name                = "mocked_families"
