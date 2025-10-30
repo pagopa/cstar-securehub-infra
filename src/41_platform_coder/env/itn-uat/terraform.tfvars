@@ -32,7 +32,7 @@ keycloak_pgflex_params = {
   auto_grow_enabled                      = false
 
 }
-
+# TODO restore replicas to 2-3 after load test
 keycloak_configuration = {
   image_registry                              = "docker.io"
   image_repository                            = "bitnamilegacy/keycloak"
