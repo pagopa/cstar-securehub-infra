@@ -81,6 +81,7 @@ locals {
       shard_key           = null
       default_ttl_seconds = null
       indexes             = [{ keys = ["_id"], unique = true }]
+      indexes             = [{ keys = ["userId"], unique = true }]
     },
     {
       name                = "mocked_families"
