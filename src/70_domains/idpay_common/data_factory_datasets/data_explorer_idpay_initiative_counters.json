@@ -1,0 +1,15 @@
+{
+    "name": "data_explorer_idpay_initiative_counters",
+    "properties": {
+        "linkedServiceName": {
+            "referenceName": "idpay-Kusto-idpay-ls",
+            "type": "LinkedServiceReference"
+        },
+        "annotations": [],
+        "type": "AzureDataExplorerTable",
+        "typeProperties": {
+            "table": "initiative_counters"
+        }
+    },
+    "type": "Microsoft.DataFactory/factories/datasets"
+}

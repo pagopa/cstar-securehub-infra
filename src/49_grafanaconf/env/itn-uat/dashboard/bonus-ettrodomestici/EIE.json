@@ -24,7 +24,7 @@
     {
       "datasource": {
         "type": "grafana-azure-data-explorer-datasource",
-        "uid": "aezn6luqall34b"
+        "uid": "af2bx3h1osn40b"
       },
       "fieldConfig": {
         "defaults": {
@@ -80,7 +80,7 @@
           "database": "idpay",
           "datasource": {
             "type": "grafana-azure-data-explorer-datasource",
-            "uid": "aezn6luqall34b"
+            "uid": "af2bx3h1osn40b"
           },
           "expression": {
             "groupBy": {
@@ -139,7 +139,7 @@
     {
       "datasource": {
         "type": "grafana-azure-data-explorer-datasource",
-        "uid": "aezn6luqall34b"
+        "uid": "af2bx3h1osn40b"
       },
       "fieldConfig": {
         "defaults": {
@@ -195,7 +195,7 @@
           "database": "idpay",
           "datasource": {
             "type": "grafana-azure-data-explorer-datasource",
-            "uid": "aezn6luqall34b"
+            "uid": "af2bx3h1osn40b"
           },
           "expression": {
             "groupBy": {
@@ -238,7 +238,7 @@
     {
       "datasource": {
         "type": "grafana-azure-data-explorer-datasource",
-        "uid": "aezn6luqall34b"
+        "uid": "af2bx3h1osn40b"
       },
       "fieldConfig": {
         "defaults": {
@@ -294,7 +294,7 @@
           "database": "idpay",
           "datasource": {
             "type": "grafana-azure-data-explorer-datasource",
-            "uid": "aezn6luqall34b"
+            "uid": "af2bx3h1osn40b"
           },
           "expression": {
             "groupBy": {
@@ -337,7 +337,7 @@
     {
       "datasource": {
         "type": "grafana-azure-data-explorer-datasource",
-        "uid": "aezn6luqall34b"
+        "uid": "af2bx3h1osn40b"
       },
       "fieldConfig": {
         "defaults": {
@@ -393,7 +393,7 @@
           "database": "idpay",
           "datasource": {
             "type": "grafana-azure-data-explorer-datasource",
-            "uid": "aezn6luqall34b"
+            "uid": "af2bx3h1osn40b"
           },
           "expression": {
             "groupBy": {
@@ -436,7 +436,7 @@
     {
       "datasource": {
         "type": "grafana-azure-data-explorer-datasource",
-        "uid": "aezn6luqall34b"
+        "uid": "af2bx3h1osn40b"
       },
       "fieldConfig": {
         "defaults": {
@@ -492,7 +492,7 @@
           "database": "idpay",
           "datasource": {
             "type": "grafana-azure-data-explorer-datasource",
-            "uid": "aezn6luqall34b"
+            "uid": "af2bx3h1osn40b"
           },
           "expression": {
             "groupBy": {
@@ -535,7 +535,7 @@
     {
       "datasource": {
         "type": "grafana-azure-data-explorer-datasource",
-        "uid": "aezn6luqall34b"
+        "uid": "af2bx3h1osn40b"
       },
       "fieldConfig": {
         "defaults": {
@@ -591,7 +591,7 @@
           "database": "idpay",
           "datasource": {
             "type": "grafana-azure-data-explorer-datasource",
-            "uid": "aezn6luqall34b"
+            "uid": "af2bx3h1osn40b"
           },
           "expression": {
             "groupBy": {
@@ -647,7 +647,7 @@
     {
       "datasource": {
         "type": "grafana-azure-data-explorer-datasource",
-        "uid": "aezn6luqall34b"
+        "uid": "af2bx3h1osn40b"
       },
       "fieldConfig": {
         "defaults": {
@@ -729,7 +729,7 @@
           "database": "idpay",
           "datasource": {
             "type": "grafana-azure-data-explorer-datasource",
-            "uid": "aezn6luqall34b"
+            "uid": "af2bx3h1osn40b"
           },
           "expression": {
             "groupBy": {
@@ -775,7 +775,7 @@
     {
       "datasource": {
         "type": "grafana-azure-data-explorer-datasource",
-        "uid": "aezn6luqall34b"
+        "uid": "af2bx3h1osn40b"
       },
       "fieldConfig": {
         "defaults": {
@@ -869,7 +869,7 @@
           "database": "idpay",
           "datasource": {
             "type": "grafana-azure-data-explorer-datasource",
-            "uid": "aezn6luqall34b"
+            "uid": "af2bx3h1osn40b"
           },
           "expression": {
             "groupBy": {
@@ -915,7 +915,7 @@
     {
       "datasource": {
         "type": "grafana-azure-data-explorer-datasource",
-        "uid": "aezn6luqall34b"
+        "uid": "af2bx3h1osn40b"
       },
       "fieldConfig": {
         "defaults": {
@@ -1011,7 +1011,7 @@
           "database": "idpay",
           "datasource": {
             "type": "grafana-azure-data-explorer-datasource",
-            "uid": "aezn6luqall34b"
+            "uid": "af2bx3h1osn40b"
           },
           "expression": {
             "groupBy": {
@@ -1057,7 +1057,7 @@
     {
       "datasource": {
         "type": "grafana-azure-data-explorer-datasource",
-        "uid": "aezn6luqall34b"
+        "uid": "af2bx3h1osn40b"
       },
       "fieldConfig": {
         "defaults": {
@@ -1151,7 +1151,7 @@
           "database": "idpay",
           "datasource": {
             "type": "grafana-azure-data-explorer-datasource",
-            "uid": "aezn6luqall34b"
+            "uid": "af2bx3h1osn40b"
           },
           "expression": {
             "groupBy": {
@@ -1197,7 +1197,7 @@
     {
       "datasource": {
         "type": "grafana-azure-data-explorer-datasource",
-        "uid": "aezn6luqall34b"
+        "uid": "af2bx3h1osn40b"
       },
       "fieldConfig": {
         "defaults": {
@@ -1291,7 +1291,7 @@
           "database": "idpay",
           "datasource": {
             "type": "grafana-azure-data-explorer-datasource",
-            "uid": "aezn6luqall34b"
+            "uid": "af2bx3h1osn40b"
           },
           "expression": {
             "groupBy": {
@@ -1308,7 +1308,7 @@
             }
           },
           "pluginVersion": "6.2.0",
-          "query": "products\r\n| where status  == 'UPLOADED'\r\n| summarize Totale = count() by category\r\n| order by category ",
+          "query": "products\r\n| where status  == 'SUPERVISED'\r\n| summarize Totale = count() by category\r\n| order by category ",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -1316,7 +1316,7 @@
           "resultFormat": "table"
         }
       ],
-      "title": "Prodotti Da Esaminare Per Categoria",
+      "title": "Prodotti Da Controllare Per Categoria",
       "transformations": [
         {
           "id": "partitionByValues",
@@ -1337,7 +1337,7 @@
     {
       "datasource": {
         "type": "grafana-azure-data-explorer-datasource",
-        "uid": "aezn6luqall34b"
+        "uid": "af2bx3h1osn40b"
       },
       "fieldConfig": {
         "defaults": {
@@ -1431,7 +1431,7 @@
           "database": "idpay",
           "datasource": {
             "type": "grafana-azure-data-explorer-datasource",
-            "uid": "aezn6luqall34b"
+            "uid": "af2bx3h1osn40b"
           },
           "expression": {
             "groupBy": {
@@ -1448,7 +1448,7 @@
             }
           },
           "pluginVersion": "6.2.0",
-          "query": "products\r\n| summarize Totale = count() by category\r\n| order by category ",
+          "query": "products\r\n| where status  == 'UPLOADED'\r\n| summarize Totale = count() by category\r\n| order by category ",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -1456,7 +1456,7 @@
           "resultFormat": "table"
         }
       ],
-      "title": "Prodotti Per Categoria",
+      "title": "Prodotti Da Esaminare Per Categoria",
       "transformations": [
         {
           "id": "partitionByValues",
@@ -1477,7 +1477,7 @@
     {
       "datasource": {
         "type": "grafana-azure-data-explorer-datasource",
-        "uid": "aezn6luqall34b"
+        "uid": "af2bx3h1osn40b"
       },
       "fieldConfig": {
         "defaults": {
@@ -1571,7 +1571,7 @@
           "database": "idpay",
           "datasource": {
             "type": "grafana-azure-data-explorer-datasource",
-            "uid": "aezn6luqall34b"
+            "uid": "af2bx3h1osn40b"
           },
           "expression": {
             "groupBy": {
@@ -1588,7 +1588,7 @@
             }
           },
           "pluginVersion": "6.2.0",
-          "query": "products\r\n| summarize Totale = count() by category\r\n| order by category ",
+          "query": "products\r\n| where status  == 'WAIT_APPROVED'\r\n| summarize Totale = count() by category\r\n| order by category ",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -1596,7 +1596,7 @@
           "resultFormat": "table"
         }
       ],
-      "title": "Prodotti Per Categoria",
+      "title": "Prodotti Da Approvare Per Categoria",
       "transformations": [
         {
           "id": "partitionByValues",
@@ -1629,5 +1629,5 @@
   "timezone": "browser",
   "title": "EIE",
   "uid": "cezndziyw8tmof",
-  "version": 67
+  "version": 75
 }
