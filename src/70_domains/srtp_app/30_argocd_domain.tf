@@ -11,7 +11,7 @@ locals {
       {
         "rtp-sender" = {
           name          = "rtp-sender"
-          target_branch = "SRTP-1069-add-helm-to-rtp-sender"
+          target_branch = "main"
           env           = ["dev", "uat", "prod"]
         }
       }
@@ -54,7 +54,7 @@ resource "argocd_application" "domain_argocd_applications" {
 
     source {
       repo_url        = "https://github.com/pagopa/${var.domain}-deploy-aks"
-      target_revision = "SRTP-1069-add-helm-to-rtp-sender"
+      target_revision = can(each.value.target_branch) ? each.value.target_branch : "main"
       path            = "helm/${var.env}/${each.value.class}/${each.value.name}"
 
       helm {
