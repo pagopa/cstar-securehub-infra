@@ -7,6 +7,13 @@ locals {
           target_branch = "main"
           env           = ["dev", "uat", "prod"]
         }
+      },
+      {
+        "rtp-sender" = {
+          name          = "rtp-sender"
+          target_branch = "main"
+          env           = ["dev", "uat", "prod"]
+        }
       }
     )
     "mid" = {}

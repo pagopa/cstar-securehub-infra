@@ -40,6 +40,7 @@ locals {
   # Workload Identity
   secret_name_workload_identity_client_id            = "${var.domain}-${var.location_short}-workload-identity-client-id"
   secret_name_workload_identity_service_account_name = "${var.domain}-${var.location_short}-workload-identity-service-account-name"
+  secret_name_workload_identity                      = "${var.domain}-${var.location_short}-workload-identity"
 
   ### ARGOCD
   argocd_namespace    = "argocd"
