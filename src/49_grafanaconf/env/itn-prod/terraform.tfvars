@@ -20,6 +20,9 @@ team_groups = {
     "cstar-p-idpay-adgroup-oncall" = {
       permission = "View"
     }
+    "cstar-p-idpay-adgroup-project-managers" = {
+      permission = "View"
+    }
   }
   srtp = {
     "cstar-p-srtp-adgroup-admin" = {
@@ -29,6 +32,9 @@ team_groups = {
       permission = "View"
     }
     "cstar-p-srtp-adgroup-externals" = {
+      permission = "View"
+    }
+    "cstar-p-srtp-adgroup-project-managers" = {
       permission = "View"
     }
   }

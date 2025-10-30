@@ -21,6 +21,23 @@ data "azurerm_resource_group" "monitoring_rg" {
   name = local.monitoring_rg_name
 }
 
+data "azurerm_log_analytics_workspace" "log_analytics_workspace" {
+  name                = "${local.project}-law"
+  resource_group_name = data.azurerm_resource_group.monitoring_rg.name
+}
+
+data "azurerm_monitor_action_group" "alerts_email" {
+  count               = contains(["p", "u"], var.env_short) ? 1 : 0
+  name                = local.monitor_alert_email_group_name
+  resource_group_name = data.azurerm_resource_group.monitoring_rg.name
+}
+
+data "azurerm_monitor_action_group" "alerts_opsgenie" {
+  count               = var.env_short == "p" ? 1 : 0
+  name                = local.monitor_alert_opsgenie_group_name
+  resource_group_name = data.azurerm_resource_group.monitoring_rg.name
+}
+
 
 #------------------------------------------------------------------
 # Azure AD

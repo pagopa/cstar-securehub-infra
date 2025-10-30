@@ -46,7 +46,7 @@
                     </div>
 
                     <div class="terms-notice">
-                        <span>Accedendo accetti i <a href="https://selfcare.pagopa.it/auth/termini-di-servizio">Termini e condizioni d'uso</a> del servizio e confermi di avere letto l'<a href="https://selfcare.pagopa.it/auth/informativa-privacy">Informativa Privacy</a></span>
+                        <span>Accedendo accetti i <a href="https://bonuselettrodomestici.it/esercente/terms-of-service">Termini e condizioni d'uso</a> del servizio e confermi di avere letto l'<a href="https://bonuselettrodomestici.it/esercente/privacy-policy">Informativa Privacy</a></span>
                     </div>
 
                     <input class="btn-primary" type="submit" value="Accedi" >
@@ -88,8 +88,8 @@
                     <div class="footer-column">
                         <h4>RISORSE</h4>
                         <ul>
-                            <li><a href="https://selfcare.pagopa.it/auth/informativa-privacy">Informativa Privacy</a></li>
-                            <li><a href="https://selfcare.pagopa.it/auth/termini-di-servizio">Termini e Condizioni</a></li>
+                            <li><a href="https://bonuselettrodomestici.it/esercente/privacy-policy">Informativa Privacy</a></li>
+                            <li><a href="https://bonuselettrodomestici.it/esercente/terms-of-service">Termini e Condizioni</a></li>
                             <li><a href="https://www.pagopa.it/it/certificazioni/">Certificazioni</a></li>
                             <li><a href="https://oneid.pagopa.it/login?response_type=CODE&scope=openid&client_id=0GemhuNwzjygMbWHJjYCMInHkYInwDjax7xQ-lFqiUs&state=145f2339797f4ce&nonce=e2a3b40c1238439&redirect_uri=https%3A%2F%2Fuat.selfcare.pagopa.it%2Fauth%2Flogin%2Fcallback">Sicurezza delle informazioni</a></li>
                             <li><a href="https://privacyportal-de.onetrust.com/webform/77f17844-04c3-4969-a11d-462ee77acbe1/9ab6533d-be4a-482e-929a-0d8d2ab29df8">Diritto alla protezione dei dati personali</a></li>
