@@ -49,7 +49,7 @@ resource "azurerm_role_assignment" "storage_account_to_sender_identity" {
 }
 
 # ------------------------------------------------------------------------------
-# Identity role for srtp microservices.
+# Role Assignment for srtp microservices.
 # ------------------------------------------------------------------------------
 
 # Access to Blob Storage
