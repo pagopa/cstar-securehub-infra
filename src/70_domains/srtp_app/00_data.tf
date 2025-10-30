@@ -20,11 +20,10 @@ data "azurerm_storage_account" "rtp_storage_account" {
   resource_group_name = local.data_rg
 }
 
-data "azurerm_storage_account" "rtp_jks_storage_account" {
-  name                = replace(local.srtp-jks-storage-account-name, "-", "")
+data "azurerm_storage_account" "rtp_share_storage_account" {
+  name                = replace(local.srtp_storage_account_share, "-", "")
   resource_group_name = local.data_rg
 }
-
 
 # APIM
 data "azurerm_api_management" "apim" {
