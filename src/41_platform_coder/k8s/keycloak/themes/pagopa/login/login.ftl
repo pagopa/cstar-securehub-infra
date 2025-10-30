@@ -82,7 +82,6 @@
                             <li><a href="https://www.pagopa.it/it/prodotti-e-servizi/centro-stella-pagamenti-elettronici">Centro stella</a></li>
                             <li><a href="https://www.pagopa.it/it/prodotti-e-servizi/check-iban">Check IBAN</a></li>
                             <li><a href="https://www.pagopa.it/it/prodotti-e-servizi/piattaforma-notifiche-digitali">Piattaforma Notifiche Digitali</a></li>
-                            <li><a href="https://www.pagopa.it/it/prodotti-e-servizi/piattaforma-digitale-nazionale-dati/">Piattaforma Digitale Nazionale Dati - <br />Interoperabilità</a></li>
                             <li><a href="https://selfcare.pagopa.it">Area Riservata</a></li>
                         </ul>
                     </div>
