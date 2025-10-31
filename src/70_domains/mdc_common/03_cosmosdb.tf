@@ -14,15 +14,15 @@ module "cosmos_account" {
   )
 
   # IDH Resources
-  idh_resource_tier   = "cosmos_mongo7"
+  idh_resource_tier = "cosmos_mongo7"
 
   # CosmosDB Account Settings
   name   = "${local.project}-mongodb-account"
   domain = var.domain
 
   # Network
-  subnet_id               = module.cosmos_snet.id
-  private_endpoint_config =  {
+  subnet_id = module.cosmos_snet.id
+  private_endpoint_config = {
     enabled                       = var.cosmos_mongo_db_params.private_endpoint_enabled
     name_mongo                    = "${local.project}-cosmos-pe"
     service_connection_name_mongo = "${local.project}-cosmos-pe"

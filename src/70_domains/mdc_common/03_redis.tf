@@ -5,7 +5,7 @@ locals {
 module "redis" {
   source = "./.terraform/modules/__v4__/IDH/redis"
 
-  name = "${local.project}-redis"
+  name                = "${local.project}-redis"
   product_name        = var.prefix
   env                 = var.env
   idh_resource_tier   = local.redis_idh_resource_tier

@@ -2,10 +2,10 @@ locals {
   product          = "${var.prefix}-${var.env_short}"
   project_location = "${var.prefix}-${var.env_short}-${var.location_short}"
   project          = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
-  project_core      = "${var.prefix}-${var.env_short}-${var.location_short}-core"
+  project_core     = "${var.prefix}-${var.env_short}-${var.location_short}-core"
 
 
-  tags = merge( module.tag_config.tags, {grafana = "yes"} )
+  tags = merge(module.tag_config.tags, { grafana = "yes" })
 
   # 📊 Monitoring
   monitor_appinsights_name     = "${local.product}-appinsights"
@@ -17,7 +17,7 @@ locals {
   vnet_legacy_name                = "${local.product}-vnet"
   vnet_legacy_resource_group_name = "${local.product}-vnet-rg"
 
-  vnet_network_rg              = "${local.project_core}-network-rg"
+  vnet_network_rg         = "${local.project_core}-network-rg"
   vnet_spoke_data_name    = "${local.project_core}-spoke-data-vnet"
   vnet_spoke_compute_name = "${local.project_core}-spoke-compute-vnet"
 
