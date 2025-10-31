@@ -60,17 +60,6 @@ variable "tags" {
 }
 
 ### Aks
-
-variable "aks_name" {
-  type        = string
-  description = "AKS cluster name"
-}
-
-variable "aks_resource_group_name" {
-  type        = string
-  description = "AKS cluster resource name"
-}
-
 variable "k8s_kube_config_path_prefix" {
   type    = string
   default = "~/.kube"
@@ -99,11 +88,6 @@ variable "dns_zone_prefix" {
 variable "dns_zone_internal_prefix" {
   type        = string
   description = "The dns subdomain."
-}
-
-variable "aks_cluster_domain_name" {
-  type        = string
-  description = "Name of the aks cluster domain. eg: dev01"
 }
 
 variable "enable" {

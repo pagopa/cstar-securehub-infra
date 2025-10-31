@@ -18,10 +18,6 @@ tags = {
 }
 
 ### Aks
-aks_name                = "cstar-p-itn-prod01-aks"
-aks_resource_group_name = "cstar-p-itn-prod01-aks-rg"
-aks_cluster_domain_name = "prod01"
-
 ingress_load_balancer_ip       = "10.20.0.250"
 ingress_load_balancer_hostname = "mdc.itn.internal.cstar.pagopa.it"
 

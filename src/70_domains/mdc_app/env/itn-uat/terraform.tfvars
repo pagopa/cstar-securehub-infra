@@ -18,10 +18,6 @@ tags = {
 }
 
 ### Aks
-aks_name                = "cstar-u-itn-uat01-aks"
-aks_resource_group_name = "cstar-u-itn-uat01-aks-rg"
-aks_cluster_domain_name = "uat01"
-
 ingress_load_balancer_ip       = "10.11.100.250"
 ingress_load_balancer_hostname = "mdc.itn.internal.uat.cstar.pagopa.it"
 

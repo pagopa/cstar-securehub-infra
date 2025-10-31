@@ -11,9 +11,11 @@ locals {
   monitor_action_group_slack   = "SlackPagoPA"
   monitor_action_group_email   = "PagoPA"
 
-  # 🐳 Kubernetes Cluster
-  aks_name                = var.aks_name
-  aks_resource_group_name = var.aks_resource_group_name
+  #
+  # AKS
+  #
+  aks_name                = "${local.product}-${var.location_short}-${var.env}-aks"
+  aks_resource_group_name = "${local.product}-${var.location_short}-core-aks-rg"
 
   # 🔎 DNS / Ingress
   ingress_hostname_prefix               = "${var.domain}.${var.location_short}"
@@ -32,11 +34,11 @@ locals {
 
   # 🔒 Key Vault
   kv_domain_name    = "${local.project}-kv"
-  kv_domain_rg_name = "${local.project}-sec-rg"
+  kv_domain_rg_name = "${local.project}-security-rg"
 
   # 📥 Event Hub (data sources)
   eventhub_namespace_name    = "${local.project}-evh"
-  eventhub_namespace_rg_name = "${local.project}-evh-rg"
+  eventhub_namespace_rg_name = "${local.project}-data-rg"
 
   aks_api_url = var.env_short == "d" ? data.azurerm_kubernetes_cluster.aks.fqdn : data.azurerm_kubernetes_cluster.aks.private_fqdn
 }
