@@ -146,7 +146,7 @@ stages:
                 --realm-name=${{parameters.keycloak_realm}} \
                 --use-all-local-addresses=false \
                 --share-connections=false \
-                --increment=25 \
+                --increment=70 \
                 --users-per-second=25 \
                 --ramp-up=5 \
                 --measurement=120 --log-http-on-failure=true
