@@ -141,21 +141,25 @@ stages:
           - script: |
               cd $(Pipeline.Workspace)/kcb/keycloak-benchmark-${{variables.KCB_VERSION}}/bin
 
-              increment=""
-              if [ "${{parameters.kcb_single_run}}" == False ] ; then
-                echo "Single run disabled, adding --increment parameter"
-                increment="--increment=${{parameters.kcb_increment}}"
-              else
-                echo "Single run enabled"
+              declare -a KCB_ARGS
+
+              KCB_ARGS+=( "--scenario=${{parameters.kcb_scenario}}" )
+              KCB_ARGS+=( "--server-url=${{variables.KEYCLOAK_URL}}" )
+              KCB_ARGS+=( "--realm-name=${{parameters.keycloak_realm}}" )
+              KCB_ARGS+=( "--users-per-second=${{parameters.kcb_users_per_second}}" )
+              KCB_ARGS+=( "--ramp-up=${{parameters.kcb_ramp_up}}" )
+              KCB_ARGS+=( "--use-all-local-addresses=${{parameters.kcb_use_all_local_addresses}}" )
+              KCB_ARGS+=( "--share-connections=${{parameters.kcb_share_connections}}" )
+
+              if [ "${{parameters.kcb_single_run}}" == "False" ] ; then
+                KCB_ARGS+=( "--increment=${{parameters.kcb_increment}}" )
               fi
 
-              ./kcb.sh --scenario=${{parameters.kcb_scenario}} --server-url=${{variables.KEYCLOAK_URL}} --realm-name=${{parameters.keycloak_realm}} \
-                --use-all-local-addresses=${{parameters.kcb_use_all_local_addresses}} \
-                --share-connections=${{parameters.kcb_share_connections}} \
-                $increment \
-                --users-per-second=${{parameters.kcb_users_per_second}} \
-                --ramp-up=${{parameters.kcb_ramp_up}} \
-                ${{parameters.kcb_additional_parameters}}
+              if [ -n "${{parameters.kcb_additional_parameters}}" ] && [ "${{parameters.kcb_additional_parameters}}" != " " ]; then
+                KCB_ARGS+=( ${{parameters.kcb_additional_parameters}} )
+              fi
+
+              ./kcb.sh "${KCB_ARGS[@]}"
             displayName: "Run KeyCloakBenchmark"
           - script: |
               cd $(Pipeline.Workspace)/kcb/keycloak-benchmark-${{variables.KCB_VERSION}}/results
