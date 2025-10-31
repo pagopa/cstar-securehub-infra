@@ -48,8 +48,8 @@ aks_system_node_pool = {
 aks_nodepool_blue = {
   vm_sku_name       = "Standard_D4ads_v5_active"
   autoscale_enabled = true
-  node_count_min    = 1
-  node_count_max    = 3
+  node_count_min    = 5
+  node_count_max    = 10
 }
 
 aks_nodepool_green = {
