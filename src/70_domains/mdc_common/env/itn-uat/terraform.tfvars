@@ -106,6 +106,6 @@ ehns_metric_alerts = {
 }
 
 # Redis
-redis_sku_name = "Basic"
+redis_idh_tier = "basic"
 redis_capacity = 0
 redis_family   = "C"

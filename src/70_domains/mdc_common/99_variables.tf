@@ -200,7 +200,7 @@ variable "redis_capacity" {
   type = number
 }
 
-variable "redis_sku_name" {
+variable "redis_idh_tier" {
   type = string
 }
 
