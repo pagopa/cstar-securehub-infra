@@ -157,6 +157,7 @@ stages:
                 --ramp-up=${{parameters.kcb_ramp_up}} \
                 ${{parameters.kcb_additional_parameters}}
             displayName: "Run KeyCloakBenchmark"
+            timeoutInMinutes: 240
           - script: |
               cd $(Pipeline.Workspace)/kcb/keycloak-benchmark-${{variables.KCB_VERSION}}/results
               zip -r results-$(Build.BuildId).zip *
