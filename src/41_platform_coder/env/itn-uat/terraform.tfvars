@@ -38,12 +38,12 @@ keycloak_configuration = {
   image_repository                            = "bitnamilegacy/keycloak"
   image_tag                                   = "26.3.1-debian-12-r1"
   chart_version                               = "24.7.7"
-  replica_count_min                           = 1
-  replica_count_max                           = 1
+  replica_count_min                           = 24
+  replica_count_max                           = 24
   cpu_request                                 = "3"
-  cpu_limit                                   = "4"
-  memory_request                              = "3Gi"
-  memory_limit                                = "4Gi"
+  cpu_limit                                   = "7"
+  memory_request                              = "4Gi"
+  memory_limit                                = "6Gi"
   http_client_connection_ttl_millis           = 180000
   http_client_connection_max_idle_time_millis = 180000
 }
