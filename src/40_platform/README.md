@@ -29,7 +29,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | c57b246c5167fb782ba3123be499be313bbe69ff |
+| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | 40a33b4b83bc0746150b16505ea839925a94321a |
 | <a name="module_adf_snet"></a> [adf\_snet](#module\_adf\_snet) | ./.terraform/modules/__v4__/IDH/subnet | n/a |
 | <a name="module_adx_snet"></a> [adx\_snet](#module\_adx\_snet) | ./.terraform/modules/__v4__/IDH/subnet | n/a |
 | <a name="module_argocd"></a> [argocd](#module\_argocd) | ./.terraform/modules/__v4__/kubernetes_argocd_setup | n/a |

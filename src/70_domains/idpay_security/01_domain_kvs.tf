@@ -14,7 +14,7 @@ module "key_vault" {
   soft_delete_retention_days    = var.env != "prod" ? 7 : 90
   public_network_access_enabled = true
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 #

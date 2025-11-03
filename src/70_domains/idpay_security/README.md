@@ -35,6 +35,7 @@
 | <a name="module_developers_policy"></a> [developers\_policy](#module\_developers\_policy) | ./.terraform/modules/__v4__//IDH/key_vault_access_policy | n/a |
 | <a name="module_externals_policy"></a> [externals\_policy](#module\_externals\_policy) | ./.terraform/modules/__v4__/IDH/key_vault_access_policy | n/a |
 | <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | ./.terraform/modules/__v4__/key_vault | n/a |
+| <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../../tag_config | n/a |
 
 ## Resources
 
@@ -74,7 +75,6 @@
 | <a name="input_location_short"></a> [location\_short](#input\_location\_short) | Location short like eg: neu, weu.. | `string` | n/a | yes |
 | <a name="input_p7m_cert_validity_hours"></a> [p7m\_cert\_validity\_hours](#input\_p7m\_cert\_validity\_hours) | n/a | `number` | `87600` | no |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | n/a | yes |
-| <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br/>  "CreatedBy": "Terraform"<br/>}</pre> | no |
 
 ## Outputs
 

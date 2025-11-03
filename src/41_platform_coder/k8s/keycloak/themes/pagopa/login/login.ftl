@@ -48,7 +48,7 @@
                     </div>
 
                     <div class="terms-notice">
-                        <span>Accedendo accetti i <a href="https://selfcare.pagopa.it/auth/termini-di-servizio">Termini e condizioni d'uso</a> del servizio e confermi di avere letto l'<a href="https://selfcare.pagopa.it/auth/informativa-privacy">Informativa Privacy</a></span>
+                        <span>Accedendo accetti i <a href="https://bonuselettrodomestici.it/esercente/terms-of-service">Termini e condizioni d'uso</a> del servizio e confermi di avere letto l'<a href="https://bonuselettrodomestici.it/esercente/privacy-policy">Informativa Privacy</a></span>
                     </div>
 
                     <input class="btn-primary" type="submit" value="Accedi">
@@ -68,31 +68,30 @@
                             </a>
                         </div>
                         <ul>
-                            <li><a href="https://www.pagopa.it/it/societa/chi-siamo/">PagoPA S.p.A.</a></li>
+                            <li><a href="https://pagopa.it/societa/chi-siamo/">PagoPA S.p.A.</a></li>
                             <li><a href="https://www.pagopa.it/it/opportunita/pnrr/progetti/">PNRR</a></li>
-                            <li><a href="https://www.pagopa.it/it/">Media</a></li>
+                            <li><a href="https://www.pagopa.it/it/media/">Media</a></li>
                             <li><a href="https://www.pagopa.it/it/lavora-con-noi/">Lavora con noi</a></li>
                         </ul>
                     </div>
                     <div class="footer-column">
                         <h4>PRODOTTI E SERVIZI</h4>
                         <ul>
-                            <li><a href="https://www.pagopa.it/it/prodotti-e-servizi/app-io">App IO</a></li>
-                            <li><a href="https://www.pagopa.it/it/prodotti-e-servizi/piattaforma-pagopa">Piattaforma pagoPA</a></li>
-                            <li><a href="https://www.pagopa.it/it/prodotti-e-servizi/centro-stella-pagamenti-elettronici">Centro stella</a></li>
-                            <li><a href="https://www.pagopa.it/it/prodotti-e-servizi/check-iban">Check IBAN</a></li>
-                            <li><a href="https://www.pagopa.it/it/prodotti-e-servizi/piattaforma-notifiche-digitali">Piattaforma Notifiche Digitali</a></li>
-                            <li><a href="https://www.pagopa.it/it/prodotti-e-servizi/piattaforma-digitale-nazionale-dati/">Piattaforma Digitale Nazionale Dati - <br />Interoperabilità</a></li>
-                            <li><a href="https://selfcare.pagopa.it">Area Riservata</a></li>
+                            <li><a href="https://www.pagopa.it/it/prodotti-e-servizi/app-io/">App IO</a></li>
+                            <li><a href="https://www.pagopa.it/it/prodotti-e-servizi/piattaforma-pagopa/">Piattaforma pagoPA</a></li>
+                            <li><a href="https://www.pagopa.it/it/prodotti-e-servizi/centro-stella-pagamenti-elettronici/">Centro stella</a></li>
+                            <li><a href="https://www.pagopa.it/it/prodotti-e-servizi/check-iban/">Check IBAN</a></li>
+                            <li><a href="https://www.pagopa.it/it/prodotti-e-servizi/piattaforma-notifiche-digitali/">Piattaforma Notifiche Digitali</a></li>
+                            <li><a href="https://oneid.pagopa.it/login?response_type=CODE&scope=openid&client_id=XNmG922uM31xCm4vaomrWoSBSaXvMeD99pDqIjD2Eh8&state=0fc630961d5d4df&nonce=f029fdb08e9c4f7&redirect_uri=https%3A%2F%2Fselfcare.pagopa.it%2Fauth%2Flogin%2Fcallback">Area Riservata</a></li>
                         </ul>
                     </div>
                     <div class="footer-column">
                         <h4>RISORSE</h4>
                         <ul>
-                            <li><a href="https://selfcare.pagopa.it/auth/informativa-privacy">Informativa Privacy</a></li>
-                            <li><a href="https://selfcare.pagopa.it/auth/termini-di-servizio">Termini e Condizioni</a></li>
+                            <li><a href="https://bonuselettrodomestici.it/esercente/privacy-policy">Informativa Privacy</a></li>
+                            <li><a href="https://bonuselettrodomestici.it/esercente/terms-of-service">Termini e Condizioni</a></li>
                             <li><a href="https://www.pagopa.it/it/certificazioni/">Certificazioni</a></li>
-                            <li><a href="https://oneid.pagopa.it/login?response_type=CODE&scope=openid&client_id=0GemhuNwzjygMbWHJjYCMInHkYInwDjax7xQ-lFqiUs&state=145f2339797f4ce&nonce=e2a3b40c1238439&redirect_uri=https%3A%2F%2Fuat.selfcare.pagopa.it%2Fauth%2Flogin%2Fcallback">Sicurezza delle informazioni</a></li>
+                            <li><a href="https://oneid.pagopa.it/login?response_type=CODE&scope=openid&client_id=XNmG922uM31xCm4vaomrWoSBSaXvMeD99pDqIjD2Eh8&state=0fc630961d5d4df&nonce=f029fdb08e9c4f7&redirect_uri=https%3A%2F%2Fselfcare.pagopa.it%2Fauth%2Flogin%2Fcallback">Sicurezza delle informazioni</a></li>
                             <li><a href="https://privacyportal-de.onetrust.com/webform/77f17844-04c3-4969-a11d-462ee77acbe1/9ab6533d-be4a-482e-929a-0d8d2ab29df8">Diritto alla protezione dei dati personali</a></li>
                             <li><a href="https://www.pagopa.it/it/">Preferenze Cookie</a></li>
                             <li><a href="https://pagopa.portaleamministrazionetrasparente.it/">Società trasparente</a></li>
@@ -117,7 +116,7 @@
                               <svg class="social-icon-svg MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-14yq2cq" focusable="false" aria-hidden="true" viewBox="0 0 1043.63 592.71"><path d="M588.67 296.36c0 163.67-131.78 296.35-294.33 296.35S0 460 0 296.36 131.78 0 294.34 0s294.33 132.69 294.33 296.36M911.56 296.36c0 154.06-65.89 279-147.17 279s-147.17-124.94-147.17-279 65.88-279 147.16-279 147.17 124.9 147.17 279M1043.63 296.36c0 138-23.17 249.94-51.76 249.94s-51.75-111.91-51.75-249.94 23.17-249.94 51.75-249.94 51.76 111.9 51.76 249.94"></path></svg>
                           </a>
                         ˙</div>
-                        <a href="https://form.agid.gov.it/view/0947e110-df2e-11ef-8637-9f856ac3da10" aria-label="Accessibilità" class="footer-text">Accessibilità</a>
+                        <a href="https://form.agid.gov.it/view/87f46790-9798-11f0-b583-8b5f76942354" aria-label="Accessibilità" class="footer-text">Accessibilità</a>
                         <br><br>
                         <a href="#" class="footer-text">Italiano &#9662;</a>
                         <div class="eu-logo">
