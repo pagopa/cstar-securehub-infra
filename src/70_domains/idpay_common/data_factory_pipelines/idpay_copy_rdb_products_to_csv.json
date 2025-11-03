@@ -1,6 +1,15 @@
 {
   "name": "idpay_copy_rdb_products_to_csv",
   "properties": {
+    "parameters": {
+      "exportAccountName": { "type": "String" },
+      "notifyTo":          { "type": "String" },
+      "notifyUrl":         { "type": "String" },
+      "resourceGroup":     { "type": "String" },
+      "subscriptionId":    { "type": "String" },
+      "kvUrl":             { "type": "String" },
+      "kvSecretName":      { "type": "String" }
+    },
     "activities": [
       {
         "name": "Copy_Cosmos_to_CSV",
@@ -13,7 +22,6 @@
           "secureOutput": false,
           "secureInput": false
         },
-        "userProperties": [],
         "typeProperties": {
           "source": {
             "type": "CosmosDbMongoDbApiSource",
@@ -52,7 +60,7 @@
         "name": "FlussoExportCSV",
         "type": "ExecuteDataFlow",
         "dependsOn": [
-          { "activity": "Copy_Cosmos_to_CSV", "dependencyConditions": ["Succeeded"] }
+          { "activity": "Copy_Cosmos_to_CSV", "dependencyConditions": [ "Succeeded" ] }
         ],
         "policy": {
           "timeout": "0.12:00:00",
@@ -61,7 +69,6 @@
           "secureOutput": false,
           "secureInput": false
         },
-        "userProperties": [],
         "typeProperties": {
           "dataFlow": { "referenceName": "export_flow_csv", "type": "DataFlowReference" },
           "compute": { "coreCount": 8, "computeType": "General" },
@@ -72,7 +79,7 @@
         "name": "Generate_SAS",
         "type": "WebActivity",
         "dependsOn": [
-          { "activity": "FlussoExportCSV", "dependencyConditions": ["Succeeded"] }
+          { "activity": "FlussoExportCSV", "dependencyConditions": [ "Succeeded" ] }
         ],
         "policy": {
           "timeout": "0.00:05:00",
@@ -81,7 +88,6 @@
           "secureOutput": true,
           "secureInput": true
         },
-        "userProperties": [],
         "typeProperties": {
           "method": "POST",
           "headers": { "Content-Type": "application/json" },
@@ -118,10 +124,37 @@
         }
       },
       {
+        "name": "Get_SubKey",
+        "type": "WebActivity",
+        "dependsOn": [
+          { "activity": "Generate_SAS", "dependencyConditions": [ "Succeeded" ] }
+        ],
+        "policy": {
+          "timeout": "0.00:02:00",
+          "retry": 3,
+          "retryIntervalInSeconds": 15,
+          "secureOutput": true,
+          "secureInput": true
+        },
+        "typeProperties": {
+          "method": "GET",
+          "headers": { "Content-Type": "application/json" },
+          "url": {
+            "type": "Expression",
+            "value": "@concat(pipeline().parameters.kvUrl,'/secrets/', pipeline().parameters.kvSecretName, '?api-version=7.3')"
+          },
+          "authentication": {
+            "type": "MSI",
+            "resource": "https://vault.azure.net"
+          },
+          "disableCertValidation": false
+        }
+      },
+      {
         "name": "Notify_Email_via_MS",
         "type": "WebActivity",
         "dependsOn": [
-          { "activity": "Generate_SAS", "dependencyConditions": ["Succeeded"] }
+          { "activity": "Get_SubKey", "dependencyConditions": [ "Succeeded" ] }
         ],
         "policy": {
           "timeout": "0.00:05:00",
@@ -130,24 +163,29 @@
           "secureOutput": true,
           "secureInput": true
         },
-        "userProperties": [],
         "typeProperties": {
           "method": "POST",
-          "headers": { "Content-Type": "application/json" },
           "url": { "type": "Expression", "value": "@pipeline().parameters.notifyUrl" },
+          "headers": {
+            "Content-Type": "application/json",
+            "Ocp-Apim-Subscription-Key": {
+              "type": "Expression",
+              "value": "@activity('Get_SubKey').output.value"
+            }
+          },
           "connectVia": {
             "referenceName": "AutoResolveIntegrationRuntime",
             "type": "IntegrationRuntimeReference"
           },
           "body": {
             "recipientEmail": { "type": "Expression", "value": "@pipeline().parameters.notifyTo" },
-            "subject": { "type": "Expression", "value": "@concat('Esportazione settimanale ', formatDateTime(utcNow(),'yyyy-MM-dd'))" },
+            "subject":        { "type": "Expression", "value": "@concat('Esportazione settimanale ', formatDateTime(utcNow(),'yyyy-MM-dd'))" },
             "templateName": "Email_ExportWeekly_Products",
             "templateValues": {
               "initiativeName": "IDPAY",
               "orgName": "PagoPA S.p.A.",
-              "exportDate": { "type": "Expression", "value": "@formatDateTime(utcNow(),'yyyy-MM-dd')" },
-              "productFileName": { "type": "Expression", "value": "@concat('export_weekly_', formatDateTime(utcNow(),'yyyy-MM-dd'), '.csv')" },
+              "exportDate":     { "type": "Expression", "value": "@formatDateTime(utcNow(),'yyyy-MM-dd')" },
+              "productFileName":{ "type": "Expression", "value": "@concat('export_weekly_', formatDateTime(utcNow(),'yyyy-MM-dd'), '.csv')" },
               "downloadLink": {
                 "type": "Expression",
                 "value": "@concat('https://', pipeline().parameters.exportAccountName, '.blob.core.windows.net/export/data/export_weekly_', formatDateTime(utcNow(),'yyyy-MM-dd'), '.csv?', activity('Generate_SAS').output.serviceSasToken)"
@@ -157,13 +195,6 @@
         }
       }
     ],
-    "parameters": {
-      "exportAccountName": { "type": "String" },
-      "notifyTo":          { "type": "String" },
-      "notifyUrl":         { "type": "String" },
-      "resourceGroup":     { "type": "String" },
-      "subscriptionId":    { "type": "String" }
-    },
     "annotations": []
   },
   "type": "Microsoft.DataFactory/factories/pipelines"

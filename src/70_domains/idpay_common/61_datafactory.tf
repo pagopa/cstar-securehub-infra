@@ -88,3 +88,17 @@ resource "azapi_resource_action" "approve_pe" {
     }
   }
 }
+# ADF MI -> can read kv secrets
+resource "azurerm_role_assignment" "adf_can_read_kv_secrets" {
+  scope                = data.azurerm_key_vault.domain_kv.id
+  role_definition_name = "Key Vault Secrets User"
+  principal_id         = data.azurerm_data_factory.data_factory.identity[0].principal_id
+}
+
+
+resource "azurerm_key_vault_access_policy" "kv_policy_adf" {
+  key_vault_id = data.azurerm_key_vault.domain_kv.id
+  tenant_id    = data.azurerm_client_config.current.tenant_id
+  object_id    = data.azurerm_data_factory.data_factory.identity[0].principal_id
+  secret_permissions = ["Get"]
+}

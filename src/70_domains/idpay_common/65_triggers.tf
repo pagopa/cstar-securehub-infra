@@ -65,6 +65,8 @@ resource "azurerm_data_factory_trigger_schedule" "weekly_triggers" {
         exportAccountName = module.storage_idpay_exports.name
         notifyTo          = local.notify_to
         notifyUrl         = local.notify_url
+        kvUrl             = format("https://%s.vault.azure.net", data.azurerm_key_vault.domain_kv.name)
+        kvSecretName      = "apim-idpay-email-export-subkey"
       }
     }
   schedule {
