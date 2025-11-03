@@ -68,11 +68,6 @@ locals {
       }
     }
     "mid" = {
-      "idpay-group" = {
-        name          = "idpay-group"
-        target_branch = "main"
-        env           = ["dev", "uat", "prod"]
-      },
       "idpay-initiative-statistics" = {
         name          = "idpay-initiative-statistics"
         target_branch = "main"
@@ -127,11 +122,6 @@ locals {
       },
       "idpay-notification-manager" = {
         name          = "idpay-notification-manager"
-        target_branch = "main"
-        env           = ["dev", "uat", "prod"]
-      },
-      "idpay-self-expense-backend" = {
-        name          = "idpay-self-expense-backend"
         target_branch = "main"
         env           = ["dev", "uat", "prod"]
       },
