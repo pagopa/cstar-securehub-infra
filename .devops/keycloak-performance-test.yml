@@ -158,7 +158,7 @@ stages:
                 $increment \
                 --users-per-second=${{parameters.kcb_users_per_second}} \
                 --ramp-up=${{parameters.kcb_ramp_up}} \
-                --users-per-realm=${{kcb_users_per_realm}} \
+                --users-per-realm=${{parameters.kcb_users_per_realm}} \
                 ${{parameters.kcb_additional_parameters}}
             displayName: "Run KeyCloakBenchmark"
             timeoutInMinutes: 240
