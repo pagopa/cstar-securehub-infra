@@ -4,7 +4,7 @@ locals {
     for key, tmpl in local.pipeline_templates : key => key
   }
 
-  # Pipeline che devono essere solo settimanali
+  # Pipeline only weekly
   weekly_pipelines = [
     "idpay_copy_rdb_products_to_csv"
   ]
@@ -58,13 +58,23 @@ resource "azurerm_data_factory_trigger_schedule" "weekly_triggers" {
   time_zone  = "W. Europe Standard Time"
 
   pipeline {
-    name = each.key
-  }
+      name = each.key
+      parameters = {
+        subscriptionId    = data.azurerm_subscription.current.subscription_id
+        resourceGroup     = data.azurerm_resource_group.idpay_data_rg.name
+        exportAccountName = module.storage_idpay_exports.name
+        notifyTo          = local.notify_to
+        notifyUrl         = local.notify_url
+      }
+    }
   schedule {
     days_of_week = ["Monday"]
     hours        = [2]
     minutes      = [0]
   }
 
-  depends_on = [azurerm_data_factory_pipeline.pipelines]
+  depends_on = [
+    azurerm_data_factory_pipeline.pipelines,
+    azurerm_role_assignment.adf_can_list_service_sas
+  ]
 }

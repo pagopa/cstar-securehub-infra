@@ -26,7 +26,7 @@
           "sink": {
             "type": "DelimitedTextSink",
             "storeSettings": {
-              "type": "AzureBlobStorageWriteSettings",
+              "type": "AzureBlobFSWriteSettings",
               "copyBehavior": "FlattenHierarchy"
             },
             "formatSettings": {
@@ -67,8 +67,104 @@
           "compute": { "coreCount": 8, "computeType": "General" },
           "traceLevel": "Fine"
         }
+      },
+      {
+        "name": "Generate_SAS",
+        "type": "WebActivity",
+        "dependsOn": [
+          { "activity": "FlussoExportCSV", "dependencyConditions": ["Succeeded"] }
+        ],
+        "policy": {
+          "timeout": "0.00:05:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": true,
+          "secureInput": true
+        },
+        "userProperties": [],
+        "typeProperties": {
+          "method": "POST",
+          "headers": { "Content-Type": "application/json" },
+          "url": {
+            "type": "Expression",
+            "value": "@concat('https://management.azure.com/subscriptions/', string(pipeline().parameters.subscriptionId), '/resourceGroups/', string(pipeline().parameters.resourceGroup), '/providers/Microsoft.Storage/storageAccounts/', string(pipeline().parameters.exportAccountName), '/ListServiceSas?api-version=2023-05-01')"
+          },
+          "authentication": {
+            "type": "MSI",
+            "resource": "https://management.azure.com/"
+          },
+          "connectVia": {
+            "referenceName": "AutoResolveIntegrationRuntime",
+            "type": "IntegrationRuntimeReference"
+          },
+          "body": {
+            "canonicalizedResource": {
+              "type": "Expression",
+              "value": "@concat('/blob/', pipeline().parameters.exportAccountName, '/export/data/export_weekly_', formatDateTime(utcNow(),'yyyy-MM-dd'), '.csv')"
+            },
+            "signedResource": "b",
+            "signedPermission": "r",
+            "signedProtocol": "https",
+            "signedStart": {
+              "type": "Expression",
+              "value": "@utcNow()"
+            },
+            "signedExpiry": {
+              "type": "Expression",
+              "value": "@formatDateTime(addDays(utcNow(), 1), 'yyyy-MM-ddTHH:mm:ssZ')"
+            },
+            "signedVersion": "2020-02-10"
+          }
+        }
+      },
+      {
+        "name": "Notify_Email_via_MS",
+        "type": "WebActivity",
+        "dependsOn": [
+          { "activity": "Generate_SAS", "dependencyConditions": ["Succeeded"] }
+        ],
+        "policy": {
+          "timeout": "0.00:05:00",
+          "retry": 3,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": true,
+          "secureInput": true
+        },
+        "userProperties": [],
+        "typeProperties": {
+          "method": "POST",
+          "headers": { "Content-Type": "application/json" },
+          "url": { "type": "Expression", "value": "@pipeline().parameters.notifyUrl" },
+          "connectVia": {
+            "referenceName": "AutoResolveIntegrationRuntime",
+            "type": "IntegrationRuntimeReference"
+          },
+          "body": {
+            "recipientEmail": { "type": "Expression", "value": "@pipeline().parameters.notifyTo" },
+            "subject": { "type": "Expression", "value": "@concat('Esportazione settimanale ', formatDateTime(utcNow(),'yyyy-MM-dd'))" },
+            "templateName": "Email_ExportWeekly_Products",
+            "templateValues": {
+              "initiativeName": "IDPAY",
+              "orgName": "PagoPA S.p.A.",
+              "exportDate": { "type": "Expression", "value": "@formatDateTime(utcNow(),'yyyy-MM-dd')" },
+              "productFileName": { "type": "Expression", "value": "@concat('export_weekly_', formatDateTime(utcNow(),'yyyy-MM-dd'), '.csv')" },
+              "downloadLink": {
+                "type": "Expression",
+                "value": "@concat('https://', pipeline().parameters.exportAccountName, '.blob.core.windows.net/export/data/export_weekly_', formatDateTime(utcNow(),'yyyy-MM-dd'), '.csv?', activity('Generate_SAS').output.serviceSasToken)"
+              }
+            }
+          }
+        }
       }
-    ]
+    ],
+    "parameters": {
+      "exportAccountName": { "type": "String" },
+      "notifyTo":          { "type": "String" },
+      "notifyUrl":         { "type": "String" },
+      "resourceGroup":     { "type": "String" },
+      "subscriptionId":    { "type": "String" }
+    },
+    "annotations": []
   },
   "type": "Microsoft.DataFactory/factories/pipelines"
 }
