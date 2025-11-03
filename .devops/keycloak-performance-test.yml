@@ -44,6 +44,9 @@ parameters:
     displayName: KCB Additional Parameters
     type: string
     default: " "
+  - name: kcb_users_per_realm
+    type: number
+    default: 1
   - name: kcb_scenario
     displayName: Test Scenario
     type: string
@@ -155,6 +158,7 @@ stages:
                 $increment \
                 --users-per-second=${{parameters.kcb_users_per_second}} \
                 --ramp-up=${{parameters.kcb_ramp_up}} \
+                --users-per-realm=${{kcb_users_per_realm}} \
                 ${{parameters.kcb_additional_parameters}}
             displayName: "Run KeyCloakBenchmark"
           - script: |
