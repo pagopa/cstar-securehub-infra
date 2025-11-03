@@ -1,0 +1,15 @@
+{
+    "name": "data_explorer_idpay_wallet",
+    "properties": {
+        "linkedServiceName": {
+            "referenceName": "idpay-Kusto-idpay-ls",
+            "type": "LinkedServiceReference"
+        },
+        "annotations": [],
+        "type": "AzureDataExplorerTable",
+        "typeProperties": {
+            "table": "wallet"
+        }
+    },
+    "type": "Microsoft.DataFactory/factories/datasets"
+}

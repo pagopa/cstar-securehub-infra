@@ -22,7 +22,7 @@
                         "batchSize": 500,
                         "cursorMethods": {
                             "project": {
-                                "value": "{\"_id\": 0, \"type\": 1, \"franchiseName\": 1, \"address\": 1, \"city\": 1, \"region\": 1, \"province\": 1, \"streetNumber\": 1, \"zipCode\": 1, \"channelEmail\": 1, \"channelPhone\": 1, \"website\": 1}",
+                                "value": "{\"_id\": 0, \"type\": 1, \"franchiseName\": 1, \"address\": 1, \"city\": 1, \"region\": 1, \"province\": 1, \"streetNumber\": 1, \"zipCode\": 1, \"channelPhone\": 1, \"website\": 1}",
                                 "type": "Expression"
                             }
                         }
