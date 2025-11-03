@@ -153,7 +153,7 @@ stages:
                 --use-all-local-addresses=${{parameters.kcb_use_all_local_addresses}} \
                 --share-connections=${{parameters.kcb_share_connections}} \
                 $increment \
-                --users-per-second=${{parameters.kcb_users_per_second}} \
+                --users-per-sec=${{parameters.kcb_users_per_second}} \
                 --ramp-up=${{parameters.kcb_ramp_up}} \
                 ${{parameters.kcb_additional_parameters}}
             displayName: "Run KeyCloakBenchmark"
