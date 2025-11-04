@@ -26,6 +26,15 @@ data "azurerm_log_analytics_workspace" "log_analytics_workspace" {
   resource_group_name = data.azurerm_resource_group.monitoring_rg.name
 }
 
+data "azurerm_resource_group" "core_monitoring_rg" {
+  name = "cstar-${var.env_short}-itn-core-monitor-rg"
+}
+
+data "azurerm_log_analytics_workspace" "core_log_analytics_workspace" {
+  name                = "cstar-${var.env_short}-itn-core-appinsights"
+  resource_group_name = data.azurerm_resource_group.core_monitoring_rg.name
+}
+
 data "azurerm_monitor_action_group" "alerts_email" {
   count               = contains(["p", "u"], var.env_short) ? 1 : 0
   name                = local.monitor_alert_email_group_name
