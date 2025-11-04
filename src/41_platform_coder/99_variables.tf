@@ -32,18 +32,6 @@ variable "location_short" {
   description = "Location short like eg: neu, weu.."
 }
 
-variable "location_display_name" {
-  type        = string
-  description = "Location short like eg: neu, weu.."
-}
-
-variable "tags" {
-  type = map(any)
-  default = {
-    CreatedBy = "Terraform"
-  }
-}
-
 variable "domain" {
   type = string
   validation {
@@ -111,5 +99,15 @@ variable "keycloak_configuration" {
     memory_limit                                = string
     http_client_connection_ttl_millis           = number
     http_client_connection_max_idle_time_millis = number
+  })
+}
+
+variable "aks_user_node_pool_keycloak" {
+  type = object({
+    idh_resource_tier = string
+    node_count_min    = number
+    node_count_max    = number
+    os_disk_size_gb   = optional(number, null)
+    os_disk_type      = optional(string, null)
   })
 }

@@ -1,18 +1,9 @@
-prefix                = "cstar"
-env_short             = "d"
-env                   = "dev"
-location              = "italynorth"
-location_display_name = "Italy North"
-location_short        = "itn"
-domain                = "platform"
-
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "DEV"
-  Owner       = "CSTAR"
-  Source      = "https://github.com/pagopa/cstar-securehub-infra"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-}
+prefix         = "cstar"
+env_short      = "d"
+env            = "dev"
+location       = "italynorth"
+location_short = "itn"
+domain         = "platform"
 
 #
 # Dns
@@ -45,4 +36,10 @@ keycloak_configuration = {
   memory_limit                                = "2Gi"
   http_client_connection_ttl_millis           = 180000
   http_client_connection_max_idle_time_millis = 180000
+}
+
+aks_user_node_pool_keycloak = {
+  idh_resource_tier = "Standard_B4ms_active"
+  node_count_min    = 1
+  node_count_max    = 1
 }
