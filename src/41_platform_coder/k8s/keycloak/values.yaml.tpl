@@ -58,7 +58,7 @@ extraEnvVars:
     value: "true"
   - name: KC_TRACING_ENABLED
     value: "true"
-  - name: KC_OPENTELEMETRY_ENABLED
+  - name: QUARKUS_OTEL_ENABLED
     value: "false"
   - name: APPLICATIONINSIGHTS_SELF_DIAGNOSTICS_LEVEL
     value: "WARN"
