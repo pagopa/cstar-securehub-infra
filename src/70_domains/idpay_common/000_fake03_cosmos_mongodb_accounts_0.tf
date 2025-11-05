@@ -35,6 +35,7 @@ module "fake_cosmos_db_account" {
 
   # Geo-location and Zone Settings
   main_geo_location_location = var.location
+  capabilities_additional    = ["DisableRateLimitingResponses"]
 }
 
 #

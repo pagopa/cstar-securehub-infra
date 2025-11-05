@@ -48,8 +48,8 @@ aks_system_node_pool = {
 aks_nodepool_blue = {
   vm_sku_name       = "Standard_D8ads_v5_active"
   autoscale_enabled = true
-  node_count_min    = 1
-  node_count_max    = 2
+  node_count_min    = 2
+  node_count_max    = 12
 }
 
 aks_nodepool_green = {
@@ -67,21 +67,21 @@ ingress_max_replica_count = "20"
 ingress_load_balancer_ip  = "10.10.1.250"
 
 # ingress-nginx helm charts releases 4.X.X: https://github.com/kubernetes/ingress-nginx/releases?expanded=true&page=1&q=tag%3Ahelm-chart-4
-# Pinned versions from "4.12.1" release: https://github.com/kubernetes/ingress-nginx/releases/tag/helm-chart-4.12.1
+# Pinned versions from "4.12.8" release: https://github.com/kubernetes/ingress-nginx/releases/tag/helm-chart-4.12.8
 nginx_helm = {
-  version = "4.12.1"
+  version = "4.12.8"
   controller = {
     image = {
       registry     = "k8s.gcr.io"
       image        = "ingress-nginx/controller"
-      tag          = "v1.12.1"
-      digest       = "sha256:e5c4824e7375fcf2a393e1c03c293b69759af37a9ca6abdb91b13d78a93da8bd"
-      digestchroot = "sha256:e0d4121e3c5e39de9122e55e331a32d5ebf8d4d257227cb93ab54a1b912a7627"
+      tag          = "v1.12.8"
+      digest       = "sha256:8f8343060688fb2a85752b7345a988d0d3c890d774e18e80b9e8730756e5b530"
+      digestchroot = "sha256:07c743429b823dfba7c2e5d399351ef0e43816abab48343ca7c01d00fd6517e3"
     },
     resources = {
       requests = {
         memory = "300Mi"
-        cpu    = "200m"
+        cpu    = "300m"
       }
     },
     config = {
