@@ -107,7 +107,7 @@ locals {
         {
           action = "Append"
           name   = contains(["d"], var.env_short) ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
-          value  = "script-src 'self' 'unsafe-inline'  https://cdn.cookielaw.org https://privacyportalde-cdn.onetrust.com; style-src 'self' 'unsafe-inline' https://${local.selfare_subdomain}.pagopa.it/assets/font/selfhostedfonts.css; worker-src 'none'; font-src 'self' https://${local.selfare_subdomain}.pagopa.it/assets/font/;"
+          value  = "script-src 'self' 'unsafe-inline' https://cdn.cookielaw.org https://privacyportalde-cdn.onetrust.com; style-src 'self' 'unsafe-inline' https://${local.selfare_subdomain}.pagopa.it/assets/font/selfhostedfonts.css https://cdn.cookielaw.org https://privacyportalde-cdn.onetrust.com; worker-src 'none'; font-src 'self' https://${local.selfare_subdomain}.pagopa.it/assets/font/;"
         },
         {
           action = "Append"
