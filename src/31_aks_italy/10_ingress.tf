@@ -50,6 +50,9 @@ module "nginx_ingress" {
 
   set = [
     {
+      name  = "controller.image.digest"
+      value = var.nginx_helm.controller.image.digest
+    },    {
       name  = "controller.image.digestChroot"
       value = var.nginx_helm.controller.image.digestchroot
     },
