@@ -107,6 +107,7 @@ locals {
       default_ttl_seconds = null
       indexes = [
         { keys = ["_id"], unique = true },
+        { keys = ["notificationStatus", "retry", "retryDate"], unique = false },
         { keys = ["notificationStatus"], unique = false },
         { keys = ["retry"], unique = false },
         { keys = ["retryDate"], unique = false },
