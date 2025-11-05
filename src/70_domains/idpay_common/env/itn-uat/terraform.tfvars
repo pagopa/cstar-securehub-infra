@@ -84,7 +84,7 @@ aks_nodepool_green = {
 #Monitoring
 law_sku               = "PerGB2018"
 law_retention_in_days = 30
-law_daily_quota_gb    = 50 # TODO Da riportare a 15 dopo i test
+law_daily_quota_gb    = 100 # TODO Da riportare a 15 dopo i test
 
 #OneIdentity
 oneidentity_base_url = "https://uat.oneid.pagopa.it"
