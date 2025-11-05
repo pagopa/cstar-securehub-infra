@@ -47,7 +47,7 @@ aks_system_node_pool = {
 aks_nodepool_blue = {
   vm_sku_name       = "Standard_D4ads_v5_active"
   autoscale_enabled = true
-  node_count_min    = 5
+  node_count_min    = 2
   node_count_max    = 12
 }
 
@@ -73,14 +73,14 @@ nginx_helm = {
     image = {
       registry     = "k8s.gcr.io"
       image        = "ingress-nginx/controller"
-      tag          = "v1.12.1"
-      digest       = "sha256:e5c4824e7375fcf2a393e1c03c293b69759af37a9ca6abdb91b13d78a93da8bd"
-      digestchroot = "sha256:e0d4121e3c5e39de9122e55e331a32d5ebf8d4d257227cb93ab54a1b912a7627"
+      tag          = "v1.12.8"
+      digest       = "sha256:8f8343060688fb2a85752b7345a988d0d3c890d774e18e80b9e8730756e5b530"
+      digestchroot = "sha256:07c743429b823dfba7c2e5d399351ef0e43816abab48343ca7c01d00fd6517e3"
     },
     resources = {
       requests = {
         memory = "300Mi"
-        cpu    = "200m"
+        cpu    = "300m"
       }
     },
     config = {
