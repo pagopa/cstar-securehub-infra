@@ -52,7 +52,7 @@ module "nginx_ingress" {
     {
       name  = "controller.image.digest"
       value = var.nginx_helm.controller.image.digest
-    },    {
+      }, {
       name  = "controller.image.digestChroot"
       value = var.nginx_helm.controller.image.digestchroot
     },
