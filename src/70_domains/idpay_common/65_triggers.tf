@@ -58,17 +58,17 @@ resource "azurerm_data_factory_trigger_schedule" "weekly_triggers" {
   time_zone  = "W. Europe Standard Time"
 
   pipeline {
-      name = each.key
-      parameters = {
-        subscriptionId    = data.azurerm_subscription.current.subscription_id
-        resourceGroup     = data.azurerm_resource_group.idpay_data_rg.name
-        exportAccountName = module.storage_idpay_exports.name
-        notifyTo          = local.notify_to
-        notifyUrl         = local.notify_url
-        kvUrl             = format("https://%s.vault.azure.net", data.azurerm_key_vault.domain_kv.name)
-        kvSecretName      = "apim-idpay-email-export-subkey"
-      }
+    name = each.key
+    parameters = {
+      subscriptionId    = data.azurerm_subscription.current.subscription_id
+      resourceGroup     = data.azurerm_resource_group.idpay_data_rg.name
+      exportAccountName = module.storage_idpay_exports.name
+      notifyTo          = local.notify_to
+      notifyUrl         = local.notify_url
+      kvUrl             = format("https://%s.vault.azure.net", data.azurerm_key_vault.domain_kv.name)
+      kvSecretName      = "apim-idpay-email-export-subkey"
     }
+  }
   schedule {
     days_of_week = ["Monday"]
     hours        = [2]

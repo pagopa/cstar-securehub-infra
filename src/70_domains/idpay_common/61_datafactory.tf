@@ -97,8 +97,8 @@ resource "azurerm_role_assignment" "adf_can_read_kv_secrets" {
 
 
 resource "azurerm_key_vault_access_policy" "kv_policy_adf" {
-  key_vault_id = data.azurerm_key_vault.domain_kv.id
-  tenant_id    = data.azurerm_client_config.current.tenant_id
-  object_id    = data.azurerm_data_factory.data_factory.identity[0].principal_id
+  key_vault_id       = data.azurerm_key_vault.domain_kv.id
+  tenant_id          = data.azurerm_client_config.current.tenant_id
+  object_id          = data.azurerm_data_factory.data_factory.identity[0].principal_id
   secret_permissions = ["Get"]
 }

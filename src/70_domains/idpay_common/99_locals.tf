@@ -159,5 +159,5 @@ locals {
 
   #notifyEmail
   notify_url = "https://api-io.dev.cstar.pagopa.it/idpay-itn/email-notification/export/notify"
-  notify_to = "stefano.delia@pagopa.it"
+  notify_to  = "stefano.delia@pagopa.it"
 }
