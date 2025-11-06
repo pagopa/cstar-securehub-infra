@@ -35,6 +35,11 @@ data "azurerm_log_analytics_workspace" "core_log_analytics_workspace" {
   resource_group_name = data.azurerm_resource_group.core_monitoring_rg.name
 }
 
+data "azurerm_application_insights" "core_app_insights" {
+  name                = data.azurerm_log_analytics_workspace.core_log_analytics_workspace.name
+  resource_group_name = data.azurerm_resource_group.core_monitoring_rg.name
+}
+
 data "azurerm_monitor_action_group" "alerts_email" {
   count               = contains(["p", "u"], var.env_short) ? 1 : 0
   name                = local.monitor_alert_email_group_name

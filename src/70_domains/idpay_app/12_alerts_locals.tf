@@ -16,13 +16,6 @@ locals {
     data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
   }
 
-  keycloak_app_insights_resource_id = format(
-    "/subscriptions/%s/resourcegroups/cstar-%s-itn-core-monitor-rg/providers/microsoft.insights/components/cstar-%s-itn-core-appinsights",
-    data.azurerm_subscription.current.subscription_id,
-    var.env_short,
-    var.env_short
-  )
-
   ### Alerts by microservice
   alerts_microservices = {
     # Register
@@ -1360,7 +1353,7 @@ locals {
               | where not(operation_Name has "admin")
               | where success == false
             QUERY
-            , local.keycloak_app_insights_resource_id
+            , data.azurerm_application_insights.core_app_insights.id
           )
 
           trigger = {
@@ -1387,7 +1380,7 @@ locals {
               | where not(operation_Name has "admin")
               | where success == false
             QUERY
-            , local.keycloak_app_insights_resource_id
+            , data.azurerm_application_insights.core_app_insights.id
           )
 
           trigger = {
@@ -1415,7 +1408,7 @@ locals {
               | where name == "POST /realms/{realm}/protocol/{protocol}/token"
               | where success == false
             QUERY
-          , local.keycloak_app_insights_resource_id
+          , data.azurerm_application_insights.core_app_insights.id
         )
 
         trigger = {
@@ -1442,7 +1435,7 @@ locals {
               | where name == "POST /realms/{realm}/protocol/{protocol}/token"
               | where success == false
             QUERY
-          , local.keycloak_app_insights_resource_id
+          , data.azurerm_application_insights.core_app_insights.id
         )
 
         trigger = {
@@ -1469,7 +1462,7 @@ locals {
               | where name == "GET /realms/{realm}/broker/{provider_alias}/login"
               | where success == false
             QUERY
-          , local.keycloak_app_insights_resource_id
+          , data.azurerm_application_insights.core_app_insights.id
         )
 
         trigger = {
@@ -1496,7 +1489,7 @@ locals {
               | where name == "GET /realms/{realm}/broker/{provider_alias}/endpoint"
               | where success == false
             QUERY
-          , local.keycloak_app_insights_resource_id
+          , data.azurerm_application_insights.core_app_insights.id
         )
 
         trigger = {
