@@ -24,7 +24,7 @@ data "azurerm_resource_group" "exports_rg" {
   name = local.data_rg
 }
 
-# ✅ Abilita publicNetworkAccess sullo Storage creato dal modulo
+#Enable publicNetworkAccess on Storage module
 resource "azapi_update_resource" "exports_enable_public" {
   resource_id = module.storage_idpay_exports.id
   type        = "Microsoft.Storage/storageAccounts@2023-05-01"
@@ -36,7 +36,6 @@ resource "azapi_update_resource" "exports_enable_public" {
   }
 }
 
-# ✅ Regole di rete: Allow + bypass AzureServices (facilita ADF, ecc.)
 resource "azurerm_storage_account_network_rules" "exports_rules" {
   storage_account_id = module.storage_idpay_exports.id
   default_action     = "Allow"
@@ -44,6 +43,7 @@ resource "azurerm_storage_account_network_rules" "exports_rules" {
 
   depends_on = [azapi_update_resource.exports_enable_public]
 }
+
 # CSV export container (kept private – public access is granted by SAS)
 resource "azurerm_storage_container" "idpay_export_products_container" {
   name                  = "export"
