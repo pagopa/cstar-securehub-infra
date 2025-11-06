@@ -12,6 +12,11 @@ resource "azurerm_data_factory_pipeline" "pipelines" {
   data_factory_id = data.azurerm_data_factory.data_factory.id
   annotations     = []
 
+  parameters = try(
+    { for k, v in each.value.properties.parameters : k => "" },
+    {}
+  )
+
   activities_json = jsonencode(each.value.properties.activities)
 
   depends_on = [
