@@ -27,11 +27,11 @@ data "azurerm_log_analytics_workspace" "log_analytics_workspace" {
 }
 
 data "azurerm_resource_group" "core_monitoring_rg" {
-  name = "cstar-${var.env_short}-itn-core-monitor-rg"
+  name = local.core_monitoring_rg_name
 }
 
 data "azurerm_log_analytics_workspace" "core_log_analytics_workspace" {
-  name                = "cstar-${var.env_short}-itn-core-appinsights"
+  name                = local.core_log_analytics_workspace_name
   resource_group_name = data.azurerm_resource_group.core_monitoring_rg.name
 }
 
