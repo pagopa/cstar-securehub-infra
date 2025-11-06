@@ -57,7 +57,11 @@ extraEnvVars:
   - name: KC_METRICS_ENABLED
     value: "true"
   - name: KC_TRACING_ENABLED
-    value: "true"
+    value: "false"
+  - name: KC_LOG_LEVEL_ORG_INFINISPAN
+    value: "WARN"
+  - name: APPLICATIONINSIGHTS_SELF_DIAGNOSTICS_LEVEL
+    value: "WARN"
     # suppress noisy logs from opentelemetry exporter - the export is handled by the app insights java agent
   - name: KC_LOG_LEVEL_IO_QUARKUS_OPENTELEMETRY_RUNTIME_EXPORTER_OTLP
     value: "ERROR"
