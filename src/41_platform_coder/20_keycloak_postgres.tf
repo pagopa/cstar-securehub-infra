@@ -71,6 +71,7 @@ module "keycloak_pgflex" {
     location                    = "germanywestcentral"
     private_dns_registration_ve = true
   }
+  storage_tier = var.keycloak_pgflex_params.storage_tier != null ? var.keycloak_pgflex_params.storage_tier : null
 
   tags = module.tag_config.tags_grafana_yes
 }

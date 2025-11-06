@@ -82,6 +82,7 @@ variable "keycloak_pgflex_params" {
     pgres_flex_pgbouncer_enabled           = bool
     pgres_flex_diagnostic_settings_enabled = bool
     auto_grow_enabled                      = bool
+    storage_tier                           = optional(string, null)
   })
 }
 

@@ -21,6 +21,7 @@ keycloak_pgflex_params = {
   pgres_flex_pgbouncer_enabled           = false
   pgres_flex_diagnostic_settings_enabled = false
   auto_grow_enabled                      = false
+  storage_tier                           = "P30"
 }
 
 # TODO restore replicas to 2-3 after load test

@@ -21,6 +21,7 @@ keycloak_pgflex_params = {
   pgres_flex_pgbouncer_enabled           = false
   pgres_flex_diagnostic_settings_enabled = false
   auto_grow_enabled                      = true
+  storage_tier                           = "P30"
 }
 
 keycloak_configuration = {
@@ -43,8 +44,8 @@ keycloak_configuration = {
 
 aks_user_node_pool_keycloak = {
   idh_resource_tier = "Standard_D8ds_v5_active"
-  node_count_min    = 0 #25
-  node_count_max    = 0 #25
+  node_count_min    = 3 #25
+  node_count_max    = 6 #25
   os_disk_size_gb   = 300
   os_disk_type      = "Managed"
 }
