@@ -293,10 +293,3 @@ variable "redis_idh_resource_tier" {
   type        = string
   description = "The SKU of the Redis Cache to deploy"
 }
-
-# Notify Email url
-variable "notify_url" {
-  type        = string
-  default     = null
-  description = "Email notification Url"
-}

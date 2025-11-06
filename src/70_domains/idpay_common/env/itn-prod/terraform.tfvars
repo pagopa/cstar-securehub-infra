@@ -99,6 +99,3 @@ additional_geo_locations = [{
 }]
 
 cdn_rewrite_disable_cittadino = true
-
-#Notify URL API email
-notify_url = "https://api-io.cstar.pagopa.it/idpay-itn/email-notification/export/notify"

@@ -63,7 +63,7 @@ resource "azurerm_data_factory_trigger_schedule" "weekly_triggers" {
       subscriptionId     = data.azurerm_subscription.current.subscription_id
       resourceGroup      = data.azurerm_resource_group.idpay_data_rg.name
       exportAccountName  = module.storage_idpay_exports.name
-      notifyUrl          = var.notify_url
+      notifyUrl          = local.notify_url
       kvUrl              = data.azurerm_key_vault.domain_kv.vault_uri
       kvSecretName       = "apim-idpay-email-export-subkey"
       notifyToSecretName = "idpay-export-email-mimit"

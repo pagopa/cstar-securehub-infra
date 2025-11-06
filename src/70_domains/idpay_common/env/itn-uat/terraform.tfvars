@@ -88,6 +88,3 @@ law_daily_quota_gb    = 100 # TODO Da riportare a 15 dopo i test
 
 #OneIdentity
 oneidentity_base_url = "https://uat.oneid.pagopa.it"
-
-#Notify URL API email
-notify_url = "https://api-io.uat.cstar.pagopa.it/idpay-itn/email-notification/export/notify"
