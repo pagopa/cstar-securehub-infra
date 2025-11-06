@@ -156,4 +156,7 @@ locals {
 
   # Action Group
   monitor_action_group_email_name = "pari-alerts-email"
+
+  #Notify URL API email
+  notify_url = "https://api-io.${data.azurerm_dns_zone.public_cstar.name}/idpay-itn/email-notification/export/notify"
 }

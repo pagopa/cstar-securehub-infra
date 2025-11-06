@@ -1,91 +1,130 @@
 {
   "name": "idpay_copy_rdb_products_to_csv",
   "properties": {
+    "parameters": {
+      "exportAccountName": { "type": "String" },
+      "notifyUrl":         { "type": "String" },
+      "resourceGroup":     { "type": "String" },
+      "subscriptionId":    { "type": "String" },
+      "kvUrl":             { "type": "String" },
+      "kvSecretName":      { "type": "String" },
+      "notifyToSecretName":{ "type": "String" }
+    },
     "activities": [
       {
         "name": "Copy_Cosmos_to_CSV",
         "type": "Copy",
         "dependsOn": [],
-        "policy": {
-          "timeout": "0.12:00:00",
-          "retry": 0,
-          "retryIntervalInSeconds": 30,
-          "secureOutput": false,
-          "secureInput": false
-        },
-        "userProperties": [],
+        "policy": { "timeout": "0.12:00:00", "retry": 0, "retryIntervalInSeconds": 30, "secureOutput": false, "secureInput": false },
         "typeProperties": {
           "source": {
             "type": "CosmosDbMongoDbApiSource",
             "batchSize": 100,
             "filter": "{ \"status\": \"APPROVED\" }",
-            "cursorMethods": {
-              "project": "{ \"_id\": 1, \"model\": 1, \"brand\": 1, \"eprelCode\": 1, \"countryOfProduction\": 1,\n  \"energyClass\": 1, \"capacity\": 1, \"productName\": 1, \"category\": 1, \"productGroup\": 1 }"
-            }
+            "cursorMethods": { "project": "{ \"_id\": 1, \"model\": 1, \"brand\": 1, \"eprelCode\": 1, \"countryOfProduction\": 1,\n  \"energyClass\": 1, \"capacity\": 1, \"productName\": 1, \"category\": 1, \"productGroup\": 1 }" }
           },
           "sink": {
             "type": "DelimitedTextSink",
-            "storeSettings": {
-              "type": "AzureBlobStorageWriteSettings",
-              "copyBehavior": "FlattenHierarchy"
-            },
-            "formatSettings": {
-              "type": "DelimitedTextWriteSettings",
-              "quoteAllText": true,
-              "fileExtension": ".txt"
-            }
+            "storeSettings": { "type": "AzureBlobFSWriteSettings", "copyBehavior": "FlattenHierarchy" },
+            "formatSettings": { "type": "DelimitedTextWriteSettings", "quoteAllText": true, "fileExtension": ".txt" }
           },
           "enableStaging": false,
-          "translator": {
-            "type": "TabularTranslator",
-            "mapComplexValuesToString": false
-          }
+          "translator": { "type": "TabularTranslator", "mapComplexValuesToString": false }
         },
-        "inputs": [
-          {
-            "referenceName": "cosmos_rdb_products",
-            "type": "DatasetReference"
-          }
-        ],
-        "outputs": [
-          {
-            "referenceName": "data_export_csv",
-            "type": "DatasetReference"
-          }
-        ]
+        "inputs": [ { "referenceName": "cosmos_rdb_products", "type": "DatasetReference" } ],
+        "outputs": [ { "referenceName": "data_export_csv", "type": "DatasetReference" } ]
       },
       {
         "name": "FlussoExportCSV",
         "type": "ExecuteDataFlow",
-        "dependsOn": [
-          {
-            "activity": "Copy_Cosmos_to_CSV",
-            "dependencyConditions": [
-              "Succeeded"
-            ]
-          }
-        ],
-        "policy": {
-          "timeout": "0.12:00:00",
-          "retry": 0,
-          "retryIntervalInSeconds": 30,
-          "secureOutput": false,
-          "secureInput": false
-        },
-        "userProperties": [],
+        "dependsOn": [ { "activity": "Copy_Cosmos_to_CSV", "dependencyConditions": [ "Succeeded" ] } ],
+        "policy": { "timeout": "0.12:00:00", "retry": 0, "retryIntervalInSeconds": 30, "secureOutput": false, "secureInput": false },
         "typeProperties": {
-          "dataFlow": {
-            "referenceName": "export_flow_csv",
-            "type": "DataFlowReference"
-          },
-          "compute": {
-            "coreCount": 8,
-            "computeType": "General"
-          },
+          "dataFlow": { "referenceName": "export_flow_csv", "type": "DataFlowReference" },
+          "compute": { "coreCount": 8, "computeType": "General" },
           "traceLevel": "Fine"
         }
+      },
+      {
+        "name": "Generate_SAS",
+        "type": "WebActivity",
+        "dependsOn": [ { "activity": "FlussoExportCSV", "dependencyConditions": [ "Succeeded" ] } ],
+        "policy": { "timeout": "0.00:05:00", "retry": 0, "retryIntervalInSeconds": 30, "secureOutput": true, "secureInput": true },
+        "typeProperties": {
+          "method": "POST",
+          "headers": { "Content-Type": "application/json" },
+          "url": {
+            "type": "Expression",
+            "value": "@concat('https://management.azure.com/subscriptions/', string(pipeline().parameters.subscriptionId), '/resourceGroups/', string(pipeline().parameters.resourceGroup), '/providers/Microsoft.Storage/storageAccounts/', string(pipeline().parameters.exportAccountName), '/ListServiceSas?api-version=2023-05-01')"
+          },
+          "authentication": { "type": "MSI", "resource": "https://management.azure.com/" },
+          "connectVia": { "referenceName": "AutoResolveIntegrationRuntime", "type": "IntegrationRuntimeReference" },
+          "body": {
+            "canonicalizedResource": { "type": "Expression", "value": "@concat('/blob/', pipeline().parameters.exportAccountName, '/export/data/export_weekly_', formatDateTime(utcNow(),'yyyy-MM-dd'), '.csv')" },
+            "signedResource": "b",
+            "signedPermission": "r",
+            "signedProtocol": "https",
+            "signedStart": { "type": "Expression", "value": "@utcNow()" },
+            "signedExpiry": { "type": "Expression", "value": "@formatDateTime(addDays(utcNow(), 1), 'yyyy-MM-ddTHH:mm:ssZ')" },
+            "signedVersion": "2020-02-10"
+          }
+        }
+      },
+      {
+        "name": "Get_SubKey",
+        "type": "WebActivity",
+        "dependsOn": [ { "activity": "Generate_SAS", "dependencyConditions": [ "Succeeded" ] } ],
+        "policy": { "timeout": "0.00:02:00", "retry": 3, "retryIntervalInSeconds": 15, "secureOutput": true, "secureInput": true },
+        "typeProperties": {
+          "method": "GET",
+          "headers": { "Content-Type": "application/json" },
+          "url": { "type": "Expression", "value": "@concat(pipeline().parameters.kvUrl,'/secrets/', pipeline().parameters.kvSecretName, '?api-version=7.3')" },
+          "authentication": { "type": "MSI", "resource": "https://vault.azure.net" },
+          "disableCertValidation": false
+        }
+      },
+      {
+        "name": "Get_NotifyTo",
+        "type": "WebActivity",
+        "dependsOn": [ { "activity": "Get_SubKey", "dependencyConditions": [ "Succeeded" ] } ],
+        "policy": { "timeout": "0.00:02:00", "retry": 3, "retryIntervalInSeconds": 15, "secureOutput": true, "secureInput": true },
+        "typeProperties": {
+          "method": "GET",
+          "headers": { "Content-Type": "application/json" },
+          "url": { "type": "Expression", "value": "@concat(pipeline().parameters.kvUrl,'/secrets/', pipeline().parameters.notifyToSecretName, '?api-version=7.3')" },
+          "authentication": { "type": "MSI", "resource": "https://vault.azure.net" },
+          "disableCertValidation": false
+        }
+      },
+      {
+        "name": "Notify_Email_via_MS",
+        "type": "WebActivity",
+        "dependsOn": [ { "activity": "Get_NotifyTo", "dependencyConditions": [ "Succeeded" ] } ],
+        "policy": { "timeout": "0.00:05:00", "retry": 3, "retryIntervalInSeconds": 30, "secureOutput": true, "secureInput": true },
+        "typeProperties": {
+          "method": "POST",
+          "url": { "type": "Expression", "value": "@pipeline().parameters.notifyUrl" },
+          "headers": {
+            "Content-Type": "application/json",
+            "Ocp-Apim-Subscription-Key": { "type": "Expression", "value": "@activity('Get_SubKey').output.value" }
+          },
+          "connectVia": { "referenceName": "AutoResolveIntegrationRuntime", "type": "IntegrationRuntimeReference" },
+          "body": {
+            "recipientEmail": { "type": "Expression", "value": "@activity('Get_NotifyTo').output.value" },
+            "subject":        { "type": "Expression", "value": "@concat('Esportazione settimanale ', formatDateTime(utcNow(),'yyyy-MM-dd'))" },
+            "templateName": "Email_ExportWeekly_Products",
+            "templateValues": {
+              "initiativeName": "IDPAY",
+              "orgName": "PagoPA S.p.A.",
+              "exportDate":     { "type": "Expression", "value": "@formatDateTime(utcNow(),'yyyy-MM-dd')" },
+              "productFileName":{ "type": "Expression", "value": "@concat('export_weekly_', formatDateTime(utcNow(),'yyyy-MM-dd'), '.csv')" },
+              "downloadLink":   { "type": "Expression", "value": "@concat('https://', pipeline().parameters.exportAccountName, '.blob.core.windows.net/export/data/export_weekly_', formatDateTime(utcNow(),'yyyy-MM-dd'), '.csv?', activity('Generate_SAS').output.serviceSasToken)" }
+            }
+          }
+        }
       }
-    ]
+    ],
+    "annotations": []
   },
   "type": "Microsoft.DataFactory/factories/pipelines"
 }

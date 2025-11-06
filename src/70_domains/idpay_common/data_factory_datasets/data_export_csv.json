@@ -2,20 +2,20 @@
   "name": "data_export_csv",
   "properties": {
     "linkedServiceName": {
-      "referenceName": "idpay-bonus-blob-storage-ls",
+      "referenceName": "idpay-exports-blobfs-ls",
       "type": "LinkedServiceReference"
     },
     "annotations": [],
     "type": "DelimitedText",
     "typeProperties": {
       "location": {
-        "type": "AzureBlobStorageLocation",
+        "type": "AzureBlobFSLocation",
         "fileName": {
           "value": "@concat('export_weekly_', formatDateTime(utcNow(), 'yyyy-MM-dd'), '.csv')",
           "type": "Expression"
         },
-        "folderPath": "elenco-informatico-elettrodomestici/data",
-        "container": "$web"
+        "folderPath": "data",
+        "fileSystem": "export"
       },
       "columnDelimiter": ",",
       "escapeChar": "\\",
