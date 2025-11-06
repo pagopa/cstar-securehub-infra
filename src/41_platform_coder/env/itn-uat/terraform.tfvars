@@ -37,6 +37,9 @@ keycloak_configuration = {
   memory_limit                                = "6Gi"
   http_client_connection_ttl_millis           = 180000
   http_client_connection_max_idle_time_millis = 180000
+  image_registry_config_cli                   = "public.ecr.aws"
+  image_repository_config_cli                 = "bitnami/keycloak-config-cli"
+  image_tag_config_cli                        = "6.4.0"
 }
 
 aks_user_node_pool_keycloak = {

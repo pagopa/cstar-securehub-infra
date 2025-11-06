@@ -36,12 +36,15 @@ keycloak_configuration = {
   memory_limit                                = "6Gi"
   http_client_connection_ttl_millis           = 180000
   http_client_connection_max_idle_time_millis = 180000
+  image_registry_config_cli                   = "public.ecr.aws"
+  image_repository_config_cli                 = "bitnami/keycloak-config-cli"
+  image_tag_config_cli                        = "6.4.0"
 }
 
 aks_user_node_pool_keycloak = {
-  aks_user_node_pool_keycloak = "Standard_D8ds_v5_active"
-  node_count_min              = 0 #25
-  node_count_max              = 0 #25
-  os_disk_size_gb             = 300
-  os_disk_type                = "Managed"
+  idh_resource_tier = "Standard_D8ds_v5_active"
+  node_count_min    = 0 #25
+  node_count_max    = 0 #25
+  os_disk_size_gb   = 300
+  os_disk_type      = "Managed"
 }

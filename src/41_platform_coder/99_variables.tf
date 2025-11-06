@@ -99,6 +99,9 @@ variable "keycloak_configuration" {
     memory_limit                                = string
     http_client_connection_ttl_millis           = number
     http_client_connection_max_idle_time_millis = number
+    image_registry_config_cli                   = string
+    image_repository_config_cli                 = string
+    image_tag_config_cli                        = string
   })
 }
 

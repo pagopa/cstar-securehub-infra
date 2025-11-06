@@ -154,9 +154,9 @@ keycloakConfigCli:
   enabled: true
   existingConfigmap: "keycloak-terraform-client-config"
   image:
-    registry: public.ecr.aws
-    repository: bitnami/keycloak-config-cli
-    tag: 6.4.0
+    registry: ${image_registry_config_cli}
+    repository: ${image_repository_config_cli}
+    tag: ${image_tag_config_cli}
     digest: ""
 
 nodeSelector:
