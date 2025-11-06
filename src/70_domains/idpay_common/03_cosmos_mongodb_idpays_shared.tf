@@ -132,7 +132,8 @@ locals {
       indexes = [
         { keys = ["_id"], unique = true },
         { keys = ["memberIds"], unique = false },
-        { keys = ["initiativeId"], unique = false }
+        { keys = ["initiativeId"], unique = false },
+        { keys = ["createDate"], unique = false, expire_after_seconds = 3600 }
       ]
     },
     {
