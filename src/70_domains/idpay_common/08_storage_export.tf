@@ -7,7 +7,7 @@ module "storage_idpay_exports" {
   resource_group_name = local.data_rg
   tags                = module.tag_config.tags
 
-  idh_resource_tier = "basic_public"
+  idh_resource_tier = var.env_short != "p" ? "basic_public" : "basic_public_no_softdel"
 
   # Module creates the storage account (keep the same name you already use)
   name   = replace("${local.project}-exports-sa", "-", "")
