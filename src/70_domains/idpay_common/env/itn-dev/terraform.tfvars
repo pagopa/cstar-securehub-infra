@@ -88,3 +88,7 @@ law_daily_quota_gb    = 5
 
 #OneIdentity
 oneidentity_base_url = "https://uat.oneid.pagopa.it"
+
+
+#Notify URL API email
+notify_url = "https://api-io.dev.cstar.pagopa.it/idpay-itn/email-notification/export/notify"

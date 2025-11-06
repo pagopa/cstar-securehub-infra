@@ -157,7 +157,4 @@ locals {
   # Action Group
   monitor_action_group_email_name = "pari-alerts-email"
 
-  #notifyEmail
-  notify_url = "https://api-io.dev.cstar.pagopa.it/idpay-itn/email-notification/export/notify"
-  notify_to  = "stefano.delia@pagopa.it"
 }
