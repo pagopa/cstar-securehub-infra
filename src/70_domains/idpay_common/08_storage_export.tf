@@ -7,8 +7,7 @@ module "storage_idpay_exports" {
   resource_group_name = local.data_rg
   tags                = module.tag_config.tags
 
-  # Basic for non-prod, Standard for prod
-  idh_resource_tier = var.env_short != "p" ? "basic" : "standard"
+  idh_resource_tier = "basic_public"
 
   # Module creates the storage account (keep the same name you already use)
   name   = replace("${local.project}-exports-sa", "-", "")
@@ -19,30 +18,7 @@ module "storage_idpay_exports" {
   private_endpoint_subnet_id = module.private_endpoint_storage_snet.id
 }
 
-# Read the resource group where the module created the storage account
-data "azurerm_resource_group" "exports_rg" {
-  name = local.data_rg
-}
 
-#Enable publicNetworkAccess on Storage module
-resource "azapi_update_resource" "exports_enable_public" {
-  resource_id = module.storage_idpay_exports.id
-  type        = "Microsoft.Storage/storageAccounts@2023-05-01"
-
-  body = {
-    properties = {
-      publicNetworkAccess = "Enabled"
-    }
-  }
-}
-
-resource "azurerm_storage_account_network_rules" "exports_rules" {
-  storage_account_id = module.storage_idpay_exports.id
-  default_action     = "Allow"
-  bypass             = ["AzureServices"]
-
-  depends_on = [azapi_update_resource.exports_enable_public]
-}
 
 # CSV export container (kept private – public access is granted by SAS)
 resource "azurerm_storage_container" "idpay_export_products_container" {
