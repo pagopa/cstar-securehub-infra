@@ -97,9 +97,9 @@ locals {
   log_analytics_workspace_name      = "${local.project_core}-law"
   application_insights_name         = "${local.project_core}-appinsights"
 
-  platform_monitor_resource_group_name  = "${local.project}-monitoring-rg"
-  platform_log_analytics_workspace_name = "${local.project}-monitoring-law"
-  platform_application_insights_name    = "${local.project}-monitoring-appinsights"
+  platform_monitor_resource_group_name  = "${local.product}-itn-platform-monitoring-rg"
+  platform_log_analytics_workspace_name = "${local.product}-itn-platform-monitoring-law"
+  platform_application_insights_name    = "${local.product}-itn-platform-monitoring-appinsights"
 
   core_monitor_resource_group_name  = "${local.project_core}-monitor-rg"
   core_log_analytics_workspace_name = "${local.project_core}-law"
@@ -108,8 +108,8 @@ locals {
   #
   # APIM
   #
-  apim_name    = "${var.prefix}-${var.env_short}-apim"
-  apim_rg_name = "${var.prefix}-${var.env_short}-api-rg"
+  apim_name    = "${local.product}-apim"
+  apim_rg_name = "${local.product}-api-rg"
   # monitor_action_group_slack_name = "SlackPagoPA"
   # monitor_action_group_email_name = "PagoPA"
   #
