@@ -107,6 +107,7 @@ locals {
       default_ttl_seconds = null
       indexes = [
         { keys = ["_id"], unique = true },
+        { keys = ["notificationStatus", "retry", "retryDate"], unique = false },
         { keys = ["notificationStatus"], unique = false },
         { keys = ["retry"], unique = false },
         { keys = ["retryDate"], unique = false },
@@ -210,6 +211,7 @@ locals {
         { keys = ["_id"], unique = true },
         { keys = ["trxCode"], unique = false },
         { keys = ["trxDate"], unique = false },
+        { keys = ["trxChargeDate"], unique = false },
         { keys = ["updateDate"], unique = false },
         { keys = ["merchantId"], unique = false },
         { keys = ["status"], unique = false },
@@ -363,6 +365,7 @@ locals {
         { keys = ["idTrxIssuer"], unique = false },
         { keys = ["userId"], unique = false },
         { keys = ["trxDate"], unique = false },
+        { keys = ["trxChargeDate"], unique = false },
         { keys = ["merchantId"], unique = false },
         { keys = ["elaborationDateTime"], unique = false },
         { keys = ["initiatives"], unique = false },
