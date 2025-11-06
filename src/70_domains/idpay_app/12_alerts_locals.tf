@@ -1480,33 +1480,6 @@ locals {
         email_subject = "[PARI][KEYCLOAK][HIGH] Keycloak /login 'user' Realm Alert (Failures)"
       })
     }
-    # Keycloak /login per realm 'merchant-operator'
-    keycloak_login_merchant_operator_realm = {
-      keycloak_login_merchant_operator_realm_alert = merge(local.alert_defaults, {
-        name        = "keycloak-login-merchant-operator-realm-alert"
-        description = "Keycloak (/login 'merchant-operator' realm): Total failure count exceeded (> 5 in 5m)"
-
-        data_source_id = data.azurerm_log_analytics_workspace.core_log_analytics_workspace.id
-
-        query = format(<<-QUERY
-              requests
-              | where appName == "%s"
-              | where tostring(customDimensions.["kc.realmName"]) in ("merchant-operator")
-              | where not(operation_Name has "admin")
-              | where name == "GET /realms/{realm}/broker/{provider_alias}/login"
-              | where success == false
-            QUERY
-          , local.keycloak_app_insights_resource_id
-        )
-
-        trigger = {
-          operator  = "GreaterThanOrEqual"
-          threshold = 5
-        }
-
-        email_subject = "[PARI][KEYCLOAK][HIGH] Keycloak /login 'merchant-operator' Realm Alert (Failures)"
-      })
-    }
     # Keycloak /endpoint per realm 'user'
     keycloak_endpoint_user_realm = {
       keycloak_endpoint_user_realm_alert = merge(local.alert_defaults, {
@@ -1532,33 +1505,6 @@ locals {
         }
 
         email_subject = "[PARI][KEYCLOAK][HIGH] Keycloak /endpoint 'user' Realm Alert (Failures)"
-      })
-    }
-    # Keycloak /endpoint per realm 'merchant-operator'
-    keycloak_endpoint_merchant_operator_realm = {
-      keycloak_endpoint_merchant_operator_realm_alert = merge(local.alert_defaults, {
-        name        = "keycloak-endpoint-merchant-operator-realm-alert"
-        description = "Keycloak (/endpoint 'merchant-operator' realm): Total failure count exceeded (> 5 in 5m)"
-
-        data_source_id = data.azurerm_log_analytics_workspace.core_log_analytics_workspace.id
-
-        query = format(<<-QUERY
-              requests
-              | where appName == "%s"
-              | where tostring(customDimensions.["kc.realmName"]) in ("merchant-operator")
-              | where not(operation_Name has "admin")
-              | where name == "GET /realms/{realm}/broker/{provider_alias}/endpoint"
-              | where success == false
-            QUERY
-          , local.keycloak_app_insights_resource_id
-        )
-
-        trigger = {
-          operator  = "GreaterThanOrEqual"
-          threshold = 5
-        }
-
-        email_subject = "[PARI][KEYCLOAK][HIGH] Keycloak /endpoint 'merchant-operator' Realm Alert (Failures)"
       })
     }
   }
