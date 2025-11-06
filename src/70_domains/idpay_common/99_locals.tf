@@ -92,24 +92,24 @@ locals {
   # Monitoring
   #
 
-  monitor_resource_group_name       = "cstar-${var.env_short}-itn-core-monitor-rg"
+  monitor_resource_group_name       = "${local.project_core}-monitor-rg"
   idpay_monitor_resource_group_name = "${local.project}-monitoring-rg"
-  log_analytics_workspace_name      = "cstar-${var.env_short}-itn-core-law"
-  application_insights_name         = "cstar-${var.env_short}-itn-core-appinsights"
+  log_analytics_workspace_name      = "${local.project_core}-law"
+  application_insights_name         = "${local.project_core}-appinsights"
 
-  platform_monitor_resource_group_name  = "cstar-${var.env_short}-itn-platform-monitoring-rg"
-  platform_log_analytics_workspace_name = "cstar-${var.env_short}-itn-platform-monitoring-law"
-  platform_application_insights_name    = "cstar-${var.env_short}-itn-platform-monitoring-appinsights"
+  platform_monitor_resource_group_name  = "${local.project}-monitoring-rg"
+  platform_log_analytics_workspace_name = "${local.project}-monitoring-law"
+  platform_application_insights_name    = "${local.project}-monitoring-appinsights"
 
-  core_monitor_resource_group_name  = "cstar-${var.env_short}-itn-core-monitor-rg"
-  core_log_analytics_workspace_name = "cstar-${var.env_short}-itn-core-law"
-  core_application_insights_name    = "cstar-${var.env_short}-itn-core-appinsights"
+  core_monitor_resource_group_name  = "${local.project_core}-monitor-rg"
+  core_log_analytics_workspace_name = "${local.project_core}-law"
+  core_application_insights_name    = "${local.project_core}-appinsights"
 
   #
   # APIM
   #
-  apim_name    = "cstar-${var.env_short}-apim"
-  apim_rg_name = "cstar-${var.env_short}-api-rg"
+  apim_name    = "${var.prefix}-${var.env_short}-apim"
+  apim_rg_name = "${var.prefix}-${var.env_short}-api-rg"
   # monitor_action_group_slack_name = "SlackPagoPA"
   # monitor_action_group_email_name = "PagoPA"
   #
