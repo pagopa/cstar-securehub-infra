@@ -43,6 +43,11 @@ data "azurerm_private_dns_zone" "internal" {
   resource_group_name = local.dns_private_internal_rg_name
 }
 
+data "azurerm_nat_gateway" "compute_nat_gateway" {
+  name                = "${local.project_core}-compute-natgw"
+  resource_group_name = local.vnet_network_rg_name
+}
+
 #-----------------------------------------------
 # Monitoring
 #-----------------------------------------------
