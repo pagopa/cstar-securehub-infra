@@ -25,7 +25,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | ec828d78964ceb919678940efd2c1e0e32116d08 |
+| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | 8e15cac233fead870817f0bdcbe07d0490b70245 |
 | <a name="module_aks_user_keycloak_snet"></a> [aks\_user\_keycloak\_snet](#module\_aks\_user\_keycloak\_snet) | ./.terraform/modules/__v4__/IDH/subnet | n/a |
 | <a name="module_aks_user_node_pool_keycloak"></a> [aks\_user\_node\_pool\_keycloak](#module\_aks\_user\_node\_pool\_keycloak) | ./.terraform/modules/__v4__/IDH/aks_node_pool | n/a |
 | <a name="module_cert_mounter"></a> [cert\_mounter](#module\_cert\_mounter) | ./.terraform/modules/__v4__/cert_mounter | n/a |

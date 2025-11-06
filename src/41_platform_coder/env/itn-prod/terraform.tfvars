@@ -39,7 +39,7 @@ keycloak_configuration = {
 }
 
 aks_user_node_pool_keycloak = {
-  aks_user_node_pool_keycloak = "Standard_D8ads_v5_active"
+  aks_user_node_pool_keycloak = "Standard_D8ds_v5_active"
   node_count_min              = 0 #25
   node_count_max              = 0 #25
   os_disk_size_gb             = 300

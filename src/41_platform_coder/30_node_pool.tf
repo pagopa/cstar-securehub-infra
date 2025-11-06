@@ -22,7 +22,10 @@ module "aks_user_node_pool_keycloak" {
     node_type : "user",
     domain : "keycloak"
   }
-  node_taints           = []
+  node_taints = [
+    "keycloakOnly=true:NoSchedule"
+  ]
+
   node_tags             = {}
   kubernetes_cluster_id = data.azurerm_kubernetes_cluster.aks.id
   vnet_subnet_id        = module.aks_user_keycloak_snet.id
