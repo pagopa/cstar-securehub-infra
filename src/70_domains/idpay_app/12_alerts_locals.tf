@@ -1344,7 +1344,7 @@ locals {
           description = "Keycloak (Catch-All 'user' realm): Total failure count exceeded (> 100 in 5m)"
           severity    = 2
 
-          data_source_id = data.azurerm_log_analytics_workspace.core_log_analytics_workspace.id
+          data_source_id = data.azurerm_application_insights.core_app_insights.id
 
           query = format(<<-QUERY
               requests
@@ -1371,7 +1371,7 @@ locals {
           description = "Keycloak (Catch-All 'merchant-operator' realm): Total failure count exceeded (> 100 in 5m)"
           severity    = 2
 
-          data_source_id = data.azurerm_log_analytics_workspace.core_log_analytics_workspace.id
+          data_source_id = data.azurerm_application_insights.core_app_insights.id
 
           query = format(<<-QUERY
               requests
@@ -1398,7 +1398,7 @@ locals {
         name        = "keycloak-token-user-realm-alert"
         description = "Keycloak (/token 'user' realm): Total failure count exceeded (> 5 in 5m)"
 
-        data_source_id = data.azurerm_log_analytics_workspace.core_log_analytics_workspace.id
+        data_source_id = data.azurerm_application_insights.core_app_insights.id
 
         query = format(<<-QUERY
               requests
@@ -1425,7 +1425,7 @@ locals {
         name        = "keycloak-token-merchant-operator-realm-alert"
         description = "Keycloak (/token 'merchant-operator' realm): Total failure count exceeded (> 5 in 5m)"
 
-        data_source_id = data.azurerm_log_analytics_workspace.core_log_analytics_workspace.id
+        data_source_id = data.azurerm_application_insights.core_app_insights.id
 
         query = format(<<-QUERY
               requests
@@ -1452,7 +1452,7 @@ locals {
         name        = "keycloak-login-user-realm-alert"
         description = "Keycloak (/login 'user' realm): Total failure count exceeded (> 5 in 5m)"
 
-        data_source_id = data.azurerm_log_analytics_workspace.core_log_analytics_workspace.id
+        data_source_id = data.azurerm_application_insights.core_app_insights.id
 
         query = format(<<-QUERY
               requests
@@ -1479,7 +1479,7 @@ locals {
         name        = "keycloak-endpoint_user-realm-alert"
         description = "Keycloak (/endpoint 'user' realm): Total failure count exceeded (> 5 in 5m)"
 
-        data_source_id = data.azurerm_log_analytics_workspace.core_log_analytics_workspace.id
+        data_source_id = data.azurerm_application_insights.core_app_insights.id
 
         query = format(<<-QUERY
               requests
