@@ -62,8 +62,8 @@ aks_nodepool_green = {
 aks_cidr_subnet      = ["10.10.1.0/24"] # 10.10.1.0 -> 10.10.1.255
 aks_cidr_subnet_user = ["10.10.2.0/24"] # 10.10.2.0 -> 10.10.2.255
 
-ingress_min_replica_count = "10"
-ingress_max_replica_count = "20"
+ingress_min_replica_count = "21"
+ingress_max_replica_count = "33"
 ingress_load_balancer_ip  = "10.10.1.250"
 
 # ingress-nginx helm charts releases 4.X.X: https://github.com/kubernetes/ingress-nginx/releases?expanded=true&page=1&q=tag%3Ahelm-chart-4
