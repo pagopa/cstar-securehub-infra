@@ -62,7 +62,7 @@ module "azdoa_linux_perf" {
   image_type                = "custom" # enables usage of "source_image_name"
   image_resource_group_name = data.azurerm_resource_group.azdo_rg.name
   source_image_name         = "${local.product}-packer-azdo-agent-ubuntu2204-image-${var.azdo_agent_image_version}"
-  vm_sku                    = "Standard_D8ads_v5"
+  vm_sku                    = var.azdo_agent_perf_vm_sku
 
   zones        = var.devops_agent_zones
   zone_balance = var.devops_agent_balance_zones
