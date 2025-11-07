@@ -120,7 +120,7 @@
           "body": {
             "canonicalizedResource": {
               "type": "Expression",
-              "value": "@concat('/blob/', pipeline().parameters.exportAccountName, '/export/data/export_weekly_', formatDateTime(utcNow(),'yyyy-MM-dd'), '.csv')"
+              "value": "@concat('/blob/', pipeline().parameters.exportAccountName, '/export/data/export_daily_', formatDateTime(utcNow(),'yyyy-MM-dd'), '.csv')"
             },
             "signedExpiry": {
               "type": "Expression",
@@ -280,11 +280,11 @@
               "type": "Expression",
               "value": "@concat('Esportazione settimanale ', formatDateTime(utcNow(),'yyyy-MM-dd'))"
             },
-            "templateName": "Email_ExportWeekly_Products",
+            "templateName": "Email_ExportDaily_Products",
             "templateValues": {
               "downloadLink": {
                 "type": "Expression",
-                "value": "@concat('https://', pipeline().parameters.exportAccountName, '.blob.core.windows.net/export/data/export_weekly_', formatDateTime(utcNow(),'yyyy-MM-dd'), '.csv?', activity('Generate_SAS').output.serviceSasToken)"
+                "value": "@concat('https://', pipeline().parameters.exportAccountName, '.blob.core.windows.net/export/data/export_daily_', formatDateTime(utcNow(),'yyyy-MM-dd'), '.csv?', activity('Generate_SAS').output.serviceSasToken)"
               },
               "exportDate": {
                 "type": "Expression",
@@ -294,7 +294,7 @@
               "orgName": "PagoPA S.p.A.",
               "productFileName": {
                 "type": "Expression",
-                "value": "@concat('export_weekly_', formatDateTime(utcNow(),'yyyy-MM-dd'), '.csv')"
+                "value": "@concat('export_daily_', formatDateTime(utcNow(),'yyyy-MM-dd'), '.csv')"
               }
             }
           }
