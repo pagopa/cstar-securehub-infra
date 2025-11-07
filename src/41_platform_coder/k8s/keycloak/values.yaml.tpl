@@ -72,7 +72,13 @@ extraEnvVars:
   - name: KC_SPI_CONNECTIONS_HTTP_CLIENT_DEFAULT_MAX_CONNECTION_IDLE_TIME_MILLIS
     value: "${keycloak_http_client_connection_max_idle_millis}"
   - name: JAVA_OPTS
-    value: "-javaagent:/opt/bitnami/keycloak/agent/applicationinsights-agent.jar"
+    value: "-javaagent:/opt/bitnami/keycloak/agent/applicationinsights-agent.jar -XX:+UseG1GC -XX:+UseLargePages -Xmx4096m"
+  - name: KC_DB_POOL_MAX_SIZE
+    value: "75"
+  - name: KC_DB_POOL_MIN_SIZE
+    value: "75"
+  - name: KC_DB_POOL_INITIAL_SIZE
+    value: "75"
 
 extraVolumes:
   - name: pagopa-theme
@@ -148,7 +154,21 @@ keycloakConfigCli:
   enabled: true
   existingConfigmap: "keycloak-terraform-client-config"
   image:
-    registry: public.ecr.aws
-    repository: bitnami/keycloak-config-cli
-    tag: 6.4.0
+    registry: ${image_registry_config_cli}
+    repository: ${image_repository_config_cli}
+    tag: ${image_tag_config_cli}
     digest: ""
+
+nodeSelector:
+  domain: keycloak
+
+tolerations:
+  - key: "keycloakOnly"
+    operator: "Equal"
+    value: "true"
+    effect: "NoSchedule"
+
+dnsConfig:
+  options:
+    - name: ndots
+      value: "1"

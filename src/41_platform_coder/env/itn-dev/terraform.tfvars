@@ -1,18 +1,9 @@
-prefix                = "cstar"
-env_short             = "d"
-env                   = "dev"
-location              = "italynorth"
-location_display_name = "Italy North"
-location_short        = "itn"
-domain                = "platform"
-
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "DEV"
-  Owner       = "CSTAR"
-  Source      = "https://github.com/pagopa/cstar-securehub-infra"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-}
+prefix         = "cstar"
+env_short      = "d"
+env            = "dev"
+location       = "italynorth"
+location_short = "itn"
+domain         = "platform"
 
 #
 # Dns
@@ -37,12 +28,21 @@ keycloak_configuration = {
   image_repository                            = "bitnamilegacy/keycloak"
   image_tag                                   = "26.3.1-debian-12-r1"
   chart_version                               = "24.7.7"
-  replica_count_min                           = 2
-  replica_count_max                           = 3
+  replica_count_min                           = 1
+  replica_count_max                           = 2
   cpu_request                                 = "500m"
   cpu_limit                                   = "1"
   memory_request                              = "1Gi"
   memory_limit                                = "2Gi"
   http_client_connection_ttl_millis           = 180000
   http_client_connection_max_idle_time_millis = 180000
+  image_registry_config_cli                   = "public.ecr.aws"
+  image_repository_config_cli                 = "bitnami/keycloak-config-cli"
+  image_tag_config_cli                        = "6.4.0"
+}
+
+aks_user_node_pool_keycloak = {
+  idh_resource_tier = "Standard_B4ms_active"
+  node_count_min    = 1
+  node_count_max    = 1
 }

@@ -164,6 +164,9 @@ resource "helm_release" "keycloak" {
       image_registry                                  = var.keycloak_configuration.image_registry
       image_repository                                = var.keycloak_configuration.image_repository
       image_tag                                       = var.keycloak_configuration.image_tag
+      image_registry_config_cli                       = var.keycloak_configuration.image_registry_config_cli
+      image_repository_config_cli                     = var.keycloak_configuration.image_repository_config_cli
+      image_tag_config_cli                            = var.keycloak_configuration.image_tag_config_cli
       postgres_db_host                                = module.keycloak_pgflex.fqdn
       postgres_db_port                                = "5432"
       postgres_db_username                            = module.keycloak_pgflex.administrator_login
