@@ -93,3 +93,8 @@ variable "azdo_agent_image_version" {
   type        = string
   description = "Version as suffix to define the image related to azdo agent"
 }
+
+variable "azdo_agent_perf_vm_sku" {
+  type        = string
+  description = "VM SKU for Azure DevOps Agent"
+}
