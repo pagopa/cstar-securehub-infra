@@ -11,6 +11,8 @@ locals {
     "fabio.felici@pagopa.it"
   ]
 
+  # These groups are allowed to be linked into the projects or global setup of ArgoCD
+  # If not present here or in the extra variable, the user can login to ArgoCD but with nothing assigned
   argocd_entra_groups_allowed = [
     #Global groups
     "${var.prefix}-${var.env_short}-adgroup-admin",
