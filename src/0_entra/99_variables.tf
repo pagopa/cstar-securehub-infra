@@ -53,6 +53,6 @@ variable "domain" {
 }
 
 # Definizione della variabile per i nomi dei gruppi Entra ID
-variable "argocd_entra_groups_allowed" {
+variable "argocd_entra_groups_allowed_extra" {
   type = list(string)
 }
