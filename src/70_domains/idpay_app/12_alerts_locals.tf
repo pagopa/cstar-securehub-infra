@@ -3,12 +3,14 @@
 # =============================================================
 
 locals {
+  # 📣 Notification action groups
   alert_action_group = compact([
     try(data.azurerm_monitor_action_group.alerts_email[0].id, null),
     var.env_short == "p" ? try(data.azurerm_monitor_action_group.alerts_opsgenie[0].id, null) : null
   ])
 
-  alert_defaults = {
+  # ⚙️ Base configuration shared by all alerts
+  base_alert_config = {
     enabled        = true
     severity       = 1
     frequency      = 5
@@ -16,6 +18,7 @@ locals {
     data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
   }
 
+  # 🧾 Register area alerts
   alerts_register = {
     portal_consent_save_5m_rules = {
       name        = "portal-consent-save-5xx-401-429-alert"
@@ -317,6 +320,7 @@ locals {
     }
   }
 
+  # 🧰 Misc alerts and dependencies
   alerts_misc = {
     pari_email_dependency_alert = {
       name        = "pari-email-dependency-alert"
@@ -352,6 +356,7 @@ locals {
     }
   }
 
+  # 🛒 Merchant Operation alerts
   alerts_merchant_op = {
     capture_transaction_5xx_alert = {
       name        = "capture-transaction-5xx-alert"
@@ -596,6 +601,7 @@ locals {
     }
   }
 
+  # 🏬 Merchant area alerts
   alerts_merchant = {
     download_invoice_5xx_alert = {
       name        = "download-invoice-file-5xx-alert"
@@ -662,6 +668,7 @@ locals {
     }
   }
 
+  # 🧑‍💼 Onboarding alerts
   alerts_onboarding = {
     get_initiative_id_5xx_alert = {
       name        = "get-initiative-id-5xx-alert"
@@ -878,6 +885,7 @@ locals {
     }
   }
 
+  # 🕒 Timeline alerts
   alerts_timeline = {
     get_timeline_5xx_alert = {
       name        = "get-timeline-5xx-alert"
@@ -896,6 +904,7 @@ locals {
     }
   }
 
+  # 👛 Wallet alerts
   alerts_wallet = {
     get_wallet_5xx_alert = {
       name        = "get-wallet-5xx-alert"
@@ -1009,6 +1018,7 @@ locals {
     }
   }
 
+  # 💶 Payment alerts
   alerts_payment = {
     create_barcode_transaction_5xx_alert = {
       name        = "create-barcode-transaction-5xx-alert"
@@ -1103,6 +1113,7 @@ locals {
     }
   }
 
+  # 🌐 Web alerts
   alerts_web = {
     get_transaction_pdf_5xx_alert = {
       name        = "get-transaction-pdf-5xx-alert"
@@ -1151,6 +1162,7 @@ locals {
     }
   }
 
+  # 🧩 General Keycloak alerts
   alerts_keycloak = {
     keycloak_catchall_user_realm_alert = {
       name        = "keycloak-catchall-user-realm-alert"
@@ -1203,6 +1215,7 @@ locals {
     }
   }
 
+  # 🔐 Token alerts for user realm
   alerts_keycloak_token_user_realm = {
     keycloak_token_user_realm_alert = {
       name        = "keycloak-token-user-realm-alert"
@@ -1230,6 +1243,7 @@ locals {
     }
   }
 
+  # 🔐 Token alerts for merchant-operator realm
   alerts_keycloak_token_merchant_operator_realm = {
     keycloak_token_merchant_operator_realm_alert = {
       name        = "keycloak-token-merchant-operator-realm-alert"
@@ -1257,6 +1271,7 @@ locals {
     }
   }
 
+  # 🔑 Login alerts for user realm
   alerts_keycloak_login_user_realm = {
     keycloak_login_user_realm_alert = {
       name        = "keycloak-login-user-realm-alert"
@@ -1284,6 +1299,7 @@ locals {
     }
   }
 
+  # 📡 Endpoint alerts for user realm
   alerts_keycloak_endpoint_user_realm = {
     keycloak_endpoint_user_realm_alert = {
       name        = "keycloak-endpoint_user-realm-alert"
@@ -1311,6 +1327,7 @@ locals {
     }
   }
 
+  # 🧱 Collection of alert groups
   alerts_groups = [
     local.alerts_register,
     local.alerts_misc,
@@ -1328,9 +1345,10 @@ locals {
     local.alerts_keycloak_endpoint_user_realm
   ]
 
-  alert_definitions = merge([
+  # ✅ Final alerts map ready for consumption: flattens every group, applies the base config and exposes a single map consumed by azurerm_monitor_scheduled_query_rules_alert
+  final_alerts = merge([
     for alerts in local.alerts_groups : {
-      for key, alert in alerts : key => merge(local.alert_defaults, alert)
+      for key, alert in alerts : key => merge(local.base_alert_config, alert)
     }
   ]...)
 }
