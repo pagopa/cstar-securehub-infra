@@ -8,4 +8,4 @@ location_short      = "itn"
 location_westeurope = "westeurope"
 
 
-argocd_entra_groups_allowed = ["cstar-p-adgroup-admin", "cstar-p-adgroup-developers", "cstar-p-adgroup-externals"]
+argocd_entra_groups_allowed_extra = ["cstar-p-idpay-adgroup-oncall", "cstar-p-srtp-adgroup-oncall"]

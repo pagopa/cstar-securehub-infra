@@ -11,6 +11,25 @@ locals {
     "fabio.felici@pagopa.it"
   ]
 
+  # These groups are allowed to be linked into the projects or global setup of ArgoCD
+  # If not present here or in the extra variable, the user can login to ArgoCD but with nothing assigned
+  argocd_entra_groups_allowed = [
+    #Global groups
+    "${var.prefix}-${var.env_short}-adgroup-admin",
+    "${var.prefix}-${var.env_short}-adgroup-developers",
+    "${var.prefix}-${var.env_short}-adgroup-externals",
+    #SRTP Groups
+    "${var.prefix}-${var.env_short}-srtp-adgroup-admin",
+    "${var.prefix}-${var.env_short}-srtp-adgroup-developers",
+    "${var.prefix}-${var.env_short}-srtp-adgroup-externals",
+    #IDPay Groups
+    "${var.prefix}-${var.env_short}-idpay-adgroup-admin",
+    "${var.prefix}-${var.env_short}-idpay-adgroup-developers",
+    "${var.prefix}-${var.env_short}-idpay-adgroup-externals",
+  ]
+
+
+
   ### Kubernetes
   kubernetes_cluster_name                = "cstar-${var.env_short}-itn-${var.env}-aks"
   kubernetes_cluster_resource_group_name = "cstar-${var.env_short}-itn-core-aks-rg"

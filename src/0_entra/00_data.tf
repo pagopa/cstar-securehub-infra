@@ -32,6 +32,6 @@ data "azuread_service_principal" "graph" {
 # data "azurerm_client_config" "current" {}
 
 data "azuread_group" "argocd_groups" {
-  for_each     = toset(var.argocd_entra_groups_allowed)
+  for_each     = toset(var.argocd_entra_groups_allowed_extra)
   display_name = each.value
 }
