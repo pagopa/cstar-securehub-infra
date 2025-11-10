@@ -1502,11 +1502,9 @@ locals {
     }
   }
 
-  alert_definitions = merge([
+  alert_definitions = contains(["u", "p"], var.env_short) ? merge([
     for service in values(local.alerts_microservices) : merge([
       for group in values(service) : group
     ]...)
-  ]...)
-
-  empty_alerts_map = { for k, v in local.alert_definitions : k => null }
+  ]...) : {}
 }
