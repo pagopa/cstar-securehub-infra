@@ -1507,4 +1507,6 @@ locals {
       for group in values(service) : group
     ]...)
   ]...)
+
+  empty_alerts_map = { for k, v in local.alert_definitions : k => null }
 }

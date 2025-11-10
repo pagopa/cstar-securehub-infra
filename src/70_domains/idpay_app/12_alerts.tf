@@ -4,7 +4,7 @@
 
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "alerts" {
-  for_each = contains(["u", "p"], var.env_short) ? local.alert_definitions : tomap({})
+  for_each = contains(["u", "p"], var.env_short) ? local.alert_definitions : local.empty_alerts_map
 
   name                = each.value.name
   resource_group_name = local.monitor_rg
