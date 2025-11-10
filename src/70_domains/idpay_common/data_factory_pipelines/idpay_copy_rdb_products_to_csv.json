@@ -278,7 +278,7 @@
             },
             "subject": {
               "type": "Expression",
-              "value": "@concat('Esportazione settimanale ', formatDateTime(utcNow(),'yyyy-MM-dd'))"
+              "value": "@concat('Export giornaliero dei prodotti ', formatDateTime(utcNow(),'yyyy-MM-dd'))"
             },
             "templateName": "Email_ExportDaily_Products",
             "templateValues": {
