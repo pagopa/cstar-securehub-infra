@@ -33,6 +33,26 @@ resource "azurerm_data_factory_linked_custom_service" "bonus_blob_storage_linked
   }
 }
 
+# LS ADLS Gen2 (BlobFS) via Managed Identity
+resource "azurerm_data_factory_linked_custom_service" "idpay_exports_blobfs_ls" {
+  name            = "${var.domain}-exports-blobfs-ls"
+  data_factory_id = data.azurerm_data_factory.data_factory.id
+  type            = "AzureBlobFS"
+  description     = "Exports Storage (ADLS Gen2) via Managed Identity"
+
+  type_properties_json = jsonencode({
+    url            = "https://${module.storage_idpay_exports.name}.dfs.core.windows.net"
+    authentication = "ManagedIdentity"
+  })
+
+  integration_runtime {
+    name = "AutoResolveIntegrationRuntime"
+  }
+
+  depends_on = [azurerm_role_assignment.adf_can_access_exports_storage]
+}
+
+
 resource "azurerm_data_factory_managed_private_endpoint" "adf_cosmosdb_mpe" {
   name               = "${local.product}-cosmosdb-mongo-mpe"
   data_factory_id    = data.azurerm_data_factory.data_factory.id
@@ -61,4 +81,18 @@ resource "azapi_resource_action" "approve_pe" {
       }
     }
   }
+}
+# ADF MI -> can read kv secrets
+resource "azurerm_role_assignment" "adf_can_read_kv_secrets" {
+  scope                = data.azurerm_key_vault.domain_kv.id
+  role_definition_name = "Key Vault Secrets User"
+  principal_id         = data.azurerm_data_factory.data_factory.identity[0].principal_id
+}
+
+
+resource "azurerm_key_vault_access_policy" "kv_policy_adf" {
+  key_vault_id       = data.azurerm_key_vault.domain_kv.id
+  tenant_id          = data.azurerm_client_config.current.tenant_id
+  object_id          = data.azurerm_data_factory.data_factory.identity[0].principal_id
+  secret_permissions = ["Get"]
 }

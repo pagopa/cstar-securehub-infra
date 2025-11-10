@@ -59,6 +59,7 @@
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_azdo_agent_image_version"></a> [azdo\_agent\_image\_version](#input\_azdo\_agent\_image\_version) | Version as suffix to define the image related to azdo agent | `string` | n/a | yes |
+| <a name="input_azdo_agent_perf_vm_sku"></a> [azdo\_agent\_perf\_vm\_sku](#input\_azdo\_agent\_perf\_vm\_sku) | VM SKU for Azure DevOps Agent | `string` | n/a | yes |
 | <a name="input_devops_agent_balance_zones"></a> [devops\_agent\_balance\_zones](#input\_devops\_agent\_balance\_zones) | (Optional) True if the devops agent instances must be evenly balanced between the configured zones | `bool` | `false` | no |
 | <a name="input_devops_agent_zones"></a> [devops\_agent\_zones](#input\_devops\_agent\_zones) | (Optional) List of zones in which the scale set for azdo agent will be deployed | `list(number)` | `null` | no |
 | <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | n/a | yes |

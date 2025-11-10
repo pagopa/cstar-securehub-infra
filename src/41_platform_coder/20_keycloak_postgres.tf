@@ -8,7 +8,7 @@ resource "azurerm_key_vault_secret" "keycloak_db_admin_user" {
 
   content_type = "text/plain"
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "random_password" "keycloak_db_admin_password" {
@@ -29,7 +29,7 @@ resource "azurerm_key_vault_secret" "keycloak_db_admin_password" {
 
   content_type = "text/plain"
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 
@@ -71,6 +71,7 @@ module "keycloak_pgflex" {
     location                    = "germanywestcentral"
     private_dns_registration_ve = true
   }
+  storage_tier = var.keycloak_pgflex_params.storage_tier != null ? var.keycloak_pgflex_params.storage_tier : null
 
   tags = module.tag_config.tags_grafana_yes
 }

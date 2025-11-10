@@ -17,7 +17,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "alerts" {
   frequency   = each.value.frequency
   time_window = each.value.time_window
 
-  data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
+  data_source_id = each.value.data_source_id
   query          = each.value.query
 
   trigger {

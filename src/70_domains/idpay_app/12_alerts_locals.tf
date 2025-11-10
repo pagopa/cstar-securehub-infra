@@ -9,10 +9,11 @@ locals {
   ])
 
   alert_defaults = {
-    enabled     = true
-    severity    = 1
-    frequency   = 5
-    time_window = 5
+    enabled        = true
+    severity       = 1
+    frequency      = 5
+    time_window    = 5
+    data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
   }
 
   ### Alerts by microservice
@@ -1332,6 +1333,172 @@ locals {
           email_subject = "[PARI][UPBE][HIGH] Get Transaction PDF API Alert (401/429)"
         })
       }
+    }
+
+    # Keycloak
+    keycloak = {
+      # Keycloak Catch-All per realm 'user'
+      keycloak_catchall_user_realm = {
+        keycloak_catchall_user_realm_alert = merge(local.alert_defaults, {
+          name        = "keycloak-catchall-user-realm-alert"
+          description = "Keycloak (Catch-All 'user' realm): Total failure count exceeded (> 100 in 5m)"
+          severity    = 2
+
+          data_source_id = data.azurerm_log_analytics_workspace.core_log_analytics_workspace.id
+
+          query = format(<<-QUERY
+              requests
+              | where appName == "%s"
+              | where tostring(customDimensions.["kc.realmName"]) in ("user")
+              | where not(operation_Name has "admin")
+              | where success == false
+            QUERY
+            , data.azurerm_application_insights.core_app_insights.id
+          )
+
+          trigger = {
+            operator  = "GreaterThanOrEqual"
+            threshold = 100
+          }
+
+          email_subject = "[PARI][KEYCLOAK][MEDIUM] Keycloak Catch-All 'user' Realm Alert (Failures)"
+        })
+      }
+      # Keycloak Catch-All per realm 'merchant-operator'
+      keycloak_catchall_merchant_operator_realm = {
+        keycloak_catchall_merchant_operator_realm_alert = merge(local.alert_defaults, {
+          name        = "keycloak-catchall-merchant-operator-realm-alert"
+          description = "Keycloak (Catch-All 'merchant-operator' realm): Total failure count exceeded (> 100 in 5m)"
+          severity    = 2
+
+          data_source_id = data.azurerm_log_analytics_workspace.core_log_analytics_workspace.id
+
+          query = format(<<-QUERY
+              requests
+              | where appName == "%s"
+              | where tostring(customDimensions.["kc.realmName"]) in ("merchant-operator")
+              | where not(operation_Name has "admin")
+              | where success == false
+            QUERY
+            , data.azurerm_application_insights.core_app_insights.id
+          )
+
+          trigger = {
+            operator  = "GreaterThanOrEqual"
+            threshold = 100
+          }
+
+          email_subject = "[PARI][KEYCLOAK][MEDIUM] Keycloak Catch-All 'merchant-operator' Realm Alert (Failures)"
+        })
+      }
+    }
+    # Keycloak /token per realm 'user'
+    keycloak_token_user_realm = {
+      keycloak_token_user_realm_alert = merge(local.alert_defaults, {
+        name        = "keycloak-token-user-realm-alert"
+        description = "Keycloak (/token 'user' realm): Total failure count exceeded (> 5 in 5m)"
+
+        data_source_id = data.azurerm_log_analytics_workspace.core_log_analytics_workspace.id
+
+        query = format(<<-QUERY
+              requests
+              | where appName == "%s"
+              | where tostring(customDimensions.["kc.realmName"]) in ("user")
+              | where not(operation_Name has "admin")
+              | where name == "POST /realms/{realm}/protocol/{protocol}/token"
+              | where success == false
+            QUERY
+          , data.azurerm_application_insights.core_app_insights.id
+        )
+
+        trigger = {
+          operator  = "GreaterThanOrEqual"
+          threshold = 5
+        }
+
+        email_subject = "[PARI][KEYCLOAK][HIGH] Keycloak /token 'user' Realm Alert (Failures)"
+      })
+    }
+    # Keycloak /token per realm 'merchant-operator'
+    keycloak_token_merchant_operator_realm = {
+      keycloak_token_merchant_operator_realm_alert = merge(local.alert_defaults, {
+        name        = "keycloak-token-merchant-operator-realm-alert"
+        description = "Keycloak (/token 'merchant-operator' realm): Total failure count exceeded (> 5 in 5m)"
+
+        data_source_id = data.azurerm_log_analytics_workspace.core_log_analytics_workspace.id
+
+        query = format(<<-QUERY
+              requests
+              | where appName == "%s"
+              | where tostring(customDimensions.["kc.realmName"]) in ("merchant-operator")
+              | where not(operation_Name has "admin")
+              | where name == "POST /realms/{realm}/protocol/{protocol}/token"
+              | where success == false
+            QUERY
+          , data.azurerm_application_insights.core_app_insights.id
+        )
+
+        trigger = {
+          operator  = "GreaterThanOrEqual"
+          threshold = 5
+        }
+
+        email_subject = "[PARI][KEYCLOAK][HIGH] Keycloak /token 'merchant-operator' Realm Alert (Failures)"
+      })
+    }
+    # Keycloak /login per realm 'user'
+    keycloak_login_user_realm = {
+      keycloak_login_user_realm_alert = merge(local.alert_defaults, {
+        name        = "keycloak-login-user-realm-alert"
+        description = "Keycloak (/login 'user' realm): Total failure count exceeded (> 5 in 5m)"
+
+        data_source_id = data.azurerm_log_analytics_workspace.core_log_analytics_workspace.id
+
+        query = format(<<-QUERY
+              requests
+              | where appName == "%s"
+              | where tostring(customDimensions.["kc.realmName"]) in ("user")
+              | where not(operation_Name has "admin")
+              | where name == "GET /realms/{realm}/broker/{provider_alias}/login"
+              | where success == false
+            QUERY
+          , data.azurerm_application_insights.core_app_insights.id
+        )
+
+        trigger = {
+          operator  = "GreaterThanOrEqual"
+          threshold = 5
+        }
+
+        email_subject = "[PARI][KEYCLOAK][HIGH] Keycloak /login 'user' Realm Alert (Failures)"
+      })
+    }
+    # Keycloak /endpoint per realm 'user'
+    keycloak_endpoint_user_realm = {
+      keycloak_endpoint_user_realm_alert = merge(local.alert_defaults, {
+        name        = "keycloak-endpoint_user-realm-alert"
+        description = "Keycloak (/endpoint 'user' realm): Total failure count exceeded (> 5 in 5m)"
+
+        data_source_id = data.azurerm_log_analytics_workspace.core_log_analytics_workspace.id
+
+        query = format(<<-QUERY
+              requests
+              | where appName == "%s"
+              | where tostring(customDimensions.["kc.realmName"]) in ("user")
+              | where not(operation_Name has "admin")
+              | where name == "GET /realms/{realm}/broker/{provider_alias}/endpoint"
+              | where success == false
+            QUERY
+          , data.azurerm_application_insights.core_app_insights.id
+        )
+
+        trigger = {
+          operator  = "GreaterThanOrEqual"
+          threshold = 5
+        }
+
+        email_subject = "[PARI][KEYCLOAK][HIGH] Keycloak /endpoint 'user' Realm Alert (Failures)"
+      })
     }
   }
 

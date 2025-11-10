@@ -1,18 +1,9 @@
-prefix                = "cstar"
-env_short             = "u"
-env                   = "uat"
-location              = "italynorth"
-location_display_name = "Italy North"
-location_short        = "itn"
-domain                = "platform"
-
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "UAT"
-  Owner       = "CSTAR"
-  Source      = "https://github.com/pagopa/cstar-securehub-infra"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-}
+prefix         = "cstar"
+env_short      = "u"
+env            = "uat"
+location       = "italynorth"
+location_short = "itn"
+domain         = "platform"
 
 #
 # Dns
@@ -30,6 +21,7 @@ keycloak_pgflex_params = {
   pgres_flex_pgbouncer_enabled           = false
   pgres_flex_diagnostic_settings_enabled = false
   auto_grow_enabled                      = false
+  storage_tier                           = "P30"
 }
 
 # TODO restore replicas to 2-3 after load test
@@ -41,9 +33,20 @@ keycloak_configuration = {
   replica_count_min                           = 1
   replica_count_max                           = 1
   cpu_request                                 = "3"
-  cpu_limit                                   = "4"
-  memory_request                              = "3Gi"
-  memory_limit                                = "4Gi"
+  cpu_limit                                   = "7"
+  memory_request                              = "4Gi"
+  memory_limit                                = "6Gi"
   http_client_connection_ttl_millis           = 180000
   http_client_connection_max_idle_time_millis = 180000
+  image_registry_config_cli                   = "public.ecr.aws"
+  image_repository_config_cli                 = "bitnami/keycloak-config-cli"
+  image_tag_config_cli                        = "6.4.0"
+}
+
+aks_user_node_pool_keycloak = {
+  idh_resource_tier = "Standard_D8ds_v5_active"
+  node_count_min    = 1
+  node_count_max    = 1
+  os_disk_size_gb   = 300
+  os_disk_type      = "Managed"
 }
