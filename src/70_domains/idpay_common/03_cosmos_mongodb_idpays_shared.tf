@@ -128,7 +128,7 @@ locals {
     {
       name                = "onboarding_families"
       shard_key           = null
-      default_ttl_seconds = null
+      default_ttl_seconds = 3600
       indexes = [
         { keys = ["_id"], unique = true },
         { keys = ["memberIds"], unique = false },
