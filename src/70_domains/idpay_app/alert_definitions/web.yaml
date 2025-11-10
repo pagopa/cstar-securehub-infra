@@ -1,0 +1,41 @@
+alerts:
+- key: get_transaction_pdf_5xx_alert
+  category_path:
+  - get_transaction_pdf
+  name: get-transaction-pdf-5xx-alert
+  description: 'API Get Transaction PDF: 5xx error count exceeded (> 5 in 5m)'
+  query: |-
+    AppRequests
+    | where Name matches regex @"^GET /idpay-itn/web/payment/initiatives/[^/]+/bar-code/[^/]+/pdf$"
+    | where ResultCode startswith "5"
+  trigger:
+    operator: GreaterThanOrEqual
+    threshold: 5
+  email_subject: '[PARI][UPBE][HIGH] Get Transaction PDF API Alert (5xx)'
+- key: get_transaction_pdf_400_alert
+  category_path:
+  - get_transaction_pdf
+  name: get-transaction-pdf-400-alert
+  description: 'API Get Transaction PDF: 400 error count exceeded (> 50 in 10m)'
+  time_window: 10
+  query: |-
+    AppRequests
+    | where Name matches regex @"^GET /idpay-itn/web/payment/initiatives/[^/]+/bar-code/[^/]+/pdf$"
+    | where ResultCode == "400"
+  trigger:
+    operator: GreaterThanOrEqual
+    threshold: 50
+  email_subject: '[PARI][UPBE][HIGH] Get Transaction PDF API Alert (400)'
+- key: get_transaction_pdf_4xx_auth_alert
+  category_path:
+  - get_transaction_pdf
+  name: get-transaction-pdf-4xx-auth-alert
+  description: 'API Get Transaction PDF: 401/429 error count exceeded (> 5 in 5m)'
+  query: |-
+    AppRequests
+    | where Name matches regex @"^GET /idpay-itn/web/payment/initiatives/[^/]+/bar-code/[^/]+/pdf$"
+    | where ResultCode in ("401", "429")
+  trigger:
+    operator: GreaterThanOrEqual
+    threshold: 5
+  email_subject: '[PARI][UPBE][HIGH] Get Transaction PDF API Alert (401/429)'

@@ -1,0 +1,15 @@
+alerts:
+- key: get_timeline_5xx_alert
+  category_path:
+  - get_timeline
+  name: get-timeline-5xx-alert
+  description: 'API Get Timeline: 5xx error count exceeded (> 3 in 5m)'
+  severity: 2
+  query: |-
+    AppRequests
+    | where Name matches regex @"^GET /idpay-itn/timeline/[^/]+$"
+    | where ResultCode startswith "5"
+  trigger:
+    operator: GreaterThanOrEqual
+    threshold: 3
+  email_subject: '[PARI][UPBE][MEDIUM] Get Timeline API Alert (5xx)'

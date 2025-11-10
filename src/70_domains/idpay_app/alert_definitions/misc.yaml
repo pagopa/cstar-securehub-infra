@@ -1,0 +1,31 @@
+alerts:
+- key: pari_email_dependency_alert
+  category_path:
+  - internal_dependency
+  name: pari-email-dependency-alert
+  description: 'Internal email microservice: error count exceeded threshold (> 10
+    in 5m)'
+  severity: 2
+  query: |-
+    AppDependencies
+    | where TimeGenerated > ago(5m)
+    | where Target == "idpay-notification-email-microservice-chart:8080"
+    | where Success == false
+  trigger:
+    operator: GreaterThanOrEqual
+    threshold: 10
+  email_subject: '[PARI] Internal Email microservice dependency alert'
+- key: pari_eprel_dependency_alert
+  category_path:
+  - external_dependency
+  name: pari-eprel-dependency-alert
+  description: 'EPREL dependency: error count exceeded threshold (> 10 in 5m)'
+  query: |-
+    AppDependencies
+    | where TimeGenerated > ago(5m)
+    | where Target == "eprel.ec.europa.eu"
+    | where Success == false
+  trigger:
+    operator: GreaterThanOrEqual
+    threshold: 10
+  email_subject: '[PARI][HIGH] EPREL external dependency alert'

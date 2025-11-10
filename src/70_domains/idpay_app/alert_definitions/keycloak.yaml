@@ -1,0 +1,43 @@
+alerts:
+- key: keycloak_catchall_user_realm_alert
+  category_path:
+  - keycloak_catchall_user_realm
+  name: keycloak-catchall-user-realm-alert
+  description: 'Keycloak (Catch-All ''user'' realm): Total failure count exceeded
+    (> 100 in 5m)'
+  severity: 2
+  data_source: core_app_insights
+  query_template: |-
+    requests
+    | where appName == "%s"
+    | where tostring(customDimensions.["kc.realmName"]) in ("user")
+    | where not(operation_Name has "admin")
+    | where success == false
+  query_template_args:
+  - core_app_insights
+  trigger:
+    operator: GreaterThanOrEqual
+    threshold: 100
+  email_subject: '[PARI][KEYCLOAK][MEDIUM] Keycloak Catch-All ''user'' Realm Alert
+    (Failures)'
+- key: keycloak_catchall_merchant_operator_realm_alert
+  category_path:
+  - keycloak_catchall_merchant_operator_realm
+  name: keycloak-catchall-merchant-operator-realm-alert
+  description: 'Keycloak (Catch-All ''merchant-operator'' realm): Total failure count
+    exceeded (> 100 in 5m)'
+  severity: 2
+  data_source: core_app_insights
+  query_template: |-
+    requests
+    | where appName == "%s"
+    | where tostring(customDimensions.["kc.realmName"]) in ("merchant-operator")
+    | where not(operation_Name has "admin")
+    | where success == false
+  query_template_args:
+  - core_app_insights
+  trigger:
+    operator: GreaterThanOrEqual
+    threshold: 100
+  email_subject: '[PARI][KEYCLOAK][MEDIUM] Keycloak Catch-All ''merchant-operator''
+    Realm Alert (Failures)'

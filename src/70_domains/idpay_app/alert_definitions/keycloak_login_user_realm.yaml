@@ -1,0 +1,19 @@
+alerts:
+- key: keycloak_login_user_realm_alert
+  name: keycloak-login-user-realm-alert
+  description: 'Keycloak (/login ''user'' realm): Total failure count exceeded (>
+    5 in 5m)'
+  data_source: core_app_insights
+  query_template: |-
+    requests
+    | where appName == "%s"
+    | where tostring(customDimensions.["kc.realmName"]) in ("user")
+    | where not(operation_Name has "admin")
+    | where name == "GET /realms/{realm}/broker/{provider_alias}/login"
+    | where success == false
+  query_template_args:
+  - core_app_insights
+  trigger:
+    operator: GreaterThanOrEqual
+    threshold: 5
+  email_subject: '[PARI][KEYCLOAK][HIGH] Keycloak /login ''user'' Realm Alert (Failures)'
