@@ -48,11 +48,11 @@ externalDatabase:
 extraEnvVars:
   - name: KC_DB_URL_PROPERTIES
     value: "sslmode=require"
-  - name: KEYCLOAK_HOSTNAME
-    value: ${keycloak_external_hostname}
-  - name: KEYCLOAK_HOSTNAME_BACKCHANNEL_DYNAMIC
+  - name: KC_HOSTNAME
+    value: "https://${keycloak_ingress_hostname}"
+  - name: KC_HOSTNAME_BACKCHANNEL_DYNAMIC
     value: "true"
-  - name: KEYCLOAK_HOSTNAME_ADMIN
+  - name: KC_HOSTNAME_ADMIN
     value: "https://${keycloak_ingress_hostname}"
   - name: KC_METRICS_ENABLED
     value: "true"

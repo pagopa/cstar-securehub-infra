@@ -17,6 +17,10 @@ resource "keycloak_realm" "merchant_operator" {
 
   email_theme = "pagopa"
 
+  attributes = {
+    frontendUrl = local.keycloak_external_hostname
+  }
+
   internationalization {
     supported_locales = [
       "it"
@@ -292,6 +296,10 @@ resource "keycloak_realm" "user" {
   realm        = "user"
   enabled      = true
   display_name = "user"
+
+  attributes = {
+    frontendUrl = local.keycloak_external_hostname
+  }
 }
 
 resource "keycloak_openid_client" "user_frontend" {
