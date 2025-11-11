@@ -1,7 +1,3 @@
-# =============================================================
-# Alert API EIE
-# =============================================================
-
 locals {
   # 📣 Notification action groups
   alert_action_group = compact([
@@ -18,8 +14,13 @@ locals {
     data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
   }
 
-  # 🧾 Register area alerts
-  alerts_register = {
+  # =============================================================
+  # Alerts API EIE
+  # =============================================================
+
+  alerts_eie = {
+
+    # Portal Consent – post (5xx, 401, 429 errors over 5 minutes)
     portal_consent_save_5m_rules = {
       name        = "portal-consent-save-5xx-401-429-alert"
       description = "Alert on POST /idpay-itn/register/consent errors (5xx > 5/5m; 401/429 > 5/5m)"
@@ -35,6 +36,7 @@ locals {
       email_subject = "[PARI] Portal Consent – save API alert (5xx/401/429)"
     }
 
+    # Portal Consent – post (400 errors over 10 minutes)
     portal_consent_save_10m_rule = {
       name        = "portal-consent-save-400-alert"
       description = "Alert on POST /idpay-itn/register/consent errors (400 > 50/10m)"
@@ -52,6 +54,7 @@ locals {
       email_subject = "[PARI] Portal Consent – save API alert (400)"
     }
 
+    # Portal Consent – get (5xx, 401, 429 errors over 5 minutes)
     pari_portal_consent_get_5m_rules_alert = {
       name        = "pari-portal-consent-get-5xx-401-429-alert"
       description = "Alert on GET /idpay-itn/register/consent errors (5xx > 5/5m; 401/429 > 5/5m)"
@@ -67,6 +70,7 @@ locals {
       email_subject = "[PARI] Portal Consent GET /consent alert (5xx/401/429)"
     }
 
+    # Portal Consent – get (400 errors over 10 minutes)
     pari_portal_consent_get_10m_rule_alert = {
       name        = "pari-portal-consent-get-400-alert"
       description = "Alert on GET /idpay-itn/register/consent errors (400 > 50/10m)"
@@ -84,6 +88,7 @@ locals {
       email_subject = "[PARI] Portal Consent GET /consent alert (400)"
     }
 
+    # Product files – upload (5xx, 401, 429 errors over 5 minutes)
     pari_product_files_upload_5m_rules_alert = {
       name        = "pari-product-files-upload-5xx-401-429-alert"
       description = "Product files upload API: 5xx/401/429 error threshold exceeded (> 5/5m)"
@@ -100,6 +105,7 @@ locals {
       email_subject = "[PARI] Product files – upload API alert (5xx/401/429)"
     }
 
+    # Product files – upload (400 errors over 10 minutes)
     pari_product_files_upload_10m_rule_alert = {
       name        = "pari-product-files-upload-400-alert"
       description = "Product files upload API: 400 error threshold exceeded (> 50/10m)"
@@ -118,6 +124,7 @@ locals {
       email_subject = "[PARI] Product files – upload API alert (400)"
     }
 
+    # Product files – verify
     pari_product_files_verify_alert = {
       name        = "pari-product-files-verify-alert"
       description = "Product files verify API: error threshold exceeded (5xx > 3/5m)"
@@ -134,6 +141,7 @@ locals {
       email_subject = "[PARI] Product files verify alert"
     }
 
+    # Product files – list
     pari_product_files_list_alert = {
       name        = "pari-product-files-list-alert"
       description = "Product files list API: 5xx error count exceeded (> 5 in 5m)"
@@ -150,6 +158,7 @@ locals {
       email_subject = "[PARI] Product files – list API alert (5xx)"
     }
 
+    # Products – update status
     pari_products_update_status_alert = {
       name        = "pari-products-update-status-alert"
       description = "Products update status API: error threshold exceeded (5xx > 3/5m per endpoint)"
@@ -172,6 +181,7 @@ locals {
       email_subject = "[PARI] Products update status alert"
     }
 
+    # GET products - 5xx Error Count
     pari_get_products_5xx_alert = {
       name        = "pari-get-products-5xx-alert"
       description = "GET /products API: 5xx error count exceeded (> 5 in 5m)"
@@ -188,6 +198,7 @@ locals {
       email_subject = "[PARI][CRITICAL] GET /products alert: High 5xx errors"
     }
 
+    # GET products - 400 Error Count
     pari_get_products_400_alert = {
       name        = "pari-get-products-400-alert"
       description = "GET /products API: 400 error count exceeded (> 50 in 10m)"
@@ -205,6 +216,7 @@ locals {
       email_subject = "[PARI][CRITICAL] GET /products alert: High 400 errors"
     }
 
+    # GET products - Availability
     pari_get_products_availability_alert = {
       name        = "pari-get-products-availability-alert"
       description = "GET /products API: Availability dropped below 99% in the last 10 minutes"
@@ -224,6 +236,7 @@ locals {
       email_subject = "[PARI][CRITICAL] GET /products alert: Availability is below 99%"
     }
 
+    # User Permissions - 5xx, 401, 429 errors over 5 minutes
     pari_user_permissions_5m_rules_alert = {
       name        = "pari-user-permissions-5m-rules-alert"
       description = "User Permissions API: 5xx > 5/5m; 401/429 > 5/5m"
@@ -239,6 +252,7 @@ locals {
       email_subject = "[PARI][HIGH] User Permissions alert (5xx or 401/429)"
     }
 
+    # User Permissions - 400 errors over 10 minutes
     pari_user_permissions_10m_rule_alert = {
       name        = "pari-user-permissions-400-alert"
       description = "User Permissions API: 400 > 50/10m"
@@ -255,6 +269,7 @@ locals {
       email_subject = "[PARI][HIGH] User Permissions alert (400)"
     }
 
+    # Error report download
     pari_error_report_download_alert = {
       name        = "pari-error-report-download-alert"
       description = "Error report download API: 5xx error count exceeded (> 5 in 5m)"
@@ -271,6 +286,7 @@ locals {
       email_subject = "[PARI] Error report download API alert (5xx)"
     }
 
+    # Batch list
     pari_batch_list_alert = {
       name        = "pari-batch-list-alert"
       description = "Batch list API: 5xx error count exceeded (> 5 in 5m)"
@@ -287,6 +303,7 @@ locals {
       email_subject = "[PARI] Batch list API alert (5xx)"
     }
 
+    # Institution by ID
     pari_institution_by_id_alert = {
       name        = "pari-institution-by-id-alert"
       description = "Institution by ID API: 5xx error count exceeded (> 5 in 5m)"
@@ -303,6 +320,7 @@ locals {
       email_subject = "[PARI] Institution by ID API alert (5xx)"
     }
 
+    # Institutions list
     pari_institutions_list_alert = {
       name        = "pari-institutions-list-alert"
       description = "Institutions list API: 5xx error count exceeded (> 5 in 5m)"
@@ -318,10 +336,8 @@ locals {
       }
       email_subject = "[PARI] Institutions list API alert (5xx)"
     }
-  }
 
-  # 🧰 Misc alerts and dependencies
-  alerts_misc = {
+    # Internal dependency – E-mail service
     pari_email_dependency_alert = {
       name        = "pari-email-dependency-alert"
       description = "Internal email microservice: error count exceeded threshold (> 10 in 5m)"
@@ -339,6 +355,7 @@ locals {
       email_subject = "[PARI] Internal Email microservice dependency alert"
     }
 
+    # External dependency  – EPREL
     pari_eprel_dependency_alert = {
       name        = "pari-eprel-dependency-alert"
       description = "EPREL dependency: error count exceeded threshold (> 10 in 5m)"
@@ -356,8 +373,13 @@ locals {
     }
   }
 
-  # 🛒 Merchant Operation alerts
-  alerts_merchant_op = {
+  # =============================================================
+  # Alerts API ESE
+  # =============================================================
+
+  alerts_ese = {
+
+    # Capture the transaction - 5xx Error Count
     capture_transaction_5xx_alert = {
       name        = "capture-transaction-5xx-alert"
       description = "API Capture Transaction: 5xx error count exceeded (> 2 in 5m)"
@@ -373,6 +395,7 @@ locals {
       email_subject = "[PARI][ESE][HIGH] Capture Transaction API Alert (5xx)"
     }
 
+    # Capture the transaction - 401/404/429 Error Count
     capture_transaction_4xx_alert = {
       name        = "capture-transaction-4xx-auth-alert"
       description = "API Capture Transaction: 401/404/429 error count exceeded (> 20 in 5m)"
@@ -388,6 +411,7 @@ locals {
       email_subject = "[PARI][ESE][HIGH] Capture Transaction API Alert (4xx)"
     }
 
+    # Preview Payment - 5xx Error Count
     preview_payment_5xx_alert = {
       name        = "preview-payment-5xx-alert"
       description = "API Preview Payment: 5xx error count exceeded (> 2 in 5m)"
@@ -403,6 +427,7 @@ locals {
       email_subject = "[PARI][ESE][HIGH] Preview Payment API Alert (5xx)"
     }
 
+    # Preview Payment - 401/429 Error Count
     preview_payment_4xx_alert = {
       name        = "preview-payment-4xx-auth-alert"
       description = "API Preview Payment: 401/429 error count exceeded (> 20 in 5m)"
@@ -418,6 +443,7 @@ locals {
       email_subject = "[PARI][ESE][HIGH] Preview Payment API Alert (4xx)"
     }
 
+    # Authorize payment - 5xx Error Count
     authorize_payment_5xx_alert = {
       name        = "authorize-payment-5xx-alert"
       description = "API Authorize Payment: 5xx error count exceeded (> 2 in 5m)"
@@ -433,6 +459,7 @@ locals {
       email_subject = "[PARI][ESE][HIGH] Authorize Payment API Alert (5xx)"
     }
 
+    # Authorize payment - 4xx Error Count
     authorize_payment_4xx_alert = {
       name        = "authorize-payment-4xx-auth-alert"
       description = "API Authorize Payment: 401/403/404/429 error count exceeded (> 20 in 5m)"
@@ -448,6 +475,7 @@ locals {
       email_subject = "[PARI][ESE][HIGH] Authorize Payment API Alert (4xx)"
     }
 
+    # POS In Progress Transactions List - 5xx Error Count
     pos_transactions_list_5xx_alert = {
       name        = "pos-transactions-inprogress-list-5xx-alert"
       description = "API POS In Progress Transactions List: 5xx error count exceeded (> 2 in 5m)"
@@ -463,6 +491,7 @@ locals {
       email_subject = "[PARI][ESE][HIGH] POS In Progress Transactions List API Alert (5xx)"
     }
 
+    # POS In Progress Transactions List - 4xx Error Count
     pos_transactions_list_4xx_alert = {
       name        = "pos-transactions-inprogress-list-4xx-alert"
       description = "API POS In Progress Transactions List: 401/404/429 error count exceeded (> 5 in 5m)"
@@ -478,6 +507,7 @@ locals {
       email_subject = "[PARI][ESE][HIGH] POS In Progress Transactions List API Alert (4xx)"
     }
 
+    # POS Processed Transactions List - 5xx Error Count
     pos_transactions_processed_5xx_alert = {
       name        = "pos-transactions-processed-5xx-alert"
       description = "API POS Processed Transactions List: 5xx error count exceeded (> 2 in 5m)"
@@ -493,6 +523,7 @@ locals {
       email_subject = "[PARI][ESE][HIGH] POS Processed Transactions List API Alert (5xx)"
     }
 
+    # POS Processed Transactions List - 4xx Error Count
     pos_transactions_processed_4xx_alert = {
       name        = "pos-transactions-processed-4xx-alert"
       description = "API POS Processed Transactions List: 401/404/429 error count exceeded (> 5 in 5m)"
@@ -508,6 +539,7 @@ locals {
       email_subject = "[PARI][ESE][HIGH] POS Processed Transactions List API Alert (4xx)"
     }
 
+    # Delete Transaction - 5xx Error Count
     delete_transaction_5xx_alert = {
       name        = "delete-transaction-5xx-alert"
       description = "API Delete Transaction: 5xx error count exceeded (> 2 in 5m)"
@@ -524,6 +556,7 @@ locals {
       email_subject = "[PARI][ESE][LOW] Delete Transaction API Alert (5xx)"
     }
 
+    # Delete Transaction - 4xx Error Count
     delete_transaction_4xx_alert = {
       name        = "delete-transaction-4xx-alert"
       description = "API Delete Transaction: 401/403/404/429 error count exceeded (> 5 in 5m)"
@@ -540,6 +573,7 @@ locals {
       email_subject = "[PARI][ESE][LOW] Delete Transaction API Alert (4xx)"
     }
 
+    # Reversal Transaction - 5xx Error Count
     reversal_transaction_5xx_alert = {
       name        = "reversal-transaction-5xx-alert"
       description = "API Reversal Transaction: 5xx error count exceeded (> 2 in 5m)"
@@ -555,6 +589,7 @@ locals {
       email_subject = "[PARI][ESE][HIGH] Reversal Transaction API Alert (5xx)"
     }
 
+    # Reward Transaction - 5xx Error Count
     reward_transaction_5xx_alert = {
       name        = "reward-transaction-5xx-alert"
       description = "API Reward Transaction: 5xx error count exceeded (> 2 in 5m)"
@@ -570,6 +605,7 @@ locals {
       email_subject = "[PARI][ESE][HIGH] Reward Transaction API Alert (5xx)"
     }
 
+    # Products List - 5xx Error Count
     products_list_5xx_alert = {
       name        = "products-list-5xx-alert"
       description = "API Products List: 5xx error count exceeded (> 2 in 5m)"
@@ -585,6 +621,7 @@ locals {
       email_subject = "[PARI][ESE][HIGH] Products List API Alert (5xx)"
     }
 
+    # Products List - 4xx Error Count
     products_list_4xx_alert = {
       name        = "products-list-4xx-alert"
       description = "API Products List: 401/404/429 error count exceeded (> 15 in 5m)"
@@ -599,10 +636,10 @@ locals {
       }
       email_subject = "[PARI][ESE][HIGH] Products List API Alert (4xx)"
     }
-  }
 
-  # 🏬 Merchant area alerts
-  alerts_merchant = {
+    # Merchant
+
+    # Download invoice file - 5xx Error Count
     download_invoice_5xx_alert = {
       name        = "download-invoice-file-5xx-alert"
       description = "API Download Invoice File: 5xx error count exceeded (> 2 in 5m)"
@@ -619,6 +656,7 @@ locals {
       email_subject = "[PARI][ESE][LOW] Download Invoice File API Alert (5xx)"
     }
 
+    # Download invoice file - 4xx Error Count
     download_invoice_4xx_alert = {
       name        = "download-invoice-file-4xx-alert"
       description = "API Download Invoice File: 400/401/429 error count exceeded (> 1 in 5m)"
@@ -635,6 +673,7 @@ locals {
       email_subject = "[PARI][ESE][LOW] Download Invoice File API Alert (4xx)"
     }
 
+    # Retrieve a point of sale - 5xx Error Count
     retrieve_pos_5xx_alert = {
       name        = "retrieve-point-of-sale-5xx-alert"
       description = "API Retrieve a point of sale: 5xx error count exceeded (> 2 in 5m)"
@@ -651,6 +690,7 @@ locals {
       email_subject = "[PARI][ESE][LOW] Retrieve a point of sale API Alert (5xx)"
     }
 
+    # Retrieve a point of sale - 4xx Error Count
     retrieve_pos_4xx_alert = {
       name        = "retrieve-point-of-sale-4xx-alert"
       description = "API Retrieve a point of sale: 401/404/429 error count exceeded (> 3 in 5m)"
@@ -668,8 +708,13 @@ locals {
     }
   }
 
-  # 🧑‍💼 Onboarding alerts
-  alerts_onboarding = {
+  # =============================================================
+  # Alerts API UPBE
+  # =============================================================
+
+  alerts_upbe = {
+
+    # Get Initiative ID (Onboarding Service) - 5xx Error Count
     get_initiative_id_5xx_alert = {
       name        = "get-initiative-id-5xx-alert"
       description = "API Get Initiative ID: 5xx error count exceeded (> 2 in 5m)"
@@ -685,6 +730,7 @@ locals {
       email_subject = "[PARI][UPBE][HIGH] Get Initiative ID API Alert (5xx)"
     }
 
+    # Get Initiative ID (Onboarding Service) - 400 Error Count
     get_initiative_id_400_alert = {
       name        = "get-initiative-id-400-alert"
       description = "API Get Initiative ID: 400 error count exceeded (> 50 in 10m)"
@@ -701,6 +747,7 @@ locals {
       email_subject = "[PARI][UPBE][HIGH] Get Initiative ID API Alert (400)"
     }
 
+    # Get Initiative ID (Onboarding Service) - 401/429 Error Count
     get_initiative_id_4xx_auth_alert = {
       name        = "get-initiative-id-4xx-auth-alert"
       description = "API Get Initiative ID: 401/429 error count exceeded (> 5 in 5m)"
@@ -716,6 +763,7 @@ locals {
       email_subject = "[PARI][UPBE][HIGH] Get Initiative ID API Alert (401/429)"
     }
 
+    # Get Initiative Detail (Onboarding Service) - 5xx Error Count
     get_initiative_detail_5xx_alert = {
       name        = "get-initiative-detail-5xx-alert"
       description = "API Get Initiative Detail: 5xx error count exceeded (> 2 in 5m)"
@@ -731,6 +779,7 @@ locals {
       email_subject = "[PARI][UPBE][HIGH] Get Initiative Detail API Alert (5xx)"
     }
 
+    # Get Initiative Detail (Onboarding Service) - 400 Error Count
     get_initiative_detail_400_alert = {
       name        = "get-initiative-detail-400-alert"
       description = "API Get Initiative Detail: 400 error count exceeded (> 50 in 10m)"
@@ -747,6 +796,7 @@ locals {
       email_subject = "[PARI][UPBE][HIGH] Get Initiative Detail API Alert (400)"
     }
 
+    # Get Initiative Detail (Onboarding Service) - 401/429 Error Count
     get_initiative_detail_4xx_auth_alert = {
       name        = "get-initiative-detail-4xx-auth-alert"
       description = "API Get Initiative Detail: 401/429 error count exceeded (> 5 in 5m)"
@@ -762,6 +812,7 @@ locals {
       email_subject = "[PARI][UPBE][HIGH] Get Initiative Detail API Alert (401/429)"
     }
 
+    # Save Onboarding - 5xx Error Count
     save_onboarding_5xx_alert = {
       name        = "save-onboarding-5xx-alert"
       description = "API Save Onboarding: 5xx error count exceeded (> 5 in 5m)"
@@ -777,6 +828,7 @@ locals {
       email_subject = "[PARI][UPBE][HIGH] Save Onboarding API Alert (5xx)"
     }
 
+    # Save Onboarding - 400 Error Count
     save_onboarding_400_alert = {
       name        = "save-onboarding-400-alert"
       description = "API Save Onboarding: 400 error count exceeded (> 50 in 10m)"
@@ -793,6 +845,7 @@ locals {
       email_subject = "[PARI][UPBE][HIGH] Save Onboarding API Alert (400)"
     }
 
+    # Save Onboarding - 401/429 Error Count
     save_onboarding_4xx_auth_alert = {
       name        = "save-onboarding-4xx-auth-alert"
       description = "API Save Onboarding: 401/429 error count exceeded (> 5 in 5m)"
@@ -808,6 +861,7 @@ locals {
       email_subject = "[PARI][UPBE][HIGH] Save Onboarding API Alert (401/429)"
     }
 
+    # Onboarding Status - 5xx Error Count
     onboarding_status_5xx_alert = {
       name        = "onboarding-status-5xx-alert"
       description = "API Onboarding Status: 5xx error count exceeded (> 5 in 5m)"
@@ -823,6 +877,7 @@ locals {
       email_subject = "[PARI][UPBE][HIGH] Onboarding Status API Alert (5xx)"
     }
 
+    # Onboarding Status - 401/429 Error Count
     onboarding_status_4xx_auth_alert = {
       name        = "onboarding-status-4xx-auth-alert"
       description = "API Onboarding Status: 401/429 error count exceeded (> 5 in 5m)"
@@ -838,6 +893,7 @@ locals {
       email_subject = "[PARI][UPBE][HIGH] Onboarding Status API Alert (401/429)"
     }
 
+    # Onboarding Initiative User Status - 5xx Error Count
     onboarding_initiative_user_status_5xx_alert = {
       name        = "onboarding-initiative-user-status-5xx-alert"
       description = "API Onboarding Initiative User Status: 5xx error count exceeded (> 2 in 5m)"
@@ -853,6 +909,7 @@ locals {
       email_subject = "[PARI][UPBE][HIGH] Onboarding Initiative User Status API Alert (5xx)"
     }
 
+    # Onboarding Initiative User Status - 400 Error Count
     onboarding_initiative_user_status_400_alert = {
       name        = "onboarding-initiative-user-status-400-alert"
       description = "API Onboarding Initiative User Status: 400 error count exceeded (> 50 in 10m)"
@@ -869,6 +926,7 @@ locals {
       email_subject = "[PARI][UPBE][HIGH] Onboarding Initiative User Status API Alert (400)"
     }
 
+    # Onboarding Initiative User Status - 401/429 Error Count
     onboarding_initiative_user_status_4xx_auth_alert = {
       name        = "onboarding-initiative-user-status-4xx-auth-alert"
       description = "API Onboarding Initiative User Status: 401/429 error count exceeded (> 5 in 5m)"
@@ -883,10 +941,8 @@ locals {
       }
       email_subject = "[PARI][UPBE][HIGH] Onboarding Initiative User Status API Alert (401/429)"
     }
-  }
 
-  # 🕒 Timeline alerts
-  alerts_timeline = {
+    # Get Timeline - 5xx Error Count
     get_timeline_5xx_alert = {
       name        = "get-timeline-5xx-alert"
       description = "API Get Timeline: 5xx error count exceeded (> 3 in 5m)"
@@ -902,10 +958,9 @@ locals {
       }
       email_subject = "[PARI][UPBE][MEDIUM] Get Timeline API Alert (5xx)"
     }
-  }
+    # Wallet
 
-  # 👛 Wallet alerts
-  alerts_wallet = {
+    # Get Wallet - 5xx Error Count
     get_wallet_5xx_alert = {
       name        = "get-wallet-5xx-alert"
       description = "API Get Wallet: 5xx error count exceeded (> 3 in 5m)"
@@ -922,6 +977,7 @@ locals {
       email_subject = "[PARI][UPBE][MEDIUM] Get Wallet API Alert (5xx)"
     }
 
+    # Get Initiative Beneficiary Detail - 5xx Error Count
     get_initiative_beneficiary_detail_5xx_alert = {
       name        = "get-initiative-beneficiary-detail-5xx-alert"
       description = "API Get Initiative Beneficiary Detail: 5xx error count exceeded (> 5 in 5m)"
@@ -938,6 +994,7 @@ locals {
       email_subject = "[PARI][UPBE][MEDIUM] Get Initiative Beneficiary Detail API Alert (5xx)"
     }
 
+    # Get Initiative Beneficiary Detail - 400 Error Count
     get_initiative_beneficiary_detail_400_alert = {
       name        = "get-initiative-beneficiary-detail-400-alert"
       description = "API Get Initiative Beneficiary Detail: 400 error count exceeded (> 50 in 10m)"
@@ -955,6 +1012,7 @@ locals {
       email_subject = "[PARI][UPBE][MEDIUM] Get Initiative Beneficiary Detail API Alert (400)"
     }
 
+    # Get Initiative Beneficiary Detail - 401/429 Error Count
     get_initiative_beneficiary_detail_4xx_auth_alert = {
       name        = "get-initiative-beneficiary-detail-4xx-auth-alert"
       description = "API Get Initiative Beneficiary Detail: 401/429 error count exceeded (> 5 in 5m)"
@@ -971,6 +1029,7 @@ locals {
       email_subject = "[PARI][UPBE][MEDIUM] Get Initiative Beneficiary Detail API Alert (401/429)"
     }
 
+    # Get Wallet Detail - 5xx Error Count
     get_wallet_detail_5xx_alert = {
       name        = "get-wallet-detail-5xx-alert"
       description = "API Get Wallet Detail: 5xx error count exceeded (> 5 in 5m)"
@@ -986,6 +1045,7 @@ locals {
       email_subject = "[PARI][UPBE][HIGH] Get Wallet Detail API Alert (5xx)"
     }
 
+    # Get Wallet Detail - 400 Error Count
     get_wallet_detail_400_alert = {
       name        = "get-wallet-detail-400-alert"
       description = "API Get Wallet Detail: 400 error count exceeded (> 50 in 10m)"
@@ -1002,6 +1062,7 @@ locals {
       email_subject = "[PARI][UPBE][HIGH] Get Wallet Detail API Alert (400)"
     }
 
+    # Get Wallet Detail - 401/429 Error Count
     get_wallet_detail_4xx_auth_alert = {
       name        = "get-wallet-detail-4xx-auth-alert"
       description = "API Get Wallet Detail: 401/429 error count exceeded (> 5 in 5m)"
@@ -1016,10 +1077,9 @@ locals {
       }
       email_subject = "[PARI][UPBE][HIGH] Get Wallet Detail API Alert (401/429)"
     }
-  }
+    # Payment
 
-  # 💶 Payment alerts
-  alerts_payment = {
+    # Create Barcode Transaction - 5xx Error Count
     create_barcode_transaction_5xx_alert = {
       name        = "create-barcode-transaction-5xx-alert"
       description = "API Create Barcode Transaction: 5xx error count exceeded (> 5 in 5m)"
@@ -1035,6 +1095,7 @@ locals {
       email_subject = "[PARI][UPBE][HIGH] Create Barcode Transaction API Alert (5xx)"
     }
 
+    # Create Barcode Transaction - 400 Error Count
     create_barcode_transaction_400_alert = {
       name        = "create-barcode-transaction-400-alert"
       description = "API Create Barcode Transaction: 400 error count exceeded (> 50 in 10m)"
@@ -1051,6 +1112,7 @@ locals {
       email_subject = "[PARI][UPBE][HIGH] Create Barcode Transaction API Alert (400)"
     }
 
+    # Create Barcode Transaction - 401/429 Error Count
     create_barcode_transaction_4xx_auth_alert = {
       name        = "create-barcode-transaction-4xx-auth-alert"
       description = "API Create Barcode Transaction: 401/429 error count exceeded (> 5 in 5m)"
@@ -1066,6 +1128,7 @@ locals {
       email_subject = "[PARI][UPBE][HIGH] Create Barcode Transaction API Alert (401/429)"
     }
 
+    # Retrieve Active Barcode Transaction - 5xx Error Count
     retrieve_active_barcode_transaction_5xx_alert = {
       name        = "retrieve-active-barcode-transaction-5xx-alert"
       description = "API Retrieve Active Barcode Transaction: 5xx error count exceeded (> 5 in 5m)"
@@ -1081,6 +1144,7 @@ locals {
       email_subject = "[PARI][UPBE][HIGH] Retrieve Active Barcode Transaction API Alert (5xx)"
     }
 
+    # Retrieve Active Barcode Transaction - 400 Error Count
     retrieve_active_barcode_transaction_400_alert = {
       name        = "retrieve-active-barcode-transaction-400-alert"
       description = "API Retrieve Active Barcode Transaction: 400 error count exceeded (> 50 in 10m)"
@@ -1097,6 +1161,7 @@ locals {
       email_subject = "[PARI][UPBE][HIGH] Retrieve Active Barcode Transaction API Alert (400)"
     }
 
+    # Retrieve Active Barcode Transaction - 401/429 Error Count
     retrieve_active_barcode_transaction_4xx_auth_alert = {
       name        = "retrieve-active-barcode-transaction-4xx-auth-alert"
       description = "API Retrieve Active Barcode Transaction: 401/429 error count exceeded (> 5 in 5m)"
@@ -1111,10 +1176,10 @@ locals {
       }
       email_subject = "[PARI][UPBE][HIGH] Retrieve Active Barcode Transaction API Alert (401/429)"
     }
-  }
 
-  # 🌐 Web alerts
-  alerts_web = {
+    # 🌐 Web
+
+    # Get Transaction PDF - 5xx Error Count
     get_transaction_pdf_5xx_alert = {
       name        = "get-transaction-pdf-5xx-alert"
       description = "API Get Transaction PDF: 5xx error count exceeded (> 5 in 5m)"
@@ -1130,6 +1195,7 @@ locals {
       email_subject = "[PARI][UPBE][HIGH] Get Transaction PDF API Alert (5xx)"
     }
 
+    # Get Transaction PDF - 400 Error Count
     get_transaction_pdf_400_alert = {
       name        = "get-transaction-pdf-400-alert"
       description = "API Get Transaction PDF: 400 error count exceeded (> 50 in 10m)"
@@ -1146,6 +1212,7 @@ locals {
       email_subject = "[PARI][UPBE][HIGH] Get Transaction PDF API Alert (400)"
     }
 
+    # Get Transaction PDF - 401/429 Error Count
     get_transaction_pdf_4xx_auth_alert = {
       name        = "get-transaction-pdf-4xx-auth-alert"
       description = "API Get Transaction PDF: 401/429 error count exceeded (> 5 in 5m)"
@@ -1162,8 +1229,13 @@ locals {
     }
   }
 
-  # 🧩 General Keycloak alerts
+  # =============================================================
+  # 🧩 Keycloak alerts
+  # =============================================================
+
   alerts_keycloak = {
+
+    # Keycloak Catch-All per realm 'user'
     keycloak_catchall_user_realm_alert = {
       name        = "keycloak-catchall-user-realm-alert"
       description = "Keycloak (Catch-All 'user' realm): Total failure count exceeded (> 100 in 5m)"
@@ -1189,6 +1261,7 @@ locals {
       email_subject = "[PARI][KEYCLOAK][MEDIUM] Keycloak Catch-All 'user' Realm Alert (Failures)"
     }
 
+    # Keycloak Catch-All per realm 'merchant-operator'
     keycloak_catchall_merchant_operator_realm_alert = {
       name        = "keycloak-catchall-merchant-operator-realm-alert"
       description = "Keycloak (Catch-All 'merchant-operator' realm): Total failure count exceeded (> 100 in 5m)"
@@ -1213,10 +1286,8 @@ locals {
 
       email_subject = "[PARI][KEYCLOAK][MEDIUM] Keycloak Catch-All 'merchant-operator' Realm Alert (Failures)"
     }
-  }
 
-  # 🔐 Token alerts for user realm
-  alerts_keycloak_token_user_realm = {
+    # Keycloak /token per realm 'user'
     keycloak_token_user_realm_alert = {
       name        = "keycloak-token-user-realm-alert"
       description = "Keycloak (/token 'user' realm): Total failure count exceeded (> 5 in 5m)"
@@ -1241,10 +1312,8 @@ locals {
 
       email_subject = "[PARI][KEYCLOAK][HIGH] Keycloak /token 'user' Realm Alert (Failures)"
     }
-  }
 
-  # 🔐 Token alerts for merchant-operator realm
-  alerts_keycloak_token_merchant_operator_realm = {
+    # Keycloak /token per realm 'merchant-operator'
     keycloak_token_merchant_operator_realm_alert = {
       name        = "keycloak-token-merchant-operator-realm-alert"
       description = "Keycloak (/token 'merchant-operator' realm): Total failure count exceeded (> 5 in 5m)"
@@ -1269,10 +1338,8 @@ locals {
 
       email_subject = "[PARI][KEYCLOAK][HIGH] Keycloak /token 'merchant-operator' Realm Alert (Failures)"
     }
-  }
 
-  # 🔑 Login alerts for user realm
-  alerts_keycloak_login_user_realm = {
+    # Keycloak /login per realm 'user'
     keycloak_login_user_realm_alert = {
       name        = "keycloak-login-user-realm-alert"
       description = "Keycloak (/login 'user' realm): Total failure count exceeded (> 5 in 5m)"
@@ -1297,10 +1364,8 @@ locals {
 
       email_subject = "[PARI][KEYCLOAK][HIGH] Keycloak /login 'user' Realm Alert (Failures)"
     }
-  }
 
-  # 📡 Endpoint alerts for user realm
-  alerts_keycloak_endpoint_user_realm = {
+    # Keycloak /endpoint per realm 'user'
     keycloak_endpoint_user_realm_alert = {
       name        = "keycloak-endpoint_user-realm-alert"
       description = "Keycloak (/endpoint 'user' realm): Total failure count exceeded (> 5 in 5m)"
@@ -1329,20 +1394,10 @@ locals {
 
   # 🧱 Collection of alert groups
   alerts_groups = [
-    local.alerts_register,
-    local.alerts_misc,
-    local.alerts_merchant_op,
-    local.alerts_merchant,
-    local.alerts_onboarding,
-    local.alerts_timeline,
-    local.alerts_wallet,
-    local.alerts_payment,
-    local.alerts_web,
-    local.alerts_keycloak,
-    local.alerts_keycloak_token_user_realm,
-    local.alerts_keycloak_token_merchant_operator_realm,
-    local.alerts_keycloak_login_user_realm,
-    local.alerts_keycloak_endpoint_user_realm
+    local.alerts_eie,
+    local.alerts_ese,
+    local.alerts_upbe,
+    local.alerts_keycloak
   ]
 
   # ✅ Final alerts map ready for consumption: flattens every group, applies the base config and exposes a single map consumed by azurerm_monitor_scheduled_query_rules_alert

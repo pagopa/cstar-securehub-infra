@@ -1,8 +1,3 @@
-# =============================================================
-# Alert API EIE
-# =============================================================
-
-
 resource "azurerm_monitor_scheduled_query_rules_alert" "alerts" {
   for_each = contains(["u", "p"], var.env_short) ? local.final_alerts : tomap({})
 
