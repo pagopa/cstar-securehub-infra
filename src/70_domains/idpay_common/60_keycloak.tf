@@ -395,17 +395,19 @@ resource "keycloak_attribute_importer_identity_provider_mapper" "email_mapper" {
   }
 }
 
-resource "keycloak_attribute_importer_identity_provider_mapper" "fiscal_number_mapper" {
-  realm                   = keycloak_realm.user.id
-  name                    = "fiscal-number-mapper"
-  claim_name              = "fiscalNumber"
-  identity_provider_alias = keycloak_oidc_identity_provider.one_identity_provider.alias
-  user_attribute          = "fiscalNumber"
+resource "keycloak_custom_identity_provider_mapper" "strip_tinit_fiscalnumber" {
+  realm                    = keycloak_realm.user.id
+  name                     = "strip-tinit-fiscalnumber-mapper"
+  identity_provider_alias  = keycloak_oidc_identity_provider.one_identity_provider.alias
+  identity_provider_mapper = "oidc-strip-tinit-idp-attr-mapper"
 
   # extra_config with syncMode is required in Keycloak 10+
   extra_config = {
-    syncMode = "INHERIT"
+    syncMode       = "FORCE"
+    user_attribute = "fiscalNumber"
+    claim_name     = "fiscalNumber"
   }
+
 }
 
 resource "keycloak_attribute_importer_identity_provider_mapper" "date_of_birth_mapper" {
