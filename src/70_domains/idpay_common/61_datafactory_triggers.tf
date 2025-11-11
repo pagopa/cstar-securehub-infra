@@ -43,7 +43,7 @@ resource "azurerm_data_factory_trigger_schedule" "idpay_copy_rdb_products_to_csv
   interval        = 1
   frequency       = "Day"
 
-  # Execution at 00:00 (hour Europe/Rome)
+  # Execution at 00:00 (Europe/Rome time)
   start_time = "2025-10-27T02:00:00Z"
   time_zone  = "W. Europe Standard Time"
 
