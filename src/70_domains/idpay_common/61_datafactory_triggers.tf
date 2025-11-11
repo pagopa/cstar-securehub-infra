@@ -43,8 +43,8 @@ resource "azurerm_data_factory_trigger_schedule" "idpay_copy_rdb_products_to_csv
   interval        = 1
   frequency       = "Day"
 
-  # Esecuzione alle 02:00 (ora Europa/Roma)
-  start_time = "2025-10-27T02:00:00Z"
+  # Execution at 00:00 (Europe/Rome time)
+  start_time = "2025-10-27T00:00:00Z"
   time_zone  = "W. Europe Standard Time"
 
   pipeline {
@@ -61,7 +61,7 @@ resource "azurerm_data_factory_trigger_schedule" "idpay_copy_rdb_products_to_csv
   }
 
   schedule {
-    hours   = [2]
+    hours   = [0]
     minutes = [0]
   }
 
