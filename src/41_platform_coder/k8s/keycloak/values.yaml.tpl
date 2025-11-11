@@ -84,6 +84,9 @@ extraVolumes:
   - name: pagopa-theme
     configMap:
       name: keycloak-pagopa-theme
+  - name: keycloak-providers
+    configMap:
+      name: keycloak-providers
   - name: agent
     emptyDir: {}
 
