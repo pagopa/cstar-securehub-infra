@@ -17,6 +17,10 @@ resource "keycloak_realm" "merchant_operator" {
 
   email_theme = "pagopa"
 
+  attributes = {
+    frontendUrl = local.keycloak_external_hostname
+  }
+
   internationalization {
     supported_locales = [
       "it"
@@ -292,6 +296,10 @@ resource "keycloak_realm" "user" {
   realm        = "user"
   enabled      = true
   display_name = "user"
+
+  attributes = {
+    frontendUrl = local.keycloak_external_hostname
+  }
 }
 
 resource "keycloak_openid_client" "user_frontend" {
@@ -608,5 +616,34 @@ resource "keycloak_openid_client_default_scopes" "merchant_operator_perf_test_de
     "acr",
     keycloak_openid_client_scope.merchant_id_scope.name,
     keycloak_openid_client_scope.point_of_sale_id_scope.name
+  ]
+}
+
+resource "keycloak_openid_client" "users_operator_perf_test" {
+  realm_id = keycloak_realm.user.id
+  name     = "Performance Test Client"
+  enabled  = true
+
+  client_id                = "performance-test-client"
+  client_secret_wo         = random_password.keycloak_perf_test_client_secret.result
+  client_secret_wo_version = 3
+
+  access_type              = "CONFIDENTIAL"
+  service_accounts_enabled = true
+
+  depends_on = [random_password.keycloak_perf_test_client_secret]
+}
+
+resource "keycloak_openid_client_default_scopes" "users_operator_perf_test_defaults" {
+  realm_id  = keycloak_realm.user.id
+  client_id = keycloak_openid_client.users_operator_perf_test.id
+
+  default_scopes = [
+    "web-origins",
+    "roles",
+    "profile",
+    "email",
+    "basic",
+    "acr"
   ]
 }
