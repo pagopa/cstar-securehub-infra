@@ -1,0 +1,23 @@
+{
+  "name": "data_export_csv_file",
+  "properties": {
+    "linkedServiceName": {
+      "referenceName": "idpay-exports-blobfs-ls",
+      "type": "LinkedServiceReference"
+    },
+    "annotations": [],
+    "type": "Binary",
+    "typeProperties": {
+      "location": {
+        "type": "AzureBlobFSLocation",
+        "fileName": {
+          "value": "@concat('export_daily_', formatDateTime(utcNow(), 'yyyy-MM-dd'), '.csv')",
+          "type": "Expression"
+        },
+        "folderPath": "data",
+        "fileSystem": "export"
+      }
+    }
+  },
+  "type": "Microsoft.DataFactory/factories/datasets"
+}
