@@ -43,7 +43,7 @@
                             <input autocomplete="username" type="text" id="username" name="username" placeholder="Email" value="${(login.username!'')}" required>
                         </div>
                         <div class="form-group">
-                            <input autocomplete="password" type="password" id="password" name="password" placeholder="Password" required>
+                            <input type="password" id="password" name="password" placeholder="Password" required>
                         </div>
                     </div>
 
