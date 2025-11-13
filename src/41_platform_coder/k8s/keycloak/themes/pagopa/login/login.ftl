@@ -32,7 +32,7 @@
 
                 <form action="${url.loginAction}" method="post">
 
-                    <div class="login-card" aria-label="">
+                    <div class="login-card">
                         <#if message?has_content>
                             <div id="kc-error-message">
                                 <p>${message.summary}</p>
