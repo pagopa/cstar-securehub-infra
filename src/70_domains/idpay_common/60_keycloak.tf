@@ -411,9 +411,9 @@ resource "keycloak_custom_identity_provider_mapper" "strip_tinit_fiscalnumber" {
 
   # extra_config with syncMode is required in Keycloak 10+
   extra_config = {
-    syncMode       = "IMPORT"
-    user_attribute = "fiscalNumber"
-    claim_name     = "fiscalNumber"
+    syncMode      = "IMPORT"
+    UserAttribute = "fiscalNumber"
+    Claim         = "fiscalNumber"
   }
 
 }
