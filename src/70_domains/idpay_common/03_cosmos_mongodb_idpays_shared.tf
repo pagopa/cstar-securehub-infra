@@ -205,11 +205,11 @@ locals {
     },
     {
       name                = "transaction_in_progress"
-      shard_key           = "_id"
+      shard_key           = null
       default_ttl_seconds = null
       indexes = [
         { keys = ["_id"], unique = true },
-        { keys = ["trxCode"], unique = false },
+        { keys = ["trxCode"], unique = true },
         { keys = ["trxDate"], unique = false },
         { keys = ["trxChargeDate"], unique = false },
         { keys = ["updateDate"], unique = false },
@@ -514,7 +514,7 @@ module "cosmos_mongodb_collections" {
   cosmosdb_mongo_account_name  = module.cosmos_db_account.name
   cosmosdb_mongo_database_name = azurerm_cosmosdb_mongo_database.databases[each.value.database_name].name
 
-  shard_key           = each.value.shard_key
+  shard_key           = each.value.shard_key != null ? each.value.shard_key : null
   default_ttl_seconds = each.value.default_ttl_seconds
   indexes             = each.value.indexes
   throughput          = null
