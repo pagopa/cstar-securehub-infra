@@ -20,7 +20,7 @@
             "batchSize": 100,
             "filter": "{ \"status\": \"APPROVED\" }",
             "cursorMethods": {
-              "project": "{ \"_id\": 1, \"model\": 1, \"brand\": 1, \"eprelCode\": 1, \"countryOfProduction\": 1,\n  \"energyClass\": 1, \"capacity\": 1, \"productName\": 1, \"category\": 1, \"productGroup\": 1 }"
+              "project": "{ \"_id\": 1, \"model\": 1, \"brand\": 1, \"eprelCode\": 1, \"countryOfProduction\": 1, \"energyClass\": 1, \"capacity\": 1, \"productName\": 1, \"category\": 1, \"productGroup\": 1 }"
             }
           },
           "sink": {
@@ -38,6 +38,98 @@
           "enableStaging": false,
           "translator": {
             "type": "TabularTranslator",
+            "mappings": [
+              {
+                "source": {
+                  "path": "$['_id']"
+                },
+                "sink": {
+                  "name": "_id",
+                  "type": "String"
+                }
+              },
+              {
+                "source": {
+                  "path": "$['model']"
+                },
+                "sink": {
+                  "name": "model",
+                  "type": "String"
+                }
+              },
+              {
+                "source": {
+                  "path": "$['brand']"
+                },
+                "sink": {
+                  "name": "brand",
+                  "type": "String"
+                }
+              },
+              {
+                "source": {
+                  "path": "$['eprelCode']"
+                },
+                "sink": {
+                  "name": "eprelCode",
+                  "type": "String"
+                }
+              },
+              {
+                "source": {
+                  "path": "$['countryOfProduction']"
+                },
+                "sink": {
+                  "name": "countryOfProduction",
+                  "type": "String"
+                }
+              },
+              {
+                "source": {
+                  "path": "$['energyClass']"
+                },
+                "sink": {
+                  "name": "energyClass",
+                  "type": "String"
+                }
+              },
+              {
+                "source": {
+                  "path": "$['capacity']"
+                },
+                "sink": {
+                  "name": "capacity",
+                  "type": "String"
+                }
+              },
+              {
+                "source": {
+                  "path": "$['productName']"
+                },
+                "sink": {
+                  "name": "productName",
+                  "type": "String"
+                }
+              },
+              {
+                "source": {
+                  "path": "$['category']"
+                },
+                "sink": {
+                  "name": "category",
+                  "type": "String"
+                }
+              },
+              {
+                "source": {
+                  "path": "$['productGroup']"
+                },
+                "sink": {
+                  "name": "productGroup",
+                  "type": "String"
+                }
+              }
+            ],
             "mapComplexValuesToString": false
           }
         },
@@ -86,11 +178,52 @@
         }
       },
       {
+        "name": "Copy_To_Bonus",
+        "type": "Copy",
+        "dependsOn": [
+          {
+            "activity": "FlussoExportCSV",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.01:00:00",
+          "retry": 2,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "userProperties": [],
+        "typeProperties": {
+          "source": {
+            "type": "BinarySource"
+          },
+          "sink": {
+            "type": "BinarySink"
+          },
+          "enableStaging": false
+        },
+        "inputs": [
+          {
+            "referenceName": "data_export_csv_file",
+            "type": "DatasetReference"
+          }
+        ],
+        "outputs": [
+          {
+            "referenceName": "data_export_csv_file_bonus",
+            "type": "DatasetReference"
+          }
+        ]
+      },
+      {
         "name": "Generate_SAS",
         "type": "WebActivity",
         "dependsOn": [
           {
-            "activity": "FlussoExportCSV",
+            "activity": "Copy_To_Bonus",
             "dependencyConditions": [
               "Succeeded"
             ]
@@ -122,30 +255,22 @@
               "type": "Expression",
               "value": "@concat('/blob/', pipeline().parameters.exportAccountName, '/export/data/export_daily_', formatDateTime(utcNow(),'yyyy-MM-dd'), '.csv')"
             },
-            "signedExpiry": {
-              "type": "Expression",
-              "value": "@formatDateTime(addDays(utcNow(), 7), 'yyyy-MM-ddTHH:mm:ssZ')"
-            },
+            "signedResource": "b",
             "signedPermission": "r",
             "signedProtocol": "https",
-            "signedResource": "b",
             "signedStart": {
               "type": "Expression",
               "value": "@utcNow()"
+            },
+            "signedExpiry": {
+              "type": "Expression",
+              "value": "@formatDateTime(addDays(utcNow(), 7), 'yyyy-MM-ddTHH:mm:ssZ')"
             },
             "signedVersion": "2020-02-10"
           },
           "authentication": {
             "type": "MSI",
-            "resource": "https://management.azure.com/",
-            "password": {
-              "Type" : "",
-              "Values": null
-            },
-            "pfx": {
-              "Type" : "",
-              "Values": null
-            }
+            "resource": "https://management.azure.com/"
           }
         }
       },
@@ -180,15 +305,7 @@
           },
           "authentication": {
             "type": "MSI",
-            "resource": "https://vault.azure.net",
-            "password": {
-              "Type" : "",
-              "Values": null
-            },
-            "pfx": {
-              "Type" : "",
-              "Values": null
-            }
+            "resource": "https://vault.azure.net"
           }
         }
       },
@@ -223,15 +340,7 @@
           },
           "authentication": {
             "type": "MSI",
-            "resource": "https://vault.azure.net",
-            "password": {
-              "Type" : "",
-              "Values": null
-            },
-            "pfx": {
-              "Type" : "",
-              "Values": null
-            }
+            "resource": "https://vault.azure.net"
           }
         }
       },
@@ -325,7 +434,7 @@
       }
     },
     "annotations": [],
-    "lastPublishTime": "2025-11-10T14:23:04Z"
+    "lastPublishTime": "2025-11-12T16:12:33Z"
   },
   "type": "Microsoft.DataFactory/factories/pipelines"
 }
