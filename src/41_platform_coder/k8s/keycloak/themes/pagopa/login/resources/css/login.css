@@ -152,6 +152,11 @@ a:hover {
   margin-top: 24px;
   text-align: center;
 
+  a {
+    text-decoration: underline;
+    font-weight: 600;
+  }
+
   span {
     padding: 10px;
     font-size: 18px;
