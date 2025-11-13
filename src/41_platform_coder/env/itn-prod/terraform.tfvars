@@ -44,8 +44,8 @@ keycloak_configuration = {
 
 aks_user_node_pool_keycloak = {
   idh_resource_tier = "Standard_D8ds_v5_active"
-  node_count_min    = 3 #25
-  node_count_max    = 6 #25
+  node_count_min    = 20
+  node_count_max    = 20
   os_disk_size_gb   = 300
   os_disk_type      = "Managed"
 }
