@@ -32,7 +32,7 @@
 
                 <form action="${url.loginAction}" method="post">
 
-                    <div class="login-card">
+                    <div class="login-card" aria-label="">
                         <#if message?has_content>
                             <div id="kc-error-message">
                                 <p>${message.summary}</p>
@@ -40,7 +40,7 @@
                         </#if>
 
                         <div class="form-group">
-                            <input autocomplete="username" type="text" id="username" name="username" placeholder="Email" value="${(login.username!'')}" required>
+                            <input aria-label="Email" autocomplete="username" type="text" id="username" name="username" placeholder="Email" value="${(login.username!'')}" required>
                         </div>
                         <div class="form-group">
                             <input type="password" id="password" name="password" placeholder="Password" required>
