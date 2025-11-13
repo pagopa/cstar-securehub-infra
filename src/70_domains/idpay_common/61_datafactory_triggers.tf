@@ -61,7 +61,7 @@ resource "azurerm_data_factory_trigger_schedule" "idpay_copy_rdb_products_to_csv
   }
 
   schedule {
-    hours   = [0]
+    hours   = [1]
     minutes = [0]
   }
 
