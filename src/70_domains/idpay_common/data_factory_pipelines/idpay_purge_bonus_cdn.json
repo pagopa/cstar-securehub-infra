@@ -1,0 +1,46 @@
+{
+  "name": "idpay_purge_bonus_cdn",
+  "properties": {
+    "activities": [
+      {
+        "name": "Purge_Bonus_CDN",
+        "type": "WebActivity",
+        "dependsOn": [],
+        "policy": {
+          "timeout": "0.02:00:00",
+          "retry": 3,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": true,
+          "secureInput": true
+        },
+        "typeProperties": {
+          "method": "POST",
+          "headers": {
+            "Content-Type": "application/json"
+          },
+          "url": {
+            "type": "Expression",
+            "value": "@concat('https://management.azure.com', pipeline().parameters.cdnEndpointResourceId, '/purge?api-version=2024-02-01')"
+          },
+          "authentication": {
+            "type": "MSI",
+            "resource": "https://management.azure.com/"
+          },
+          "body": {
+            "contentPaths": [
+              "/lista-punti-vendita/*",
+              "/elenco-informatico-elettrodomestici/*"
+            ]
+          }
+        }
+      }
+    ],
+    "parameters": {
+      "cdnEndpointResourceId": {
+        "type": "String"
+      }
+    },
+    "annotations": []
+  },
+  "type": "Microsoft.DataFactory/factories/pipelines"
+}
