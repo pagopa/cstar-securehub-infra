@@ -37,7 +37,26 @@ locals {
   ]
 
   # Merge volume mount
-  keycloak_extra_volume_mounts = concat(local.fixed_volume_mounts, local.theme_volume_mounts)
+  keycloak_extra_volume_mounts = concat(local.fixed_volume_mounts, local.theme_volume_mounts, [local.provider_volume_mount])
+
+  # ConfigMap for JAR provider
+  keycloak_provider_jar_path = "${path.module}/k8s/keycloak/providers/keycloak-idp-strip-tinit-1.0.0.jar"
+  keycloak_provider_cm_name  = "keycloak-providers"
+  keycloak_provider_file     = basename(local.keycloak_provider_jar_path)
+  # Volume for providers
+  provider_volume = {
+    name = "keycloak-providers"
+    configMap = {
+      name = kubernetes_config_map.keycloak_providers.metadata[0].name
+    }
+  }
+  # Mount for single JAR with subPath in /opt/bitnami/keycloak/providers
+  provider_volume_mount = {
+    name      = "keycloak-providers"
+    mountPath = "/opt/bitnami/keycloak/providers/${local.keycloak_provider_file}"
+    subPath   = local.keycloak_provider_file
+    readOnly  = true
+  }
 
 }
 
@@ -147,6 +166,16 @@ resource "kubernetes_config_map" "keycloak_pagopa_theme" {
   binary_data = local.binary_files
 }
 
+resource "kubernetes_config_map" "keycloak_providers" {
+  metadata {
+    name      = local.keycloak_provider_cm_name
+    namespace = local.keycloak_namespace
+  }
+
+  binary_data = {
+    "${local.keycloak_provider_file}" = filebase64(local.keycloak_provider_jar_path)
+  }
+}
 
 resource "helm_release" "keycloak" {
   name      = "keycloak"
@@ -164,6 +193,9 @@ resource "helm_release" "keycloak" {
       image_registry                                  = var.keycloak_configuration.image_registry
       image_repository                                = var.keycloak_configuration.image_repository
       image_tag                                       = var.keycloak_configuration.image_tag
+      image_registry_config_cli                       = var.keycloak_configuration.image_registry_config_cli
+      image_repository_config_cli                     = var.keycloak_configuration.image_repository_config_cli
+      image_tag_config_cli                            = var.keycloak_configuration.image_tag_config_cli
       postgres_db_host                                = module.keycloak_pgflex.fqdn
       postgres_db_port                                = "5432"
       postgres_db_username                            = module.keycloak_pgflex.administrator_login

@@ -17,7 +17,8 @@ locals {
   key_vault_rg_name = "${local.project}-security-rg"
 
   # Storage Account
-  srtp_storage_account_name = "${local.project}-sa"
+  srtp_storage_account_name  = "${local.project}-sa"
+  srtp_storage_account_share = "${local.project}-share-sa"
 
   # APIM
   apim_rg_name = "cstar-${var.env_short}-api-rg"
@@ -39,6 +40,7 @@ locals {
   # Workload Identity
   secret_name_workload_identity_client_id            = "${var.domain}-${var.location_short}-workload-identity-client-id"
   secret_name_workload_identity_service_account_name = "${var.domain}-${var.location_short}-workload-identity-service-account-name"
+  secret_name_workload_identity                      = "${var.domain}-${var.location_short}-workload-identity"
 
   ### ARGOCD
   argocd_namespace    = "argocd"

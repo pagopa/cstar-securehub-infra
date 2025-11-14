@@ -17,6 +17,10 @@ resource "keycloak_realm" "merchant_operator" {
 
   email_theme = "pagopa"
 
+  attributes = {
+    frontendUrl = local.keycloak_external_hostname
+  }
+
   internationalization {
     supported_locales = [
       "it"
@@ -292,6 +296,10 @@ resource "keycloak_realm" "user" {
   realm        = "user"
   enabled      = true
   display_name = "user"
+
+  attributes = {
+    frontendUrl = local.keycloak_external_hostname
+  }
 }
 
 resource "keycloak_openid_client" "user_frontend" {
@@ -395,17 +403,19 @@ resource "keycloak_attribute_importer_identity_provider_mapper" "email_mapper" {
   }
 }
 
-resource "keycloak_attribute_importer_identity_provider_mapper" "fiscal_number_mapper" {
-  realm                   = keycloak_realm.user.id
-  name                    = "fiscal-number-mapper"
-  claim_name              = "fiscalNumber"
-  identity_provider_alias = keycloak_oidc_identity_provider.one_identity_provider.alias
-  user_attribute          = "fiscalNumber"
+resource "keycloak_custom_identity_provider_mapper" "strip_tinit_fiscalnumber" {
+  realm                    = keycloak_realm.user.id
+  name                     = "fiscal-number-mapper"
+  identity_provider_alias  = keycloak_oidc_identity_provider.one_identity_provider.alias
+  identity_provider_mapper = "oidc-strip-tinit-idp-attr-mapper"
 
   # extra_config with syncMode is required in Keycloak 10+
   extra_config = {
-    syncMode = "INHERIT"
+    "syncMode"       = "IMPORT"
+    "user.attribute" = "fiscalNumber"
+    "claim"          = "fiscalNumber"
   }
+
 }
 
 resource "keycloak_attribute_importer_identity_provider_mapper" "date_of_birth_mapper" {
@@ -505,26 +515,26 @@ resource "keycloak_realm_user_profile" "user_profile" {
 }
 
 # Client Scope dedicated per fiscalNumber
-resource "keycloak_openid_client_scope" "fiscal_number_scope" {
-  realm_id    = keycloak_realm.user.id
-  name        = "fiscal-number-scope"
-  description = "Scope to expose fiscalNumber claim"
-}
+#resource "keycloak_openid_client_scope" "fiscal_number_scope" {
+#  realm_id    = keycloak_realm.user.id
+#  name        = "fiscal-number-scope"
+#  description = "Scope to expose fiscalNumber claim"
+#}
 
 # Mapper per fiscalNumber into scope
-resource "keycloak_openid_user_attribute_protocol_mapper" "fiscal_number_mapper" {
-  realm_id            = keycloak_realm.user.id
-  client_scope_id     = keycloak_openid_client_scope.fiscal_number_scope.id
-  name                = "fiscalNumber"
-  user_attribute      = "fiscalNumber"
-  claim_name          = "fiscalNumber"
-  claim_value_type    = "String"
-  add_to_id_token     = true
-  add_to_access_token = true
-  add_to_userinfo     = true
-
-  depends_on = [keycloak_realm_user_profile.user_profile, keycloak_openid_client_scope.fiscal_number_scope]
-}
+#resource "keycloak_openid_user_attribute_protocol_mapper" "fiscal_number_mapper" {
+#  realm_id            = keycloak_realm.user.id
+#  client_scope_id     = keycloak_openid_client_scope.fiscal_number_scope.id
+#  name                = "fiscalNumber"
+#  user_attribute      = "fiscalNumber"
+#  claim_name          = "fiscalNumber"
+#  claim_value_type    = "String"
+#  add_to_id_token     = true
+#  add_to_access_token = true
+#  add_to_userinfo     = true
+#
+#  depends_on = [keycloak_realm_user_profile.user_profile, keycloak_openid_client_scope.fiscal_number_scope]
+#}
 
 # Client Scope dedicated for dateOfBirth
 resource "keycloak_openid_client_scope" "date_of_birth_scope" {
@@ -606,5 +616,34 @@ resource "keycloak_openid_client_default_scopes" "merchant_operator_perf_test_de
     "acr",
     keycloak_openid_client_scope.merchant_id_scope.name,
     keycloak_openid_client_scope.point_of_sale_id_scope.name
+  ]
+}
+
+resource "keycloak_openid_client" "users_operator_perf_test" {
+  realm_id = keycloak_realm.user.id
+  name     = "Performance Test Client"
+  enabled  = true
+
+  client_id                = "performance-test-client"
+  client_secret_wo         = random_password.keycloak_perf_test_client_secret.result
+  client_secret_wo_version = 3
+
+  access_type              = "CONFIDENTIAL"
+  service_accounts_enabled = true
+
+  depends_on = [random_password.keycloak_perf_test_client_secret]
+}
+
+resource "keycloak_openid_client_default_scopes" "users_operator_perf_test_defaults" {
+  realm_id  = keycloak_realm.user.id
+  client_id = keycloak_openid_client.users_operator_perf_test.id
+
+  default_scopes = [
+    "web-origins",
+    "roles",
+    "profile",
+    "email",
+    "basic",
+    "acr"
   ]
 }

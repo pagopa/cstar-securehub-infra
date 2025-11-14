@@ -8,4 +8,4 @@ location_short      = "itn"
 location_westeurope = "westeurope"
 
 
-argocd_entra_groups_allowed = ["cstar-d-adgroup-admin", "cstar-d-adgroup-developers", "cstar-d-adgroup-externals"]
+argocd_entra_groups_allowed_extra = []

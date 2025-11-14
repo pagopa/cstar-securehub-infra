@@ -144,6 +144,7 @@ resource "kubernetes_config_map" "rest-client" {
     selc_base_url                    = var.selc_base_url
     io_manage_backend_base_url       = var.io_manage_backend_base_url
     idpay_transactions_host          = "http://idpay-transactions-microservice-chart:8080"
+    idpay_timeline_host              = "http://idpay-timeline-microservice-chart:8080"
   }
 
 }

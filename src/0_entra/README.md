@@ -62,7 +62,7 @@ Re-enable all the resource, commented before to complete the procedure
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_argocd_entra_groups_allowed"></a> [argocd\_entra\_groups\_allowed](#input\_argocd\_entra\_groups\_allowed) | Definizione della variabile per i nomi dei gruppi Entra ID | `list(string)` | n/a | yes |
+| <a name="input_argocd_entra_groups_allowed_extra"></a> [argocd\_entra\_groups\_allowed\_extra](#input\_argocd\_entra\_groups\_allowed\_extra) | Additional Entra ID groups allowed to access ArgoCD. | `list(string)` | n/a | yes |
 | <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | n/a | yes |
 | <a name="input_env"></a> [env](#input\_env) | n/a | `string` | n/a | yes |
 | <a name="input_env_short"></a> [env\_short](#input\_env\_short) | n/a | `string` | n/a | yes |

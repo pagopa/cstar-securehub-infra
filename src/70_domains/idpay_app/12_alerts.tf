@@ -1,10 +1,5 @@
-# =============================================================
-# Alert API EIE
-# =============================================================
-
-
 resource "azurerm_monitor_scheduled_query_rules_alert" "alerts" {
-  for_each = contains(["u", "p"], var.env_short) ? local.alert_definitions : {}
+  for_each = contains(["u", "p"], var.env_short) ? local.final_alerts : tomap({})
 
   name                = each.value.name
   resource_group_name = local.monitor_rg
@@ -17,7 +12,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "alerts" {
   frequency   = each.value.frequency
   time_window = each.value.time_window
 
-  data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
+  data_source_id = each.value.data_source_id
   query          = each.value.query
 
   trigger {

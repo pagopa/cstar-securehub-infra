@@ -21,3 +21,8 @@ data "azuread_group" "adgroup_externals" {
 data "azurerm_resource_group" "security_rg" {
   name = "${local.project}-security-rg"
 }
+
+data "azurerm_user_assigned_identity" "azdo_managed_identity" {
+  name                = local.azdo_managed_identity_name
+  resource_group_name = local.azdo_managed_identity_rg_name
+}

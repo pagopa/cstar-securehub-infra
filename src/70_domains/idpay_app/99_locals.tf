@@ -1,6 +1,7 @@
 locals {
-  project = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
-  product = "${var.prefix}-${var.env_short}"
+  project      = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
+  project_core = "${var.prefix}-${var.env_short}-${var.location_short}-core"
+  product      = "${var.prefix}-${var.env_short}"
 
   monitor_appinsights_name        = "${local.product}-appinsights"
   monitor_action_group_slack_name = "SlackPagoPA"
@@ -63,6 +64,8 @@ locals {
   #
   monitoring_rg_name                = "${local.project}-monitoring-rg"
   monitor_rg                        = local.monitoring_rg_name
+  core_monitoring_rg_name           = "${local.project_core}-monitor-rg"
+  core_app_insights_name            = "${local.project_core}-appinsights"
   monitor_alert_email_group_name    = "pari-alerts-email"
   monitor_alert_opsgenie_group_name = "IdpayOpsgenie"
 

@@ -26,3 +26,4 @@ app_gateway_mtls_endpoint_enabled = true
 # AZDOA:
 enable_azdoa             = true
 azdo_agent_image_version = "v20250519"
+azdo_agent_perf_vm_sku   = "Standard_D16ds_v5"

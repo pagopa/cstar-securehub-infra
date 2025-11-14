@@ -70,8 +70,8 @@ single_page_applications_portal_merchants_operator_roots_dirs = [
 aks_nodepool_blue = {
   vm_sku_name       = "Standard_D8ads_v5_active"
   autoscale_enabled = true
-  node_count_min    = 4
-  node_count_max    = 6
+  node_count_min    = 15
+  node_count_max    = 21
 }
 
 aks_nodepool_green = {
@@ -84,7 +84,7 @@ aks_nodepool_green = {
 #Monitoring
 law_sku               = "PerGB2018"
 law_retention_in_days = 30
-law_daily_quota_gb    = 15
+law_daily_quota_gb    = 100 # TODO Da riportare a 15 dopo i test
 
 #OneIdentity
 oneidentity_base_url = "https://uat.oneid.pagopa.it"

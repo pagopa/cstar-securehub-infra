@@ -102,17 +102,17 @@ locals {
         {
           action = "Overwrite"
           name   = contains(["d"], var.env_short) ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
-          value  = "default-src 'self'; object-src 'none'; frame-src 'self' https://api-io.${var.dns_zone_prefix}.${var.external_domain}/ ${local.mcshared_api_url}/; connect-src 'self' https://selfcare.pagopa.it https://api-io.${var.dns_zone_prefix}.${var.external_domain}/ ${local.mcshared_api_url}/ https://api-eu.mixpanel.com/track/;"
+          value  = "default-src 'self'; object-src 'none'; frame-src 'self' https://api-io.${var.dns_zone_prefix}.${var.external_domain}/ ${local.mcshared_api_url}/; connect-src 'self' https://selfcare.pagopa.it https://api-io.${var.dns_zone_prefix}.${var.external_domain}/ ${local.mcshared_api_url}/ https://api-eu.mixpanel.com/track/ https://cdn.cookielaw.org https://privacyportalde-cdn.onetrust.com;"
         },
         {
           action = "Append"
           name   = contains(["d"], var.env_short) ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
-          value  = "script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://${local.selfare_subdomain}.pagopa.it/assets/font/selfhostedfonts.css; worker-src 'none'; font-src 'self' https://${local.selfare_subdomain}.pagopa.it/assets/font/;"
+          value  = "script-src 'self' 'unsafe-inline' https://cdn.cookielaw.org https://privacyportalde-cdn.onetrust.com; style-src 'self' 'unsafe-inline' https://${local.selfare_subdomain}.pagopa.it/assets/font/selfhostedfonts.css https://cdn.cookielaw.org https://privacyportalde-cdn.onetrust.com; worker-src 'none'; font-src 'self' https://${local.selfare_subdomain}.pagopa.it/assets/font/;"
         },
         {
           action = "Append"
           name   = contains(["d"], var.env_short) ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
-          value  = "img-src 'self' https://assets.cdn.io.italia.it https://${module.cdn_idpay_bonuselettrodomestici.storage_primary_web_host} data:;"
+          value  = "img-src 'self' https://assets.cdn.io.italia.it https://${module.cdn_idpay_bonuselettrodomestici.storage_primary_web_host} https://cdn.cookielaw.org https://www.pagopa.it data:;"
         }
       ]
     },
@@ -404,6 +404,7 @@ locals {
 // Public CDN to serve frontend - main domain
 module "cdn_idpay_bonuselettrodomestici" {
   source = "./.terraform/modules/__v4__/cdn_frontdoor"
+  # source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//cdn_frontdoor?ref=PAYMCLOUD-477-v-4-creazione-modulo-cdn-front-door-per-sostituire-cdn-classic-deprecata"
 
   # Basic Configuration
   cdn_prefix_name     = "${local.project}-bonus"

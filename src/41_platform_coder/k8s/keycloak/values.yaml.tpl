@@ -48,16 +48,20 @@ externalDatabase:
 extraEnvVars:
   - name: KC_DB_URL_PROPERTIES
     value: "sslmode=require"
-  - name: KEYCLOAK_HOSTNAME
-    value: ${keycloak_external_hostname}
-  - name: KEYCLOAK_HOSTNAME_BACKCHANNEL_DYNAMIC
+  - name: KC_HOSTNAME
+    value: "https://${keycloak_ingress_hostname}"
+  - name: KC_HOSTNAME_BACKCHANNEL_DYNAMIC
     value: "true"
-  - name: KEYCLOAK_HOSTNAME_ADMIN
+  - name: KC_HOSTNAME_ADMIN
     value: "https://${keycloak_ingress_hostname}"
   - name: KC_METRICS_ENABLED
     value: "true"
   - name: KC_TRACING_ENABLED
-    value: "true"
+    value: "false"
+  - name: KC_LOG_LEVEL_ORG_INFINISPAN
+    value: "WARN"
+  - name: APPLICATIONINSIGHTS_SELF_DIAGNOSTICS_LEVEL
+    value: "WARN"
     # suppress noisy logs from opentelemetry exporter - the export is handled by the app insights java agent
   - name: KC_LOG_LEVEL_IO_QUARKUS_OPENTELEMETRY_RUNTIME_EXPORTER_OTLP
     value: "ERROR"
@@ -68,12 +72,21 @@ extraEnvVars:
   - name: KC_SPI_CONNECTIONS_HTTP_CLIENT_DEFAULT_MAX_CONNECTION_IDLE_TIME_MILLIS
     value: "${keycloak_http_client_connection_max_idle_millis}"
   - name: JAVA_OPTS
-    value: "-javaagent:/opt/bitnami/keycloak/agent/applicationinsights-agent.jar"
+    value: "-javaagent:/opt/bitnami/keycloak/agent/applicationinsights-agent.jar -XX:+UseG1GC -XX:+UseLargePages -Xmx4096m"
+  - name: KC_DB_POOL_MAX_SIZE
+    value: "75"
+  - name: KC_DB_POOL_MIN_SIZE
+    value: "75"
+  - name: KC_DB_POOL_INITIAL_SIZE
+    value: "75"
 
 extraVolumes:
   - name: pagopa-theme
     configMap:
       name: keycloak-pagopa-theme
+  - name: keycloak-providers
+    configMap:
+      name: keycloak-providers
   - name: agent
     emptyDir: {}
 
@@ -143,3 +156,22 @@ networkPolicy:
 keycloakConfigCli:
   enabled: true
   existingConfigmap: "keycloak-terraform-client-config"
+  image:
+    registry: ${image_registry_config_cli}
+    repository: ${image_repository_config_cli}
+    tag: ${image_tag_config_cli}
+    digest: ""
+
+nodeSelector:
+  domain: keycloak
+
+tolerations:
+  - key: "keycloakOnly"
+    operator: "Equal"
+    value: "true"
+    effect: "NoSchedule"
+
+dnsConfig:
+  options:
+    - name: ndots
+      value: "1"
