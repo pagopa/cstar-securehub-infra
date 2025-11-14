@@ -98,4 +98,4 @@ additional_geo_locations = [{
   zone_redundant    = false
 }]
 
-cdn_rewrite_disable_cittadino = true
+cdn_rewrite_disable_cittadino = false
