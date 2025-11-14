@@ -74,7 +74,7 @@ module "cdn_idpay_assetregister" {
       {
         action = "Append"
         name   = contains(["d"], var.env_short) ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
-        value  = "script-src 'self'; style-src 'self' 'unsafe-inline' https://${local.selfare_subdomain}.pagopa.it/assets/font/selfhostedfonts.css https://privacyportal-de.onetrust.com https://privacyportalde-cdn.onetrust.com; worker-src 'none'; font-src 'self' https://selfcare.pagopa.it/assets/font/; img-src 'self' https://cdn.cookielaw.org/ https://selc${var.env_short}checkoutsa.z6.web.core.windows.net/"
+        value  = "script-src 'self'  https://cdn.cookielaw.org https://privacyportalde-cdn.onetrust.com; style-src 'self' 'unsafe-inline' https://${local.selfare_subdomain}.pagopa.it/assets/font/selfhostedfonts.css https://privacyportal-de.onetrust.com https://cdn.cookielaw.org https://privacyportalde-cdn.onetrust.com; worker-src 'none'; font-src 'self' https://selfcare.pagopa.it/assets/font/; img-src 'self' https://cdn.cookielaw.org/ https://selc${var.env_short}checkoutsa.z6.web.core.windows.net/"
       },
       # {
       #   action = "Append"
