@@ -65,7 +65,7 @@ module "cdn_idpay_welfare" {
       {
         action = "Overwrite"
         name   = contains(["d"], var.env_short) ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
-        value  = "default-src 'self'; object-src 'none'; connect-src 'self' https://api-io.${var.dns_zone_prefix}.${var.external_domain}/ https://api-eu.mixpanel.com/track/; "
+        value  = "default-src 'self'; object-src 'none'; connect-src 'self' https://api-io.${var.dns_zone_prefix}.${var.external_domain}/ https://api-eu.mixpanel.com/track/ https://cdn.cookielaw.org https://privacyportal-de.onetrust.com; script-src 'self' https://cdn.cookielaw.org https://privacyportal-de.onetrust.com https://privacyportalde-cdn.onetrust.com;"
       },
       {
         action = "Append"
@@ -75,7 +75,7 @@ module "cdn_idpay_welfare" {
       {
         action = "Append"
         name   = contains(["d"], var.env_short) ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
-        value  = "img-src 'self' https://assets.cdn.io.italia.it https://${module.cdn_idpay_welfare.storage_primary_web_host} https://${var.env != "prod" ? "${var.env}." : ""}${local.selfare_subdomain}.pagopa.it https://selc${var.env_short}checkoutsa.z6.web.core.windows.net/institutions/ data:; "
+        value  = "img-src 'self' https://assets.cdn.io.italia.it https://${module.cdn_idpay_welfare.storage_primary_web_host} https://${var.env != "prod" ? "${var.env}." : ""}${local.selfare_subdomain}.pagopa.it https://selc${var.env_short}checkoutsa.z6.web.core.windows.net/ https://cdn.cookielaw.org/ data:; "
       },
     ]
     },

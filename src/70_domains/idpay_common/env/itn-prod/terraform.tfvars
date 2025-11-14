@@ -72,8 +72,8 @@ single_page_applications_portal_merchants_operator_roots_dirs = [
 aks_nodepool_blue = {
   vm_sku_name       = "Standard_D8ads_v5_active"
   autoscale_enabled = true
-  node_count_min    = 4
-  node_count_max    = 16
+  node_count_min    = 18
+  node_count_max    = 21
 }
 
 aks_nodepool_green = {
