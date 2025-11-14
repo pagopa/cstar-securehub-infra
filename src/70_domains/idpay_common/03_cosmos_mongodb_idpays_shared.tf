@@ -205,11 +205,11 @@ locals {
     },
     {
       name                = "transaction_in_progress"
-      shard_key           = null
+      shard_key           = "_id"
       default_ttl_seconds = null
       indexes = [
         { keys = ["_id"], unique = true },
-        { keys = ["trxCode"], unique = true },
+        { keys = ["_id", "trxCode"], unique = true }
         { keys = ["trxDate"], unique = false },
         { keys = ["trxChargeDate"], unique = false },
         { keys = ["updateDate"], unique = false },
