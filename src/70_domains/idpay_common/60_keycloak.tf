@@ -556,6 +556,7 @@ resource "keycloak_openid_client_default_scopes" "default_scopes_user_frontend" 
   default_scopes = [
     "basic",
     "profile",
+    "roles",
     keycloak_openid_client_scope.fiscal_number_scope.name,
   ]
 }
