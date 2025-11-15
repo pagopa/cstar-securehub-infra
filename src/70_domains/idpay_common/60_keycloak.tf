@@ -549,7 +549,7 @@ resource "keycloak_openid_user_attribute_protocol_mapper" "fiscal_number_mapper"
  depends_on = [keycloak_realm_user_profile.user_profile, keycloak_openid_client_scope.fiscal_number_scope]
 }
 
-resource "keycloak_openid_client_default_scopes" "client_default_scopes" {
+resource "keycloak_openid_client_default_scopes" "default_scopes_user_frontend" {
   realm_id  = keycloak_realm.user.id
   client_id = keycloak_openid_client.user_frontend.id
 
