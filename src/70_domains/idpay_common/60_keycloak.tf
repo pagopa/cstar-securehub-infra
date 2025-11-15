@@ -529,24 +529,24 @@ resource "keycloak_realm_user_profile" "user_profile" {
 
 # Client Scope dedicated per fiscalNumber
 resource "keycloak_openid_client_scope" "fiscal_number_scope" {
- realm_id    = keycloak_realm.user.id
- name        = "fiscal-number-scope"
- description = "Scope to expose fiscalNumber claim"
+  realm_id    = keycloak_realm.user.id
+  name        = "fiscal-number-scope"
+  description = "Scope to expose fiscalNumber claim"
 }
 
 # Mapper per fiscalNumber into scope
 resource "keycloak_openid_user_attribute_protocol_mapper" "fiscal_number_mapper" {
- realm_id            = keycloak_realm.user.id
- client_scope_id     = keycloak_openid_client_scope.fiscal_number_scope.id
- name                = "fiscalNumber"
- user_attribute      = "fiscalNumber"
- claim_name          = "fiscalNumber"
- claim_value_type    = "String"
- add_to_id_token     = true
- add_to_access_token = true
- add_to_userinfo     = true
+  realm_id            = keycloak_realm.user.id
+  client_scope_id     = keycloak_openid_client_scope.fiscal_number_scope.id
+  name                = "fiscalNumber"
+  user_attribute      = "fiscalNumber"
+  claim_name          = "fiscalNumber"
+  claim_value_type    = "String"
+  add_to_id_token     = true
+  add_to_access_token = true
+  add_to_userinfo     = true
 
- depends_on = [keycloak_realm_user_profile.user_profile, keycloak_openid_client_scope.fiscal_number_scope]
+  depends_on = [keycloak_realm_user_profile.user_profile, keycloak_openid_client_scope.fiscal_number_scope]
 }
 
 resource "keycloak_openid_client_default_scopes" "default_scopes_user_frontend" {
