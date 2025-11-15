@@ -377,11 +377,24 @@ resource "keycloak_attribute_importer_identity_provider_mapper" "last_name_mappe
   }
 }
 
-resource "keycloak_user_template_importer_identity_provider_mapper" "username_mapper" {
+resource "keycloak_attribute_importer_identity_provider_mapper" "username_mapper" {
   realm                   = keycloak_realm.user.id
   name                    = "username-mapper"
+  claim_name              = "fiscalNumber"
   identity_provider_alias = keycloak_oidc_identity_provider.one_identity_provider.alias
-  template                = "$${CLAIM.email}"
+  user_attribute          = "username"
+
+  # extra_config with syncMode is required in Keycloak 10+
+  extra_config = {
+    syncMode = "INHERIT"
+  }
+}
+
+resource "keycloak_user_template_importer_identity_provider_mapper" "userid_template_importer" {
+  realm                   = keycloak_realm.user.id
+  name                    = "userid-template-importer"
+  identity_provider_alias = keycloak_oidc_identity_provider.one_identity_provider.alias
+  template                = "$${ALIAS}.$${CLAIM.fiscalNumber}"
 
   # extra_config with syncMode is required in Keycloak 10+
   extra_config = {
