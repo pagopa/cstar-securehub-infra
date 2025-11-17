@@ -60,12 +60,12 @@ extraEnvVars:
     value: "true"
   - name: KC_LOG_LEVEL_ORG_INFINISPAN
     value: "WARN"
+  - name: QUARKUS_OPENTELEMETRY_AUTO_CONFIGURE
+    value: "false"
   - name: APPLICATIONINSIGHTS_SELF_DIAGNOSTICS_LEVEL
     value: "WARN"
     # suppress noisy logs from opentelemetry exporter - the export is handled by the app insights java agent
   - name: KC_LOG_LEVEL_IO_QUARKUS_OPENTELEMETRY_RUNTIME_EXPORTER_OTLP
-    value: "ERROR"
-  - name: KC_LOG_LEVEL_IO_OPENTELEMETRY_API_GLOBALOPENTELEMETRY
     value: "ERROR"
   - name: APPLICATIONINSIGHTS_CONNECTION_STRING
     value: "${appinsights_connection_string}"
