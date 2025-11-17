@@ -74,6 +74,6 @@ provider "keycloak" {
 }
 
 module "__v4__" {
-  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v7.47.0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=3b924a24ae31c63aed193d1c01d826ba5904b23d"
+  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v7.51.0
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=f0c290ddcd01951773cbec9c99ae8b61110c56a9"
 }
