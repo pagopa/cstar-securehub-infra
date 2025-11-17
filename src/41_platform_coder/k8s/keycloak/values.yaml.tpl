@@ -58,14 +58,6 @@ extraEnvVars:
     value: "true"
   - name: KC_TRACING_ENABLED
     value: "false"
-  - name: KC_FEATURES
-    value: "events"
-  - name: KC_EVENTS_ENABLED
-    value: "true"
-  - name: KC_EVENTS_LISTENERS
-    value: "jboss-logging"
-  - name: KC_EVENTS_LOG
-    value: "true"
   - name: KC_LOG_LEVEL_ORG_INFINISPAN
     value: "WARN"
   - name: APPLICATIONINSIGHTS_SELF_DIAGNOSTICS_LEVEL
