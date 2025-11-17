@@ -65,6 +65,8 @@ extraEnvVars:
     # suppress noisy logs from opentelemetry exporter - the export is handled by the app insights java agent
   - name: KC_LOG_LEVEL_IO_QUARKUS_OPENTELEMETRY_RUNTIME_EXPORTER_OTLP
     value: "ERROR"
+  - name: KC_LOG_LEVEL_IO_OPENTELEMETRY_API_GLOBALOPENTELEMETRY
+    value: "ERROR"
   - name: APPLICATIONINSIGHTS_CONNECTION_STRING
     value: "${appinsights_connection_string}"
   - name: KC_SPI_CONNECTIONS_HTTP_CLIENT_DEFAULT_CONNECTION_TTL_MILLIS
