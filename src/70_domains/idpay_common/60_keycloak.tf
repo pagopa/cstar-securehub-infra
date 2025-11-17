@@ -377,11 +377,24 @@ resource "keycloak_attribute_importer_identity_provider_mapper" "last_name_mappe
   }
 }
 
-resource "keycloak_user_template_importer_identity_provider_mapper" "username_mapper" {
+resource "keycloak_attribute_importer_identity_provider_mapper" "username_mapper" {
   realm                   = keycloak_realm.user.id
   name                    = "username-mapper"
+  claim_name              = "fiscalNumber"
   identity_provider_alias = keycloak_oidc_identity_provider.one_identity_provider.alias
-  template                = "$${CLAIM.email}"
+  user_attribute          = "username"
+
+  # extra_config with syncMode is required in Keycloak 10+
+  extra_config = {
+    syncMode = "INHERIT"
+  }
+}
+
+resource "keycloak_user_template_importer_identity_provider_mapper" "userid_template_importer" {
+  realm                   = keycloak_realm.user.id
+  name                    = "userid-template-importer"
+  identity_provider_alias = keycloak_oidc_identity_provider.one_identity_provider.alias
+  template                = "$${ALIAS}.$${CLAIM.fiscalNumber}"
 
   # extra_config with syncMode is required in Keycloak 10+
   extra_config = {
@@ -515,26 +528,38 @@ resource "keycloak_realm_user_profile" "user_profile" {
 }
 
 # Client Scope dedicated per fiscalNumber
-#resource "keycloak_openid_client_scope" "fiscal_number_scope" {
-#  realm_id    = keycloak_realm.user.id
-#  name        = "fiscal-number-scope"
-#  description = "Scope to expose fiscalNumber claim"
-#}
+resource "keycloak_openid_client_scope" "fiscal_number_scope" {
+  realm_id    = keycloak_realm.user.id
+  name        = "fiscal-number-scope"
+  description = "Scope to expose fiscalNumber claim"
+}
 
 # Mapper per fiscalNumber into scope
-#resource "keycloak_openid_user_attribute_protocol_mapper" "fiscal_number_mapper" {
-#  realm_id            = keycloak_realm.user.id
-#  client_scope_id     = keycloak_openid_client_scope.fiscal_number_scope.id
-#  name                = "fiscalNumber"
-#  user_attribute      = "fiscalNumber"
-#  claim_name          = "fiscalNumber"
-#  claim_value_type    = "String"
-#  add_to_id_token     = true
-#  add_to_access_token = true
-#  add_to_userinfo     = true
-#
-#  depends_on = [keycloak_realm_user_profile.user_profile, keycloak_openid_client_scope.fiscal_number_scope]
-#}
+resource "keycloak_openid_user_attribute_protocol_mapper" "fiscal_number_mapper" {
+  realm_id            = keycloak_realm.user.id
+  client_scope_id     = keycloak_openid_client_scope.fiscal_number_scope.id
+  name                = "fiscalNumber"
+  user_attribute      = "fiscalNumber"
+  claim_name          = "fiscalNumber"
+  claim_value_type    = "String"
+  add_to_id_token     = true
+  add_to_access_token = true
+  add_to_userinfo     = true
+
+  depends_on = [keycloak_realm_user_profile.user_profile, keycloak_openid_client_scope.fiscal_number_scope]
+}
+
+resource "keycloak_openid_client_default_scopes" "default_scopes_user_frontend" {
+  realm_id  = keycloak_realm.user.id
+  client_id = keycloak_openid_client.user_frontend.id
+
+  default_scopes = [
+    "basic",
+    "profile",
+    "roles",
+    keycloak_openid_client_scope.fiscal_number_scope.name,
+  ]
+}
 
 # Client Scope dedicated for dateOfBirth
 resource "keycloak_openid_client_scope" "date_of_birth_scope" {
