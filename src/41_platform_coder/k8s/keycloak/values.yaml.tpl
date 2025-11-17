@@ -57,6 +57,14 @@ extraEnvVars:
   - name: KC_METRICS_ENABLED
     value: "true"
   - name: KC_TRACING_ENABLED
+    value: "false"
+  - name: KC_FEATURES
+    value: "events"
+  - name: KC_EVENTS_ENABLED
+    value: "true"
+  - name: KC_EVENTS_LISTENERS
+    value: "jboss-logging"
+  - name: KC_EVENTS_LOG
     value: "true"
   - name: KC_LOG_LEVEL_ORG_INFINISPAN
     value: "WARN"
@@ -72,7 +80,7 @@ extraEnvVars:
   - name: KC_SPI_CONNECTIONS_HTTP_CLIENT_DEFAULT_MAX_CONNECTION_IDLE_TIME_MILLIS
     value: "${keycloak_http_client_connection_max_idle_millis}"
   - name: JAVA_OPTS
-    value: "-javaagent:/opt/bitnami/keycloak/agent/applicationinsights-agent.jar -XX:+UseG1GC -XX:+UseLargePages -Xmx4096m -Djava.util.logging.manager=org.jboss.logmanager.LogManager -Dorg.jboss.logmanager.level.io.opentelemetry.api=ERROR"
+    value: "-javaagent:/opt/bitnami/keycloak/agent/applicationinsights-agent.jar -XX:+UseG1GC -XX:+UseLargePages -Xmx4096m"
   - name: KC_DB_POOL_MAX_SIZE
     value: "75"
   - name: KC_DB_POOL_MIN_SIZE
