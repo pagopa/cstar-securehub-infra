@@ -57,7 +57,7 @@ extraEnvVars:
   - name: KC_METRICS_ENABLED
     value: "true"
   - name: KC_TRACING_ENABLED
-    value: "true"
+    value: "false"
   - name: KC_LOG_LEVEL_ORG_INFINISPAN
     value: "WARN"
   - name: APPLICATIONINSIGHTS_SELF_DIAGNOSTICS_LEVEL
