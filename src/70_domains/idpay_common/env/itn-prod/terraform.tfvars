@@ -22,7 +22,7 @@ cosmos_mongo_db_idpay_params = {
 }
 
 ### Redis Cache
-redis_idh_resource_tier = "standard_C2_v6"
+redis_idh_resource_tier = "premium_P1_v6_no_zones"
 
 ### Service bus
 service_bus_namespace = {
