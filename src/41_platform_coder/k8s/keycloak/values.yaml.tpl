@@ -60,7 +60,7 @@ extraEnvVars:
     value: "true"
   - name: KC_LOG_LEVEL_ORG_INFINISPAN
     value: "WARN"
-  - name: KC_LOG_LEVEL_IO_OPENTELEMETRY_SDK_AUTOCONFIGURE
+  - name: KC_LOG_LEVEL_IO_OPENTELEMETRY_SDK
     value: "ERROR"
   - name: APPLICATIONINSIGHTS_SELF_DIAGNOSTICS_LEVEL
     value: "WARN"
