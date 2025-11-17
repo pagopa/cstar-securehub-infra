@@ -49,7 +49,7 @@ resource "azurerm_data_factory_trigger_schedule" "idpay_copy_rdb_products_to_csv
   time_zone  = "W. Europe Standard Time"
 
   pipeline {
-    name = local.parametrized_daily_pipeline
+    name = "idpay_copy_rdb_products_to_csv"
     parameters = {
       subscriptionId     = data.azurerm_subscription.current.subscription_id
       resourceGroup      = data.azurerm_resource_group.idpay_data_rg.name
