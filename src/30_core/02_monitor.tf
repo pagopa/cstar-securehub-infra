@@ -63,7 +63,8 @@ resource "azurerm_monitor_action_group" "slack" {
 }
 
 resource "azurerm_monitor_action_group" "cstar_infra_opsgenie" { #
-  count               = var.env_short == "p" ? 1 : 0
+  count = var.env_short == "p" ? 1 : 0
+
   name                = "CstarInfraOpsgenie"
   resource_group_name = azurerm_resource_group.monitor_rg.name
   short_name          = "InfrOpsgenie"
