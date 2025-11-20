@@ -1,0 +1,14 @@
+{
+    "name": "data_explorer_onboarding_citizen",
+        "linkedServiceName": {
+            "referenceName": "idpay-Kusto-idpay-ls",
+            "type": "LinkedServiceReference"
+        },
+        "annotations": [],
+        "type": "AzureDataExplorerTable",
+        "typeProperties": {
+            "table": "onboarding_citizen"
+        }
+    },
+    "type": "Microsoft.DataFactory/factories/datasets"
+}
