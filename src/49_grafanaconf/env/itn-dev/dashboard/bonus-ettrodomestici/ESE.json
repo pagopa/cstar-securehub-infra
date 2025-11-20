@@ -197,7 +197,7 @@
             }
           },
           "pluginVersion": "6.2.0",
-          "query": "merchant_initiative_counters\r\n| where initiativeId == \"68dd003ccce8c534d1da22bc\"\r\n| join kind=leftouter (\r\n    merchant\r\n    | project businessName, _id\r\n) on $left.merchantId == $right._id\r\n| project businessName,trxNumber\r\n| order by businessName desc",
+          "query": "merchant_initiative_counters\r\n| where initiativeId == \"68dd003ccce8c534d1da22bc\"\r\n| join kind=leftouter (\r\n    merchant\r\n    | project businessName, _id\r\n) on $left.merchantId == $right._id\r\n| project businessName, refoundNumber\r\n| order by businessName desc",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -344,6 +344,27 @@
           "color": {
             "mode": "palette-classic"
           },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -354,7 +375,32 @@
             ]
           }
         },
-        "overrides": []
+        "overrides": [
+          {
+            "__systemRef": "hideSeriesFrom",
+            "matcher": {
+              "id": "byNames",
+              "options": {
+                "mode": "exclude",
+                "names": [
+                  "Totale Esercente di test IdPay"
+                ],
+                "prefix": "All except:",
+                "readOnly": true
+              }
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": true
+                }
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 11,
@@ -362,30 +408,29 @@
         "x": 12,
         "y": 9
       },
-      "id": 1,
+      "id": 5,
       "options": {
-        "displayMode": "gradient",
+        "barRadius": 0,
+        "barWidth": 0.97,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
         "legend": {
           "calcs": [],
           "displayMode": "list",
           "placement": "bottom",
-          "showLegend": false
+          "showLegend": true
         },
-        "maxVizHeight": 300,
-        "minVizHeight": 16,
-        "minVizWidth": 8,
-        "namePlacement": "auto",
         "orientation": "horizontal",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": true
+        "showValue": "auto",
+        "stacking": "none",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
         },
-        "showUnfilled": true,
-        "sizing": "auto",
-        "valueMode": "color"
+        "xField": "businessName",
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
       },
       "pluginVersion": "11.6.3",
       "targets": [
@@ -435,7 +480,7 @@
         }
       ],
       "transparent": true,
-      "type": "bargauge"
+      "type": "barchart"
     }
   ],
   "preload": false,
@@ -452,5 +497,5 @@
   "timezone": "browser",
   "title": "ESE",
   "uid": "eezu3dfeyfhfkb",
-  "version": 46
+  "version": 52
 }
