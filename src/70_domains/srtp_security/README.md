@@ -15,14 +15,14 @@
 | Name | Version |
 |------|---------|
 | <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 2.53.1 |
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.38.1 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.54.0 |
 | <a name="provider_external"></a> [external](#provider\_external) | 2.3.5 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | 1b507dcbfc89880e17ff6722fb69b10dfda9368d |
+| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | fa7a4a628ebd1281bf9ad469948ee004a031a21f |
 | <a name="module_admins_policy"></a> [admins\_policy](#module\_admins\_policy) | ./.terraform/modules/__v4__/IDH/key_vault_access_policy | n/a |
 | <a name="module_developers_policy"></a> [developers\_policy](#module\_developers\_policy) | ./.terraform/modules/__v4__//IDH/key_vault_access_policy | n/a |
 | <a name="module_externals_policy"></a> [externals\_policy](#module\_externals\_policy) | ./.terraform/modules/__v4__/IDH/key_vault_access_policy | n/a |
