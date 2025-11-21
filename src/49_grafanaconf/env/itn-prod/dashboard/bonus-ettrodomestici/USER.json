@@ -24,7 +24,7 @@
     {
       "datasource": {
         "type": "grafana-azure-data-explorer-datasource",
-        "uid": "aezn6luqall34b"
+        "uid": "ef2bw8859i6tcd"
       },
       "fieldConfig": {
         "defaults": {
@@ -758,7 +758,7 @@
           "database": "idpay",
           "datasource": {
             "type": "grafana-azure-data-explorer-datasource",
-            "uid": "aezn6luqall34b"
+            "uid": "ef2bw8859i6tcd"
           },
           "expression": {
             "groupBy": {
@@ -789,7 +789,7 @@
     {
       "datasource": {
         "type": "grafana-azure-data-explorer-datasource",
-        "uid": "aezn6luqall34b"
+        "uid": "ef2bw8859i6tcd"
       },
       "fieldConfig": {
         "defaults": {
@@ -872,7 +872,7 @@
           "database": "idpay",
           "datasource": {
             "type": "grafana-azure-data-explorer-datasource",
-            "uid": "aezn6luqall34b"
+            "uid": "ef2bw8859i6tcd"
           },
           "expression": {
             "groupBy": {
@@ -917,7 +917,7 @@
     {
       "datasource": {
         "type": "grafana-azure-data-explorer-datasource",
-        "uid": "aezn6luqall34b"
+        "uid": "ef2bw8859i6tcd"
       },
       "fieldConfig": {
         "defaults": {
@@ -1000,7 +1000,7 @@
           "database": "idpay",
           "datasource": {
             "type": "grafana-azure-data-explorer-datasource",
-            "uid": "aezn6luqall34b"
+            "uid": "ef2bw8859i6tcd"
           },
           "expression": {
             "groupBy": {
@@ -1031,7 +1031,7 @@
     {
       "datasource": {
         "type": "grafana-azure-data-explorer-datasource",
-        "uid": "aezn6luqall34b"
+        "uid": "ef2bw8859i6tcd"
       },
       "fieldConfig": {
         "defaults": {
@@ -1114,7 +1114,7 @@
           "database": "idpay",
           "datasource": {
             "type": "grafana-azure-data-explorer-datasource",
-            "uid": "aezn6luqall34b"
+            "uid": "ef2bw8859i6tcd"
           },
           "expression": {
             "groupBy": {
@@ -1145,7 +1145,7 @@
     {
       "datasource": {
         "type": "grafana-azure-data-explorer-datasource",
-        "uid": "aezn6luqall34b"
+        "uid": "ef2bw8859i6tcd"
       },
       "fieldConfig": {
         "defaults": {
@@ -1228,7 +1228,7 @@
           "database": "idpay",
           "datasource": {
             "type": "grafana-azure-data-explorer-datasource",
-            "uid": "aezn6luqall34b"
+            "uid": "ef2bw8859i6tcd"
           },
           "expression": {
             "groupBy": {
