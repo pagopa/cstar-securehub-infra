@@ -300,6 +300,19 @@ locals {
       ]
     },
     {
+      name                = "rewards_batch"
+      shard_key           = null
+      default_ttl_seconds = null
+      indexes = [
+        { keys = ["_id"], unique = true },
+        { keys = ["merchantId"], unique = false },
+        { keys = ["month"], unique = false },
+        { keys = ["name"], unique = false },
+        { keys = ["posType"], unique = false },
+        { keys = ["merchantId", "posType", "month"], unique = true }
+      ]
+    },
+    {
       name                = "rewards_iban"
       shard_key           = null
       default_ttl_seconds = null
