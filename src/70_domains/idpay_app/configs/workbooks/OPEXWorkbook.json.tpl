@@ -7,157 +7,6 @@
         "version": "KqlParameterItem/1.0",
         "parameters": [
           {
-            "id": "75b945d9-1f77-40e6-a8f6-2356759b8c3b",
-            "version": "KqlParameterItem/1.0",
-            "name": "timeRangeOverall",
-            "type": 4,
-            "isRequired": true,
-            "typeSettings": {
-              "selectableValues": [
-                {
-                  "durationMs": 300000
-                },
-                {
-                  "durationMs": 900000
-                },
-                {
-                  "durationMs": 1800000
-                },
-                {
-                  "durationMs": 86400000
-                }
-              ],
-              "allowCustom": true
-            },
-            "timeContext": {
-              "durationMs": 86400000
-            },
-            "value": {
-              "durationMs": 86400000
-            }
-          },
-          {
-            "version": "KqlParameterItem/1.0",
-            "name": "timeRangeBeneficiary",
-            "type": 4,
-            "isRequired": true,
-            "typeSettings": {
-              "selectableValues": [
-                {
-                  "durationMs": 300000
-                },
-                {
-                  "durationMs": 900000
-                },
-                {
-                  "durationMs": 1800000
-                },
-                {
-                  "durationMs": 86400000
-                }
-              ],
-              "allowCustom": true
-            },
-            "timeContext": {
-              "durationMs": 86400000
-            },
-            "value": {
-              "durationMs": 86400000
-            },
-            "id": "9c0cdac3-ecdd-46e8-a521-cc03ca45515b"
-          },
-          {
-            "version": "KqlParameterItem/1.0",
-            "name": "timeRangeAssetRegister",
-            "type": 4,
-            "isRequired": true,
-            "typeSettings": {
-              "selectableValues": [
-                {
-                  "durationMs": 300000
-                },
-                {
-                  "durationMs": 900000
-                },
-                {
-                  "durationMs": 1800000
-                },
-                {
-                  "durationMs": 86400000
-                }
-              ],
-              "allowCustom": true
-            },
-            "timeContext": {
-              "durationMs": 86400000
-            },
-            "value": {
-              "durationMs": 86400000
-            },
-            "id": "5fb91bed-6f51-430a-87da-b2938b408748"
-          },
-          {
-            "version": "KqlParameterItem/1.0",
-            "name": "timeRangeEnte",
-            "type": 4,
-            "isRequired": true,
-            "typeSettings": {
-              "selectableValues": [
-                {
-                  "durationMs": 300000
-                },
-                {
-                  "durationMs": 900000
-                },
-                {
-                  "durationMs": 1800000
-                },
-                {
-                  "durationMs": 86400000
-                }
-              ],
-              "allowCustom": true
-            },
-            "timeContext": {
-              "durationMs": 86400000
-            },
-            "value": {
-              "durationMs": 86400000
-            },
-            "id": "758d1979-c585-4692-b0c3-c97db96b52de"
-          },
-          {
-            "version": "KqlParameterItem/1.0",
-            "name": "timeRangePayment",
-            "type": 4,
-            "isRequired": true,
-            "typeSettings": {
-              "selectableValues": [
-                {
-                  "durationMs": 300000
-                },
-                {
-                  "durationMs": 900000
-                },
-                {
-                  "durationMs": 1800000
-                },
-                {
-                  "durationMs": 86400000
-                }
-              ],
-              "allowCustom": true
-            },
-            "timeContext": {
-              "durationMs": 86400000
-            },
-            "value": {
-              "durationMs": 432000000,
-              "endTime": "2023-09-14T10:58:00.000Z"
-            },
-            "id": "e39254bc-334b-43ec-b064-87a2889fc3ca"
-          },
-          {
             "id": "4a7b6e18-8b58-4227-86a9-c6ac65cd7bb8",
             "version": "KqlParameterItem/1.0",
             "name": "timeSpan",
@@ -359,36 +208,6 @@
             "defaultValue": "value::all"
           },
           {
-            "version": "KqlParameterItem/1.0",
-            "name": "timeRangeMerchant",
-            "type": 4,
-            "isRequired": true,
-            "typeSettings": {
-              "selectableValues": [
-                {
-                  "durationMs": 300000
-                },
-                {
-                  "durationMs": 900000
-                },
-                {
-                  "durationMs": 1800000
-                },
-                {
-                  "durationMs": 86400000
-                }
-              ],
-              "allowCustom": true
-            },
-            "timeContext": {
-              "durationMs": 86400000
-            },
-            "value": {
-              "durationMs": 86400000
-            },
-            "id": "2cf67bf4-f445-4fe4-9375-bcbd19b9e8d7"
-          },
-          {
             "id": "f465971b-1420-454e-ae30-dfd4e4c18f3d",
             "version": "KqlParameterItem/1.0",
             "name": "itnMerchantProduct",
@@ -450,7 +269,7 @@
           {
             "id": "49821010-bf38-4a7f-82b3-2663bc56ebf2",
             "version": "KqlParameterItem/1.0",
-            "name": "timeRangeUsers",
+            "name": "timeRangeOverall",
             "type": 4,
             "typeSettings": {
               "selectableValues": [
@@ -1744,7 +1563,7 @@
                   "type": 3,
                   "content": {
                     "version": "KqlItem/1.0",
-                    "query": "let startTime = {timeRangeAssetRegister:start};\r\nlet endTime = {timeRangeAssetRegister:end};\r\nlet interval = endTime-startTime;\r\n\r\nlet totalCount = requests\r\n| where timestamp between (startTime .. endTime)\r\n| where operation_Name  has '{itnRegisterOperation}' \r\n| summarize Total = count() by operation_Name;\r\nlet data = requests\r\n| where timestamp between (startTime .. endTime)\r\n| where operation_Name has '{itnRegisterOperation}';\r\ndata\r\n| join kind=inner totalCount on operation_Name\r\n| summarize Count = count(), Users = dcount(tostring(customDimensions[\"Request-X-Forwarded-For\"])) by operation_Name, resultCode, Total//, timestamp=bin(timestamp,interval)\r\n| project ['Request Name'] = operation_Name, ['Result Code'] = resultCode, ['Total Response'] = Count, ['Rate %'] = (Count*100)/Total, ['Users Affected'] = Users\r\n| sort by ['Request Name']",
+                    "query": "let startTime = {timeRangeOverall:start};\r\nlet endTime = {timeRangeOverall:end};\r\nlet interval = endTime-startTime;\r\n\r\nlet totalCount = requests\r\n| where timestamp between (startTime .. endTime)\r\n| where operation_Name  has '{itnRegisterOperation}' \r\n| summarize Total = count() by operation_Name;\r\nlet data = requests\r\n| where timestamp between (startTime .. endTime)\r\n| where operation_Name has '{itnRegisterOperation}';\r\ndata\r\n| join kind=inner totalCount on operation_Name\r\n| summarize Count = count(), Users = dcount(tostring(customDimensions[\"Request-X-Forwarded-For\"])) by operation_Name, resultCode, Total//, timestamp=bin(timestamp,interval)\r\n| project ['Request Name'] = operation_Name, ['Result Code'] = resultCode, ['Total Response'] = Count, ['Rate %'] = (Count*100)/Total, ['Users Affected'] = Users\r\n| sort by ['Request Name']",
                     "size": 0,
                     "showAnalytics": true,
                     "queryType": 0,
@@ -1984,7 +1803,7 @@
                   "type": 3,
                   "content": {
                     "version": "KqlItem/1.0",
-                    "query": "let startTime = {timeRangeAssetRegister:start};\nlet endTime = {timeRangeAssetRegister:end};\nlet interval = totimespan({timeSpan:label});\n\nrequests\n| where timestamp between (startTime .. endTime)\n| where operation_Name has '{itnRegisterOperation}'\n| summarize total = count(), n_ok = countif(resultCode startswith '2'  or resultCode == '404') by bin(timestamp,interval)\n| project timestamp, availability = todouble(n_ok)/total\n| join kind=fullouter (range timestamp from startTime to endTime step interval) on timestamp\n| project timestamp=coalesce(timestamp,timestamp1), availability = coalesce(availability,1.0), watermark=0.99",
+                    "query": "let startTime = {timeRangeOverall:start};\nlet endTime = {timeRangeOverall:end};\nlet interval = totimespan({timeSpan:label});\n\nrequests\n| where timestamp between (startTime .. endTime)\n| where operation_Name has '{itnRegisterOperation}'\n| summarize total = count(), n_ok = countif(resultCode startswith '2'  or resultCode == '404') by bin(timestamp,interval)\n| project timestamp, availability = todouble(n_ok)/total\n| join kind=fullouter (range timestamp from startTime to endTime step interval) on timestamp\n| project timestamp=coalesce(timestamp,timestamp1), availability = coalesce(availability,1.0), watermark=0.99",
                     "size": 0,
                     "aggregation": 3,
                     "showAnalytics": true,
@@ -2003,7 +1822,7 @@
                   "type": 3,
                   "content": {
                     "version": "KqlItem/1.0",
-                    "query": "let startTime = {timeRangeAssetRegister:start};\r\nlet endTime = {timeRangeAssetRegister:end};\r\nlet interval = totimespan({timeSpan:label});\r\n\r\nlet dataset = requests\r\n    // additional filters can be applied here\r\n    | where timestamp between (startTime .. endTime) \r\n        and operation_Name has '{itnRegisterOperation}'\r\n;\r\ndataset\r\n| summarize percentile_95=percentile(duration, 95) by bin(timestamp, interval)\r\n| project timestamp, percentile_95, watermark=1000\r\n| render timechart",
+                    "query": "let startTime = {timeRangeOverall:start};\r\nlet endTime = {timeRangeOverall:end};\r\nlet interval = totimespan({timeSpan:label});\r\n\r\nlet dataset = requests\r\n    // additional filters can be applied here\r\n    | where timestamp between (startTime .. endTime) \r\n        and operation_Name has '{itnRegisterOperation}'\r\n;\r\ndataset\r\n| summarize percentile_95=percentile(duration, 95) by bin(timestamp, interval)\r\n| project timestamp, percentile_95, watermark=1000\r\n| render timechart",
                     "size": 0,
                     "aggregation": 3,
                     "showAnalytics": true,
@@ -2036,7 +1855,7 @@
                           "resourceIds": [
                             "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-idpay-appinsights"
                           ],
-                          "timeContextFromParameter": "timeRangeAssetRegister",
+                          "timeContextFromParameter": "timeRangeOverall",
                           "timeContext": {
                             "durationMs": 86400000
                           },
@@ -2086,7 +1905,7 @@
                           "resourceIds": [
                             "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-idpay-appinsights"
                           ],
-                          "timeContextFromParameter": "timeRangeAssetRegister",
+                          "timeContextFromParameter": "timeRangeOverall",
                           "timeContext": {
                             "durationMs": 86400000
                           },
@@ -2147,7 +1966,7 @@
                           "resourceIds": [
                             "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-idpay-appinsights"
                           ],
-                          "timeContextFromParameter": "timeRangeAssetRegister",
+                          "timeContextFromParameter": "timeRangeOverall",
                           "timeContext": {
                             "durationMs": 86400000
                           },
@@ -2209,7 +2028,7 @@
                           "resourceIds": [
                             "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-idpay-appinsights"
                           ],
-                          "timeContextFromParameter": "timeRangeAssetRegister",
+                          "timeContextFromParameter": "timeRangeOverall",
                           "timeContext": {
                             "durationMs": 86400000
                           },
@@ -2270,7 +2089,7 @@
                           "resourceIds": [
                             "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-idpay-appinsights"
                           ],
-                          "timeContextFromParameter": "timeRangeAssetRegister",
+                          "timeContextFromParameter": "timeRangeOverall",
                           "timeContext": {
                             "durationMs": 86400000
                           },
@@ -2350,7 +2169,7 @@
                                             "resourceIds": [
                                               "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-rdb-ns"
                                             ],
-                                            "timeContextFromParameter": "timeRangeAssetRegister",
+                                            "timeContextFromParameter": "timeRangeOverall",
                                             "timeContext": {
                                               "durationMs": 86400000
                                             },
@@ -2384,7 +2203,7 @@
                                             "resourceIds": [
                                               "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-rdb-ns"
                                             ],
-                                            "timeContextFromParameter": "timeRangeAssetRegister",
+                                            "timeContextFromParameter": "timeRangeOverall",
                                             "timeContext": {
                                               "durationMs": 86400000
                                             },
@@ -2429,7 +2248,7 @@
                                             "resourceIds": [
                                               "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.DocumentDB/databaseAccounts/${prefix}-idpay-mongodb-account"
                                             ],
-                                            "timeContextFromParameter": "timeRangeAssetRegister",
+                                            "timeContextFromParameter": "timeRangeOverall",
                                             "timeContext": {
                                               "durationMs": 86400000
                                             },
@@ -2470,7 +2289,7 @@
                                             "resourceIds": [
                                               "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.DocumentDB/databaseAccounts/${prefix}-idpay-mongodb-account"
                                             ],
-                                            "timeContextFromParameter": "timeRangeAssetRegister",
+                                            "timeContextFromParameter": "timeRangeOverall",
                                             "timeContext": {
                                               "durationMs": 86400000
                                             },
@@ -2544,7 +2363,7 @@
                   "type": 3,
                   "content": {
                     "version": "KqlItem/1.0",
-                    "query": "let startTime = {timeRangeBeneficiary:start};\r\nlet endTime = {timeRangeBeneficiary:end};\r\nlet interval = endTime-startTime;\r\n\r\nlet totalCount = requests\r\n| where timestamp between (startTime .. endTime)\r\n| where operation_Name has_any ({apiBeneficiary})\r\n| summarize Total = count() by operation_Name;\r\nlet data = requests\r\n| where timestamp between (startTime .. endTime)\r\n| where operation_Name has_any ({apiBeneficiary});\r\ndata\r\n| join kind=inner totalCount on operation_Name\r\n| summarize Count = count(), Users = dcount(tostring(customDimensions[\"Request-X-Forwarded-For\"])) by operation_Name, resultCode, Total//, timestamp=bin(timestamp,interval)\r\n| project ['Request Name'] = operation_Name, ['Result Code'] = resultCode, ['Total Response'] = Count, ['Rate %'] = (Count*100)/Total, ['Users Affected'] = Users\r\n| sort by ['Request Name']",
+                    "query": "let startTime = {timeRangeOverall:start};\r\nlet endTime = {timeRangeOverall:end};\r\nlet interval = endTime-startTime;\r\n\r\nlet totalCount = requests\r\n| where timestamp between (startTime .. endTime)\r\n| where operation_Name has_any ({apiBeneficiary})\r\n| summarize Total = count() by operation_Name;\r\nlet data = requests\r\n| where timestamp between (startTime .. endTime)\r\n| where operation_Name has_any ({apiBeneficiary});\r\ndata\r\n| join kind=inner totalCount on operation_Name\r\n| summarize Count = count(), Users = dcount(tostring(customDimensions[\"Request-X-Forwarded-For\"])) by operation_Name, resultCode, Total//, timestamp=bin(timestamp,interval)\r\n| project ['Request Name'] = operation_Name, ['Result Code'] = resultCode, ['Total Response'] = Count, ['Rate %'] = (Count*100)/Total, ['Users Affected'] = Users\r\n| sort by ['Request Name']",
                     "size": 0,
                     "showAnalytics": true,
                     "queryType": 0,
@@ -2784,7 +2603,7 @@
                   "type": 3,
                   "content": {
                     "version": "KqlItem/1.0",
-                    "query": "let startTime = {timeRangeBeneficiary:start};\nlet endTime = {timeRangeBeneficiary:end};\nlet interval = totimespan({timeSpan:label});\n\nrequests\n| where timestamp between (startTime .. endTime)\n| where operation_Name has_any ({apiBeneficiary})\n| summarize total = count(), n_ok = countif(resultCode startswith '2'  or resultCode == '404') by bin(timestamp,interval)\n| project timestamp, availability = todouble(n_ok)/total\n| join kind=fullouter (range timestamp from startTime to endTime step interval) on timestamp\n| project timestamp=coalesce(timestamp,timestamp1), availability = coalesce(availability,1.0), watermark=0.99",
+                    "query": "let startTime = {timeRangeOverall:start};\nlet endTime = {timeRangeOverall:end};\nlet interval = totimespan({timeSpan:label});\n\nrequests\n| where timestamp between (startTime .. endTime)\n| where operation_Name has_any ({apiBeneficiary})\n| summarize total = count(), n_ok = countif(resultCode startswith '2'  or resultCode == '404') by bin(timestamp,interval)\n| project timestamp, availability = todouble(n_ok)/total\n| join kind=fullouter (range timestamp from startTime to endTime step interval) on timestamp\n| project timestamp=coalesce(timestamp,timestamp1), availability = coalesce(availability,1.0), watermark=0.99",
                     "size": 0,
                     "aggregation": 3,
                     "showAnalytics": true,
@@ -2803,7 +2622,7 @@
                   "type": 3,
                   "content": {
                     "version": "KqlItem/1.0",
-                    "query": "let startTime = {timeRangeBeneficiary:start};\r\nlet endTime = {timeRangeBeneficiary:end};\r\nlet interval = totimespan({timeSpan:label});\r\n\r\nlet dataset = requests\r\n    // additional filters can be applied here\r\n    | where timestamp between (startTime .. endTime) \r\n        and operation_Name has_any ({apiBeneficiary})\r\n;\r\ndataset\r\n| summarize percentile_95=percentile(duration, 95) by bin(timestamp, interval)\r\n| project timestamp, percentile_95, watermark=1000\r\n| render timechart",
+                    "query": "let startTime = {timeRangeOverall:start};\r\nlet endTime = {timeRangeOverall:end};\r\nlet interval = totimespan({timeSpan:label});\r\n\r\nlet dataset = requests\r\n    // additional filters can be applied here\r\n    | where timestamp between (startTime .. endTime) \r\n        and operation_Name has_any ({apiBeneficiary})\r\n;\r\ndataset\r\n| summarize percentile_95=percentile(duration, 95) by bin(timestamp, interval)\r\n| project timestamp, percentile_95, watermark=1000\r\n| render timechart",
                     "size": 0,
                     "aggregation": 3,
                     "showAnalytics": true,
@@ -2836,7 +2655,7 @@
                           "resourceIds": [
                             "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-idpay-appinsights"
                           ],
-                          "timeContextFromParameter": "timeRangeBeneficiary",
+                          "timeContextFromParameter": "timeRangeOverall",
                           "timeContext": {
                             "durationMs": 86400000
                           },
@@ -2888,7 +2707,7 @@
                           "resourceIds": [
                             "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-idpay-appinsights"
                           ],
-                          "timeContextFromParameter": "timeRangeBeneficiary",
+                          "timeContextFromParameter": "timeRangeOverall",
                           "timeContext": {
                             "durationMs": 86400000
                           },
@@ -2951,7 +2770,7 @@
                           "resourceIds": [
                             "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-idpay-appinsights"
                           ],
-                          "timeContextFromParameter": "timeRangeBeneficiary",
+                          "timeContextFromParameter": "timeRangeOverall",
                           "timeContext": {
                             "durationMs": 86400000
                           },
@@ -3015,7 +2834,7 @@
                           "resourceIds": [
                             "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-idpay-appinsights"
                           ],
-                          "timeContextFromParameter": "timeRangeBeneficiary",
+                          "timeContextFromParameter": "timeRangeOverall",
                           "timeContext": {
                             "durationMs": 86400000
                           },
@@ -3078,7 +2897,7 @@
                           "resourceIds": [
                             "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-idpay-appinsights"
                           ],
-                          "timeContextFromParameter": "timeRangeBeneficiary",
+                          "timeContextFromParameter": "timeRangeOverall",
                           "timeContext": {
                             "durationMs": 86400000
                           },
@@ -3141,7 +2960,7 @@
                           "resourceIds": [
                             "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-01-ns"
                           ],
-                          "timeContextFromParameter": "timeRangeUsers",
+                          "timeContextFromParameter": "timeRangeOverall",
                           "timeContext": {
                             "durationMs": 86400000
                           },
@@ -3252,7 +3071,7 @@
                                 "resourceIds": [
                                   "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-01-ns"
                                 ],
-                                "timeContextFromParameter": "timeRangeUsers",
+                                "timeContextFromParameter": "timeRangeOverall",
                                 "timeContext": {
                                   "durationMs": 86400000
                                 },
@@ -3304,7 +3123,7 @@
                                 "resourceIds": [
                                   "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-01-ns"
                                 ],
-                                "timeContextFromParameter": "timeRangeUsers",
+                                "timeContextFromParameter": "timeRangeOverall",
                                 "timeContext": {
                                   "durationMs": 86400000
                                 },
@@ -3362,7 +3181,7 @@
                                       "resourceIds": [
                                         "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.DocumentDB/databaseAccounts/${prefix}-idpay-mongodb-account"
                                       ],
-                                      "timeContextFromParameter": "timeRangeUsers",
+                                      "timeContextFromParameter": "timeRangeOverall",
                                       "timeContext": {
                                         "durationMs": 86400000
                                       },
@@ -3418,7 +3237,7 @@
                                       "resourceIds": [
                                         "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.DocumentDB/databaseAccounts/${prefix}-idpay-mongodb-account"
                                       ],
-                                      "timeContextFromParameter": "timeRangeUsers",
+                                      "timeContextFromParameter": "timeRangeOverall",
                                       "timeContext": {
                                         "durationMs": 86400000
                                       },
@@ -3494,7 +3313,7 @@
                   "type": 3,
                   "content": {
                     "version": "KqlItem/1.0",
-                    "query": "let startTime = {timeRangeEnte:start};\r\nlet endTime = {timeRangeEnte:end};\r\nlet interval = endTime-startTime;\r\n\r\nlet totalCount = requests\r\n| where timestamp between (startTime .. endTime)\r\n| where operation_Name has_any ({apiEnte})\r\n| summarize Total = count() by operation_Name;\r\nlet data = requests\r\n| where timestamp between (startTime .. endTime)\r\n| where operation_Name has_any ({apiEnte});\r\ndata\r\n| join kind=inner totalCount on operation_Name\r\n| summarize Count = count(), Users = dcount(tostring(customDimensions[\"Request-X-Forwarded-For\"])) by operation_Name, resultCode, Total//, timestamp=bin(timestamp,interval)\r\n| project ['Request Name'] = operation_Name, ['Result Code'] = resultCode, ['Total Response'] = Count, ['Rate %'] = (Count*100)/Total, ['Users Affected'] = Users\r\n| sort by ['Request Name']",
+                    "query": "let startTime = {timeRangeOverall:start};\r\nlet endTime = {timeRangeOverall:end};\r\nlet interval = endTime-startTime;\r\n\r\nlet totalCount = requests\r\n| where timestamp between (startTime .. endTime)\r\n| where operation_Name has_any ({apiEnte})\r\n| summarize Total = count() by operation_Name;\r\nlet data = requests\r\n| where timestamp between (startTime .. endTime)\r\n| where operation_Name has_any ({apiEnte});\r\ndata\r\n| join kind=inner totalCount on operation_Name\r\n| summarize Count = count(), Users = dcount(tostring(customDimensions[\"Request-X-Forwarded-For\"])) by operation_Name, resultCode, Total//, timestamp=bin(timestamp,interval)\r\n| project ['Request Name'] = operation_Name, ['Result Code'] = resultCode, ['Total Response'] = Count, ['Rate %'] = (Count*100)/Total, ['Users Affected'] = Users\r\n| sort by ['Request Name']",
                     "size": 0,
                     "showAnalytics": true,
                     "queryType": 0,
@@ -3734,7 +3553,7 @@
                   "type": 3,
                   "content": {
                     "version": "KqlItem/1.0",
-                    "query": "let startTime = {timeRangeEnte:start};\nlet endTime = {timeRangeEnte:end};\nlet interval = totimespan({timeSpan:label});\n\nrequests\n| where timestamp between (startTime .. endTime)\n| where operation_Name has_any ({apiEnte})\n| summarize total = count(), n_ok = countif(resultCode startswith '2' or resultCode == '404') by bin(timestamp,interval)\n| project timestamp, availability = todouble(n_ok)/total\n| join kind=fullouter (range timestamp from startTime to endTime step interval) on timestamp\n| project timestamp=coalesce(timestamp,timestamp1), availability = coalesce(availability,1.0), watermark=0.99",
+                    "query": "let startTime = {timeRangeOverall:start};\nlet endTime = {timeRangeOverall:end};\nlet interval = totimespan({timeSpan:label});\n\nrequests\n| where timestamp between (startTime .. endTime)\n| where operation_Name has_any ({apiEnte})\n| summarize total = count(), n_ok = countif(resultCode startswith '2' or resultCode == '404') by bin(timestamp,interval)\n| project timestamp, availability = todouble(n_ok)/total\n| join kind=fullouter (range timestamp from startTime to endTime step interval) on timestamp\n| project timestamp=coalesce(timestamp,timestamp1), availability = coalesce(availability,1.0), watermark=0.99",
                     "size": 0,
                     "aggregation": 3,
                     "title": "Availability",
@@ -3752,7 +3571,7 @@
                   "type": 3,
                   "content": {
                     "version": "KqlItem/1.0",
-                    "query": "let startTime = {timeRangeEnte:start};\r\nlet endTime = {timeRangeEnte:end};\r\nlet interval = totimespan({timeSpan:label});\r\n\r\nlet dataset = requests\r\n    // additional filters can be applied here\r\n    | where timestamp between (startTime .. endTime) \r\n        and operation_Name has_any ({apiEnte})\r\n;\r\ndataset\r\n| summarize percentile_95=percentile(duration, 95) by bin(timestamp, interval)\r\n| project timestamp, percentile_95, watermark=1000\r\n| render timechart",
+                    "query": "let startTime = {timeRangeOverall:start};\r\nlet endTime = {timeRangeOverall:end};\r\nlet interval = totimespan({timeSpan:label});\r\n\r\nlet dataset = requests\r\n    // additional filters can be applied here\r\n    | where timestamp between (startTime .. endTime) \r\n        and operation_Name has_any ({apiEnte})\r\n;\r\ndataset\r\n| summarize percentile_95=percentile(duration, 95) by bin(timestamp, interval)\r\n| project timestamp, percentile_95, watermark=1000\r\n| render timechart",
                     "size": 0,
                     "aggregation": 3,
                     "showAnalytics": true,
@@ -3785,7 +3604,7 @@
                           "resourceIds": [
                             "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-idpay-appinsights"
                           ],
-                          "timeContextFromParameter": "timeRangeEnte",
+                          "timeContextFromParameter": "timeRangeOverall",
                           "timeContext": {
                             "durationMs": 86400000
                           },
@@ -3827,7 +3646,7 @@
                           "resourceIds": [
                             "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-idpay-appinsights"
                           ],
-                          "timeContextFromParameter": "timeRangeEnte",
+                          "timeContextFromParameter": "timeRangeOverall",
                           "timeContext": {
                             "durationMs": 86400000
                           },
@@ -3880,7 +3699,7 @@
                           "resourceIds": [
                             "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-idpay-appinsights"
                           ],
-                          "timeContextFromParameter": "timeRangeEnte",
+                          "timeContextFromParameter": "timeRangeOverall",
                           "timeContext": {
                             "durationMs": 86400000
                           },
@@ -3934,7 +3753,7 @@
                           "resourceIds": [
                             "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-idpay-appinsights"
                           ],
-                          "timeContextFromParameter": "timeRangeEnte",
+                          "timeContextFromParameter": "timeRangeOverall",
                           "timeContext": {
                             "durationMs": 86400000
                           },
@@ -3987,7 +3806,7 @@
                           "resourceIds": [
                             "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-idpay-appinsights"
                           ],
-                          "timeContextFromParameter": "timeRangeEnte",
+                          "timeContextFromParameter": "timeRangeOverall",
                           "timeContext": {
                             "durationMs": 86400000
                           },
@@ -4041,7 +3860,7 @@
                             "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-01-ns",
                             "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-00-ns"
                           ],
-                          "timeContextFromParameter": "timeRangeEnte",
+                          "timeContextFromParameter": "timeRangeOverall",
                           "timeContext": {
                             "durationMs": 86400000
                           },
@@ -4146,7 +3965,7 @@
                                 "resourceIds": [
                                   "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-00-ns"
                                 ],
-                                "timeContextFromParameter": "timeRangeEnte",
+                                "timeContextFromParameter": "timeRangeOverall",
                                 "timeContext": {
                                   "durationMs": 86400000
                                 },
@@ -4192,7 +4011,7 @@
                                 "resourceIds": [
                                   "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-00-ns"
                                 ],
-                                "timeContextFromParameter": "timeRangeEnte",
+                                "timeContextFromParameter": "timeRangeOverall",
                                 "timeContext": {
                                   "durationMs": 86400000
                                 },
@@ -4249,7 +4068,7 @@
                                 "resourceIds": [
                                   "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-01-ns"
                                 ],
-                                "timeContextFromParameter": "timeRangeEnte",
+                                "timeContextFromParameter": "timeRangeOverall",
                                 "timeContext": {
                                   "durationMs": 86400000
                                 },
@@ -4295,7 +4114,7 @@
                                 "resourceIds": [
                                   "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-01-ns"
                                 ],
-                                "timeContextFromParameter": "timeRangeEnte",
+                                "timeContextFromParameter": "timeRangeOverall",
                                 "timeContext": {
                                   "durationMs": 86400000
                                 },
@@ -4357,7 +4176,7 @@
                   "type": 3,
                   "content": {
                     "version": "KqlItem/1.0",
-                    "query": "let startTime = {timeRangeAssetRegister:start};\r\nlet endTime = {timeRangeAssetRegister:end};\r\nlet interval = endTime-startTime;\r\n\r\nlet totalCount = requests\r\n| where timestamp between (startTime .. endTime)\r\n| where operation_Name  has '{itnMerchantOperation}' \r\n| summarize Total = count() by operation_Name;\r\nlet data = requests\r\n| where timestamp between (startTime .. endTime)\r\n| where operation_Name has '{itnMerchantOperation}';\r\ndata\r\n| join kind=inner totalCount on operation_Name\r\n| summarize Count = count(), Users = dcount(tostring(customDimensions[\"Request-X-Forwarded-For\"])) by operation_Name, resultCode, Total//, timestamp=bin(timestamp,interval)\r\n| project ['Request Name'] = operation_Name, ['Result Code'] = resultCode, ['Total Response'] = Count, ['Rate %'] = (Count*100)/Total, ['Users Affected'] = Users\r\n| sort by ['Request Name']",
+                    "query": "let startTime = {timeRangeOverall:start};\r\nlet endTime = {timeRangeOverall:end};\r\nlet interval = endTime-startTime;\r\n\r\nlet totalCount = requests\r\n| where timestamp between (startTime .. endTime)\r\n| where operation_Name  has '{itnMerchantOperation}' \r\n| summarize Total = count() by operation_Name;\r\nlet data = requests\r\n| where timestamp between (startTime .. endTime)\r\n| where operation_Name has '{itnMerchantOperation}';\r\ndata\r\n| join kind=inner totalCount on operation_Name\r\n| summarize Count = count(), Users = dcount(tostring(customDimensions[\"Request-X-Forwarded-For\"])) by operation_Name, resultCode, Total//, timestamp=bin(timestamp,interval)\r\n| project ['Request Name'] = operation_Name, ['Result Code'] = resultCode, ['Total Response'] = Count, ['Rate %'] = (Count*100)/Total, ['Users Affected'] = Users\r\n| sort by ['Request Name']",
                     "size": 0,
                     "showAnalytics": true,
                     "queryType": 0,
@@ -4609,7 +4428,7 @@
                   "type": 3,
                   "content": {
                     "version": "KqlItem/1.0",
-                    "query": "let startTime = {timeRangeAssetRegister:start};\r\nlet endTime = {timeRangeAssetRegister:end};\r\nlet interval = endTime-startTime;\r\n\r\nlet requestFilter = dynamic([\"merchant-operator\"]);\r\n\r\nlet totalCount = requests\r\n| where timestamp between (startTime .. endTime)\r\n| where tostring(customDimensions[\"kc.realmName\"]) in (requestFilter)\r\n| where not(operation_Name has \"admin\")\r\n| summarize Total = count() by operation_Name;\r\n\r\nlet data = requests\r\n| where timestamp between (startTime .. endTime);\r\n\r\ndata\r\n| join kind=inner totalCount on operation_Name\r\n| summarize \r\n    Count = count(), \r\n    Users = dcount(tostring(customDimensions[\"Request-X-Forwarded-For\"])), \r\n    SuccessCount = countif(success == true), \r\n    FailureCount = countif(success == false) \r\n    by operation_Name, success, Total\r\n| project \r\n    ['Request Name'] = operation_Name, \r\n    ['Successful'] = success, \r\n    ['Total Response'] = Count, \r\n    ['Rate %'] = (Count * 100.0) / Total, \r\n    ['Users Affected'] = Users,\r\n    ['Success Count'] = SuccessCount,\r\n    ['Failure Count'] = FailureCount\r\n| sort by ['Request Name']\r\n",
+                    "query": "let startTime = {timeRangeOverall:start};\r\nlet endTime = {timeRangeOverall:end};\r\nlet interval = endTime-startTime;\r\n\r\nlet requestFilter = dynamic([\"merchant-operator\"]);\r\n\r\nlet totalCount = requests\r\n| where timestamp between (startTime .. endTime)\r\n| where tostring(customDimensions[\"kc.realmName\"]) in (requestFilter)\r\n| where not(operation_Name has \"admin\")\r\n| summarize Total = count() by operation_Name;\r\n\r\nlet data = requests\r\n| where timestamp between (startTime .. endTime);\r\n\r\ndata\r\n| join kind=inner totalCount on operation_Name\r\n| summarize \r\n    Count = count(), \r\n    Users = dcount(tostring(customDimensions[\"Request-X-Forwarded-For\"])), \r\n    SuccessCount = countif(success == true), \r\n    FailureCount = countif(success == false) \r\n    by operation_Name, success, Total\r\n| project \r\n    ['Request Name'] = operation_Name, \r\n    ['Successful'] = success, \r\n    ['Total Response'] = Count, \r\n    ['Rate %'] = (Count * 100.0) / Total, \r\n    ['Users Affected'] = Users,\r\n    ['Success Count'] = SuccessCount,\r\n    ['Failure Count'] = FailureCount\r\n| sort by ['Request Name']\r\n",
                     "size": 0,
                     "showAnalytics": true,
                     "queryType": 0,
@@ -4850,7 +4669,7 @@
                   "type": 3,
                   "content": {
                     "version": "KqlItem/1.0",
-                    "query": "let startTime = {timeRangeAssetRegister:start};\nlet endTime = {timeRangeAssetRegister:end};\nlet interval = totimespan({timeSpan:label});\n\nrequests\n| where timestamp between (startTime .. endTime)\n| where operation_Name has '{itnMerchantOperation}'\n| summarize total = count(), n_ok = countif(resultCode startswith '2'  or resultCode == '404') by bin(timestamp,interval)\n| project timestamp, availability = todouble(n_ok)/total\n| join kind=fullouter (range timestamp from startTime to endTime step interval) on timestamp\n| project timestamp=coalesce(timestamp,timestamp1), availability = coalesce(availability,1.0), watermark=0.99",
+                    "query": "let startTime = {timeRangeOverall:start};\nlet endTime = {timeRangeOverall:end};\nlet interval = totimespan({timeSpan:label});\n\nrequests\n| where timestamp between (startTime .. endTime)\n| where operation_Name has '{itnMerchantOperation}'\n| summarize total = count(), n_ok = countif(resultCode startswith '2'  or resultCode == '404') by bin(timestamp,interval)\n| project timestamp, availability = todouble(n_ok)/total\n| join kind=fullouter (range timestamp from startTime to endTime step interval) on timestamp\n| project timestamp=coalesce(timestamp,timestamp1), availability = coalesce(availability,1.0), watermark=0.99",
                     "size": 0,
                     "aggregation": 3,
                     "title": "Availability",
@@ -4868,7 +4687,7 @@
                   "type": 3,
                   "content": {
                     "version": "KqlItem/1.0",
-                    "query": "let startTime = {timeRangeAssetRegister:start};\r\nlet endTime = {timeRangeAssetRegister:end};\r\nlet interval = totimespan({timeSpan:label});\r\n\r\nlet dataset = requests\r\n    // additional filters can be applied here\r\n    | where timestamp between (startTime .. endTime) \r\n        and operation_Name has '{itnMerchantOperation}'\r\n;\r\ndataset\r\n| summarize percentile_95=percentile(duration, 95) by bin(timestamp, interval)\r\n| project timestamp, percentile_95, watermark=1000\r\n| render timechart",
+                    "query": "let startTime = {timeRangeOverall:start};\r\nlet endTime = {timeRangeOverall:end};\r\nlet interval = totimespan({timeSpan:label});\r\n\r\nlet dataset = requests\r\n    // additional filters can be applied here\r\n    | where timestamp between (startTime .. endTime) \r\n        and operation_Name has '{itnMerchantOperation}'\r\n;\r\ndataset\r\n| summarize percentile_95=percentile(duration, 95) by bin(timestamp, interval)\r\n| project timestamp, percentile_95, watermark=1000\r\n| render timechart",
                     "size": 0,
                     "aggregation": 3,
                     "showAnalytics": true,
@@ -4901,7 +4720,7 @@
                           "resourceIds": [
                             "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-idpay-appinsights"
                           ],
-                          "timeContextFromParameter": "timeRangeMerchant",
+                          "timeContextFromParameter": "timeRangeOverall",
                           "timeContext": {
                             "durationMs": 86400000
                           },
@@ -4951,7 +4770,7 @@
                           "resourceIds": [
                             "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-idpay-appinsights"
                           ],
-                          "timeContextFromParameter": "timeRangeMerchant",
+                          "timeContextFromParameter": "timeRangeOverall",
                           "timeContext": {
                             "durationMs": 86400000
                           },
@@ -5012,7 +4831,7 @@
                           "resourceIds": [
                             "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-idpay-appinsights"
                           ],
-                          "timeContextFromParameter": "timeRangeMerchant",
+                          "timeContextFromParameter": "timeRangeOverall",
                           "timeContext": {
                             "durationMs": 86400000
                           },
@@ -5074,7 +4893,7 @@
                           "resourceIds": [
                             "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-idpay-appinsights"
                           ],
-                          "timeContextFromParameter": "timeRangeMerchant",
+                          "timeContextFromParameter": "timeRangeOverall",
                           "timeContext": {
                             "durationMs": 86400000
                           },
@@ -5135,7 +4954,7 @@
                           "resourceIds": [
                             "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-idpay-appinsights"
                           ],
-                          "timeContextFromParameter": "timeRangeMerchant",
+                          "timeContextFromParameter": "timeRangeOverall",
                           "timeContext": {
                             "durationMs": 86400000
                           },
@@ -5197,7 +5016,7 @@
                           "resourceIds": [
                             "/subscriptions/${subscription_id}/resourceGroups/${prefix}-core-monitor-rg/providers/Microsoft.Insights/components/${prefix}-core-appinsights"
                           ],
-                          "timeContextFromParameter": "timeRangeMerchant",
+                          "timeContextFromParameter": "timeRangeOverall",
                           "timeContext": {
                             "durationMs": 86400000
                           },
@@ -5246,7 +5065,7 @@
                           "resourceIds": [
                             "/subscriptions/${subscription_id}/resourceGroups/${prefix}-core-monitor-rg/providers/Microsoft.Insights/components/${prefix}-core-appinsights"
                           ],
-                          "timeContextFromParameter": "timeRangeMerchant",
+                          "timeContextFromParameter": "timeRangeOverall",
                           "timeContext": {
                             "durationMs": 86400000
                           },
@@ -5303,7 +5122,7 @@
                           "resourceIds": [
                             "/subscriptions/${subscription_id}/resourceGroups/${prefix}-core-monitor-rg/providers/Microsoft.Insights/components/${prefix}-core-appinsights"
                           ],
-                          "timeContextFromParameter": "timeRangeMerchant",
+                          "timeContextFromParameter": "timeRangeOverall",
                           "timeContext": {
                             "durationMs": 86400000
                           },
@@ -5360,7 +5179,7 @@
                           "resourceIds": [
                             "/subscriptions/${subscription_id}/resourceGroups/${prefix}-core-monitor-rg/providers/Microsoft.Insights/components/${prefix}-core-appinsights"
                           ],
-                          "timeContextFromParameter": "timeRangeMerchant",
+                          "timeContextFromParameter": "timeRangeOverall",
                           "timeContext": {
                             "durationMs": 86400000
                           },
@@ -5421,7 +5240,7 @@
                           "resourceIds": [
                             "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-01-ns"
                           ],
-                          "timeContextFromParameter": "timeRangeMerchant",
+                          "timeContextFromParameter": "timeRangeOverall",
                           "timeContext": {
                             "durationMs": 86400000
                           },
@@ -5473,7 +5292,7 @@
                           "resourceIds": [
                             "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-01-ns"
                           ],
-                          "timeContextFromParameter": "timeRangeMerchant",
+                          "timeContextFromParameter": "timeRangeOverall",
                           "timeContext": {
                             "durationMs": 86400000
                           },
@@ -5525,7 +5344,7 @@
                           "resourceIds": [
                             "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-01-ns"
                           ],
-                          "timeContextFromParameter": "timeRangeMerchant",
+                          "timeContextFromParameter": "timeRangeOverall",
                           "timeContext": {
                             "durationMs": 86400000
                           },
@@ -5641,7 +5460,7 @@
                           "resourceIds": [
                             "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.DocumentDB/databaseAccounts/${prefix}-idpay-mongodb-account"
                           ],
-                          "timeContextFromParameter": "timeRangeMerchant",
+                          "timeContextFromParameter": "timeRangeOverall",
                           "timeContext": {
                             "durationMs": 86400000
                           },
@@ -5687,7 +5506,7 @@
                           "resourceIds": [
                             "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.DocumentDB/databaseAccounts/${prefix}-idpay-mongodb-account"
                           ],
-                          "timeContextFromParameter": "timeRangeMerchant",
+                          "timeContextFromParameter": "timeRangeOverall",
                           "timeContext": {
                             "durationMs": 86400000
                           },
@@ -5745,7 +5564,7 @@
                   "type": 3,
                   "content": {
                     "version": "KqlItem/1.0",
-                    "query": "let startTime = {timeRangeAssetRegister:start};\r\nlet endTime = {timeRangeAssetRegister:end};\r\nlet interval = endTime-startTime;\r\n\r\nlet totalCount = requests\r\n| where timestamp between (startTime .. endTime)\r\n| where operation_Name  has '{itnUsersOperation}' \r\n| summarize Total = count() by operation_Name;\r\nlet data = requests\r\n| where timestamp between (startTime .. endTime)\r\n| where operation_Name has '{itnUsersOperation}';\r\ndata\r\n| join kind=inner totalCount on operation_Name\r\n| summarize Count = count(), Users = dcount(tostring(customDimensions[\"Request-X-Forwarded-For\"])) by operation_Name, resultCode, Total//, timestamp=bin(timestamp,interval)\r\n| project ['Request Name'] = operation_Name, ['Result Code'] = resultCode, ['Total Response'] = Count, ['Rate %'] = (Count*100)/Total, ['Users Affected'] = Users\r\n| sort by ['Request Name']",
+                    "query": "let startTime = {timeRangeOverall:start};\r\nlet endTime = {timeRangeOverall:end};\r\nlet interval = endTime-startTime;\r\n\r\nlet totalCount = requests\r\n| where timestamp between (startTime .. endTime)\r\n| where operation_Name  has '{itnUsersOperation}' \r\n| summarize Total = count() by operation_Name;\r\nlet data = requests\r\n| where timestamp between (startTime .. endTime)\r\n| where operation_Name has '{itnUsersOperation}';\r\ndata\r\n| join kind=inner totalCount on operation_Name\r\n| summarize Count = count(), Users = dcount(tostring(customDimensions[\"Request-X-Forwarded-For\"])) by operation_Name, resultCode, Total//, timestamp=bin(timestamp,interval)\r\n| project ['Request Name'] = operation_Name, ['Result Code'] = resultCode, ['Total Response'] = Count, ['Rate %'] = (Count*100)/Total, ['Users Affected'] = Users\r\n| sort by ['Request Name']",
                     "size": 0,
                     "showAnalytics": true,
                     "queryType": 0,
@@ -5997,7 +5816,7 @@
                   "type": 3,
                   "content": {
                     "version": "KqlItem/1.0",
-                    "query": "let startTime = {timeRangeAssetRegister:start};\r\nlet endTime = {timeRangeAssetRegister:end};\r\nlet interval = endTime-startTime;\r\n\r\nlet requestFilter = dynamic([\"user\"]);\r\n \r\nlet totalCount = requests\r\n| where timestamp between (startTime .. endTime)\r\n| where tostring(customDimensions[\"kc.realmName\"]) in (requestFilter)\r\n| where not(operation_Name has \"admin\")\r\n| summarize Total = count() by operation_Name;\r\n\r\nlet data = requests\r\n| where timestamp between (startTime .. endTime);\r\n\r\ndata\r\n| join kind=inner totalCount on operation_Name\r\n| summarize \r\n    Count = count(), \r\n    Users = dcount(tostring(customDimensions[\"Request-X-Forwarded-For\"])), \r\n    SuccessCount = countif(success == true), \r\n    FailureCount = countif(success == false) \r\n    by operation_Name, success, Total\r\n| project \r\n    ['Request Name'] = operation_Name, \r\n    ['Successful'] = success, \r\n    ['Total Response'] = Count, \r\n    ['Rate %'] = (Count * 100.0) / Total, \r\n    ['Users Affected'] = Users,\r\n    ['Success Count'] = SuccessCount,\r\n    ['Failure Count'] = FailureCount\r\n| sort by ['Request Name']\r\n",
+                    "query": "let startTime = {timeRangeOverall:start};\r\nlet endTime = {timeRangeOverall:end};\r\nlet interval = endTime-startTime;\r\n\r\nlet requestFilter = dynamic([\"user\"]);\r\n \r\nlet totalCount = requests\r\n| where timestamp between (startTime .. endTime)\r\n| where tostring(customDimensions[\"kc.realmName\"]) in (requestFilter)\r\n| where not(operation_Name has \"admin\")\r\n| summarize Total = count() by operation_Name;\r\n\r\nlet data = requests\r\n| where timestamp between (startTime .. endTime);\r\n\r\ndata\r\n| join kind=inner totalCount on operation_Name\r\n| summarize \r\n    Count = count(), \r\n    Users = dcount(tostring(customDimensions[\"Request-X-Forwarded-For\"])), \r\n    SuccessCount = countif(success == true), \r\n    FailureCount = countif(success == false) \r\n    by operation_Name, success, Total\r\n| project \r\n    ['Request Name'] = operation_Name, \r\n    ['Successful'] = success, \r\n    ['Total Response'] = Count, \r\n    ['Rate %'] = (Count * 100.0) / Total, \r\n    ['Users Affected'] = Users,\r\n    ['Success Count'] = SuccessCount,\r\n    ['Failure Count'] = FailureCount\r\n| sort by ['Request Name']\r\n",
                     "size": 0,
                     "showAnalytics": true,
                     "queryType": 0,
@@ -6249,7 +6068,7 @@
                   "type": 3,
                   "content": {
                     "version": "KqlItem/1.0",
-                    "query": "let startTime = {timeRangeAssetRegister:start};\nlet endTime = {timeRangeAssetRegister:end};\nlet interval = totimespan({timeSpan:label});\n\nrequests\n| where timestamp between (startTime .. endTime)\n| where operation_Name has '{itnUsersOperation}'\n| summarize total = count(), n_ok = countif(resultCode startswith '2'  or resultCode == '404') by bin(timestamp,interval)\n| project timestamp, availability = todouble(n_ok)/total\n| join kind=fullouter (range timestamp from startTime to endTime step interval) on timestamp\n| project timestamp=coalesce(timestamp,timestamp1), availability = coalesce(availability,1.0), watermark=0.99",
+                    "query": "let startTime = {timeRangeOverall:start};\nlet endTime = {timeRangeOverall:end};\nlet interval = totimespan({timeSpan:label});\n\nrequests\n| where timestamp between (startTime .. endTime)\n| where operation_Name has '{itnUsersOperation}'\n| summarize total = count(), n_ok = countif(resultCode startswith '2'  or resultCode == '404') by bin(timestamp,interval)\n| project timestamp, availability = todouble(n_ok)/total\n| join kind=fullouter (range timestamp from startTime to endTime step interval) on timestamp\n| project timestamp=coalesce(timestamp,timestamp1), availability = coalesce(availability,1.0), watermark=0.99",
                     "size": 0,
                     "aggregation": 3,
                     "title": "Availability",
@@ -6267,7 +6086,7 @@
                   "type": 3,
                   "content": {
                     "version": "KqlItem/1.0",
-                    "query": "let startTime = {timeRangeAssetRegister:start};\r\nlet endTime = {timeRangeAssetRegister:end};\r\nlet interval = totimespan({timeSpan:label});\r\n\r\nlet dataset = requests\r\n    // additional filters can be applied here\r\n    | where timestamp between (startTime .. endTime) \r\n        and operation_Name has '{itnUsersOperation}'\r\n;\r\ndataset\r\n| summarize percentile_95=percentile(duration, 95) by bin(timestamp, interval)\r\n| project timestamp, percentile_95, watermark=1000\r\n| render timechart",
+                    "query": "let startTime = {timeRangeOverall:start};\r\nlet endTime = {timeRangeOverall:end};\r\nlet interval = totimespan({timeSpan:label});\r\n\r\nlet dataset = requests\r\n    // additional filters can be applied here\r\n    | where timestamp between (startTime .. endTime) \r\n        and operation_Name has '{itnUsersOperation}'\r\n;\r\ndataset\r\n| summarize percentile_95=percentile(duration, 95) by bin(timestamp, interval)\r\n| project timestamp, percentile_95, watermark=1000\r\n| render timechart",
                     "size": 0,
                     "aggregation": 3,
                     "showAnalytics": true,
@@ -6300,7 +6119,7 @@
                           "resourceIds": [
                             "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-idpay-appinsights"
                           ],
-                          "timeContextFromParameter": "timeRangeUsers",
+                          "timeContextFromParameter": "timeRangeOverall",
                           "timeContext": {
                             "durationMs": 86400000
                           },
@@ -6350,7 +6169,7 @@
                           "resourceIds": [
                             "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-idpay-appinsights"
                           ],
-                          "timeContextFromParameter": "timeRangeUsers",
+                          "timeContextFromParameter": "timeRangeOverall",
                           "timeContext": {
                             "durationMs": 86400000
                           },
@@ -6411,7 +6230,7 @@
                           "resourceIds": [
                             "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-idpay-appinsights"
                           ],
-                          "timeContextFromParameter": "timeRangeUsers",
+                          "timeContextFromParameter": "timeRangeOverall",
                           "timeContext": {
                             "durationMs": 86400000
                           },
@@ -6473,7 +6292,7 @@
                           "resourceIds": [
                             "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-idpay-appinsights"
                           ],
-                          "timeContextFromParameter": "timeRangeUsers",
+                          "timeContextFromParameter": "timeRangeOverall",
                           "timeContext": {
                             "durationMs": 86400000
                           },
@@ -6534,7 +6353,7 @@
                           "resourceIds": [
                             "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-idpay-appinsights"
                           ],
-                          "timeContextFromParameter": "timeRangeUsers",
+                          "timeContextFromParameter": "timeRangeOverall",
                           "timeContext": {
                             "durationMs": 86400000
                           },
@@ -6596,7 +6415,7 @@
                           "resourceIds": [
                             "/subscriptions/${subscription_id}/resourceGroups/${prefix}-core-monitor-rg/providers/Microsoft.Insights/components/${prefix}-core-appinsights"
                           ],
-                          "timeContextFromParameter": "timeRangeUsers",
+                          "timeContextFromParameter": "timeRangeOverall",
                           "timeContext": {
                             "durationMs": 86400000
                           },
@@ -6650,7 +6469,7 @@
                           "resourceIds": [
                             "/subscriptions/${subscription_id}/resourceGroups/${prefix}-core-monitor-rg/providers/Microsoft.Insights/components/${prefix}-core-appinsights"
                           ],
-                          "timeContextFromParameter": "timeRangeUsers",
+                          "timeContextFromParameter": "timeRangeOverall",
                           "timeContext": {
                             "durationMs": 86400000
                           },
@@ -6712,7 +6531,7 @@
                           "resourceIds": [
                             "/subscriptions/${subscription_id}/resourceGroups/${prefix}-core-monitor-rg/providers/Microsoft.Insights/components/${prefix}-core-appinsights"
                           ],
-                          "timeContextFromParameter": "timeRangeUsers",
+                          "timeContextFromParameter": "timeRangeOverall",
                           "timeContext": {
                             "durationMs": 86400000
                           },
@@ -6774,7 +6593,7 @@
                           "resourceIds": [
                             "/subscriptions/${subscription_id}/resourceGroups/${prefix}-core-monitor-rg/providers/Microsoft.Insights/components/${prefix}-core-appinsights"
                           ],
-                          "timeContextFromParameter": "timeRangeUsers",
+                          "timeContextFromParameter": "timeRangeOverall",
                           "timeContext": {
                             "durationMs": 86400000
                           },
@@ -6846,7 +6665,7 @@
                                 "resourceIds": [
                                   "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.DocumentDB/databaseAccounts/${prefix}-idpay-mongodb-account"
                                 ],
-                                "timeContextFromParameter": "timeRangeUsers",
+                                "timeContextFromParameter": "timeRangeOverall",
                                 "timeContext": {
                                   "durationMs": 86400000
                                 },
@@ -6902,7 +6721,7 @@
                                 "resourceIds": [
                                   "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.DocumentDB/databaseAccounts/${prefix}-idpay-mongodb-account"
                                 ],
-                                "timeContextFromParameter": "timeRangeUsers",
+                                "timeContextFromParameter": "timeRangeOverall",
                                 "timeContext": {
                                   "durationMs": 86400000
                                 },
@@ -6975,7 +6794,7 @@
                           "resourceIds": [
                             "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-01-ns"
                           ],
-                          "timeContextFromParameter": "timeRangeUsers",
+                          "timeContextFromParameter": "timeRangeOverall",
                           "timeContext": {
                             "durationMs": 86400000
                           },
@@ -7027,7 +6846,7 @@
                           "resourceIds": [
                             "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-01-ns"
                           ],
-                          "timeContextFromParameter": "timeRangeUsers",
+                          "timeContextFromParameter": "timeRangeOverall",
                           "timeContext": {
                             "durationMs": 86400000
                           },
@@ -7079,7 +6898,7 @@
                           "resourceIds": [
                             "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-01-ns"
                           ],
-                          "timeContextFromParameter": "timeRangeUsers",
+                          "timeContextFromParameter": "timeRangeOverall",
                           "timeContext": {
                             "durationMs": 86400000
                           },
@@ -7196,7 +7015,7 @@
                   "type": 3,
                   "content": {
                     "version": "KqlItem/1.0",
-                    "query": "let startTime = {timeRangePayment:start};\r\nlet endTime = {timeRangePayment:end};\r\nlet interval = endTime-startTime;\r\n\r\nlet totalCount = requests\r\n| where timestamp between (startTime .. endTime)\r\n| where operation_Name has_any ({apiPayment})\r\n| summarize Total = count() by operation_Name;\r\nlet data = requests\r\n| where timestamp between (startTime .. endTime)\r\n| where operation_Name has_any ({apiPayment});\r\ndata\r\n| join kind=inner totalCount on operation_Name\r\n| summarize Count = count(), Users = dcount(tostring(customDimensions[\"Request-X-Forwarded-For\"])) by operation_Name, resultCode, Total//, timestamp=bin(timestamp,interval)\r\n| project ['Request Name'] = operation_Name, ['Result Code'] = resultCode, ['Total Response'] = Count, ['Rate %'] = (Count*100)/Total, ['Users Affected'] = Users\r\n| sort by ['Request Name']",
+                    "query": "let startTime = {timeRangeOverall:start};\r\nlet endTime = {timeRangeOverall:end};\r\nlet interval = endTime-startTime;\r\n\r\nlet totalCount = requests\r\n| where timestamp between (startTime .. endTime)\r\n| where operation_Name has_any ({apiPayment})\r\n| summarize Total = count() by operation_Name;\r\nlet data = requests\r\n| where timestamp between (startTime .. endTime)\r\n| where operation_Name has_any ({apiPayment});\r\ndata\r\n| join kind=inner totalCount on operation_Name\r\n| summarize Count = count(), Users = dcount(tostring(customDimensions[\"Request-X-Forwarded-For\"])) by operation_Name, resultCode, Total//, timestamp=bin(timestamp,interval)\r\n| project ['Request Name'] = operation_Name, ['Result Code'] = resultCode, ['Total Response'] = Count, ['Rate %'] = (Count*100)/Total, ['Users Affected'] = Users\r\n| sort by ['Request Name']",
                     "size": 0,
                     "showAnalytics": true,
                     "queryType": 0,
@@ -7436,7 +7255,7 @@
                   "type": 3,
                   "content": {
                     "version": "KqlItem/1.0",
-                    "query": "let startTime = {timeRangePayment:start};\nlet endTime = {timeRangePayment:end};\nlet interval = totimespan({timeSpan:label});\n\nrequests\n| where timestamp between (startTime .. endTime)\n| where operation_Name has_any ({apiPayment})\n| summarize total = count(), n_ok = countif(resultCode startswith '2' or resultCode == '404') by bin(timestamp,interval)\n| project timestamp, availability = todouble(n_ok)/total\n| join kind=fullouter (range timestamp from startTime to endTime step interval) on timestamp\n| project timestamp=coalesce(timestamp,timestamp1), availability = coalesce(availability,1.0), watermark = 0.99",
+                    "query": "let startTime = {timeRangeOverall:start};\nlet endTime = {timeRangeOverall:end};\nlet interval = totimespan({timeSpan:label});\n\nrequests\n| where timestamp between (startTime .. endTime)\n| where operation_Name has_any ({apiPayment})\n| summarize total = count(), n_ok = countif(resultCode startswith '2' or resultCode == '404') by bin(timestamp,interval)\n| project timestamp, availability = todouble(n_ok)/total\n| join kind=fullouter (range timestamp from startTime to endTime step interval) on timestamp\n| project timestamp=coalesce(timestamp,timestamp1), availability = coalesce(availability,1.0), watermark = 0.99",
                     "size": 0,
                     "aggregation": 3,
                     "title": "Availability",
@@ -7454,7 +7273,7 @@
                   "type": 3,
                   "content": {
                     "version": "KqlItem/1.0",
-                    "query": "let startTime = {timeRangePayment:start};\r\nlet endTime = {timeRangePayment:end};\r\nlet interval = totimespan({timeSpan:label});\r\n\r\nlet dataset = requests\r\n    // additional filters can be applied here\r\n    | where timestamp between (startTime .. endTime) \r\n        and operation_Name has_any ({apiPayment})\r\n;\r\ndataset\r\n| summarize percentile_95=percentile(duration, 95) by bin(timestamp, interval)\r\n| project timestamp, percentile_95, watermark=1000\r\n| render timechart",
+                    "query": "let startTime = {timeRangeOverall:start};\r\nlet endTime = {timeRangeOverall:end};\r\nlet interval = totimespan({timeSpan:label});\r\n\r\nlet dataset = requests\r\n    // additional filters can be applied here\r\n    | where timestamp between (startTime .. endTime) \r\n        and operation_Name has_any ({apiPayment})\r\n;\r\ndataset\r\n| summarize percentile_95=percentile(duration, 95) by bin(timestamp, interval)\r\n| project timestamp, percentile_95, watermark=1000\r\n| render timechart",
                     "size": 0,
                     "aggregation": 3,
                     "showAnalytics": true,
@@ -7487,7 +7306,7 @@
                           "resourceIds": [
                             "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-idpay-appinsights"
                           ],
-                          "timeContextFromParameter": "timeRangePayment",
+                          "timeContextFromParameter": "timeRangeOverall",
                           "timeContext": {
                             "durationMs": 432000000,
                             "endTime": "2023-09-14T10:58:00.000Z"
@@ -7530,7 +7349,7 @@
                           "resourceIds": [
                             "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-idpay-appinsights"
                           ],
-                          "timeContextFromParameter": "timeRangePayment",
+                          "timeContextFromParameter": "timeRangeOverall",
                           "timeContext": {
                             "durationMs": 432000000,
                             "endTime": "2023-09-14T10:58:00.000Z"
@@ -7584,7 +7403,7 @@
                           "resourceIds": [
                             "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-idpay-appinsights"
                           ],
-                          "timeContextFromParameter": "timeRangePayment",
+                          "timeContextFromParameter": "timeRangeOverall",
                           "timeContext": {
                             "durationMs": 432000000,
                             "endTime": "2023-09-14T10:58:00.000Z"
@@ -7639,7 +7458,7 @@
                           "resourceIds": [
                             "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-idpay-appinsights"
                           ],
-                          "timeContextFromParameter": "timeRangePayment",
+                          "timeContextFromParameter": "timeRangeOverall",
                           "timeContext": {
                             "durationMs": 432000000,
                             "endTime": "2023-09-14T10:58:00.000Z"
@@ -7693,7 +7512,7 @@
                           "resourceIds": [
                             "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-monitoring-rg/providers/Microsoft.Insights/components/${prefix}-idpay-appinsights"
                           ],
-                          "timeContextFromParameter": "timeRangePayment",
+                          "timeContextFromParameter": "timeRangeOverall",
                           "timeContext": {
                             "durationMs": 432000000,
                             "endTime": "2023-09-14T10:58:00.000Z"
@@ -7747,7 +7566,7 @@
                           "resourceIds": [
                             "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-01-ns"
                           ],
-                          "timeContextFromParameter": "timeRangePayment",
+                          "timeContextFromParameter": "timeRangeOverall",
                           "timeContext": {
                             "durationMs": 432000000,
                             "endTime": "2023-09-14T10:58:00.000Z"
@@ -7853,7 +7672,7 @@
                                 "resourceIds": [
                                   "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-01-ns"
                                 ],
-                                "timeContextFromParameter": "timeRangePayment",
+                                "timeContextFromParameter": "timeRangeOverall",
                                 "timeContext": {
                                   "durationMs": 432000000,
                                   "endTime": "2023-09-14T10:58:00.000Z"
@@ -7900,7 +7719,7 @@
                                 "resourceIds": [
                                   "/subscriptions/${subscription_id}/resourceGroups/${prefix}-idpay-data-rg/providers/Microsoft.EventHub/namespaces/${prefix}-idpay-evh-01-ns"
                                 ],
-                                "timeContextFromParameter": "timeRangePayment",
+                                "timeContextFromParameter": "timeRangeOverall",
                                 "timeContext": {
                                   "durationMs": 432000000,
                                   "endTime": "2023-09-14T10:58:00.000Z"
