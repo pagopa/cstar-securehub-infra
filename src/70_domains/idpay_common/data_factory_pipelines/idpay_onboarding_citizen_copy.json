@@ -55,7 +55,7 @@
                             { "source": { "path": "updateDate.$date.$numberLong" },
                                 "sink": { "name": "updateDateString", "type": "String" } },
 
-                            { "source": { "path": "$['detailKO']" }, "sink": { "name": "detailKO", "type": "String" } },
+                            { "source": { "path": "$['detailKO']" }, "sink": { "name": "detailKO", "type": "String" } }
 
                         ],
 
