@@ -44,7 +44,7 @@
       },
       "gridPos": {
         "h": 9,
-        "w": 12,
+        "w": 6,
         "x": 0,
         "y": 0
       },
@@ -105,7 +105,213 @@
           "resultFormat": "table"
         }
       ],
-      "title": "Numero Transizioni Per Franchise",
+      "title": "Numero Transazioni Per Franchise",
+      "transformations": [
+        {
+          "id": "partitionByValues",
+          "options": {
+            "fields": [
+              "businessName"
+            ],
+            "keepFields": true
+          }
+        }
+      ],
+      "transparent": true,
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-data-explorer-datasource",
+        "uid": "ef2bw8859i6tcd"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 6,
+        "x": 6,
+        "y": 0
+      },
+      "id": 6,
+      "options": {
+        "displayLabels": [
+          "value",
+          "name"
+        ],
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true,
+          "values": [
+            "value",
+            "percent"
+          ]
+        },
+        "pieType": "donut",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^TotaleTransazioni$/",
+          "values": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.6.3",
+      "targets": [
+        {
+          "OpenAI": false,
+          "database": "idpay",
+          "datasource": {
+            "type": "grafana-azure-data-explorer-datasource",
+            "uid": "ef2bw8859i6tcd"
+          },
+          "expression": {
+            "groupBy": {
+              "expressions": [],
+              "type": "and"
+            },
+            "reduce": {
+              "expressions": [],
+              "type": "and"
+            },
+            "where": {
+              "expressions": [],
+              "type": "and"
+            }
+          },
+          "pluginVersion": "6.2.0",
+          "query": "transaction\r\n| join kind=rightouter (\r\n    point_of_sales\r\n    | project _id, type\r\n) on $left.pointOfSaleId == $right._id\r\n| summarize TotaleTransazioni = count() by type",
+          "querySource": "raw",
+          "queryType": "KQL",
+          "rawMode": true,
+          "refId": "A",
+          "resultFormat": "table"
+        }
+      ],
+      "title": "Numero Transazioni Per Tipologia Punto Vendita",
+      "transformations": [
+        {
+          "id": "partitionByValues",
+          "options": {
+            "fields": [
+              "businessName"
+            ],
+            "keepFields": true
+          }
+        }
+      ],
+      "transparent": true,
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-data-explorer-datasource",
+        "uid": "ef2bw8859i6tcd"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 6,
+        "x": 12,
+        "y": 0
+      },
+      "id": 7,
+      "options": {
+        "displayLabels": [
+          "value",
+          "name"
+        ],
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true,
+          "values": [
+            "value",
+            "percent"
+          ]
+        },
+        "pieType": "donut",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^TotaleTransazioni$/",
+          "values": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.6.3",
+      "targets": [
+        {
+          "OpenAI": false,
+          "database": "idpay",
+          "datasource": {
+            "type": "grafana-azure-data-explorer-datasource",
+            "uid": "ef2bw8859i6tcd"
+          },
+          "expression": {
+            "groupBy": {
+              "expressions": [],
+              "type": "and"
+            },
+            "reduce": {
+              "expressions": [],
+              "type": "and"
+            },
+            "where": {
+              "expressions": [],
+              "type": "and"
+            }
+          },
+          "pluginVersion": "6.2.0",
+          "query": "transaction\r\n| join kind=rightouter (\r\n    point_of_sales\r\n    | project _id, type\r\n) on $left.pointOfSaleId == $right._id\r\n| summarize TotaleTransazioni = count() by type",
+          "querySource": "raw",
+          "queryType": "KQL",
+          "rawMode": true,
+          "refId": "A",
+          "resultFormat": "table"
+        }
+      ],
+      "title": "Numero Transazioni Per Tipologia Punto Vendita",
       "transformations": [
         {
           "id": "partitionByValues",
@@ -144,8 +350,8 @@
       },
       "gridPos": {
         "h": 9,
-        "w": 12,
-        "x": 12,
+        "w": 6,
+        "x": 18,
         "y": 0
       },
       "id": 4,
@@ -197,7 +403,7 @@
             }
           },
           "pluginVersion": "6.2.0",
-          "query": "merchant_initiative_counters\r\n| where initiativeId == \"68dd003ccce8c534d1da22bc\"\r\n| join kind=leftouter (\r\n    merchant\r\n    | project businessName, _id\r\n) on $left.merchantId == $right._id\r\n| project businessName,trxNumber\r\n| order by businessName desc",
+          "query": "merchant_initiative_counters\r\n| where initiativeId == \"68dd003ccce8c534d1da22bc\"\r\n| join kind=leftouter (\r\n    merchant\r\n    | project businessName, _id\r\n) on $left.merchantId == $right._id\r\n| project businessName, refoundNumber\r\n| order by businessName desc",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -287,7 +493,7 @@
       "targets": [
         {
           "OpenAI": false,
-          "clusterUri": "https://cstar-p-itn-platform.italynorth.kusto.windows.net",
+          "clusterUri": "https://cstar-d-itn-platform.italynorth.kusto.windows.net",
           "database": "idpay",
           "datasource": {
             "type": "grafana-azure-data-explorer-datasource",
@@ -344,6 +550,27 @@
           "color": {
             "mode": "palette-classic"
           },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -354,7 +581,32 @@
             ]
           }
         },
-        "overrides": []
+        "overrides": [
+          {
+            "__systemRef": "hideSeriesFrom",
+            "matcher": {
+              "id": "byNames",
+              "options": {
+                "mode": "exclude",
+                "names": [
+                  "Totale Esercente di test IdPay"
+                ],
+                "prefix": "All except:",
+                "readOnly": true
+              }
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": true
+                }
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 11,
@@ -362,30 +614,29 @@
         "x": 12,
         "y": 9
       },
-      "id": 1,
+      "id": 5,
       "options": {
-        "displayMode": "gradient",
+        "barRadius": 0,
+        "barWidth": 0.97,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
         "legend": {
           "calcs": [],
           "displayMode": "list",
           "placement": "bottom",
-          "showLegend": false
+          "showLegend": true
         },
-        "maxVizHeight": 300,
-        "minVizHeight": 16,
-        "minVizWidth": 8,
-        "namePlacement": "auto",
         "orientation": "horizontal",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": true
+        "showValue": "auto",
+        "stacking": "none",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
         },
-        "showUnfilled": true,
-        "sizing": "auto",
-        "valueMode": "color"
+        "xField": "businessName",
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
       },
       "pluginVersion": "11.6.3",
       "targets": [
@@ -419,7 +670,7 @@
           "resultFormat": "table"
         }
       ],
-      "title": "Punti Vendita Per Franchise",
+      "title": "Punti Vendita Per Esercenti",
       "transformations": [
         {
           "id": "partitionByValues",
@@ -435,7 +686,7 @@
         }
       ],
       "transparent": true,
-      "type": "bargauge"
+      "type": "barchart"
     }
   ],
   "preload": false,
@@ -452,5 +703,5 @@
   "timezone": "browser",
   "title": "ESE",
   "uid": "eezu3dfeyfhfkb",
-  "version": 46
+  "version": 60
 }
