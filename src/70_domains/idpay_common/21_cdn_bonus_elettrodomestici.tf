@@ -56,37 +56,7 @@ locals {
           }
         ]
       }
-    ],
-
-    var.cdn_rewrite_disable_cittadino ? [
-      {
-        name              = "UtenteRedirect"
-        order             = 50
-        behavior_on_match = "Continue"
-
-        // conditions
-        url_path_conditions = [
-          {
-            operator         = "BeginsWith"
-            match_values     = ["/utente"]
-            negate_condition = false
-            transforms       = null
-          }
-        ]
-
-        // actions
-        url_redirect_actions = [
-          {
-            redirect_type = "Found"
-            protocol      = "Https"
-            hostname      = "ioapp.it"
-            path          = "/bonus-elettrodomestici"
-            fragment      = ""
-            query_string  = ""
-          }
-        ]
-      }
-    ] : []
+    ]
   ])
 
   #--------------------------------------------------
@@ -142,7 +112,7 @@ locals {
   # by rewriting URLs to serve the correct index.html files
   app_delivery_rules = flatten([
     # Cittadino Application Rule - Handles citizen portal routing
-    var.cdn_rewrite_disable_cittadino ? [] : [{
+    [{
       name              = "RewriteUtenteCittadinoApplication"
       order             = 10
       behavior_on_match = "Stop"

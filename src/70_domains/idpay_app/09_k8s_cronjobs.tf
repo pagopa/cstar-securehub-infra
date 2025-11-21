@@ -122,7 +122,7 @@ resource "kubernetes_cron_job_v1" "reminder_voucher_expiration" {
               name  = "reminder-voucher-expiration"
               image = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
               args = [
-                "-X", "PUT",
+                "-X", "POST",
                 "https://${local.idpay_ingress_url}/idpaywallet/idpay/wallet/batch/run/${var.idpay_bel_initiative_id}"
               ]
             }

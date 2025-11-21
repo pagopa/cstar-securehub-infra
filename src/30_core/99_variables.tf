@@ -33,11 +33,6 @@ variable "location_short" {
   description = "Location short like eg: neu, weu.."
 }
 
-variable "pagopa_location_short" {
-  type        = string
-  description = "Pagopa's location short like eg: weu.."
-}
-
 variable "domain" {
   type = string
   validation {

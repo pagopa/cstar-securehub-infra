@@ -1,7 +1,6 @@
 locals {
-  product     = "${var.prefix}-${var.env_short}"
-  product_ita = "${var.prefix}-${var.env_short}-${var.location_short}"
-  project     = "${var.prefix}-${var.env_short}-${var.location_short}-${var.env}"
+  product = "${var.prefix}-${var.env_short}"
+  project = "${var.prefix}-${var.env_short}-${var.location_short}-${var.env}"
 
   argocd_application_owners = [
     "diego.lagosmorales@pagopa.it",
@@ -13,30 +12,38 @@ locals {
 
   # These groups are allowed to be linked into the projects or global setup of ArgoCD
   # If not present here or in the extra variable, the user can login to ArgoCD but with nothing assigned
-  argocd_entra_groups_allowed = [
+  argocd_entra_groups_allowed = concat([
     #Global groups
-    "${var.prefix}-${var.env_short}-adgroup-admin",
-    "${var.prefix}-${var.env_short}-adgroup-developers",
-    "${var.prefix}-${var.env_short}-adgroup-externals",
+    "${local.product}-adgroup-admin",
+    "${local.product}-adgroup-developers",
+    "${local.product}-adgroup-externals",
     #SRTP Groups
-    "${var.prefix}-${var.env_short}-srtp-adgroup-admin",
-    "${var.prefix}-${var.env_short}-srtp-adgroup-developers",
-    "${var.prefix}-${var.env_short}-srtp-adgroup-externals",
+    "${local.product}-srtp-adgroup-admin",
+    "${local.product}-srtp-adgroup-developers",
+    "${local.product}-srtp-adgroup-externals",
     #IDPay Groups
-    "${var.prefix}-${var.env_short}-idpay-adgroup-admin",
-    "${var.prefix}-${var.env_short}-idpay-adgroup-developers",
-    "${var.prefix}-${var.env_short}-idpay-adgroup-externals",
-  ]
+    "${local.product}-idpay-adgroup-admin",
+    "${local.product}-idpay-adgroup-developers",
+    "${local.product}-idpay-adgroup-externals",
+    ],
+
+    # OnCall group only in prod
+    var.env_short == "p" ? [
+
+      "${local.product}-idpay-adgroup-oncall",
+      "${local.product}-srtp-adgroup-oncall"
+    ] : []
+  )
 
 
 
   ### Kubernetes
-  kubernetes_cluster_name                = "cstar-${var.env_short}-itn-${var.env}-aks"
-  kubernetes_cluster_resource_group_name = "cstar-${var.env_short}-itn-core-aks-rg"
+  kubernetes_cluster_name                = "${local.project}-aks"
+  kubernetes_cluster_resource_group_name = "${local.product}-itn-core-aks-rg"
 
   ### KV
-  kv_name                = "cstar-${var.env_short}-itn-cicd-kv"
-  kv_resource_group_name = "cstar-${var.env_short}-itn-core-sec-rg"
+  kv_name                = "${local.product}-itn-cicd-kv"
+  kv_resource_group_name = "${local.product}-itn-core-sec-rg"
 
   ### ArgoCD
   argocd_hostname             = var.env == "prod" ? "argocd.itn.internal.cstar.pagopa.it" : "argocd.itn.internal.${var.env}.cstar.pagopa.it"

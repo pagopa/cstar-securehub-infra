@@ -14,13 +14,13 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.38.1 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.53.0 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | 8f5dbfc8d531ffd24057e3d45a875bd6d8ce17fa |
+| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | 2af8a000f8e3ac6c78944d1aad6be020ad8f0f63 |
 | <a name="module_azdoa_linux_app"></a> [azdoa\_linux\_app](#module\_azdoa\_linux\_app) | ./.terraform/modules/__v4__/azure_devops_agent | n/a |
 | <a name="module_azdoa_linux_infra"></a> [azdoa\_linux\_infra](#module\_azdoa\_linux\_infra) | ./.terraform/modules/__v4__/azure_devops_agent | n/a |
 | <a name="module_azdoa_linux_perf"></a> [azdoa\_linux\_perf](#module\_azdoa\_linux\_perf) | ./.terraform/modules/__v4__/azure_devops_agent | n/a |
@@ -71,7 +71,6 @@
 | <a name="input_law_sku"></a> [law\_sku](#input\_law\_sku) | Sku of the Log Analytics Workspace | `string` | `"PerGB2018"` | no |
 | <a name="input_location"></a> [location](#input\_location) | n/a | `string` | n/a | yes |
 | <a name="input_location_short"></a> [location\_short](#input\_location\_short) | Location short like eg: neu, weu.. | `string` | n/a | yes |
-| <a name="input_pagopa_location_short"></a> [pagopa\_location\_short](#input\_pagopa\_location\_short) | Pagopa's location short like eg: weu.. | `string` | n/a | yes |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | # General | `string` | n/a | yes |
 
 ## Outputs

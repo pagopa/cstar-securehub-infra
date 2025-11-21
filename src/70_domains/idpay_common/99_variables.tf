@@ -128,13 +128,6 @@ variable "single_page_applications_portal_merchants_operator_roots_dirs" {
   description = "spa root dirs"
 }
 
-variable "cdn_rewrite_disable_cittadino" {
-  default     = false
-  type        = bool
-  description = "Enable one single redirect to ioapp.it/bonus-elettrodomestici"
-}
-
-
 ## Event hub
 variable "ehns_sku_name" {
   type        = string
