@@ -43,16 +43,16 @@
                             { "source": { "path": "$['tc']" }, "sink": { "name": "tc", "type": "Boolean" } },
                             { "source": { "path": "$['pdndAccept']" }, "sink": { "name": "pdndAccept", "type": "Boolean" } },
 
-                            { "source": { "path": "tcAcceptTimestamp.$date.$numberLong" },
+                            { "source": { "path": "tcAcceptTimestamp.$date" },
                                 "sink": { "name": "tcAcceptTimestampString", "type": "String" } },
 
-                            { "source": { "path": "criteriaConsensusTimestamp.$date.$numberLong" },
+                            { "source": { "path": "criteriaConsensusTimestamp.$date" },
                                 "sink": { "name": "criteriaConsensusTimestampString", "type": "String" } },
 
-                            { "source": { "path": "onboardingOkDate.$date.$numberLong" },
+                            { "source": { "path": "onboardingOkDate.$date" },
                                 "sink": { "name": "onboardingOkDateString", "type": "String" } },
 
-                            { "source": { "path": "updateDate.$date.$numberLong" },
+                            { "source": { "path": "updateDate.$date" },
                                 "sink": { "name": "updateDateString", "type": "String" } },
 
                             { "source": { "path": "$['detailKO']" }, "sink": { "name": "detailKO", "type": "String" } }
