@@ -43,26 +43,3 @@ data "azurerm_key_vault_secret" "grafana_service_account_token" {
   name         = "grafana-itn-service-account-token-value"
   key_vault_id = data.azurerm_key_vault.core.id
 }
-
-
-# Azure AD
-data "azuread_group" "adgroup_admin" {
-  display_name = "${local.product}-adgroup-admin"
-}
-
-data "azuread_group" "adgroup_developers" {
-  display_name = "${local.product}-adgroup-developers"
-}
-
-data "azuread_user" "adgroup_cstar_users_developer" {
-  for_each  = toset(data.azuread_group.adgroup_developers.members)
-  object_id = each.value
-}
-
-data "azuread_group" "adgroup_externals" {
-  display_name = "${local.product}-adgroup-externals"
-}
-
-data "azuread_group" "adgroup_security" {
-  display_name = "${local.product}-adgroup-security"
-}
