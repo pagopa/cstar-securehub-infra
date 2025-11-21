@@ -61,11 +61,6 @@ locals {
         target_branch = "main"
         env           = ["dev", "uat", "prod"]
       }
-      "fake-mcshared-datavault" = {
-        name          = "fake-mcshared-datavault"
-        target_branch = "IDP-2806-idpay-duplicazione-mcshared-per-test-con-shared-key-su-nuova-collection"
-        env           = ["dev", "uat", "prod"]
-      }
     }
     "mid" = {
       "idpay-initiative-statistics" = {
