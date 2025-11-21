@@ -1,5 +1,6 @@
 {
     "name": "data_explorer_onboarding_citizen",
+    "properties": {
         "linkedServiceName": {
             "referenceName": "idpay-Kusto-idpay-ls",
             "type": "LinkedServiceReference"
