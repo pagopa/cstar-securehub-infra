@@ -1,13 +1,13 @@
 {
-    "name": "idpay_transaction_copy",
+    "name": "idpay_onboarding_citizen_copy",
     "properties": {
         "activities": [
             {
-                "name": "Copy transaction collection",
+                "name": "Copy onboarding citizen collection",
                 "type": "Copy",
                 "dependsOn": [
                     {
-                        "activity": "Clear transaction table",
+                        "activity": "Clear onboarding_citizen table",
                         "dependencyConditions": [
                             "Succeeded"
                         ]
@@ -65,19 +65,19 @@
                 },
                 "inputs": [
                     {
-                        "referenceName": "cosmos_idpay_transaction",
+                        "referenceName": "cosmos_idpay_onboarding_citizen",
                         "type": "DatasetReference"
                     }
                 ],
                 "outputs": [
                     {
-                        "referenceName": "data_explorer_idpay_transaction",
+                        "referenceName": "data_explorer_idpay_onboarding_citizen",
                         "type": "DatasetReference"
                     }
                 ]
             },
             {
-                "name": "Clear transaction table",
+                "name": "Clear onboarding_citizen table",
                 "type": "AzureDataExplorerCommand",
                 "dependsOn": [],
                 "policy": {
@@ -89,59 +89,7 @@
                 },
                 "userProperties": [],
                 "typeProperties": {
-                    "command": ".clear table transaction data",
-                    "commandTimeout": "00:20:00"
-                },
-                "linkedServiceName": {
-                    "referenceName": "idpay-Kusto-idpay-ls",
-                    "type": "LinkedServiceReference"
-                }
-            },
-            {
-                "name": "Extract RejectionReasons",
-                "type": "AzureDataExplorerCommand",
-                "dependsOn": [
-                    {
-                        "activity": "Convert Date",
-                        "dependencyConditions": [
-                            "Succeeded"
-                        ]
-                    }
-                ],
-                "policy": {
-                    "timeout": "0.12:00:00",
-                    "retry": 0,
-                    "retryIntervalInSeconds": 30
-                },
-                "userProperties": [],
-                "typeProperties": {
-                    "command": ".set-or-replace transaction_rejection_reasons <|\ntransaction\n| extend rejectionArray = parse_json(rejectionReasons)\n| mv-expand rejectionArray\n| project transactionId = _id, rejectionReason = tostring(rejectionArray)",
-                    "commandTimeout": "00:20:00"
-                },
-                "linkedServiceName": {
-                    "referenceName": "idpay-Kusto-idpay-ls",
-                    "type": "LinkedServiceReference"
-                }
-            },
-            {
-                "name": "Extract InitiativeRejectionReasons",
-                "type": "AzureDataExplorerCommand",
-                "dependsOn": [
-                    {
-                        "activity": "Extract RejectionReasons",
-                        "dependencyConditions": [
-                            "Succeeded"
-                        ]
-                    }
-                ],
-                "policy": {
-                    "timeout": "0.12:00:00",
-                    "retry": 0,
-                    "retryIntervalInSeconds": 30
-                },
-                "userProperties": [],
-                "typeProperties": {
-                    "command": ".set-or-replace transaction_initiative_rejection_reasons <|\ntransaction\n| extend initiativeRejectionMap = parse_json(initiativeRejectionReasons)\n| mv-expand initiativeId = bag_keys(initiativeRejectionMap)\n| extend initiativeId = tostring(initiativeId)\n| extend rejectionList = initiativeRejectionMap[initiativeId]\n| mv-expand rejectionReason = rejectionList\n| project transactionId = _id, initiativeId, rejectionReason = tostring(rejectionReason)",
+                    "command": ".clear table onboarding_citizen data",
                     "commandTimeout": "00:20:00"
                 },
                 "linkedServiceName": {
@@ -154,7 +102,7 @@
                 "type": "AzureDataExplorerCommand",
                 "dependsOn": [
                     {
-                        "activity": "Copy transaction collection",
+                        "activity": "Copy onboarding citizen collection",
                         "dependencyConditions": [
                             "Succeeded"
                         ]
@@ -169,7 +117,7 @@
                 },
                 "userProperties": [],
                 "typeProperties": {
-                    "command": ".set-or-replace transaction <|\ntransaction\n| extend \n    trxDate = unixtime_milliseconds_todatetime(tolong(trxDateString)),\n    trxChargeDate = unixtime_milliseconds_todatetime(tolong(trxChargeDateString)),\n    elaborationDateTime = unixtime_milliseconds_todatetime(tolong(elaborationDateTimeString))",
+                    "command": ".set-or-replace onboarding_citizen <|\nonboarding_citizen\n| extend \n    tcAcceptTimestamp = unixtime_milliseconds_todatetime(tolong(tcAcceptTimestampString)),\n    criteriaConsensusTimestamp = unixtime_milliseconds_todatetime(tolong(criteriaConsensusTimestampString)),\n    onboardingOkDate = unixtime_milliseconds_todatetime(tolong(onboardingOkDateString)),\n    updateDate = unixtime_milliseconds_todatetime(tolong(updateDateString))",
                     "commandTimeout": "00:20:00"
                 },
                 "linkedServiceName": {
