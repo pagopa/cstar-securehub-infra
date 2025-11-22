@@ -1,0 +1,15 @@
+{
+    "name": "cosmos_idpay_onboarding_citizen",
+    "properties": {
+        "linkedServiceName": {
+            "referenceName": "idpay-CosmosDB-idpay-beneficiari-ls",
+            "type": "LinkedServiceReference"
+        },
+        "annotations": [],
+        "type": "CosmosDbMongoDbApiCollection",
+        "typeProperties": {
+            "collection": "onboarding_citizen"
+        }
+    },
+    "type": "Microsoft.DataFactory/factories/datasets"
+}

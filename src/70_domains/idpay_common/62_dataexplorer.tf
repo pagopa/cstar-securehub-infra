@@ -8,8 +8,14 @@ resource "azurerm_kusto_database" "db" {
 
   hot_cache_period   = each.value.hot_cache_period
   soft_delete_period = each.value.soft_delete_period
-
 }
+
+resource "null_resource" "trigger_create_tables_idpay" {
+  triggers = {
+    file_hash = filesha256("${path.module}/data_explorer_kql/create_tables_idpay.kql")
+  }
+}
+
 resource "azapi_resource" "create_tables_idpay" {
   type      = "Microsoft.Kusto/clusters/databases/scripts@2023-08-15"
   name      = "create-table-idpay"
@@ -26,6 +32,9 @@ resource "azapi_resource" "create_tables_idpay" {
   depends_on = [
     azurerm_kusto_database.db
   ]
+  lifecycle {
+    replace_triggered_by = [null_resource.trigger_create_tables_idpay]
+  }
 }
 
 resource "azurerm_data_factory_managed_private_endpoint" "adf_dataexplorer_mpe" {
