@@ -324,7 +324,7 @@
                 },
                 "userProperties": [],
                 "typeProperties": {
-                    "command": ".clear table wallet data",
+                    "command": ".clear table timeline data",
                     "commandTimeout": "00:20:00"
                 },
                 "linkedServiceName": {
@@ -362,7 +362,7 @@
             }
         ],
         "annotations": [],
-        "lastPublishTime": "2025-10-23T13:15:41Z"
+        "lastPublishTime": "2025-11-21T13:32:05Z"
     },
     "type": "Microsoft.DataFactory/factories/pipelines"
 }
