@@ -38,25 +38,7 @@
                                     "path": "$['_id']"
                                 },
                                 "sink": {
-                                    "name": "id",
-                                    "type": "String"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['idTrxAcquirer']"
-                                },
-                                "sink": {
-                                    "name": "idTrxAcquirer",
-                                    "type": "String"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['acquirerCode']"
-                                },
-                                "sink": {
-                                    "name": "acquirerCode",
+                                    "name": "_id",
                                     "type": "String"
                                 }
                             },
@@ -71,37 +53,10 @@
                             },
                             {
                                 "source": {
-                                    "path": "$['hpan']"
-                                },
-                                "sink": {
-                                    "name": "hpan",
-                                    "type": "String"
-                                }
-                            },
-                            {
-                                "source": {
                                     "path": "$['operationType']"
                                 },
                                 "sink": {
                                     "name": "operationType",
-                                    "type": "String"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['circuitType']"
-                                },
-                                "sink": {
-                                    "name": "circuitType",
-                                    "type": "String"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['idTrxIssuer']"
-                                },
-                                "sink": {
-                                    "name": "idTrxIssuer",
                                     "type": "String"
                                 }
                             },
@@ -134,15 +89,6 @@
                             },
                             {
                                 "source": {
-                                    "path": "$['mcc']"
-                                },
-                                "sink": {
-                                    "name": "mcc",
-                                    "type": "String"
-                                }
-                            },
-                            {
-                                "source": {
                                     "path": "$['acquirerId']"
                                 },
                                 "sink": {
@@ -170,64 +116,10 @@
                             },
                             {
                                 "source": {
-                                    "path": "$['terminalId']"
-                                },
-                                "sink": {
-                                    "name": "terminalId",
-                                    "type": "String"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['bin']"
-                                },
-                                "sink": {
-                                    "name": "bin",
-                                    "type": "String"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['senderCode']"
-                                },
-                                "sink": {
-                                    "name": "senderCode",
-                                    "type": "String"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['fiscalCode']"
-                                },
-                                "sink": {
-                                    "name": "fiscalCode",
-                                    "type": "String"
-                                }
-                            },
-                            {
-                                "source": {
                                     "path": "$['vat']"
                                 },
                                 "sink": {
                                     "name": "vat",
-                                    "type": "String"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['posType']"
-                                },
-                                "sink": {
-                                    "name": "posType",
-                                    "type": "String"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['par']"
-                                },
-                                "sink": {
-                                    "name": "par",
                                     "type": "String"
                                 }
                             },
@@ -255,6 +147,24 @@
                                 },
                                 "sink": {
                                     "name": "initiativeRejectionReasons",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['rewards']['68dd003ccce8c534d1da22bc']['initiativeId']"
+                                },
+                                "sink": {
+                                    "name": "rewardInitiativeId",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['rewards']['68dd003ccce8c534d1da22bc']['organizationId']"
+                                },
+                                "sink": {
+                                    "name": "rewardOrganizationId",
                                     "type": "String"
                                 }
                             },
@@ -359,28 +269,37 @@
                             },
                             {
                                 "source": {
+                                    "path": "$['rewards']['68dd003ccce8c534d1da22bc']['counters']['trxNumber']"
+                                },
+                                "sink": {
+                                    "name": "rewardCountersTrxNumber",
+                                    "type": "Long"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['rewards']['68dd003ccce8c534d1da22bc']['counters']['totalRewardCents']"
+                                },
+                                "sink": {
+                                    "name": "rewardCountersTotalRewardCents",
+                                    "type": "Long"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['rewards']['68dd003ccce8c534d1da22bc']['counters']['totalAmountCents']"
+                                },
+                                "sink": {
+                                    "name": "rewardCountersTotalAmountCents",
+                                    "type": "Long"
+                                }
+                            },
+                            {
+                                "source": {
                                     "path": "$['userId']"
                                 },
                                 "sink": {
                                     "name": "userId",
-                                    "type": "String"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['maskedPan']"
-                                },
-                                "sink": {
-                                    "name": "maskedPan",
-                                    "type": "String"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['brandLogo']"
-                                },
-                                "sink": {
-                                    "name": "brandLogo",
                                     "type": "String"
                                 }
                             },
@@ -444,6 +363,15 @@
                                 },
                                 "sink": {
                                     "name": "additionalProductName",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['trxCode']"
+                                },
+                                "sink": {
+                                    "name": "trxCode",
                                     "type": "String"
                                 }
                             }
