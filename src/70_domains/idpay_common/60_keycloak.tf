@@ -293,10 +293,10 @@ resource "keycloak_openid_client_default_scopes" "merchant_frontend_defaults" {
 # USER REALM
 ##################
 resource "keycloak_realm" "user" {
-  realm        = "user"
-  enabled      = true
-  display_name = "user"
-
+  realm                    = "user"
+  enabled                  = true
+  display_name             = "user"
+  duplicate_emails_allowed = true
   attributes = {
     frontendUrl = local.keycloak_external_hostname
   }
@@ -403,18 +403,27 @@ resource "keycloak_user_template_importer_identity_provider_mapper" "userid_temp
   }
 }
 
-resource "keycloak_attribute_importer_identity_provider_mapper" "email_mapper" {
+resource "keycloak_hardcoded_attribute_identity_provider_mapper" "email_importer" {
   realm                   = keycloak_realm.user.id
-  name                    = "email-mapper"
-  claim_name              = "email"
   identity_provider_alias = keycloak_oidc_identity_provider.one_identity_provider.alias
-  user_attribute          = "email"
 
-  # extra_config with syncMode is required in Keycloak 10+
+  name = "email-importer"
+
+  # Mapper type = Hardcoded Attribute
+  # User Attribute  -> attribute_name
+  # User Attribute Value -> attribute_value
+  attribute_name  = "email"
+  attribute_value = "n/a"
+
+  # Not tied only to the user session
+  user_session = false
+
+  # Sync mode override = Inherit
   extra_config = {
     syncMode = "INHERIT"
   }
 }
+
 
 resource "keycloak_custom_identity_provider_mapper" "strip_tinit_fiscalnumber" {
   realm                    = keycloak_realm.user.id
@@ -424,7 +433,7 @@ resource "keycloak_custom_identity_provider_mapper" "strip_tinit_fiscalnumber" {
 
   # extra_config with syncMode is required in Keycloak 10+
   extra_config = {
-    "syncMode"       = "IMPORT"
+    "syncMode"       = "INHERIT"
     "user.attribute" = "fiscalNumber"
     "claim"          = "fiscalNumber"
   }
@@ -667,7 +676,6 @@ resource "keycloak_openid_client_default_scopes" "users_operator_perf_test_defau
     "web-origins",
     "roles",
     "profile",
-    "email",
     "basic",
     "acr"
   ]
