@@ -293,9 +293,9 @@ resource "keycloak_openid_client_default_scopes" "merchant_frontend_defaults" {
 # USER REALM
 ##################
 resource "keycloak_realm" "user" {
-  realm        = "user"
-  enabled      = true
-  display_name = "user"
+  realm                    = "user"
+  enabled                  = true
+  display_name             = "user"
   duplicate_emails_allowed = true
   attributes = {
     frontendUrl = local.keycloak_external_hostname
