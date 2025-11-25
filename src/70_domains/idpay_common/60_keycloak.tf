@@ -433,7 +433,7 @@ resource "keycloak_custom_identity_provider_mapper" "strip_tinit_fiscalnumber" {
 
   # extra_config with syncMode is required in Keycloak 10+
   extra_config = {
-    "syncMode"       = "IMPORT"
+    "syncMode"       = "INHERIT"
     "user.attribute" = "fiscalNumber"
     "claim"          = "fiscalNumber"
   }
@@ -676,7 +676,6 @@ resource "keycloak_openid_client_default_scopes" "users_operator_perf_test_defau
     "web-origins",
     "roles",
     "profile",
-    "email",
     "basic",
     "acr"
   ]
