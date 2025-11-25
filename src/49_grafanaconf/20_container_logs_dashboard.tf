@@ -151,6 +151,22 @@ resource "grafana_dashboard" "aks_container_logs_dashboard" {
   overwrite = true
 }
 
+resource "grafana_dashboard" "aks_container_aggregated_logs_dashboard" {
+  provider = grafana.cloud
+  for_each = { for product, type in local.team_product : product => type.aks if can(type.aks) }
+  config_json = templatefile("${path.module}/custom_dashboard/Cstar_AKS_Container_aggregated_logs.json", {
+    env                  = var.env,
+    env_short            = var.env_short,
+    location_short       = each.value.location_short,
+    namespace            = each.key,
+    subscription         = data.azurerm_subscription.current.id,
+    monitor_workspace_id = each.value.monitor_workspace_id,
+    aks_name             = each.value.aks_name
+  })
+  folder    = grafana_folder.team_dashboard_folder[each.key].uid
+  overwrite = true
+}
+
 # ACA dashboards
 resource "grafana_dashboard" "aca_container_logs_dashboard" {
   provider = grafana.cloud
