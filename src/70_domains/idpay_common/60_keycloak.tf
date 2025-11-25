@@ -415,7 +415,7 @@ resource "keycloak_hardcoded_attribute_identity_provider_mapper" "email_importer
   attribute_name  = "email"
   attribute_value = "n/a"
 
-  # Non è legato solo alla user session
+  # Not tied only to the user session
   user_session = false
 
   # Sync mode override = Inherit
