@@ -383,7 +383,8 @@ locals {
         { keys = ["elaborationDateTime"], unique = false },
         { keys = ["initiatives"], unique = false },
         { keys = ["status"], unique = false },
-        { keys = ["additionalProperties.productName"], unique = false }
+        { keys = ["additionalProperties.productName"], unique = false },
+        { keys = ["rewardBatchId", "samplingKey"], unique = false },
       ]
     },
     {

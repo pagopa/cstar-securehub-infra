@@ -466,7 +466,7 @@ locals {
       query       = <<-QUERY
             AppRequests
             | where Name matches regex @"^PUT /idpay-itn/merchant-op/transactions/bar-code/[^/]+/authorize$"
-            | where ResultCode in ("401", "403", "404", "429")
+            | where ResultCode in ("401", "403", "429")
           QUERY
       trigger = {
         operator  = "GreaterThanOrEqual"
@@ -478,7 +478,7 @@ locals {
     # POS In Progress Transactions List - 5xx Error Count
     pos_transactions_list_5xx_alert = {
       name        = "pos-transactions-inprogress-list-5xx-alert"
-      description = "API POS In Progress Transactions List: 5xx error count exceeded (> 2 in 5m)"
+      description = "API POS In Progress Transactions List: 5xx error count exceeded (> 50 in 5m)"
       query       = <<-QUERY
             AppRequests
             | where Name matches regex @"^GET /idpay-itn/merchant-op/initiatives/[^/]+/point-of-sales/[^/]+/transactions$"
@@ -486,7 +486,7 @@ locals {
           QUERY
       trigger = {
         operator  = "GreaterThanOrEqual"
-        threshold = 2
+        threshold = 50
       }
       email_subject = "[PARI][ESE][HIGH] POS In Progress Transactions List API Alert (5xx)"
     }
@@ -608,7 +608,7 @@ locals {
     # Products List - 5xx Error Count
     products_list_5xx_alert = {
       name        = "products-list-5xx-alert"
-      description = "API Products List: 5xx error count exceeded (> 2 in 5m)"
+      description = "API Products List: 5xx error count exceeded (> 50 in 5m)"
       query       = <<-QUERY
             AppRequests
             | where Name == "GET /idpay-itn/merchant-op/products"
@@ -616,7 +616,7 @@ locals {
           QUERY
       trigger = {
         operator  = "GreaterThanOrEqual"
-        threshold = 2
+        threshold = 50
       }
       email_subject = "[PARI][ESE][HIGH] Products List API Alert (5xx)"
     }
@@ -750,7 +750,7 @@ locals {
     # Get Initiative ID (Onboarding Service) - 401/429 Error Count
     get_initiative_id_4xx_auth_alert = {
       name        = "get-initiative-id-4xx-auth-alert"
-      description = "API Get Initiative ID: 401/429 error count exceeded (> 5 in 5m)"
+      description = "API Get Initiative ID: 401/429 error count exceeded (> 150 in 5m)"
       query       = <<-QUERY
             AppRequests
             | where Name matches regex @"^GET /idpay-itn/onboarding/service/[^/]+$"
@@ -758,7 +758,7 @@ locals {
           QUERY
       trigger = {
         operator  = "GreaterThanOrEqual"
-        threshold = 5
+        threshold = 150
       }
       email_subject = "[PARI][UPBE][HIGH] Get Initiative ID API Alert (401/429)"
     }
@@ -777,23 +777,6 @@ locals {
         threshold = 2
       }
       email_subject = "[PARI][UPBE][HIGH] Get Initiative Detail API Alert (5xx)"
-    }
-
-    # Get Initiative Detail (Onboarding Service) - 400 Error Count
-    get_initiative_detail_400_alert = {
-      name        = "get-initiative-detail-400-alert"
-      description = "API Get Initiative Detail: 400 error count exceeded (> 50 in 10m)"
-      time_window = 10
-      query       = <<-QUERY
-            AppRequests
-            | where Name matches regex @"^GET /idpay-itn/onboarding/[^/]+/detail$"
-            | where ResultCode == "400"
-          QUERY
-      trigger = {
-        operator  = "GreaterThanOrEqual"
-        threshold = 50
-      }
-      email_subject = "[PARI][UPBE][HIGH] Get Initiative Detail API Alert (400)"
     }
 
     # Get Initiative Detail (Onboarding Service) - 401/429 Error Count
@@ -896,7 +879,7 @@ locals {
     # Onboarding Initiative User Status - 5xx Error Count
     onboarding_initiative_user_status_5xx_alert = {
       name        = "onboarding-initiative-user-status-5xx-alert"
-      description = "API Onboarding Initiative User Status: 5xx error count exceeded (> 2 in 5m)"
+      description = "API Onboarding Initiative User Status: 5xx error count exceeded (> 50 in 5m)"
       query       = <<-QUERY
             AppRequests
             | where Name == "GET /idpay-itn/onboarding/user/initiative/status"
@@ -904,7 +887,7 @@ locals {
           QUERY
       trigger = {
         operator  = "GreaterThanOrEqual"
-        threshold = 2
+        threshold = 50
       }
       email_subject = "[PARI][UPBE][HIGH] Onboarding Initiative User Status API Alert (5xx)"
     }
@@ -1215,7 +1198,7 @@ locals {
     # Get Transaction PDF - 401/429 Error Count
     get_transaction_pdf_4xx_auth_alert = {
       name        = "get-transaction-pdf-4xx-auth-alert"
-      description = "API Get Transaction PDF: 401/429 error count exceeded (> 5 in 5m)"
+      description = "API Get Transaction PDF: 401/429 error count exceeded (> 150 in 5m)"
       query       = <<-QUERY
             AppRequests
             | where Name matches regex @"^GET /idpay-itn/web/payment/initiatives/[^/]+/bar-code/[^/]+/pdf$"
@@ -1223,7 +1206,7 @@ locals {
           QUERY
       trigger = {
         operator  = "GreaterThanOrEqual"
-        threshold = 5
+        threshold = 150
       }
       email_subject = "[PARI][UPBE][HIGH] Get Transaction PDF API Alert (401/429)"
     }

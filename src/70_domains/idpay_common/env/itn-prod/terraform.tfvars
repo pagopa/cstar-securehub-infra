@@ -97,5 +97,3 @@ additional_geo_locations = [{
   failover_priority = 1
   zone_redundant    = false
 }]
-
-cdn_rewrite_disable_cittadino = false
