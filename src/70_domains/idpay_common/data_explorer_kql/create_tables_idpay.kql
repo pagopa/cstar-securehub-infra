@@ -76,7 +76,7 @@
     status:string,
     rejectionReasons:dynamic,
     initiativeRejectionReasons:dynamic,
-    rewardInitiatieveId:string,
+    rewardInitiativeId:string,
     rewardOrganizationId:string,
     rewardProvidedRewardCents:long,
     rewardAccruedRewardCents:long,
