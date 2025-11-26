@@ -1,0 +1,228 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "Azure Monitor Container Insights",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 216,
+  "links": [],
+  "panels": [
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 26,
+      "panels": [],
+      "title": "Cluster - Pod -Logs",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "TimeGenerated"
+            },
+            "properties": []
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 21,
+        "w": 24,
+        "x": 0,
+        "y": 1
+      },
+      "id": 34,
+      "options": {
+        "dedupStrategy": "none",
+        "enableInfiniteScrolling": false,
+        "enableLogDetails": true,
+        "prettifyLogMessage": false,
+        "showCommonLabels": false,
+        "showLabels": false,
+        "showTime": false,
+        "sortOrder": "Ascending",
+        "wrapLogMessage": true
+      },
+      "pluginVersion": "11.6.3",
+      "targets": [
+        {
+          "appInsights": {
+            "dimension": [
+              "none"
+            ],
+            "metricName": "select",
+            "rawQuery": false,
+            "rawQueryString": "",
+            "timeColumn": "timestamp",
+            "timeGrain": "auto",
+            "valueColumn": ""
+          },
+          "azureLogAnalytics": {
+            "dashboardTime": false,
+            "query": "KubePodInventory\r\n| where ClusterName == \"$aks\"\r\n| where Namespace == \"$namespace\"\r\n| project ContainerID, PodName=Name, Namespace\r\n| distinct ContainerID, PodName\r\n| join\r\n(\r\n    ContainerLog\r\n    | where $__timeFilter(TimeGenerated)\r\n)\r\non ContainerID\r\n| project TimeGenerated, PodName, LogEntry, LogEntrySource, Nodo=Computer\r\n| where isnull(\"$MessageFilter\") or LogEntry contains \"$MessageFilter\"\r\n| summarize by TimeGenerated, LogEntry, PodName, LogEntrySource, Nodo\r\n| top $Limit by TimeGenerated desc",
+            "resources": [
+              "${monitor_workspace_id}"
+            ],
+            "resultFormat": "time_series"
+          },
+          "azureMonitor": {
+            "aggOptions": [],
+            "dimensionFilter": "*",
+            "dimensionFilters": [],
+            "metricDefinition": "select",
+            "metricName": "select",
+            "metricNamespace": "select",
+            "resources": [
+              {
+                "resourceGroup": "select",
+                "resourceName": "select"
+              }
+            ],
+            "timeGrain": "auto",
+            "timeGrains": [],
+            "top": "10"
+          },
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "hide": false,
+          "insightsAnalytics": {
+            "query": "",
+            "resultFormat": "time_series"
+          },
+          "queryType": "Azure Log Analytics",
+          "refId": "A",
+          "subscription": "${subscription}"
+        }
+      ],
+      "title": "Pod Logs (Top $Limit)",
+      "transformations": [
+        {
+          "id": "filterFieldsByName",
+          "options": {}
+        }
+      ],
+      "type": "logs"
+    }
+  ],
+  "preload": false,
+  "refresh": "",
+  "schemaVersion": 41,
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "text": "${aks_name}",
+          "value": "${aks_name}"
+        },
+        "description": "",
+        "hide": 2,
+        "name": "aks",
+        "query": "${aks_name}",
+        "skipUrlSync": true,
+        "type": "constant"
+      },
+      {
+        "current": {
+          "text": "${namespace}",
+          "value": "${namespace}"
+        },
+        "description": "",
+        "hide": 2,
+        "name": "namespace",
+        "query": "${namespace}",
+        "skipUrlSync": true,
+        "type": "constant"
+      },
+      {
+        "current": {
+          "text": "500",
+          "value": "500"
+        },
+        "label": "Limit",
+        "name": "Limit",
+        "options": [
+          {
+            "selected": true,
+            "text": "500",
+            "value": "500"
+          }
+        ],
+        "query": "500",
+        "type": "textbox"
+      },
+      {
+        "current": {
+          "text": "",
+          "value": ""
+        },
+        "hide": 1,
+        "label": "Log Filter",
+        "name": "MessageFilter",
+        "options": [
+          {
+            "selected": true,
+            "text": "",
+            "value": ""
+          }
+        ],
+        "query": "",
+        "type": "textbox"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ]
+  },
+  "timezone": "",
+  "title": "[AKS ${upper(location_short)}] ${upper(namespace)} AGGREGATED Container - Logs"
+}

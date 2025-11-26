@@ -45,6 +45,14 @@ locals {
         aks_name             = "${var.prefix}-${var.env_short}-${var.location_short}-${var.env}-aks"
       },
     }
+    keycloak = {
+      groups = lookup(var.team_groups, "keycloak", {})
+      aks = {
+        location_short       = "itn",
+        monitor_workspace_id = data.azurerm_log_analytics_workspace.law_core_itn.id,
+        aks_name             = "${var.prefix}-${var.env_short}-${var.location_short}-${var.env}-aks"
+      },
+    }
     mil = {
       groups = lookup(var.team_groups, "mil", {})
       aks = {
