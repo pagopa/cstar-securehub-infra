@@ -18,6 +18,17 @@ team_groups = {
       permission = "View"
     }
   }
+  keycloak = {
+    "cstar-u-idpay-adgroup-admin" = {
+      permission = "Admin"
+    }
+    "cstar-u-idpay-adgroup-developers" = {
+      permission = "View"
+    }
+    "cstar-u-idpay-adgroup-externals" = {
+      permission = "View"
+    }
+  }
   srtp = {
     "cstar-u-srtp-adgroup-admin" = {
       permission = "Admin"
