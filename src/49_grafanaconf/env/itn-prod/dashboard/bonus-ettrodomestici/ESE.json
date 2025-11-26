@@ -24,7 +24,7 @@
     {
       "datasource": {
         "type": "grafana-azure-data-explorer-datasource",
-        "uid": "ef2bw8859i6tcd"
+        "uid": "aezn6luqall34b"
       },
       "fieldConfig": {
         "defaults": {
@@ -80,7 +80,7 @@
           "database": "idpay",
           "datasource": {
             "type": "grafana-azure-data-explorer-datasource",
-            "uid": "ef2bw8859i6tcd"
+            "uid": "aezn6luqall34b"
           },
           "expression": {
             "groupBy": {
@@ -123,7 +123,7 @@
     {
       "datasource": {
         "type": "grafana-azure-data-explorer-datasource",
-        "uid": "ef2bw8859i6tcd"
+        "uid": "aezn6luqall34b"
       },
       "fieldConfig": {
         "defaults": {
@@ -183,7 +183,7 @@
           "database": "idpay",
           "datasource": {
             "type": "grafana-azure-data-explorer-datasource",
-            "uid": "ef2bw8859i6tcd"
+            "uid": "aezn6luqall34b"
           },
           "expression": {
             "groupBy": {
@@ -226,7 +226,7 @@
     {
       "datasource": {
         "type": "grafana-azure-data-explorer-datasource",
-        "uid": "ef2bw8859i6tcd"
+        "uid": "aezn6luqall34b"
       },
       "fieldConfig": {
         "defaults": {
@@ -270,7 +270,7 @@
           "calcs": [
             "lastNotNull"
           ],
-          "fields": "/^TotaleTransazioni$/",
+          "fields": "",
           "values": true
         },
         "tooltip": {
@@ -286,7 +286,7 @@
           "database": "idpay",
           "datasource": {
             "type": "grafana-azure-data-explorer-datasource",
-            "uid": "ef2bw8859i6tcd"
+            "uid": "aezn6luqall34b"
           },
           "expression": {
             "groupBy": {
@@ -303,7 +303,7 @@
             }
           },
           "pluginVersion": "6.2.0",
-          "query": "transaction\r\n| join kind=rightouter (\r\n    point_of_sales\r\n    | project _id, type\r\n) on $left.pointOfSaleId == $right._id\r\n| summarize TotaleTransazioni = count() by type",
+          "query": "transaction\r\n| where status in ( 'INVOICED', 'CAPTURED')\r\n| extend LungaDurata = (trxChargeDate - trxDate) > 15m\r\n| summarize TransazioniCount = count() by LungaDurata\r\n| extend Category = iff(LungaDurata, \"Voucher statico\", \"Voucher app\")\r\n| project Category, TransazioniCount\r\n",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -311,7 +311,7 @@
           "resultFormat": "table"
         }
       ],
-      "title": "Numero Transazioni Per Tipologia Punto Vendita",
+      "title": "Numero Transazioni Per Tipologia Voucher",
       "transformations": [
         {
           "id": "partitionByValues",
@@ -329,7 +329,7 @@
     {
       "datasource": {
         "type": "grafana-azure-data-explorer-datasource",
-        "uid": "ef2bw8859i6tcd"
+        "uid": "aezn6luqall34b"
       },
       "fieldConfig": {
         "defaults": {
@@ -386,7 +386,7 @@
           "database": "idpay",
           "datasource": {
             "type": "grafana-azure-data-explorer-datasource",
-            "uid": "ef2bw8859i6tcd"
+            "uid": "aezn6luqall34b"
           },
           "expression": {
             "groupBy": {
@@ -429,7 +429,7 @@
     {
       "datasource": {
         "type": "grafana-azure-data-explorer-datasource",
-        "uid": "ef2bw8859i6tcd"
+        "uid": "aezn6luqall34b"
       },
       "fieldConfig": {
         "defaults": {
@@ -459,7 +459,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 11,
+        "h": 13,
         "w": 12,
         "x": 0,
         "y": 9
@@ -497,7 +497,7 @@
           "database": "idpay",
           "datasource": {
             "type": "grafana-azure-data-explorer-datasource",
-            "uid": "ef2bw8859i6tcd"
+            "uid": "aezn6luqall34b"
           },
           "expression": {
             "groupBy": {
@@ -543,7 +543,7 @@
     {
       "datasource": {
         "type": "grafana-azure-data-explorer-datasource",
-        "uid": "ef2bw8859i6tcd"
+        "uid": "aezn6luqall34b"
       },
       "fieldConfig": {
         "defaults": {
@@ -609,7 +609,7 @@
         ]
       },
       "gridPos": {
-        "h": 11,
+        "h": 13,
         "w": 12,
         "x": 12,
         "y": 9
@@ -645,7 +645,7 @@
           "database": "idpay",
           "datasource": {
             "type": "grafana-azure-data-explorer-datasource",
-            "uid": "ef2bw8859i6tcd"
+            "uid": "aezn6luqall34b"
           },
           "expression": {
             "groupBy": {
@@ -662,7 +662,7 @@
             }
           },
           "pluginVersion": "6.2.0",
-          "query": "merchant\r\n| join kind=rightouter  (\r\n    point_of_sales\r\n) on $left._id == $right.merchantId\r\n| summarize Totale = count() by businessName\r\n| order by Totale desc ",
+          "query": "merchant\r\n| join kind=rightouter  (\r\n    point_of_sales\r\n) on $left._id == $right.merchantId\r\n| summarize Totale = count() by businessName\r\n| order by Totale desc \r\n| limit 10",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -703,5 +703,5 @@
   "timezone": "browser",
   "title": "ESE",
   "uid": "eezu3dfeyfhfkb",
-  "version": 60
+  "version": 63
 }
