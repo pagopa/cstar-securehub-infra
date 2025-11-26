@@ -15,10 +15,11 @@ module "tf_audit_logic_app" {
     table_name = var.audit_sa.table_name
     access_key = module.secret_core.values["tf-audit-storage-access-key"].value
   }
+
   tags = module.tag_config.tags
+
   trigger = {
     interval  = 15
     frequency = "Minute"
   }
-
 }
