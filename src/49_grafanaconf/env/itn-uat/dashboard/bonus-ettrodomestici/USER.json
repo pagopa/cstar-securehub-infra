@@ -29,6 +29,254 @@
       "fieldConfig": {
         "defaults": {
           "color": {
+            "mode": "palette-classic"
+          },
+          "fieldMinMax": false,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          },
+          "unit": "currencyEUR"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "BudgetTotale"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Budget Totale"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 5,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.6.3",
+      "targets": [
+        {
+          "OpenAI": false,
+          "database": "idpay",
+          "datasource": {
+            "type": "grafana-azure-data-explorer-datasource",
+            "uid": "aezn6luqall34b"
+          },
+          "expression": {
+            "groupBy": {
+              "expressions": [],
+              "type": "and"
+            },
+            "reduce": {
+              "expressions": [],
+              "type": "and"
+            },
+            "where": {
+              "expressions": [],
+              "type": "and"
+            }
+          },
+          "pluginVersion": "6.2.0",
+          "query": "initiative_counters\r\n| where initiativeId != \"68dd003ccce8c534d1da22bc\"\r\n| project \r\n    BudgetTotale = initiativeBudgetCents / 100,\r\n    Speso = spentInitiativeBudgetCents / 100,\r\n    Riservato = reservedInitiativeBudgetCents / 100,\r\n    Residuo = residualInitiativeBudgetCents / 100",
+          "querySource": "raw",
+          "queryType": "KQL",
+          "rawMode": true,
+          "refId": "A",
+          "resultFormat": "table"
+        }
+      ],
+      "title": "Recap Budget",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-data-explorer-datasource",
+        "uid": "df4s9lke68vlse"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 12,
+        "y": 0
+      },
+      "id": 14,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.6.3",
+      "targets": [
+        {
+          "OpenAI": false,
+          "database": "idpay",
+          "datasource": {
+            "type": "grafana-azure-data-explorer-datasource",
+            "uid": "df4s9lke68vlse"
+          },
+          "query": "onboarding_citizen\n| summarize count()",
+          "rawMode": true,
+          "refId": "A",
+          "resultFormat": "table"
+        }
+      ],
+      "title": "Richieste di onboarding",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 18,
+        "y": 0
+      },
+      "id": 15,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.6.3",
+      "targets": [
+        {
+          "azureMonitor": {
+            "aggregation": "Average",
+            "allowedTimeGrainsMs": [
+              60000,
+              300000,
+              900000,
+              1800000,
+              3600000,
+              21600000,
+              43200000,
+              86400000
+            ],
+            "dimensionFilters": [],
+            "metricName": "ActiveMessages",
+            "metricNamespace": "microsoft.servicebus/namespaces",
+            "region": "italynorth",
+            "resources": [
+              {
+                "metricNamespace": "Microsoft.ServiceBus/namespaces",
+                "region": "italynorth",
+                "resourceGroup": "cstar-d-itn-idpay-data-rg",
+                "resourceName": "cstar-d-itn-idpay-sb-ns",
+                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+              }
+            ],
+            "timeGrain": "auto"
+          },
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Monitor",
+          "refId": "A",
+          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+        }
+      ],
+      "title": "Richieste in lista di attesa",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-data-explorer-datasource",
+        "uid": "aezn6luqall34b"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
             "mode": "thresholds"
           },
           "mappings": [],
@@ -47,7 +295,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 0
+        "y": 8
       },
       "id": 13,
       "options": {
@@ -89,7 +337,7 @@
             }
           },
           "pluginVersion": "6.2.0",
-          "query": "let lastWallet = wallet\r\n| summarize arg_max(updateDate, amountCents) by userId;\r\nlet lastTx = transaction\r\n| summarize arg_max(trxDate, rewardCountersInitiativeBudgetCents, rewardCountersTotalRewardCents) by userId;\r\nlet joinedData = onboarding_citizen\r\n| where status ==\"ONBOARDING_OK\"\r\n| join kind=leftouter lastWallet on userId\r\n| join kind=leftouter lastTx on userId\r\n| project userId, status,\r\n          voucherUsed = iff(amountCents == 0, true, false),\r\n          voucherAmountUsed = iff(amountCents != 0, amountCents, rewardCountersTotalRewardCents);\r\njoinedData\r\n| summarize\r\n    TotalUsers = count(),\r\n    VoucherUsedCount = countif(voucherUsed == true),\r\n    VoucherNotUsedCount = countif(voucherUsed == false),\r\n    TotalAmountSpent = sumif(voucherAmountUsed, voucherUsed == true) / 100",
+          "query": "\r\nlet lastTx = transaction\r\n| summarize arg_max(trxDate, rewardCountersInitiativeBudgetCents, rewardCountersTotalRewardCents) by userId;\r\nlet lastWallet = wallet\r\n| where status == \"REFUNDABLE\"\r\n| summarize arg_max(updateDate, amountCents) by userId\r\n| join kind=leftouter lastTx on userId\r\n| project userId, \r\n          voucherUsed = iff(amountCents == 0, true, false),\r\n          voucherAmountUsed = iff(amountCents != 0, amountCents, rewardCountersTotalRewardCents);\r\nlastWallet\r\n| summarize\r\n    TotalUsers = count(),\r\n    VoucherUsedCount = countif(voucherUsed == true),\r\n    VoucherNotUsedCount = countif(voucherUsed == false),\r\n    TotalAmountSpent = sumif(voucherAmountUsed, voucherUsed == true) / 100",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -176,7 +424,7 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 8
+        "y": 16
       },
       "id": 12,
       "options": {
@@ -308,7 +556,7 @@
         "h": 16,
         "w": 12,
         "x": 0,
-        "y": 17
+        "y": 25
       },
       "id": 7,
       "options": {
@@ -441,7 +689,7 @@
         "h": 16,
         "w": 12,
         "x": 12,
-        "y": 17
+        "y": 25
       },
       "id": 8,
       "options": {
@@ -567,7 +815,7 @@
               "options": {
                 "mode": "exclude",
                 "names": [
-                  "AUTHORIZED"
+                  "REWARDED-2"
                 ],
                 "prefix": "All except:",
                 "readOnly": true
@@ -588,9 +836,9 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 24,
+        "w": 12,
         "x": 0,
-        "y": 33
+        "y": 41
       },
       "id": 6,
       "options": {
@@ -640,102 +888,6 @@
       ],
       "title": "Trend temporale delle tipologia di transazioni",
       "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "grafana-azure-data-explorer-datasource",
-        "uid": "aezn6luqall34b"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "fieldMinMax": false,
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green"
-              }
-            ]
-          },
-          "unit": "currencyEUR"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "BudgetTotale"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Budget Totale"
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 41
-      },
-      "id": 5,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "horizontal",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": true
-        },
-        "showPercentChange": false,
-        "textMode": "auto",
-        "wideLayout": true
-      },
-      "pluginVersion": "11.6.3",
-      "targets": [
-        {
-          "OpenAI": false,
-          "database": "idpay",
-          "datasource": {
-            "type": "grafana-azure-data-explorer-datasource",
-            "uid": "aezn6luqall34b"
-          },
-          "expression": {
-            "groupBy": {
-              "expressions": [],
-              "type": "and"
-            },
-            "reduce": {
-              "expressions": [],
-              "type": "and"
-            },
-            "where": {
-              "expressions": [],
-              "type": "and"
-            }
-          },
-          "pluginVersion": "6.2.0",
-          "query": "initiative_counters\r\n| where initiativeId != \"68dd003ccce8c534d1da22bc\"\r\n| project \r\n    BudgetTotale = initiativeBudgetCents / 100,\r\n    Speso = spentInitiativeBudgetCents / 100,\r\n    Riservato = reservedInitiativeBudgetCents / 100,\r\n    Residuo = residualInitiativeBudgetCents / 100",
-          "querySource": "raw",
-          "queryType": "KQL",
-          "rawMode": true,
-          "refId": "A",
-          "resultFormat": "table"
-        }
-      ],
-      "title": "Recap Budget",
-      "type": "stat"
     },
     {
       "datasource": {
@@ -1376,5 +1528,5 @@
   "timezone": "browser",
   "title": "USER",
   "uid": "ef2037t65hnuoe",
-  "version": 55
+  "version": 61
 }
