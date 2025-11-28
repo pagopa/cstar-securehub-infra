@@ -337,7 +337,7 @@
             }
           },
           "pluginVersion": "6.2.0",
-          "query": "\r\nlet lastTx = transaction\r\n| summarize arg_max(trxDate, rewardCountersInitiativeBudgetCents, rewardCountersTotalRewardCents) by userId;\r\nlet lastWallet = wallet\r\n| where status == \"REFUNDABLE\"\r\n| summarize arg_max(updateDate, amountCents) by userId\r\n| join kind=leftouter lastTx on userId\r\n| project userId, \r\n          voucherUsed = iff(amountCents == 0, true, false),\r\n          voucherAmountUsed = iff(amountCents != 0, amountCents, rewardCountersTotalRewardCents);\r\nlastWallet\r\n| summarize\r\n    TotalUsers = count(),\r\n    VoucherUsedCount = countif(voucherUsed == true),\r\n    VoucherNotUsedCount = countif(voucherUsed == false),\r\n    TotalAmountSpent = sumif(voucherAmountUsed, voucherUsed == true) / 100",
+          "query": "let lastWallet = wallet\r\n| summarize arg_max(updateDate, amountCents) by userId;\r\nlet lastTx = transaction\r\n| summarize arg_max(trxDate, rewardCountersInitiativeBudgetCents, rewardCountersTotalRewardCents) by userId;\r\nlet joinedData = onboarding_citizen\r\n| where status ==\"ONBOARDING_OK\"\r\n| join kind=leftouter lastWallet on userId\r\n| join kind=leftouter lastTx on userId\r\n| project userId, status,\r\n          voucherUsed = iff(amountCents == 0, true, false),\r\n          voucherAmountUsed = iff(amountCents != 0, amountCents, rewardCountersTotalRewardCents);\r\njoinedData\r\n| summarize\r\n    TotalUsers = count(),\r\n    VoucherUsedCount = countif(voucherUsed == true),\r\n    VoucherNotUsedCount = countif(voucherUsed == false),\r\n    TotalAmountSpent = sumif(voucherAmountUsed, voucherUsed == true) / 100",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -815,7 +815,7 @@
               "options": {
                 "mode": "exclude",
                 "names": [
-                  "REWARDED-2"
+                  "AUTHORIZED"
                 ],
                 "prefix": "All except:",
                 "readOnly": true
@@ -1493,8 +1493,8 @@
     "list": [
       {
         "current": {
-          "text": "1d",
-          "value": "1d"
+          "text": "1h",
+          "value": "1h"
         },
         "label": "granularità",
         "name": "granularita",
@@ -1505,12 +1505,12 @@
             "value": "1m"
           },
           {
-            "selected": false,
+            "selected": true,
             "text": "1h",
             "value": "1h"
           },
           {
-            "selected": true,
+            "selected": false,
             "text": "1d",
             "value": "1d"
           }
@@ -1528,5 +1528,5 @@
   "timezone": "browser",
   "title": "USER",
   "uid": "ef2037t65hnuoe",
-  "version": 61
+  "version": 59
 }
