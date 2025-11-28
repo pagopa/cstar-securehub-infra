@@ -248,11 +248,11 @@
             "region": "italynorth",
             "resources": [
               {
-                "metricNamespace": "Microsoft.ServiceBus/namespaces",
+                "metricNamespace": "microsoft.servicebus/namespaces",
                 "region": "italynorth",
-                "resourceGroup": "cstar-d-itn-idpay-data-rg",
-                "resourceName": "cstar-d-itn-idpay-sb-ns",
-                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+                "resourceGroup": "$serviceBusRg",
+                "resourceName": "$serviceBus",
+                "subscription": "$subscription"
               }
             ],
             "timeGrain": "auto"
@@ -263,7 +263,7 @@
           },
           "queryType": "Azure Monitor",
           "refId": "A",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "$subscription"
         }
       ],
       "title": "Richieste in lista di attesa",
@@ -337,7 +337,7 @@
             }
           },
           "pluginVersion": "6.2.0",
-          "query": "let lastWallet = wallet\r\n| summarize arg_max(updateDate, amountCents) by userId;\r\nlet lastTx = transaction\r\n| summarize arg_max(trxDate, rewardCountersInitiativeBudgetCents, rewardCountersTotalRewardCents) by userId;\r\nlet joinedData = onboarding_citizen\r\n| where status ==\"ONBOARDING_OK\"\r\n| join kind=leftouter lastWallet on userId\r\n| join kind=leftouter lastTx on userId\r\n| project userId, status,\r\n          voucherUsed = iff(amountCents == 0, true, false),\r\n          voucherAmountUsed = iff(amountCents != 0, amountCents, rewardCountersTotalRewardCents);\r\njoinedData\r\n| summarize\r\n    TotalUsers = count(),\r\n    VoucherUsedCount = countif(voucherUsed == true),\r\n    VoucherNotUsedCount = countif(voucherUsed == false),\r\n    TotalAmountSpent = sumif(voucherAmountUsed, voucherUsed == true) / 100",
+          "query": "\r\nlet lastTx = transaction\r\n| summarize arg_max(trxDate, rewardCountersInitiativeBudgetCents, rewardCountersTotalRewardCents) by userId;\r\nlet lastWallet = wallet\r\n| where status == \"REFUNDABLE\"\r\n| summarize arg_max(updateDate, amountCents) by userId\r\n| join kind=leftouter lastTx on userId\r\n| project userId, \r\n          voucherUsed = iff(amountCents == 0, true, false),\r\n          voucherAmountUsed = iff(amountCents != 0, amountCents, rewardCountersTotalRewardCents);\r\nlastWallet\r\n| summarize\r\n    TotalUsers = count(),\r\n    VoucherUsedCount = countif(voucherUsed == true),\r\n    VoucherNotUsedCount = countif(voucherUsed == false),\r\n    TotalAmountSpent = sumif(voucherAmountUsed, voucherUsed == true) / 100",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -815,7 +815,7 @@
               "options": {
                 "mode": "exclude",
                 "names": [
-                  "AUTHORIZED"
+                  "REWARDED-2"
                 ],
                 "prefix": "All except:",
                 "readOnly": true
@@ -1517,6 +1517,79 @@
         ],
         "query": "1m, 1h, 1d",
         "type": "custom"
+      },
+      {
+        "current": {
+          "text": "cstar-d-itn-idpay-sb-ns",
+          "value": "cstar-d-itn-idpay-sb-ns"
+        },
+        "definition": "",
+        "hide": 2,
+        "name": "serviceBus",
+        "options": [],
+        "query": {
+          "azureLogAnalytics": {
+            "query": "",
+            "resources": [
+              "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/cstar-d-itn-idpay-data-rg/providers/Microsoft.DocumentDB/databaseAccounts/cstar-d-itn-idpay-mongodb-account"
+            ]
+          },
+          "namespace": "microsoft.servicebus/namespaces",
+          "queryType": "Azure Resource Names",
+          "refId": "A",
+          "region": "italynorth",
+          "resourceGroup": "$serviceBusRg",
+          "subscription": "$subscription"
+        },
+        "refresh": 1,
+        "regex": "/.*idpay-sb-ns.*/",
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "cstar-d-itn-idpay-data-rg",
+          "value": "cstar-d-itn-idpay-data-rg"
+        },
+        "definition": "",
+        "hide": 2,
+        "name": "serviceBusRg",
+        "options": [],
+        "query": {
+          "azureLogAnalytics": {
+            "query": "",
+            "resources": [
+              "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/cstar-d-itn-idpay-data-rg/providers/Microsoft.DocumentDB/databaseAccounts/cstar-d-itn-idpay-mongodb-account"
+            ]
+          },
+          "queryType": "Azure Resource Groups",
+          "refId": "A",
+          "region": "italynorth",
+          "subscription": "$subscription"
+        },
+        "refresh": 1,
+        "regex": "/.*idpay-data-rg.*/",
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "DEV-CSTAR",
+          "value": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+        },
+        "definition": "",
+        "hide": 2,
+        "name": "subscription",
+        "options": [],
+        "query": {
+          "azureLogAnalytics": {
+            "query": "",
+            "resources": []
+          },
+          "queryType": "Azure Subscriptions",
+          "refId": "A"
+        },
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
       }
     ]
   },
@@ -1528,5 +1601,5 @@
   "timezone": "browser",
   "title": "USER",
   "uid": "ef2037t65hnuoe",
-  "version": 59
+  "version": 67
 }
