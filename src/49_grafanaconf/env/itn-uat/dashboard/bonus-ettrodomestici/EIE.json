@@ -23,8 +23,8 @@
   "panels": [
     {
       "datasource": {
-        "type": "grafana-azure-data-explorer-datasource",
-        "uid": "af2bx3h1osn40b"
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
       },
       "fieldConfig": {
         "defaults": {
@@ -80,7 +80,7 @@
           "database": "idpay",
           "datasource": {
             "type": "grafana-azure-data-explorer-datasource",
-            "uid": "af2bx3h1osn40b"
+            "uid": "${ds}"
           },
           "expression": {
             "groupBy": {
@@ -139,7 +139,7 @@
     {
       "datasource": {
         "type": "grafana-azure-data-explorer-datasource",
-        "uid": "af2bx3h1osn40b"
+        "uid": "${ds}"
       },
       "fieldConfig": {
         "defaults": {
@@ -195,7 +195,7 @@
           "database": "idpay",
           "datasource": {
             "type": "grafana-azure-data-explorer-datasource",
-            "uid": "af2bx3h1osn40b"
+            "uid": "${ds}"
           },
           "expression": {
             "groupBy": {
@@ -238,7 +238,7 @@
     {
       "datasource": {
         "type": "grafana-azure-data-explorer-datasource",
-        "uid": "af2bx3h1osn40b"
+        "uid": "${ds}"
       },
       "fieldConfig": {
         "defaults": {
@@ -294,7 +294,7 @@
           "database": "idpay",
           "datasource": {
             "type": "grafana-azure-data-explorer-datasource",
-            "uid": "af2bx3h1osn40b"
+            "uid": "${ds}"
           },
           "expression": {
             "groupBy": {
@@ -337,7 +337,7 @@
     {
       "datasource": {
         "type": "grafana-azure-data-explorer-datasource",
-        "uid": "af2bx3h1osn40b"
+        "uid": "${ds}"
       },
       "fieldConfig": {
         "defaults": {
@@ -393,7 +393,7 @@
           "database": "idpay",
           "datasource": {
             "type": "grafana-azure-data-explorer-datasource",
-            "uid": "af2bx3h1osn40b"
+            "uid": "${ds}"
           },
           "expression": {
             "groupBy": {
@@ -436,7 +436,7 @@
     {
       "datasource": {
         "type": "grafana-azure-data-explorer-datasource",
-        "uid": "af2bx3h1osn40b"
+        "uid": "${ds}"
       },
       "fieldConfig": {
         "defaults": {
@@ -492,7 +492,7 @@
           "database": "idpay",
           "datasource": {
             "type": "grafana-azure-data-explorer-datasource",
-            "uid": "af2bx3h1osn40b"
+            "uid": "${ds}"
           },
           "expression": {
             "groupBy": {
@@ -535,7 +535,7 @@
     {
       "datasource": {
         "type": "grafana-azure-data-explorer-datasource",
-        "uid": "af2bx3h1osn40b"
+        "uid": "${ds}"
       },
       "fieldConfig": {
         "defaults": {
@@ -591,7 +591,7 @@
           "database": "idpay",
           "datasource": {
             "type": "grafana-azure-data-explorer-datasource",
-            "uid": "af2bx3h1osn40b"
+            "uid": "${ds}"
           },
           "expression": {
             "groupBy": {
@@ -647,7 +647,7 @@
     {
       "datasource": {
         "type": "grafana-azure-data-explorer-datasource",
-        "uid": "af2bx3h1osn40b"
+        "uid": "${ds}"
       },
       "fieldConfig": {
         "defaults": {
@@ -729,7 +729,7 @@
           "database": "idpay",
           "datasource": {
             "type": "grafana-azure-data-explorer-datasource",
-            "uid": "af2bx3h1osn40b"
+            "uid": "${ds}"
           },
           "expression": {
             "groupBy": {
@@ -775,7 +775,7 @@
     {
       "datasource": {
         "type": "grafana-azure-data-explorer-datasource",
-        "uid": "af2bx3h1osn40b"
+        "uid": "${ds}"
       },
       "fieldConfig": {
         "defaults": {
@@ -869,7 +869,7 @@
           "database": "idpay",
           "datasource": {
             "type": "grafana-azure-data-explorer-datasource",
-            "uid": "af2bx3h1osn40b"
+            "uid": "${ds}"
           },
           "expression": {
             "groupBy": {
@@ -915,7 +915,7 @@
     {
       "datasource": {
         "type": "grafana-azure-data-explorer-datasource",
-        "uid": "af2bx3h1osn40b"
+        "uid": "${ds}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1011,7 +1011,7 @@
           "database": "idpay",
           "datasource": {
             "type": "grafana-azure-data-explorer-datasource",
-            "uid": "af2bx3h1osn40b"
+            "uid": "${ds}"
           },
           "expression": {
             "groupBy": {
@@ -1057,7 +1057,7 @@
     {
       "datasource": {
         "type": "grafana-azure-data-explorer-datasource",
-        "uid": "af2bx3h1osn40b"
+        "uid": "${ds}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1151,7 +1151,7 @@
           "database": "idpay",
           "datasource": {
             "type": "grafana-azure-data-explorer-datasource",
-            "uid": "af2bx3h1osn40b"
+            "uid": "${ds}"
           },
           "expression": {
             "groupBy": {
@@ -1197,7 +1197,7 @@
     {
       "datasource": {
         "type": "grafana-azure-data-explorer-datasource",
-        "uid": "af2bx3h1osn40b"
+        "uid": "${ds}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1291,7 +1291,7 @@
           "database": "idpay",
           "datasource": {
             "type": "grafana-azure-data-explorer-datasource",
-            "uid": "af2bx3h1osn40b"
+            "uid": "${ds}"
           },
           "expression": {
             "groupBy": {
@@ -1337,7 +1337,7 @@
     {
       "datasource": {
         "type": "grafana-azure-data-explorer-datasource",
-        "uid": "af2bx3h1osn40b"
+        "uid": "${ds}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1431,7 +1431,7 @@
           "database": "idpay",
           "datasource": {
             "type": "grafana-azure-data-explorer-datasource",
-            "uid": "af2bx3h1osn40b"
+            "uid": "${ds}"
           },
           "expression": {
             "groupBy": {
@@ -1477,7 +1477,7 @@
     {
       "datasource": {
         "type": "grafana-azure-data-explorer-datasource",
-        "uid": "af2bx3h1osn40b"
+        "uid": "${ds}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1571,7 +1571,7 @@
           "database": "idpay",
           "datasource": {
             "type": "grafana-azure-data-explorer-datasource",
-            "uid": "af2bx3h1osn40b"
+            "uid": "${ds}"
           },
           "expression": {
             "groupBy": {
@@ -1619,7 +1619,22 @@
   "schemaVersion": 41,
   "tags": [],
   "templating": {
-    "list": []
+    "list": [
+      {
+        "allowCustomValue": false,
+        "current": {
+          "text": "grafana-azure-data-explorer-datasource",
+          "value": "df4s9lke68vlse"
+        },
+        "hide": 2,
+        "name": "ds",
+        "options": [],
+        "query": "grafana-azure-data-explorer-datasource",
+        "refresh": 1,
+        "regex": "grafana-azure-data-explorer-datasource",
+        "type": "datasource"
+      }
+    ]
   },
   "time": {
     "from": "now-6h",
@@ -1629,5 +1644,5 @@
   "timezone": "browser",
   "title": "EIE",
   "uid": "cezndziyw8tmof",
-  "version": 75
+  "version": 81
 }
