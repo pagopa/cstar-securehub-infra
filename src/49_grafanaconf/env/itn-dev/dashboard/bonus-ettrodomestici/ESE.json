@@ -493,7 +493,6 @@
       "targets": [
         {
           "OpenAI": false,
-          "clusterUri": "https://cstar-d-itn-platform.italynorth.kusto.windows.net",
           "database": "idpay",
           "datasource": {
             "type": "grafana-azure-data-explorer-datasource",
