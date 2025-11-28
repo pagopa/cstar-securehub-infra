@@ -108,16 +108,23 @@ resource "argocd_project" "domain_project" {
     role {
       name   = "external"
       groups = local.argocd_groups_external
-      policies = var.env != "prod" ? [
-        "p, proj:${local.argocd_project_name}:external, logs, get, ${local.argocd_project_name}/*, allow",
-        "p, proj:${local.argocd_project_name}:external, applications, get, ${local.argocd_project_name}/*, allow",
-        "p, proj:${local.argocd_project_name}:external, applications, update/*/ConfigMap/*/*, ${local.argocd_project_name}/*, allow",
-        "p, proj:${local.argocd_project_name}:external, applications, delete/*/Pod/*/*, ${local.argocd_project_name}/*, allow",
-        "p, proj:${local.argocd_project_name}:external, applications, action/apps/Deployment/restart, ${local.argocd_project_name}/*, allow",
-        "p, proj:${local.argocd_project_name}:external, applications, action/apps/StatefulSet/restart, ${local.argocd_project_name}/*, allow",
-        "p, proj:${local.argocd_project_name}:external, applications, action/apps/DaemonSet/restart, ${local.argocd_project_name}/*, allow",
-        "p, proj:${local.argocd_project_name}:external, applications, sync, ${local.argocd_project_name}/*, allow",
-      ] : []
+
+      policies = var.env != "prod" ? concat(
+        [
+          "p, proj:${local.argocd_project_name}:external, logs, get, ${local.argocd_project_name}/*, allow",
+          "p, proj:${local.argocd_project_name}:external, applications, get, ${local.argocd_project_name}/*, allow",
+          "p, proj:${local.argocd_project_name}:external, applications, update/*/ConfigMap/*/*, ${local.argocd_project_name}/*, allow",
+          "p, proj:${local.argocd_project_name}:external, applications, delete/*/Pod/*/*, ${local.argocd_project_name}/*, allow",
+          "p, proj:${local.argocd_project_name}:external, applications, action/apps/Deployment/restart, ${local.argocd_project_name}/*, allow",
+          "p, proj:${local.argocd_project_name}:external, applications, action/apps/StatefulSet/restart, ${local.argocd_project_name}/*, allow",
+          "p, proj:${local.argocd_project_name}:external, applications, action/apps/DaemonSet/restart, ${local.argocd_project_name}/*, allow",
+          "p, proj:${local.argocd_project_name}:external, applications, sync, ${local.argocd_project_name}/*, allow",
+        ],
+        var.env == "dev" ? [
+          "p, proj:${local.argocd_project_name}:external, applications, update/*/Deployment/*/*, ${local.argocd_project_name}/*, allow",
+          "p, proj:${local.argocd_project_name}:external, applications, delete/*/Deployment/*/*, ${local.argocd_project_name}/*, allow",
+        ] : []
+      ) : []
     }
 
   }
