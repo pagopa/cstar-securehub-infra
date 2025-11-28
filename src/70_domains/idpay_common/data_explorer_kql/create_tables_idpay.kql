@@ -101,6 +101,8 @@
     additionalProductGtin:string,
     additionalProductName:string,
     trxCode:string,
+    voucherAmountCents: long
+    extendedAuthorization: Boolean,
     trxDate:datetime,
     trxChargeDate:datetime,
     elaborationDateTime:datetime
