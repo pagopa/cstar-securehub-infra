@@ -1,0 +1,173 @@
+pr: none
+trigger: none
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+parameters:
+  - name: env
+    displayName: Environment
+    type: string
+    default: dev
+    values:
+      - dev
+      - uat
+      - prd
+  - name: keycloak_realm
+    displayName: Keycloak Realm
+    type: string
+  - name: kcb_use_all_local_addresses
+    displayName: KCB Use all local addresses
+    type: boolean
+    default: false
+  - name: kcb_share_connections
+    displayName: KCB Share connections
+    type: boolean
+    default: false
+  - name: kcb_increment
+    displayName: KCB Increment
+    type: number
+    default: 32
+  - name: kcb_single_run
+    displayName: KCB Single Run
+    type: boolean
+    default: false
+  - name: kcb_users_per_second
+    displayName: KCB Users per second
+    type: number
+    default: 1
+  - name: kcb_ramp_up
+    displayName: KCB Ramp up time
+    type: number
+    default: 5
+  - name: kcb_additional_parameters
+    displayName: KCB Additional Parameters
+    type: string
+    default: " "
+  - name: kcb_scenario
+    displayName: Test Scenario
+    type: string
+    default: keycloak.scenario.authentication.AuthorizationCode
+    values:
+      - keycloak.scenario.authentication.AuthorizationCode
+      - keycloak.scenario.authentication.LoginUserPassword
+      - keycloak.scenario.authentication.ClientSecret
+      - keycloak.scenario.admin.CreateDeleteClients
+      - keycloak.scenario.admin.CreateClients
+      - keycloak.scenario.admin.CreateDeleteUsers
+      - keycloak.scenario.admin.CreateUsers
+      - keycloak.scenario.admin.CreateDeleteRoles
+      - keycloak.scenario.admin.CreateRoles
+      - keycloak.scenario.admin.CreateDeleteGroups
+      - keycloak.scenario.admin.CreateGroups
+      - keycloak.scenario.admin.CreateDeleteClientScopes
+      - keycloak.scenario.admin.CreateClientScopes
+      - keycloak.scenario.admin.UserCrawl
+      - keycloak.scenario.admin.ListSessions
+      - keycloak.scenario.admin.CreateRealms
+      - keycloak.scenario.admin.CreateDeleteRealms
+      - keycloak.scenario.basic.Get
+
+variables:
+  KCB_VERSION: "26.0-SNAPSHOT"
+  ${{ if eq(parameters.env, 'dev') }}:
+    AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_DEV)'
+    poolImage: $(TF_POOL_NAME_DEV)
+    KEYCLOAK_URL: "https://api-mcshared.dev.cstar.pagopa.it/auth-itn"
+    KV_NAME: "cstar-d-itn-core-kv"
+  ${{ elseif eq(parameters.env, 'uat') }}:
+    AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_UAT)'
+    poolImage: $(TF_POOL_NAME_UAT)
+    KEYCLOAK_URL: "https://api-mcshared.uat.cstar.pagopa.it/auth-itn"
+    KV_NAME: "cstar-u-itn-core-kv"
+  ${{ elseif eq(parameters.env, 'prd') }}:
+    AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_PROD)'
+    poolImage: $(TF_POOL_NAME_PROD)
+    KEYCLOAK_URL: "https://api-mcshared.cstar.pagopa.it/auth-itn"
+    KV_NAME: "cstar-p-itn-core-kv"
+
+
+stages:
+  - stage: keycloak_performance
+    displayName: "Keycloak Performance test"
+    jobs:
+      - job: setup_environment
+        pool: $(poolImage)
+        displayName: "Setup running environment"
+        steps:
+          - checkout: self
+          - script: |
+              cd $(Pipeline.Workspace)
+              mkdir kcb
+              wget -c https://github.com/keycloak/keycloak-benchmark/releases/download/${{variables.KCB_VERSION}}/keycloak-benchmark-${{variables.KCB_VERSION}}.tar.gz
+              tar -xzf keycloak-benchmark-${{variables.KCB_VERSION}}.tar.gz -C kcb
+              rm -rf keycloak-benchmark-${{variables.KCB_VERSION}}.tar.gz
+              ls -la kcb
+              echo "##vso[task.prependpath]$(Pipeline.Workspace)/kcb"
+            displayName: "Install KeyCloak Benchmark"
+          - script: |
+              cd $(Pipeline.Workspace)
+              mkdir java
+              wget -c https://download.oracle.com/java/21/latest/jdk-21_linux-x64_bin.tar.gz
+              tar -xzf jdk-21_linux-x64_bin.tar.gz -C java
+              rm -rf jdk-21_linux-x64_bin.tar.gz
+              ls -la java
+              echo "##vso[task.prependpath]$(Pipeline.Workspace)/java/jdk-21.0.9/bin"
+              echo "##vso[task.setvariable variable=JAVA_HOME;]$(Pipeline.Workspace)/java/jdk-21.0.9"
+            displayName: "Install Java"
+#          - script: |
+#              cd $(Pipeline.Workspace)
+#              mkdir kc
+#              rm -rf keycloak-26.4.2.zip
+#              wget -r -c https://github.com/keycloak/keycloak/releases/download/26.4.2/keycloak-26.4.2.zip
+#              #curl -o keycloak-26.4.2.zip  https://github.com/keycloak/keycloak/releases/download/26.4.2/keycloak-26.4.2.zip  -L
+#              unzip  keycloak-26.4.2.zip -d kc
+#              rm -rf keycloak-26.4.2.zip
+#              ls -la kc
+#              echo "##vso[task.prependpath]$(Pipeline.Workspace)/kc/keycloak-26.4.2/bin"
+#              echo "##vso[task.setvariable variable=KEYCLOAK_HOME;]$(Pipeline.Workspace)/kc/keycloak-26.4.2"
+#            displayName: "Install KeyCloak bins"
+#          - task: AzureKeyVault@2
+#            displayName: "Get keycloak secrets"
+#            inputs:
+#              azureSubscription: ${{ variables.AZURE_SERVICE_CONNECTION }}
+#              keyVaultName: ${{variables.KV_NAME}}
+#              secretsFilter: 'keycloak-admin-username,keycloak-admin-password'
+#          - script: |
+#               cd $(Pipeline.Workspace)/kcb/keycloak-benchmark-${{variables.KCB_VERSION}}/bin
+#               kcadm.sh config credentials --server ${{variables.KEYCLOAK_URL}} --realm master --user $(keycloak-admin-username) --password $(keycloak-admin-password)
+#               ./initialize-benchmark-entities.sh -r ${{parameters.keycloak_realm}} -c gatling -u user-0 -k $(Pipeline.Workspace)/kc/keycloak-26.4.2
+#            displayName: "Initialize KeyCloak Benchmark entities"
+          - script: |
+              cd $(Pipeline.Workspace)/kcb/keycloak-benchmark-${{variables.KCB_VERSION}}/bin
+
+              increment=""
+              if [ "${{parameters.kcb_single_run}}" == False ] ; then
+                echo "Single run disabled, adding --increment parameter"
+                increment="--increment=${{parameters.kcb_increment}}"
+              else
+                echo "Single run enabled"
+              fi
+
+              ./kcb.sh --scenario=${{parameters.kcb_scenario}} --server-url=${{variables.KEYCLOAK_URL}} --realm-name=${{parameters.keycloak_realm}} \
+                --use-all-local-addresses=${{parameters.kcb_use_all_local_addresses}} \
+                --share-connections=${{parameters.kcb_share_connections}} \
+                $increment \
+                --users-per-sec=${{parameters.kcb_users_per_second}} \
+                --ramp-up=${{parameters.kcb_ramp_up}} \
+                ${{parameters.kcb_additional_parameters}}
+            displayName: "Run KeyCloakBenchmark"
+            timeoutInMinutes: 240
+          - script: |
+              cd $(Pipeline.Workspace)/kcb/keycloak-benchmark-${{variables.KCB_VERSION}}/results
+              zip -r results-$(Build.BuildId).zip *
+            displayName: "Compress results"
+            condition: always()
+          - publish: $(Pipeline.Workspace)/kcb/keycloak-benchmark-${{variables.KCB_VERSION}}/results/results-$(Build.BuildId).zip
+            artifact: Results
+            condition: always()
+          - script: |
+              cd $(Pipeline.Workspace)/kcb/keycloak-benchmark-${{variables.KCB_VERSION}}/results
+              rm -rf *
+            displayName: "Cleanup results"
+            condition: always()
