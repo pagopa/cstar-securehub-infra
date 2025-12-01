@@ -22,7 +22,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | fa7a4a628ebd1281bf9ad469948ee004a031a21f |
+| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | 049e72640e8e8bc743d34f64af65169765cb30dd |
 | <a name="module_admins_policy"></a> [admins\_policy](#module\_admins\_policy) | ./.terraform/modules/__v4__/IDH/key_vault_access_policy | n/a |
 | <a name="module_developers_policy"></a> [developers\_policy](#module\_developers\_policy) | ./.terraform/modules/__v4__//IDH/key_vault_access_policy | n/a |
 | <a name="module_externals_policy"></a> [externals\_policy](#module\_externals\_policy) | ./.terraform/modules/__v4__/IDH/key_vault_access_policy | n/a |
