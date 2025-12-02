@@ -130,7 +130,7 @@ locals {
         principal_type = "Group"
       }
     ],
-    contains(["d"], var.env_short) ? [{
+    contains(["d", "u"], var.env_short) ? [{
       id             = data.azuread_group.adgroup_idpay_externals.object_id,
       name           = data.azuread_group.adgroup_idpay_externals.display_name
       role           = "Admin"

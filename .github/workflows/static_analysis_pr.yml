@@ -34,4 +34,4 @@ jobs:
         if: env.dir_changes_detected == 'true'
         uses: pagopa/eng-github-actions-iac-template/azure/terraform-static-analysis@159289e1e23d0783533d1dd83e1b7cf0a5a565d9 #v1.24.0
         with:
-          precommit_version: 'v1.99.2@sha256:34f6cef8b944d571ea22be316a960d8353fcc0571adea35302cbd9ab80bf2758'
+          precommit_version: 'v1.104.0@sha256:62658b3f3b71524a07001e7b98de4bfb078885bae4a1b60e77ae925a4be27400'
