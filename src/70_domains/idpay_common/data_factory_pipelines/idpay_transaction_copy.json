@@ -374,6 +374,24 @@
                                     "name": "trxCode",
                                     "type": "String"
                                 }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['voucherAmountCents']"
+                                },
+                                "sink": {
+                                    "name": "voucherAmountCents",
+                                    "type": "Long"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['extendedAuthorization']"
+                                },
+                                "sink": {
+                                    "name": "extendedAuthorization",
+                                    "type": "Boolean"
+                                }
                             }
                         ],
                         "collectionReference": "",
