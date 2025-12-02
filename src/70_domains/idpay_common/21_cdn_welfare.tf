@@ -33,9 +33,7 @@ locals {
  */
 // public_cstar storage used to serve FE
 module "cdn_idpay_welfare" {
-
   source = "./.terraform/modules/__v4__/cdn_frontdoor"
-  # source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//cdn_frontdoor?ref=PAYMCLOUD-477-v-4-creazione-modulo-cdn-front-door-per-sostituire-cdn-classic-deprecata"
 
   cdn_prefix_name     = "${local.project}-welfare"
   resource_group_name = data.azurerm_resource_group.idpay_data_rg.name
@@ -65,12 +63,12 @@ module "cdn_idpay_welfare" {
       {
         action = "Overwrite"
         name   = contains(["d"], var.env_short) ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
-        value  = "default-src 'self'; object-src 'none'; connect-src 'self' https://api-io.${var.dns_zone_prefix}.${var.external_domain}/ https://api-eu.mixpanel.com/track/ https://cdn.cookielaw.org https://privacyportal-de.onetrust.com; script-src 'self' https://cdn.cookielaw.org https://privacyportal-de.onetrust.com https://privacyportalde-cdn.onetrust.com;"
+        value  = "default-src 'self'; object-src 'none'; connect-src 'self' https://api-io.${var.dns_zone_prefix}.${var.external_domain}/ https://api-eu.mixpanel.com/track/ https://cdn.cookielaw.org https://privacyportal-de.onetrust.com https://${module.storage_idpay_refund.name}.blob.core.windows.net; script-src 'self' https://cdn.cookielaw.org https://privacyportal-de.onetrust.com https://privacyportalde-cdn.onetrust.com;"
       },
       {
         action = "Append"
         name   = contains(["d"], var.env_short) ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
-        value  = "script-src 'self' https://cdn.cookielaw.org https://privacyporalde-cdn.onetrust.com; style-src 'self' 'unsafe-inline' https://${local.selfare_subdomain}.pagopa.it/assets/font/selfhostedfonts.css; worker-src 'none'; font-src 'self' https://${local.selfare_subdomain}.pagopa.it/assets/font/; "
+        value  = "style-src 'self' 'unsafe-inline' https://${local.selfare_subdomain}.pagopa.it/assets/font/selfhostedfonts.css; worker-src 'none'; font-src 'self' https://${local.selfare_subdomain}.pagopa.it/assets/font/; "
       },
       {
         action = "Append"

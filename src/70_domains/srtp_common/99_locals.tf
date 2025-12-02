@@ -124,6 +124,17 @@ locals {
           }
         ]
       }
+      failed_takeover_notification = {
+        autoscale_max_throughput          = var.cosmos_collections_autoscale_max_throughput
+        cosmos_collections_max_throughput = var.cosmos_collections_max_throughput
+        default_ttl_seconds               = -1
+        indexes = [
+          {
+            keys   = ["_id"]
+            unique = true
+          }
+        ]
+      }
     }
   }
   cosmos_collections = flatten([
