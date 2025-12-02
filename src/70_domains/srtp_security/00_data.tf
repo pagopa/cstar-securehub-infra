@@ -15,6 +15,14 @@ data "azuread_group" "adgroup_externals" {
   display_name = "${local.product}-adgroup-externals"
 }
 
+#---------------------------------------------------------------------------
+# Domain Groups
+#---------------------------------------------------------------------------
+
+data "azuread_group" "adgroup_domain_externals" {
+  display_name = "${local.project_entra}-adgroup-externals"
+}
+
 #
 # Azure Resource Groups
 #
