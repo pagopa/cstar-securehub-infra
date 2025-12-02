@@ -23,6 +23,14 @@ module "storage_idpay_refund" {
   private_dns_zone_blob_ids  = [data.azurerm_private_dns_zone.blob_storage.id]
   private_endpoint_subnet_id = module.private_endpoint_storage_snet.id
 
+  blob_cors_rule = {
+    allowed_headers    = ["*"]
+    exposed_headers    = ["*"]
+    allowed_methods    = ["GET", "OPTIONS"]
+    allowed_origins    = ["https://welfare.${data.azurerm_dns_zone.public_cstar.name}"]
+    max_age_in_seconds = 200
+  }
+
 }
 
 #
