@@ -8,7 +8,7 @@ resource "kubernetes_cron_job_v1" "cancel_pending_transactions" {
   }
 
   spec {
-    schedule           = "0 0 * * *" #  # During standard time (Oct–Mar) runs at 00:00 Italy time, During daylight saving time (Mar–Oct) runs at 01:00 Italy time
+    schedule           = "0 0 * * *" # runs at 00:00
     timezone           = "Europe/Rome"
     concurrency_policy = "Forbid"
 
