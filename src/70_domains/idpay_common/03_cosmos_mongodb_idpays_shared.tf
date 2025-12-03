@@ -385,6 +385,7 @@ locals {
         { keys = ["status"], unique = false },
         { keys = ["additionalProperties.productName"], unique = false },
         { keys = ["rewardBatchId", "samplingKey"], unique = false },
+        { keys = ["rewardBatchTrxStatus"], unique = false },
       ]
     },
     {
