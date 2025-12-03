@@ -136,7 +136,7 @@ resource "kubernetes_cron_job_v1" "reminder_voucher_expiration" {
 
 resource "kubernetes_cron_job_v1" "evaluate_sent_reward_batch" {
   metadata {
-    name      = "evaluate_sent_reward_batch"
+    name      = "evaluate-sent-reward-batch"
     namespace = var.domain
     labels = {
       app = "idpay-app"
@@ -148,9 +148,13 @@ resource "kubernetes_cron_job_v1" "evaluate_sent_reward_batch" {
     timezone           = "Europe/Rome"
     concurrency_policy = "Forbid"
 
+    #Active only in PROD
+    #Suspends the cronjob until the release to PROD
+    suspend = true # var.env_short != "p"
+
     job_template {
       metadata {
-        name = "evaluate_sent_reward_batch-job"
+        name = "evaluate-sent-reward-batch"
         labels = {
           app = "idpay-app"
         }
@@ -164,7 +168,7 @@ resource "kubernetes_cron_job_v1" "evaluate_sent_reward_batch" {
           }
           spec {
             container {
-              name  = "evaluate_sent_reward_batch"
+              name  = "evaluate-sent-reward-batch"
               image = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
               args = [
                 "-X", "POST",
