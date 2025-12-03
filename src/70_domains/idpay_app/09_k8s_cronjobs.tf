@@ -133,3 +133,48 @@ resource "kubernetes_cron_job_v1" "reminder_voucher_expiration" {
     }
   }
 }
+
+resource "kubernetes_cron_job_v1" "evaluate_sent_reward_batch" {
+  metadata {
+    name      = "evaluate_sent_reward_batch"
+    namespace = var.domain
+    labels = {
+      app = "idpay-app"
+    }
+  }
+
+  spec {
+    schedule           = "15 0 * * *" # 00:15
+    timezone           = "Europe/Rome"
+    concurrency_policy = "Forbid"
+
+    job_template {
+      metadata {
+        name = "evaluate_sent_reward_batch-job"
+        labels = {
+          app = "idpay-app"
+        }
+      }
+      spec {
+        template {
+          metadata {
+            labels = {
+              app = "idpay-app"
+            }
+          }
+          spec {
+            container {
+              name  = "evaluate_sent_reward_batch"
+              image = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
+              args = [
+                "-X", "POST",
+                "https://${local.idpay_ingress_url}/idpaytransactions/idpay/merchant/portal/initiatives/${var.idpay_bel_initiative_id}/reward-batches/evaluate"
+              ]
+            }
+            restart_policy = "OnFailure"
+          }
+        }
+      }
+    }
+  }
+}
