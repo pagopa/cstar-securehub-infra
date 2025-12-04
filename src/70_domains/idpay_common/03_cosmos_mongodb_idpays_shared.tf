@@ -121,8 +121,8 @@ locals {
       indexes = [
         { keys = ["_id"], unique = true },
         { keys = ["updateDate"], unique = false },
-        { keys = ["initiativeId"], unique = false },
-        { keys = ["userId"], unique = false }
+        { keys = ["initiativeId", "familyId"], unique = false },
+        { keys = ["userId"], unique = false },
       ]
     },
     {
