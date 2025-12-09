@@ -22,10 +22,13 @@ locals {
           AZURE_CLIENT_ID       = data.azurerm_user_assigned_identity.cd_client_identity.client_id
           AZURE_SUBSCRIPTION_ID = data.azurerm_subscription.current.subscription_id
           AZURE_TENANT_ID       = data.azurerm_client_config.current.tenant_id
-          SLACK_WEBHOOK_URL     = data.azurerm_key_vault_secret.slack_webhook.value
         }
       ]
-      repository_secrets   = []
+      repository_secrets = [
+        {
+          SLACK_WEBHOOK_URL = data.azurerm_key_vault_secret.slack_webhook.value
+        }
+      ]
       repository_variables = []
     }
     rtp-sender = {
@@ -35,10 +38,13 @@ locals {
           AZURE_CLIENT_ID       = data.azurerm_user_assigned_identity.cd_client_identity.client_id
           AZURE_SUBSCRIPTION_ID = data.azurerm_subscription.current.subscription_id
           AZURE_TENANT_ID       = data.azurerm_client_config.current.tenant_id
-          SLACK_WEBHOOK_URL     = data.azurerm_key_vault_secret.slack_webhook.value
         }
       ]
-      repository_secrets   = []
+      repository_secrets = [
+        {
+          SLACK_WEBHOOK_URL = data.azurerm_key_vault_secret.slack_webhook.value
+        }
+      ]
       repository_variables = []
     }
     rtp-platform-qa = {
@@ -58,7 +64,11 @@ locals {
           AZURE_TENANT_ID       = data.azurerm_client_config.current.tenant_id
         }
       ]
-      repository_secrets   = []
+      repository_secrets = [
+        {
+          SLACK_WEBHOOK_URL = data.azurerm_key_vault_secret.slack_webhook.value
+        }
+      ]
       repository_variables = []
     }
   }
