@@ -121,8 +121,8 @@ locals {
       indexes = [
         { keys = ["_id"], unique = true },
         { keys = ["updateDate"], unique = false },
-        { keys = ["initiativeId"], unique = false },
-        { keys = ["userId"], unique = false }
+        { keys = ["initiativeId", "familyId"], unique = false },
+        { keys = ["userId"], unique = false },
       ]
     },
     {
@@ -385,6 +385,7 @@ locals {
         { keys = ["status"], unique = false },
         { keys = ["additionalProperties.productName"], unique = false },
         { keys = ["rewardBatchId", "samplingKey"], unique = false },
+        { keys = ["rewardBatchTrxStatus"], unique = false }
       ]
     },
     {
