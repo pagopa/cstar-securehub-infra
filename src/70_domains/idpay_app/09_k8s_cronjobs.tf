@@ -133,3 +133,105 @@ resource "kubernetes_cron_job_v1" "reminder_voucher_expiration" {
     }
   }
 }
+
+resource "kubernetes_cron_job_v1" "evaluate_sent_reward_batch" {
+  metadata {
+    name      = "evaluate-sent-reward-batch"
+    namespace = var.domain
+    labels = {
+      app = "idpay-app"
+    }
+  }
+
+  spec {
+    schedule           = "15 0 * * *" # 00:15
+    timezone           = "Europe/Rome"
+    concurrency_policy = "Forbid"
+
+    #Active only in PROD
+    #Suspends the cronjob until the release to PROD
+    suspend = true # var.env_short != "p"
+
+    job_template {
+      metadata {
+        name = "evaluate-sent-reward-batch"
+        labels = {
+          app = "idpay-app"
+        }
+      }
+      spec {
+        template {
+          metadata {
+            labels = {
+              app = "idpay-app"
+            }
+          }
+          spec {
+            container {
+              name  = "evaluate-sent-reward-batch"
+              image = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
+              args = [
+                "-X", "POST",
+                "-H", "Content-Type: application/json",
+                "-d", "{}",
+                "https://${local.idpay_ingress_url}/idpaytransactions/idpay/merchant/portal/initiatives/${var.idpay_bel_initiative_id}/reward-batches/evaluate"
+              ]
+            }
+            restart_policy = "OnFailure"
+          }
+        }
+      }
+    }
+  }
+}
+
+resource "kubernetes_cron_job_v1" "evaluate_approve_reward_batch" {
+  metadata {
+    name      = "evaluate-approve-reward-batch"
+    namespace = var.domain
+    labels = {
+      app = "idpay-app"
+    }
+  }
+
+  spec {
+    schedule           = "15 3 * * *" # 00:15
+    timezone           = "Europe/Rome"
+    concurrency_policy = "Forbid"
+
+    #Active only in PROD
+    #Suspends the cronjob until the release to PROD
+    suspend = true # var.env_short != "p"
+
+    job_template {
+      metadata {
+        name = "evaluate-approve-reward-batch"
+        labels = {
+          app = "idpay-app"
+        }
+      }
+      spec {
+        template {
+          metadata {
+            labels = {
+              app = "idpay-app"
+            }
+          }
+          spec {
+            container {
+              name  = "evaluate-approve-reward-batch"
+              image = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
+              args = [
+                "-X", "POST",
+                "-H", "Content-Type: application/json",
+                "-d", "{}",
+                "https://${local.idpay_ingress_url}/idpaytransactions/idpay/merchant/portal/initiatives/${var.idpay_bel_initiative_id}/reward-batches/approved"
+              ]
+            }
+            restart_policy = "OnFailure"
+          }
+        }
+      }
+    }
+  }
+}
