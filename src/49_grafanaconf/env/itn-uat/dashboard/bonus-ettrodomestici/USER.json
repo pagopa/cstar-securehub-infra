@@ -1432,7 +1432,7 @@
             }
           },
           "pluginVersion": "6.2.0",
-          "query": "initiative_counters\n| where initiativeId != \"$initiativeId\"\n| extend \n    Speso = spentInitiativeBudgetCents,\n    Riservato = reservedInitiativeBudgetCents\n| extend \n    // Calcoliamo la percentuale di completamento reale\n    Efficienza = (todouble(Speso) / (Speso + Riservato)) * 100\n| project Efficienza",
+          "query": "initiative_counters\n| where initiativeId != \"$initiativeId\"\n| extend \n    Speso = spentInitiativeBudgetCents,\n    Riservato = reservedInitiativeBudgetCents\n| extend \n    // Calcoliamo la percentuale di completamento reale\n    Efficienza = case((Speso + Riservato) == 0, 0.0, (todouble(Speso) / (Speso + Riservato)) * 100)\n| project Efficienza",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
