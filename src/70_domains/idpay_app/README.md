@@ -55,6 +55,8 @@
 | [kubernetes_config_map.rtd-eventhub](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/config_map) | resource |
 | [kubernetes_cron_job_v1.cancel_expired_vouchers](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/cron_job_v1) | resource |
 | [kubernetes_cron_job_v1.cancel_pending_transactions](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/cron_job_v1) | resource |
+| [kubernetes_cron_job_v1.evaluate_approve_reward_batch](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/cron_job_v1) | resource |
+| [kubernetes_cron_job_v1.evaluate_sent_reward_batch](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/cron_job_v1) | resource |
 | [kubernetes_cron_job_v1.reminder_voucher_expiration](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/cron_job_v1) | resource |
 | [null_resource.transaction_in_progress_connector](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [azuread_group.adgroup_admin](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
