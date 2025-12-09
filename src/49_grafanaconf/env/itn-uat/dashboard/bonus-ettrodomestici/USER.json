@@ -1408,7 +1408,6 @@
         },
         "showThresholdLabels": false,
         "showThresholdMarkers": true,
-        "showthresholdMarkers": true,
         "sizing": "auto"
       },
       "pluginVersion": "11.6.3",
