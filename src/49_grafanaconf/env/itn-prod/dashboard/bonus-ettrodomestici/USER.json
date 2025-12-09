@@ -1938,7 +1938,7 @@
             }
           },
           "pluginVersion": "6.2.0",
-          "query": "let ForecastDays = 14d; \nwallet\n| where initiativeId == \"68dd003ccce8c534d1da22bc\"\n| where status != \"UNSUBSCRIBED\" \n| where voucherEndDate between (now() .. (now() + ForecastDays))\n| where amountCents > 0\n| summarize RientroPrevisto = sum(amountCents)/100.0 by bin(voucherEndDate, 1d)\n| order by voucherEndDate asc",
+          "query": "let ForecastDays = 14d; \nwallet\n| where initiativeId == \"$initiativeId\"\n| where status != \"UNSUBSCRIBED\" \n| where voucherEndDate between (now() .. (now() + ForecastDays))\n| where amountCents > 0\n| summarize RientroPrevisto = sum(amountCents)/100.0 by bin(voucherEndDate, 1d)\n| order by voucherEndDate asc",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
