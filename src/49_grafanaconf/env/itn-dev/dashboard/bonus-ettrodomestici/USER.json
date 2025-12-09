@@ -1368,19 +1368,21 @@
             "mode": "thresholds"
           },
           "mappings": [],
+          "max": 100,
+          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "red"
               },
               {
                 "color": "#EAB839",
-                "value": 70
+                "value": 30
               },
               {
-                "color": "red",
-                "value": 90
+                "color": "green",
+                "value": 70
               }
             ]
           },
@@ -1394,7 +1396,7 @@
         "x": 0,
         "y": 64
       },
-      "id": 20,
+      "id": 27,
       "options": {
         "minVizHeight": 75,
         "minVizWidth": 75,
@@ -1408,7 +1410,6 @@
         },
         "showThresholdLabels": false,
         "showThresholdMarkers": true,
-        "showthresholdMarkers": true,
         "sizing": "auto"
       },
       "pluginVersion": "11.6.3",
@@ -1416,10 +1417,6 @@
         {
           "OpenAI": false,
           "database": "idpay",
-          "datasource": {
-            "type": "grafana-azure-data-explorer-datasource",
-            "uid": "${ds}"
-          },
           "expression": {
             "groupBy": {
               "expressions": [],
@@ -1435,7 +1432,7 @@
             }
           },
           "pluginVersion": "6.2.0",
-          "query": "initiative_counters\n| where initiativeId != \"$initiativeId\"\n| extend \n    BudgetTotale = initiativeBudgetCents / 100.0,\n    Speso = spentInitiativeBudgetCents / 100.0,\n    Riservato = reservedInitiativeBudgetCents / 100.0,\n    Residuo = residualInitiativeBudgetCents / 100.0\n| extend \n    Perc_Impegnato = ((Speso + Riservato) / BudgetTotale) * 100,\n    Stato = case(Residuo < 1000, \"SATURO\", \"DISPONIBILE\")\n| project Perc_Impegnato",
+          "query": "initiative_counters\n| where initiativeId != \"$initiativeId\"\n| extend \n    Speso = spentInitiativeBudgetCents,\n    Riservato = reservedInitiativeBudgetCents\n| extend \n    // Calcoliamo la percentuale di completamento reale\n    Efficienza = (todouble(Speso) / (Speso + Riservato)) * 100\n| project Efficienza",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -1443,7 +1440,7 @@
           "resultFormat": "table"
         }
       ],
-      "title": "🔥 Saturazione Budget (Speso + Riservato)",
+      "title": "🚀 Efficienza di Spesa (Burn Rate)",
       "type": "gauge"
     },
     {
@@ -1606,6 +1603,9 @@
             },
             "insertNulls": false,
             "lineInterpolation": "smooth",
+            "lineStyle": {
+              "fill": "solid"
+            },
             "lineWidth": 1,
             "pointSize": 5,
             "scaleDistribution": {
@@ -1676,6 +1676,36 @@
                 }
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Scaduti"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "purple",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "RichiesteTotali"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
           }
         ]
       },
@@ -1719,7 +1749,7 @@
             }
           },
           "pluginVersion": "6.2.0",
-          "query": "let StartTime = todatetime($__from);\nlet EndTime = todatetime($__to);\nlet Interval = $granularita;\nonboarding_citizen\n| where initiativeId == \"$initiativeId\"\n| where updateDate between (StartTime .. EndTime)\n| make-series \n    RichiesteTotali = count(),\n    UtentiAttivi = countif(status == \"ONBOARDING_OK\"), \n    InCoda = countif(status == \"ON_EVALUATION\"),\n    Rifiutati = countif(status in (\"ONBOARDING_KO\", \"JOINED\"))\n    on updateDate from StartTime to EndTime step Interval\n| mv-expand updateDate, RichiesteTotali, UtentiAttivi, InCoda, Rifiutati\n| project updateDate, UtentiAttivi, InCoda, Rifiutati",
+          "query": "let StartTime = unixtime_milliseconds_todatetime(tolong($__from));\nlet EndTime = unixtime_milliseconds_todatetime(tolong($__to));\nlet Interval = $granularita;\nonboarding_citizen\n| where initiativeId == \"$initiativeId\"\n| where updateDate between (StartTime .. EndTime)\n| make-series \n    RichiesteTotali = count(),\n    UtentiAttivi = countif(status == \"ONBOARDING_OK\"), \n    InCoda = countif(status == \"ON_EVALUATION\"),\n    Rifiutati = countif(status in (\"ONBOARDING_KO\", \"JOINED\")),\n    Scaduti = countif(status == \"UNSUBSCRIBED\")\n    on updateDate from StartTime to EndTime step Interval\n| mv-expand updateDate, RichiesteTotali, UtentiAttivi, InCoda, Rifiutati, Scaduti\n| extend updateDate = todatetime(updateDate),\n    RichiesteTotali = tolong(RichiesteTotali),\n    UtentiAttivi = tolong(UtentiAttivi),\n    InCoda = tolong(InCoda),\n    Rifiutati = tolong(Rifiutati),\n    Scaduti = tolong(Scaduti)\n",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -1744,12 +1774,12 @@
             "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
-            "axisLabel": "Euro (€)",
+            "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
             "barWidthFactor": 0.6,
-            "drawStyle": "bars",
-            "fillOpacity": 80,
+            "drawStyle": "line",
+            "fillOpacity": 35,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -1757,7 +1787,10 @@
               "viz": false
             },
             "insertNulls": false,
-            "lineInterpolation": "linear",
+            "lineInterpolation": "smooth",
+            "lineStyle": {
+              "fill": "solid"
+            },
             "lineWidth": 1,
             "pointSize": 5,
             "scaleDistribution": {
@@ -1767,7 +1800,7 @@
             "spanNulls": false,
             "stacking": {
               "group": "A",
-              "mode": "none"
+              "mode": "normal"
             },
             "thresholdsStyle": {
               "mode": "off"
@@ -1781,10 +1814,85 @@
                 "color": "green"
               }
             ]
-          },
-          "unit": "currencyEUR"
+          }
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Autorizzate"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Catturate"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Fatturate"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "gray",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Annullate"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "purple",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Stornate"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 8,
@@ -1792,13 +1900,13 @@
         "x": 0,
         "y": 80
       },
-      "id": 23,
+      "id": 24,
       "options": {
         "legend": {
           "calcs": [],
           "displayMode": "list",
           "placement": "bottom",
-          "showLegend": false
+          "showLegend": true
         },
         "tooltip": {
           "hideZeros": false,
@@ -1826,7 +1934,7 @@
             }
           },
           "pluginVersion": "6.2.0",
-          "query": "let ForecastDays = 14d; \nwallet\n| where initiativeId == \"$initiativeId\"\n| where status != \"UNSUBSCRIBED\" \n| where voucherEndDate between (now() .. (now() + ForecastDays))\n| extend ResiduoWallet = (amountCents - accruedCents)\n| where ResiduoWallet > 0\n| summarize RientroPrevisto = sum(ResiduoWallet)/100.0 by bin(voucherEndDate, 1d)\n| order by voucherEndDate asc",
+          "query": "let StartTime = unixtime_milliseconds_todatetime(tolong($__from));\nlet EndTime = unixtime_milliseconds_todatetime(tolong($__to));\nlet Interval = $granularita;\n['transaction']\n| where isnotempty(trxChargeDate)\n| where trxChargeDate between (StartTime .. EndTime)\n| make-series \n    TransazioniTotali = count(),\n    Autorizzate = countif(status == \"AUTHORIZED\"), \n    Catturate = countif(status == \"CAPTURED\"),\n    Fatturate = countif(status == \"INVOICED\"),\n    Annullate = countif(status == \"CANCELLED\"),\n    Stornate = countif(status == \"REFUNDED\")\n    on trxChargeDate from StartTime to EndTime step Interval\n| mv-expand trxChargeDate, TransazioniTotali, Autorizzate, Catturate, Fatturate, Annullate, Stornate\n| extend updateDate = todatetime(trxChargeDate),\n    TransazioniTotali = tolong(TransazioniTotali),\n    Autorizzate = tolong(Autorizzate),\n    Catturate = tolong(Catturate),\n    Fatturate = tolong(Fatturate),\n    Annullate = tolong(Annullate),\n    Stornate = tolong(Stornate)\n| render timechart\n",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -1834,7 +1942,7 @@
           "resultFormat": "table"
         }
       ],
-      "title": "🔮 Previsione Rientro Budget (Prossimi 14gg)",
+      "title": "💰 Trend Transazioni",
       "type": "timeseries"
     },
     {
@@ -1874,10 +1982,6 @@
             "steps": [
               {
                 "color": "green"
-              },
-              {
-                "color": "red",
-                "value": 80
               }
             ]
           },
@@ -1891,7 +1995,7 @@
         "x": 0,
         "y": 88
       },
-      "id": 18,
+      "id": 23,
       "options": {
         "barRadius": 0,
         "barWidth": 0.97,
@@ -1903,7 +2007,7 @@
           "placement": "bottom",
           "showLegend": true
         },
-        "orientation": "vertical",
+        "orientation": "auto",
         "showValue": "auto",
         "stacking": "none",
         "tooltip": {
@@ -1919,10 +2023,6 @@
         {
           "OpenAI": false,
           "database": "idpay",
-          "datasource": {
-            "type": "grafana-azure-data-explorer-datasource",
-            "uid": "${ds}"
-          },
           "expression": {
             "groupBy": {
               "expressions": [],
@@ -1938,7 +2038,7 @@
             }
           },
           "pluginVersion": "6.2.0",
-          "query": "let ForecastDays = 14d; \nwallet\n| where initiativeId == \"68dd003ccce8c534d1da22bc\"\n| where status != \"UNSUBSCRIBED\" \n| where voucherEndDate between (now() .. (now() + ForecastDays))\n| where amountCents > 0\n| summarize RientroPrevisto = sum(amountCents)/100.0 by bin(voucherEndDate, 1d)\n| order by voucherEndDate asc",
+          "query": "let ForecastDays = 14d; \nlet StartTime = now();\nlet EndTime =  now() + ForecastDays;\nlet Interval = $granularita;\nwallet\n| where initiativeId == \"$initiativeId\"\n| where status != \"UNSUBSCRIBED\" \n| where voucherEndDate between (StartTime .. EndTime)\n| extend ResiduoWallet = amountCents\n| where ResiduoWallet > 0\n| summarize RientroPrevisto = sum(amountCents)/100.0 by bin(voucherEndDate, Interval)\n| project Giorno = format_datetime(voucherEndDate, 'yyyy-MM-dd'), RientroPrevisto\n| order by Giorno asc\n",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -1946,7 +2046,7 @@
           "resultFormat": "table"
         }
       ],
-      "title": "Previsione Recupero",
+      "title": "🔮 Previsione Rientro Budget (Prossimi 14gg)",
       "type": "barchart"
     },
     {
@@ -1970,7 +2070,51 @@
           },
           "unit": "currencyEUR"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Perc_Speso"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Perc_Speso"
+            },
+            "properties": [
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red"
+                    },
+                    {
+                      "color": "#EAB839",
+                      "value": 40
+                    },
+                    {
+                      "color": "orange",
+                      "value": 60
+                    },
+                    {
+                      "color": "green",
+                      "value": 80
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 8,
@@ -2027,7 +2171,7 @@
             }
           },
           "pluginVersion": "6.2.0",
-          "query": "initiative_counters\n| where initiativeId != \"68dd003ccce8c534d1da22bc\"\n| extend \n    BudgetTotale = initiativeBudgetCents / 100.0,\n    Speso = spentInitiativeBudgetCents / 100.0,\n    Riservato = reservedInitiativeBudgetCents / 100.0,\n    Residuo = residualInitiativeBudgetCents / 100.0\n| extend \n    // Calcoliamo quanto è \"pieno\" il bucket\n    Perc_Impegnato = ((Speso + Riservato) / BudgetTotale) * 100,\n    // Creiamo uno stato logico per la Dashboard\n    Stato_Budget = case(\n        Residuo < 1000, \"SATURO\", \n        Residuo < 1000000, \"IN ESAURIMENTO\", \n        \"DISPONIBILE\"\n    )\n| project BudgetTotale, Speso, Riservato, Residuo, Perc_Impegnato, Stato_Budget",
+          "query": "initiative_counters\n| where initiativeId != \"68dd003ccce8c534d1da22bc\"\n| extend \n    BudgetTotale = initiativeBudgetCents / 100.0,\n    Speso = spentInitiativeBudgetCents / 100.0,\n    Riservato = reservedInitiativeBudgetCents / 100.0,\n    Residuo = residualInitiativeBudgetCents / 100.0\n| extend \n    // Calcoliamo quanto è \"pieno\" il bucket\n    Perc_Speso = ((Speso) / BudgetTotale) * 100,\n    // Creiamo uno stato logico per la Dashboard\n    Stato_Budget = case(\n        Residuo < 1000, \"SATURO\", \n        Residuo < 1000000, \"IN ESAURIMENTO\", \n        \"DISPONIBILE\"\n    )\n| project BudgetTotale, Speso, Riservato, Residuo, Perc_Speso, Stato_Budget",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -2037,120 +2181,6 @@
       ],
       "title": "Budget",
       "type": "bargauge"
-    },
-    {
-      "datasource": {
-        "type": "grafana-azure-data-explorer-datasource",
-        "uid": "${ds}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green"
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 24,
-        "x": 0,
-        "y": 96
-      },
-      "id": 17,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "11.6.3",
-      "targets": [
-        {
-          "OpenAI": false,
-          "database": "idpay",
-          "datasource": {
-            "type": "grafana-azure-data-explorer-datasource",
-            "uid": "${ds}"
-          },
-          "expression": {
-            "groupBy": {
-              "expressions": [],
-              "type": "and"
-            },
-            "reduce": {
-              "expressions": [],
-              "type": "and"
-            },
-            "where": {
-              "expressions": [],
-              "type": "and"
-            }
-          },
-          "pluginVersion": "6.2.0",
-          "query": "let StartTime = todatetime($__from);\nlet EndTime = todatetime($__to);\nlet Interval = $granularita;\nonboarding_citizen\n| where initiativeId == \"$initiativeId\"\n// Filtro temporale preventivo per performance\n| where updateDate between (StartTime .. EndTime)\n| make-series \n    // Totale generale delle richieste (indipendentemente dall'esito)\n    RichiesteTotali = count(),\n    // UTENTI ATTIVI (Voucher ottenuto)\n    UtentiAttivi = countif(status == \"ONBOARDING_OK\"), \n    // LISTA D'ATTESA (Il famoso \"imbuto\")\n    InCoda = countif(status == \"ON_EVALUATION\"),\n    // RIFIUTATI o NON AMMESSI (KO tecnico o logico + JOINED che mi indichi come scartati)\n    Rifiutati = countif(status in (\"ONBOARDING_KO\", \"JOINED\"))\n    on updateDate from StartTime to EndTime step Interval\n| mv-expand updateDate, RichiesteTotali, UtentiAttivi, InCoda, Rifiutati\n| project updateDate, RichiesteTotali, UtentiAttivi, InCoda, Rifiutati",
-          "querySource": "raw",
-          "queryType": "KQL",
-          "rawMode": true,
-          "refId": "A",
-          "resultFormat": "time_series"
-        }
-      ],
-      "title": "Onboarding",
-      "type": "timeseries"
     }
   ],
   "preload": false,
@@ -2299,5 +2329,5 @@
   "timezone": "browser",
   "title": "USER",
   "uid": "ef2037t65hnuoe",
-  "version": 88
+  "version": 107
 }
