@@ -356,3 +356,26 @@
     onboardingOkDate:datetime,
     updateDate:datetime
 )
+
+.create table rewards_batch (
+    _id:string,
+    merchantId:string,
+    businessName:string,
+    month:string,
+    posType:string,
+    status:string,
+    partial:bool,
+    name:string,
+    startDate:datetime,
+    endDate:datetime,
+    approvedAmountCents:long,
+    initialAmountCents:long,
+    numberOfTransactions:long,
+    numberOfTransactionsElaborated:long,
+    reportPath:string,
+    assigneeLevel:string,
+    numberOfTransactionsSuspended:long,
+    numberOfTransactionsRejected:long,
+    creationDate:datetime,
+    updateDate:datetime
+)
