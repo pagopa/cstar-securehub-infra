@@ -149,8 +149,7 @@ resource "kubernetes_cron_job_v1" "evaluate_sent_reward_batch" {
     concurrency_policy = "Forbid"
 
     #Active only in PROD
-    #Suspends the cronjob until the release to PROD
-    suspend = true # var.env_short != "p"
+    suspend = var.env_short != "p"
 
     job_template {
       metadata {
@@ -195,13 +194,12 @@ resource "kubernetes_cron_job_v1" "evaluate_approve_reward_batch" {
   }
 
   spec {
-    schedule           = "15 3 * * *" # 00:15
+    schedule           = "15 3 * * *" # 03:15
     timezone           = "Europe/Rome"
     concurrency_policy = "Forbid"
 
     #Active only in PROD
-    #Suspends the cronjob until the release to PROD
-    suspend = true # var.env_short != "p"
+    suspend = var.env_short != "p"
 
     job_template {
       metadata {
