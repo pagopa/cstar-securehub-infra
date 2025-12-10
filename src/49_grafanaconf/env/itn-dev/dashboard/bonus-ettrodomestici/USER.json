@@ -1564,7 +1564,7 @@
             }
           },
           "pluginVersion": "6.2.0",
-          "query": "onboarding_citizen\n| where initiativeId == \"$initiativeId\"\n| summarize \n    RichiesteTotali = count(),\n    UtentiAttivi = countif(status == \"ONBOARDING_OK\"),\n    InCoda = countif(status == \"ON_EVALUATION\")\n| extend \n    TassoAccettazione = round((todouble(UtentiAttivi) / RichiesteTotali) * 100, 1)\n| project TassoAccettazione, InCoda",
+          "query": "onboarding_citizen\n| where initiativeId == \"$initiativeId\"\n| summarize \n    RichiesteTotali = count(),\n    RichiesteProcessate = countif(status in (\"ONBOARDING_OK\", \"SUBSCRIBED\")),\n    InCoda = countif(status == \"ON_EVALUATION\")\n| extend \n    TassoAccettazione = round((todouble(RichiesteProcessate) / RichiesteTotali) * 100, 1)\n| project TassoAccettazione, InCoda",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -2099,18 +2099,30 @@
                     },
                     {
                       "color": "#EAB839",
-                      "value": 40
+                      "value": 25
                     },
                     {
                       "color": "orange",
-                      "value": 60
+                      "value": 50
                     },
                     {
                       "color": "green",
-                      "value": 80
+                      "value": 75
                     }
                   ]
                 }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Perc_Speso"
+            },
+            "properties": [
+              {
+                "id": "max",
+                "value": 100
               }
             ]
           }
@@ -2329,5 +2341,5 @@
   "timezone": "browser",
   "title": "USER",
   "uid": "ef2037t65hnuoe",
-  "version": 107
+  "version": 109
 }
