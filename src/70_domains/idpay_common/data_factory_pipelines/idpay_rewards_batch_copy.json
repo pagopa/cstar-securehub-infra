@@ -34,84 +34,184 @@
             "type": "TabularTranslator",
             "mappings": [
               {
-                "source": { "path": "$['_id']" },
-                "sink": { "name": "_id", "type": "String" }
+                "source": {
+                  "path": "$['_id']"
+                },
+                "sink": {
+                  "name": "_id",
+                  "type": "String"
+                }
               },
               {
-                "source": { "path": "$['merchantId']" },
-                "sink": { "name": "merchantId", "type": "String" }
+                "source": {
+                  "path": "$['merchantId']"
+                },
+                "sink": {
+                  "name": "merchantId",
+                  "type": "String"
+                }
               },
               {
-                "source": { "path": "$['businessName']" },
-                "sink": { "name": "businessName", "type": "String" }
+                "source": {
+                  "path": "$['businessName']"
+                },
+                "sink": {
+                  "name": "businessName",
+                  "type": "String"
+                }
               },
               {
-                "source": { "path": "$['month']" },
-                "sink": { "name": "month", "type": "String" }
+                "source": {
+                  "path": "$['month']"
+                },
+                "sink": {
+                  "name": "month",
+                  "type": "String"
+                }
               },
               {
-                "source": { "path": "$['posType']" },
-                "sink": { "name": "posType", "type": "String" }
+                "source": {
+                  "path": "$['posType']"
+                },
+                "sink": {
+                  "name": "posType",
+                  "type": "String"
+                }
               },
               {
-                "source": { "path": "$['status']" },
-                "sink": { "name": "status", "type": "String" }
+                "source": {
+                  "path": "$['status']"
+                },
+                "sink": {
+                  "name": "status",
+                  "type": "String"
+                }
               },
               {
-                "source": { "path": "$['partial']" },
-                "sink": { "name": "partial", "type": "Boolean" }
+                "source": {
+                  "path": "$['partial']"
+                },
+                "sink": {
+                  "name": "partial",
+                  "type": "Boolean"
+                }
               },
               {
-                "source": { "path": "$['name']" },
-                "sink": { "name": "name", "type": "String" }
+                "source": {
+                  "path": "$['name']"
+                },
+                "sink": {
+                  "name": "name",
+                  "type": "String"
+                }
               },
               {
-                "source": { "path": "$['startDate.$date']" },
-                "sink": { "name": "startDate", "type": "String" }
+                "source": {
+                  "path": "startDate.$date"
+                },
+                "sink": {
+                  "name": "startDateString",
+                  "type": "String"
+                }
               },
               {
-                "source": { "path": "$['endDate.$date']" },
-                "sink": { "name": "endDate", "type": "String" }
+                "source": {
+                  "path": "endDate.$date"
+                },
+                "sink": {
+                  "name": "endDateString",
+                  "type": "String"
+                }
               },
               {
-                "source": { "path": "$['approvedAmountCents.$numberLong']" },
-                "sink": { "name": "approvedAmountCents", "type": "String" }
+                "source": {
+                  "path": "$['approvedAmountCents.$numberLong']"
+                },
+                "sink": {
+                  "name": "approvedAmountCents",
+                  "type": "String"
+                }
               },
               {
-                "source": { "path": "$['initialAmountCents.$numberLong']" },
-                "sink": { "name": "initialAmountCents", "type": "String" }
+                "source": {
+                  "path": "$['initialAmountCents.$numberLong']"
+                },
+                "sink": {
+                  "name": "initialAmountCents",
+                  "type": "String"
+                }
               },
               {
-                "source": { "path": "$['numberOfTransactions.$numberLong']" },
-                "sink": { "name": "numberOfTransactions", "type": "String" }
+                "source": {
+                  "path": "$['numberOfTransactions.$numberLong']"
+                },
+                "sink": {
+                  "name": "numberOfTransactions",
+                  "type": "String"
+                }
               },
               {
-                "source": { "path": "$['numberOfTransactionsElaborated.$numberLong']" },
-                "sink": { "name": "numberOfTransactionsElaborated", "type": "String" }
+                "source": {
+                  "path": "$['numberOfTransactionsElaborated.$numberLong']"
+                },
+                "sink": {
+                  "name": "numberOfTransactionsElaborated",
+                  "type": "String"
+                }
               },
               {
-                "source": { "path": "$['assigneeLevel']" },
-                "sink": { "name": "assigneeLevel", "type": "String" }
+                "source": {
+                  "path": "$['assigneeLevel']"
+                },
+                "sink": {
+                  "name": "assigneeLevel",
+                  "type": "String"
+                }
               },
               {
-                "source": { "path": "$['numberOfTransactionsSuspended.$numberLong']" },
-                "sink": { "name": "numberOfTransactionsSuspended", "type": "String" }
+                "source": {
+                  "path": "$['numberOfTransactionsSuspended.$numberLong']"
+                },
+                "sink": {
+                  "name": "numberOfTransactionsSuspended",
+                  "type": "String"
+                }
               },
               {
-                "source": { "path": "$['numberOfTransactionsRejected.$numberLong']" },
-                "sink": { "name": "numberOfTransactionsRejected", "type": "String" }
+                "source": {
+                  "path": "$['numberOfTransactionsRejected.$numberLong']"
+                },
+                "sink": {
+                  "name": "numberOfTransactionsRejected",
+                  "type": "String"
+                }
               },
               {
-                "source": { "path": "$['reportPath']" },
-                "sink": { "name": "reportPath", "type": "String" }
+                "source": {
+                  "path": "$['reportPath']"
+                },
+                "sink": {
+                  "name": "reportPath",
+                  "type": "String"
+                }
               },
               {
-                "source": { "path": "$['creationDate.$date']" },
-                "sink": { "name": "creationDate", "type": "String" }
+                "source": {
+                  "path": "creationDate.$date"
+                },
+                "sink": {
+                  "name": "creationDateString",
+                  "type": "String"
+                }
               },
               {
-                "source": { "path": "$['updateDate.$date']" },
-                "sink": { "name": "updateDate", "type": "String" }
+                "source": {
+                  "path": "updateDate.$date"
+                },
+                "sink": {
+                  "name": "updateDateString",
+                  "type": "String"
+                }
               }
             ]
           }
@@ -149,9 +249,38 @@
           "referenceName": "idpay-Kusto-idpay-ls",
           "type": "LinkedServiceReference"
         }
+      },
+      {
+        "name": "Convert Date",
+        "type": "AzureDataExplorerCommand",
+        "dependsOn": [
+          {
+            "activity": "Copy rewards_batch collection",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "userProperties": [],
+        "typeProperties": {
+          "command": ".set-or-replace rewards_batch <|\nrewards_batch\n| extend \n    startDate = unixtime_milliseconds_todatetime(tolong(startDateString)),\n    endDate = unixtime_milliseconds_todatetime(tolong(endDateString)),\n    creationDate = unixtime_milliseconds_todatetime(tolong(creationDateString)),\n    updateDate = unixtime_milliseconds_todatetime(tolong(updateDateString))",
+          "commandTimeout": "00:20:00"
+        },
+        "linkedServiceName": {
+          "referenceName": "idpay-Kusto-idpay-ls",
+          "type": "LinkedServiceReference"
+        }
       }
     ],
-    "annotations": []
+    "annotations": [],
+    "lastPublishTime": "2025-12-10T17:15:48Z"
   },
   "type": "Microsoft.DataFactory/factories/pipelines"
 }

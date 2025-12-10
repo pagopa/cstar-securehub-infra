@@ -367,7 +367,9 @@
     partial:bool,
     name:string,
     startDate:datetime,
+    startDateString:string,
     endDate:datetime,
+    endDateString:string,
     approvedAmountCents:long,
     initialAmountCents:long,
     numberOfTransactions:long,
@@ -377,5 +379,7 @@
     numberOfTransactionsSuspended:long,
     numberOfTransactionsRejected:long,
     creationDate:datetime,
-    updateDate:datetime
+    creationDateString:string,
+    updateDate:datetime,
+    updateDateString:string
 )
