@@ -41,7 +41,8 @@ locals {
   idpay_containers = [
     "refund",
     "merchant",
-    "invoices"
+    "invoices",
+    "reward-batches"
   ]
 }
 
