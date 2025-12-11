@@ -213,7 +213,9 @@
                   "type": "String"
                 }
               }
-            ]
+            ],
+            "collectionReference": "",
+            "mapComplexValuesToString": true
           }
         },
         "inputs": [
