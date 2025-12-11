@@ -218,13 +218,13 @@
         },
         "inputs": [
           {
-            "referenceName": "cosmos_rewards_batch",
+            "referenceName": "cosmos_idpay_rewards_batch",
             "type": "DatasetReference"
           }
         ],
         "outputs": [
           {
-            "referenceName": "data_explorer_rewards_batch",
+            "referenceName": "data_explorer_idpay_rewards_batch",
             "type": "DatasetReference"
           }
         ]
