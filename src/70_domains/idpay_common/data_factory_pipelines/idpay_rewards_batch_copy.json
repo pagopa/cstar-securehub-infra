@@ -125,38 +125,38 @@
               },
               {
                 "source": {
-                  "path": "$['approvedAmountCents.$numberLong']"
+                  "path": "$['approvedAmountCents']"
                 },
                 "sink": {
                   "name": "approvedAmountCents",
-                  "type": "String"
+                  "type": "Long"
                 }
               },
               {
                 "source": {
-                  "path": "$['initialAmountCents.$numberLong']"
+                  "path": "$['initialAmountCents']"
                 },
                 "sink": {
                   "name": "initialAmountCents",
-                  "type": "String"
+                  "type": "Long"
                 }
               },
               {
                 "source": {
-                  "path": "$['numberOfTransactions.$numberLong']"
+                  "path": "$['numberOfTransactions']"
                 },
                 "sink": {
                   "name": "numberOfTransactions",
-                  "type": "String"
+                  "type": "Long"
                 }
               },
               {
                 "source": {
-                  "path": "$['numberOfTransactionsElaborated.$numberLong']"
+                  "path": "$['numberOfTransactionsElaborated']"
                 },
                 "sink": {
                   "name": "numberOfTransactionsElaborated",
-                  "type": "String"
+                  "type": "Long"
                 }
               },
               {
@@ -170,20 +170,20 @@
               },
               {
                 "source": {
-                  "path": "$['numberOfTransactionsSuspended.$numberLong']"
+                  "path": "$['numberOfTransactionsSuspended']"
                 },
                 "sink": {
                   "name": "numberOfTransactionsSuspended",
-                  "type": "String"
+                  "type": "Long"
                 }
               },
               {
                 "source": {
-                  "path": "$['numberOfTransactionsRejected.$numberLong']"
+                  "path": "$['numberOfTransactionsRejected']"
                 },
                 "sink": {
                   "name": "numberOfTransactionsRejected",
-                  "type": "String"
+                  "type": "Long"
                 }
               },
               {
