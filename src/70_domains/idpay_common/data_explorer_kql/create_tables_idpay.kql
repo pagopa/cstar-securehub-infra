@@ -98,6 +98,8 @@
     trxChargeDateString:string,
     elaborationDateTimeString:string,
     channel:string,
+    rewardBatchId:string,
+    rewardBatchTrxStatus:string,
     additionalProductGtin:string,
     additionalProductName:string,
     trxCode:string,
