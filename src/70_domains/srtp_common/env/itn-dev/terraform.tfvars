@@ -13,7 +13,7 @@ enable_cdn                                       = true
 
 law_daily_quota_gb = 5
 
-cosmos_otp_ttl = 120
+cosmos_otp_ttl = 3600
 
 # AKS
 aks_nodepool_blue = {

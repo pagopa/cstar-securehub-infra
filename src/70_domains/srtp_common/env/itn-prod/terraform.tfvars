@@ -14,7 +14,7 @@ enable_cdn                                       = false
 law_daily_quota_gb                          = 100
 cosmos_collections_autoscale_max_throughput = 1000
 
-cosmos_otp_ttl = 120
+cosmos_otp_ttl = 3600
 
 # AKS
 aks_nodepool_blue = {
