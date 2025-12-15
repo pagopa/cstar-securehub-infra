@@ -1,0 +1,268 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 238,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {
+        "type": "grafana-azure-data-explorer-datasource",
+        "uid": "${ds}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "KO": {
+                  "color": "red",
+                  "index": 1
+                },
+                "OK": {
+                  "color": "green",
+                  "index": 0
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 4,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/.*/",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.6.3",
+      "targets": [
+        {
+          "OpenAI": false,
+          "clusterUri": "https://cstar-d-itn-platform.italynorth.kusto.windows.net",
+          "database": "idpay",
+          "datasource": {
+            "type": "grafana-azure-data-explorer-datasource",
+            "uid": "${ds}"
+          },
+          "expression": {
+            "groupBy": {
+              "expressions": [],
+              "type": "and"
+            },
+            "reduce": {
+              "expressions": [],
+              "type": "and"
+            },
+            "where": {
+              "expressions": [],
+              "type": "and"
+            }
+          },
+          "pluginVersion": "6.2.0",
+          "query": "initiative_counters\n| where _id == '{\"$oid\":\"68dd003ccce8c534d1da22bc\"}'\n| extend resto=reservedInitiativeBudgetCents%10000\n| project ismultiplo=iff(resto == 0, 'OK', 'KO')",
+          "querySource": "raw",
+          "queryType": "KQL",
+          "rawMode": true,
+          "refId": "A",
+          "resultFormat": "table"
+        }
+      ],
+      "title": "Budget residuo multiplo di 100",
+      "type": "stat"
+    }
+  ],
+  "preload": false,
+  "schemaVersion": 41,
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "text": "1h",
+          "value": "1h"
+        },
+        "label": "granularità",
+        "name": "granularita",
+        "options": [
+          {
+            "selected": false,
+            "text": "1m",
+            "value": "1m"
+          },
+          {
+            "selected": true,
+            "text": "1h",
+            "value": "1h"
+          },
+          {
+            "selected": false,
+            "text": "1d",
+            "value": "1d"
+          }
+        ],
+        "query": "1m, 1h, 1d",
+        "type": "custom"
+      },
+      {
+        "current": {
+          "text": "68dd003ccce8c534d1da22bc",
+          "value": "68dd003ccce8c534d1da22bc"
+        },
+        "label": "Initiative ID",
+        "name": "initiativeId",
+        "options": [
+          {
+            "selected": true,
+            "text": "68dd003ccce8c534d1da22bc",
+            "value": "68dd003ccce8c534d1da22bc"
+          }
+        ],
+        "query": "68dd003ccce8c534d1da22bc",
+        "type": "textbox"
+      },
+      {
+        "current": {
+          "text": "cstar-d-itn-idpay-sb-ns",
+          "value": "cstar-d-itn-idpay-sb-ns"
+        },
+        "definition": "",
+        "hide": 2,
+        "name": "serviceBus",
+        "options": [],
+        "query": {
+          "azureLogAnalytics": {
+            "query": "",
+            "resources": [
+              "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/cstar-d-itn-idpay-data-rg/providers/Microsoft.DocumentDB/databaseAccounts/cstar-d-itn-idpay-mongodb-account"
+            ]
+          },
+          "namespace": "microsoft.servicebus/namespaces",
+          "queryType": "Azure Resource Names",
+          "refId": "A",
+          "region": "italynorth",
+          "resourceGroup": "$serviceBusRg",
+          "subscription": "$subscription"
+        },
+        "refresh": 1,
+        "regex": "/.*idpay-sb-ns.*/",
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "cstar-d-itn-idpay-data-rg",
+          "value": "cstar-d-itn-idpay-data-rg"
+        },
+        "definition": "",
+        "hide": 2,
+        "name": "serviceBusRg",
+        "options": [],
+        "query": {
+          "azureLogAnalytics": {
+            "query": "",
+            "resources": [
+              "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/cstar-d-itn-idpay-data-rg/providers/Microsoft.DocumentDB/databaseAccounts/cstar-d-itn-idpay-mongodb-account"
+            ]
+          },
+          "queryType": "Azure Resource Groups",
+          "refId": "A",
+          "region": "italynorth",
+          "subscription": "$subscription"
+        },
+        "refresh": 1,
+        "regex": "/.*idpay-data-rg.*/",
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "DEV-CSTAR",
+          "value": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+        },
+        "definition": "",
+        "hide": 2,
+        "name": "subscription",
+        "options": [],
+        "query": {
+          "azureLogAnalytics": {
+            "query": "",
+            "resources": []
+          },
+          "queryType": "Azure Subscriptions",
+          "refId": "A"
+        },
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
+      },
+      {
+        "allowCustomValue": false,
+        "current": {
+          "text": "grafana-azure-data-explorer-datasource",
+          "value": "df4s9lke68vlse"
+        },
+        "hide": 2,
+        "name": "ds",
+        "options": [],
+        "query": "grafana-azure-data-explorer-datasource",
+        "refresh": 1,
+        "regex": "grafana-azure-data-explorer-datasource",
+        "type": "datasource"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Quadrature",
+  "uid": "df76d6k1v7cw0c",
+  "version": 5
+}
