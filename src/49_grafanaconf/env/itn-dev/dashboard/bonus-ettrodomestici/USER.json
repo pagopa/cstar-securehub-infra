@@ -2123,6 +2123,10 @@
               {
                 "id": "max",
                 "value": 100
+              },
+              {
+                "id": "min",
+                "value": 0
               }
             ]
           }
@@ -2341,5 +2345,5 @@
   "timezone": "browser",
   "title": "USER",
   "uid": "ef2037t65hnuoe",
-  "version": 109
+  "version": 110
 }
