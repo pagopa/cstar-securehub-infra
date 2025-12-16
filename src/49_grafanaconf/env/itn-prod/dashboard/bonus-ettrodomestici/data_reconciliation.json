@@ -85,7 +85,6 @@
       "targets": [
         {
           "OpenAI": false,
-          "clusterUri": "https://cstar-d-itn-platform.italynorth.kusto.windows.net",
           "database": "idpay",
           "datasource": {
             "type": "grafana-azure-data-explorer-datasource",
@@ -678,5 +677,5 @@
   "timezone": "browser",
   "title": "Quadrature",
   "uid": "df76d6k1v7cw0c",
-  "version": 13
+  "version": 14
 }
