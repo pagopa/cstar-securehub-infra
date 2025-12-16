@@ -58,7 +58,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
+        "h": 16,
         "w": 4,
         "x": 0,
         "y": 0
@@ -106,7 +106,7 @@
             }
           },
           "pluginVersion": "6.2.0",
-          "query": "initiative_counters\n| where _id == '{\"$oid\":\"68dd003ccce8c534d1da22bc\"}'\n| extend resto=reservedInitiativeBudgetCents%10000\n| project ismultiplo=iff(resto == 0, 'OK', 'KO')",
+          "query": "initiative_counters\n| where _id == strcat('{\"$oid\":\"', \"$initiativeId\", '\"}')\n| extend resto=reservedInitiativeBudgetCents%10000\n| project ismultiplo=iff(resto == 0, 'OK', 'KO')",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -114,8 +114,394 @@
           "resultFormat": "table"
         }
       ],
-      "title": "Budget residuo multiplo di 100",
+      "title": "Budget riservato multiplo di 100 euro",
       "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-data-explorer-datasource",
+        "uid": "${ds}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "KO": {
+                  "color": "red",
+                  "index": 1
+                },
+                "OK": {
+                  "color": "green",
+                  "index": 0
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 18,
+        "x": 4,
+        "y": 0
+      },
+      "id": 2,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/.*/",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.6.3",
+      "targets": [
+        {
+          "OpenAI": false,
+          "database": "idpay",
+          "datasource": {
+            "type": "grafana-azure-data-explorer-datasource",
+            "uid": "${ds}"
+          },
+          "expression": {
+            "groupBy": {
+              "expressions": [],
+              "type": "and"
+            },
+            "reduce": {
+              "expressions": [],
+              "type": "and"
+            },
+            "where": {
+              "expressions": [],
+              "type": "and"
+            }
+          },
+          "pluginVersion": "6.2.0",
+          "query": "\r\n// Aggrega le transazioni per batch\r\nlet TxByBatch =\r\n    transaction\r\n    |where isnotempty( rewardBatchId) and status in ('INVOICED','REWARDED')\r\n    | summarize\r\n        tx_sum_cents = tolong(sum(toint(rewardAccruedRewardCents))),\r\n        tx_count = count()\r\n      by rewardBatchId;\r\n\r\nlet toleranceCents = 0;\r\nlet monthToCheck = \"$month\";\r\n\r\n// Confronta con la tabella rewards_batch\r\nlet rewards_batch_check = \r\nrewards_batch\r\n|where month == monthToCheck\r\n| extend\r\n    batch_id = tostring(_id),\r\n    initial_cents = tolong(coalesce(toint(initialAmountCents), 0))\r\n| join kind=leftouter TxByBatch on $left.batch_id == $right.rewardBatchId\r\n| extend\r\n    tx_sum_cents = tolong(coalesce(tx_sum_cents, 0)),\r\n    tx_count = tolong(coalesce(tx_count, 0)),\r\n    delta_cents = initial_cents - tx_sum_cents\r\n| where abs(delta_cents) > toleranceCents  // seleziona solo i mismatch\r\n| project\r\n    rewardBatchId = _id,\r\n    initialAmountCents = initial_cents,\r\n    tx_sum_cents,\r\n    delta_cents,\r\n    tx_count\r\n;\r\nrewards_batch_check\r\n| summarize cnt = count()\r\n| project CheckLottiNov = iff(cnt == 0, \"OK\", \"KO\")\r\n\r\n\r\n\r\n\r\n\r\n",
+          "querySource": "raw",
+          "queryType": "KQL",
+          "rawMode": true,
+          "refId": "A",
+          "resultFormat": "table"
+        }
+      ],
+      "title": "Check importi lotti",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-data-explorer-datasource",
+        "uid": "${ds}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 18,
+        "x": 4,
+        "y": 4
+      },
+      "id": 3,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "11.6.3",
+      "targets": [
+        {
+          "OpenAI": false,
+          "database": "idpay",
+          "datasource": {
+            "type": "grafana-azure-data-explorer-datasource",
+            "uid": "${ds}"
+          },
+          "expression": {
+            "groupBy": {
+              "expressions": [],
+              "type": "and"
+            },
+            "reduce": {
+              "expressions": [],
+              "type": "and"
+            },
+            "where": {
+              "expressions": [],
+              "type": "and"
+            }
+          },
+          "pluginVersion": "6.2.0",
+          "query": "\r\n// Aggrega le transazioni per batch\r\nlet TxByBatch =\r\n    transaction\r\n    |where isnotempty( rewardBatchId) and status in ('INVOICED','REWARDED')\r\n    | summarize\r\n        tx_sum_cents = tolong(sum(toint(rewardAccruedRewardCents))),\r\n        tx_count = count()\r\n      by rewardBatchId;\r\n\r\nlet toleranceCents = 0;\r\nlet monthToCheck = \"$month\";\r\n\r\n// Confronta con la tabella rewards_batch\r\nrewards_batch\r\n|where month == monthToCheck\r\n| extend\r\n    batch_id = tostring(_id),\r\n    initial_cents = tolong(coalesce(toint(initialAmountCents), 0))\r\n| join kind=leftouter TxByBatch on $left.batch_id == $right.rewardBatchId\r\n| extend\r\n    tx_sum_cents = tolong(coalesce(tx_sum_cents, 0)),\r\n    tx_count = tolong(coalesce(tx_count, 0)),\r\n    delta_cents = initial_cents - tx_sum_cents\r\n| where abs(delta_cents) > toleranceCents  // seleziona solo i mismatch\r\n| project\r\n    rewardBatchId = _id,\r\n    initialAmountCents = initial_cents,\r\n    tx_sum_cents,\r\n    delta_cents,\r\n    tx_count\r\n| order by abs(delta_cents) desc, tx_count desc\r\n\r\n\r\n\r\n",
+          "querySource": "raw",
+          "queryType": "KQL",
+          "rawMode": true,
+          "refId": "A",
+          "resultFormat": "table"
+        }
+      ],
+      "title": "Dettaglio lotti KO",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-data-explorer-datasource",
+        "uid": "${ds}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "KO": {
+                  "color": "red",
+                  "index": 1
+                },
+                "OK": {
+                  "color": "green",
+                  "index": 0
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 18,
+        "x": 4,
+        "y": 8
+      },
+      "id": 4,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/.*/",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.6.3",
+      "targets": [
+        {
+          "OpenAI": false,
+          "database": "idpay",
+          "datasource": {
+            "type": "grafana-azure-data-explorer-datasource",
+            "uid": "${ds}"
+          },
+          "expression": {
+            "groupBy": {
+              "expressions": [],
+              "type": "and"
+            },
+            "reduce": {
+              "expressions": [],
+              "type": "and"
+            },
+            "where": {
+              "expressions": [],
+              "type": "and"
+            }
+          },
+          "pluginVersion": "6.2.0",
+          "query": "transaction\r\n| where isempty(rewardBatchId) and status in('INVOICED','REWARDED')\r\n| summarize cnt = count()\r\n| project Status = iff(cnt == 0, \"OK\", \"KO\")\r\n\r\n\r\n\r\n\r\n",
+          "querySource": "raw",
+          "queryType": "KQL",
+          "rawMode": true,
+          "refId": "A",
+          "resultFormat": "table"
+        }
+      ],
+      "title": "Check Transazioni senza lotto",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-data-explorer-datasource",
+        "uid": "${ds}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [
+            {
+              "options": {
+                "KO": {
+                  "color": "red",
+                  "index": 1
+                },
+                "OK": {
+                  "color": "green",
+                  "index": 0
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 18,
+        "x": 4,
+        "y": 12
+      },
+      "id": 5,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "11.6.3",
+      "targets": [
+        {
+          "OpenAI": false,
+          "database": "idpay",
+          "datasource": {
+            "type": "grafana-azure-data-explorer-datasource",
+            "uid": "${ds}"
+          },
+          "expression": {
+            "groupBy": {
+              "expressions": [],
+              "type": "and"
+            },
+            "reduce": {
+              "expressions": [],
+              "type": "and"
+            },
+            "where": {
+              "expressions": [],
+              "type": "and"
+            }
+          },
+          "pluginVersion": "6.2.0",
+          "query": "transaction\r\n| where isempty(rewardBatchId) and status in('INVOICED','REWARDED')\r\n\r\n\r\n\r\n\r\n\r\n",
+          "querySource": "raw",
+          "queryType": "KQL",
+          "rawMode": true,
+          "refId": "A",
+          "resultFormat": "table"
+        }
+      ],
+      "title": "Transazioni senza lotto",
+      "type": "table"
     }
   ],
   "preload": false,
@@ -125,8 +511,8 @@
     "list": [
       {
         "current": {
-          "text": "1h",
-          "value": "1h"
+          "text": "1d",
+          "value": "1d"
         },
         "label": "granularità",
         "name": "granularita",
@@ -137,12 +523,12 @@
             "value": "1m"
           },
           {
-            "selected": true,
+            "selected": false,
             "text": "1h",
             "value": "1h"
           },
           {
-            "selected": false,
+            "selected": true,
             "text": "1d",
             "value": "1d"
           }
@@ -166,6 +552,34 @@
         ],
         "query": "68dd003ccce8c534d1da22bc",
         "type": "textbox"
+      },
+      {
+        "current": {
+          "text": "2025-11",
+          "value": "2025-11"
+        },
+        "hide": 1,
+        "label": "Mese di riferimento",
+        "name": "month",
+        "options": [
+          {
+            "selected": true,
+            "text": "2025-11",
+            "value": "2025-11"
+          },
+          {
+            "selected": false,
+            "text": "2025-12",
+            "value": "2025-12"
+          },
+          {
+            "selected": false,
+            "text": "2026-01",
+            "value": "2026-01"
+          }
+        ],
+        "query": "2025-11, 2025-12, 2026-01",
+        "type": "custom"
       },
       {
         "current": {
@@ -264,5 +678,5 @@
   "timezone": "browser",
   "title": "Quadrature",
   "uid": "df76d6k1v7cw0c",
-  "version": 5
+  "version": 13
 }
