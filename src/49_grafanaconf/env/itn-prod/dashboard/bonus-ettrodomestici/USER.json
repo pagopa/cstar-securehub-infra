@@ -2098,11 +2098,11 @@
                       "color": "red"
                     },
                     {
-                      "color": "#EAB839",
+                      "color": "orange",
                       "value": 25
                     },
                     {
-                      "color": "orange",
+                      "color": "yellow",
                       "value": 50
                     },
                     {
@@ -2345,5 +2345,5 @@
   "timezone": "browser",
   "title": "USER",
   "uid": "ef2037t65hnuoe",
-  "version": 110
+  "version": 111
 }
