@@ -30,3 +30,13 @@ data "azurerm_key_vault_secret" "slack_webhook" {
   key_vault_id = data.azurerm_key_vault.rtp-kv.id
   name         = "slack-webhook-url"
 }
+
+data "azurerm_key_vault_secret" "git_pat" {
+  key_vault_id = data.azurerm_key_vault.rtp-kv.id
+  name         = "git-pat"
+}
+
+data "azurerm_key_vault_secret" "sonar_token" {
+  key_vault_id = data.azurerm_key_vault.rtp-kv.id
+  name         = "sonar-token"
+}
