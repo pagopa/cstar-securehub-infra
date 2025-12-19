@@ -383,5 +383,6 @@
     creationDate:datetime,
     creationDateString:string,
     updateDate:datetime,
-    updateDateString:string
+    updateDateString:string,
+    approvalDate:datetime
 )
