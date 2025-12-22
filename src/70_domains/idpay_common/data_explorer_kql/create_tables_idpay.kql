@@ -386,3 +386,9 @@
     updateDateString:string,
     approvalDate:datetime
 )
+
+.create table data_vault (
+    _id:string,
+    data:string,
+    page:long
+)
