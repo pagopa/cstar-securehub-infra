@@ -1,0 +1,105 @@
+{
+    "name": "idpay_data_vault_copy",
+    "properties": {
+        "activities": [
+            {
+                "name": "Copy data_vault collection",
+                "type": "Copy",
+                "dependsOn": [
+                    {
+                        "activity": "Clear data_vault table",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "source": {
+                        "type": "CosmosDbMongoDbApiSource",
+                        "batchSize": 100
+                    },
+                    "sink": {
+                        "type": "AzureDataExplorerSink"
+                    },
+                    "enableStaging": false,
+                    "translator": {
+                        "type": "TabularTranslator",
+                        "mappings": [
+                            {
+                                "source": {
+                                    "path": "$['_id']"
+                                },
+                                "sink": {
+                                    "name": "_id",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['data']"
+                                },
+                                "sink": {
+                                    "name": "data",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['page']"
+                                },
+                                "sink": {
+                                    "name": "page",
+                                    "type": "Long"
+                                }
+                            }
+                        ]
+                    }
+                },
+                "inputs": [
+                    {
+                        "referenceName": "cosmos_idpay_data_vault",
+                        "type": "DatasetReference"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "referenceName": "data_explorer_idpay_data_vault",
+                        "type": "DatasetReference"
+                    }
+                ]
+            },
+            {
+                "name": "Clear data_vault table",
+                "type": "AzureDataExplorerCommand",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "command": ".clear table data_vault data",
+                    "commandTimeout": "00:20:00"
+                },
+                "linkedServiceName": {
+                    "referenceName": "idpay-Kusto-idpay-ls",
+                    "type": "LinkedServiceReference"
+                }
+            }
+        ],
+        "annotations": [],
+        "lastPublishTime": "2025-10-23T13:15:41Z"
+    },
+    "type": "Microsoft.DataFactory/factories/pipelines"
+}
