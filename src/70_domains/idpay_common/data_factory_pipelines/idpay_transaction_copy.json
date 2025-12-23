@@ -349,6 +349,24 @@
                                 }
                             },
                             {
+                              "source": {
+                                "path": "$['rewardBatchId']"
+                              },
+                              "sink": {
+                                "name": "rewardBatchId",
+                                "type": "String"
+                              }
+                            },
+                            {
+                              "source": {
+                                "path": "$['rewardBatchTrxStatus']"
+                              },
+                              "sink": {
+                                "name": "rewardBatchTrxStatus",
+                                "type": "String"
+                              }
+                            },
+                            {
                                 "source": {
                                     "path": "$['additionalProperties']['productGtin']"
                                 },
@@ -367,29 +385,29 @@
                                 }
                             },
                             {
+                              "source": {
+                                "path": "$['invoiceData']['filename']"
+                              },
+                              "sink": {
+                                "name": "invoiceFilename",
+                                "type": "String"
+                              }
+                            },
+                            {
+                              "source": {
+                                "path": "$['invoiceData']['docNumber']"
+                              },
+                              "sink": {
+                                "name": "invoiceDocNumber",
+                                "type": "String"
+                              }
+                            },
+                          {
                                 "source": {
                                     "path": "$['trxCode']"
                                 },
                                 "sink": {
                                     "name": "trxCode",
-                                    "type": "String"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['rewardBatchId']"
-                                },
-                                "sink": {
-                                    "name": "rewardBatchId",
-                                    "type": "String"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['rewardBatchTrxStatus']"
-                                },
-                                "sink": {
-                                    "name": "rewardBatchTrxStatus",
                                     "type": "String"
                                 }
                             },
