@@ -233,3 +233,55 @@ resource "kubernetes_cron_job_v1" "evaluate_approve_reward_batch" {
     }
   }
 }
+
+resource "kubernetes_cron_job_v1" "cancel_empty_reward_batches" {
+  metadata {
+    name      = "cancel-empty-reward-batches"
+    namespace = var.domain
+    labels = {
+      app = "idpay-app"
+    }
+  }
+
+  spec {
+    schedule           = "0 1 1 * *" # 01:00 first day of the month
+    timezone           = "Europe/Rome"
+    concurrency_policy = "Forbid"
+
+    job_template {
+      metadata {
+        name = "cancel-empty-reward-batches-job"
+        labels = {
+          app = "idpay-app"
+        }
+      }
+
+      spec {
+        template {
+          metadata {
+            labels = {
+              app = "idpay-app"
+            }
+          }
+
+          spec {
+            container {
+              name  = "cancel-empty-reward-batches"
+              image = "curlimages/curl:8.1.2"
+
+              args = [
+                "--fail",
+                "--max-time", "30",
+                "-X", "DELETE",
+                "https://${local.idpay_ingress_url}/idpay/merchant/portal/empty-reward-batches"
+              ]
+            }
+
+            restart_policy = "OnFailure"
+          }
+        }
+      }
+    }
+  }
+}
+
