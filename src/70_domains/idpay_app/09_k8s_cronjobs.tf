@@ -273,7 +273,7 @@ resource "kubernetes_cron_job_v1" "cancel_empty_reward_batches" {
                 "--fail",
                 "--max-time", "30",
                 "-X", "DELETE",
-                "https://${local.idpay_ingress_url}/idpay/merchant/portal/empty-reward-batches"
+                "https://${local.idpay_ingress_url}/idpaytransactions/idpay/merchant/portal/empty-reward-batches"
               ]
             }
 
