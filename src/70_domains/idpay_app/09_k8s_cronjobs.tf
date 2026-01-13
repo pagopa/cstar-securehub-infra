@@ -284,4 +284,3 @@ resource "kubernetes_cron_job_v1" "cancel_empty_reward_batches" {
     }
   }
 }
-
