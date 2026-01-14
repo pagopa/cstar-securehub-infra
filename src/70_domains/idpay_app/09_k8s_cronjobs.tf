@@ -43,6 +43,50 @@ resource "kubernetes_cron_job_v1" "cancel_pending_transactions" {
   }
 }
 
+resource "kubernetes_cron_job_v1" "transaction_reaper" {
+  metadata {
+    name      = "transaction-reaper"
+    namespace = var.domain
+    labels = {
+      app = "idpay-app"
+    }
+  }
+
+  spec {
+    schedule           = "0 0 * * *" # runs at 00:00 everyday
+    timezone           = "Europe/Rome"
+    concurrency_policy = "Forbid"
+
+    job_template {
+      metadata {
+        name = "transaction-reaper-job"
+        labels = {
+          app = "idpay-app"
+        }
+      }
+      spec {
+        template {
+          metadata {
+            labels = {
+              app = "idpay-app"
+            }
+          }
+          spec {
+            container {
+              name  = "delete-lapsed-transaction"
+              image = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
+              args = [
+                "-X", "DELETE",
+                "https://${local.idpay_ingress_url}/idpaypayment/idpay/payment/deleteLapsedTransaction/{initiativeId}"
+              ]
+            }
+            restart_policy = "OnFailure"
+          }
+        }
+      }
+    }
+  }
+}
 
 resource "kubernetes_cron_job_v1" "cancel_expired_vouchers" {
   metadata {
