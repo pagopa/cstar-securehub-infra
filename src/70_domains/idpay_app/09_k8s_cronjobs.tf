@@ -53,7 +53,7 @@ resource "kubernetes_cron_job_v1" "transaction_reaper" {
   }
 
   spec {
-    schedule           = "0 2 * * *" # runs at 00:00 everyday
+    schedule           = "0 2 * * *" # runs at 02:00 everyday
     timezone           = "Europe/Rome"
     concurrency_policy = "Forbid"
 
