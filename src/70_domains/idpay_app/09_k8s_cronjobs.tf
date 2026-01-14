@@ -53,7 +53,7 @@ resource "kubernetes_cron_job_v1" "transaction_reaper" {
   }
 
   spec {
-    schedule           = "0 0 * * *" # runs at 00:00 everyday
+    schedule           = "0 2 * * *" # runs at 00:00 everyday
     timezone           = "Europe/Rome"
     concurrency_policy = "Forbid"
 
@@ -77,7 +77,7 @@ resource "kubernetes_cron_job_v1" "transaction_reaper" {
               image = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
               args = [
                 "-X", "DELETE",
-                "https://${local.idpay_ingress_url}/idpaypayment/idpay/payment/deleteLapsedTransaction/{initiativeId}"
+                "https://${local.idpay_ingress_url}/idpaypayment/idpay/payment/deleteLapsedTransaction/${var.idpay_bel_initiative_id}"
               ]
             }
             restart_policy = "OnFailure"
