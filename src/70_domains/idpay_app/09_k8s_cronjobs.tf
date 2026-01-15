@@ -288,7 +288,7 @@ resource "kubernetes_cron_job_v1" "delete_invoiced_transactions" {
   }
 
   spec {
-    schedule           = "0 0 * * *" # runs at 00:00 everyday
+    schedule           = "0 2 * * *"
     timezone           = "Europe/Rome"
     concurrency_policy = "Forbid"
 
