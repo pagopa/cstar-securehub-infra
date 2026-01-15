@@ -92,14 +92,10 @@ locals {
           autoscale_max_throughput          = null
           cosmos_collections_max_throughput = null
           default_ttl_seconds               = -1
-          shard_key                         = "payerId"
+          shard_key                         = "fiscalCode"
           indexes = [
             {
               keys   = ["_id"]
-              unique = true
-            },
-            {
-              keys   = ["fiscalCode"]
               unique = true
             },
             {
