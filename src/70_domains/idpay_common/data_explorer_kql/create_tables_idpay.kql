@@ -102,6 +102,8 @@
     rewardBatchTrxStatus:string,
     additionalProductGtin:string,
     additionalProductName:string,
+    invoiceFilename:string,
+    invoiceDocNumber:string,
     trxCode:string,
     voucherAmountCents: long,
     extendedAuthorization: bool,
@@ -383,5 +385,12 @@
     creationDate:datetime,
     creationDateString:string,
     updateDate:datetime,
-    updateDateString:string
+    updateDateString:string,
+    approvalDate:datetime
+)
+
+.create table data_vault (
+    _id:string,
+    data:string,
+    page:long
 )

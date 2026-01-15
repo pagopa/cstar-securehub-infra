@@ -43,6 +43,50 @@ resource "kubernetes_cron_job_v1" "cancel_pending_transactions" {
   }
 }
 
+resource "kubernetes_cron_job_v1" "transaction_reaper" {
+  metadata {
+    name      = "transaction-reaper"
+    namespace = var.domain
+    labels = {
+      app = "idpay-app"
+    }
+  }
+
+  spec {
+    schedule           = "0 2 * * *" # runs at 02:00 everyday
+    timezone           = "Europe/Rome"
+    concurrency_policy = "Forbid"
+
+    job_template {
+      metadata {
+        name = "transaction-reaper-job"
+        labels = {
+          app = "idpay-app"
+        }
+      }
+      spec {
+        template {
+          metadata {
+            labels = {
+              app = "idpay-app"
+            }
+          }
+          spec {
+            container {
+              name  = "delete-lapsed-transaction"
+              image = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
+              args = [
+                "-X", "DELETE",
+                "https://${local.idpay_ingress_url}/idpaypayment/idpay/payment/deleteLapsedTransaction/${var.idpay_bel_initiative_id}"
+              ]
+            }
+            restart_policy = "OnFailure"
+          }
+        }
+      }
+    }
+  }
+}
 
 resource "kubernetes_cron_job_v1" "cancel_expired_vouchers" {
   metadata {
@@ -226,6 +270,109 @@ resource "kubernetes_cron_job_v1" "evaluate_approve_reward_batch" {
                 "https://${local.idpay_ingress_url}/idpaytransactions/idpay/merchant/portal/initiatives/${var.idpay_bel_initiative_id}/reward-batches/approved"
               ]
             }
+            restart_policy = "OnFailure"
+          }
+        }
+      }
+    }
+  }
+}
+
+resource "kubernetes_cron_job_v1" "delete_invoiced_transactions" {
+  metadata {
+    name      = "delete-invoiced-transactions"
+    namespace = var.domain
+    labels = {
+      app = "idpay-app"
+    }
+  }
+
+  spec {
+    schedule           = "0 2 * * *"
+    timezone           = "Europe/Rome"
+    concurrency_policy = "Forbid"
+
+    job_template {
+      metadata {
+        name = "delete-invoiced-transactions-job"
+        labels = {
+          app = "idpay-app"
+        }
+      }
+
+      spec {
+        template {
+          metadata {
+            labels = {
+              app = "idpay-app"
+            }
+          }
+
+          spec {
+            container {
+              name  = "delete-invoiced-transactions"
+              image = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
+
+              args = [
+                "--fail",
+                "--max-time", "30",
+                "-X", "DELETE",
+                "https://${local.idpay_ingress_url}/idpaypayment/idpay/payment/deleteInvoicedTransaction"
+              ]
+            }
+
+            restart_policy = "OnFailure"
+          }
+        }
+      }
+    }
+  }
+}
+
+
+resource "kubernetes_cron_job_v1" "cancel_empty_reward_batches" {
+  metadata {
+    name      = "cancel-empty-reward-batches"
+    namespace = var.domain
+    labels = {
+      app = "idpay-app"
+    }
+  }
+
+  spec {
+    schedule           = "0 1 1 * *" # 01:00 first day of the month
+    timezone           = "Europe/Rome"
+    concurrency_policy = "Forbid"
+
+    job_template {
+      metadata {
+        name = "cancel-empty-reward-batches-job"
+        labels = {
+          app = "idpay-app"
+        }
+      }
+
+      spec {
+        template {
+          metadata {
+            labels = {
+              app = "idpay-app"
+            }
+          }
+
+          spec {
+            container {
+              name  = "cancel-empty-reward-batches"
+              image = "curlimages/curl:8.1.2"
+
+              args = [
+                "--fail",
+                "--max-time", "30",
+                "-X", "DELETE",
+                "https://${local.idpay_ingress_url}/idpaytransactions/idpay/merchant/portal/empty-reward-batches"
+              ]
+            }
+
             restart_policy = "OnFailure"
           }
         }

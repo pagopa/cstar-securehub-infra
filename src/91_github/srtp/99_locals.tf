@@ -16,33 +16,37 @@ locals {
 
   repository = {
     rtp-activator = {
-      env_variables = [],
-      env_secret_variables = [
-        {
-          AZURE_CLIENT_ID       = data.azurerm_user_assigned_identity.cd_client_identity.client_id
-          AZURE_SUBSCRIPTION_ID = data.azurerm_subscription.current.subscription_id
-          AZURE_TENANT_ID       = data.azurerm_client_config.current.tenant_id
-        }
-      ]
+      env_variables        = [],
+      env_secret_variables = []
       repository_secrets = [
         {
           SLACK_WEBHOOK_URL = data.azurerm_key_vault_secret.slack_webhook.value
+          GIT_PAT           = data.azurerm_key_vault_secret.git_pat.value
+          SONAR_TOKEN       = data.azurerm_key_vault_secret.sonar_token.value
         }
       ]
       repository_variables = []
     }
     rtp-sender = {
-      env_variables = [],
-      env_secret_variables = [
-        {
-          AZURE_CLIENT_ID       = data.azurerm_user_assigned_identity.cd_client_identity.client_id
-          AZURE_SUBSCRIPTION_ID = data.azurerm_subscription.current.subscription_id
-          AZURE_TENANT_ID       = data.azurerm_client_config.current.tenant_id
-        }
-      ]
+      env_variables        = [],
+      env_secret_variables = []
       repository_secrets = [
         {
           SLACK_WEBHOOK_URL = data.azurerm_key_vault_secret.slack_webhook.value
+          GIT_PAT           = data.azurerm_key_vault_secret.git_pat.value
+          SONAR_TOKEN       = data.azurerm_key_vault_secret.sonar_token.value
+        }
+      ]
+      repository_variables = []
+    }
+    rtp-consumer = {
+      env_variables        = [],
+      env_secret_variables = []
+      repository_secrets = [
+        {
+          SLACK_WEBHOOK_URL = data.azurerm_key_vault_secret.slack_webhook.value
+          GIT_PAT           = data.azurerm_key_vault_secret.git_pat.value
+          SONAR_TOKEN       = data.azurerm_key_vault_secret.sonar_token.value
         }
       ]
       repository_variables = []

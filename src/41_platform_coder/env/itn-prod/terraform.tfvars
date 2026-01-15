@@ -29,8 +29,8 @@ keycloak_configuration = {
   image_repository                            = "bitnamilegacy/keycloak"
   image_tag                                   = "26.3.1-debian-12-r1"
   chart_version                               = "24.7.7"
-  replica_count_min                           = 10
-  replica_count_max                           = 10
+  replica_count_min                           = 2
+  replica_count_max                           = 2
   cpu_request                                 = "3"
   cpu_limit                                   = "7"
   memory_request                              = "4Gi"
@@ -44,8 +44,8 @@ keycloak_configuration = {
 
 aks_user_node_pool_keycloak = {
   idh_resource_tier = "Standard_D8ds_v5_active"
-  node_count_min    = 10
-  node_count_max    = 10
+  node_count_min    = 2
+  node_count_max    = 2
   os_disk_size_gb   = 300
   os_disk_type      = "Managed"
 }
