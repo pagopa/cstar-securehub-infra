@@ -278,6 +278,58 @@ resource "kubernetes_cron_job_v1" "evaluate_approve_reward_batch" {
   }
 }
 
+resource "kubernetes_cron_job_v1" "delete_invoiced_transactions" {
+  metadata {
+    name      = "delete-invoiced-transactions"
+    namespace = var.domain
+    labels = {
+      app = "idpay-app"
+    }
+  }
+
+  spec {
+    schedule           = "0 0 * * *" # runs at 00:00 everyday
+    timezone           = "Europe/Rome"
+    concurrency_policy = "Forbid"
+
+    job_template {
+      metadata {
+        name = "delete-invoiced-transactions-job"
+        labels = {
+          app = "idpay-app"
+        }
+      }
+
+      spec {
+        template {
+          metadata {
+            labels = {
+              app = "idpay-app"
+            }
+          }
+
+          spec {
+            container {
+              name  = "delete-invoiced-transactions"
+              image = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
+
+              args = [
+                "--fail",
+                "--max-time", "30",
+                "-X", "DELETE",
+                "https://${local.idpay_ingress_url}/idpaypayment/idpay/payment/deleteInvoicedTransaction"
+              ]
+            }
+
+            restart_policy = "OnFailure"
+          }
+        }
+      }
+    }
+  }
+}
+
+
 resource "kubernetes_cron_job_v1" "cancel_empty_reward_batches" {
   metadata {
     name      = "cancel-empty-reward-batches"
