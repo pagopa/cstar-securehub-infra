@@ -311,7 +311,7 @@ resource "kubernetes_cron_job_v1" "cancel_empty_reward_batches" {
           spec {
             container {
               name  = "cancel-empty-reward-batches"
-              image = "curlimages/curl:8.1.2"
+              image = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
 
               args = [
                 "--fail",
