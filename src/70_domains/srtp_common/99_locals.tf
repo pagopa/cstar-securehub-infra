@@ -80,7 +80,7 @@ locals {
             unique = false
           },
           {
-            keys = ["noticeNumber"]
+            keys   = ["noticeNumber"]
             unique = false
           }
         ]
