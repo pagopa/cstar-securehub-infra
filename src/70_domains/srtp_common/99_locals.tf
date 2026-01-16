@@ -66,83 +66,87 @@ locals {
   # 🍀 Cosmos DB Collection
   cosmos_db = {
     rtp = {
-      rtps = {
-        autoscale_max_throughput          = var.cosmos_collections_autoscale_max_throughput
-        cosmos_collections_max_throughput = var.cosmos_collections_max_throughput
-        default_ttl_seconds               = -1
-        indexes = [
-          {
-            keys   = ["_id"]
-            unique = true
-          },
-          {
-            keys   = ["operationId", "eventDispatcher"]
-            unique = false
-          }
-        ]
+      collections = {
+        rtps = {
+          autoscale_max_throughput          = var.cosmos_collections_autoscale_max_throughput
+          cosmos_collections_max_throughput = var.cosmos_collections_max_throughput
+          default_ttl_seconds               = -1
+          indexes = [
+            {
+              keys   = ["_id"]
+              unique = true
+            },
+            {
+              keys   = ["operationId", "eventDispatcher"]
+              unique = false
+            }
+          ]
+        }
       }
     }
     activation = {
-      activations = {
-        autoscale_max_throughput          = var.cosmos_collections_autoscale_max_throughput
-        cosmos_collections_max_throughput = var.cosmos_collections_max_throughput
-        default_ttl_seconds               = -1
-        indexes = [
-          {
-            keys   = ["_id"]
-            unique = true
-          },
-          {
-            keys   = ["fiscalCode"]
-            unique = true
-          },
-          {
-            keys   = ["serviceProviderDebtor", "_id"]
-            unique = false
-          }
-        ]
-      }
-      deleted_activations = {
-        autoscale_max_throughput          = var.cosmos_collections_autoscale_max_throughput
-        cosmos_collections_max_throughput = var.cosmos_collections_max_throughput
-        default_ttl_seconds               = -1
-        indexes = [
-          {
-            keys   = ["_id"]
-            unique = true
-          }
-        ]
-      }
-      otps = {
-        autoscale_max_throughput          = var.cosmos_collections_autoscale_max_throughput
-        cosmos_collections_max_throughput = var.cosmos_collections_max_throughput
-        default_ttl_seconds               = var.cosmos_otp_ttl
-        indexes = [
-          {
-            keys   = ["_id"]
-            unique = true
-          }
-        ]
-      }
-      failed_takeover_notification = {
-        autoscale_max_throughput          = var.cosmos_collections_autoscale_max_throughput
-        cosmos_collections_max_throughput = var.cosmos_collections_max_throughput
-        default_ttl_seconds               = -1
-        indexes = [
-          {
-            keys   = ["_id"]
-            unique = true
-          }
-        ]
+      # Database-level throughput: RU are shared across all collections
+      db_autoscale_max_throughput = var.cosmos_activation_db_autoscale_max_throughput
+      collections = {
+        activations = {
+          autoscale_max_throughput          = null
+          cosmos_collections_max_throughput = null
+          default_ttl_seconds               = -1
+          shard_key                         = "fiscalCode"
+          indexes = [
+            {
+              keys   = ["_id"]
+              unique = true
+            },
+            {
+              keys   = ["serviceProviderDebtor", "_id"]
+              unique = false
+            }
+          ]
+        }
+        deleted_activations = {
+          autoscale_max_throughput          = null
+          cosmos_collections_max_throughput = null
+          default_ttl_seconds               = -1
+          indexes = [
+            {
+              keys   = ["_id"]
+              unique = true
+            }
+          ]
+        }
+        otps = {
+          autoscale_max_throughput          = null
+          cosmos_collections_max_throughput = null
+          default_ttl_seconds               = var.cosmos_otp_ttl
+          indexes = [
+            {
+              keys   = ["_id"]
+              unique = true
+            }
+          ]
+        }
+        failed_takeover_notification = {
+          autoscale_max_throughput          = null
+          cosmos_collections_max_throughput = null
+          default_ttl_seconds               = -1
+          indexes = [
+            {
+              keys   = ["_id"]
+              unique = true
+            }
+          ]
+        }
       }
     }
   }
   cosmos_collections = flatten([
     for db_name, db in local.cosmos_db : [
-      for coll_name, coll in db : {
+      for coll_name, coll in try(db.collections, {}) : {
         db_name                  = db_name
         coll_name                = coll_name
         indexes                  = coll.indexes
+        shard_key                = try(coll.shard_key, null)
         autoscale_max_throughput = coll.autoscale_max_throughput
         max_throughput           = coll.cosmos_collections_max_throughput
         default_ttl_seconds      = coll.default_ttl_seconds

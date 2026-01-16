@@ -14,6 +14,9 @@ enable_cdn                                       = false
 law_daily_quota_gb                          = 100
 cosmos_collections_autoscale_max_throughput = 1000
 
+# Activation database - shared throughput at database level (4000 RU)
+cosmos_activation_db_autoscale_max_throughput = 4000
+
 cosmos_otp_ttl = 3600
 
 # AKS

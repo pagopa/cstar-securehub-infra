@@ -90,6 +90,12 @@ variable "cosmos_collections_max_throughput" {
   default     = null
 }
 
+variable "cosmos_activation_db_autoscale_max_throughput" {
+  type        = number
+  description = "Max throughput for activation database (shared across collections)"
+  default     = null
+}
+
 variable "cosmos_otp_ttl" {
   type        = number
   description = "TTL for otps collection."
