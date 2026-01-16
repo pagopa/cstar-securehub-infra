@@ -142,7 +142,7 @@ locals {
   }
   cosmos_collections = flatten([
     for db_name, db in local.cosmos_db : [
-      for coll_name, coll in db.collections : {
+      for coll_name, coll in try(db.collections, {}) : {
         db_name                  = db_name
         coll_name                = coll_name
         indexes                  = coll.indexes
