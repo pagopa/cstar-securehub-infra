@@ -309,7 +309,8 @@ locals {
         { keys = ["month"], unique = false },
         { keys = ["name"], unique = false },
         { keys = ["posType"], unique = false },
-        { keys = ["merchantId", "posType", "month"], unique = true }
+        { keys = ["merchantId", "posType", "month"], unique = true },
+        { keys = ["merchantSendDate"], unique = false }
       ]
     },
     {
