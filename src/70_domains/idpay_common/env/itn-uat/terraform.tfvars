@@ -30,8 +30,13 @@ service_bus_namespace = {
 }
 
 ##Eventhub
-ehns_sku_name                 = "Standard"
-ehns_capacity                 = 1
+ehns_sku_name = "Standard"
+ehns_capacity = {
+  ns_00 = 1
+  ns_01 = 1
+  ns_02 = 1
+  rdb   = 1
+}
 ehns_maximum_throughput_units = 5
 ehns_auto_inflate_enabled     = true
 ehns_alerts_enabled           = false
