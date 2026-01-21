@@ -109,6 +109,7 @@
 | <a name="input_cosmos_collections_autoscale_max_throughput"></a> [cosmos\_collections\_autoscale\_max\_throughput](#input\_cosmos\_collections\_autoscale\_max\_throughput) | Max throughput for autoscale | `number` | `null` | no |
 | <a name="input_cosmos_collections_max_throughput"></a> [cosmos\_collections\_max\_throughput](#input\_cosmos\_collections\_max\_throughput) | Max throughput for collections | `number` | `null` | no |
 | <a name="input_cosmos_otp_ttl"></a> [cosmos\_otp\_ttl](#input\_cosmos\_otp\_ttl) | TTL for otps collection. | `number` | `null` | no |
+| <a name="input_cosmos_rtp_db_autoscale_max_throughput"></a> [cosmos\_rtp\_db\_autoscale\_max\_throughput](#input\_cosmos\_rtp\_db\_autoscale\_max\_throughput) | Max throughput for rtp database (shared across collections) | `number` | `null` | no |
 | <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | n/a | yes |
 | <a name="input_enable_cdn"></a> [enable\_cdn](#input\_enable\_cdn) | Enable CDN for the domain | `bool` | n/a | yes |
 | <a name="input_env"></a> [env](#input\_env) | Environment | `string` | n/a | yes |

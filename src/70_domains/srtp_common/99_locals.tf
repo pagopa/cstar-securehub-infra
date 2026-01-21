@@ -66,19 +66,18 @@ locals {
   # 🍀 Cosmos DB Collection
   cosmos_db = {
     rtp = {
+      # Database-level throughput: RU are shared across all collections
+      db_autoscale_max_throughput = var.cosmos_rtp_db_autoscale_max_throughput
       collections = {
         rtps = {
-          autoscale_max_throughput          = var.cosmos_collections_autoscale_max_throughput
-          cosmos_collections_max_throughput = var.cosmos_collections_max_throughput
+          autoscale_max_throughput          = null
+          cosmos_collections_max_throughput = null
           default_ttl_seconds               = -1
+          shard_key                         = "operationDispatcherKey"
           indexes = [
             {
               keys   = ["_id"]
               unique = true
-            },
-            {
-              keys   = ["operationId", "eventDispatcher"]
-              unique = false
             }
           ]
         }
