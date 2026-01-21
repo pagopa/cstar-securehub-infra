@@ -78,6 +78,10 @@ locals {
             {
               keys   = ["_id"]
               unique = true
+            },
+            {
+              keys   = ["operationId", "eventDispatcher"]
+              unique = false
             }
           ]
         }
