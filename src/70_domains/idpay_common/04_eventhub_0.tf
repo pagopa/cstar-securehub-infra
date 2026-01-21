@@ -17,7 +17,7 @@ module "eventhub_namespace_idpay_00" {
   resource_group_name      = data.azurerm_resource_group.idpay_data_rg.name
   auto_inflate_enabled     = var.ehns_auto_inflate_enabled
   sku                      = var.ehns_sku_name
-  capacity                 = var.ehns_capacity
+  capacity                 = var.ehns_capacity.ns_00
   maximum_throughput_units = var.ehns_maximum_throughput_units
 
   private_endpoint_created             = true
@@ -90,7 +90,7 @@ module "eventhub_namespace_idpay_01" {
   resource_group_name      = data.azurerm_resource_group.idpay_data_rg.name
   auto_inflate_enabled     = var.ehns_auto_inflate_enabled
   sku                      = var.ehns_sku_name
-  capacity                 = var.ehns_capacity
+  capacity                 = var.ehns_capacity.ns_01
   maximum_throughput_units = var.ehns_maximum_throughput_units
 
   private_endpoint_created             = true
@@ -162,7 +162,7 @@ module "eventhub_namespace_idpay_02" {
   resource_group_name      = data.azurerm_resource_group.idpay_data_rg.name
   auto_inflate_enabled     = var.ehns_auto_inflate_enabled
   sku                      = var.ehns_sku_name
-  capacity                 = var.ehns_capacity
+  capacity                 = var.ehns_capacity.ns_02
   maximum_throughput_units = var.ehns_maximum_throughput_units
 
   private_endpoint_created             = true
@@ -234,7 +234,7 @@ module "eventhub_namespace_rdb" {
   resource_group_name      = data.azurerm_resource_group.idpay_data_rg.name
   auto_inflate_enabled     = var.ehns_auto_inflate_enabled
   sku                      = var.ehns_sku_name
-  capacity                 = var.ehns_capacity
+  capacity                 = var.ehns_capacity.rdb
   maximum_throughput_units = var.ehns_maximum_throughput_units
 
   private_endpoint_created             = true

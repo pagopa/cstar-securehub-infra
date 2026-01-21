@@ -136,9 +136,13 @@ variable "ehns_sku_name" {
 }
 
 variable "ehns_capacity" {
-  type        = number
+  type = object({
+    ns_00 = number
+    ns_01 = number
+    ns_02 = number
+    rdb   = number
+  })
   description = "Specifies the Capacity / Throughput Units for a Standard SKU namespace."
-  # default     = null
 }
 
 variable "ehns_maximum_throughput_units" {
