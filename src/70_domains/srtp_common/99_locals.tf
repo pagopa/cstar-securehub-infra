@@ -82,6 +82,10 @@ locals {
             {
               keys   = ["operationId", "eventDispatcher"]
               unique = false
+            },
+            {
+              keys   = ["noticeNumber"]
+              unique = false
             }
           ]
         }
