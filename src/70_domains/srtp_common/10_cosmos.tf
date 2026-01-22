@@ -57,6 +57,13 @@ resource "azurerm_cosmosdb_mongo_database" "mongo_database" {
   name                = each.key
   resource_group_name = local.data_rg_name
   account_name        = module.cosmos_db_account.name
+
+  dynamic "autoscale_settings" {
+    for_each = try(each.value.db_autoscale_max_throughput, null) != null ? [each.value.db_autoscale_max_throughput] : []
+    content {
+      max_throughput = autoscale_settings.value
+    }
+  }
 }
 
 # ------------------------------------------------------------------------------
@@ -73,6 +80,7 @@ resource "azurerm_cosmosdb_mongo_collection" "mongo_collection" {
   account_name        = module.cosmos_db_account.name
   database_name       = each.value.db_name
   default_ttl_seconds = each.value.default_ttl_seconds
+  shard_key           = each.value.shard_key
 
   dynamic "autoscale_settings" {
     for_each = each.value.autoscale_max_throughput != null ? [each.value.autoscale_max_throughput] : []
