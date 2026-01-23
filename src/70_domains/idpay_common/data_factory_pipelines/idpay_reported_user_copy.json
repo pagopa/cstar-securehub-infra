@@ -1,0 +1,171 @@
+{
+  "name": "idpay_reported_user_copy",
+  "properties": {
+    "activities": [
+      {
+        "name": "Copy reported_user collection",
+        "type": "Copy",
+        "dependsOn": [
+          {
+            "activity": "Clear reported_user table",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "userProperties": [],
+        "typeProperties": {
+          "source": {
+            "type": "CosmosDbMongoDbApiSource",
+            "batchSize": 100
+          },
+          "sink": {
+            "type": "AzureDataExplorerSink"
+          },
+          "enableStaging": false,
+          "translator": {
+            "type": "TabularTranslator",
+            "mappings": [
+              {
+                "source": {
+                  "path": "$['_id']"
+                },
+                "sink": {
+                  "name": "_id",
+                  "type": "String"
+                }
+              },
+              {
+                "source": {
+                  "path": "$['merchantId']"
+                },
+                "sink": {
+                  "name": "merchantId",
+                  "type": "String"
+                }
+              },
+              {
+                "source": {
+                  "path": "$['initiativeId']"
+                },
+                "sink": {
+                  "name": "initiativeId",
+                  "type": "String"
+                }
+              },
+              {
+                "source": {
+                  "path": "$['userId']"
+                },
+                "sink": {
+                  "name": "userId",
+                  "type": "String"
+                }
+              },
+              {
+                "source": {
+                  "path": "$['transactionId']"
+                },
+                "sink": {
+                  "name": "transactionId",
+                  "type": "String"
+                }
+              },
+              {
+                "source": {
+                  "path": "trxChargeDate.$date"
+                },
+                "sink": {
+                  "name": "trxChargeDateString",
+                  "type": "String"
+                }
+              },
+              {
+                "source": {
+                  "path": "createdAt.$date"
+                },
+                "sink": {
+                  "name": "createdAtString",
+                  "type": "String"
+                }
+              }
+            ],
+            "collectionReference": "",
+            "mapComplexValuesToString": true
+          }
+        },
+        "inputs": [
+          {
+            "referenceName": "cosmos_idpay_reported_user",
+            "type": "DatasetReference"
+          }
+        ],
+        "outputs": [
+          {
+            "referenceName": "data_explorer_idpay_reported_user",
+            "type": "DatasetReference"
+          }
+        ]
+      },
+      {
+        "name": "Clear reported_user table",
+        "type": "AzureDataExplorerCommand",
+        "dependsOn": [],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "userProperties": [],
+        "typeProperties": {
+          "command": ".clear table reported_user data",
+          "commandTimeout": "00:20:00"
+        },
+        "linkedServiceName": {
+          "referenceName": "idpay-Kusto-idpay-ls",
+          "type": "LinkedServiceReference"
+        }
+      },
+      {
+        "name": "Convert Date",
+        "type": "AzureDataExplorerCommand",
+        "dependsOn": [
+          {
+            "activity": "Copy reported_user collection",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "userProperties": [],
+        "typeProperties": {
+          "command": ".set-or-replace reported_user <|\nreported_user\n| extend \n    trxChargeDate = unixtime_milliseconds_todatetime(tolong(trxChargeDateString)),\n    createdAt = unixtime_milliseconds_todatetime(tolong(createdAtString))",
+          "commandTimeout": "00:20:00"
+        },
+        "linkedServiceName": {
+          "referenceName": "idpay-Kusto-idpay-ls",
+          "type": "LinkedServiceReference"
+        }
+      }
+    ],
+    "annotations": [],
+    "lastPublishTime": "2025-12-10T17:15:48Z"
+  },
+  "type": "Microsoft.DataFactory/factories/pipelines"
+}
