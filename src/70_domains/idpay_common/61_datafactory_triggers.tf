@@ -3,19 +3,29 @@ locals {
     for key, tmpl in local.pipeline_templates : key => key
   }
 
-  #Parametrized pipeline with parameters
   parametrized_daily_pipeline = "idpay_copy_rdb_products_to_csv"
 
   daily_trigger_pipelines = {
     for k, v in local.trigger_pipelines : k => v
     if k != local.parametrized_daily_pipeline
   }
+
+  daily_trigger_keys = sort(keys(local.daily_trigger_pipelines))
+
+  daily_trigger_list = [
+    for idx, key in local.daily_trigger_keys : {
+      index = idx
+      key   = key
+    }
+  ]
 }
 
-#Generic daily trigger (without parameters)
 resource "azurerm_data_factory_trigger_schedule" "daily_triggers" {
-  for_each        = local.daily_trigger_pipelines
-  name            = "trigger-${each.key}"
+  for_each = {
+    for item in local.daily_trigger_list : item.key => item
+  }
+
+  name            = "trigger-${each.value.key}"
   data_factory_id = data.azurerm_data_factory.data_factory.id
   activated       = true
   interval        = 1
@@ -25,16 +35,18 @@ resource "azurerm_data_factory_trigger_schedule" "daily_triggers" {
   time_zone  = "W. Europe Standard Time"
 
   pipeline {
-    name = each.key
+    name = each.value.key
   }
 
   schedule {
-    hours   = [0]
-    minutes = [0]
+    hours   = [floor((each.value.index * 10) / 60)]
+    minutes = [each.value.index * 10 % 60]
   }
 
   depends_on = [azurerm_data_factory_pipeline.pipelines]
 }
+
+
 
 resource "azurerm_data_factory_trigger_schedule" "idpay_copy_rdb_products_to_csv_daily" {
   name            = "trigger-idpay_copy_rdb_products_to_csv"
