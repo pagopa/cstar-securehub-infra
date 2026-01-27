@@ -394,3 +394,15 @@
     data:string,
     page:long
 )
+
+.create table reported_user (
+    _id:string,
+    merchantId:string,
+    initiativeId:string,
+    userId:string,
+    transactionId:string,
+    trxChargeDate:datetime,
+    trxChargeDateString:string,
+    createdAt:datetime,
+    createdAtString:string
+)

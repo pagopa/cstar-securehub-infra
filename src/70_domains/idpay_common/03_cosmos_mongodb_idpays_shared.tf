@@ -255,7 +255,8 @@ locals {
         { keys = ["fiscalCode", "acquirerId"], unique = true },
         { keys = ["initiativeList.initiativeId"], unique = false },
         { keys = ["fiscalCode"], unique = false },
-        { keys = ["acquirerId"], unique = false }
+        { keys = ["acquirerId"], unique = false },
+        { keys = ["businessName"], unique = false }
       ]
     },
     {
