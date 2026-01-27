@@ -2,7 +2,6 @@ locals {
   parametrized_daily_pipeline = "idpay_copy_rdb_products_to_csv"
 
   pipelines_T = [
-    "idpay_copy_rdb_products_to_csv",
     "idpay_merchant_copy",
     "idpay_merchant_counters_copy",
     "idpay_onboarding_citizen_copy",
