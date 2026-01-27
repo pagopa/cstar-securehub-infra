@@ -386,7 +386,8 @@
     creationDateString:string,
     updateDate:datetime,
     updateDateString:string,
-    approvalDate:datetime
+    approvalDate:datetime,
+    suspendedAmountCents:long
 )
 
 .create table data_vault (
