@@ -107,6 +107,7 @@
     trxCode:string,
     voucherAmountCents: long,
     extendedAuthorization: bool,
+    rewardBatchLastMonthElaborated:string,
     trxDate:datetime,
     trxChargeDate:datetime,
     elaborationDateTime:datetime
