@@ -212,6 +212,15 @@
                   "name": "updateDateString",
                   "type": "String"
                 }
+              },
+              {
+                "source": {
+                  "path": "suspendedAmountCents"
+                },
+                "sink": {
+                  "name": "suspendedAmountCents",
+                  "type": "Long"
+                }
               }
             ],
             "collectionReference": "",
