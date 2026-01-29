@@ -387,7 +387,8 @@
     updateDate:datetime,
     updateDateString:string,
     approvalDate:datetime,
-    suspendedAmountCents:long
+    suspendedAmountCents:long,
+    rewardBatchLastMonthElaborated:string
 )
 
 .create table data_vault (
