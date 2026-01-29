@@ -107,6 +107,7 @@
     trxCode:string,
     voucherAmountCents: long,
     extendedAuthorization: bool,
+    rewardBatchLastMonthElaborated:string,
     trxDate:datetime,
     trxChargeDate:datetime,
     elaborationDateTime:datetime
@@ -387,8 +388,7 @@
     updateDate:datetime,
     updateDateString:string,
     approvalDate:datetime,
-    suspendedAmountCents:long,
-    rewardBatchLastMonthElaborated:string
+    suspendedAmountCents:long
 )
 
 .create table data_vault (

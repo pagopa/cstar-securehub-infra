@@ -428,6 +428,16 @@
                                     "name": "extendedAuthorization",
                                     "type": "Boolean"
                                 }
+                            },
+                            {
+
+                                "source": {
+                                    "path": "rewardBatchLastMonthElaborated"
+                                },
+                                "sink": {
+                                    "name": "rewardBatchLastMonthElaborated",
+                                    "type": "String"
+                                }
                             }
                         ],
                         "collectionReference": "",

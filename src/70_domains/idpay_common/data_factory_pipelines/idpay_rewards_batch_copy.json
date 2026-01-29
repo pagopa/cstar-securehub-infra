@@ -212,25 +212,6 @@
                   "name": "updateDateString",
                   "type": "String"
                 }
-              },
-              {
-                "source": {
-                  "path": "suspendedAmountCents"
-                },
-                "sink": {
-                  "name": "suspendedAmountCents",
-                  "type": "Long"
-                }
-              },
-              {
-
-                "source": {
-                  "path": "rewardBatchLastMonthElaborated"
-                },
-                "sink": {
-                  "name": "rewardBatchLastMonthElaborated",
-                  "type": "String"
-                }
               }
             ],
             "collectionReference": "",
