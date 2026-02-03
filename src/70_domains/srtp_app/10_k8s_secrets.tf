@@ -25,4 +25,3 @@ resource "kubernetes_secret" "rtp_activator_fileshare" {
 
   type = "Opaque"
 }
-
