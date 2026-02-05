@@ -21,7 +21,7 @@ aks_sku_tier                   = "Free"
 aks_private_cluster_is_enabled = true
 aks_alerts_enabled             = false
 
-aks_kubernetes_version = "1.32.6"
+aks_kubernetes_version = "1.34.2"
 
 # Standard is recommended tier Standard_B2ms
 # B – Economical burstable
@@ -67,7 +67,7 @@ ingress_load_balancer_ip  = "10.10.1.250"
 # ingress-nginx helm charts releases 4.X.X: https://github.com/kubernetes/ingress-nginx/releases?expanded=true&page=1&q=tag%3Ahelm-chart-4
 # Pinned versions from "4.12.8" release: https://github.com/kubernetes/ingress-nginx/releases/tag/helm-chart-4.12.8
 nginx_helm = {
-  version = "4.12.8"
+  version = "4.14.2"
   controller = {
     image = {
       registry     = "k8s.gcr.io"
@@ -91,7 +91,7 @@ nginx_helm = {
 # chart releases: https://github.com/kedacore/charts/releases
 # keda image tags: https://github.com/kedacore/keda/pkgs/container/keda/versions
 # keda-metrics-apiserver image tags: https://github.com/kedacore/keda/pkgs/container/keda-metrics-apiserver/versions
-keda_helm_chart_version = "2.17.1"
+keda_helm_chart_version = "2.17.2"
 
 # chart releases: https://github.com/stakater/Reloader/releases
 # image tags: https://hub.docker.com/r/stakater/reloader/tags
