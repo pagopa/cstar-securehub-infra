@@ -83,7 +83,8 @@ locals {
       default_ttl_seconds = null
       indexes = [
         { keys = ["_id"], unique = true },
-        { keys = ["userId"], unique = false }
+        { keys = ["userId"], unique = false },
+        { keys = ["status"], unique = false }
       ]
     },
     {
@@ -440,8 +441,7 @@ locals {
       shard_key           = null
       default_ttl_seconds = null
       indexes = [
-        { keys = ["_id"], unique = true },
-        { keys = ["status"], unique = false }
+        { keys = ["_id"], unique = true }
       ]
     },
     {
