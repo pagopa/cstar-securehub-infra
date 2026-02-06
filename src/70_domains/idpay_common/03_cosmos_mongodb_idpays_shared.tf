@@ -83,7 +83,8 @@ locals {
       default_ttl_seconds = null
       indexes = [
         { keys = ["_id"], unique = true },
-        { keys = ["userId"], unique = false }
+        { keys = ["userId"], unique = false },
+        { keys = ["status"], unique = false }
       ]
     },
     {
@@ -439,7 +440,9 @@ locals {
       name                = "initiative_statistics"
       shard_key           = null
       default_ttl_seconds = null
-      indexes             = [{ keys = ["_id"], unique = true }]
+      indexes = [
+        { keys = ["_id"], unique = true }
+      ]
     },
     {
       name                = "merchant_initiative_counters"
