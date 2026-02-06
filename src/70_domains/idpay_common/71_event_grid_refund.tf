@@ -46,6 +46,13 @@ resource "azurerm_eventgrid_system_topic_event_subscription" "idpay_refund_stora
 
   included_event_types = ["Microsoft.Storage.BlobCreated"]
 
+  advanced_filter {
+    string_begins_with {
+      key    = "subject"
+      values = ["/blobServices/default/containers/merchant/blobs/"]
+    }
+  }
+
   retry_policy {
     event_time_to_live    = 1440
     max_delivery_attempts = 30
