@@ -23,8 +23,8 @@
   "panels": [
     {
       "datasource": {
-        "type": "grafana-azure-monitor-datasource",
-        "uid": "azure-monitor-oob"
+        "type": "grafana-azure-data-explorer-datasource",
+        "uid": "${ds}"
       },
       "fieldConfig": {
         "defaults": {
@@ -73,7 +73,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.6.3",
+      "pluginVersion": "11.6.9",
       "targets": [
         {
           "OpenAI": false,
@@ -82,24 +82,7 @@
             "type": "grafana-azure-data-explorer-datasource",
             "uid": "${ds}"
           },
-          "expression": {
-            "groupBy": {
-              "expressions": [],
-              "type": "and"
-            },
-            "reduce": {
-              "expressions": [],
-              "type": "and"
-            },
-            "where": {
-              "expressions": [],
-              "type": "and"
-            }
-          },
-          "pluginVersion": "6.2.0",
-          "query": "products\r\n| summarize Totale = count() by organizationName\r\n| order by organizationName ",
-          "querySource": "raw",
-          "queryType": "KQL",
+          "query": "products\r\n| summarize Totale = count() by organizationName\r\n| order by organizationName asc\r\n",
           "rawMode": true,
           "refId": "A",
           "resultFormat": "table"
@@ -188,7 +171,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.6.3",
+      "pluginVersion": "11.6.9",
       "targets": [
         {
           "OpenAI": false,
@@ -287,7 +270,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.6.3",
+      "pluginVersion": "11.6.9",
       "targets": [
         {
           "OpenAI": false,
@@ -386,7 +369,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.6.3",
+      "pluginVersion": "11.6.9",
       "targets": [
         {
           "OpenAI": false,
@@ -485,7 +468,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.6.3",
+      "pluginVersion": "11.6.9",
       "targets": [
         {
           "OpenAI": false,
@@ -584,7 +567,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.6.3",
+      "pluginVersion": "11.6.9",
       "targets": [
         {
           "OpenAI": false,
@@ -722,7 +705,7 @@
           "sort": "desc"
         }
       },
-      "pluginVersion": "11.6.3",
+      "pluginVersion": "11.6.9",
       "targets": [
         {
           "OpenAI": false,
@@ -862,7 +845,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.6.3",
+      "pluginVersion": "11.6.9",
       "targets": [
         {
           "OpenAI": false,
@@ -1004,7 +987,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.6.3",
+      "pluginVersion": "11.6.9",
       "targets": [
         {
           "OpenAI": false,
@@ -1144,7 +1127,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.6.3",
+      "pluginVersion": "11.6.9",
       "targets": [
         {
           "OpenAI": false,
@@ -1284,7 +1267,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.6.3",
+      "pluginVersion": "11.6.9",
       "targets": [
         {
           "OpenAI": false,
@@ -1424,7 +1407,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.6.3",
+      "pluginVersion": "11.6.9",
       "targets": [
         {
           "OpenAI": false,
@@ -1564,7 +1547,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.6.3",
+      "pluginVersion": "11.6.9",
       "targets": [
         {
           "OpenAI": false,
@@ -1644,5 +1627,5 @@
   "timezone": "browser",
   "title": "EIE",
   "uid": "cezndziyw8tmof",
-  "version": 81
+  "version": 82
 }

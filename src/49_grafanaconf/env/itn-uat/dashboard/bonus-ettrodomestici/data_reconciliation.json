@@ -326,7 +326,7 @@
     {
       "datasource": {
         "type": "grafana-azure-data-explorer-datasource",
-        "uid": "aezn6luqall34b"
+        "uid": "${ds}"
       },
       "fieldConfig": {
         "defaults": {
@@ -400,7 +400,7 @@
           "database": "idpay",
           "datasource": {
             "type": "grafana-azure-data-explorer-datasource",
-            "uid": "aezn6luqall34b"
+            "uid": "${ds}"
           },
           "expression": {
             "groupBy": {
@@ -852,5 +852,5 @@
   "timezone": "browser",
   "title": "Quadrature",
   "uid": "df76d6k1v7cw0c",
-  "version": 20
+  "version": 21
 }
