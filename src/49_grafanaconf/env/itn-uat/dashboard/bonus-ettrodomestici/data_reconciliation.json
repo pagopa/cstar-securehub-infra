@@ -58,7 +58,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 12,
+        "h": 15,
         "w": 5,
         "x": 0,
         "y": 0
@@ -81,7 +81,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.6.3",
+      "pluginVersion": "11.6.9",
       "targets": [
         {
           "OpenAI": false,
@@ -180,7 +180,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.6.3",
+      "pluginVersion": "11.6.9",
       "targets": [
         {
           "OpenAI": false,
@@ -288,7 +288,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.6.3",
+      "pluginVersion": "11.6.9",
       "targets": [
         {
           "OpenAI": false,
@@ -321,6 +321,144 @@
         }
       ],
       "title": "N. Transazioni senza lotto",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-data-explorer-datasource",
+        "uid": "${ds}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "dark-red"
+              }
+            ]
+          },
+          "unit": "currencyEUR"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "A"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "0": {
+                        "color": "green",
+                        "index": 0
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 6,
+        "x": 5,
+        "y": 6
+      },
+      "id": 7,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/.*/",
+          "values": true
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.6.9",
+      "targets": [
+        {
+          "OpenAI": false,
+          "database": "idpay",
+          "datasource": {
+            "type": "grafana-azure-data-explorer-datasource",
+            "uid": "${ds}"
+          },
+          "expression": {
+            "groupBy": {
+              "expressions": [],
+              "type": "and"
+            },
+            "reduce": {
+              "expressions": [],
+              "type": "and"
+            },
+            "where": {
+              "expressions": [],
+              "type": "and"
+            }
+          },
+          "hide": false,
+          "pluginVersion": "7.2.2",
+          "query": "let total_rewards =\r\n    toscalar(\r\n        transaction\r\n        | where tostring(rewardInitiatieveId) == \"68dd003ccce8c534d1da22bc\"\r\n        | where tostring(status) in (\"CAPTURED\", \"INVOICED\", \"REWARDED\")\r\n        | summarize sum(toint(rewardAccruedRewardCents))\r\n    );\r\ninitiative_counters\r\n| where _id == strcat('{\"$oid\":\"', \"$initiativeId\", '\"}')\r\n| project \r\n    result = (spentInitiativeBudgetCents - coalesce(total_rewards, 0)) / 100",
+          "querySource": "raw",
+          "queryType": "KQL",
+          "rawMode": true,
+          "refId": "A",
+          "resultFormat": "table"
+        }
+      ],
+      "title": "Discrepanza Voucher/Contatore Iniziativa",
+      "transformations": [
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Contatore dello speso iniziativa - totale dei voucher spesi",
+            "binary": {
+              "left": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "spentInitiativeBudgetCents"
+                }
+              },
+              "operator": "-",
+              "right": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "total"
+                }
+              }
+            },
+            "mode": "binary",
+            "reduce": {
+              "include": [
+                "spentInitiativeBudgetCents",
+                "total"
+              ],
+              "reducer": "sum"
+            },
+            "replaceFields": false
+          }
+        }
+      ],
       "type": "stat"
     },
     {
@@ -376,7 +514,7 @@
         "h": 3,
         "w": 6,
         "x": 5,
-        "y": 6
+        "y": 9
       },
       "id": 5,
       "options": {
@@ -396,7 +534,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.6.3",
+      "pluginVersion": "11.6.9",
       "targets": [
         {
           "OpenAI": false,
@@ -484,7 +622,7 @@
         "h": 3,
         "w": 6,
         "x": 5,
-        "y": 9
+        "y": 12
       },
       "id": 6,
       "options": {
@@ -504,7 +642,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.6.3",
+      "pluginVersion": "11.6.9",
       "targets": [
         {
           "OpenAI": false,
@@ -714,5 +852,5 @@
   "timezone": "browser",
   "title": "Quadrature",
   "uid": "df76d6k1v7cw0c",
-  "version": 15
+  "version": 21
 }
