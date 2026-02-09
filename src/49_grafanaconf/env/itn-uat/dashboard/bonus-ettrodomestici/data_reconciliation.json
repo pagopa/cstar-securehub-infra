@@ -204,7 +204,7 @@
             }
           },
           "pluginVersion": "6.2.0",
-          "query": "let TxByBatch =\r\n    transaction\r\n    | where isnotempty(rewardBatchId)\r\n      and status in ('INVOICED','REWARDED')\r\n      and rewardBatchTrxStatus == 'APPROVED'\r\n    | summarize\r\n        tx_sum_cents = tolong(sum(toint(rewardAccruedRewardCents))),\r\n        tx_count = count()\r\n      by rewardBatchId;\r\nlet toleranceCents = 0;\r\nlet monthToCheck = \"$month\";\r\n// Confronta con la tabella rewards_batch\r\nlet rewards_batch_check =\r\nrewards_batch\r\n| where month == monthToCheck\r\n| extend\r\n    batch_id = tostring(_id),\r\n    approved_cents = tolong(coalesce(toint(approvedAmountCents), 0))\r\n| join kind=leftouter TxByBatch on $left.batch_id == $right.rewardBatchId\r\n| extend\r\n    tx_sum_cents = tolong(coalesce(tx_sum_cents, 0)),\r\n    tx_count = tolong(coalesce(tx_count, 0)),\r\n    delta_cents = approved_cents - tx_sum_cents\r\n| where abs(delta_cents) > toleranceCents  // seleziona solo i mismatch\r\n| project\r\n    rewardBatchId = _id,\r\n    approvedAmountCents = approved_cents,\r\n    tx_sum_cents,\r\n    delta_cents,\r\n    tx_count\r\n;\r\nrewards_batch_check\r\n| summarize cnt = count()\r\n| project CheckLotti= iff(cnt == 0, \"OK\", \"KO\")",
+          "query": "let TxByBatch =\r\n    transaction\r\n    | where isnotempty(rewardBatchId)\r\n      and status in ('INVOICED','REWARDED')\r\n      and rewardBatchTrxStatus == 'APPROVED'\r\n    | summarize\r\n        tx_sum_cents = tolong(sum(toint(rewardAccruedRewardCents))),\r\n        tx_count = count()\r\n      by rewardBatchId;\r\nlet toleranceCents = 0;\r\nlet monthToCheck = \"$month\";\r\n// Confronta con la tabella rewards_batch\r\nlet rewards_batch_check =\r\nrewards_batch\r\n| where month == monthToCheck and status == 'APPROVED'\r\n| extend\r\n    batch_id = tostring(_id),\r\n    approved_cents = tolong(coalesce(toint(approvedAmountCents), 0))\r\n| join kind=leftouter TxByBatch on $left.batch_id == $right.rewardBatchId\r\n| extend\r\n    tx_sum_cents = tolong(coalesce(tx_sum_cents, 0)),\r\n    tx_count = tolong(coalesce(tx_count, 0)),\r\n    delta_cents = approved_cents - tx_sum_cents\r\n| where abs(delta_cents) > toleranceCents  // seleziona solo i mismatch\r\n| project\r\n    rewardBatchId = _id,\r\n    approvedAmountCents = approved_cents,\r\n    tx_sum_cents,\r\n    delta_cents,\r\n    tx_count\r\n;\r\nrewards_batch_check\r\n| summarize cnt = count()\r\n| project CheckLottiNov = iff(cnt == 0, \"OK\", \"KO\")\r\n",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -852,5 +852,5 @@
   "timezone": "browser",
   "title": "Quadrature",
   "uid": "df76d6k1v7cw0c",
-  "version": 23
+  "version": 24
 }
