@@ -15,6 +15,28 @@ data "azuread_group" "adgroup_security" {
   display_name = "${local.product}-adgroup-security"
 }
 
+data "azuread_group" "adgroup_mdc_admin" {
+  display_name = "${local.project_entra}-adgroup-admin"
+}
+
+data "azuread_group" "adgroup_mdc_developers" {
+  display_name = "${local.project_entra}-adgroup-developers"
+}
+
+data "azuread_group" "adgroup_mdc_externals" {
+  display_name = "${local.project_entra}-adgroup-externals"
+}
+
+data "azuread_group" "adgroup_mdc_project_managers" {
+  count        = var.env == "prod" ? 1 : 0
+  display_name = "${local.project_entra}-adgroup-project-managers"
+}
+
+data "azuread_group" "adgroup_mdc_oncall" {
+  count        = var.env == "prod" ? 1 : 0
+  display_name = "${local.project_entra}-adgroup-oncall"
+}
+
 #
 # Azure Resource Groups
 #
@@ -88,4 +110,15 @@ data "azurerm_private_dns_zone" "privatelink_redis" {
 data "azurerm_kubernetes_cluster" "aks" {
   name                = local.aks_name
   resource_group_name = local.aks_resource_group_name
+}
+
+### ARGO
+data "azurerm_key_vault_secret" "argocd_admin_username" {
+  name         = "argocd-admin-username"
+  key_vault_id = data.azurerm_key_vault.kv_domain.id
+}
+
+data "azurerm_key_vault_secret" "argocd_admin_password" {
+  name         = "argocd-admin-password"
+  key_vault_id = data.azurerm_key_vault.kv_domain.id
 }

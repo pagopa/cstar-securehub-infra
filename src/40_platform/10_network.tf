@@ -3,7 +3,6 @@
 #----------------------------------------------------------------
 module "synthetic_snet" {
   source = "./.terraform/modules/__v4__/subnet"
-  # source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//subnet?ref=v1.20.0"
 
   name                 = "${local.project}-synthetic-snet"
   resource_group_name  = data.azurerm_virtual_network.vnet_hub.resource_group_name
@@ -37,6 +36,8 @@ module "github_cae_snet" {
 
   # IDH Resources
   idh_resource_tier = "container_app_environment_27"
+
+  tags = module.tag_config.tags
 }
 
 #----------------------------------------------------------------
@@ -81,7 +82,9 @@ module "adf_snet" {
   virtual_network_name = local.vnet_core_data_name
 
   # IDH Resources
-  idh_resource_tier = "private_endpoint"
+  idh_resource_tier = "slash28_privatelink_true"
+
+  tags = module.tag_config.tags
 }
 
 module "adx_snet" {
@@ -97,7 +100,9 @@ module "adx_snet" {
   virtual_network_name = local.vnet_core_data_name
 
   # IDH Resources
-  idh_resource_tier = "private_endpoint"
+  idh_resource_tier = "slash28_privatelink_true"
+
+  tags = module.tag_config.tags
 }
 
 module "data_postgres_flexible_snet" {
@@ -110,6 +115,8 @@ module "data_postgres_flexible_snet" {
   idh_resource_tier = "postgres_flexible"
   product_name      = var.prefix
   env               = var.env
+
+  tags = module.tag_config.tags
 }
 
 #----------------------------------------------------------------

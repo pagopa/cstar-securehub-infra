@@ -4,21 +4,23 @@ locals {
   ### ArgoCD Groups ---------------------------------------------
   argocd_groups_admin = var.env == "prod" ? [
     data.azuread_group.adgroup_admin.object_id,
-    data.azuread_group.adgroup_domain_oncall[0].object_id
+    data.azuread_group.adgroup_mdc_admin.object_id,
+    data.azuread_group.adgroup_mdc_oncall[0].object_id
     ] : [
     data.azuread_group.adgroup_admin.object_id,
+    data.azuread_group.adgroup_mdc_admin.object_id,
   ]
 
   argocd_groups_developer = [
-    data.azuread_group.adgroup_domain_developers.object_id,
+    data.azuread_group.adgroup_mdc_developers.object_id,
   ]
 
   argocd_groups_reader = var.env == "prod" ? [
-    data.azuread_group.adgroup_domain_project_managers[0].object_id,
+    data.azuread_group.adgroup_mdc_project_managers[0].object_id,
   ] : []
 
   argocd_groups_external = [
-    data.azuread_group.adgroup_domain_externals.object_id,
+    data.azuread_group.adgroup_mdc_externals.object_id,
   ]
 }
 
@@ -108,23 +110,15 @@ resource "argocd_project" "domain_project" {
     role {
       name   = "external"
       groups = local.argocd_groups_external
-
-      policies = var.env != "prod" ? concat(
-        [
-          "p, proj:${local.argocd_project_name}:external, logs, get, ${local.argocd_project_name}/*, allow",
-          "p, proj:${local.argocd_project_name}:external, applications, get, ${local.argocd_project_name}/*, allow",
-          "p, proj:${local.argocd_project_name}:external, applications, update/*/ConfigMap/*/*, ${local.argocd_project_name}/*, allow",
-          "p, proj:${local.argocd_project_name}:external, applications, delete/*/Pod/*/*, ${local.argocd_project_name}/*, allow",
-          "p, proj:${local.argocd_project_name}:external, applications, action/apps/Deployment/restart, ${local.argocd_project_name}/*, allow",
-          "p, proj:${local.argocd_project_name}:external, applications, action/apps/StatefulSet/restart, ${local.argocd_project_name}/*, allow",
-          "p, proj:${local.argocd_project_name}:external, applications, action/apps/DaemonSet/restart, ${local.argocd_project_name}/*, allow",
-          "p, proj:${local.argocd_project_name}:external, applications, sync, ${local.argocd_project_name}/*, allow",
-        ],
-        var.env == "dev" ? [
-          "p, proj:${local.argocd_project_name}:external, applications, update/*/Deployment/*/*, ${local.argocd_project_name}/*, allow",
-          "p, proj:${local.argocd_project_name}:external, applications, delete/*/Deployment/*/*, ${local.argocd_project_name}/*, allow",
-        ] : []
-      ) : []
+      policies = [
+        "p, proj:${local.argocd_project_name}:external, applications, get, ${local.argocd_project_name}/*, allow",
+        "p, proj:${local.argocd_project_name}:external, logs, get, ${local.argocd_project_name}/*, allow",
+        "p, proj:${local.argocd_project_name}:external, applications, delete/*/Pod/*/*, ${local.argocd_project_name}/*, allow",
+        "p, proj:${local.argocd_project_name}:external, applications, action/apps/Deployment/restart, ${local.argocd_project_name}/*, allow",
+        "p, proj:${local.argocd_project_name}:external, applications, action/apps/StatefulSet/restart, ${local.argocd_project_name}/*, allow",
+        "p, proj:${local.argocd_project_name}:external, applications, action/apps/DaemonSet/restart, ${local.argocd_project_name}/*, allow",
+        "p, proj:${local.argocd_project_name}:external, applications, sync, ${local.argocd_project_name}/*, allow",
+      ]
     }
 
   }
@@ -135,6 +129,6 @@ resource "argocd_project" "domain_project" {
 #
 resource "azurerm_key_vault_secret" "argocd_server_url" {
   name         = "argocd-server-url"
-  key_vault_id = data.azurerm_key_vault.domain_kv.id
+  key_vault_id = data.azurerm_key_vault.kv_domain.id
   value        = local.argocd_internal_url
 }

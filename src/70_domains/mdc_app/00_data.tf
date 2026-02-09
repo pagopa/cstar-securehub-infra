@@ -63,3 +63,14 @@ data "azuread_group" "adgroup_externals" {
 data "azuread_group" "adgroup_security" {
   display_name = "${local.product}-adgroup-security"
 }
+
+### ARGO
+data "azurerm_key_vault_secret" "argocd_admin_username" {
+  name         = "argocd-admin-username"
+  key_vault_id = data.azurerm_key_vault.kv_domain.id
+}
+
+data "azurerm_key_vault_secret" "argocd_admin_password" {
+  name         = "argocd-admin-password"
+  key_vault_id = data.azurerm_key_vault.kv_domain.id
+}
