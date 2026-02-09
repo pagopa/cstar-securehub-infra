@@ -340,7 +340,7 @@ resource "kubernetes_cron_job_v1" "cancel_empty_reward_batches" {
   }
 
   spec {
-    schedule           = "0 1 1 * *" # 01:00 first day of the month
+    schedule           = "20 0 * * *" # runs at 00:20 everyday
     timezone           = "Europe/Rome"
     concurrency_policy = "Forbid"
 
