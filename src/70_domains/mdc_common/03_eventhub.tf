@@ -3,46 +3,30 @@ locals {
 }
 
 module "eventhub_namespace" {
-  source = "./.terraform/modules/__v4__/eventhub"
+  source = "./.terraform/modules/__v4__/IDH/event_hub"
 
-  count = var.is_feature_enabled.eventhub ? 1 : 0
+  env                 = var.env
+  idh_resource_tier   = "standard_private"
+  location            = var.location
+  name                = "${local.project}-evh"
+  product_name        = var.prefix
+  resource_group_name = data.azurerm_resource_group.mdc_data_rg.name
 
-  name                     = "${local.project}-evh"
-  location                 = var.location
-  resource_group_name      = data.azurerm_resource_group.mdc_data_rg.name
-  auto_inflate_enabled     = var.ehns_auto_inflate_enabled
-  sku                      = var.ehns_sku_name
-  capacity                 = var.ehns_capacity
-  maximum_throughput_units = var.ehns_maximum_throughput_units
+  embedded_subnet = {
+    enabled      = true
+    vnet_rg_name = local.vnet_network_rg
+    vnet_name    = local.vnet_spoke_data_name
+  }
+  private_endpoint_resource_group_name = data.azurerm_resource_group.mdc_data_rg.name
+  private_dns_zones_ids                = [data.azurerm_private_dns_zone.eventhub.id]
 
-  private_endpoint_subnet_id           = module.eventhub_snet.subnet_id
-  private_endpoint_created             = var.ehns_private_endpoint_is_present
-  private_endpoint_resource_group_name = module.eventhub_snet.resource_group_name
-
-  public_network_access_enabled = var.ehns_public_network_access
-
-  action = [
-    {
-      action_group_id    = data.azurerm_monitor_action_group.slack.id
-      webhook_properties = null
-    },
-    {
-      action_group_id    = data.azurerm_monitor_action_group.email.id
-      webhook_properties = null
-    }
-  ]
-
-  metric_alerts_create = var.ehns_alerts_enabled
-  metric_alerts        = var.ehns_metric_alerts
-
-  tags = local.tags
+  tags = module.tag_config.tags
 }
 
 module "eventhub_configuration" {
   source = "./.terraform/modules/__v4__/eventhub_configuration"
-  count  = var.is_feature_enabled.eventhub ? 1 : 0
 
-  event_hub_namespace_name                = module.eventhub_namespace[0].name
+  event_hub_namespace_name                = module.eventhub_namespace.name
   event_hub_namespace_resource_group_name = data.azurerm_resource_group.mdc_data_rg.name
 
   eventhubs = [
@@ -101,13 +85,13 @@ module "eventhub_configuration" {
 # KV
 #-----------------------------------------------------------------------------------------------------------------------
 resource "azurerm_key_vault_secret" "eventhub_primary_connection_strings" {
-  for_each = var.is_feature_enabled.eventhub ? module.eventhub_configuration[0].key_ids : {}
+  for_each = module.eventhub_configuration.key_ids
 
   name         = format("evh-%s-%s-emd", replace(each.key, ".", "-"), "jaas-config")
-  value        = format(local.jaas_config_template_emd, module.eventhub_configuration[0].keys[each.key].primary_connection_string)
+  value        = format(local.jaas_config_template_emd, module.eventhub_configuration.keys[each.key].primary_connection_string)
   content_type = "text/plain"
 
   key_vault_id = data.azurerm_key_vault.kv_domain.id
 
-  tags = local.tags
+  tags = module.tag_config.tags
 }

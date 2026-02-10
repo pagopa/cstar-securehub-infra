@@ -7,8 +7,7 @@ location_short = "itn"
 
 ### FEATURES FLAGS
 is_feature_enabled = {
-  eventhub = true
-  cosmos   = true
+  cosmos = true
 }
 
 # 🐳 Kubernetes

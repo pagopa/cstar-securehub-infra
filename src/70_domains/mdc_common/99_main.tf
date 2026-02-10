@@ -55,6 +55,6 @@ provider "helm" {
 }
 
 module "__v4__" {
-  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v8.5.3
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=feat/add-embedded-subnet-aks-nodepool"
+  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v8.7.0
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=d11d94663f2c4e385e87ebb6bc3ee14e4cbac49b"
 }
