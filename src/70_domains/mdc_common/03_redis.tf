@@ -12,7 +12,13 @@ module "redis" {
     subnet_id            = module.redis_snet.id
     private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_redis.id]
   }
-  tags = module.tag_config.tags
+
+  tags = merge(
+    module.tag_config.tags,
+    {
+      "grafana" = "yes"
+    }
+  )
 }
 
 #-----------------------------------------------------------------------------------------------------------------------

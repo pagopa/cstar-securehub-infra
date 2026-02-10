@@ -17,8 +17,9 @@ locals {
   vnet_legacy_name                = "${local.product}-vnet"
   vnet_legacy_resource_group_name = "${local.product}-vnet-rg"
 
-  vnet_network_rg      = "${local.project_core}-network-rg"
-  vnet_spoke_data_name = "${local.project_core}-spoke-data-vnet"
+  vnet_network_rg         = "${local.project_core}-network-rg"
+  vnet_spoke_compute_name = "${local.project_core}-spoke-compute-vnet"
+  vnet_spoke_data_name    = "${local.project_core}-spoke-data-vnet"
 
   internal_dns_zone_name                = "${var.dns_zone_internal_prefix}.${var.external_domain}"
   internal_dns_zone_resource_group_name = "${local.product}-vnet-rg"

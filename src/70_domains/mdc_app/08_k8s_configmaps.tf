@@ -1,4 +1,4 @@
-resource "kubernetes_config_map" "mdc-common" {
+resource "kubernetes_config_map" "mdc_common" {
   metadata {
     name      = "mdc-common"
     namespace = var.domain
@@ -11,7 +11,7 @@ resource "kubernetes_config_map" "mdc-common" {
 
 }
 
-resource "kubernetes_config_map" "emd-eventhub" {
+resource "kubernetes_config_map" "emd_eventhub" {
   metadata {
     name      = "emd-eventhub"
     namespace = var.domain
@@ -30,7 +30,7 @@ resource "kubernetes_config_map" "emd-eventhub" {
 
 }
 
-resource "kubernetes_config_map" "appinsights-config" {
+resource "kubernetes_config_map" "appinsights_config" {
   metadata {
     name      = "appinsights-config"
     namespace = var.domain
@@ -41,7 +41,7 @@ resource "kubernetes_config_map" "appinsights-config" {
   }
 }
 
-resource "kubernetes_config_map" "rest-client" {
+resource "kubernetes_config_map" "rest_client" {
   metadata {
     name      = "rest-client"
     namespace = var.domain

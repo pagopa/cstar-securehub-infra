@@ -33,11 +33,6 @@ variable "location" {
   description = "One of italynorth, westeurope"
 }
 
-variable "location_string" {
-  type        = string
-  description = "One of Italy North, West Europe"
-}
-
 variable "location_short" {
   type = string
   validation {
@@ -45,11 +40,6 @@ variable "location_short" {
     error_message = "Length must be 3 chars."
   }
   description = "One of itn, weu"
-}
-
-variable "instance" {
-  type        = string
-  description = "One of beta, prod01, prod02"
 }
 
 variable "tags" {
@@ -63,14 +53,6 @@ variable "tags" {
 variable "k8s_kube_config_path_prefix" {
   type    = string
   default = "~/.kube"
-}
-
-variable "ingress_load_balancer_ip" {
-  type = string
-}
-
-variable "ingress_load_balancer_hostname" {
-  type = string
 }
 
 # DNS

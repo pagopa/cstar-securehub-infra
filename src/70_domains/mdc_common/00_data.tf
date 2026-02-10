@@ -79,12 +79,6 @@ data "azurerm_monitor_action_group" "email" {
   name                = local.monitor_action_group_email
 }
 
-# 🛜 VNET
-data "azurerm_virtual_network" "vnet_core" {
-  name                = local.vnet_legacy_name
-  resource_group_name = local.vnet_legacy_resource_group_name
-}
-
 # 🔎 DNS
 data "azurerm_private_dns_zone" "internal" {
   name                = local.internal_dns_zone_name
@@ -121,4 +115,10 @@ data "azurerm_key_vault_secret" "argocd_admin_username" {
 data "azurerm_key_vault_secret" "argocd_admin_password" {
   name         = "argocd-admin-password"
   key_vault_id = data.azurerm_key_vault.kv_domain.id
+}
+
+# NatGateway
+data "azurerm_nat_gateway" "compute_nat_gateway" {
+  name                = "${local.project_core}-compute-natgw"
+  resource_group_name = local.vnet_network_rg
 }

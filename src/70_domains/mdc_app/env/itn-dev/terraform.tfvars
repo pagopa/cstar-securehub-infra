@@ -1,25 +1,10 @@
-prefix          = "cstar"
-env_short       = "d"
-env             = "dev"
-domain          = "mdc"
-location        = "italynorth"
-location_string = "Italy North"
-location_short  = "itn"
-instance        = "dev01"
+prefix         = "cstar"
+env_short      = "d"
+env            = "dev"
+domain         = "mdc"
+location       = "italynorth"
+location_short = "itn"
 
-tags = {
-  CreatedBy    = "Terraform"
-  Environment  = "DEV"
-  Owner        = "CSTAR"
-  Source       = "https://github.com/pagopa/cstar-securehub-infra"
-  CostCenter   = "TS310 - PAGAMENTI & SERVIZI"
-  BusinessUnit = "CStar"
-  domain       = "mdc"
-}
-
-### Aks
-ingress_load_balancer_ip       = "10.11.100.250"
-ingress_load_balancer_hostname = "mdc.itn.internal.dev.cstar.pagopa.it"
 
 # DNS
 dns_zone_internal_prefix = "internal.dev.cstar"

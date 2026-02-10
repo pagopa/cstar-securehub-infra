@@ -1,25 +1,9 @@
-prefix          = "cstar"
-env_short       = "u"
-env             = "uat"
-domain          = "mdc"
-location        = "italynorth"
-location_string = "Italy North"
-location_short  = "itn"
-instance        = "uat01"
-
-tags = {
-  CreatedBy    = "Terraform"
-  Environment  = "UAT"
-  Owner        = "CSTAR"
-  Source       = "https://github.com/pagopa/cstar-securehub-infra"
-  CostCenter   = "TS310 - PAGAMENTI & SERVIZI"
-  BusinessUnit = "CStar"
-  domain       = "mdc"
-}
-
-### Aks
-ingress_load_balancer_ip       = "10.11.100.250"
-ingress_load_balancer_hostname = "mdc.itn.internal.uat.cstar.pagopa.it"
+prefix         = "cstar"
+env_short      = "u"
+env            = "uat"
+domain         = "mdc"
+location       = "italynorth"
+location_short = "itn"
 
 # DNS
 dns_zone_internal_prefix = "internal.uat.cstar"
