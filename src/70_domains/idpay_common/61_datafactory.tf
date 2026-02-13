@@ -96,3 +96,17 @@ resource "azurerm_key_vault_access_policy" "kv_policy_adf" {
   object_id          = data.azurerm_data_factory.data_factory.identity[0].principal_id
   secret_permissions = ["Get"]
 }
+
+
+#ADF secrets
+resource "azurerm_key_vault_secret" "data_factory_name" {
+  name         = "data-factory-name"
+  value        = local.data_factory_name
+  key_vault_id = data.azurerm_key_vault.domain_kv.id
+}
+
+resource "azurerm_key_vault_secret" "data_factory_rg_name" {
+  name         = "data-factory-rg-name"
+  value        = local.data_factory_rg_name
+  key_vault_id = data.azurerm_key_vault.domain_kv.id
+}

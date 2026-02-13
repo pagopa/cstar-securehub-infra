@@ -82,3 +82,7 @@ locals {
     )
   }
 }
+
+# DATA FACTORY
+data_factory_resource_group_name = "${var.prefix}-${var.env_short}-${var.location_short}-platform-data-rg"
+data_factory_name = "${var.prefix}-${var.env_short}-${var.location_short}-itn-platform-adf"

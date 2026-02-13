@@ -28,6 +28,17 @@ data "azurerm_key_vault_secret" "workload_identity_service_account_name" {
   key_vault_id = data.azurerm_key_vault.key_vault_domain.id
 }
 
+#DATA FACTORY
+data "azurerm_key_vault_secret" "data_factory_resource_group_name" {
+  name         = local.data_factory_resource_group_name
+  key_vault_id = data.azurerm_key_vault.key_vault_domain.id
+}
+
+data "azurerm_key_vault_secret" "data_factory_name" {
+  name         = local.data_factory_name
+  key_vault_id = data.azurerm_key_vault.key_vault_domain.id
+}
+
 
 # data "azurerm_key_vault" "kv" {
 #   name                = "${local.product}-${var.domain}-kv"
