@@ -47,7 +47,7 @@ aks_system_node_pool = {
 aks_nodepool_blue = {
   vm_sku_name       = "Standard_D4ads_v5_active"
   autoscale_enabled = true
-  node_count_min    = 6
+  node_count_min    = 3
   node_count_max    = 9
 }
 
@@ -61,7 +61,7 @@ aks_nodepool_green = {
 aks_cidr_subnet      = ["10.10.1.0/24"] # 10.10.1.0 -> 10.10.1.255
 aks_cidr_subnet_user = ["10.10.2.0/24"] # 10.10.2.0 -> 10.10.2.255
 
-ingress_min_replica_count = "21"
+ingress_min_replica_count = "6"
 ingress_max_replica_count = "33"
 ingress_load_balancer_ip  = "10.10.1.250"
 
