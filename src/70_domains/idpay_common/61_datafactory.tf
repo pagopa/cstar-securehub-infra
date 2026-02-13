@@ -97,7 +97,6 @@ resource "azurerm_key_vault_access_policy" "kv_policy_adf" {
   secret_permissions = ["Get"]
 }
 
-
 #ADF secrets
 resource "azurerm_key_vault_secret" "data_factory_name" {
   name         = "data-factory-name"
@@ -108,5 +107,18 @@ resource "azurerm_key_vault_secret" "data_factory_name" {
 resource "azurerm_key_vault_secret" "data_factory_rg_name" {
   name         = "data-factory-rg-name"
   value        = local.data_factory_rg_name
+  key_vault_id = data.azurerm_key_vault.domain_kv.id
+}
+
+# needed for client application
+resource "azurerm_key_vault_secret" "data_factory_rg_name" {
+  name         = "idpay-tenant-id"
+  value        = data.azurerm_client_config.current.tenant_id
+  key_vault_id = data.azurerm_key_vault.domain_kv.id
+}
+
+resource "azurerm_key_vault_secret" "data_factory_rg_name" {
+  name         = "idpay-subscription-id"
+  value        = data.azurerm_subscription.current.subscription_id
   key_vault_id = data.azurerm_key_vault.domain_kv.id
 }
