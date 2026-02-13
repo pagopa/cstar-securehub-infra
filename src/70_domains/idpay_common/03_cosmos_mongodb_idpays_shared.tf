@@ -414,6 +414,15 @@ locals {
         { keys = ["initiativeId"], unique = false },
         { keys = ["pendingTrx.id"], unique = false }
       ]
+    },
+    {
+      name                = "reports"
+      shard_key           = null
+      default_ttl_seconds = null
+      indexes = [
+        { keys = ["_id"], unique = true },
+        { keys = ["initiativeId", "merchantId"], unique = false }
+      ]
     }
   ]
 
