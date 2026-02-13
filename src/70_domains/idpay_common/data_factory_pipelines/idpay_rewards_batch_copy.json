@@ -215,6 +215,15 @@
               },
               {
                 "source": {
+                  "path": "approvalDate.$date"
+                },
+                "sink": {
+                  "name": "approvalDateString",
+                  "type": "String"
+                }
+              },
+              {
+                "source": {
                   "path": "suspendedAmountCents"
                 },
                 "sink": {
@@ -281,7 +290,7 @@
         },
         "userProperties": [],
         "typeProperties": {
-          "command": ".set-or-replace rewards_batch <|\nrewards_batch\n| extend \n    startDate = unixtime_milliseconds_todatetime(tolong(startDateString)),\n    endDate = unixtime_milliseconds_todatetime(tolong(endDateString)),\n    creationDate = unixtime_milliseconds_todatetime(tolong(creationDateString)),\n    updateDate = unixtime_milliseconds_todatetime(tolong(updateDateString))",
+          "command": ".set-or-replace rewards_batch <|\nrewards_batch\n| extend \n    startDate = unixtime_milliseconds_todatetime(tolong(startDateString)),\n    endDate = unixtime_milliseconds_todatetime(tolong(endDateString)),\n    creationDate = unixtime_milliseconds_todatetime(tolong(creationDateString)),\n    updateDate = unixtime_milliseconds_todatetime(tolong(updateDateString)),\n    approvalDate = unixtime_milliseconds_todatetime(tolong(approvalDateString))",
           "commandTimeout": "00:20:00"
         },
         "linkedServiceName": {

@@ -388,6 +388,7 @@
     updateDate:datetime,
     updateDateString:string,
     approvalDate:datetime,
+    approvalDateString:string,
     suspendedAmountCents:long
 )
 
