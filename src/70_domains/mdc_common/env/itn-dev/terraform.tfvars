@@ -18,6 +18,11 @@ external_domain          = "pagopa.it"
 dns_zone_prefix          = "mdc"
 dns_zone_internal_prefix = "internal.dev.cstar"
 
+#Monitoring
+law_sku               = "PerGB2018"
+law_retention_in_days = 30
+law_daily_quota_gb    = 5
+
 ### Cosmos
 cosmos_mongo_db_params = {
   kind         = "MongoDB"

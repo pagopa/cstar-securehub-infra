@@ -165,7 +165,7 @@ resource "azurerm_key_vault_secret" "cosmosdb_account_mongodb_connection_strings
 
   key_vault_id = data.azurerm_key_vault.kv_domain.id
 
-  tags = local.tags
+  tags = module.tag_config.tags
 }
 
 #-----------------------------------------------------------------------------------------------------------------------
@@ -204,13 +204,18 @@ resource "azurerm_monitor_metric_alert" "cosmos_db_normalized_ru_exceeded" {
     }
   }
 
-  action {
-    action_group_id = data.azurerm_monitor_action_group.email.id
-  }
+  # action {
+  #   action_group_id = data.azurerm_monitor_action_group.email.id
+  # }
+  #
+  # action {
+  #   action_group_id = data.azurerm_monitor_action_group.slack.id
+  # }
 
-  action {
-    action_group_id = data.azurerm_monitor_action_group.slack.id
-  }
-
-  tags = local.tags
+  tags = merge(
+    module.tag_config.tags,
+    {
+      "grafana" = "yes"
+    }
+  )
 }

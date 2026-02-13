@@ -184,25 +184,26 @@ EOD
   }))
 }
 
-#
-# AKS
-#
-variable "k8s_kube_config_path_prefix" {
-  type        = string
-  default     = "~/.kube"
-  description = "USED in Devops IAC pipeline. DO NOT REMOVE"
-}
-
 #Redis
-
-variable "redis_capacity" {
-  type = number
-}
-
 variable "redis_idh_tier" {
   type = string
 }
 
-variable "redis_family" {
-  type = string
+## Monitor
+variable "law_sku" {
+  type        = string
+  description = "Sku of the Log Analytics Workspace"
+  default     = "PerGB2018"
+}
+
+variable "law_retention_in_days" {
+  type        = number
+  description = "The workspace data retention in days"
+  default     = 30
+}
+
+variable "law_daily_quota_gb" {
+  type        = number
+  description = "The workspace daily quota for ingestion in GB."
+  default     = -1
 }

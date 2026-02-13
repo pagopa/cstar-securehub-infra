@@ -4,17 +4,12 @@ locals {
   project_core  = "${var.prefix}-${var.env_short}-${var.location_short}-core"
   project_entra = "${var.prefix}-${var.env_short}-${var.domain}"
 
-
-  tags = merge(module.tag_config.tags, { grafana = "yes" })
-
   # 📊 Monitoring
-  monitor_appinsights_name     = "${local.product}-appinsights"
-  monitor_resource_group_name  = "${local.product}-monitor-rg"
-  log_analytics_workspace_name = "${local.product}-law"
-  monitor_action_group_slack   = "SlackPagoPA"
-  monitor_action_group_email   = "PagoPA"
+  monitoring_rg_name = "${local.project}-monitoring-rg"
 
-  vnet_legacy_name                = "${local.product}-vnet"
+  monitor_action_group_slack = "SlackPagoPA"
+  monitor_action_group_email = "PagoPA"
+
   vnet_legacy_resource_group_name = "${local.product}-vnet-rg"
 
   vnet_network_rg         = "${local.project_core}-network-rg"
@@ -42,4 +37,6 @@ locals {
   argocd_namespace    = "argocd"
   argocd_internal_url = "argocd.${var.location_short}.${var.dns_zone_internal_prefix}.${var.external_domain}"
 
+  # 🔗 API Management
+  apim_name = "${local.product}-apim"
 }

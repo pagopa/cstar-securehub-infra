@@ -54,31 +54,6 @@ data "azurerm_key_vault" "kv_domain" {
   resource_group_name = local.kv_domain_rg_name
 }
 
-# 📊 Monitoring
-data "azurerm_resource_group" "monitor_rg" {
-  name = local.monitor_resource_group_name
-}
-
-data "azurerm_log_analytics_workspace" "log_analytics" {
-  name                = local.log_analytics_workspace_name
-  resource_group_name = local.monitor_resource_group_name
-}
-
-data "azurerm_application_insights" "application_insights" {
-  name                = local.monitor_appinsights_name
-  resource_group_name = data.azurerm_resource_group.monitor_rg.name
-}
-
-data "azurerm_monitor_action_group" "slack" {
-  resource_group_name = data.azurerm_resource_group.monitor_rg.name
-  name                = local.monitor_action_group_slack
-}
-
-data "azurerm_monitor_action_group" "email" {
-  resource_group_name = data.azurerm_resource_group.monitor_rg.name
-  name                = local.monitor_action_group_email
-}
-
 # 🔎 DNS
 data "azurerm_private_dns_zone" "internal" {
   name                = local.internal_dns_zone_name
@@ -106,19 +81,13 @@ data "azurerm_kubernetes_cluster" "aks" {
   resource_group_name = local.aks_resource_group_name
 }
 
-### ARGO
-data "azurerm_key_vault_secret" "argocd_admin_username" {
-  name         = "argocd-admin-username"
-  key_vault_id = data.azurerm_key_vault.kv_domain.id
-}
-
-data "azurerm_key_vault_secret" "argocd_admin_password" {
-  name         = "argocd-admin-password"
-  key_vault_id = data.azurerm_key_vault.kv_domain.id
-}
-
 # NatGateway
 data "azurerm_nat_gateway" "compute_nat_gateway" {
   name                = "${local.project_core}-compute-natgw"
   resource_group_name = local.vnet_network_rg
+}
+
+data "azurerm_api_management" "apim" {
+  name                = local.apim_name
+  resource_group_name = "${local.product}-api-rg"
 }
