@@ -422,7 +422,7 @@ locals {
       indexes = [
         { keys = ["_id"], unique = true },
         { keys = ["initiativeId", "merchantId"], unique = false },
-        { keys = ["requestDate"], unique = false}
+        { keys = ["requestDate"], unique = false }
       ]
     }
   ]
