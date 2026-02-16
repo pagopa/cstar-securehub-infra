@@ -33,6 +33,21 @@ resource "azurerm_data_factory_linked_custom_service" "bonus_blob_storage_linked
   }
 }
 
+resource "azurerm_data_factory_linked_custom_service" "idpay_blob_storage_trx_report_linked_service" {
+
+  name            = "${var.domain}-report-trx-blob-storage-ls"
+  data_factory_id = data.azurerm_data_factory.data_factory.id
+  type            = "AzureBlobStorage"
+  description     = "Report Transaction Blob Storage Account linked service for IdPay"
+  type_properties_json = jsonencode({
+    connectionString = module.storage_idpay_refund.primary_connection_string
+  })
+
+  integration_runtime {
+    name = "AutoResolveIntegrationRuntime"
+  }
+}
+
 # LS ADLS Gen2 (BlobFS) via Managed Identity
 resource "azurerm_data_factory_linked_custom_service" "idpay_exports_blobfs_ls" {
   name            = "${var.domain}-exports-blobfs-ls"

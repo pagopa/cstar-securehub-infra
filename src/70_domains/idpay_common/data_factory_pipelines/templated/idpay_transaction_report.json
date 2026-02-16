@@ -1,0 +1,202 @@
+{
+    "name": "idpay_transaction_report",
+    "properties": {
+        "description": "Generate transaction report for a merchant into an initiative in a requested time range",
+        "activities": [
+            {
+                "name": "Set_Processing",
+                "type": "WebActivity",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "00:10:00",
+                    "retry": 2,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "method": "PATCH",
+                    "url": {
+                        "value": "@concat(\n  '${data_factory_api_base_url}/initiatives/',\n  pipeline().parameters.initiativeId,\n  '/reports/',\n  pipeline().parameters.reportId\n)",
+                        "type": "Expression"
+                    },
+                    "connectVia": {
+                        "referenceName": "AutoResolveIntegrationRuntime",
+                        "type": "IntegrationRuntimeReference"
+                    },
+                    "body": {
+                        "reportStatus": "IN_PROGRESS"
+                    }
+                }
+            },
+            {
+                "name": "GenerateCsvToBlob",
+                "description": "Run Kusto query on transactions and save result as CSV to Blob",
+                "type": "Copy",
+                "dependsOn": [
+                    {
+                        "activity": "Set_Processing",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "02:00:00",
+                    "retry": 2,
+                    "retryIntervalInSeconds": 60,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "source": {
+                        "type": "AzureDataExplorerSource",
+                        "query": {
+                            "value": "transaction | where merchantId == '@{pipeline().parameters.merchantId}' | where elaborationDateTime >= todatetime('@{pipeline().parameters.startDate}') and elaborationDateTime <= todatetime('@{pipeline().parameters.endDate}') | join kind=inner merchant on $left.merchantId == $right._id | join kind=inner point_of_sales on $left.pointOfSaleId == $right._id | project CodiceGTIN=additionalProductGtin, NumeroFattura=invoiceDocNumber, CodiceVoucher=trxCode, StatoTransazione=case(status=='AUTHORIZED','Autorizzata',status=='CANCELLED','Annullata',status=='CAPTURED','Fattura da caricare',status=='EXPIRED','Scaduta',status=='INVOICED','Fattura caricata',status=='REFUNDED','Stornata',status=='REJECTED','Rifiutato',status=='REWARDED','Richiesto rimborso',''), CostoLordo=toreal(amountCents)/100, ImportoSconto=toreal(rewardCountersTotalRewardCents)/100, CostoNetto=(toreal(amountCents)-toreal(rewardCountersTotalRewardCents))/100, DataElaborazione=datetime_add('hour',1,elaborationDateTime), Regione=region, Provincia=province, Citta=city, Indirizzo=address, CAP=zipCode",
+                            "type": "Expression"
+                        },
+                        "queryTimeout": "01:00:00",
+                        "noTruncation": true
+                    },
+                    "sink": {
+                        "type": "DelimitedTextSink",
+                        "storeSettings": {
+                            "type": "AzureBlobStorageWriteSettings"
+                        },
+                        "formatSettings": {
+                            "type": "DelimitedTextWriteSettings",
+                            "quoteAllText": true,
+                            "fileExtension": ".txt"
+                        }
+                    },
+                    "enableStaging": false
+                },
+                "inputs": [
+                    {
+                        "referenceName": "data_explorer_idpay_transaction",
+                        "type": "DatasetReference"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "referenceName": "blob_report_transactions",
+                        "type": "DatasetReference",
+                        "parameters": {
+                            "initiativeId": {
+                                "value": "@pipeline().parameters.initiativeId",
+                                "type": "Expression"
+                            },
+                            "merchantId": {
+                                "value": "@pipeline().parameters.merchantId",
+                                "type": "Expression"
+                            },
+                            "reportName": {
+                                "value": "@pipeline().parameters.reportName",
+                                "type": "Expression"
+                            }
+                        }
+                    }
+                ]
+            },
+            {
+                "name": "Set_Done",
+                "type": "WebActivity",
+                "dependsOn": [
+                    {
+                        "activity": "GenerateCsvToBlob",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "00:10:00",
+                    "retry": 2,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "method": "PATCH",
+                    "url": {
+                        "value": "@concat(\n  '${data_factory_api_base_url}/initiatives/',\n  pipeline().parameters.initiativeId,\n  '/reports/',\n  pipeline().parameters.reportId\n)",
+                        "type": "Expression"
+                    },
+                    "connectVia": {
+                        "referenceName": "AutoResolveIntegrationRuntime",
+                        "type": "IntegrationRuntimeReference"
+                    },
+                    "body": {
+                        "reportStatus": "GENERATED"
+                    }
+                }
+            },
+            {
+                "name": "Set_Failed",
+                "type": "WebActivity",
+                "dependsOn": [
+                    {
+                        "activity": "GenerateCsvToBlob",
+                        "dependencyConditions": [
+                            "Failed"
+                        ]
+                    },
+                    {
+                        "activity": "Set_Processing",
+                        "dependencyConditions": [
+                            "Failed"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "00:10:00",
+                    "retry": 1,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "method": "PATCH",
+                    "url": {
+                        "value": "@concat(\n  '${data_factory_api_base_url}/initiatives/',\n  pipeline().parameters.initiativeId,\n  '/reports/',\n  pipeline().parameters.reportId\n)",
+                        "type": "Expression"
+                    },
+                    "connectVia": {
+                        "referenceName": "AutoResolveIntegrationRuntime",
+                        "type": "IntegrationRuntimeReference"
+                    },
+                    "body": {
+                        "reportStatus": "FAILED"
+                    }
+                }
+            }
+        ],
+        "concurrency": 5,
+        "parameters": {
+            "reportId": {
+                "type": "String"
+            },
+            "startDate": {
+                "type": "String"
+            },
+            "endDate": {
+                "type": "String"
+            },
+            "merchantId": {
+                "type": "String"
+            },
+            "initiativeId": {
+                "type": "String"
+            },
+            "reportName": {
+                "type": "String"
+            }
+        },
+        "annotations": []
+    },
+    "type": "Microsoft.DataFactory/factories/pipelines"
+}
