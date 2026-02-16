@@ -610,7 +610,7 @@ resource "keycloak_openid_client" "merchant_operator_perf_test" {
   name      = "Performance Test Client"
   enabled   = true
 
-  access_type = "PUBLIC"
+  access_type = "CONFIDENTIAL"
 
   standard_flow_enabled = true
 
