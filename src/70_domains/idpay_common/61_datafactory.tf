@@ -111,13 +111,13 @@ resource "azurerm_key_vault_secret" "data_factory_rg_name" {
 }
 
 # needed for client application
-resource "azurerm_key_vault_secret" "data_factory_rg_name" {
+resource "azurerm_key_vault_secret" "data_factory_tenant_id" {
   name         = "idpay-tenant-id"
   value        = data.azurerm_client_config.current.tenant_id
   key_vault_id = data.azurerm_key_vault.domain_kv.id
 }
 
-resource "azurerm_key_vault_secret" "data_factory_rg_name" {
+resource "azurerm_key_vault_secret" "data_factory_subscription_id" {
   name         = "idpay-subscription-id"
   value        = data.azurerm_subscription.current.subscription_id
   key_vault_id = data.azurerm_key_vault.domain_kv.id

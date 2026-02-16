@@ -421,7 +421,8 @@ locals {
       default_ttl_seconds = null
       indexes = [
         { keys = ["_id"], unique = true },
-        { keys = ["initiativeId", "merchantId"], unique = false }
+        { keys = ["initiativeId", "merchantId"], unique = false },
+        { keys = ["requestDate"], unique = false}
       ]
     }
   ]
