@@ -122,3 +122,12 @@ resource "azurerm_key_vault_secret" "data_factory_subscription_id" {
   value        = data.azurerm_subscription.current.subscription_id
   key_vault_id = data.azurerm_key_vault.domain_kv.id
 }
+
+#
+# Roles Assignments for Workload Identity
+#
+resource "azurerm_role_assignment" "role_datafactory_contributor" {
+  scope                = data.azurerm_resource_group.platform_data.id
+  role_definition_name = "Data Factory Contributor"
+  principal_id         = module.workload_identity_configuration_v2.workload_identity_principal_id
+}
