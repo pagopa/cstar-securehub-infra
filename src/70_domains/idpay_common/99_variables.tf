@@ -295,5 +295,3 @@ variable "redis_idh_resource_tier" {
   type        = string
   description = "The SKU of the Redis Cache to deploy"
 }
-
-
