@@ -6,7 +6,14 @@
             {
                 "name": "Set_Processing",
                 "type": "WebActivity",
-                "dependsOn": [],
+                "dependsOn": [
+                    {
+                        "activity": "Get_SubKey",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
                 "policy": {
                     "timeout": "00:10:00",
                     "retry": 2,
@@ -17,6 +24,12 @@
                 "userProperties": [],
                 "typeProperties": {
                     "method": "PATCH",
+                    "headers": {
+                        "Ocp-Apim-Subscription-Key": {
+                            "value": "@activity('Get_SubKey').output.value",
+                            "type": "Expression"
+                        }
+                    },
                     "url": {
                         "value": "@concat(\n  '${data_factory_api_base_url}/initiatives/',\n  pipeline().parameters.initiativeId,\n  '/reports/',\n  pipeline().parameters.reportId\n)",
                         "type": "Expression"
@@ -54,7 +67,7 @@
                     "source": {
                         "type": "AzureDataExplorerSource",
                         "query": {
-                            "value": "transaction | where merchantId == '@{pipeline().parameters.merchantId}' | where elaborationDateTime >= todatetime('@{pipeline().parameters.startDate}') and elaborationDateTime <= todatetime('@{pipeline().parameters.endDate}') | join kind=inner merchant on $left.merchantId == $right._id | join kind=inner point_of_sales on $left.pointOfSaleId == $right._id | project CodiceGTIN=additionalProductGtin, NumeroFattura=invoiceDocNumber, CodiceVoucher=trxCode, StatoTransazione=case(status=='AUTHORIZED','Autorizzata',status=='CANCELLED','Annullata',status=='CAPTURED','Fattura da caricare',status=='EXPIRED','Scaduta',status=='INVOICED','Fattura caricata',status=='REFUNDED','Stornata',status=='REJECTED','Rifiutato',status=='REWARDED','Richiesto rimborso',''), CostoLordo=toreal(amountCents)/100, ImportoSconto=toreal(rewardCountersTotalRewardCents)/100, CostoNetto=(toreal(amountCents)-toreal(rewardCountersTotalRewardCents))/100, DataElaborazione=datetime_add('hour',1,elaborationDateTime), Regione=region, Provincia=province, Citta=city, Indirizzo=address, CAP=zipCode",
+                            "value": "let tx = transaction\n| where merchantId == '@{pipeline().parameters.merchantId}'\n| where elaborationDateTime >= todatetime('@{pipeline().parameters.startDate}') \n  and elaborationDateTime <= todatetime('@{pipeline().parameters.endDate}')\n| project tx_merchantId = merchantId,\n          tx_pointOfSaleId = pointOfSaleId,\n          tx_rewardBatchId = rewardBatchId,\n          tx_additionalProductGtin = additionalProductGtin,\n          tx_invoiceDocNumber = invoiceDocNumber,\n          tx_trxCode = trxCode,\n          tx_status = status,\n          tx_amountCents = amountCents,\n          tx_rewardCountersTotalRewardCents = rewardCountersTotalRewardCents,\n          tx_elaborationDateTime = elaborationDateTime,\n\t\t  tx_rewardBatchTrxStatus = rewardBatchTrxStatus;\n\nlet m = merchant \n| project m_id = _id, m_businessName = businessName;\n\nlet pos = point_of_sales\n| project pos_id = _id, pos_franchiseName = franchiseName, pos_region = region, pos_province = province, pos_city = city, pos_address = address, pos_zipCode = zipCode;\n\nlet rb = rewards_batch\n| project rb_id = _id, rb_name = name, rb_status = status;\n\ntx\n| join kind=inner m on $left.tx_merchantId == $right.m_id\n| join kind=inner pos on $left.tx_pointOfSaleId == $right.pos_id\n| join kind=inner rb on $left.tx_rewardBatchId == $right.rb_id\n| project\n    CodiceGTIN = tx_additionalProductGtin,\n    NumeroFattura = tx_invoiceDocNumber,\n    CodiceVoucher = tx_trxCode,\n    StatoTransazione = case(tx_status=='AUTHORIZED','Autorizzata',\n                            tx_status=='CANCELLED','Annullata',\n                            tx_status=='CAPTURED','Fattura da caricare',\n                            tx_status=='EXPIRED','Scaduta',\n                            tx_status=='INVOICED','Fattura caricata',\n                            tx_status=='REFUNDED','Stornata',\n                            tx_status=='REJECTED','Rifiutato',\n                            tx_status=='REWARDED','Richiesto rimborso',''),\n    CostoLordo = toreal(tx_amountCents)/100,\n    ImportoSconto = toreal(tx_rewardCountersTotalRewardCents)/100,\n    CostoNetto = (toreal(tx_amountCents)-toreal(tx_rewardCountersTotalRewardCents))/100,\n    DataElaborazione = datetime_add('hour',1,tx_elaborationDateTime),\n    Regione = pos_region,\n    Provincia = pos_province,\n    Citta = pos_city,\n    Indirizzo = pos_address,\n    CAP = pos_zipCode,\n    NomeLotto = rb_name,\n\tStatoLotto = case(rb_status=='CREATED','Creato',\n                     rb_status=='SENT','Inviato',\n                     rb_status=='EVALUATING','In elaborazione',\n                     rb_status=='APPROVED','Approvato',\n                     rb_status=='APPROVING','In approvazione',''),\n    StatoTransazioneLotto = case(tx_rewardBatchTrxStatus=='TO_CHECK','Da esaminare',\n                            tx_rewardBatchTrxStatus=='CONSULTABLE','Consultabile',\n\t\t\t\t\t\t\ttx_rewardBatchTrxStatus=='SUSPENDED','Da controllare',\n\t\t\t\t\t\t\ttx_rewardBatchTrxStatus=='APPROVED','Approvata',\n                            tx_rewardBatchTrxStatus=='REJECTED','Esclusa',''),\n    Esercente = m_businessName,\n    PuntoVendita = pos_franchiseName;",
                             "type": "Expression"
                         },
                         "queryTimeout": "01:00:00",
@@ -109,6 +122,12 @@
                         "dependencyConditions": [
                             "Succeeded"
                         ]
+                    },
+                    {
+                        "activity": "Get_SubKey",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
                     }
                 ],
                 "policy": {
@@ -121,6 +140,12 @@
                 "userProperties": [],
                 "typeProperties": {
                     "method": "PATCH",
+                    "headers": {
+                        "Ocp-Apim-Subscription-Key": {
+                            "value": "@activity('Get_SubKey').output.value",
+                            "type": "Expression"
+                        }
+                    },
                     "url": {
                         "value": "@concat(\n  '${data_factory_api_base_url}/initiatives/',\n  pipeline().parameters.initiativeId,\n  '/reports/',\n  pipeline().parameters.reportId\n)",
                         "type": "Expression"
@@ -149,6 +174,12 @@
                         "dependencyConditions": [
                             "Failed"
                         ]
+                    },
+                    {
+                        "activity": "Get_SubKey",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
                     }
                 ],
                 "policy": {
@@ -161,6 +192,12 @@
                 "userProperties": [],
                 "typeProperties": {
                     "method": "PATCH",
+                    "headers": {
+                        "Ocp-Apim-Subscription-Key": {
+                            "value": "@activity('Get_SubKey').output.value",
+                            "type": "Expression"
+                        }
+                    },
                     "url": {
                         "value": "@concat(\n  '${data_factory_api_base_url}/initiatives/',\n  pipeline().parameters.initiativeId,\n  '/reports/',\n  pipeline().parameters.reportId\n)",
                         "type": "Expression"
@@ -173,26 +210,57 @@
                         "reportStatus": "FAILED"
                     }
                 }
+            },
+            {
+                "name": "Get_SubKey",
+                "type": "WebActivity",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 3,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": true,
+                    "secureInput": true
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "method": "GET",
+                    "headers": {
+                        "Content-Type": "application/json"
+                    },
+                    "url": {
+                        "value": "${kv_url}secrets/idpay-df-subscription-key?api-version=7.3",
+                        "type": "Expression"
+                    },
+                    "connectVia": {
+                        "referenceName": "AutoResolveIntegrationRuntime",
+                        "type": "IntegrationRuntimeReference"
+                    },
+                    "authentication": {
+                        "type": "MSI",
+                        "resource": "https://vault.azure.net"
+                    }
+                }
             }
         ],
         "concurrency": 5,
         "parameters": {
-            "reportId": {
-                "type": "String"
-            },
-            "startDate": {
-                "type": "String"
-            },
             "endDate": {
-                "type": "String"
-            },
-            "merchantId": {
                 "type": "String"
             },
             "initiativeId": {
                 "type": "String"
             },
+            "merchantId": {
+                "type": "String"
+            },
+            "reportId": {
+                "type": "String"
+            },
             "reportName": {
+                "type": "String"
+            },
+            "startDate": {
                 "type": "String"
             }
         },

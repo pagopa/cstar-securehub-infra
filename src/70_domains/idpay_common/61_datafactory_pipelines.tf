@@ -7,7 +7,8 @@ locals {
   # path to the trx report pipeline
   pipeline_trx_report_file = "${path.module}/data_factory_pipelines/templated/idpay_transaction_report.json"
   pipeline_trx_report_json = jsondecode(templatefile(local.pipeline_trx_report_file, {
-    data_factory_api_base_url = var.data_factory_api_base_url
+    data_factory_api_base_url = var.data_factory_api_base_url,
+    kv_url                    = data.azurerm_key_vault.domain_kv.vault_uri
   }))
 }
 
@@ -34,9 +35,9 @@ resource "azurerm_data_factory_pipeline" "idpay_transaction_report" {
   name            = local.pipeline_trx_report_json.name
   data_factory_id = data.azurerm_data_factory.data_factory.id
 
-  description     = try(local.pipeline_trx_report_json.properties.description, null)
-  concurrency     = try(local.pipeline_trx_report_json.properties.concurrency, null)
-  annotations     = try(local.pipeline_trx_report_json.properties.annotations, [])
+  description = try(local.pipeline_trx_report_json.properties.description, null)
+  concurrency = try(local.pipeline_trx_report_json.properties.concurrency, null)
+  annotations = try(local.pipeline_trx_report_json.properties.annotations, [])
   parameters = try(
     {
       for k, v in local.pipeline_trx_report_json.properties.parameters :
