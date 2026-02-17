@@ -11,6 +11,19 @@ data "azuread_group" "adgroup_externals" {
   display_name = "${local.product}-adgroup-externals"
 }
 
+# Azure AD idpay
+data "azuread_group" "idpay_adgroup_admin" {
+  display_name = "${local.product_domain}-adgroup-admin"
+}
+
+data "azuread_group" "idpay_adgroup_developers" {
+  display_name = "${local.product_domain}-adgroup-developers"
+}
+
+data "azuread_group" "idpay_adgroup_externals" {
+  display_name = "${local.product_domain}-adgroup-externals"
+}
+
 #
 # Azure Resource Groups
 #
