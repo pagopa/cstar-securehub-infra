@@ -23,18 +23,12 @@ locals {
   selected_keys = lookup(local.keys_map, var.env_short, [])
 }
 
-# 1. Recupera il Key Vault usando le variabili esistenti per costruire il nome
-data "azurerm_key_vault" "target_kv" {
-  name                = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}-kv"
-  resource_group_name = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}-security-rg"
-}
-
-# 2. Crea le chiavi dinamicamente
+# 1. Crea le chiavi dinamicamente
 resource "azurerm_key_vault_key" "keys" {
   for_each = toset(local.selected_keys)
 
   name         = each.value
-  key_vault_id = data.azurerm_key_vault.target_kv.id
+  key_vault_id = data.azurerm_key_vault.kv_domain.id
   key_type     = "RSA"
   key_size     = 2048
 
