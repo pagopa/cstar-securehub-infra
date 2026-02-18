@@ -49,12 +49,12 @@ data "azurerm_subscription" "current" {}
 data "azurerm_client_config" "current" {}
 
 provider "kubernetes" {
-  config_path = "~/.kube/config-${local.aks_name}"
+  config_path = "${var.k8s_kube_config_path_prefix}/config-${local.aks_name}"
 }
 
 provider "helm" {
   kubernetes {
-    config_path = "~/.kube/config-${local.aks_name}"
+    config_path = "${var.k8s_kube_config_path_prefix}/config-${local.aks_name}"
   }
 }
 

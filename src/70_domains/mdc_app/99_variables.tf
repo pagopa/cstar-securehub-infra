@@ -49,10 +49,10 @@ variable "tags" {
   }
 }
 
-### Aks
 variable "k8s_kube_config_path_prefix" {
-  type    = string
-  default = "~/.kube"
+  type        = string
+  default     = "~/.kube"
+  description = "DO NOT REMOVE. Used in code review e deploy pipelines. https://github.com/pagopa/azure-pipeline-templates/tree/master/templates/terraform-plan-apply & https://github.com/pagopa/azure-pipeline-templates/tree/master/templates/terraform-plan"
 }
 
 # DNS
