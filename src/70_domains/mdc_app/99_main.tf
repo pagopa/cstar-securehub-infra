@@ -8,7 +8,7 @@ terraform {
     }
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "<= 4.25"
+      version = "~> 4.0"
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
@@ -21,6 +21,10 @@ terraform {
     null = {
       source  = "hashicorp/null"
       version = "~> 3.2"
+    }
+    argocd = {
+      source  = "argoproj-labs/argocd"
+      version = "~> 7.0"
     }
   }
 
@@ -39,11 +43,6 @@ data "azurerm_subscription" "current" {}
 
 data "azurerm_client_config" "current" {}
 
-module "__v4__" {
-  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v7.43.1
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=40a33b4b83bc0746150b16505ea839925a94321a"
-}
-
 provider "kubernetes" {
   config_path = "${var.k8s_kube_config_path_prefix}/config-${local.aks_name}"
 }
@@ -52,4 +51,18 @@ provider "helm" {
   kubernetes {
     config_path = "${var.k8s_kube_config_path_prefix}/config-${local.aks_name}"
   }
+}
+
+provider "argocd" {
+  server_addr = local.argocd_internal_url
+  username    = data.azurerm_key_vault_secret.argocd_admin_username.value
+  password    = data.azurerm_key_vault_secret.argocd_admin_password.value
+  kubernetes {
+    config_context = "config-${local.aks_name}"
+  }
+}
+
+module "__v4__" {
+  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/8.5.2
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=c31b9ecda24c3a0aab52f9febd901157ff205a6d"
 }

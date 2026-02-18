@@ -8,12 +8,13 @@ module "cosmos_snet" {
   name                 = "${local.project}-cosmos-prv-end-snet"
   virtual_network_name = local.vnet_spoke_data_name
 
-  idh_resource_tier = "private_endpoint"
+  idh_resource_tier = "slash28_privatelink_true"
 
   service_endpoints = [
     "Microsoft.Web",
     "Microsoft.AzureCosmosDB"
   ]
+  tags = module.tag_config.tags
 }
 
 module "eventhub_snet" {
@@ -26,11 +27,12 @@ module "eventhub_snet" {
   name                 = "${local.project}-eventhub-prv-end-snet"
   virtual_network_name = local.vnet_spoke_data_name
 
-  idh_resource_tier = "private_endpoint"
+  idh_resource_tier = "slash28_privatelink_true"
 
   service_endpoints = [
     "Microsoft.EventHub"
   ]
+  tags = module.tag_config.tags
 }
 
 module "storage_snet" {
@@ -43,11 +45,12 @@ module "storage_snet" {
   name                 = "${local.project}-storage-prv-end-snet"
   virtual_network_name = local.vnet_spoke_data_name
 
-  idh_resource_tier = "private_endpoint"
+  idh_resource_tier = "slash28_privatelink_true"
 
   service_endpoints = [
     "Microsoft.Storage"
   ]
+  tags = module.tag_config.tags
 }
 
 module "redis_snet" {
@@ -60,7 +63,8 @@ module "redis_snet" {
   name                 = "${local.project}-redis-prv-end-snet"
   virtual_network_name = local.vnet_spoke_data_name
 
-  idh_resource_tier = "private_endpoint"
+  idh_resource_tier = "slash28_privatelink_true"
+  tags              = module.tag_config.tags
 }
 
 resource "azurerm_private_dns_a_record" "ingress" {
@@ -70,5 +74,5 @@ resource "azurerm_private_dns_a_record" "ingress" {
   ttl                 = 3600
   records             = [var.ingress_private_load_balancer_ip]
 
-  tags = local.tags
+  tags = module.tag_config.tags
 }

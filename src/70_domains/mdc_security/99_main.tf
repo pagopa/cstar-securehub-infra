@@ -8,7 +8,7 @@ terraform {
     }
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~> 4"
+      version = "~> 4.0"
     }
     external = {
       source  = "hashicorp/external"
@@ -32,6 +32,6 @@ data "azurerm_subscription" "current" {}
 data "azurerm_client_config" "current" {}
 
 module "__v4__" {
-  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v7.28.0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=200dc075ed1f95628ac7177b3a129dc9f3e60631"
+  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v7.56.0
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=d38fd519025c6f9d0e4119ebc5b5039021afbac4"
 }

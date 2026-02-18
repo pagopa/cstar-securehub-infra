@@ -1,6 +1,5 @@
 module "aks_idpay_node_pool_blue" {
   source = "./.terraform/modules/__v4__/IDH/aks_node_pool"
-  # source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//IDH/aks_node_pool?ref=PAYMCLOUD-449-idh-node-pool-aks"
 
   product_name = var.prefix
   env          = var.env
@@ -22,7 +21,6 @@ module "aks_idpay_node_pool_blue" {
 
 module "aks_idpay_node_pool_green" {
   source = "./.terraform/modules/__v4__/IDH/aks_node_pool"
-  # source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//IDH/aks_node_pool?ref=PAYMCLOUD-449-idh-node-pool-aks"
 
   product_name = var.prefix
   env          = var.env

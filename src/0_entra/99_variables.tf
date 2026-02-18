@@ -29,14 +29,6 @@ variable "env_short" {
   }
 }
 
-variable "location" {
-  type = string
-}
-
-variable "location_westeurope" {
-  type = string
-}
-
 variable "location_short" {
   type        = string
   description = "Location short like eg: weu, weu.."
@@ -56,4 +48,5 @@ variable "domain" {
 variable "argocd_entra_groups_allowed_extra" {
   type        = list(string)
   description = "Additional Entra ID groups allowed to access ArgoCD."
+  default     = []
 }

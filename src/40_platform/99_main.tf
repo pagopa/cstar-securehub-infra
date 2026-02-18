@@ -44,12 +44,12 @@ data "azurerm_subscription" "current" {}
 data "azurerm_client_config" "current" {}
 
 provider "kubernetes" {
-  config_path = "${var.k8s_kube_config_path_prefix}/config-${local.aks_cluster_name}"
+  config_path = "~/.kube/config-${local.aks_cluster_name}"
 }
 
 provider "helm" {
   kubernetes {
-    config_path = "${var.k8s_kube_config_path_prefix}/config-${local.aks_cluster_name}"
+    config_path = "~/.kube/config-${local.aks_cluster_name}"
   }
 }
 
@@ -63,6 +63,6 @@ provider "argocd" {
 }
 
 module "__v4__" {
-  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v7.43.1
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=40a33b4b83bc0746150b16505ea839925a94321a"
+  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v9.0.0
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=a8779d9a41e1afb803cacbcfd778acb2e86e9a0a"
 }

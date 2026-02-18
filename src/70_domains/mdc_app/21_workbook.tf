@@ -3,7 +3,7 @@ resource "azurerm_resource_group" "workbook_rg" {
 
   name     = "${local.project}-workbook-rg"
   location = var.location
-  tags     = var.tags
+  tags     = module.tag_config.tags
 }
 
 resource "azurerm_application_insights_workbook" "workbook" {
@@ -20,5 +20,5 @@ resource "azurerm_application_insights_workbook" "workbook" {
       env_short       = var.env_short
   })
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
