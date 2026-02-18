@@ -29,8 +29,6 @@ locals {
   eventhub_namespace_name    = "${local.project}-evh"
   eventhub_namespace_rg_name = "${local.project}-data-rg"
 
-  aks_api_url = var.env_short == "d" ? data.azurerm_kubernetes_cluster.aks.fqdn : data.azurerm_kubernetes_cluster.aks.private_fqdn
-
   ### ARGOCD
   argocd_internal_url = "argocd.${var.location_short}.${var.dns_zone_internal_prefix}.${var.external_domain}"
 
