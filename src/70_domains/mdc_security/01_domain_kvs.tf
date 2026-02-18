@@ -33,8 +33,21 @@ module "admins_policy" {
   object_id         = data.azuread_group.adgroup_admin.object_id
 }
 
+module "admin_domain_policy" {
+  source = "./.terraform/modules/__v4__/IDH/key_vault_access_policy"
+
+  for_each = toset(local.secrets_folders_kv)
+
+  product_name      = "cstar"
+  idh_resource_tier = "admin" # or developer, external
+  env               = var.env # or prod, uat, etc.
+  key_vault_id      = module.key_vault[each.key].id
+  tenant_id         = data.azurerm_client_config.current.tenant_id
+  object_id         = data.azuread_group.adgroup_domain_admin.object_id
+}
+
 module "developers_policy" {
-  source = "./.terraform/modules/__v4__//IDH/key_vault_access_policy"
+  source = "./.terraform/modules/__v4__/IDH/key_vault_access_policy"
 
   for_each = toset(local.secrets_folders_kv)
 
@@ -43,7 +56,7 @@ module "developers_policy" {
   env               = var.env     # or prod, uat, etc.
   key_vault_id      = module.key_vault[each.key].id
   tenant_id         = data.azurerm_client_config.current.tenant_id
-  object_id         = data.azuread_group.adgroup_developers.object_id
+  object_id         = data.azuread_group.adgroup_domain_developers.object_id
 }
 
 module "externals_policy" {
@@ -56,5 +69,5 @@ module "externals_policy" {
   env               = var.env
   key_vault_id      = module.key_vault[each.key].id
   tenant_id         = data.azurerm_client_config.current.tenant_id
-  object_id         = data.azuread_group.adgroup_externals.object_id
+  object_id         = data.azuread_group.adgroup_domain_externals.object_id
 }
