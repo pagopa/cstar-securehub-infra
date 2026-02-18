@@ -38,6 +38,9 @@ locals {
   key_vault_name    = "${local.project}-kv"
   key_vault_rg_name = "${local.project}-security-rg"
 
+  kv_core_name                = "${local.project_no_domain}-core-kv"
+  kv_core_resource_group_name = "${local.project_no_domain}-core-sec-rg"
+
   # 🔎 DNS
   dns_zone_name                    = "${var.env != "prod" ? "${var.env}." : ""}${var.prefix}.pagopa.it"
   dns_zone_internal                = "internal.${local.dns_zone_name}"
