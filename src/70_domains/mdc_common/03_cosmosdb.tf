@@ -23,7 +23,7 @@ module "cosmos_account" {
   # Network
   subnet_id = module.cosmos_snet.id
   private_endpoint_config = {
-    enabled                       = var.cosmos_mongo_db_params.private_endpoint_enabled
+    enabled                       = true
     name_mongo                    = "${local.project}-cosmos-pe"
     service_connection_name_mongo = "${local.project}-cosmos-pe"
     private_dns_zone_mongo_ids    = [data.azurerm_private_dns_zone.cosmos.id]
@@ -33,8 +33,6 @@ module "cosmos_account" {
 }
 
 resource "azurerm_cosmosdb_mongo_database" "mdc" {
-  count = var.is_feature_enabled.cosmos ? 1 : 0
-
   name                = var.domain
   resource_group_name = data.azurerm_resource_group.mdc_data_rg.name
   account_name        = module.cosmos_account.name
@@ -141,13 +139,13 @@ locals {
 
 module "cosmosdb_collections" {
   source   = "./.terraform/modules/__v4__/cosmosdb_mongodb_collection"
-  for_each = var.is_feature_enabled.cosmos ? { for index, coll in local.collections : coll.name => coll } : {}
+  for_each = { for index, coll in local.collections : coll.name => coll }
 
   name                = each.value.name
   resource_group_name = data.azurerm_resource_group.mdc_data_rg.name
 
   cosmosdb_mongo_account_name  = module.cosmos_account.name
-  cosmosdb_mongo_database_name = azurerm_cosmosdb_mongo_database.mdc[0].name
+  cosmosdb_mongo_database_name = azurerm_cosmosdb_mongo_database.mdc.name
 
   indexes     = each.value.indexes
   lock_enable = var.env_short == "p"
@@ -172,7 +170,7 @@ resource "azurerm_key_vault_secret" "cosmosdb_account_mongodb_connection_strings
 # Alerts
 #-----------------------------------------------------------------------------------------------------------------------
 resource "azurerm_monitor_metric_alert" "cosmos_db_normalized_ru_exceeded" {
-  count = var.is_feature_enabled.cosmos && var.env_short == "p" ? 1 : 0
+  count = var.env_short == "p" ? 1 : 0
 
   name                = "[${var.domain != null ? "${var.domain} | " : ""}${module.cosmos_account.name}] Normalized RU Exceeded"
   resource_group_name = data.azurerm_resource_group.mdc_data_rg.name
@@ -218,4 +216,9 @@ resource "azurerm_monitor_metric_alert" "cosmos_db_normalized_ru_exceeded" {
       "grafana" = "yes"
     }
   )
+}
+
+moved {
+  from = azurerm_cosmosdb_mongo_database.mdc[0]
+  to   = azurerm_cosmosdb_mongo_database.mdc
 }

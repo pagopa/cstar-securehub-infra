@@ -18,6 +18,10 @@ terraform {
       source  = "argoproj-labs/argocd"
       version = "~> 7.0"
     }
+    helm = {
+      source  = "hashicorp/helm"
+      version = "~> 2.17"
+    }
   }
 
   backend "azurerm" {}
@@ -50,11 +54,11 @@ provider "kubernetes" {
 
 provider "helm" {
   kubernetes {
-    config_path = "${var.k8s_kube_config_path_prefix}/config-${local.aks_name}"
+    config_path = "~/.kube/config-${local.aks_name}"
   }
 }
 
 module "__v4__" {
-  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v8.7.0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=d11d94663f2c4e385e87ebb6bc3ee14e4cbac49b"
+  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v8.8.4
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=89e6891c9259faa71232e82c9895378e12209135"
 }

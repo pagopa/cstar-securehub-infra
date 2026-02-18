@@ -6,11 +6,11 @@ module "aks_node_pool" {
   tags         = module.tag_config.tags
 
   # IDH Resources
-  idh_resource_tier = "Standard_B4ms_active" #var.aks_nodepool_blue.idh_resource_tier
+  idh_resource_tier = var.aks_nodepool.vm_sku_name
 
   name           = "${var.prefix}${var.env_short}${var.domain}"
-  node_count_min = 1 #var.aks_nodepool_blue.node_count_min
-  node_count_max = 1 #var.aks_nodepool_blue.node_count_max
+  node_count_min = var.aks_nodepool.node_count_min
+  node_count_max = var.aks_nodepool.node_count_max
 
   node_labels           = { node_name : var.prefix, node_type : "user", domain : var.domain }
   node_tags             = {}

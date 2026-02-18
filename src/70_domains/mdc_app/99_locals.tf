@@ -17,10 +17,6 @@ locals {
   aks_name                = "${local.product}-${var.location_short}-${var.env}-aks"
   aks_resource_group_name = "${local.product}-${var.location_short}-core-aks-rg"
 
-  # 🔎 DNS / Ingress
-  ingress_hostname_prefix = "${var.domain}.${var.location_short}"
-  domain_aks_hostname     = var.env == "prod" ? "${local.ingress_hostname_prefix}.internal.cstar.pagopa.it" : "${local.ingress_hostname_prefix}.internal.${var.env}.cstar.pagopa.it"
-
   # 🔗 API Management
   apim_name    = "${local.product}-apim"
   apim_rg_name = "${local.product}-api-rg"
