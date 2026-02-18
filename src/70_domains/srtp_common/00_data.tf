@@ -6,6 +6,12 @@ data "azurerm_key_vault" "domain_kv" {
   resource_group_name = local.key_vault_rg_name
 }
 
+# CORE
+data "azurerm_key_vault" "core_kv" {
+  name                = local.kv_core_name
+  resource_group_name = local.kv_core_resource_group_name
+}
+
 ### ARGO
 data "azurerm_key_vault_secret" "argocd_admin_username" {
   name         = "argocd-admin-username"
@@ -15,6 +21,16 @@ data "azurerm_key_vault_secret" "argocd_admin_username" {
 data "azurerm_key_vault_secret" "argocd_admin_password" {
   name         = "argocd-admin-password"
   key_vault_id = data.azurerm_key_vault.domain_kv.id
+}
+
+data "azurerm_key_vault_secret" "terraform_client_secret_for_keycloak" {
+  name         = "terraform-client-secret-for-keycloak"
+  key_vault_id = data.azurerm_key_vault.core_kv.id
+}
+
+data "azurerm_key_vault_secret" "keycloak_url" {
+  name         = "keycloak-url"
+  key_vault_id = data.azurerm_key_vault.core_kv.id
 }
 
 #
