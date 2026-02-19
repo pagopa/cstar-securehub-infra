@@ -25,13 +25,17 @@ locals {
     "${local.product}-idpay-adgroup-admin",
     "${local.product}-idpay-adgroup-developers",
     "${local.product}-idpay-adgroup-externals",
+    #MDC Groups
+    "${local.product}-mdc-adgroup-admin",
+    "${local.product}-mdc-adgroup-developers",
+    "${local.product}-mdc-adgroup-externals",
     ],
 
     # OnCall group only in prod
     var.env_short == "p" ? [
-
       "${local.product}-idpay-adgroup-oncall",
-      "${local.product}-srtp-adgroup-oncall"
+      "${local.product}-srtp-adgroup-oncall",
+      "${local.product}-mdc-adgroup-oncall"
     ] : []
   )
 

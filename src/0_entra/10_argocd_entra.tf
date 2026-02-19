@@ -5,7 +5,6 @@
 
 module "argocd_entra" {
   source = "./.terraform/modules/__v4__/kubernetes_argocd_entra"
-  # source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//kubernetes_argocd_entra?ref=PAYMCLOUD-231-argocd-creazione-modulo"
 
   name_identifier                = local.project
   argocd_hostname                = local.argocd_hostname
@@ -16,4 +15,6 @@ module "argocd_entra" {
   argocd_namespace               = local.argocd_namespace
   argocd_service_account_name    = local.argocd_service_account_name
   key_vault_id                   = data.azurerm_key_vault.kv_core_ita.id
+
+  tags = module.tag_config.tags
 }

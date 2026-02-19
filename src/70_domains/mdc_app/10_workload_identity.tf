@@ -1,5 +1,4 @@
 module "workload_identity" {
-  #   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_workload_identity_configuration?ref=fix-workload-identity-info"
   source = "./.terraform/modules/__v4__/kubernetes_workload_identity_configuration"
 
   workload_identity_name_prefix         = var.domain

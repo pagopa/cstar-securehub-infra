@@ -33,11 +33,6 @@ variable "location" {
   description = "One of italynorth, westeurope"
 }
 
-variable "location_string" {
-  type        = string
-  description = "One of Italy North, West Europe"
-}
-
 variable "location_short" {
   type = string
   validation {
@@ -47,11 +42,6 @@ variable "location_short" {
   description = "One of itn, weu"
 }
 
-variable "instance" {
-  type        = string
-  description = "One of beta, prod01, prod02"
-}
-
 variable "tags" {
   type = map(any)
   default = {
@@ -59,18 +49,10 @@ variable "tags" {
   }
 }
 
-### Aks
 variable "k8s_kube_config_path_prefix" {
-  type    = string
-  default = "~/.kube"
-}
-
-variable "ingress_load_balancer_ip" {
-  type = string
-}
-
-variable "ingress_load_balancer_hostname" {
-  type = string
+  type        = string
+  default     = "~/.kube"
+  description = "DO NOT REMOVE. Used in code review e deploy pipelines. https://github.com/pagopa/azure-pipeline-templates/tree/master/templates/terraform-plan-apply & https://github.com/pagopa/azure-pipeline-templates/tree/master/templates/terraform-plan"
 }
 
 # DNS

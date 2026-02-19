@@ -36,15 +36,16 @@ Re-enable all the resource, commented before to complete the procedure
 
 | Name | Version |
 |------|---------|
-| <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 3.4.0 |
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.38.0 |
+| <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 3.7.0 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.58.0 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | 2af8a000f8e3ac6c78944d1aad6be020ad8f0f63 |
+| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | c31b9ecda24c3a0aab52f9febd901157ff205a6d |
 | <a name="module_argocd_entra"></a> [argocd\_entra](#module\_argocd\_entra) | ./.terraform/modules/__v4__/kubernetes_argocd_entra | n/a |
+| <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../tag_config | n/a |
 
 ## Resources
 
@@ -62,13 +63,11 @@ Re-enable all the resource, commented before to complete the procedure
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_argocd_entra_groups_allowed_extra"></a> [argocd\_entra\_groups\_allowed\_extra](#input\_argocd\_entra\_groups\_allowed\_extra) | Additional Entra ID groups allowed to access ArgoCD. | `list(string)` | n/a | yes |
+| <a name="input_argocd_entra_groups_allowed_extra"></a> [argocd\_entra\_groups\_allowed\_extra](#input\_argocd\_entra\_groups\_allowed\_extra) | Additional Entra ID groups allowed to access ArgoCD. | `list(string)` | `[]` | no |
 | <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | n/a | yes |
 | <a name="input_env"></a> [env](#input\_env) | n/a | `string` | n/a | yes |
 | <a name="input_env_short"></a> [env\_short](#input\_env\_short) | n/a | `string` | n/a | yes |
-| <a name="input_location"></a> [location](#input\_location) | n/a | `string` | n/a | yes |
 | <a name="input_location_short"></a> [location\_short](#input\_location\_short) | Location short like eg: weu, weu.. | `string` | n/a | yes |
-| <a name="input_location_westeurope"></a> [location\_westeurope](#input\_location\_westeurope) | n/a | `string` | n/a | yes |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | `"cstar"` | no |
 
 ## Outputs
