@@ -11,7 +11,6 @@ locals {
 
 }
 
-
 resource "azurerm_data_factory_custom_dataset" "datasets" {
   for_each = local.dataset_templates
 
@@ -25,11 +24,14 @@ resource "azurerm_data_factory_custom_dataset" "datasets" {
 
   type_properties_json = jsonencode(each.value.properties.typeProperties)
 
-  description = lookup(each.value, "description", null)
-  annotations = lookup(each.value, "annotations", [])
+  description = try(each.value.properties.description, null)
+  annotations = try(each.value.properties.annotations, [])
 
-  parameters  = lookup(each.value, "parameters", null)
-  schema_json = lookup(each.value, "schema", null)
+  parameters = try(
+    { for k, v in each.value.properties.parameters : k => v.type },
+    null
+  )
+  schema_json = try(jsonencode(each.value.properties.schema), null)
 
   depends_on = [
     azurerm_data_factory_linked_custom_service.adf_cosmosdb_linked_service,

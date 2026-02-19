@@ -93,3 +93,7 @@ law_daily_quota_gb    = 5
 
 #OneIdentity
 oneidentity_base_url = "https://uat.oneid.pagopa.it"
+#
+# DATA FACTORY API
+#
+data_factory_api_base_url = "https://api-io.dev.cstar.pagopa.it/idpay-itn/df"

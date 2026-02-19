@@ -95,6 +95,10 @@ law_daily_quota_gb    = 200
 
 ### OneIdentity
 oneidentity_base_url = "https://oneid.pagopa.it"
+#
+# DATA FACTORY API
+#
+data_factory_api_base_url = "https://api-io.cstar.pagopa.it/idpay-itn/df"
 
 ### CosmosDB
 additional_geo_locations = [{
