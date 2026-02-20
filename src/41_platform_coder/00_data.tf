@@ -19,6 +19,16 @@ data "azurerm_key_vault" "key_vault_core" {
   resource_group_name = local.kv_core_resource_group_name
 }
 
+data "azurerm_key_vault_secret" "terraform_client_secret_for_keycloak" {
+  name         = "terraform-client-secret-for-keycloak"
+  key_vault_id = data.azurerm_key_vault.key_vault_core.id
+}
+
+data "azurerm_key_vault_secret" "keycloak_url" {
+  name         = "keycloak-url"
+  key_vault_id = data.azurerm_key_vault.key_vault_core.id
+}
+
 #-----------------------------------------------
 # Network
 #-----------------------------------------------
