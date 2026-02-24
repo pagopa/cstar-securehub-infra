@@ -5,9 +5,6 @@ domain         = "mdc"
 location       = "italynorth"
 location_short = "itn"
 
-# 🐳 Kubernetes
-ingress_private_load_balancer_ip = "10.11.100.250"
-
 # 🔎 DNS
 external_domain          = "pagopa.it"
 dns_zone_internal_prefix = "internal.cstar"

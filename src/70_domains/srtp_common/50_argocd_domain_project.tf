@@ -11,6 +11,8 @@ locals {
 
   argocd_groups_developer = [
     data.azuread_group.adgroup_domain_developers.object_id,
+    data.azuread_group.adgroup_tpm.object_id
+
   ]
 
   argocd_groups_reader = var.env == "prod" ? [
