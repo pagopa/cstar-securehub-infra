@@ -17,6 +17,7 @@ locals {
     "${local.product}-adgroup-admin",
     "${local.product}-adgroup-developers",
     "${local.product}-adgroup-externals",
+    "${local.product}-adgroup-technical-project-managers",
     #SRTP Groups
     "${local.product}-srtp-adgroup-admin",
     "${local.product}-srtp-adgroup-developers",
