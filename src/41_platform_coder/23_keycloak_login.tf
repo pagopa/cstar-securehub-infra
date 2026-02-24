@@ -3,15 +3,90 @@ data "azurerm_key_vault_secret" "azure_ad_secret" {
   key_vault_id = data.azurerm_key_vault.key_vault_core.id
 }
 
+data "azuread_application" "keycloak" {
+  display_name = "TEST-Keycloak-Admin"
+}
+
 resource "keycloak_oidc_identity_provider" "azure_ad" {
   realm             = "master"
-  alias             = "azure-ad"
+  alias             = "azure-entra"
   display_name      = "Microsoft Entra ID"
   enabled           = true
-  authorization_url = "https://login.microsoftonline.com/${tenant_id}/oauth2/v2.0/authorize"
-  token_url         = "https://login.microsoftonline.com/${tenant_id}/oauth2/v2.0/token"
-  client_id              = var.azure_ad_client_id
-  client_secret          = data.azurerm_key_vault_secret.azure_ad_secret.value
+  authorization_url = "https://login.microsoftonline.com/${data.azurerm_client_config.current.tenant_id}/oauth2/v2.0/authorize"
+  token_url         = "https://login.microsoftonline.com/${data.azurerm_client_config.current.tenant_id}/oauth2/v2.0/token"
 
-  sync_mode = "FORCE"
+  client_id      = data.azuread_application.keycloak.client_id
+  client_secret  = "XXX"
+  default_scopes = "openid profile email"
+
+  sync_mode   = "FORCE"
+  trust_email = true
+}
+
+resource "keycloak_custom_identity_provider_mapper" "azure_admin_mapper" {
+  realm                    = "master"
+  name                     = "azure-group-to-admin"
+  identity_provider_alias  = keycloak_oidc_identity_provider.azure_ad.alias
+  identity_provider_mapper = "oidc-role-idp-mapper"
+
+  extra_config = {
+    syncMode      = "FORCE"
+    claim         = "groups"
+    "claim.value" = data.azuread_group.adgroup_admin.object_id
+    role          = "admin"
+  }
+}
+
+resource "keycloak_custom_identity_provider_mapper" "azure_username_mapper" {
+  realm                    = "master"
+  name                     = "azure-username-mapper"
+  identity_provider_alias  = keycloak_oidc_identity_provider.azure_ad.alias
+  identity_provider_mapper = "oidc-username-idp-mapper"
+
+  extra_config = {
+    syncMode = "INHERIT"
+    template = "$${CLAIM.preferred_username}"
+  }
+}
+
+# Mappa il Nome (First Name)
+resource "keycloak_custom_identity_provider_mapper" "azure_first_name" {
+  realm                    = "master"
+  name                     = "azure-firstname-mapper"
+  identity_provider_alias  = keycloak_oidc_identity_provider.azure_ad.alias
+  identity_provider_mapper = "oidc-user-attribute-idp-mapper"
+
+  extra_config = {
+    syncMode         = "INHERIT"
+    claim            = "given_name"
+    "user.attribute" = "firstName"
+  }
+}
+
+# Mappa il Cognome (Last Name)
+resource "keycloak_custom_identity_provider_mapper" "azure_last_name" {
+  realm                    = "master"
+  name                     = "azure-lastname-mapper"
+  identity_provider_alias  = keycloak_oidc_identity_provider.azure_ad.alias
+  identity_provider_mapper = "oidc-user-attribute-idp-mapper"
+
+  extra_config = {
+    syncMode         = "INHERIT"
+    claim            = "family_name"
+    "user.attribute" = "lastName"
+  }
+}
+
+# Mappa l'Email
+resource "keycloak_custom_identity_provider_mapper" "azure_email" {
+  realm                    = "master"
+  name                     = "azure-email-mapper"
+  identity_provider_alias  = keycloak_oidc_identity_provider.azure_ad.alias
+  identity_provider_mapper = "oidc-user-attribute-idp-mapper"
+
+  extra_config = {
+    syncMode         = "INHERIT"
+    claim            = "preferred_username"
+    "user.attribute" = "email"
+  }
 }
