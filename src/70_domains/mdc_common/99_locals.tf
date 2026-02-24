@@ -20,6 +20,7 @@ locals {
   internal_dns_zone_name                = "${var.dns_zone_internal_prefix}.${var.external_domain}"
   internal_dns_zone_resource_group_name = "${local.product}-vnet-rg"
   ingress_hostname_prefix               = "${var.domain}.${var.location_short}"
+  ingress_private_load_balancer_ip      = "10.10.1.250"
   domain_aks_hostname                   = var.env == "prod" ? "${local.ingress_hostname_prefix}.internal.cstar.pagopa.it" : "${local.ingress_hostname_prefix}.internal.${var.env}.cstar.pagopa.it"
 
   cosmos_dns_zone_name                = "privatelink.mongo.cosmos.azure.com"
