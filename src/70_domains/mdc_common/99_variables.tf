@@ -56,12 +56,7 @@ variable "k8s_kube_config_path_prefix" {
   description = "DO NOT REMOVE. Used in code review e deploy pipelines. https://github.com/pagopa/azure-pipeline-templates/tree/master/templates/terraform-plan-apply & https://github.com/pagopa/azure-pipeline-templates/tree/master/templates/terraform-plan"
 }
 
-variable "ingress_private_load_balancer_ip" {
-  type = string
-}
-
 # DNS
-
 variable "external_domain" {
   type        = string
   default     = null
