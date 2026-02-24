@@ -9,6 +9,10 @@ data "azurerm_resource_group" "idpay_data_rg" {
   name = "${local.project}-data-rg"
 }
 
+data "azurerm_resource_group" "platform_data" {
+  name = "${local.product_no_domain}-platform-data-rg"
+}
+
 data "azurerm_resource_group" "idpay_monitoring_rg" {
   name = "${local.project}-monitoring-rg"
 }

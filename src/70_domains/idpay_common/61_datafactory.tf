@@ -33,6 +33,21 @@ resource "azurerm_data_factory_linked_custom_service" "bonus_blob_storage_linked
   }
 }
 
+resource "azurerm_data_factory_linked_custom_service" "idpay_blob_storage_trx_report_linked_service" {
+
+  name            = "${var.domain}-report-trx-blob-storage-ls"
+  data_factory_id = data.azurerm_data_factory.data_factory.id
+  type            = "AzureBlobStorage"
+  description     = "Report Transaction Blob Storage Account linked service for IdPay"
+  type_properties_json = jsonencode({
+    connectionString = module.storage_idpay_refund.primary_connection_string
+  })
+
+  integration_runtime {
+    name = "AutoResolveIntegrationRuntime"
+  }
+}
+
 # LS ADLS Gen2 (BlobFS) via Managed Identity
 resource "azurerm_data_factory_linked_custom_service" "idpay_exports_blobfs_ls" {
   name            = "${var.domain}-exports-blobfs-ls"
@@ -95,4 +110,39 @@ resource "azurerm_key_vault_access_policy" "kv_policy_adf" {
   tenant_id          = data.azurerm_client_config.current.tenant_id
   object_id          = data.azurerm_data_factory.data_factory.identity[0].principal_id
   secret_permissions = ["Get"]
+}
+
+#ADF secrets
+resource "azurerm_key_vault_secret" "data_factory_name" {
+  name         = "data-factory-name"
+  value        = local.data_factory_name
+  key_vault_id = data.azurerm_key_vault.domain_kv.id
+}
+
+resource "azurerm_key_vault_secret" "data_factory_rg_name" {
+  name         = "data-factory-rg-name"
+  value        = local.data_factory_rg_name
+  key_vault_id = data.azurerm_key_vault.domain_kv.id
+}
+
+# needed for client application
+resource "azurerm_key_vault_secret" "data_factory_tenant_id" {
+  name         = "idpay-tenant-id"
+  value        = data.azurerm_client_config.current.tenant_id
+  key_vault_id = data.azurerm_key_vault.domain_kv.id
+}
+
+resource "azurerm_key_vault_secret" "data_factory_subscription_id" {
+  name         = "idpay-subscription-id"
+  value        = data.azurerm_subscription.current.subscription_id
+  key_vault_id = data.azurerm_key_vault.domain_kv.id
+}
+
+#
+# Roles Assignments for Workload Identity
+#
+resource "azurerm_role_assignment" "role_datafactory_contributor" {
+  scope                = data.azurerm_resource_group.platform_data.id
+  role_definition_name = "Data Factory Contributor"
+  principal_id         = module.workload_identity_configuration_v2.workload_identity_principal_id
 }
