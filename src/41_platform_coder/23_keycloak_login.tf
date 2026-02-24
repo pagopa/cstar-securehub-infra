@@ -1,10 +1,5 @@
-data "azurerm_key_vault_secret" "azure_ad_secret" {
-  name         = "keycloak-url"
-  key_vault_id = data.azurerm_key_vault.key_vault_core.id
-}
-
 data "azuread_application" "keycloak" {
-  display_name = "TEST-Keycloak-Admin"
+  display_name = "${var.prefix}-${var.env}-keycloak"
 }
 
 resource "keycloak_oidc_identity_provider" "azure_ad" {
@@ -16,7 +11,7 @@ resource "keycloak_oidc_identity_provider" "azure_ad" {
   token_url         = "https://login.microsoftonline.com/${data.azurerm_client_config.current.tenant_id}/oauth2/v2.0/token"
 
   client_id      = data.azuread_application.keycloak.client_id
-  client_secret  = "XXX"
+  client_secret  = module.core_secrets.values["keycloak-azure-app-secret-value"].value
   default_scopes = "openid profile email"
 
   sync_mode   = "FORCE"
@@ -49,7 +44,6 @@ resource "keycloak_custom_identity_provider_mapper" "azure_username_mapper" {
   }
 }
 
-# Mappa il Nome (First Name)
 resource "keycloak_custom_identity_provider_mapper" "azure_first_name" {
   realm                    = "master"
   name                     = "azure-firstname-mapper"
@@ -63,7 +57,6 @@ resource "keycloak_custom_identity_provider_mapper" "azure_first_name" {
   }
 }
 
-# Mappa il Cognome (Last Name)
 resource "keycloak_custom_identity_provider_mapper" "azure_last_name" {
   realm                    = "master"
   name                     = "azure-lastname-mapper"
@@ -77,7 +70,6 @@ resource "keycloak_custom_identity_provider_mapper" "azure_last_name" {
   }
 }
 
-# Mappa l'Email
 resource "keycloak_custom_identity_provider_mapper" "azure_email" {
   realm                    = "master"
   name                     = "azure-email-mapper"
