@@ -8,6 +8,7 @@ provider "registry.terraform.io/argoproj-labs/argocd" {
     "h1:LuEkRpNmjPZO/UpicY69VZzgY/RsrdWP5AYH6K5mBnw=",
     "h1:VkxT1DfVBI5sl/VpcAjmBEc6MMKErppS34hgIdTN8Ow=",
     "h1:n9ED+AVGohwkOW9R88E+ksx9KdrwTscJVI1B266likE=",
+    "h1:wILB7IlwIv+47/6HtxQNPf07ujElFM/i636d457EqeQ=",
     "h1:xLjKOueYSZ5GckxfIhET3v4mG39ftsXlno78fiTRiag=",
     "zh:000900b9aa68e95f471598a5a7f55d5e0f28581f6b45c65ceb6cb57adf681d8e",
     "zh:0b640960e40516faf2c2265c54d9aed5d283cb8ac3da9d818762762be3c98341",
@@ -27,6 +28,7 @@ provider "registry.terraform.io/azure/azapi" {
   constraints = "~> 2.6.0"
   hashes = [
     "h1:/DYNm1COCnn45IXGzXG+zUZFdDjfI+y1dVj2Yn3mHW4=",
+    "h1:Fj6f1rDPq62qj6VCqwpqiMzcBkaWSiBFEd7L1gNUzmg=",
     "h1:V4PXYe0l4i+RqXhKPkNFSFmQzvg8emIN3Q5+Ei5ReLA=",
     "h1:XR3UFODqLg7M/xbLCJClcQbojEpnbLL7zWHWuhIM3ow=",
     "h1:mMkfr2ZCRGP0uQl/KS5V1wkpyGx2ebdREKPv70QGDDA=",
@@ -49,6 +51,7 @@ provider "registry.terraform.io/hashicorp/azuread" {
   version     = "3.6.0"
   constraints = "~> 3.0"
   hashes = [
+    "h1:Eod23KbZv0ihQFqu448/WgmNLG9FDS08zmKGM8Xt+rc=",
     "h1:KwlsIKhCEW60VWgFg/roBp5JnUV+wsgg++sOglMjOTk=",
     "h1:m8YpHQA7RLv/NMezfpemgedmsGHXB6xwmd+qdQWb870=",
     "h1:qaCAbN6TbyAWAk5hV/MCHXiuFZDah+prIbtLq1Nd6QA=",
@@ -75,6 +78,7 @@ provider "registry.terraform.io/hashicorp/azurerm" {
     "h1:Q/JIe7B0F7cziHSDBE7Yr+mFxhtNCDe3JjxuobOGh6w=",
     "h1:XytWKIk+YpI03QBUSMy8ZD4DtA7HeCYZGY4hbsK3dOU=",
     "h1:j2bM6QYxBw4dKDlNLR2lAWP6Dggv5lhyGU5VREOfaDw=",
+    "h1:jhiT/bTLruHaXmo4Z3RRgL/VJI1hDfzhwibmGBZKVDU=",
     "h1:n3jlbS7k2PHRYIiooQRfUjNNk9nvxFQ6oYuN3Ix4sr4=",
     "zh:11899f771a9f03c4e5d222d73ce842e930d26af8aaba88b99a2f0638265331dc",
     "zh:2450a4258f40f6ba1f6705a10b2bdb6ff2067ab4c2a6938135391df03c974251",
@@ -97,6 +101,7 @@ provider "registry.terraform.io/hashicorp/external" {
   hashes = [
     "h1:1JSWWSmVSxzHGbD4RmaNUsdGsr2hPo+WwYaluyWv7vY=",
     "h1:FnUk98MI5nOh3VJ16cHf8mchQLewLfN1qZG/MqNgPrI=",
+    "h1:Htn3w+kMuggvB3ErfMk+wANaSQZkigSr4r77vb5K2/k=",
     "h1:ORX3G4aEHO9sFP3dyv821JJTF9qa8J9XVp441SvvjvA=",
     "h1:smKSos4zs57pJjQrNuvGBpSWth2el9SgePPbPHo0aps=",
     "zh:6e89509d056091266532fa64de8c06950010498adf9070bf6ff85bc485a82562",
@@ -120,6 +125,7 @@ provider "registry.terraform.io/hashicorp/helm" {
   hashes = [
     "h1:0LSHBFqJvHTzQesUwagpDLsrzVliY+t2c26nDJizHFM=",
     "h1:K5FEjxvDnxb1JF1kG1xr8J3pNGxoaR3Z0IBG9Csm/Is=",
+    "h1:UXXOgqsqALJFmxAQ3BQcSLJxNcn7qgzEH/P3FEqNkCU=",
     "h1:kQMkcPVvHOguOqnxoEU2sm1ND9vCHiT8TvZ2x6v/Rsw=",
     "h1:rsqAO9oKyDMLiysQqrWEzf9CNtU9NJtwEGk7bSItC9g=",
     "zh:06fb4e9932f0afc1904d2279e6e99353c2ddac0d765305ce90519af410706bd4",
@@ -144,6 +150,7 @@ provider "registry.terraform.io/hashicorp/kubernetes" {
     "h1:1OF0rDUteVdoX04BrtmTc0T4NOo6+D0utmK6hM0EzZw=",
     "h1:5CkveFo5ynsLdzKk+Kv+r7+U9rMrNjfZPT3a0N/fhgE=",
     "h1:7nJdsd1RMPBtOjDXidB37+KSDN5VcOWkbkow69qJVGc=",
+    "h1:PrqdwvK/d9ZW1G35lUc5nkMyHa3/9+JOnbs66IJHNNw=",
     "h1:soK8Lt0SZ6dB+HsypFRDzuX/npqlMU6M0fvyaR1yW0k=",
     "zh:0af928d776eb269b192dc0ea0f8a3f0f5ec117224cd644bdacdc682300f84ba0",
     "zh:1be998e67206f7cfc4ffe77c01a09ac91ce725de0abaec9030b22c0a832af44f",
@@ -167,6 +174,7 @@ provider "registry.terraform.io/hashicorp/null" {
     "h1:+Ag4hSb4qQjNtAS6gj2+gsGl7v0iB/Bif6zZZU8lXsw=",
     "h1:127ts0CG8hFk1bHIfrBsKxcnt9bAYQCq3udWM+AACH8=",
     "h1:L5V05xwp/Gto1leRryuesxjMfgZwjb7oool4WS1UEFQ=",
+    "h1:VMNuSHZMkfsbrzvhpp6lzm2vWdmT/1vuUdW0x+Dsa0Q=",
     "h1:hkf5w5B6q8e2A42ND2CjAvgvSN3puAosDmOJb3zCVQM=",
     "zh:59f6b52ab4ff35739647f9509ee6d93d7c032985d9f8c6237d1f8a59471bbbe2",
     "zh:78d5eefdd9e494defcb3c68d282b8f96630502cac21d1ea161f53cfe9bb483b3",
@@ -189,6 +197,7 @@ provider "registry.terraform.io/hashicorp/random" {
   hashes = [
     "h1:0hcNr59VEJbhZYwuDE/ysmyTS0evkfcLarlni+zATPM=",
     "h1:356j/3XnXEKr9nyicLUufzoF4Yr6hRy481KIxRVpK0c=",
+    "h1:Def/iHM4HihJCIxQ8AYoxtoVL5lVlYx0V7bX91pxwgM=",
     "h1:KG4NuIBl1mRWU0KD/BGfCi1YN/j3F7H4YgeeM7iSdNs=",
     "h1:hkKSY5xI4R1H4Yrg10HHbtOoxZif2dXa9HFPSbaVg5o=",
     "zh:14829603a32e4bc4d05062f059e545a91e27ff033756b48afbae6b3c835f508f",
@@ -212,6 +221,7 @@ provider "registry.terraform.io/keycloak/keycloak" {
   hashes = [
     "h1:7r/ChkGFy9RS9iQ+mMCxKURttK3ogHqc7mhBENZu4t8=",
     "h1:RLA8lhkI2RRjATxtugbTNXjQ+lEUqMQfkO/Abtl/mQo=",
+    "h1:b9RYosMJ4cuzuFjQYm6vKZseueemORecfdbjS63GbR0=",
     "h1:iSJiuhCPPs/msdiyJ6ID+vfrZcD1UxFtb1r6P42SQHM=",
     "h1:m/LrRonkMUGs5QJG8mw6PQ5xzqfEYnnO50ERVGElN6A=",
     "zh:2c645fe37ad8a4e0285a6e6e11997df4128de378fab947bb199711c4845d0088",
