@@ -891,7 +891,7 @@
             }
           },
           "pluginVersion": "6.2.0",
-          "query": "// Conteggio batch approvati senza filename per Stat Panel\r\nrewards_batch\r\n| where status == \"approved\"\r\n| where isempty(filename) or isnull(filename) and month == $month\r\n| count",
+          "query": "// Conteggio batch approvati senza filename per Stat Panel\r\nrewards_batch\r\n| where status == \"APPROVED\"\r\n| where isempty(filename) and month == $month\r\n| count",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -1083,5 +1083,5 @@
   "timezone": "browser",
   "title": "Quadrature",
   "uid": "df76d6k1v7cw0c",
-  "version": 36
+  "version": 38
 }
