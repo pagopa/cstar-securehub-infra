@@ -7,9 +7,10 @@ module "keycloak_app" {
   authorized_group_names = local.entra_groups_allowed
 
   redirect_uris = [
+    "https://${local.keycloak_hostname}/realms/hub-spoke/broker/azure-entra/endpoint",
     "https://${local.keycloak_hostname}/realms/master/broker/azure-entra/endpoint"
   ]
-  logout_url = "https://${local.keycloak_hostname}/realms/master/protocol/openid-connect/logout"
+  logout_url = "https://${local.keycloak_hostname}/realms/hub-spoke/protocol/openid-connect/logout"
 }
 
 resource "azurerm_key_vault_secret" "keycloak_client_id" {
