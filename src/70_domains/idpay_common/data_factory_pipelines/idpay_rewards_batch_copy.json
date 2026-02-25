@@ -230,6 +230,15 @@
                   "name": "suspendedAmountCents",
                   "type": "Long"
                 }
+              },
+              {
+                "source": {
+                  "path": "filename"
+                },
+                "sink": {
+                  "name": "filename",
+                  "type": "String"
+                }
               }
             ],
             "collectionReference": "",
