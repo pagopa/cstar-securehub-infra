@@ -11,8 +11,8 @@ locals {
   security_rg_name = "${local.project}-security-rg"
   compute_rg_name  = "${local.project}-compute-rg"
   cicd_rg_name     = "${local.project}-cicd-rg"
-  monitor_rg_name  = "${local.project}-monitoring-rg"
   identity_rg_name = "${local.project}-identity-rg"
+  monitor_rg_name  = "${local.project}-monitoring-rg"
 
 
   default_resource_group_names = [

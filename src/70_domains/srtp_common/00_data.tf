@@ -23,6 +23,36 @@ data "azurerm_key_vault_secret" "argocd_admin_password" {
   key_vault_id = data.azurerm_key_vault.domain_kv.id
 }
 
+data "azurerm_key_vault_secret" "read_rtp_activations_client_id" {
+  name         = "read-rtp-activations-client-id"
+  key_vault_id = data.azurerm_key_vault.domain_kv.id
+}
+
+data "azurerm_key_vault_secret" "read_rtp_activations_client_secret" {
+  name         = "read-rtp-activations-client-secret"
+  key_vault_id = data.azurerm_key_vault.domain_kv.id
+}
+
+data "azurerm_key_vault_secret" "read_rtp_payees_client_id" {
+  name         = "read-rtp-payees-client-id"
+  key_vault_id = data.azurerm_key_vault.domain_kv.id
+}
+
+data "azurerm_key_vault_secret" "read_rtp_payees_client_secret" {
+  name         = "read-rtp-payees-client-secret"
+  key_vault_id = data.azurerm_key_vault.domain_kv.id
+}
+
+data "azurerm_key_vault_secret" "mil_auth_client_id_consumer" {
+  name         = "mil-auth-client-id-consumer"
+  key_vault_id = data.azurerm_key_vault.domain_kv.id
+}
+
+data "azurerm_key_vault_secret" "mil_auth_client_secret_consumer" {
+  name         = "mil-auth-client-secret-consumer"
+  key_vault_id = data.azurerm_key_vault.domain_kv.id
+}
+
 data "azurerm_key_vault_secret" "terraform_client_secret_for_keycloak" {
   name         = "terraform-client-secret-for-keycloak"
   key_vault_id = data.azurerm_key_vault.core_kv.id

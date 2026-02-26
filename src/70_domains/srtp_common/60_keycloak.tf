@@ -8,6 +8,7 @@ resource "azurerm_key_vault_secret" "keycloak_url_srtp" {
 ######################
 # SRTP REALM
 ######################
+
 resource "keycloak_realm" "srtp" {
   realm        = "srtp"
   enabled      = true
@@ -21,78 +22,160 @@ resource "keycloak_realm" "srtp" {
   }
 }
 
+######################
+# REALM ROLES
+######################
 
-resource "random_password" "keycloak_sender_random_password" {
-  length  = 30
-  special = false
+resource "keycloak_role" "write_rtp_activations" {
+  realm_id    = keycloak_realm.srtp.id
+  name        = "write_rtp_activations"
+  description = "Role to write RTP activations"
 }
 
-resource "random_password" "keycloak_consumer_random_password" {
-  length  = 30
-  special = false
+resource "keycloak_role" "read_rtp_activations" {
+  realm_id    = keycloak_realm.srtp.id
+  name        = "read_rtp_activations"
+  description = "Role to read RTP activations"
 }
 
-resource "azurerm_key_vault_secret" "keycloak_rtp_sender_app_client_secret" {
-  name         = "keycloak-sender-client-secret"
-  value        = random_password.keycloak_sender_random_password.result
-  key_vault_id = data.azurerm_key_vault.domain_kv.id
-
-  depends_on = [random_password.keycloak_sender_random_password]
+resource "keycloak_role" "read_rtp_payees" {
+  realm_id    = keycloak_realm.srtp.id
+  name        = "read_rtp_payees"
+  description = "Role to read RTP payees"
 }
 
-resource "azurerm_key_vault_secret" "keycloak_rtp_consumer_app_client_secret" {
-  name         = "keycloak-consumer-client-secret"
-  value        = random_password.keycloak_consumer_random_password.result
-  key_vault_id = data.azurerm_key_vault.domain_kv.id
-
-  depends_on = [random_password.keycloak_consumer_random_password]
+resource "keycloak_role" "process_rtp_send" {
+  realm_id    = keycloak_realm.srtp.id
+  name        = "process_rtp_send"
+  description = "Role to process RTP send"
 }
 
-resource "keycloak_openid_client" "sender_app_client" {
+resource "keycloak_role" "read_rtp_all" {
+  realm_id    = keycloak_realm.srtp.id
+  name        = "read_rtp_all"
+  description = "Role to read all RTPs"
+}
+
+resource "keycloak_role" "payee_read_rtp" {
+  realm_id    = keycloak_realm.srtp.id
+  name        = "payee_read_rtp"
+  description = "Role for payee to read RTP"
+}
+
+resource "keycloak_role" "read_service_registry" {
+  realm_id    = keycloak_realm.srtp.id
+  name        = "read_service_registry"
+  description = "Role to read service registry"
+}
+
+
+######################
+# READ_RTP_ACTIVATIONS Client (CONFIDENTIAL)
+######################
+
+resource "keycloak_openid_client" "read_rtp_activations" {
   realm_id = keycloak_realm.srtp.id
-  name     = "RTP Sender App Client"
+  name     = "15376371009"
   enabled  = true
 
-  client_id                = "rtp-sender-app-client"
-  client_secret_wo         = random_password.keycloak_sender_random_password.result
+  client_id                = data.azurerm_key_vault_secret.read_rtp_activations_client_id.value
+  client_secret_wo         = data.azurerm_key_vault_secret.read_rtp_activations_client_secret.value
   client_secret_wo_version = 3
 
-  access_type              = "CONFIDENTIAL"
-  service_accounts_enabled = true
+  access_type                  = "CONFIDENTIAL"
+  service_accounts_enabled     = true
+  standard_flow_enabled        = false
+  direct_access_grants_enabled = false
 
-  depends_on = [random_password.keycloak_sender_random_password]
+  depends_on = [
+    keycloak_realm.srtp,
+  ]
 }
 
-resource "keycloak_openid_client" "consumer_app_client" {
+resource "keycloak_openid_client_service_account_realm_role" "read_rtp_activations_write_rtp_activations_role" {
+  realm_id                = keycloak_realm.srtp.id
+  service_account_user_id = keycloak_openid_client.read_rtp_activations.service_account_user_id
+  role                    = keycloak_role.write_rtp_activations.name
+}
+
+resource "keycloak_openid_client_service_account_realm_role" "read_rtp_activations_read_rtp_activations_role" {
+  realm_id                = keycloak_realm.srtp.id
+  service_account_user_id = keycloak_openid_client.read_rtp_activations.service_account_user_id
+  role                    = keycloak_role.read_rtp_activations.name
+}
+
+######################
+# READ_RTP_PAYEES Client (CONFIDENTIAL)
+######################
+
+resource "keycloak_openid_client" "read_rtp_payees" {
   realm_id = keycloak_realm.srtp.id
-  name     = "RTP Consumer App Client"
+  name     = "pagoPA"
   enabled  = true
 
-  client_id                = "rtp-consumer-app-client"
-  client_secret_wo         = random_password.keycloak_consumer_random_password.result
+  client_id                = data.azurerm_key_vault_secret.read_rtp_payees_client_id.value
+  client_secret_wo         = data.azurerm_key_vault_secret.read_rtp_payees_client_secret.value
   client_secret_wo_version = 3
 
-  access_type              = "CONFIDENTIAL"
-  service_accounts_enabled = true
+  access_type                  = "CONFIDENTIAL"
+  service_accounts_enabled     = true
+  standard_flow_enabled        = false
+  direct_access_grants_enabled = false
 
-  depends_on = [random_password.keycloak_consumer_random_password]
+  depends_on = [
+    keycloak_realm.srtp,
+  ]
 }
 
+resource "keycloak_openid_client_service_account_realm_role" "read_rtp_payees_read_rtp_payees_role" {
+  realm_id                = keycloak_realm.srtp.id
+  service_account_user_id = keycloak_openid_client.read_rtp_payees.service_account_user_id
+  role                    = keycloak_role.read_rtp_payees.name
+}
 
-resource "keycloak_realm_user_profile" "srtp_user_profile" {
+######################
+# PROCESS_MESSAGE Client (CONFIDENTIAL)
+######################
+
+resource "keycloak_openid_client" "process_message" {
   realm_id = keycloak_realm.srtp.id
+  name     = "RTP-CONSUMER_CLIENT"
+  enabled  = true
 
-  unmanaged_attribute_policy = "ENABLED"
+  client_id                = data.azurerm_key_vault_secret.mil_auth_client_id_consumer.value
+  client_secret_wo         = data.azurerm_key_vault_secret.mil_auth_client_secret_consumer.value
+  client_secret_wo_version = 3
 
-  attribute {
-    name         = "username"
-    display_name = "BIC"
+  access_type                  = "CONFIDENTIAL"
+  service_accounts_enabled     = true
+  standard_flow_enabled        = false
+  direct_access_grants_enabled = false
 
-    multi_valued = false
+  depends_on = [
+    keycloak_realm.srtp,
+  ]
+}
 
-    permissions {
-      view = ["admin", "user"]
-      edit = ["admin"]
-    }
-  }
+resource "keycloak_openid_client_service_account_realm_role" "process_message_process_rtp_send_role" {
+  realm_id                = keycloak_realm.srtp.id
+  service_account_user_id = keycloak_openid_client.process_message.service_account_user_id
+  role                    = keycloak_role.process_rtp_send.name
+}
+
+######################
+# Internal Test Webform (PUBLIC)
+######################
+
+resource "keycloak_openid_client" "internal_test_webform" {
+  realm_id  = keycloak_realm.srtp.id
+  client_id = "internal-test-webform"
+  name      = "Internal Test Webform"
+  enabled   = true
+
+  access_type = "PUBLIC"
+
+  standard_flow_enabled        = false
+  direct_access_grants_enabled = true
+
+  depends_on = [keycloak_realm.srtp]
 }
