@@ -67,8 +67,8 @@
                     "source": {
                         "type": "AzureDataExplorerSource",
                         "query": {
-                            "value": "let tx = transaction\n| where elaborationDateTime >= todatetime('@{pipeline().parameters.startDate}') and elaborationDateTime <= todatetime('@{pipeline().parameters.endDate}')\n| where status in ('INVOICED', 'CAPTURED', 'REWARDED')\n| project \n    tx_userId = userId,\n    tx_status = status,\n    tx_elaborationDateTime = elaborationDateTime,\n    valoreEuro = toreal(rewardCountersTotalRewardCents) / 100\n| extend \n    intero = floor(valoreEuro, 1),\n    decimale = valoreEuro % 1\n| extend \n    BonusErogatoArrotondato = iif(decimale > 0.50, intero + 1, intero);\nlet dv = data_vault \n| project dv_userId = _id, dv_fiscalCode = data;\ntx \n| join kind=inner dv on $left.tx_userId == $right.dv_userId\n| project\n    CodiceFiscale = dv_fiscalCode,\n    Importo = BonusErogatoArrotondato,\n    StatoTransazione = tx_status,\n    DataElaborazione = datetime_add('hour', 1, tx_elaborationDateTime)",
-                            "type": "Expression"
+                            "value": "let tx = transaction\n| where elaborationDateTime >= todatetime('@{pipeline().parameters.startDate}') and elaborationDateTime <= todatetime('@{pipeline().parameters.endDate}')\n| where status in ('INVOICED', 'CAPTURED', 'REWARDED')\n| project \n    tx_userId = userId,\n    tx_status = status,\n    tx_elaborationDateTime = elaborationDateTime,\n    valoreEuro = toreal(rewardCountersTotalRewardCents) / 100\n| extend \n    intero = floor(valoreEuro, 1),\n    decimale = valoreEuro % 1\n| extend \n    BonusErogatoArrotondato = iif(decimale > 0.50, intero + 1, intero);\nlet dv = data_vault \n| project dv_userId = _id, dv_fiscalCode = data;\ntx \n| join kind=inner dv on $left.tx_userId == $right.dv_userId\n| project\n    CodiceFiscale = dv_fiscalCode,\n    Importo = BonusErogatoArrotondato",
+                          "type": "Expression"
                         },
                         "queryTimeout": "01:00:00",
                         "noTruncation": true
