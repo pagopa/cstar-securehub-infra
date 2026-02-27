@@ -50,10 +50,22 @@ resource "keycloak_role" "process_rtp_send" {
   description = "Role to process RTP send"
 }
 
+resource "keycloak_role" "read_rtp_send" {
+  realm_id    = keycloak_realm.srtp.id
+  name        = "read_rtp_send"
+  description = "Role to read RTPs"
+}
+
 resource "keycloak_role" "read_rtp_all" {
   realm_id    = keycloak_realm.srtp.id
   name        = "read_rtp_all"
   description = "Role to read all RTPs"
+}
+
+resource "keycloak_role" "write_rtp_send" {
+  realm_id    = keycloak_realm.srtp.id
+  name        = "write_rtp_send"
+  description = "Role to write RTPs"
 }
 
 resource "keycloak_role" "payee_read_rtp" {
@@ -104,6 +116,27 @@ resource "keycloak_openid_client_service_account_realm_role" "read_rtp_activatio
   role                    = keycloak_role.read_rtp_activations.name
 }
 
+resource "keycloak_openid_hardcoded_claim_protocol_mapper" "read_rtp_activations_sub_mapper" {
+  realm_id  = keycloak_realm.srtp.id
+  client_id = keycloak_openid_client.read_rtp_activations.id
+  name      = "sub-mapper"
+
+  claim_name       = "sub"
+  claim_value      = keycloak_openid_client.read_rtp_activations.name
+  claim_value_type = "String"
+}
+
+resource "keycloak_openid_hardcoded_claim_protocol_mapper" "read_rtp_activations_subject_mapper" {
+  realm_id  = keycloak_realm.srtp.id
+  client_id = keycloak_openid_client.read_rtp_activations.id
+  name      = "subject-mapper"
+
+  claim_name       = "subject"
+  claim_value      = keycloak_openid_client.read_rtp_activations.name
+  claim_value_type = "String"
+}
+
+
 ######################
 # READ_RTP_PAYEES Client (CONFIDENTIAL)
 ######################
@@ -132,6 +165,27 @@ resource "keycloak_openid_client_service_account_realm_role" "read_rtp_payees_re
   service_account_user_id = keycloak_openid_client.read_rtp_payees.service_account_user_id
   role                    = keycloak_role.read_rtp_payees.name
 }
+
+resource "keycloak_openid_hardcoded_claim_protocol_mapper" "read_rtp_payees_sub_mapper" {
+  realm_id  = keycloak_realm.srtp.id
+  client_id = keycloak_openid_client.read_rtp_payees.id
+  name      = "sub-mapper"
+
+  claim_name       = "sub"
+  claim_value      = keycloak_openid_client.read_rtp_payees.name
+  claim_value_type = "String"
+}
+
+resource "keycloak_openid_hardcoded_claim_protocol_mapper" "read_rtp_payees_subject_mapper" {
+  realm_id  = keycloak_realm.srtp.id
+  client_id = keycloak_openid_client.read_rtp_payees.id
+  name      = "subject-mapper"
+
+  claim_name       = "subject"
+  claim_value      = keycloak_openid_client.read_rtp_payees.name
+  claim_value_type = "String"
+}
+
 
 ######################
 # PROCESS_MESSAGE Client (CONFIDENTIAL)
@@ -162,6 +216,27 @@ resource "keycloak_openid_client_service_account_realm_role" "process_message_pr
   role                    = keycloak_role.process_rtp_send.name
 }
 
+resource "keycloak_openid_hardcoded_claim_protocol_mapper" "process_message_sub_mapper" {
+  realm_id  = keycloak_realm.srtp.id
+  client_id = keycloak_openid_client.process_message.id
+  name      = "sub-mapper"
+
+  claim_name       = "sub"
+  claim_value      = keycloak_openid_client.process_message.name
+  claim_value_type = "String"
+}
+
+resource "keycloak_openid_hardcoded_claim_protocol_mapper" "process_message_subject_mapper" {
+  realm_id  = keycloak_realm.srtp.id
+  client_id = keycloak_openid_client.process_message.id
+  name      = "subject-mapper"
+
+  claim_name       = "subject"
+  claim_value      = keycloak_openid_client.process_message.name
+  claim_value_type = "String"
+}
+
+
 ######################
 # Internal Test Webform (PUBLIC)
 ######################
@@ -178,4 +253,24 @@ resource "keycloak_openid_client" "internal_test_webform" {
   direct_access_grants_enabled = true
 
   depends_on = [keycloak_realm.srtp]
+}
+
+resource "keycloak_openid_hardcoded_claim_protocol_mapper" "internal_test_webform_sub_mapper" {
+  realm_id  = keycloak_realm.srtp.id
+  client_id = keycloak_openid_client.internal_test_webform.id
+  name      = "sub-mapper"
+
+  claim_name       = "sub"
+  claim_value      = keycloak_openid_client.internal_test_webform.name
+  claim_value_type = "String"
+}
+
+resource "keycloak_openid_hardcoded_claim_protocol_mapper" "internal_test_webform_subject_mapper" {
+  realm_id  = keycloak_realm.srtp.id
+  client_id = keycloak_openid_client.internal_test_webform.id
+  name      = "subject-mapper"
+
+  claim_name       = "subject"
+  claim_value      = keycloak_openid_client.internal_test_webform.name
+  claim_value_type = "String"
 }
