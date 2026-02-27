@@ -59,37 +59,3 @@ module "cosmosdb_account_mongodb_weu" {
 
   tags = module.tag_config.tags
 }
-
-import {
-  for_each = { for index, coll in local.collections : coll.name => coll }
-
-  to = module.cosmosdb_collections[each.key].azurerm_cosmosdb_mongo_collection.this
-  id = "/subscriptions/88c709b0-11cf-4450-856e-f9bf54051c1d/resourceGroups/cstar-p-weu-mil-cosmosdb-rg/providers/Microsoft.DocumentDB/databaseAccounts/cstar-p-weu-mil-cosmos-account/mongodbDatabases/mil/collections/${each.value.name}"
-}
-
-import {
-  for_each = { for index, coll in local.collections : coll.name => coll }
-
-  to = module.cosmosdb_collections[each.key].azurerm_management_lock.this[0]
-  id = "/subscriptions/88c709b0-11cf-4450-856e-f9bf54051c1d/resourceGroups/cstar-p-weu-mil-cosmosdb-rg/providers/Microsoft.DocumentDB/databaseAccounts/cstar-p-weu-mil-cosmos-account/mongodbDatabases/mil/collections/${each.value.name}/providers/Microsoft.Authorization/locks/mongodb-collection-${each.value.name}-lock"
-}
-
-import {
-  to = module.cosmosdb_account_mongodb_weu[0].azurerm_cosmosdb_account.this
-  id = "/subscriptions/88c709b0-11cf-4450-856e-f9bf54051c1d/resourceGroups/cstar-p-weu-mil-cosmosdb-rg/providers/Microsoft.DocumentDB/databaseAccounts/cstar-p-weu-mil-cosmos-account"
-}
-
-import {
-  to = azurerm_resource_group.cosmosdb_mil_rg[0]
-  id = "/subscriptions/88c709b0-11cf-4450-856e-f9bf54051c1d/resourceGroups/cstar-p-weu-mil-cosmosdb-rg"
-}
-
-import {
-  to = module.cosmosdb_account_mongodb_weu[0].azurerm_monitor_metric_alert.cosmos_db_provisioned_throughput_exceeded[0]
-  id = "/subscriptions/88c709b0-11cf-4450-856e-f9bf54051c1d/resourceGroups/cstar-p-weu-mil-cosmosdb-rg/providers/Microsoft.Insights/metricAlerts/[mil | cstar-p-weu-mil-cosmos-account] Provisioned Throughput Exceeded"
-}
-
-import {
-  to = azurerm_cosmosdb_mongo_database.mongo_db
-  id = "/subscriptions/88c709b0-11cf-4450-856e-f9bf54051c1d/resourceGroups/cstar-p-weu-mil-cosmosdb-rg/providers/Microsoft.DocumentDB/databaseAccounts/cstar-p-weu-mil-cosmos-account/mongodbDatabases/mil"
-}
