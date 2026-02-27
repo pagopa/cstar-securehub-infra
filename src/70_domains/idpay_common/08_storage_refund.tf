@@ -43,7 +43,8 @@ locals {
     "merchant",
     "invoices",
     "reward-batches",
-    "report-transactions"
+    "report-transactions",
+    "report-user-details"
   ]
 }
 
