@@ -95,3 +95,18 @@ resource "azurerm_key_vault_secret" "eventhub_primary_connection_strings" {
 
   tags = module.tag_config.tags
 }
+
+moved {
+  from = module.eventhub_namespace[0].azurerm_eventhub_namespace.this
+  to   = module.eventhub_namespace.module.event_hub.azurerm_eventhub_namespace.this
+}
+
+moved {
+  from = module.eventhub_namespace[0].azurerm_private_endpoint.eventhub[0]
+  to   = module.eventhub_namespace.module.event_hub.azurerm_private_endpoint.eventhub[0]
+}
+
+moved {
+  from = module.eventhub_configuration[0]
+  to   = module.eventhub_configuration
+}

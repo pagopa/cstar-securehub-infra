@@ -44,10 +44,6 @@ data "azurerm_resource_group" "mdc_data_rg" {
   name = "${local.project}-data-rg"
 }
 
-data "azurerm_resource_group" "mdc_monitoring_rg" {
-  name = "${local.project}-monitoring-rg"
-}
-
 # 🔒 KV
 data "azurerm_key_vault" "kv_domain" {
   name                = local.kv_domain_name
@@ -90,4 +86,15 @@ data "azurerm_nat_gateway" "compute_nat_gateway" {
 data "azurerm_api_management" "apim" {
   name                = local.apim_name
   resource_group_name = "${local.product}-api-rg"
+}
+
+
+data "azurerm_monitor_action_group" "slack" {
+  resource_group_name = local.monitoring_core_rg_name
+  name                = local.monitor_action_group_slack
+}
+
+data "azurerm_monitor_action_group" "email" {
+  resource_group_name = local.monitoring_core_rg_name
+  name                = local.monitor_action_group_email
 }
