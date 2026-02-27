@@ -19,8 +19,8 @@ law_daily_quota_gb    = 100
 aks_nodepool = {
   vm_sku_name       = "Standard_D8ads_v5_active"
   autoscale_enabled = true
-  node_count_min    = 3
-  node_count_max    = 5
+  node_count_min    = 2
+  node_count_max    = 4
 }
 
 enable_cosmos_db_weu = true
