@@ -102,3 +102,43 @@ variable "aks_nodepool" {
   })
   description = "Paramters for node pool"
 }
+
+variable "enable_cosmos_db_weu" {
+  type        = bool
+  description = "Enable cosmos db in west europe"
+  default     = false
+}
+
+variable "cosmos_mongodb_params_weu" {
+  type = object({
+    capabilities   = list(string)
+    offer_type     = string
+    server_version = string
+    kind           = string
+    consistency_policy = object({
+      consistency_level       = string
+      max_interval_in_seconds = number
+      max_staleness_prefix    = number
+    })
+    enable_free_tier                 = bool
+    main_geo_location_zone_redundant = bool
+    additional_geo_locations = list(object({
+      location          = string
+      failover_priority = number
+      zone_redundant    = bool
+    }))
+    is_virtual_network_filter_enabled = bool
+    backup_continuous_enabled         = bool
+    ip_range_filter                   = optional(list(string), null)
+  })
+  description = "Parameters for cosmosdb account WEU"
+  default     = null
+}
+
+variable "cosmos_mongodb_common_configuration" {
+  type = object({
+    max_throughput    = number
+    autoscale_enabled = bool
+  })
+  description = "Parameters for Cosmos DB account in West Europe"
+}

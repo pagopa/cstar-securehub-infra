@@ -3,27 +3,27 @@ locals {
     "top" = {
       "emd-citizen" = {
         name          = "emd-citizen"
-        target_branch = "argocd-init"
+        target_branch = "main"
         env           = ["dev", "uat", "prod"]
       },
       "emd-message-core" = {
         name          = "emd-message-core"
-        target_branch = "argocd-init"
+        target_branch = "main"
         env           = ["dev", "uat", "prod"]
       },
       "emd-notifier-sender" = {
         name          = "emd-notifier-sender"
-        target_branch = "argocd-init"
+        target_branch = "main"
         env           = ["dev", "uat", "prod"]
       },
       "emd-payment-core" = {
         name          = "emd-payment-core"
-        target_branch = "argocd-init"
+        target_branch = "main"
         env           = ["dev", "uat", "prod"]
       },
       "emd-tpp" = {
         name          = "emd-tpp"
-        target_branch = "argocd-init"
+        target_branch = "main"
         env           = ["dev", "uat", "prod"]
       }
     }
@@ -62,7 +62,7 @@ resource "argocd_application" "domain_argocd_applications" {
     }
 
     source {
-      repo_url        = "https://github.com/pagopa/mil-aks-deploy"
+      repo_url        = "https://github.com/pagopa/mdc-aks-deploy"
       target_revision = each.value.target_branch
       path            = "helm/${var.env}/${each.value.class}/${each.value.name}"
 
