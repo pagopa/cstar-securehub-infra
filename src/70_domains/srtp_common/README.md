@@ -77,6 +77,7 @@
 | [keycloak_openid_client.read_rtp_activations](https://registry.terraform.io/providers/keycloak/keycloak/latest/docs/resources/openid_client) | resource |
 | [keycloak_openid_client.read_rtp_payees](https://registry.terraform.io/providers/keycloak/keycloak/latest/docs/resources/openid_client) | resource |
 | [keycloak_openid_client_service_account_realm_role.process_message_process_rtp_send_role](https://registry.terraform.io/providers/keycloak/keycloak/latest/docs/resources/openid_client_service_account_realm_role) | resource |
+| [keycloak_openid_client_service_account_realm_role.read_rtp_activations_read_all_rtp_activations_role](https://registry.terraform.io/providers/keycloak/keycloak/latest/docs/resources/openid_client_service_account_realm_role) | resource |
 | [keycloak_openid_client_service_account_realm_role.read_rtp_activations_read_rtp_activations_role](https://registry.terraform.io/providers/keycloak/keycloak/latest/docs/resources/openid_client_service_account_realm_role) | resource |
 | [keycloak_openid_client_service_account_realm_role.read_rtp_activations_write_rtp_activations_role](https://registry.terraform.io/providers/keycloak/keycloak/latest/docs/resources/openid_client_service_account_realm_role) | resource |
 | [keycloak_openid_client_service_account_realm_role.read_rtp_payees_read_rtp_payees_role](https://registry.terraform.io/providers/keycloak/keycloak/latest/docs/resources/openid_client_service_account_realm_role) | resource |

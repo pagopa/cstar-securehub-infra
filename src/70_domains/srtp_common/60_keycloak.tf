@@ -118,6 +118,12 @@ resource "keycloak_openid_client_service_account_realm_role" "read_rtp_activatio
   role                    = keycloak_role.read_rtp_activations.name
 }
 
+resource "keycloak_openid_client_service_account_realm_role" "read_rtp_activations_read_all_rtp_activations_role" {
+  realm_id                = keycloak_realm.srtp.id
+  service_account_user_id = keycloak_openid_client.read_rtp_activations.service_account_user_id
+  role                    = keycloak_role.read_rtp_all.name
+}
+
 resource "keycloak_openid_hardcoded_claim_protocol_mapper" "read_rtp_activations_sub_mapper" {
   realm_id  = keycloak_realm.srtp.id
   client_id = keycloak_openid_client.read_rtp_activations.id
@@ -253,6 +259,10 @@ resource "keycloak_openid_client" "internal_test_webform" {
 
   standard_flow_enabled        = false
   direct_access_grants_enabled = true
+
+  web_origins = [
+    "https://rtp.${local.dns_zone_name}",
+  ]
 
   depends_on = [keycloak_realm.srtp]
 }
