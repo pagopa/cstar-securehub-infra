@@ -201,8 +201,3 @@ resource "azurerm_monitor_metric_alert" "cosmos_db_normalized_ru_exceeded" {
     }
   )
 }
-
-moved {
-  from = azurerm_cosmosdb_mongo_database.mil[0]
-  to   = azurerm_cosmosdb_mongo_database.mongo_db
-}
