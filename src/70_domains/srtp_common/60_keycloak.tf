@@ -14,6 +14,8 @@ resource "keycloak_realm" "srtp" {
   enabled      = true
   display_name = "SRTP"
 
+  login_with_email_allowed = true
+
   internationalization {
     supported_locales = [
       "it"
