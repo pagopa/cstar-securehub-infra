@@ -10,9 +10,9 @@ data "azurerm_eventhub_namespace" "eventhub" {
   resource_group_name = local.eventhub_namespace_rg_name
 }
 
-data "azurerm_application_insights" "application_insights" {
+data "azurerm_application_insights" "domain_application_insights" {
   name                = local.monitor_appinsights_name
-  resource_group_name = local.monitor_resource_group_name
+  resource_group_name = local.monitor_rg
 }
 
 # 🐳 Kubernetes Cluster

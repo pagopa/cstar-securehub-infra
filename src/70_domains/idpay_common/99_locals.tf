@@ -92,15 +92,6 @@ locals {
   # Monitoring
   #
 
-  monitor_resource_group_name       = "${local.project_core}-monitor-rg"
-  idpay_monitor_resource_group_name = "${local.project}-monitoring-rg"
-  log_analytics_workspace_name      = "${local.project_core}-law"
-  application_insights_name         = "${local.project_core}-appinsights"
-
-  platform_monitor_resource_group_name  = "${local.product}-itn-platform-monitoring-rg"
-  platform_log_analytics_workspace_name = "${local.product}-itn-platform-monitoring-law"
-  platform_application_insights_name    = "${local.product}-itn-platform-monitoring-appinsights"
-
   core_monitor_resource_group_name  = "${local.project_core}-monitor-rg"
   core_log_analytics_workspace_name = "${local.project_core}-law"
   core_application_insights_name    = "${local.project_core}-appinsights"
@@ -110,24 +101,6 @@ locals {
   #
   apim_name    = "${local.product}-apim"
   apim_rg_name = "${local.product}-api-rg"
-  # monitor_action_group_slack_name = "SlackPagoPA"
-  # monitor_action_group_email_name = "PagoPA"
-  #
-  # vnet_core_name                = "${local.product}-vnet"
-  # vnet_core_resource_group_name = "${local.product}-vnet-rg"
-  #
-  # container_registry_common_name    = "${local.project}-common-acr"
-  # rg_container_registry_common_name = "${local.project}-container-registry-rg"
-  #
-  # core = {
-  #   event_hub = {
-  #     namespace_name      = "cstar-${var.env_short}-evh-ns"
-  #     resource_group_name = "cstar-${var.env_short}-msg-rg"
-  #   }
-  # }
-  #
-  # azdo_managed_identity_rg_name = "${var.prefix}-${var.env_short}-identity-rg"
-  # azdo_iac_managed_identities   = toset(["azdo-${var.env}-${var.prefix}-iac-deploy-v2", "azdo-${var.env}-${var.prefix}-iac-plan-v2"])
 
   mcshared_api_url           = "https://api-mcshared.${local.public_dns_zone_name}"
   keycloak_external_hostname = "${local.mcshared_api_url}/auth-itn"
