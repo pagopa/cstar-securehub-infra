@@ -4,12 +4,16 @@ locals {
 
   tags = module.tag_config.tags
 
+  # Default Domain Resource Group
+  data_rg     = "${local.project}-data-rg"
+  security_rg = "${local.project}-security-rg"
+  compute_rg  = "${local.project}-compute-rg"
+  cicd_rg     = "${local.project}-cicd-rg"
+  monitor_rg  = "${local.project}-monitoring-rg"
+
   # 📊 Monitoring
-  monitor_appinsights_name     = "${local.product}-appinsights"
-  monitor_resource_group_name  = "${local.product}-monitor-rg"
-  log_analytics_workspace_name = "${local.product}-law"
-  monitor_action_group_slack   = "SlackPagoPA"
-  monitor_action_group_email   = "PagoPA"
+  monitor_appinsights_name     = "${local.project}-appinsights"
+  log_analytics_workspace_name = "${local.project}-law"
 
   #
   # AKS
@@ -31,7 +35,4 @@ locals {
 
   ### ARGOCD
   argocd_internal_url = "argocd.${var.location_short}.${var.dns_zone_internal_prefix}.${var.external_domain}"
-
-  secret_name_workload_identity_client_id            = "mdc-itn-workload-identity-client-id"
-  secret_name_workload_identity_service_account_name = "mdc-itn-workload-identity-service-account-name"
 }
