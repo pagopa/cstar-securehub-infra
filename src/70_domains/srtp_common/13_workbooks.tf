@@ -9,36 +9,20 @@ locals {
       filePath = "${path.module}/workbooks/tabs/finestra-osservabilità.json.tpl"
     },
     {
-      name     = "Attivazioni cittadini"
-      filePath = "${path.module}/workbooks/tabs/attivazioni-cittadini.json.tpl"
-    },
-    {
-      name     = "Disattivazione cittadini"
-      filePath = "${path.module}/workbooks/tabs/disattivazioni-cittadini.json.tpl"
+      name     = "Activator"
+      filePath = "${path.module}/workbooks/tabs/activator.json.tpl"
     },
     {
       name     = "Invii SRTP"
       filePath = "${path.module}/workbooks/tabs/invii-srtp.json.tpl"
     },
     {
-      name     = "Cancellazioni"
-      filePath = "${path.module}/workbooks/tabs/cancellazioni.json.tpl"
-    },
-    {
-      name     = "Callback"
-      filePath = "${path.module}/workbooks/tabs/callback.json.tpl"
+      name     = "Servizi per gli Enti"
+      filePath = "${path.module}/workbooks/tabs/servizienti.json.tpl"
     },
     {
       name     = "Accessi Account Storage"
       filePath = "${path.module}/workbooks/tabs/accessi-account-storage.json.tpl"
-    },
-    {
-      name     = "Activator"
-      filePath = "${path.module}/workbooks/tabs/activator.json.tpl"
-    },
-    {
-      name     = "Sender"
-      filePath = "${path.module}/workbooks/tabs/sender.json.tpl"
     },
     {
       name     = "Autenticazione"
@@ -49,9 +33,17 @@ locals {
       filePath = "${path.module}/workbooks/tabs/monitoraggio-service-providers.json.tpl"
     },
     {
-      name     = "Subentro"
-      filePath = "${path.module}/workbooks/tabs/subentro.json.tpl"
-    }
+      name     = "JKS"
+      filePath = "${path.module}/workbooks/tabs/jks.json.tpl"
+    },
+    {
+      name     = "Invii RTP (API)"
+      filePath = "${path.module}/workbooks/tabs/inviiAPI.json.tpl"
+    },
+    {
+      name     = "Cancellazioni RTP (API)"
+      filePath = "${path.module}/workbooks/tabs/cancellazioneAPI.json.tpl"
+    },
   ]
 
   workbook_items = join(",", [
