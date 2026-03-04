@@ -1,8 +1,13 @@
 #
 # 🔐 KV
 #
-data "azurerm_key_vault" "kv_core_ita" {
-  name                = local.kv_name
+data "azurerm_key_vault" "kv_cicd" {
+  name                = local.kv_cicd_name
+  resource_group_name = local.kv_resource_group_name
+}
+
+data "azurerm_key_vault" "kv_core" {
+  name                = local.kv_core_name
   resource_group_name = local.kv_resource_group_name
 }
 
@@ -10,7 +15,7 @@ data "azurerm_key_vault" "kv_core_ita" {
 # Users
 #
 data "azuread_users" "argocd_application_owners" {
-  user_principal_names = local.argocd_application_owners
+  user_principal_names = local.application_owners
 }
 
 #
