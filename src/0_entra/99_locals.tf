@@ -52,7 +52,7 @@ locals {
   kv_resource_group_name = "${local.product}-itn-core-sec-rg"
 
   #DNS
-  internal_dns_zone_name = join(".", compact([var.location_short, "internal", var.env, var.prefix, "pagopa.it"]))
+  internal_dns_zone_name = join(".", compact([var.location_short, "internal", var.env_short == "p" ? "" : var.env, var.prefix, "pagopa.it"]))
 
   ### ArgoCD
   argocd_namespace            = "argocd"
