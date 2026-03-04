@@ -30,7 +30,36 @@
             }
           }
         },
+        "customWidth": "50",
         "name": "Status code chiamate verso endpoint di stacco token CBI"
+      },
+      {
+        "type": 3,
+        "content": {
+          "version": "KqlItem/1.0",
+          "query": "AppDependencies\n| where TimeGenerated {evaluation_window:query}\n| where AppRoleName == 'rtp-sender'\n| where Data contains 'https://login.microsoftonline.com/08b638e8-0676-45cc-b677-5c038b17d28a/oauth2/v2.0/token'\n| summarize count() by tostring(toint(ResultCode))\n\n",
+          "size": 0,
+          "title": "Status code chiamate verso endpoint di stacco token Poste",
+          "queryType": 0,
+          "resourceType": "microsoft.operationalinsights/workspaces",
+          "crossComponentResources": [
+            "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
+          ],
+          "visualization": "piechart",
+          "chartSettings": {
+            "ySettings": {
+              "numberFormatSettings": {
+                "unit": 0,
+                "options": {
+                  "style": "decimal",
+                  "useGrouping": true
+                }
+              }
+            }
+          }
+        },
+        "customWidth": "50",
+        "name": "Status code chiamate verso endpoint di stacco token Poste"
       }
     ]
   },

@@ -27,23 +27,6 @@ data "azurerm_api_management" "apim_core" {
   resource_group_name = local.apim_rg_name
 }
 
-# 🔑 Azure AD
-data "azuread_group" "adgroup_admin" {
-  display_name = "${local.product}-adgroup-admin"
-}
-
-data "azuread_group" "adgroup_developers" {
-  display_name = "${local.product}-adgroup-developers"
-}
-
-data "azuread_group" "adgroup_externals" {
-  display_name = "${local.product}-adgroup-externals"
-}
-
-data "azuread_group" "adgroup_security" {
-  display_name = "${local.product}-adgroup-security"
-}
-
 ### ARGO
 data "azurerm_key_vault_secret" "argocd_admin_username" {
   name         = "argocd-admin-username"

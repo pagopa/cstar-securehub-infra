@@ -43,6 +43,8 @@ resource "github_repository_ruleset" "develop" {
       dismiss_stale_reviews_on_push     = true
       required_review_thread_resolution = true
       require_last_push_approval        = false
+
+      allowed_merge_methods = ["squash"]
     }
 
     required_status_checks {
@@ -60,6 +62,11 @@ resource "github_repository_ruleset" "develop" {
         security_alerts_threshold = "high_or_higher"
         alerts_threshold          = "errors"
       }
+    }
+
+    copilot_code_review {
+      review_on_push             = false
+      review_draft_pull_requests = false
     }
   }
 }
@@ -103,6 +110,7 @@ resource "github_repository_ruleset" "uat_and_main" {
       dismiss_stale_reviews_on_push     = true
       required_review_thread_resolution = true
       require_last_push_approval        = false
+      allowed_merge_methods             = ["merge"]
     }
 
     required_status_checks {
@@ -121,20 +129,10 @@ resource "github_repository_ruleset" "uat_and_main" {
         alerts_threshold          = "errors"
       }
     }
-  }
-}
 
-resource "null_resource" "change_allowed_merge_methods" {
-  for_each = local.repository
-
-  triggers = {
-    always_run = "${timestamp()}"
-  }
-
-  provisioner "local-exec" {
-    command = <<-EOT
-      sh change_allowed_merge_methods.sh pagopa ${each.key} develop squash
-      sh change_allowed_merge_methods.sh pagopa ${each.key} uat_and_main merge
-    EOT
+    copilot_code_review {
+      review_on_push             = false
+      review_draft_pull_requests = false
+    }
   }
 }

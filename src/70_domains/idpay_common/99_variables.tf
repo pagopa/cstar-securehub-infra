@@ -283,6 +283,11 @@ variable "oneidentity_base_url" {
   description = "OneIdentity base Url"
 }
 
+variable "data_factory_api_base_url" {
+  type        = string
+  description = "Internal API for Data Factory"
+}
+
 #----------------------------------------------------------------------
 # Redis
 #----------------------------------------------------------------------

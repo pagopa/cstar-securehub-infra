@@ -5,7 +5,8 @@ locals {
   project_entra = "${var.prefix}-${var.env_short}-${var.domain}"
 
   # 📊 Monitoring
-  monitoring_rg_name = "${local.project}-monitoring-rg"
+  monitoring_rg_name      = "${local.project}-monitoring-rg"
+  monitoring_core_rg_name = "${local.project_core}-monitor-rg"
 
   monitor_action_group_slack = "SlackPagoPA"
   monitor_action_group_email = "PagoPA"
