@@ -274,7 +274,7 @@ function other_actions() {
       file_name="$partition_key-$row_key"
 
       # plan to file
-      terraform plan -var-file="./env/$env/terraform.tfvars" -compact-warnings -out="$file_name.tfplan" -detailed-exitcode $other
+      terraform plan -parallelism=100 -var-file="./env/$env/terraform.tfvars" -compact-warnings -out="$file_name.tfplan" -detailed-exitcode $other
       plan_exitcode=$?
       check_plan_output "$plan_exitcode"
 
@@ -283,7 +283,7 @@ function other_actions() {
       read -p "${bold}Apply these changes (only yes will be accepted): ${normal}" apply_confirmation
       if [ "$apply_confirmation" == "yes" ]; then
         audit_pre_apply "$file_name" "$partition_key" "$row_key"
-        terraform apply -auto-approve "$file_name.tfplan" -compact-warnings | tee "$file_name.apply"
+        terraform apply -parallelism=100 -auto-approve "$file_name.tfplan" -compact-warnings | tee "$file_name.apply"
         audit_post_apply "$file_name" "$partition_key" "$row_key"
         # cleanup temporary files
         clean_audit_files "$file_name"
@@ -293,7 +293,7 @@ function other_actions() {
       # clean plan file
       clean_audit_files "$file_name"
     else
-      terraform "$action" -var-file="./env/$env/terraform.tfvars" -compact-warnings $other
+      terraform "$action" -parallelism=100 -var-file="./env/$env/terraform.tfvars" -compact-warnings $other
     fi
 
 

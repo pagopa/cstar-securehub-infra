@@ -32,7 +32,8 @@
             {
               "durationMs": 2592000000
             }
-          ]
+          ],
+          "allowCustom": true
         },
         "timeContext": {
           "durationMs": 86400000

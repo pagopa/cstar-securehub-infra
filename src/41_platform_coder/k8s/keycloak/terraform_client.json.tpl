@@ -17,5 +17,17 @@
         "/*"
       ]
     }
+  ],
+  "users": [
+    {
+      "username": "service-account-terraform",
+      "enabled": true,
+      "serviceAccountClientId": "terraform",
+      "realmRoles": [
+        "create-realm",
+        "admin"
+      ],
+      "clientRoles": {}
+    }
   ]
 }

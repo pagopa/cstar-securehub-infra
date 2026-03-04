@@ -5,27 +5,11 @@
     "style": "tabs",
     "links": [
       {
-        "id": "ddde8bae-1136-42ce-acff-959cdd9b79d8",
+        "id": "9db7392a-098c-4af6-8dc6-0e3d27800273",
         "cellValue": "tab",
         "linkTarget": "parameter",
-        "linkLabel": "Attivazioni cittadini",
-        "subTarget": "attivazioni",
-        "style": "link"
-      },
-      {
-        "id": "854ac761-df9d-465c-a503-6ee9bfc7d5ce",
-        "cellValue": "tab",
-        "linkTarget": "parameter",
-        "linkLabel": "Subentro",
-        "subTarget": "takeover",
-        "style": "link"
-      },
-      {
-        "id": "c4773476-5d1f-413b-aa2e-b0f3ab6d96af",
-        "cellValue": "tab",
-        "linkTarget": "parameter",
-        "linkLabel": "Disattivazione Cittadini",
-        "subTarget": "disattivazioni",
+        "linkLabel": "Activator",
+        "subTarget": "rtp-activator",
         "style": "link"
       },
       {
@@ -37,19 +21,11 @@
         "style": "link"
       },
       {
-        "id": "07d1ffe5-e677-455f-86e1-6d75f3409bc9",
+        "id": "860e4073-6517-469e-9312-55ff1c8cd2da",
         "cellValue": "tab",
         "linkTarget": "parameter",
-        "linkLabel": "Cancellazioni RTP",
-        "subTarget": "cancellazione",
-        "style": "link"
-      },
-      {
-        "id": "49f84314-e3cf-4c13-80d2-fd8a5c143283",
-        "cellValue": "tab",
-        "linkTarget": "parameter",
-        "linkLabel": "Callback RTP",
-        "subTarget": "callback",
+        "linkLabel": "Servizi per gli Enti",
+        "subTarget": "servizienti",
         "style": "link"
       },
       {
@@ -61,27 +37,11 @@
         "style": "link"
       },
       {
-        "id": "962860b7-7ab0-407b-8893-436851775e83",
+        "id": "76718917-a2fe-4c95-a389-cc0cbd37808c",
         "cellValue": "tab",
         "linkTarget": "parameter",
-        "linkLabel": "Activator Health Status",
-        "subTarget": "activator",
-        "style": "link"
-      },
-      {
-        "id": "e5d18498-a18c-48f7-9f42-e442d53a829f",
-        "cellValue": "tab",
-        "linkTarget": "parameter",
-        "linkLabel": "Sender Health Status",
-        "subTarget": "sender",
-        "style": "link"
-      },
-      {
-        "id": "51582522-aadd-4ac5-9c9e-7836ee0b7124",
-        "cellValue": "tab",
-        "linkTarget": "parameter",
-        "linkLabel": "Autenticazione",
-        "subTarget": "autenticazione",
+        "linkLabel": "JKS",
+        "subTarget": "jks",
         "style": "link"
       },
       {
@@ -93,11 +53,27 @@
         "style": "link"
       },
       {
-        "id": "76718917-a2fe-4c95-a389-cc0cbd37808c",
+        "id": "93f537b3-c65d-4b19-b3c5-27b1cfda9f1b",
         "cellValue": "tab",
         "linkTarget": "parameter",
-        "linkLabel": "JKS",
-        "subTarget": "jks",
+        "linkLabel": "Invii RTP (API)",
+        "subTarget": "inviiAPI",
+        "style": "link"
+      },
+      {
+        "id": "eebcae94-2a86-4760-ae76-615340bf91b1",
+        "cellValue": "tab",
+        "linkTarget": "parameter",
+        "linkLabel": "Cancellazioni RTP (API)",
+        "subTarget": "cancellazioneAPI",
+        "style": "link"
+      },
+      {
+        "id": "51582522-aadd-4ac5-9c9e-7836ee0b7124",
+        "cellValue": "tab",
+        "linkTarget": "parameter",
+        "linkLabel": "Autenticazione",
+        "subTarget": "autenticazione",
         "style": "link"
       }
     ]
