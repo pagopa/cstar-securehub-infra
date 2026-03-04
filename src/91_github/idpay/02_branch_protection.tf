@@ -110,7 +110,7 @@ resource "github_repository_ruleset" "uat_and_main" {
       dismiss_stale_reviews_on_push     = true
       required_review_thread_resolution = true
       require_last_push_approval        = false
-      allowed_merge_methods             = ["merge", "squash", "rebase"]
+      allowed_merge_methods             = ["merge"]
     }
 
     required_status_checks {
