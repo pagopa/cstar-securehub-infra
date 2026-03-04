@@ -27,6 +27,6 @@ data "azurerm_subscription" "current" {}
 data "azurerm_client_config" "current" {}
 
 module "__v4__" {
-  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=keycloak-application"
+  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v9.3.0
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=c1d2665e49fbc59996c5d2807f77d4391d8f593e"
 }
