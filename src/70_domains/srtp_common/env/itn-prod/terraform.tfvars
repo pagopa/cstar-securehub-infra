@@ -11,9 +11,7 @@ cdn_location   = "westeurope"
 azuread_service_principal_azure_cdn_frontdoor_id = "f3b3f72f-4770-47a5-8c1e-aa298003be12"
 enable_cdn                                       = false
 
-law_daily_quota_gb                          = 100
-cosmos_collections_autoscale_max_throughput = 1000
-
+law_daily_quota_gb = 100
 # Activation database - shared throughput at database level (4000 RU)
 cosmos_activation_db_autoscale_max_throughput = 4000
 
@@ -35,3 +33,10 @@ aks_nodepool_green = {
   node_count_min    = 0
   node_count_max    = 0
 }
+
+### CosmosDB
+additional_geo_locations = [{
+  location          = "germanywestcentral"
+  failover_priority = 1
+  zone_redundant    = false
+}]
