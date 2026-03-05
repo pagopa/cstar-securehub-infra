@@ -11,7 +11,8 @@ module "private_endpoint_cosmos_snet" {
   virtual_network_name = local.vnet_spoke_data_name
 
   # IDH Resources
-  idh_resource_tier = "private_endpoint"
+  idh_resource_tier = "slash28_privatelink_true"
+  tags              = module.tag_config.tags
 }
 
 module "private_endpoint_storage_account_snet" {
@@ -28,6 +29,7 @@ module "private_endpoint_storage_account_snet" {
 
   # IDH Resources
   idh_resource_tier = "private_endpoint"
+  tags              = module.tag_config.tags
 }
 
 #---------------------------------------------------------------
@@ -48,6 +50,7 @@ module "cae_env_snet" {
 
   # IDH Resources
   idh_resource_tier = "container_app_environment"
+  tags              = module.tag_config.tags
 }
 
 module "private_endpoint_cae_snet" {
@@ -64,6 +67,7 @@ module "private_endpoint_cae_snet" {
 
   # IDH Resources
   idh_resource_tier = "private_endpoint"
+  tags              = module.tag_config.tags
 }
 
 #----------------------------------------------------------------
@@ -83,6 +87,7 @@ module "aks_overlay_snet" {
 
   # IDH Resources
   idh_resource_tier = "aks_overlay"
+  tags              = module.tag_config.tags
 }
 
 #----------------------------------------------------------------
@@ -94,6 +99,7 @@ resource "azurerm_private_dns_a_record" "ingress" {
   resource_group_name = local.vnet_legacy_core_rg
   ttl                 = 3600
   records             = [local.ingress_private_load_balancer_ip]
+  tags                = module.tag_config.tags
 }
 
 #----------------------------------------------------------------

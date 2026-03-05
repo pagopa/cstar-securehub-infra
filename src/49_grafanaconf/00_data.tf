@@ -20,10 +20,6 @@ data "azurerm_log_analytics_workspace" "law_core_itn" {
   resource_group_name = local.law_name_core_itn_rg
 }
 
-data "azurerm_log_analytics_workspace" "law_srtp" {
-  name                = local.law_name_srtp
-  resource_group_name = local.law_name_srtp_rg
-}
 
 data "azurerm_log_analytics_workspace" "law_mcshared" {
   name                = local.law_name_mcshared

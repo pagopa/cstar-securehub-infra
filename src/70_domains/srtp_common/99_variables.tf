@@ -78,12 +78,6 @@ variable "enable_cdn" {
   description = "Enable CDN for the domain"
 }
 
-variable "cosmos_collections_autoscale_max_throughput" {
-  type        = number
-  description = "Max throughput for autoscale"
-  default     = null
-}
-
 variable "cosmos_collections_max_throughput" {
   type        = number
   description = "Max throughput for collections"
@@ -106,6 +100,16 @@ variable "cosmos_otp_ttl" {
   type        = number
   description = "TTL for otps collection."
   default     = null
+}
+
+variable "additional_geo_locations" {
+  type = list(object({
+    location          = string
+    failover_priority = number
+    zone_redundant    = bool
+  }))
+  default     = []
+  description = "Specifies a list of additional geo_location resources, used to define where data should be replicated."
 }
 
 variable "k8s_kube_config_path_prefix" {

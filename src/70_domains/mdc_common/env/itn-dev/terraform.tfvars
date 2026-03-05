@@ -5,9 +5,6 @@ domain         = "mdc"
 location       = "italynorth"
 location_short = "itn"
 
-# 🐳 Kubernetes
-ingress_private_load_balancer_ip = "10.10.1.250"
-
 # 🔎 DNS
 external_domain          = "pagopa.it"
 dns_zone_internal_prefix = "internal.dev.cstar"
@@ -25,4 +22,9 @@ aks_nodepool = {
   autoscale_enabled = true
   node_count_min    = 1
   node_count_max    = 2
+}
+
+cosmos_mongodb_common_configuration = {
+  max_throughput    = 1000
+  autoscale_enabled = false
 }

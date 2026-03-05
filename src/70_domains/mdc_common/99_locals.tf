@@ -5,7 +5,8 @@ locals {
   project_entra = "${var.prefix}-${var.env_short}-${var.domain}"
 
   # 📊 Monitoring
-  monitoring_rg_name = "${local.project}-monitoring-rg"
+  monitoring_rg_name      = "${local.project}-monitoring-rg"
+  monitoring_core_rg_name = "${local.project_core}-monitor-rg"
 
   monitor_action_group_slack = "SlackPagoPA"
   monitor_action_group_email = "PagoPA"
@@ -20,6 +21,7 @@ locals {
   internal_dns_zone_name                = "${var.dns_zone_internal_prefix}.${var.external_domain}"
   internal_dns_zone_resource_group_name = "${local.product}-vnet-rg"
   ingress_hostname_prefix               = "${var.domain}.${var.location_short}"
+  ingress_private_load_balancer_ip      = "10.10.1.250"
   domain_aks_hostname                   = var.env == "prod" ? "${local.ingress_hostname_prefix}.internal.cstar.pagopa.it" : "${local.ingress_hostname_prefix}.internal.${var.env}.cstar.pagopa.it"
 
   cosmos_dns_zone_name                = "privatelink.mongo.cosmos.azure.com"

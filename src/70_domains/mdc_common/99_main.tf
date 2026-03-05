@@ -8,11 +8,11 @@ terraform {
     }
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~> 4.25"
+      version = "~> 4.0"
     }
     external = {
       source  = "hashicorp/external"
-      version = "~> 2.3"
+      version = "~> 2.0"
     }
     argocd = {
       source  = "argoproj-labs/argocd"
@@ -20,7 +20,7 @@ terraform {
     }
     helm = {
       source  = "hashicorp/helm"
-      version = "~> 2.17"
+      version = "~> 2.0"
     }
   }
 
@@ -59,6 +59,6 @@ provider "helm" {
 }
 
 module "__v4__" {
-  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v8.8.4
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=89e6891c9259faa71232e82c9895378e12209135"
+  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v9.2.4
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=485e30b36056adcf9819df702ad983d93329000a"
 }

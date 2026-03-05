@@ -42,7 +42,9 @@ locals {
     "refund",
     "merchant",
     "invoices",
-    "reward-batches"
+    "reward-batches",
+    "report-transactions",
+    "report-user-details"
   ]
 }
 

@@ -12,6 +12,7 @@
           "query": "traces\n| where timestamp {evaluation_window:query}\n| where customDimensions.LoggerName contains \"SendRtpProcessorImpl\"\n| where message contains \"trustAnchors parameter must be non-empty\"\n\n",
           "size": 0,
           "title": "JKS utilizzato risulta vuoto o con qualche problema",
+          "noDataMessageStyle": 3,
           "queryType": 0,
           "resourceType": "microsoft.insights/components",
           "crossComponentResources": [
@@ -27,6 +28,7 @@
           "query": "traces\n| where timestamp {evaluation_window:query}\n| where customDimensions.LoggerName contains \"SendRtpProcessorImpl\"\n| where message contains \"unable to find valid certification path to requested\"",
           "size": 0,
           "title": "Mancanza della CA specifica per un determinato client",
+          "noDataMessageStyle": 3,
           "queryType": 0,
           "resourceType": "microsoft.insights/components",
           "crossComponentResources": [
@@ -42,6 +44,7 @@
           "query": "traces\n| where timestamp {evaluation_window:query}\n| where customDimensions.LoggerName contains \"SendRtpProcessorImpl\"\n| where message contains \"JKS file not found at path: /mnt/jks/trust_store.jks\"",
           "size": 0,
           "title": "JKS non presente",
+          "noDataMessageStyle": 3,
           "queryType": 0,
           "resourceType": "microsoft.insights/components",
           "crossComponentResources": [
