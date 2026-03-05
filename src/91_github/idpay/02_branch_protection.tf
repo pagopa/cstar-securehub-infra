@@ -63,11 +63,11 @@ resource "github_repository_ruleset" "develop" {
         alerts_threshold          = "errors"
       }
     }
-
-    copilot_code_review {
-      review_on_push             = false
-      review_draft_pull_requests = false
-    }
+    /* UNCOMMENT TO ENABLE COPILOT CODE REVIEW
+     copilot_code_review {
+           review_on_push             = false
+           review_draft_pull_requests = false
+       } */
   }
 }
 
@@ -130,9 +130,10 @@ resource "github_repository_ruleset" "uat_and_main" {
       }
     }
 
-    copilot_code_review {
-      review_on_push             = false
-      review_draft_pull_requests = false
-    }
+    /* UNCOMMENT TO ENABLE COPILOT CODE REVIEW
+     copilot_code_review {
+           review_on_push             = false
+           review_draft_pull_requests = false
+       } */
   }
 }
