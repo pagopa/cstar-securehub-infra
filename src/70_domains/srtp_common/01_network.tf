@@ -17,6 +17,7 @@ module "private_endpoint_cosmos_snet" {
 
 module "private_endpoint_storage_account_snet" {
   source = "./.terraform/modules/__v4__/IDH/subnet"
+  count  = contains(["p"], var.env_short) ? 1 : 0
 
   # General
   product_name        = var.prefix
@@ -37,7 +38,6 @@ module "private_endpoint_storage_account_snet" {
 #---------------------------------------------------------------
 module "cae_env_snet" {
   source = "./.terraform/modules/__v4__/IDH/subnet"
-  # source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//IDH/subnet?ref=fix-subnet-container-app"
 
   # General
   product_name        = var.prefix
