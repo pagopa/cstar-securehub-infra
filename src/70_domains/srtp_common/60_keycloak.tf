@@ -16,11 +16,6 @@ resource "keycloak_realm" "srtp" {
 
   login_with_email_allowed = true
 
-  default_default_client_scopes = [
-    "roles",
-    "web-origins"
-  ]
-
   internationalization {
     supported_locales = [
       "it"
