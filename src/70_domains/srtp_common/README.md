@@ -9,6 +9,7 @@
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | ~> 2.53 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 4.0 |
 | <a name="requirement_external"></a> [external](#requirement\_external) | ~> 2.3 |
+| <a name="requirement_keycloak"></a> [keycloak](#requirement\_keycloak) | >= 5.0.0 |
 | <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | ~> 2.36 |
 
 ## Providers
@@ -18,6 +19,7 @@
 | <a name="provider_argocd"></a> [argocd](#provider\_argocd) | 7.11.0 |
 | <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 2.53.1 |
 | <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.38.1 |
+| <a name="provider_keycloak"></a> [keycloak](#provider\_keycloak) | 5.7.0 |
 | <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | 2.38.0 |
 
 ## Modules
@@ -60,6 +62,7 @@
 | [azurerm_key_vault_secret.azure_devops_sa_token](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.cosmosdb_account_rtp_primary_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.cosmosdb_account_rtp_secondary_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.keycloak_url_srtp](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_log_analytics_workspace.log_analytics_workspace](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/log_analytics_workspace) | resource |
 | [azurerm_private_dns_a_record.ingress](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_a_record) | resource |
 | [azurerm_private_dns_a_record.ingress_qa](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_a_record) | resource |
@@ -69,6 +72,33 @@
 | [azurerm_storage_share.rtp_jks_file_share](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_share) | resource |
 | [azurerm_subnet_nat_gateway_association.nat_gateway_association](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet_nat_gateway_association) | resource |
 | [azurerm_user_assigned_identity.identity_cd](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/user_assigned_identity) | resource |
+| [keycloak_openid_client.internal_test_webform](https://registry.terraform.io/providers/keycloak/keycloak/latest/docs/resources/openid_client) | resource |
+| [keycloak_openid_client.process_message](https://registry.terraform.io/providers/keycloak/keycloak/latest/docs/resources/openid_client) | resource |
+| [keycloak_openid_client.read_rtp_activations](https://registry.terraform.io/providers/keycloak/keycloak/latest/docs/resources/openid_client) | resource |
+| [keycloak_openid_client.read_rtp_payees](https://registry.terraform.io/providers/keycloak/keycloak/latest/docs/resources/openid_client) | resource |
+| [keycloak_openid_client_service_account_realm_role.process_message_process_rtp_send_role](https://registry.terraform.io/providers/keycloak/keycloak/latest/docs/resources/openid_client_service_account_realm_role) | resource |
+| [keycloak_openid_client_service_account_realm_role.read_rtp_activations_read_all_rtp_activations_role](https://registry.terraform.io/providers/keycloak/keycloak/latest/docs/resources/openid_client_service_account_realm_role) | resource |
+| [keycloak_openid_client_service_account_realm_role.read_rtp_activations_read_rtp_activations_role](https://registry.terraform.io/providers/keycloak/keycloak/latest/docs/resources/openid_client_service_account_realm_role) | resource |
+| [keycloak_openid_client_service_account_realm_role.read_rtp_activations_write_rtp_send_role](https://registry.terraform.io/providers/keycloak/keycloak/latest/docs/resources/openid_client_service_account_realm_role) | resource |
+| [keycloak_openid_client_service_account_realm_role.read_rtp_payees_read_rtp_payees_role](https://registry.terraform.io/providers/keycloak/keycloak/latest/docs/resources/openid_client_service_account_realm_role) | resource |
+| [keycloak_openid_hardcoded_claim_protocol_mapper.internal_test_webform_bic_mapper](https://registry.terraform.io/providers/keycloak/keycloak/latest/docs/resources/openid_hardcoded_claim_protocol_mapper) | resource |
+| [keycloak_openid_hardcoded_claim_protocol_mapper.internal_test_webform_sub_mapper](https://registry.terraform.io/providers/keycloak/keycloak/latest/docs/resources/openid_hardcoded_claim_protocol_mapper) | resource |
+| [keycloak_openid_hardcoded_claim_protocol_mapper.process_message_bic_mapper](https://registry.terraform.io/providers/keycloak/keycloak/latest/docs/resources/openid_hardcoded_claim_protocol_mapper) | resource |
+| [keycloak_openid_hardcoded_claim_protocol_mapper.process_message_sub_mapper](https://registry.terraform.io/providers/keycloak/keycloak/latest/docs/resources/openid_hardcoded_claim_protocol_mapper) | resource |
+| [keycloak_openid_hardcoded_claim_protocol_mapper.read_rtp_activations_bic_mapper](https://registry.terraform.io/providers/keycloak/keycloak/latest/docs/resources/openid_hardcoded_claim_protocol_mapper) | resource |
+| [keycloak_openid_hardcoded_claim_protocol_mapper.read_rtp_activations_sub_mapper](https://registry.terraform.io/providers/keycloak/keycloak/latest/docs/resources/openid_hardcoded_claim_protocol_mapper) | resource |
+| [keycloak_openid_hardcoded_claim_protocol_mapper.read_rtp_payees_bic_mapper](https://registry.terraform.io/providers/keycloak/keycloak/latest/docs/resources/openid_hardcoded_claim_protocol_mapper) | resource |
+| [keycloak_openid_hardcoded_claim_protocol_mapper.read_rtp_payees_sub_mapper](https://registry.terraform.io/providers/keycloak/keycloak/latest/docs/resources/openid_hardcoded_claim_protocol_mapper) | resource |
+| [keycloak_realm.srtp](https://registry.terraform.io/providers/keycloak/keycloak/latest/docs/resources/realm) | resource |
+| [keycloak_role.payee_read_rtp](https://registry.terraform.io/providers/keycloak/keycloak/latest/docs/resources/role) | resource |
+| [keycloak_role.process_rtp_send](https://registry.terraform.io/providers/keycloak/keycloak/latest/docs/resources/role) | resource |
+| [keycloak_role.read_rtp_activations](https://registry.terraform.io/providers/keycloak/keycloak/latest/docs/resources/role) | resource |
+| [keycloak_role.read_rtp_all](https://registry.terraform.io/providers/keycloak/keycloak/latest/docs/resources/role) | resource |
+| [keycloak_role.read_rtp_payees](https://registry.terraform.io/providers/keycloak/keycloak/latest/docs/resources/role) | resource |
+| [keycloak_role.read_rtp_send](https://registry.terraform.io/providers/keycloak/keycloak/latest/docs/resources/role) | resource |
+| [keycloak_role.read_service_registry](https://registry.terraform.io/providers/keycloak/keycloak/latest/docs/resources/role) | resource |
+| [keycloak_role.write_rtp_activations](https://registry.terraform.io/providers/keycloak/keycloak/latest/docs/resources/role) | resource |
+| [keycloak_role.write_rtp_send](https://registry.terraform.io/providers/keycloak/keycloak/latest/docs/resources/role) | resource |
 | [kubernetes_namespace.namespace](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/namespace) | resource |
 | [kubernetes_namespace.system_domain_namespace](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/namespace) | resource |
 | [kubernetes_role_binding.deployer_binding](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/role_binding) | resource |
@@ -82,9 +112,18 @@
 | [azuread_group.adgroup_domain_project_managers](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_tpm](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 | [azurerm_api_management.apim](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/api_management) | data source |
+| [azurerm_key_vault.core_kv](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault) | data source |
 | [azurerm_key_vault.domain_kv](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault) | data source |
 | [azurerm_key_vault_secret.argocd_admin_password](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.argocd_admin_username](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.keycloak_url](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.mil_auth_client_id_consumer](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.mil_auth_client_secret_consumer](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.read_rtp_activations_client_id](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.read_rtp_activations_client_secret](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.read_rtp_payees_client_id](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.read_rtp_payees_client_secret](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.terraform_client_secret_for_keycloak](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_kubernetes_cluster.aks](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/kubernetes_cluster) | data source |
 | [azurerm_nat_gateway.compute_nat_gateway](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/nat_gateway) | data source |
 | [azurerm_private_dns_zone.blob_storage](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/private_dns_zone) | data source |
