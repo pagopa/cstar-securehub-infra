@@ -15,16 +15,16 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_argocd"></a> [argocd](#provider\_argocd) | 7.11.0 |
+| <a name="provider_argocd"></a> [argocd](#provider\_argocd) | 7.15.0 |
 | <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 2.53.1 |
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.38.1 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.63.0 |
 | <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | 2.38.0 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | c1d2665e49fbc59996c5d2807f77d4391d8f593e |
+| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | aa982defd677c691e38ecc6b2122950f176e69bd |
 | <a name="module_aks_overlay_snet"></a> [aks\_overlay\_snet](#module\_aks\_overlay\_snet) | ./.terraform/modules/__v4__/IDH/subnet | n/a |
 | <a name="module_aks_srtp_node_pool_blue"></a> [aks\_srtp\_node\_pool\_blue](#module\_aks\_srtp\_node\_pool\_blue) | ./.terraform/modules/__v4__/IDH/aks_node_pool | n/a |
 | <a name="module_aks_srtp_node_pool_green"></a> [aks\_srtp\_node\_pool\_green](#module\_aks\_srtp\_node\_pool\_green) | ./.terraform/modules/__v4__/IDH/aks_node_pool | n/a |
