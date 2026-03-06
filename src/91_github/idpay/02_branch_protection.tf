@@ -63,11 +63,6 @@ resource "github_repository_ruleset" "develop" {
         alerts_threshold          = "errors"
       }
     }
-
-    copilot_code_review {
-      review_on_push             = false
-      review_draft_pull_requests = false
-    }
   }
 }
 
@@ -128,11 +123,6 @@ resource "github_repository_ruleset" "uat_and_main" {
         security_alerts_threshold = "high_or_higher"
         alerts_threshold          = "errors"
       }
-    }
-
-    copilot_code_review {
-      review_on_push             = false
-      review_draft_pull_requests = false
     }
   }
 }
