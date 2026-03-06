@@ -106,10 +106,10 @@ resource "keycloak_openid_client" "read_rtp_activations" {
   ]
 }
 
-resource "keycloak_openid_client_service_account_realm_role" "read_rtp_activations_write_rtp_activations_role" {
+resource "keycloak_openid_client_service_account_realm_role" "read_rtp_activations_write_rtp_send_role" {
   realm_id                = keycloak_realm.srtp.id
   service_account_user_id = keycloak_openid_client.read_rtp_activations.service_account_user_id
-  role                    = keycloak_role.write_rtp_activations.name
+  role                    = keycloak_role.write_rtp_send.name
 }
 
 resource "keycloak_openid_client_service_account_realm_role" "read_rtp_activations_read_rtp_activations_role" {
