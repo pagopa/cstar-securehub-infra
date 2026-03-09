@@ -11,7 +11,7 @@ module "private_endpoint_cosmos_snet" {
   virtual_network_name = local.vnet_spoke_data_name
 
   # IDH Resources
-  idh_resource_tier = "private_endpoint"
+  idh_resource_tier = "slash28_privatelink_true"
   tags              = module.tag_config.tags
 }
 
