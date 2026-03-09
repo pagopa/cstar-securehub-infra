@@ -21,9 +21,9 @@ locals {
     data.azuread_group.adgroup_domain_project_managers[0].object_id,
   ] : []
 
-  argocd_groups_external = [
+  argocd_groups_external = var.env != "prod" ? [
     data.azuread_group.adgroup_domain_externals.object_id,
-  ]
+  ] : null
 }
 
 #
@@ -128,7 +128,9 @@ resource "argocd_project" "domain_project" {
           "p, proj:${local.argocd_project_name}:external, applications, update/*/Deployment/*/*, ${local.argocd_project_name}/*, allow",
           "p, proj:${local.argocd_project_name}:external, applications, delete/*/Deployment/*/*, ${local.argocd_project_name}/*, allow",
         ] : []
-      ) : []
+        ) : [
+        "p, proj:${local.argocd_project_name}:external, logs, get, ${local.argocd_project_name}/*, allow",
+      ]
     }
 
   }
