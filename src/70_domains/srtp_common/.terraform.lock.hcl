@@ -140,7 +140,8 @@ provider "registry.terraform.io/hashicorp/random" {
 }
 
 provider "registry.terraform.io/keycloak/keycloak" {
-  version = "5.7.0"
+  version     = "5.7.0"
+  constraints = ">= 5.0.0"
   hashes = [
     "h1:3DuKdVeOxwULh7l6bvJKWZvsgSZo92rtnrdvyp+X2Lc=",
     "zh:19be4505b17e4818db121a82917cb6723019cf379cfb82b720eaa2886f15bede",

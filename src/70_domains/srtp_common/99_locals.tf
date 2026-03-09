@@ -11,8 +11,8 @@ locals {
   security_rg_name = "${local.project}-security-rg"
   compute_rg_name  = "${local.project}-compute-rg"
   cicd_rg_name     = "${local.project}-cicd-rg"
-  monitor_rg_name  = "${local.project}-monitoring-rg"
   identity_rg_name = "${local.project}-identity-rg"
+  monitor_rg_name  = "${local.project}-monitoring-rg"
 
 
   default_resource_group_names = [
@@ -37,6 +37,9 @@ locals {
   # 🔐 KV
   key_vault_name    = "${local.project}-kv"
   key_vault_rg_name = "${local.project}-security-rg"
+
+  kv_core_name                = "${local.project_no_domain}-core-kv"
+  kv_core_resource_group_name = "${local.project_no_domain}-core-sec-rg"
 
   # 🔎 DNS
   dns_zone_name                    = "${var.env != "prod" ? "${var.env}." : ""}${var.prefix}.pagopa.it"
