@@ -194,6 +194,16 @@ resource "keycloak_openid_hardcoded_claim_protocol_mapper" "read_rtp_payees_bic_
   claim_value_type = "String"
 }
 
+resource "keycloak_openid_hardcoded_claim_protocol_mapper" "read_rtp_payees_scope_mapper" {
+  realm_id  = keycloak_realm.srtp.id
+  client_id = keycloak_openid_client.read_rtp_payees.id
+  name      = "scope-mapper"
+
+  claim_name       = "scope"
+  claim_value      = "transaction:reversal:basic transaction:invoiceupdate:basic"
+  claim_value_type = "String"
+}
+
 
 ######################
 # PROCESS_MESSAGE Client (CONFIDENTIAL)
