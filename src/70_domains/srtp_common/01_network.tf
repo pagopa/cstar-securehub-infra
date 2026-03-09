@@ -15,61 +15,6 @@ module "private_endpoint_cosmos_snet" {
   tags              = module.tag_config.tags
 }
 
-module "private_endpoint_storage_account_snet" {
-  source = "./.terraform/modules/__v4__/IDH/subnet"
-
-  # General
-  product_name        = var.prefix
-  env                 = var.env
-  resource_group_name = local.network_rg
-
-  # Network
-  name                 = "${local.project}-storage-account-prv-end-snet"
-  virtual_network_name = local.vnet_spoke_data_name
-
-  # IDH Resources
-  idh_resource_tier = "private_endpoint"
-  tags              = module.tag_config.tags
-}
-
-#---------------------------------------------------------------
-# CAE Environment and Private Endpoint Subnets
-#---------------------------------------------------------------
-module "cae_env_snet" {
-  source = "./.terraform/modules/__v4__/IDH/subnet"
-  # source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//IDH/subnet?ref=fix-subnet-container-app"
-
-  # General
-  product_name        = var.prefix
-  env                 = var.env
-  resource_group_name = local.network_rg
-
-  # Network
-  name                 = "${local.project}-cae-snet"
-  virtual_network_name = local.vnet_spoke_compute_name
-
-  # IDH Resources
-  idh_resource_tier = "container_app_environment"
-  tags              = module.tag_config.tags
-}
-
-module "private_endpoint_cae_snet" {
-  source = "./.terraform/modules/__v4__/IDH/subnet"
-
-  # General
-  product_name        = var.prefix
-  env                 = var.env
-  resource_group_name = local.network_rg
-
-  # Network
-  name                 = "${local.project}-cae-prv-end-snet"
-  virtual_network_name = local.vnet_spoke_compute_name
-
-  # IDH Resources
-  idh_resource_tier = "private_endpoint"
-  tags              = module.tag_config.tags
-}
-
 #----------------------------------------------------------------
 # 🔎 AKS Overlay Subnet
 #----------------------------------------------------------------
@@ -103,11 +48,11 @@ resource "azurerm_private_dns_a_record" "ingress" {
 }
 
 #----------------------------------------------------------------
-# Nat Association for ALL created subnet in this folder
+# Nat Association
 #----------------------------------------------------------------
 resource "azurerm_subnet_nat_gateway_association" "nat_gateway_association" {
   for_each = {
-    for snet in [module.cae_env_snet, module.aks_overlay_snet] : snet.name => snet
+    for snet in [module.aks_overlay_snet] : snet.name => snet
   }
 
   subnet_id      = each.value.id

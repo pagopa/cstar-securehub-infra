@@ -19,8 +19,13 @@ module "srtp_storage_account" {
   idh_resource_tier = var.env_short != "prod" ? "basic" : "backup30"
 
   # Network
-  private_dns_zone_blob_ids  = [data.azurerm_private_dns_zone.blob_storage.id]
-  private_endpoint_subnet_id = module.private_endpoint_storage_account_snet.id
+  private_dns_zone_blob_ids = [data.azurerm_private_dns_zone.blob_storage.id]
+
+  embedded_subnet = {
+    enabled      = true
+    vnet_name    = local.vnet_spoke_data_name
+    vnet_rg_name = local.network_rg
+  }
 }
 
 resource "azurerm_storage_container" "srtp_container" {
@@ -52,8 +57,13 @@ module "share_storage_account" {
   idh_resource_tier = var.env_short != "p" ? "basic_public" : "backup7_public"
 
   # Network
-  private_dns_zone_file_ids  = [data.azurerm_private_dns_zone.file_storage.id]
-  private_endpoint_subnet_id = module.private_endpoint_storage_account_snet.id
+  private_dns_zone_file_ids = [data.azurerm_private_dns_zone.file_storage.id]
+
+  embedded_subnet = {
+    enabled      = true
+    vnet_name    = local.vnet_spoke_data_name
+    vnet_rg_name = local.network_rg
+  }
 }
 
 resource "azurerm_storage_share" "rtp_jks_file_share" {
