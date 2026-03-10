@@ -279,7 +279,7 @@ resource "keycloak_openid_hardcoded_claim_protocol_mapper" "transaction_permissi
   client_scope_id     = keycloak_openid_client_scope.transaction_permissions_scope.id
   name                = "transaction-permissions"
   claim_name          = "scope"
-  claim_value         = "transaction:reversal:basic transaction:invoiceupdate:basic"
+  claim_value         = "transaction:invoicelivecycle:basic"
   claim_value_type    = "String"
   add_to_id_token     = true
   add_to_access_token = true
