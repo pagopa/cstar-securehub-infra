@@ -14,10 +14,10 @@ enable_cdn                                       = true
 law_daily_quota_gb = 5
 
 # Activation database - shared throughput at database level (4000 RU)
-cosmos_activation_db_autoscale_max_throughput = 4000
+cosmos_activation_db_autoscale_max_throughput = 20000
 
 # RTP database - shared throughput at database level (1000 RU)
-cosmos_rtp_db_autoscale_max_throughput = 1000
+cosmos_rtp_db_autoscale_max_throughput = 10000
 
 cosmos_otp_ttl = 3600
 
