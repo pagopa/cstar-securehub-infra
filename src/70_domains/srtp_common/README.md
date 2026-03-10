@@ -85,6 +85,7 @@
 | [keycloak_openid_hardcoded_claim_protocol_mapper.read_rtp_activations_bic_mapper](https://registry.terraform.io/providers/keycloak/keycloak/latest/docs/resources/openid_hardcoded_claim_protocol_mapper) | resource |
 | [keycloak_openid_hardcoded_claim_protocol_mapper.read_rtp_activations_sub_mapper](https://registry.terraform.io/providers/keycloak/keycloak/latest/docs/resources/openid_hardcoded_claim_protocol_mapper) | resource |
 | [keycloak_openid_hardcoded_claim_protocol_mapper.read_rtp_payees_bic_mapper](https://registry.terraform.io/providers/keycloak/keycloak/latest/docs/resources/openid_hardcoded_claim_protocol_mapper) | resource |
+| [keycloak_openid_hardcoded_claim_protocol_mapper.read_rtp_payees_scope_mapper](https://registry.terraform.io/providers/keycloak/keycloak/latest/docs/resources/openid_hardcoded_claim_protocol_mapper) | resource |
 | [keycloak_openid_hardcoded_claim_protocol_mapper.read_rtp_payees_sub_mapper](https://registry.terraform.io/providers/keycloak/keycloak/latest/docs/resources/openid_hardcoded_claim_protocol_mapper) | resource |
 | [keycloak_realm.srtp](https://registry.terraform.io/providers/keycloak/keycloak/latest/docs/resources/realm) | resource |
 | [keycloak_role.payee_read_rtp](https://registry.terraform.io/providers/keycloak/keycloak/latest/docs/resources/role) | resource |
