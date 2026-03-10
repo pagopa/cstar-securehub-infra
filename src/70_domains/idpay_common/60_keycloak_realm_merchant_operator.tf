@@ -275,12 +275,12 @@ resource "keycloak_openid_client_scope" "transaction_permissions_scope" {
 
 # Mapper per aggiungere i permessi transaction al claim scope
 resource "keycloak_openid_hardcoded_claim_protocol_mapper" "transaction_permissions_mapper" {
-  realm_id        = keycloak_realm.merchant_operator.id
-  client_scope_id = keycloak_openid_client_scope.transaction_permissions_scope.id
-  name            = "transaction-permissions"
-  claim_name      = "scope"
-  claim_value     = "transaction:reversal:basic transaction:invoiceupdate:basic"
-  claim_value_type = "String"
+  realm_id            = keycloak_realm.merchant_operator.id
+  client_scope_id     = keycloak_openid_client_scope.transaction_permissions_scope.id
+  name                = "transaction-permissions"
+  claim_name          = "scope"
+  claim_value         = "transaction:reversal:basic transaction:invoiceupdate:basic"
+  claim_value_type    = "String"
   add_to_id_token     = true
   add_to_access_token = true
   add_to_userinfo     = false
