@@ -304,4 +304,3 @@ resource "keycloak_openid_client_default_scopes" "merchant_frontend_defaults" {
     keycloak_openid_client_scope.transaction_permissions_scope.name
   ]
 }
-
