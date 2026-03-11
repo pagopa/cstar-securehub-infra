@@ -1,0 +1,29 @@
+resource "azurerm_monitor_scheduled_query_rules_alert" "alerts" {
+  for_each = local.final_alerts
+
+  name                = each.value.name
+  resource_group_name = data.azurerm_resource_group.monitor_rg.name
+  location            = var.location
+
+  description = each.value.description
+  enabled     = lookup(try(each.value.enabled_by_env, {}), var.env_short, lookup(each.value, "enabled", true))
+  severity    = lookup(try(each.value.severity_by_env, {}), var.env_short, each.value.severity)
+
+  frequency   = each.value.frequency
+  time_window = each.value.time_window
+
+  data_source_id = each.value.data_source_id
+  query          = each.value.query
+
+  trigger {
+    operator  = each.value.trigger.operator
+    threshold = each.value.trigger.threshold
+  }
+
+  action {
+    action_group  = lookup(each.value, "action_groups", [azurerm_monitor_action_group.email.id])
+    email_subject = each.value.email_subject
+  }
+
+  tags = module.tag_config.tags
+}

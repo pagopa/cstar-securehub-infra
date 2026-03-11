@@ -1,8 +1,24 @@
 data "azurerm_subscription" "current" {}
+
 # 🔐 KV
 data "azurerm_key_vault" "domain_kv" {
   name                = local.key_vault_name
   resource_group_name = local.key_vault_rg_name
+}
+
+# Monitoring
+data "azurerm_resource_group" "monitor_rg" {
+  name = local.monitoring_rg
+}
+
+data "azurerm_key_vault_secret" "slack_webhook_email" {
+  name         = "slack-webhook-email-alert"
+  key_vault_id = data.azurerm_key_vault.domain_kv.id
+}
+
+data "azurerm_log_analytics_workspace" "log_analytics_workspace" {
+  name                = "${local.project}-law"
+  resource_group_name = local.monitoring_rg
 }
 
 #
