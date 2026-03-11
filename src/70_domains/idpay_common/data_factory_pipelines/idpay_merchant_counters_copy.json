@@ -75,7 +75,7 @@
                                 },
                                 "sink": {
                                     "name": "initiativeId",
-                                    "type": "Long"
+                                    "type": "String"
                                 }
                             },
                             {
