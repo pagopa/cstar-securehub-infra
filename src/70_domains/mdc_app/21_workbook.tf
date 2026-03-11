@@ -10,6 +10,8 @@ resource "azurerm_application_insights_workbook" "workbook" {
       subscription_id = data.azurerm_subscription.current.subscription_id
       prefix          = var.prefix
       env_short       = var.env_short
+      location_short  = var.location_short
+      domain          = var.domain
   })
 
   tags = module.tag_config.tags
