@@ -1,13 +1,13 @@
 resource "azurerm_monitor_scheduled_query_rules_alert" "alerts" {
-  for_each = local.final_alerts
+  for_each = var.srtp_alerts_enabled ? local.final_alerts : tomap({})
 
   name                = each.value.name
   resource_group_name = data.azurerm_resource_group.monitor_rg.name
   location            = var.location
 
   description = each.value.description
-  enabled     = lookup(try(each.value.enabled_by_env, {}), var.env_short, lookup(each.value, "enabled", true))
-  severity    = lookup(try(each.value.severity_by_env, {}), var.env_short, each.value.severity)
+  enabled     = lookup(each.value, "enabled", true)
+  severity    = each.value.severity
 
   frequency   = each.value.frequency
   time_window = each.value.time_window

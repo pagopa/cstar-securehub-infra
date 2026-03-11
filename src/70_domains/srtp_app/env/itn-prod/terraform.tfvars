@@ -4,4 +4,5 @@ env_short      = "p"
 env            = "prod"
 domain         = "srtp"
 location       = "italynorth"
-location_short = "itn"
+location_short      = "itn"
+srtp_alerts_enabled = true

@@ -11,18 +11,17 @@ locals {
   alerts_rtp = {
     # 🚨 Activations failure rate > 50% in the last 30 minutes
     rtp_activations_failure_rate_alert = {
-      name           = "rtp-activations-failure-rate-alert"
-      description    = "Alert when the activation failure rate is strictly greater than 50% in the last 30 minutes"
-      severity       = 0
-      frequency      = 30
-      time_window    = 30
-      enabled_by_env = { "p" = true, "u" = false, "d" = false }
-      query          = <<-QUERY
+      name        = "rtp-activations-failure-rate-alert"
+      description = "Alert when the activation failure rate is strictly greater than 50% in the last 30 minutes"
+      severity    = 0
+      frequency   = 5
+      time_window = 5
+      query       = <<-QUERY
             AppRequests
             | where Name contains "POST /rtp/activation/activations"
             | summarize TotalRequests = count(), FailedRequests = countif(Success == false and ResultCode != "409")
             | extend FailureRate = (todouble(FailedRequests) / todouble(TotalRequests)) * 100
-            | where FailureRate > 50
+            | where FailureRate > 5
           QUERY
       trigger = {
         operator  = "GreaterThanOrEqual"
