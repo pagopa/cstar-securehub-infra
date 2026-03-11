@@ -142,3 +142,14 @@ variable "cosmos_mongodb_common_configuration" {
   })
   description = "Parameters for Cosmos DB account in West Europe"
 }
+
+
+variable "additional_geo_locations" {
+  type = list(object({
+    location          = string
+    failover_priority = number
+    zone_redundant    = bool
+  }))
+  default     = []
+  description = "Specifies a list of additional geo_location resources, used to define where data should be replicated."
+}

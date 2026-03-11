@@ -1,17 +1,9 @@
-resource "azurerm_resource_group" "workbook_rg" {
-  count = contains(["u", "p"], var.env_short) ? 1 : 0
-
-  name     = "${local.project}-workbook-rg"
-  location = var.location
-  tags     = module.tag_config.tags
-}
-
 resource "azurerm_application_insights_workbook" "workbook" {
   count = contains(["u", "p"], var.env_short) ? 1 : 0
 
   name                = uuid()
-  resource_group_name = azurerm_resource_group.workbook_rg[0].name
-  location            = azurerm_resource_group.workbook_rg[0].location
+  resource_group_name = local.monitor_rg
+  location            = var.location
   display_name        = "EMD Dashboard ${upper(var.env)} v2"
   data_json = templatefile("${path.module}/workbooks/EMDDashboard${upper(var.env)}v2.json.tpl",
     {

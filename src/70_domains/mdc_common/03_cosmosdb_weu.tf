@@ -59,3 +59,33 @@ module "cosmosdb_account_mongodb_weu" {
 
   tags = module.tag_config.tags
 }
+
+resource "azurerm_cosmosdb_mongo_database" "mongo_db_weu" {
+  count               = var.enable_cosmos_db_weu ? 1 : 0
+  name                = "mil"
+  resource_group_name = azurerm_resource_group.cosmosdb_mil_rg[0].name
+  account_name        = module.cosmosdb_account_mongodb_weu[0].name
+
+  dynamic "autoscale_settings" {
+    for_each = var.cosmos_mongodb_common_configuration.autoscale_enabled ? [1] : []
+    content {
+      max_throughput = var.cosmos_mongodb_common_configuration.max_throughput
+    }
+  }
+}
+
+module "cosmosdb_collections_weu" {
+  source   = "./.terraform/modules/__v4__/cosmosdb_mongodb_collection"
+  for_each = var.enable_cosmos_db_weu ? { for index, coll in local.collections : coll.name => coll } : {}
+
+  name                = each.value.name
+  resource_group_name = azurerm_resource_group.cosmosdb_mil_rg[0].name
+
+  cosmosdb_mongo_account_name  = module.cosmosdb_account_mongodb_weu[0].name
+  cosmosdb_mongo_database_name = azurerm_cosmosdb_mongo_database.mongo_db_weu[0].name
+
+  indexes     = each.value.indexes
+  lock_enable = var.env_short == "p"
+
+  default_ttl_seconds = each.value.name == "retrieval" ? 1800 : null
+}
