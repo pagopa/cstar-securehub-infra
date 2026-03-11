@@ -379,6 +379,7 @@ resource "kubernetes_cron_job_v1" "cancel_empty_reward_batches" {
       }
     }
   }
+}
 
 resource "kubernetes_cron_job_v1" "delivery_reward_batch" {
   metadata {
@@ -429,6 +430,7 @@ resource "kubernetes_cron_job_v1" "delivery_reward_batch" {
     }
   }
 }
+
 
 resource "kubernetes_cron_job_v1" "delivery_check_outcome_reward_batch" {
   metadata {
