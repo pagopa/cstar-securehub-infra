@@ -53,11 +53,29 @@
                             },
                             {
                                 "source": {
+                                    "path": "$['totalProvidedCents']"
+                                },
+                                "sink": {
+                                    "name": "totalProvidedCents",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['totalRefundedCents']"
+                                },
+                                "sink": {
+                                    "name": "totalRefundedCents",
+                                    "type": "Long"
+                                }
+                            },
+                            {
+                                "source": {
                                     "path": "$['initiativeId']"
                                 },
                                 "sink": {
                                     "name": "initiativeId",
-                                    "type": "String"
+                                    "type": "Long"
                                 }
                             },
                             {
@@ -98,10 +116,19 @@
                             },
                             {
                                 "source": {
-                                    "path": "$['lastUpdatedDateTime.$date.$numberLong']"
+                                    "path": "lastUpdatedDateTime.$date."
                                 },
                                 "sink": {
-                                    "name": "lastUpdatedDateTime",
+                                    "name": "lastUpdatedDateTimeString",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "createdAt.$date"
+                                },
+                                "sink": {
+                                    "name": "createdAtString",
                                     "type": "String"
                                 }
                             }
@@ -120,6 +147,34 @@
                         "type": "DatasetReference"
                     }
                 ]
+            },
+            {
+                "name": "Convert Date",
+                "type": "AzureDataExplorerCommand",
+                "dependsOn": [
+                    {
+                        "activity": "Copy merchant counters collection",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "command": ".set-or-replace merchant_initiative_counters<|\nmerchant_initiative_counters\n| extend \n    lastUpdatedDateTime= unixtime_milliseconds_todatetime(tolong(lastUpdatedDateTimeString)),\n    createdAt= unixtime_milliseconds_todatetime(tolong(createdAtString))",
+                    "commandTimeout": "00:20:00"
+                },
+                "linkedServiceName": {
+                    "referenceName": "idpay-Kusto-idpay-ls",
+                    "type": "LinkedServiceReference"
+                }
             },
             {
                 "name": "Clear merchant counters table",
