@@ -34,7 +34,6 @@
 | <a name="module_cosmos_db_account"></a> [cosmos\_db\_account](#module\_cosmos\_db\_account) | ./.terraform/modules/__v4__/IDH/cosmosdb_account | n/a |
 | <a name="module_kubernetes_service_account"></a> [kubernetes\_service\_account](#module\_kubernetes\_service\_account) | ./.terraform/modules/__v4__/kubernetes_service_account | n/a |
 | <a name="module_private_endpoint_cosmos_snet"></a> [private\_endpoint\_cosmos\_snet](#module\_private\_endpoint\_cosmos\_snet) | ./.terraform/modules/__v4__/IDH/subnet | n/a |
-| <a name="module_private_endpoint_redis_snet"></a> [private\_endpoint\_redis\_snet](#module\_private\_endpoint\_redis\_snet) | ./.terraform/modules/__v4__/IDH/subnet | n/a |
 | <a name="module_redis"></a> [redis](#module\_redis) | ./.terraform/modules/__v4__/IDH/redis | n/a |
 | <a name="module_share_storage_account"></a> [share\_storage\_account](#module\_share\_storage\_account) | ./.terraform/modules/__v4__/IDH/storage_account | n/a |
 | <a name="module_srtp_storage_account"></a> [srtp\_storage\_account](#module\_srtp\_storage\_account) | ./.terraform/modules/__v4__/IDH/storage_account | n/a |

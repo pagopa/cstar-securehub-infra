@@ -15,8 +15,10 @@ module "redis" {
   name = "${local.project}-redis"
 
   # Network
-  private_endpoint = {
-    subnet_id            = module.private_endpoint_redis_snet.id
+  embedded_subnet = {
+    enabled              = true
+    vnet_name            = local.vnet_spoke_data_name
+    vnet_rg_name         = local.network_rg
     private_dns_zone_ids = [data.azurerm_private_dns_zone.redis.id]
   }
 }
