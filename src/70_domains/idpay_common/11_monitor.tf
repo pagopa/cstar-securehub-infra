@@ -24,6 +24,7 @@ resource "azurerm_application_insights" "idpay_application_insights" {
   resource_group_name  = data.azurerm_resource_group.idpay_monitoring_rg.name
   daily_data_cap_in_gb = var.law_daily_quota_gb
   tags                 = module.tag_config.tags
+  retention_in_days    = var.law_retention_in_days
 
   application_type = "other"
 
