@@ -57,7 +57,7 @@
                                 },
                                 "sink": {
                                     "name": "totalProvidedCents",
-                                    "type": "String"
+                                    "type": "Long"
                                 }
                             },
                             {
@@ -98,25 +98,7 @@
                             },
                             {
                                 "source": {
-                                    "path": "$['totalProvidedCents']"
-                                },
-                                "sink": {
-                                    "name": "totalProvidedCents",
-                                    "type": "String"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['totalRefundedCents']"
-                                },
-                                "sink": {
-                                    "name": "totalRefundedCents",
-                                    "type": "Long"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "lastUpdatedDateTime.$date."
+                                    "path": "lastUpdatedDateTime.$date"
                                 },
                                 "sink": {
                                     "name": "lastUpdatedDateTimeString",

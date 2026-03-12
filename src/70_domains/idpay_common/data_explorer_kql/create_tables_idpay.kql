@@ -340,7 +340,7 @@
     userNotificationDateString: string,
     businessName: string,
     createdAt: datetime,
-    createdAtString: string,
+    createdAtString: string
 )
 
 .create table initiative_counters (
