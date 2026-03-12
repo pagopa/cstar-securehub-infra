@@ -114,7 +114,8 @@
                                     "type": "String"
                                 }
                             }
-                        ]
+                        ],
+                        "mapComplexValuesToString": true
                     }
                 },
                 "inputs": [
