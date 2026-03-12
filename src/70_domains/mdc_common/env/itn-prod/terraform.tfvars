@@ -59,3 +59,10 @@ cosmos_mongodb_common_configuration = {
   max_throughput    = 10000
   autoscale_enabled = true
 }
+
+### CosmosDB
+additional_geo_locations = [{
+  location          = "germanywestcentral"
+  failover_priority = 1
+  zone_redundant    = false
+}]
