@@ -266,9 +266,7 @@ resource "keycloak_openid_user_attribute_protocol_mapper" "point_of_sale_id_mapp
   depends_on = [keycloak_realm_user_profile.merchant_op_profile, keycloak_openid_client_scope.point_of_sale_id_scope]
 }
 
-# Client Scopes per transaction permissions
-# Il campo "scope" nel JWT è costruito automaticamente da Keycloak
-# concatenando i nomi dei client scope assegnati al client.
+# This client is added in order to add "transaction:invoicelifecycle:basic" in the generated jwt
 resource "keycloak_openid_client_scope" "transaction_invoicelifecycle_scope" {
   realm_id    = keycloak_realm.merchant_operator.id
   name        = "transaction:invoicelifecycle:basic"
