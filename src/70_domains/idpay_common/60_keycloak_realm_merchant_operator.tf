@@ -266,26 +266,13 @@ resource "keycloak_openid_user_attribute_protocol_mapper" "point_of_sale_id_mapp
   depends_on = [keycloak_realm_user_profile.merchant_op_profile, keycloak_openid_client_scope.point_of_sale_id_scope]
 }
 
-# Client Scope per transaction permissions
-resource "keycloak_openid_client_scope" "transaction_permissions_scope" {
+# Client Scopes per transaction permissions
+# Il campo "scope" nel JWT è costruito automaticamente da Keycloak
+# concatenando i nomi dei client scope assegnati al client.
+resource "keycloak_openid_client_scope" "transaction_invoicelifecycle_scope" {
   realm_id    = keycloak_realm.merchant_operator.id
-  name        = "transaction-permissions"
-  description = "Scope to add transaction permissions"
-}
-
-# Mapper per aggiungere i permessi transaction al claim scope
-resource "keycloak_openid_hardcoded_claim_protocol_mapper" "transaction_permissions_mapper" {
-  realm_id            = keycloak_realm.merchant_operator.id
-  client_scope_id     = keycloak_openid_client_scope.transaction_permissions_scope.id
-  name                = "transaction-permissions"
-  claim_name          = "scope"
-  claim_value         = "transaction:invoicelifecycle:basic"
-  claim_value_type    = "String"
-  add_to_id_token     = true
-  add_to_access_token = true
-  add_to_userinfo     = false
-
-  depends_on = [keycloak_openid_client_scope.transaction_permissions_scope]
+  name        = "transaction:invoicelifecycle:basic"
+  description = "Scope for transaction invoice lifecycle basic permissions"
 }
 
 resource "keycloak_openid_client_default_scopes" "merchant_frontend_defaults" {
@@ -301,6 +288,6 @@ resource "keycloak_openid_client_default_scopes" "merchant_frontend_defaults" {
     "acr",
     keycloak_openid_client_scope.merchant_id_scope.name,
     keycloak_openid_client_scope.point_of_sale_id_scope.name,
-    keycloak_openid_client_scope.transaction_permissions_scope.name
+    keycloak_openid_client_scope.transaction_invoicelifecycle_scope.name
   ]
 }
