@@ -49,7 +49,7 @@
     totalRefundedCents: long,
     trxNumber:int,
     refoundNumber:int,
-    lastUpdatedDateTime: dateTime,
+    lastUpdatedDateTime: datetime,
     lastUpdatedDateTimeString : string,
     createdAt: datetime,
     createdAtString: string
