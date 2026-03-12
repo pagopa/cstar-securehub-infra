@@ -1,5 +1,6 @@
 # Action Group for Email
 resource "azurerm_monitor_action_group" "email" {
+  count               = var.srtp_alerts_enabled ? 1 : 0
   name                = "${local.project}-email-ag"
   resource_group_name = data.azurerm_resource_group.monitor_rg.name
   short_name          = "srtp-email"
@@ -7,7 +8,7 @@ resource "azurerm_monitor_action_group" "email" {
 
   email_receiver {
     name                    = "srtp-alerts-email"
-    email_address           = var.env_short == "p" ? "rtp-alerts@pagopa.it" : "rtp.alert.test@gmail.com" # TODO: Update with real prod email
+    email_address           = "rtp-alerts@pagopa.it"
     use_common_alert_schema = true
   }
 
@@ -16,6 +17,7 @@ resource "azurerm_monitor_action_group" "email" {
 
 # Action Group for Slack (Email-to-Slack pattern)
 resource "azurerm_monitor_action_group" "slack" {
+  count               = var.srtp_alerts_enabled ? 1 : 0
   name                = "${local.project}-slack-ag"
   resource_group_name = data.azurerm_resource_group.monitor_rg.name
   short_name          = "rtp-slack"
@@ -23,7 +25,7 @@ resource "azurerm_monitor_action_group" "slack" {
 
   email_receiver {
     name                    = "rtp-slack-email"
-    email_address           = data.azurerm_key_vault_secret.slack_webhook_email.value
+    email_address           = data.azurerm_key_vault_secret.slack_webhook_email[0].value
     use_common_alert_schema = true
   }
 

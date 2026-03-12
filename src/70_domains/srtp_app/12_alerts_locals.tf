@@ -14,24 +14,25 @@ locals {
       name        = "rtp-activations-failure-rate-alert"
       description = "Alert when the activation failure rate is strictly greater than 50% in the last 30 minutes"
       severity    = 0
-      frequency   = 5
-      time_window = 5
+      frequency   = 30
+      time_window = 30
       query       = <<-QUERY
             AppRequests
-            | where Name contains "POST /rtp/activation/activations"
+            | where AppRoleName == "rtp-activator"
+            | where Name startswith "POST" and Name contains "activations"
             | summarize TotalRequests = count(), FailedRequests = countif(Success == false and ResultCode != "409")
             | extend FailureRate = (todouble(FailedRequests) / todouble(TotalRequests)) * 100
-            | where FailureRate > 5
+            | where FailureRate > 50
           QUERY
       trigger = {
         operator  = "GreaterThanOrEqual"
         threshold = 1
       }
       # Use both email and slack for this critical alert
-      action_groups = [
-        azurerm_monitor_action_group.email.id,
-        azurerm_monitor_action_group.slack.id
-      ]
+      action_groups = compact([
+        try(azurerm_monitor_action_group.email[0].id, null),
+        try(azurerm_monitor_action_group.slack[0].id, null)
+      ])
       email_subject = "[RTP][CRITICAL] Activation Failure Rate > 50%"
     }
   }

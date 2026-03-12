@@ -21,7 +21,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "alerts" {
   }
 
   action {
-    action_group  = lookup(each.value, "action_groups", [azurerm_monitor_action_group.email.id])
+    action_group  = lookup(each.value, "action_groups", compact([try(azurerm_monitor_action_group.email[0].id, null)]))
     email_subject = each.value.email_subject
   }
 

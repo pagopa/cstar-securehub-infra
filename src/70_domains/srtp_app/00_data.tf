@@ -12,6 +12,7 @@ data "azurerm_resource_group" "monitor_rg" {
 }
 
 data "azurerm_key_vault_secret" "slack_webhook_email" {
+  count        = var.srtp_alerts_enabled ? 1 : 0
   name         = "slack-webhook-email-alert"
   key_vault_id = data.azurerm_key_vault.domain_kv.id
 }
