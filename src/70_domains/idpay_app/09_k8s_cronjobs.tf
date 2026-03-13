@@ -380,3 +380,104 @@ resource "kubernetes_cron_job_v1" "cancel_empty_reward_batches" {
     }
   }
 }
+
+resource "kubernetes_cron_job_v1" "delivery_reward_batch" {
+  metadata {
+    name      = "delivery-reward-batch"
+    namespace = var.domain
+    labels = {
+      app = "idpay-app"
+    }
+  }
+
+  spec {
+    schedule           = "0 4 * * 2,5" # 04:00 TUE, FRI
+    timezone           = "Europe/Rome"
+    concurrency_policy = "Forbid"
+
+    #Active only in PROD
+    suspend = var.env_short != "p"
+
+    job_template {
+      metadata {
+        name = "delivery-reward-batch"
+        labels = {
+          app = "idpay-app"
+        }
+      }
+      spec {
+        template {
+          metadata {
+            labels = {
+              app = "idpay-app"
+            }
+          }
+          spec {
+            container {
+              name  = "delivery-reward-batch"
+              image = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
+              args = [
+                "-X", "POST",
+                "-H", "Content-Type: application/json",
+                "-d", "{}",
+                "https://${local.idpay_ingress_url}/idpaytransactions/idpay/merchant/portal/initiatives/${var.idpay_bel_initiative_id}/reward-batches/delivery"
+              ]
+            }
+            restart_policy = "OnFailure"
+          }
+        }
+      }
+    }
+  }
+}
+
+
+resource "kubernetes_cron_job_v1" "delivery_check_outcome_reward_batch" {
+  metadata {
+    name      = "delivery-check-outcome-reward-batch"
+    namespace = var.domain
+    labels = {
+      app = "idpay-app"
+    }
+  }
+
+  spec {
+    schedule           = "0 5 * * *" # 03:30
+    timezone           = "Europe/Rome"
+    concurrency_policy = "Forbid"
+
+    #Active only in PROD
+    suspend = var.env_short != "p"
+
+    job_template {
+      metadata {
+        name = "delivery-check-outcome-reward-batch"
+        labels = {
+          app = "idpay-app"
+        }
+      }
+      spec {
+        template {
+          metadata {
+            labels = {
+              app = "idpay-app"
+            }
+          }
+          spec {
+            container {
+              name  = "delivery-check-outcome-reward-batch"
+              image = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
+              args = [
+                "-X", "POST",
+                "-H", "Content-Type: application/json",
+                "-d", "{}",
+                "https://${local.idpay_ingress_url}/idpaytransactions/idpay/merchant/portal/initiatives/${var.idpay_bel_initiative_id}/reward-batches/check-outcomes"
+              ]
+            }
+            restart_policy = "OnFailure"
+          }
+        }
+      }
+    }
+  }
+}
