@@ -71,10 +71,16 @@ locals {
       frequency   = 30
       time_window = 30
       query       = <<-QUERY
+            let excluded_takeovers = AppTraces
+              | where AppRoleName == "rtp-activator"
+              | where Message startswith "OTP expired due to expiration time exceeded"
+                  or Message startswith "Request rejected due to nonexistent OTP"
+              | summarize by OperationId;
             AppRequests
             | where AppRoleName == "rtp-activator"
             | where Name startswith "POST" and Name contains "takeover"
-            | summarize TotalRequests = count(), FailedRequests = countif(Success == false)
+            | join kind=leftouter excluded_takeovers on OperationId
+            | summarize TotalRequests = count(), FailedRequests = countif(Success == false and isempty(OperationId1))
             | extend FailureRate = (todouble(FailedRequests) / todouble(TotalRequests)) * 100
             | where FailureRate > 50
           QUERY
