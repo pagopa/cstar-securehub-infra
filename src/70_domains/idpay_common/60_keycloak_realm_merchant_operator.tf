@@ -266,6 +266,13 @@ resource "keycloak_openid_user_attribute_protocol_mapper" "point_of_sale_id_mapp
   depends_on = [keycloak_realm_user_profile.merchant_op_profile, keycloak_openid_client_scope.point_of_sale_id_scope]
 }
 
+# This client is added in order to add "transaction:invoicelifecycle:basic" in the generated jwt
+resource "keycloak_openid_client_scope" "transaction_invoicelifecycle_scope" {
+  realm_id    = keycloak_realm.merchant_operator.id
+  name        = "transaction:invoicelifecycle:basic"
+  description = "Scope for transaction invoice lifecycle basic permissions"
+}
+
 resource "keycloak_openid_client_default_scopes" "merchant_frontend_defaults" {
   realm_id  = keycloak_realm.merchant_operator.id
   client_id = keycloak_openid_client.merchant_operator_frontend.id
@@ -278,6 +285,7 @@ resource "keycloak_openid_client_default_scopes" "merchant_frontend_defaults" {
     "basic",
     "acr",
     keycloak_openid_client_scope.merchant_id_scope.name,
-    keycloak_openid_client_scope.point_of_sale_id_scope.name
+    keycloak_openid_client_scope.point_of_sale_id_scope.name,
+    keycloak_openid_client_scope.transaction_invoicelifecycle_scope.name
   ]
 }
