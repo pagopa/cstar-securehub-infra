@@ -251,8 +251,8 @@ resource "keycloak_openid_hardcoded_claim_protocol_mapper" "process_message_bic_
 
 resource "keycloak_openid_client" "internal_test_webform" {
   realm_id  = keycloak_realm.srtp.id
-  client_id = "internal-test-webform"
-  name      = "Internal Test Webform"
+  client_id = "1ec1f3f4-411b-4dc3-ad1c-68196af7e90c"
+  name      = "15376371009"
   enabled   = true
 
   access_type = "PUBLIC"
