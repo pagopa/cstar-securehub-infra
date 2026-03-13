@@ -150,6 +150,15 @@
                                     "name": "preallocatedAmountCents",
                                     "type": "Long"
                                 }
+                            },
+                            {
+                                "source": {
+                                    "path": "updateDate.$date"
+                                },
+                                "sink": {
+                                    "name": "updateDateString",
+                                    "type": "String"
+                                }
                             }
                         ],
                         "mapComplexValuesToString": true
@@ -209,7 +218,7 @@
                 },
                 "userProperties": [],
                 "typeProperties": {
-                    "command": ".set-or-replace initiative_counters<|\ninitiative_counters\n| extend \n    createdAt= unixtime_milliseconds_todatetime(tolong(createdAtDateString)),\n    enqueuedTime= unixtime_milliseconds_todatetime(tolong(enqueuedTimeDateString))\n",
+                    "command": ".set-or-replace initiative_counters<|\ninitiative_counters\n| extend \n    createdAt= unixtime_milliseconds_todatetime(tolong(createdAtDateString)),\n    enqueuedTime= unixtime_milliseconds_todatetime(tolong(enqueuedTimeDateString)),\n updateDate= unixtime_milliseconds_todatetime(tolong(updateDateString))\n",
                     "commandTimeout": "00:20:00"
                 },
                 "linkedServiceName": {

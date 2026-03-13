@@ -293,6 +293,15 @@
                                     "name": "businessName",
                                     "type": "String"
                                 }
+                            },
+                            {
+                                "source": {
+                                    "path": "createdAt.$date"
+                                },
+                                "sink": {
+                                    "name": "createdAtString",
+                                    "type": "String"
+                                }
                             }
                         ],
                         "mapComplexValuesToString": true
@@ -352,7 +361,7 @@
                 },
                 "userProperties": [],
                 "typeProperties": {
-                    "command": ".set-or-replace ['timeline']<|\n['timeline']\n| extend \n    operationDate= unixtime_milliseconds_todatetime(tolong(operationDateString)),\n    endDate= unixtime_milliseconds_todatetime(tolong(startDateString)),\n    transferDate= unixtime_milliseconds_todatetime(tolong(endDateString)),\n    userNotificationDate= unixtime_milliseconds_todatetime(tolong(userNotificationDateString))",
+                    "command": ".set-or-replace ['timeline']<|\n['timeline']\n| extend \n    operationDate= unixtime_milliseconds_todatetime(tolong(operationDateString)),\n    endDate= unixtime_milliseconds_todatetime(tolong(startDateString)),\n    transferDate= unixtime_milliseconds_todatetime(tolong(endDateString)),\n    userNotificationDate= unixtime_milliseconds_todatetime(tolong(userNotificationDateString)),\n    createdAt= unixtime_milliseconds_todatetime(tolong(createdAtString))",
                     "commandTimeout": "00:20:00"
                 },
                 "linkedServiceName": {
