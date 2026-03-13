@@ -40,3 +40,6 @@ additional_geo_locations = [{
   failover_priority = 1
   zone_redundant    = false
 }]
+
+### Redis Cache
+redis_idh_resource_tier = "standard"

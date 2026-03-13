@@ -29,3 +29,6 @@ aks_nodepool_green = {
   node_count_min    = 0
   node_count_max    = 0
 }
+
+### Redis Cache
+redis_idh_resource_tier = "basic"
