@@ -151,7 +151,7 @@ resource "keycloak_openid_hardcoded_claim_protocol_mapper" "read_rtp_activations
 
 resource "keycloak_openid_client" "read_rtp_payees" {
   realm_id = keycloak_realm.srtp.id
-  name     = "pagoPA"
+  name     = "RTP APP AS PAYEES READER"
   enabled  = true
 
   client_id                = data.azurerm_key_vault_secret.read_rtp_payees_client_id.value
