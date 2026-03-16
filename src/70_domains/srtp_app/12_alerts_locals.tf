@@ -95,6 +95,32 @@ locals {
       ])
       email_subject = "[RTP][CRITICAL] Takeover Failure Rate > 50%"
     }
+
+    # 🚨 0 messages consumed by rtp-consumer in the last 30 minutes
+    rtp_consumer_zero_messages_alert = {
+      name        = "rtp-consumer-zero-messages-alert"
+      description = "Alert when the rtp-consumer microservice consumes 0 messages in the last 30 minutes"
+      severity    = 1
+      frequency   = 30
+      time_window = 30
+      query       = <<-QUERY
+            AppTraces
+            | where AppRoleName == "rtp-consumer"
+            | where Message startswith "New GPD message received" or Message startswith "Error processing message."
+            | summarize TotalMessages = count()
+            | where TotalMessages == 0
+          QUERY
+      trigger = {
+        operator  = "GreaterThanOrEqual"
+        threshold = 1
+      }
+      # Use both email and slack for this alert
+      action_groups = compact([
+        try(azurerm_monitor_action_group.email[0].id, null),
+        try(azurerm_monitor_action_group.slack[0].id, null)
+      ])
+      email_subject = "[RTP-CONSUMER][WARNING] 0 messages consumed by rtp-consumer in the last 30 minutes"
+    }
   }
 
   # 🧱 Collection of alert groups
