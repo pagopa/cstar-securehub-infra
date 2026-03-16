@@ -89,8 +89,6 @@ law_sku               = "PerGB2018"
 law_retention_in_days = 30
 law_daily_quota_gb    = 5
 
-
-
 #OneIdentity
 oneidentity_base_url = "https://uat.oneid.pagopa.it"
 #

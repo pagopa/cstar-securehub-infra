@@ -30,15 +30,29 @@
     vatNumber:string,
     iban:string,
     ibanHolder:string,
-    isEnabled:bool
+    isEnabled:bool,
+    activationDate:datetime,
+    activationDateString:string,
+    lastLogin:datetime,
+    lastLoginString:string,
+    updateDate:datetime,
+    updateDateString:string,
+    createdAt:datetime,
+    createdAtString:string
 )
 
 .create table merchant_initiative_counters (
     _id:string,
     merchantId:string,
     initiativeId:string,
+    totalProvidedCents: long,
+    totalRefundedCents: long,
     trxNumber:int,
-    refoundNumber:int
+    refoundNumber:int,
+    lastUpdatedDateTime: datetime,
+    lastUpdatedDateTimeString : string,
+    createdAt: datetime,
+    createdAtString: string
 )
 
 .create table point_of_sales (
@@ -225,6 +239,8 @@
     lastCounterUpdateString: string,
     suspensionDate: datetime,
     suspensionDateString: string,
+    createdAt: datetime,
+    createdAtString: string,
     initiativeRewardType: string,
     isLogoPresent: bool,
     maxTrx: long,
@@ -272,7 +288,9 @@
     subject: string,
     content: string,
     senderEmail: string,
-    recipientEmail: string
+    recipientEmail: string,
+    updateDate: datetime,
+    updateDateString: string
 )
 
 .create table notification_reject_reasons (
@@ -320,7 +338,9 @@
     transferDateString: string,
     userNotificationDate: datetime,
     userNotificationDateString: string,
-    businessName: string
+    businessName: string,
+    createdAt: datetime,
+    createdAtString: string
 )
 
 .create table initiative_counters (
@@ -338,7 +358,9 @@
     sequenceNumber: long,
     enqueuedTime: datetime,
     enqueuedTimeDateString: string,
-    preallocatedAmountCents: long
+    preallocatedAmountCents: long,
+    updateDate: datetime,
+    updateDateString: string
 )
 
 .create table onboarding_citizen (

@@ -162,14 +162,42 @@
                             },
                             {
                                 "source": {
-                                    "path": "$['activationDate.$date.$numberLong']"
+                                    "path": "activationDate.$date"
                                 },
                                 "sink": {
-                                    "name": "activationDate",
+                                    "name": "activationDateString",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "lastLogin.$date"
+                                },
+                                "sink": {
+                                    "name": "lastLoginString",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "updateDate.$date"
+                                },
+                                "sink": {
+                                    "name": "updateDateString",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "createdAt.$date"
+                                },
+                                "sink": {
+                                    "name": "createdAtString",
                                     "type": "String"
                                 }
                             }
-                        ]
+                        ],
+                        "mapComplexValuesToString": true
                     }
                 },
                 "inputs": [
@@ -184,6 +212,34 @@
                         "type": "DatasetReference"
                     }
                 ]
+            },
+            {
+                "name": "Convert Date",
+                "type": "AzureDataExplorerCommand",
+                "dependsOn": [
+                    {
+                        "activity": "Copy merchant collection",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "command": ".set-or-replace merchant<|\nmerchant\n| extend \n    activationDate= unixtime_milliseconds_todatetime(tolong(activationDateString)),\n    lastLogin= unixtime_milliseconds_todatetime(tolong(lastLoginString)),\n    updateDate= unixtime_milliseconds_todatetime(tolong(updateDateString)),\n    createdAt= unixtime_milliseconds_todatetime(tolong(createdAtString))",
+                    "commandTimeout": "00:20:00"
+                },
+                "linkedServiceName": {
+                    "referenceName": "idpay-Kusto-idpay-ls",
+                    "type": "LinkedServiceReference"
+                }
             },
             {
                 "name": "Clear merchant table",

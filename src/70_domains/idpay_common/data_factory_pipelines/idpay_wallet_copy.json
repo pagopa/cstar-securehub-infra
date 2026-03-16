@@ -251,6 +251,15 @@
                             },
                             {
                                 "source": {
+                                    "path": "createdAt.$date"
+                                },
+                                "sink": {
+                                    "name": "createdAtString",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
                                     "path": "$['initiativeRewardType']"
                                 },
                                 "sink": {
@@ -387,7 +396,7 @@
                 },
                 "userProperties": [],
                 "typeProperties": {
-                    "command": ".set-or-replace wallet<|\nwallet\n| extend \n    acceptanceDate= unixtime_milliseconds_todatetime(tolong(acceptanceDateString)),\n    initiativeEndDate= unixtime_milliseconds_todatetime(tolong(initiativeEndDateString)),\n    voucherStartDate= unixtime_milliseconds_todatetime(tolong(voucherStartDateString)),\n    voucherEndDate= unixtime_milliseconds_todatetime(tolong(    voucherEndDateString)),\n    requestUnsubscribeDate= unixtime_milliseconds_todatetime(tolong(requestUnsubscribeDateString)),\n    updateDate= unixtime_milliseconds_todatetime(tolong(updateDateString)),\n    lastCounterUpdate= unixtime_milliseconds_todatetime(tolong(lastCounterUpdateString)),\n   suspensionDate= unixtime_milliseconds_todatetime(tolong(suspensionDateString))",
+                    "command": ".set-or-replace wallet<|\nwallet\n| extend \n    acceptanceDate= unixtime_milliseconds_todatetime(tolong(acceptanceDateString)),\n    initiativeEndDate= unixtime_milliseconds_todatetime(tolong(initiativeEndDateString)),\n    voucherStartDate= unixtime_milliseconds_todatetime(tolong(voucherStartDateString)),\n    voucherEndDate= unixtime_milliseconds_todatetime(tolong(    voucherEndDateString)),\n    requestUnsubscribeDate= unixtime_milliseconds_todatetime(tolong(requestUnsubscribeDateString)),\n    updateDate= unixtime_milliseconds_todatetime(tolong(updateDateString)),\n    lastCounterUpdate= unixtime_milliseconds_todatetime(tolong(lastCounterUpdateString)),\n   suspensionDate= unixtime_milliseconds_todatetime(tolong(suspensionDateString)),\n   createdAt= unixtime_milliseconds_todatetime(tolong(createdAtString))",
                     "commandTimeout": "00:20:00"
                 },
                 "linkedServiceName": {

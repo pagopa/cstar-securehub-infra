@@ -53,6 +53,24 @@
                             },
                             {
                                 "source": {
+                                    "path": "$['totalProvidedCents']"
+                                },
+                                "sink": {
+                                    "name": "totalProvidedCents",
+                                    "type": "Long"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['totalRefundedCents']"
+                                },
+                                "sink": {
+                                    "name": "totalRefundedCents",
+                                    "type": "Long"
+                                }
+                            },
+                            {
+                                "source": {
                                     "path": "$['initiativeId']"
                                 },
                                 "sink": {
@@ -80,32 +98,24 @@
                             },
                             {
                                 "source": {
-                                    "path": "$['totalProvidedCents']"
+                                    "path": "lastUpdatedDateTime.$date"
                                 },
                                 "sink": {
-                                    "name": "totalProvidedCents",
+                                    "name": "lastUpdatedDateTimeString",
                                     "type": "String"
                                 }
                             },
                             {
                                 "source": {
-                                    "path": "$['totalRefundedCents']"
+                                    "path": "createdAt.$date"
                                 },
                                 "sink": {
-                                    "name": "totalRefundedCents",
-                                    "type": "Long"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['lastUpdatedDateTime.$date.$numberLong']"
-                                },
-                                "sink": {
-                                    "name": "lastUpdatedDateTime",
+                                    "name": "createdAtString",
                                     "type": "String"
                                 }
                             }
-                        ]
+                        ],
+                        "mapComplexValuesToString": true
                     }
                 },
                 "inputs": [
@@ -120,6 +130,34 @@
                         "type": "DatasetReference"
                     }
                 ]
+            },
+            {
+                "name": "Convert Date",
+                "type": "AzureDataExplorerCommand",
+                "dependsOn": [
+                    {
+                        "activity": "Copy merchant counters collection",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "command": ".set-or-replace merchant_initiative_counters<|\nmerchant_initiative_counters\n| extend \n    lastUpdatedDateTime= unixtime_milliseconds_todatetime(tolong(lastUpdatedDateTimeString)),\n    createdAt= unixtime_milliseconds_todatetime(tolong(createdAtString))",
+                    "commandTimeout": "00:20:00"
+                },
+                "linkedServiceName": {
+                    "referenceName": "idpay-Kusto-idpay-ls",
+                    "type": "LinkedServiceReference"
+                }
             },
             {
                 "name": "Clear merchant counters table",
