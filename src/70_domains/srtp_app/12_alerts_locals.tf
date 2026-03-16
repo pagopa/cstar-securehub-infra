@@ -106,7 +106,7 @@ locals {
       query       = <<-QUERY
             AppTraces
             | where AppRoleName == "rtp-consumer"
-            | where Message startswith "New GPD message received"
+            | where Message startswith "New GPD message received" or Message startswith "Error processing message."
             | summarize TotalMessages = count()
             | where TotalMessages == 0
           QUERY
