@@ -42,4 +42,4 @@ additional_geo_locations = [{
 }]
 
 ### Redis Cache
-redis_idh_resource_tier = "standard"
+redis_idh_resource_tier = "standard_C1_v6"
