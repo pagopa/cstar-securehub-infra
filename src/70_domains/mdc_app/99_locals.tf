@@ -56,14 +56,14 @@ locals {
   # To add a new alert: add an entry here + the corresponding .kql file
   alerts_mdc = {
     retry_failures = {
-      name          = "${local.project}-retry-failures-${var.env_short}"
-      description   = "Alert: Send of message failed after 3 retry. Environment: ${var.env}"
-      query         = file("${path.module}/queries-KQL/retry_failures.kql")
+      name        = "${local.project}-retry-failures-${var.env_short}"
+      description = "Alert: Send of message failed after 3 retry. Environment: ${var.env}"
+      query       = file("${path.module}/queries-KQL/retry_failures.kql")
     }
     api_5xx_errors = {
-      name          = "${local.project}-5xx-errors-${var.env_short}"
-      description   = "Alert: Error 5XX on SEND API. Environment: ${var.env}"
-      query         = file("${path.module}/queries-KQL/api_5xx_errors.kql")
+      name        = "${local.project}-5xx-errors-${var.env_short}"
+      description = "Alert: Error 5XX on SEND API. Environment: ${var.env}"
+      query       = file("${path.module}/queries-KQL/api_5xx_errors.kql")
     }
   }
 

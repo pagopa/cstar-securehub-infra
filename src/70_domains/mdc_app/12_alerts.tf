@@ -8,8 +8,8 @@ resource "azurerm_monitor_action_group" "alerts" {
   short_name          = "ag-${var.env_short}"
 
   email_receiver {
-    name          = "team-email"
-    email_address = each.value.email_address
+    name                    = "team-email"
+    email_address           = each.value.email_address
     use_common_alert_schema = true
   }
 
@@ -20,11 +20,11 @@ resource "azurerm_monitor_action_group" "alerts" {
 resource "azurerm_monitor_scheduled_query_rules_alert_v2" "alerts" {
   for_each = local.final_alerts
 
-  name                = each.value.name
-  resource_group_name = local.monitor_rg
-  location            = var.location
-  description         = each.value.description
-  enabled             = each.value.enabled
+  name                 = each.value.name
+  resource_group_name  = local.monitor_rg
+  location             = var.location
+  description          = each.value.description
+  enabled              = each.value.enabled
   evaluation_frequency = each.value.evaluation_frequency
   window_duration      = each.value.window_duration
   scopes               = [data.azurerm_log_analytics_workspace.domain_log_analytics.id]
