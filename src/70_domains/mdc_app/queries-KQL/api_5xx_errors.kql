@@ -1,0 +1,3 @@
+ApiManagementGatewayLogs
+| where Url has "emd/message-core/sendMessage"
+| where ResponseCode >= 500 and ResponseCode < 600
