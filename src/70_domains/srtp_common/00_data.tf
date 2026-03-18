@@ -127,3 +127,9 @@ data "azurerm_user_assigned_identity" "iac_federated_azdo" {
   name                = each.key
   resource_group_name = local.azdo_managed_identity_rg_name
 }
+
+# Redis private dns zone
+data "azurerm_private_dns_zone" "redis" {
+  name                = "privatelink.redis.cache.windows.net"
+  resource_group_name = local.vnet_legacy_core_rg
+}
