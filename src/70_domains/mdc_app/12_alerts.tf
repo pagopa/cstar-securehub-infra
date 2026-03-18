@@ -7,10 +7,14 @@ resource "azurerm_monitor_action_group" "alerts" {
   resource_group_name = local.monitor_rg
   short_name          = "ag-${var.env_short}"
 
-  email_receiver {
-    name                    = "team-email"
-    email_address           = each.value.email_address
-    use_common_alert_schema = true
+  dynamic "email_receiver" {
+    for_each = each.value.email_addresses
+
+    content {
+      name                    = "email-${email_receiver.key}"
+      email_address           = email_receiver.value
+      use_common_alert_schema = true
+    }
   }
 
   tags = local.tags

@@ -49,7 +49,10 @@ locals {
     time_aggregation_method      = "Count"
     minimum_failing_periods      = 1
     number_of_evaluation_periods = 1
-    email_address                = "team_sw_client_msgcor-aaaanhfcws5qn5ndc4a4cjzm7m@pagopaspa.slack.com"
+    email_addresses = [
+      "team_sw_client_msgcor-aaaanhfcws5qn5ndc4a4cjzm7m@pagopaspa.slack.com",
+      "messaggidicortesia@assistenza.pagopa.it"
+    ]
   }
 
   # MDC domain alerts map.
