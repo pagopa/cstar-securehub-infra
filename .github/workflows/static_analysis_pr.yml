@@ -22,6 +22,7 @@ jobs:
           include_folders: "src/tag_config"
           include_patterns: "src"
           stopper_folders: "env,tests,api,api_product,helm,argocd,secrets,k8s-file,workbooks,data_explorer_kql"
+          scan_suffix: ".tf,.tvars,.tpl,.kql"
 
       - name: 👀 See folders downloaded
         if: env.dir_changes_detected == 'true'
