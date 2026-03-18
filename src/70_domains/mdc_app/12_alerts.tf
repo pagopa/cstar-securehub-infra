@@ -44,9 +44,6 @@ resource "azurerm_monitor_scheduled_query_rules_alert_v2" "alerts" {
 
   action {
     action_groups = [azurerm_monitor_action_group.alerts[each.key].id]
-    custom_properties = {
-      "Email.Subject" = each.value.description
-    }
   }
 
   tags = local.tags
