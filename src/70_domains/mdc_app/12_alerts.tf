@@ -1,7 +1,7 @@
 # Action Groups
 # Creates one Action Group per alert to support different email addresses
 resource "azurerm_monitor_action_group" "alerts" {
-  for_each = local.final_alerts
+  for_each = var.env_short == "p" ? local.final_alerts : {}
 
   name                = "${each.value.name}-ag"
   resource_group_name = local.monitor_rg
@@ -22,7 +22,7 @@ resource "azurerm_monitor_action_group" "alerts" {
 
 # Scheduled Query Rules
 resource "azurerm_monitor_scheduled_query_rules_alert_v2" "alerts" {
-  for_each = local.final_alerts
+  for_each = var.env_short == "p" ? local.final_alerts : {}
 
   name                 = each.value.name
   resource_group_name  = local.monitor_rg

@@ -44,7 +44,7 @@ locals {
     window_duration              = "PT10M"
     severity                     = 1
     threshold                    = 0
-    enabled                      = contains(["p"], var.env_short) ? true : false
+    enabled                      = true
     operator                     = "GreaterThan"
     time_aggregation_method      = "Count"
     minimum_failing_periods      = 1
