@@ -1,0 +1,3 @@
+AppTraces
+| where Message has "[NOTIFY-ERROR-PRODUCER-SERVICE][ENQUEUE-NOTIFY]"
+    and Message has "exceeds max retry attempts"

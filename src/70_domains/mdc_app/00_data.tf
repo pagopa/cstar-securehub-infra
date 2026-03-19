@@ -15,6 +15,11 @@ data "azurerm_application_insights" "domain_application_insights" {
   resource_group_name = local.monitor_rg
 }
 
+data "azurerm_log_analytics_workspace" "domain_log_analytics" {
+  name                = local.log_analytics_workspace_name
+  resource_group_name = local.monitor_rg
+}
+
 # 🐳 Kubernetes Cluster
 data "azurerm_kubernetes_cluster" "aks" {
   name                = local.aks_name

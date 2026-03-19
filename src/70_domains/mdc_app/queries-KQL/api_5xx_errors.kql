@@ -1,0 +1,3 @@
+AppRequests
+| where Url has "emd/message-core/sendMessage"
+| where toint(ResultCode) >= 500 and toint(ResultCode) < 600
