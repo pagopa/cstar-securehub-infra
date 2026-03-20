@@ -8,9 +8,11 @@ module "aks_idpay_node_pool_blue" {
   # IDH Resources
   idh_resource_tier = var.aks_nodepool_blue.vm_sku_name
 
-  name           = "cs${var.env_short}blueidpay"
-  node_count_min = var.aks_nodepool_blue.node_count_min
-  node_count_max = var.aks_nodepool_blue.node_count_max
+  name = "cs${var.env_short}blueidpay"
+
+  autoscale_enabled = var.aks_nodepool_blue.autoscale_enabled
+  node_count_min    = var.aks_nodepool_blue.node_count_min
+  node_count_max    = var.aks_nodepool_blue.node_count_max
 
   node_labels           = { node_name : "idpay-blue", node_type : "user", domain : var.domain, phase : "blue" }
   node_taints           = ["${var.domain}Only=true:NoSchedule"]
