@@ -40,15 +40,12 @@ locals {
   # Base configuration shared across all alerts.
   # Modify here to change global behavior.
   base_alert_config = {
-    evaluation_frequency         = "PT10M"
-    window_duration              = "PT10M"
+    evaluation_frequency         = 10
+    window_duration              = 10
     severity                     = 1
     threshold                    = 0
     enabled                      = true
     operator                     = "GreaterThan"
-    time_aggregation_method      = "Count"
-    minimum_failing_periods      = 1
-    number_of_evaluation_periods = 1
     email_addresses = [
       "team_sw_client_msgcor-aaaanhfcws5qn5ndc4a4cjzm7m@pagopaspa.slack.com",
       "messaggidicortesia@assistenza.pagopa.it"
@@ -60,12 +57,12 @@ locals {
   alerts_mdc = {
     retry_failures = {
       name        = "${local.project}-retry-failures-${var.env_short}"
-      description = "Alert: Send of message failed after 3 retry. Environment: ${var.env}"
+      email_subject = "Alert: Send of message failed after 3 retry. Environment: ${var.env}"
       query       = file("${path.module}/queries-KQL/retry_failures.kql")
     }
     api_5xx_errors = {
       name        = "${local.project}-5xx-errors-${var.env_short}"
-      description = "Alert: Error 5XX on SEND API. Environment: ${var.env}"
+      email_subject = "Alert: Error 5XX on SEND API. Environment: ${var.env}"
       query       = file("${path.module}/queries-KQL/api_5xx_errors.kql")
     }
   }
