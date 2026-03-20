@@ -1,27 +1,3 @@
-# TO REMOVE POST APPLY
-module "redis" {
-  source = "./.terraform/modules/__v4__/IDH/redis"
-
-  # General
-  product_name        = var.prefix
-  env                 = var.env
-  location            = var.location
-  resource_group_name = local.data_rg
-  tags                = module.tag_config.tags
-
-  # IDH Resources
-  idh_resource_tier = var.redis_idh_resource_tier
-
-  # Redis Settings
-  name = "${local.project}-redis"
-
-  # Network
-  private_endpoint = {
-    subnet_id            = module.private_endpoint_redis_snet.id
-    private_dns_zone_ids = [data.azurerm_private_dns_zone.redis.id]
-  }
-}
-
 module "redis_v2" {
   source = "./.terraform/modules/__v4__/IDH/redis"
 
