@@ -87,9 +87,9 @@ resource "azurerm_key_vault_secret" "cosmosdb_account_mongodb_connection_strings
 resource "azurerm_monitor_metric_alert" "cosmos_db_normalized_ru_exceeded" {
   count = var.env_short == "p" ? 1 : 0
 
-  name                = "[${var.domain != null ? "${var.domain} | " : ""}${var.enable_cosmos_db_weu ? module.cosmosdb_account_mongodb_weu[0].name : module.cosmos_account[0].name}] Normalized RU Exceeded"
+  name                = "[${var.domain != null ? "${var.domain} | " : ""}${module.cosmos_account.name}] Normalized RU Exceeded"
   resource_group_name = data.azurerm_resource_group.mdc_data_rg.name
-  scopes              = [var.enable_cosmos_db_weu ? module.cosmosdb_account_mongodb_weu[0].id : module.cosmos_account[0].id]
+  scopes              = [module.cosmos_account.id]
   description         = "A collection Normalized RU/s exceed provisioned throughput, and it's raising latency. Please, consider to increase RU."
   severity            = 0
   window_size         = "PT5M"
@@ -107,7 +107,7 @@ resource "azurerm_monitor_metric_alert" "cosmos_db_normalized_ru_exceeded" {
     dimension {
       name     = "Region"
       operator = "Include"
-      values   = [var.enable_cosmos_db_weu ? azurerm_resource_group.cosmosdb_mil_rg[0].location : data.azurerm_resource_group.mdc_data_rg.location]
+      values   = [data.azurerm_resource_group.mdc_data_rg.location]
     }
 
     dimension {
@@ -132,19 +132,3 @@ resource "azurerm_monitor_metric_alert" "cosmos_db_normalized_ru_exceeded" {
     }
   )
 }
-
-# moved {
-#   from = module.cosmosdb_collections
-#   to = module.cosmosdb_collections_weu
-# }
-#
-# #
-# # moved {
-# #   from = module.cosmos_account[0]
-# #   to = module.cosmos_account
-# # }
-#
-# moved {
-#   from = azurerm_cosmosdb_mongo_database.mongo_db
-#   to = azurerm_cosmosdb_mongo_database.mongo_db_weu
-# }

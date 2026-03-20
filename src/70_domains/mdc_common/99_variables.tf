@@ -103,12 +103,6 @@ variable "aks_nodepool" {
   description = "Paramters for node pool"
 }
 
-variable "enable_cosmos_db_weu" {
-  type        = bool
-  description = "Enable cosmos db in west europe"
-  default     = false
-}
-
 variable "cosmos_mongodb_params_weu" {
   type = object({
     capabilities   = list(string)
