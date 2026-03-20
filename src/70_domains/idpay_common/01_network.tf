@@ -11,11 +11,12 @@ module "private_endpoint_cosmos_snet" {
   virtual_network_name = local.vnet_spoke_data_name
 
   # IDH Resources
-  idh_resource_tier = "private_endpoint"
+  idh_resource_tier = "slash28_privatelink_true"
 
   service_endpoints = [
     "Microsoft.AzureCosmosDB"
   ]
+  tags = module.tag_config.tags
 }
 
 module "private_endpoint_eventhub_snet" {
@@ -31,11 +32,12 @@ module "private_endpoint_eventhub_snet" {
   virtual_network_name = local.vnet_spoke_data_name
 
   # IDH Resources
-  idh_resource_tier = "private_endpoint"
+  idh_resource_tier = "slash28_privatelink_true"
 
   service_endpoints = [
     "Microsoft.EventHub"
   ]
+  tags = module.tag_config.tags
 }
 
 module "private_endpoint_redis_snet" {
@@ -51,7 +53,9 @@ module "private_endpoint_redis_snet" {
   virtual_network_name = local.vnet_spoke_data_name
 
   # IDH Resources
-  idh_resource_tier = "private_endpoint"
+  idh_resource_tier = "slash28_privatelink_true"
+
+  tags = module.tag_config.tags
 }
 
 
@@ -68,7 +72,9 @@ module "private_endpoint_storage_snet" {
   virtual_network_name = local.vnet_spoke_data_name
 
   # IDH Resources
-  idh_resource_tier = "private_endpoint"
+  idh_resource_tier = "slash28_privatelink_true"
+
+  tags = module.tag_config.tags
 }
 
 module "private_endpoint_service_bus_snet" {
@@ -85,7 +91,9 @@ module "private_endpoint_service_bus_snet" {
   virtual_network_name = local.vnet_spoke_data_name
 
   # IDH Resources
-  idh_resource_tier = "private_endpoint"
+  idh_resource_tier = "slash28_privatelink_true"
+
+  tags = module.tag_config.tags
 }
 
 #----------------------------------------------------------------
@@ -105,6 +113,8 @@ module "aks_overlay_snet" {
 
   # IDH Resources
   idh_resource_tier = "aks_overlay"
+
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_subnet_nat_gateway_association" "nat_gateway_association" {

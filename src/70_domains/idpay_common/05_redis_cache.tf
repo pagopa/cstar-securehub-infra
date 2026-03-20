@@ -1,6 +1,6 @@
+# TO REMOVE POST APPLY
 module "redis" {
   source = "./.terraform/modules/__v4__/IDH/redis"
-  # source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//IDH/redis?ref=RTD-2663-bonus-elettrodomestici-hardening-infra"
 
   # General
   product_name        = var.prefix
@@ -22,16 +22,41 @@ module "redis" {
   }
 }
 
+module "redis_v2" {
+  source = "./.terraform/modules/__v4__/IDH/redis"
+
+  # General
+  product_name        = var.prefix
+  env                 = var.env
+  location            = var.location
+  resource_group_name = local.data_rg
+  tags                = module.tag_config.tags
+
+  # IDH Resources
+  idh_resource_tier = var.redis_idh_resource_tier
+
+  # Redis Settings
+  name = "${local.project}-v2-redis"
+
+  # Network
+  embedded_subnet = {
+    enabled              = true
+    vnet_name            = local.vnet_spoke_data_name
+    vnet_rg_name         = local.network_rg
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.redis.id]
+  }
+}
+
 #
 # 🔑 KV
 #
 locals {
   redis_kv_values = {
-    "idpay-redis-primary-connection-string"   = module.redis.primary_connection_string
-    "idpay-redis-primary-connection-url"      = module.redis.primary_connection_url
-    "idpay-redis-secondary-connection-string" = module.redis.secondary_connection_string
+    "idpay-redis-primary-connection-string"   = module.redis_v2.primary_connection_string
+    "idpay-redis-primary-connection-url"      = module.redis_v2.primary_connection_url
+    "idpay-redis-secondary-connection-string" = module.redis_v2.secondary_connection_string
     # The double “s” in rediss:// for TLS is not a typo.
-    "idpay-redis-secondary-connection-url" = module.redis.secondary_connection_url
+    "idpay-redis-secondary-connection-url" = module.redis_v2.secondary_connection_url
   }
 }
 
