@@ -11,8 +11,8 @@ resource "azurerm_monitor_action_group" "alerts" {
     for_each = each.value.email_addresses
 
     content {
-      name                    = "email-${email_receiver.key}"
-      email_address           = email_receiver.value
+      name          = "email-${email_receiver.key}"
+      email_address = email_receiver.value
     }
   }
 
@@ -32,7 +32,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "alerts" {
   data_source_id      = data.azurerm_log_analytics_workspace.domain_log_analytics.id
   severity            = each.value.severity
 
-  query               = each.value.query
+  query = each.value.query
 
   trigger {
     operator  = each.value.operator
