@@ -47,8 +47,8 @@ locals {
     enabled              = true
     operator             = "GreaterThan"
     email_addresses = [
-      "team_sw_client_msgcor-aaaanhfcws5qn5ndc4a4cjzm7m@pagopaspa.slack.com",
-      "messaggidicortesia@assistenza.pagopa.it"
+      module.secrets.values["email-mdc-slack"].value,
+      module.secrets.values["email-mdc-google"].value
     ]
   }
 
