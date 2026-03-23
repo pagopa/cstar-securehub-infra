@@ -4,8 +4,5 @@ module "secrets" {
   key_vault_name = local.kv_domain_name
   resource_group = local.kv_domain_rg_name
 
-  secrets = compact([
-    "email-mdc-slack",
-    "email-mdc-google"
-  ])
+  secrets = local.alert_email_secret_names
 }

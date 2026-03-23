@@ -37,6 +37,9 @@ locals {
   argocd_internal_url = "argocd.${var.location_short}.${var.dns_zone_internal_prefix}.${var.external_domain}"
 
   # 🔔 Alerts
+  alert_email_secret_names = var.env_short == "p" ? ["email-mdc-slack", "email-mdc-google"] : []
+  alert_email_addresses    = [for k, v in module.secrets.values : v.value if contains(local.alert_email_secret_names, k)]
+
   # Base configuration shared across all alerts.
   # Modify here to change global behavior.
   base_alert_config = {
@@ -46,10 +49,7 @@ locals {
     threshold            = 0
     enabled              = true
     operator             = "GreaterThan"
-    email_addresses = [
-      module.secrets.values["email-mdc-slack"].value,
-      module.secrets.values["email-mdc-google"].value
-    ]
+    email_addresses      = local.alert_email_addresses
   }
 
   # MDC domain alerts map.
