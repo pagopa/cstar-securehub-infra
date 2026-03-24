@@ -133,3 +133,25 @@ data "azurerm_private_dns_zone" "redis" {
   name                = "privatelink.redis.cache.windows.net"
   resource_group_name = local.vnet_legacy_core_rg
 }
+
+data "azurerm_client_config" "current" {}
+
+#
+# Azure Data Factory
+#
+data "azurerm_data_factory" "data_factory" {
+  name                = local.data_factory_name
+  resource_group_name = local.data_factory_rg_name
+}
+
+data "azurerm_resource_group" "platform_data" {
+  name = local.data_factory_rg_name
+}
+
+#
+# Azure Data Explorer (Kusto)
+#
+data "azurerm_kusto_cluster" "kusto_cluster" {
+  name                = local.kusto_cluster_name
+  resource_group_name = local.kusto_cluster_rg_name
+}
