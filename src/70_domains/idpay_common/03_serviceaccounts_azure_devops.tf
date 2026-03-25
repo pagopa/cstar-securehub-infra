@@ -1,10 +1,3 @@
-resource "kubernetes_namespace" "system_domain_namespace" {
-  metadata {
-    name = "${var.domain}-system"
-  }
-}
-
-
 module "kubernetes_service_account" {
   source = "./.terraform/modules/__v4__/kubernetes_service_account"
 

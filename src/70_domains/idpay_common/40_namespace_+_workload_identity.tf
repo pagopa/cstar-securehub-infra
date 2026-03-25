@@ -4,11 +4,26 @@ resource "kubernetes_namespace" "namespace" {
   }
 }
 
+resource "kubernetes_namespace" "system_domain_namespace" {
+  metadata {
+    name = "${var.domain}-system"
+  }
+}
+
 module "namespace_role_bindings" {
   source = "./.terraform/modules/__v4__/kubernetes_namespace_role_binding"
 
-  name         = var.domain
-  ad_group_ids = [data.azuread_group.adgroup_idpay_admin.object_id]
+  name                  = var.domain
+  ad_group_ids          = [data.azuread_group.adgroup_idpay_admin.object_id]
+  rbac_reader_name_role = "rbac-reader"
+}
+
+module "namespace_system_role_bindings" {
+  source = "./.terraform/modules/__v4__/kubernetes_namespace_role_binding"
+
+  name                  = "${var.domain}-system"
+  ad_group_ids          = [data.azuread_group.adgroup_idpay_admin.object_id]
+  rbac_reader_name_role = "rbac-reader"
 }
 
 module "workload_identity_v2" {
