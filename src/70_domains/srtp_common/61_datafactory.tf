@@ -60,12 +60,3 @@ resource "azurerm_key_vault_access_policy" "kv_policy_adf" {
   object_id          = data.azurerm_data_factory.data_factory.identity[0].principal_id
   secret_permissions = ["Get"]
 }
-
-#
-# Roles Assignments for Workload Identity
-#
-resource "azurerm_role_assignment" "role_datafactory_contributor" {
-  scope                = data.azurerm_resource_group.platform_data.id
-  role_definition_name = "Data Factory Contributor"
-  principal_id         = data.azurerm_user_assigned_identity.iac_federated_azdo["azdo-${var.env}-${var.prefix}-iac-deploy-v2"].principal_id
-}
