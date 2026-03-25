@@ -4,6 +4,13 @@ resource "kubernetes_namespace" "namespace" {
   }
 }
 
+module "namespace_role_bindings" {
+  source = "./.terraform/modules/__v4__/kubernetes_namespace_role_binding"
+
+  name         = var.domain
+  ad_group_ids = [data.azuread_group.adgroup_idpay_admin.object_id]
+}
+
 module "workload_identity_v2" {
   source = "./.terraform/modules/__v4__/kubernetes_workload_identity_init"
 
