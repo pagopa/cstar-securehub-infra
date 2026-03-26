@@ -10,6 +10,28 @@ resource "kubernetes_config_map" "idpay-common" {
 }
 
 
+resource "kubernetes_config_map" "idpay-payment-initiatives-property-validation" {
+  metadata {
+    name      = "idpay-payment-initiatives-property-validation"
+    namespace = var.domain
+  }
+
+  data = {
+    spring_application_json = jsonencode({
+      app = {
+        barCode = {
+          "additional-properties-validation" = {
+            initiatives = {
+              "68dd003ccce8c534d1da22bc" = "PRODUCT_GTIN"
+            }
+          }
+        }
+      }
+    })
+  }
+}
+
+
 resource "kubernetes_config_map" "idpay-eventhub-00" {
   metadata {
     name      = "idpay-eventhub-00"
