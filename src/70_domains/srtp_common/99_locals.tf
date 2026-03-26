@@ -159,4 +159,18 @@ locals {
       }
     ]
   ])
+
+  # Data Factory
+  data_factory_name    = "${local.project_no_domain}-platform-adf"
+  data_factory_rg_name = "${local.project_no_domain}-platform-data-rg"
+
+  # Data Explorer (ADX / Kusto)
+  kusto_cluster_name    = "${local.project_no_domain}-platform"
+  kusto_cluster_rg_name = "${local.project_no_domain}-platform-data-rg"
+  kusto_database = {
+    (var.domain) = {
+      hot_cache_period   = "P5D"
+      soft_delete_period = "P7D"
+    }
+  }
 }
