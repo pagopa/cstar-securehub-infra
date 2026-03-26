@@ -50,7 +50,7 @@ data "azurerm_key_vault" "kv_domain" {
   resource_group_name = local.kv_domain_rg_name
 }
 
-# Key Vault CORE 
+# Key Vault CORE
 data "azurerm_key_vault" "core_kv" {
   name                = local.kv_core_name
   resource_group_name = local.kv_core_resource_group_name
