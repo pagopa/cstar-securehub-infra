@@ -22,7 +22,7 @@ resource "kubernetes_config_map" "idpay-payment-initiatives-property-validation"
         barCode = {
           "additional-properties-validation" = {
             initiatives = {
-              "68dd003ccce8c534d1da22bc" = "PRODUCT_GTIN"
+              (var.idpay_bel_initiative_id) = "PRODUCT_GTIN"
             }
           }
         }
