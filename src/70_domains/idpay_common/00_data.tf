@@ -119,11 +119,6 @@ data "azurerm_resource_group" "core_monitor_rg" {
   name = local.core_monitor_resource_group_name
 }
 
-data "azurerm_application_insights" "core_application_insights" {
-  name                = local.core_application_insights_name
-  resource_group_name = data.azurerm_resource_group.core_monitor_rg.name
-}
-
 data "azurerm_resource_group" "apim_rg" {
   name = local.apim_rg_name
 }

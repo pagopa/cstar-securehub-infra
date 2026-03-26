@@ -132,6 +132,26 @@ locals {
   #Notify URL API email
   notify_url = "https://api-io.${data.azurerm_dns_zone.public_cstar.name}/idpay-itn/email-notification/export/notify"
 
-  # Active Directory Groups
-  ad_group_rbac = concat([data.azuread_group.adgroup_idpay_admin, data.azuread_group.adgroup_idpay_developers], var.env_short != "p" ? [data.azuread_group.adgroup_idpay_externals] : [])
+  ad_group_rbac = flatten([
+    {
+      object_id    = data.azuread_group.adgroup_idpay_admin.object_id
+      display_name = data.azuread_group.adgroup_idpay_admin.display_name
+    },
+    var.env_short != "p" ? [
+      {
+        object_id    = data.azuread_group.adgroup_idpay_developers.object_id
+        display_name = data.azuread_group.adgroup_idpay_developers.display_name
+      },
+      {
+        object_id    = data.azuread_group.adgroup_idpay_externals.object_id
+        display_name = data.azuread_group.adgroup_idpay_externals.display_name
+      }
+    ] : [],
+    var.env_short == "p" ? [
+      {
+        object_id    = data.azuread_group.adgroup_idpay_oncall[0].object_id
+        display_name = data.azuread_group.adgroup_idpay_oncall[0].display_name
+      }
+    ] : []
+  ])
 }

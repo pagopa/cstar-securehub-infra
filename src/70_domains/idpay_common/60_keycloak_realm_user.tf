@@ -5,7 +5,7 @@
 #   key_vault_id = data.azurerm_key_vault.domain_kv.id
 # }
 
-##################
+##############\####
 # USER REALM
 ##################
 resource "keycloak_realm" "user" {

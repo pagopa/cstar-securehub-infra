@@ -293,7 +293,7 @@ function other_actions() {
       # clean plan file
       clean_audit_files "$file_name"
     else
-      terraform "$action" -var-file="./env/$env/terraform.tfvars" -compact-warnings $other
+      terraform "$action" -var-file="./env/$env/terraform.tfvars" -compact-warnings -parallelism=100 $other
     fi
 
 
