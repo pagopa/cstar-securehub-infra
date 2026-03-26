@@ -1,8 +1,9 @@
 locals {
-  product       = "${var.prefix}-${var.env_short}"
-  project       = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
-  project_core  = "${var.prefix}-${var.env_short}-${var.location_short}-core"
-  project_entra = "${var.prefix}-${var.env_short}-${var.domain}"
+  product           = "${var.prefix}-${var.env_short}"
+  product_no_domain = "${var.prefix}-${var.env_short}-${var.location_short}"
+  project           = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
+  project_core      = "${var.prefix}-${var.env_short}-${var.location_short}-core"
+  project_entra     = "${var.prefix}-${var.env_short}-${var.domain}"
 
   # 📊 Monitoring
   monitoring_rg_name      = "${local.project}-monitoring-rg"
@@ -31,6 +32,9 @@ locals {
   # KV
   kv_domain_name    = "${local.project}-kv"
   kv_domain_rg_name = "${local.project}-security-rg"
+
+  kv_core_name                = "${local.product_no_domain}-core-kv"
+  kv_core_resource_group_name = "${local.product_no_domain}-core-sec-rg"
 
   #
   # AKS
