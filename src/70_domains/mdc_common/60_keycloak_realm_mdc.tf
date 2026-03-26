@@ -1,8 +1,8 @@
 # Realm configuration for Keycloak
 resource "keycloak_realm" "mdc" {
-  realm             = "mdc"
-  enabled           = true
-  display_name      = "Messaggi di cortesia"
+  realm        = "mdc"
+  enabled      = true
+  display_name = "Messaggi di cortesia"
 
   internationalization {
     supported_locales = [
@@ -12,6 +12,6 @@ resource "keycloak_realm" "mdc" {
   }
 
   # Durata dei token (opzionale)
-  access_token_lifespan = "30m" 
-    
+  access_token_lifespan = "30m"
+
 }
