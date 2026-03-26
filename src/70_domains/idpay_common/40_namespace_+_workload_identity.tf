@@ -1,15 +1,3 @@
-# resource "kubernetes_namespace" "namespace" {
-#   metadata {
-#     name = var.domain
-#   }
-# }
-
-# resource "kubernetes_namespace" "system_domain_namespace" {
-#   metadata {
-#     name = "${var.domain}-system"
-#   }
-# }
-
 module "namespace_role_bindings" {
   source = "./.terraform/modules/__v4__/kubernetes_namespace_role_binding"
 
@@ -70,14 +58,4 @@ module "workload_identity_configuration_v2" {
   depends_on = [
     module.workload_identity_v2,
   ]
-}
-
-moved {
-  from = kubernetes_namespace.namespace
-  to   = module.namespace_role_bindings.kubernetes_namespace.this
-}
-
-moved {
-  from = kubernetes_namespace.system_domain_namespace
-  to   = module.namespace_system_role_bindings.kubernetes_namespace.this
 }
