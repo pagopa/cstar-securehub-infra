@@ -1,29 +1,47 @@
-resource "kubernetes_namespace" "namespace" {
-  metadata {
-    name = var.domain
-  }
-}
+# resource "kubernetes_namespace" "namespace" {
+#   metadata {
+#     name = var.domain
+#   }
+# }
 
-resource "kubernetes_namespace" "system_domain_namespace" {
-  metadata {
-    name = "${var.domain}-system"
-  }
-}
+# resource "kubernetes_namespace" "system_domain_namespace" {
+#   metadata {
+#     name = "${var.domain}-system"
+#   }
+# }
 
 module "namespace_role_bindings" {
   source = "./.terraform/modules/__v4__/kubernetes_namespace_role_binding"
 
-  name                  = var.domain
-  ad_group_ids          = [data.azuread_group.adgroup_idpay_admin.object_id]
-  rbac_reader_name_role = "rbac-reader"
+  name         = var.domain
+  ad_group_ids = [for i in local.ad_group_rbac : i.object_id]
 }
 
 module "namespace_system_role_bindings" {
   source = "./.terraform/modules/__v4__/kubernetes_namespace_role_binding"
 
-  name                  = "${var.domain}-system"
-  ad_group_ids          = [data.azuread_group.adgroup_idpay_admin.object_id]
-  rbac_reader_name_role = "rbac-reader"
+  name         = "${var.domain}-system"
+  ad_group_ids = [for i in local.ad_group_rbac : i.object_id]
+}
+
+resource "kubernetes_cluster_role_binding" "rbac_reader_global" {
+  for_each = { for i in local.ad_group_rbac : i.object_id => i }
+
+  metadata {
+    name = "${each.value.display_name}.rbac-reader-global-binding"
+  }
+
+  role_ref {
+    api_group = "rbac.authorization.k8s.io"
+    kind      = "ClusterRole"
+    name      = "rbac-reader"
+  }
+
+  subject {
+    kind      = "Group"
+    name      = each.value.object_id
+    api_group = "rbac.authorization.k8s.io"
+  }
 }
 
 module "workload_identity_v2" {
@@ -52,4 +70,14 @@ module "workload_identity_configuration_v2" {
   depends_on = [
     module.workload_identity_v2,
   ]
+}
+
+moved {
+  from = kubernetes_namespace.namespace
+  to   = module.namespace_role_bindings.kubernetes_namespace.this
+}
+
+moved {
+  from = kubernetes_namespace.system_domain_namespace
+  to   = module.namespace_system_role_bindings.kubernetes_namespace.this
 }

@@ -4,7 +4,7 @@ module "private_endpoint_cosmos_snet" {
   # General
   product_name        = var.prefix
   env                 = var.env
-  resource_group_name = local.network_rg
+  resource_group_name = local.core_network_rg
 
   # Network
   name                 = "${local.project}-cosmos-prv-end-snet"
@@ -16,6 +16,8 @@ module "private_endpoint_cosmos_snet" {
   service_endpoints = [
     "Microsoft.AzureCosmosDB"
   ]
+  resource_group_nsg_name = local.network_rg
+
   tags = module.tag_config.tags
 }
 
@@ -25,7 +27,7 @@ module "private_endpoint_eventhub_snet" {
   # General
   product_name        = var.prefix
   env                 = var.env
-  resource_group_name = local.network_rg
+  resource_group_name = local.core_network_rg
 
   # Network
   name                 = "${local.project}-eventhub-prv-end-snet"
@@ -37,6 +39,8 @@ module "private_endpoint_eventhub_snet" {
   service_endpoints = [
     "Microsoft.EventHub"
   ]
+  resource_group_nsg_name = local.network_rg
+
   tags = module.tag_config.tags
 }
 
@@ -46,7 +50,7 @@ module "private_endpoint_storage_snet" {
   # General
   product_name        = var.prefix
   env                 = var.env
-  resource_group_name = local.network_rg
+  resource_group_name = local.core_network_rg
 
   # Network
   name                 = "${local.project}-storage-prv-end-snet"
@@ -54,6 +58,8 @@ module "private_endpoint_storage_snet" {
 
   # IDH Resources
   idh_resource_tier = "slash28_privatelink_true"
+
+  resource_group_nsg_name = local.network_rg
 
   tags = module.tag_config.tags
 }
@@ -65,7 +71,7 @@ module "private_endpoint_service_bus_snet" {
   # General
   product_name        = var.prefix
   env                 = var.env
-  resource_group_name = local.network_rg
+  resource_group_name = local.core_network_rg
 
   # Network
   name                 = "${local.project}-serv-bus-prv-end-snet"
@@ -73,6 +79,8 @@ module "private_endpoint_service_bus_snet" {
 
   # IDH Resources
   idh_resource_tier = "slash28_privatelink_true"
+
+  resource_group_nsg_name = local.network_rg
 
   tags = module.tag_config.tags
 }
@@ -86,7 +94,7 @@ module "aks_overlay_snet" {
   # General
   product_name        = var.prefix
   env                 = var.env
-  resource_group_name = local.network_rg
+  resource_group_name = local.core_network_rg
 
   # Network
   name                 = "${local.project}-aks-idpay-overlay-snet"
@@ -94,6 +102,8 @@ module "aks_overlay_snet" {
 
   # IDH Resources
   idh_resource_tier = "aks_overlay"
+
+  resource_group_nsg_name = local.network_rg
 
   tags = module.tag_config.tags
 }

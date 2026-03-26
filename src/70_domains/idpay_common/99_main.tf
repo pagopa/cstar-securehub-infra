@@ -74,6 +74,6 @@ provider "keycloak" {
 }
 
 module "__v4__" {
-  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v9.5.1
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=feat/namespace-role-binding"
+  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v9.7.0
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=19f11e31ecbbe89f50bf41d659d825653132cd8a"
 }

@@ -2,7 +2,7 @@ module "kubernetes_service_account" {
   source = "./.terraform/modules/__v4__/kubernetes_service_account"
 
   name      = "azure-devops"
-  namespace = kubernetes_namespace.system_domain_namespace.metadata[0].name
+  namespace = module.namespace_system_role_bindings.namespace_name
 }
 
 #-------------------------------------------------------------
@@ -20,14 +20,14 @@ resource "kubernetes_role_binding" "deployer_binding" {
   subject {
     kind      = "ServiceAccount"
     name      = "azure-devops"
-    namespace = kubernetes_namespace.system_domain_namespace.metadata[0].name
+    namespace = module.namespace_system_role_bindings.namespace_name
   }
 }
 
 resource "kubernetes_role_binding" "system_deployer_binding" {
   metadata {
     name      = "system-deployer-binding"
-    namespace = kubernetes_namespace.system_domain_namespace.metadata[0].name
+    namespace = module.namespace_system_role_bindings.namespace_name
   }
   role_ref {
     api_group = "rbac.authorization.k8s.io"
@@ -37,7 +37,7 @@ resource "kubernetes_role_binding" "system_deployer_binding" {
   subject {
     kind      = "ServiceAccount"
     name      = "azure-devops"
-    namespace = kubernetes_namespace.system_domain_namespace.metadata[0].name
+    namespace = module.namespace_system_role_bindings.namespace_name
   }
 }
 
@@ -54,7 +54,7 @@ resource "kubernetes_role_binding" "kube_system_reader_binding" {
   subject {
     kind      = "ServiceAccount"
     name      = "azure-devops"
-    namespace = kubernetes_namespace.system_domain_namespace.metadata[0].name
+    namespace = module.namespace_system_role_bindings.namespace_name
   }
 }
 

@@ -69,4 +69,5 @@ resource "azurerm_key_vault_secret" "sops_local_secrets" {
   depends_on = [
     module.key_vault,
   ]
+  tags = module.tag_config.tags
 }

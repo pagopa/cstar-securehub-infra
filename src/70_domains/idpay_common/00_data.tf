@@ -32,7 +32,7 @@ data "azurerm_dns_zone" "public_cstar" {
 
 data "azurerm_nat_gateway" "compute_nat_gateway" {
   name                = "${local.project_core}-compute-natgw"
-  resource_group_name = local.network_rg
+  resource_group_name = local.core_network_rg
 }
 
 data "azurerm_dns_zone" "bonus_elettrodomestici_apex" {
@@ -87,11 +87,6 @@ data "azurerm_key_vault" "domain_kv" {
   name                = local.idpay_kv_name
   resource_group_name = local.idpay_kv_rg_name
 }
-# CORE
-data "azurerm_key_vault" "core_kv" {
-  name                = local.kv_core_name
-  resource_group_name = local.kv_core_resource_group_name
-}
 
 ### ARGO
 data "azurerm_key_vault_secret" "argocd_admin_username" {
@@ -143,12 +138,12 @@ data "azurerm_api_management" "apim_core" {
 #
 data "azurerm_key_vault_secret" "terraform_client_secret_for_keycloak" {
   name         = "terraform-client-secret-for-keycloak"
-  key_vault_id = data.azurerm_key_vault.core_kv.id
+  key_vault_id = data.azurerm_key_vault.domain_kv.id
 }
 
 data "azurerm_key_vault_secret" "keycloak_url" {
   name         = "keycloak-url"
-  key_vault_id = data.azurerm_key_vault.core_kv.id
+  key_vault_id = data.azurerm_key_vault.domain_kv.id
 }
 
 data "azurerm_key_vault_secret" "ses_smtp_username" {
