@@ -26,6 +26,10 @@ terraform {
       source  = "keycloak/keycloak"
       version = ">= 5.0.0"
     }
+    azapi = {
+      source  = "azure/azapi"
+      version = "~> 2.0"
+    }
   }
 
   backend "azurerm" {}
