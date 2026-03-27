@@ -51,6 +51,18 @@ locals {
       ]
       repository_variables = []
     }
+    rtp-payees = {
+      env_variables        = [],
+      env_secret_variables = []
+      repository_secrets = [
+        {
+          SLACK_WEBHOOK_URL = data.azurerm_key_vault_secret.slack_webhook.value
+          GIT_PAT           = data.azurerm_key_vault_secret.git_pat.value
+          SONAR_TOKEN       = data.azurerm_key_vault_secret.sonar_token.value
+        }
+      ]
+      repository_variables = []
+    }
     rtp-platform-qa = {
       env = ["${var.location_short}-dev", "${var.location_short}-uat"],
       env_variables = [
