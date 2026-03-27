@@ -147,3 +147,24 @@ variable "additional_geo_locations" {
   default     = []
   description = "Specifies a list of additional geo_location resources, used to define where data should be replicated."
 }
+
+variable "dns_zone_public_name" {
+  type        = string
+  description = "Public DNS zone name, e.g. 'dev.cstar.pagopa.it'"
+}
+
+variable "robots_indexed_paths" {
+  type        = list(string)
+  default     = []
+  description = "List of paths that should be indexed by robots. All others will get noindex header."
+}
+
+variable "backoffice_cdn_storage_replication_type" {
+  type        = string
+  default     = "LRS"
+  description = "Storage account replication type for the backoffice CDN. Use LRS for dev/uat, ZRS or GRS for prod."
+  validation {
+    condition     = contains(["LRS", "GRS", "ZRS", "RAGRS", "GZRS"], var.backoffice_cdn_storage_replication_type)
+    error_message = "Must be one of: LRS, GRS, ZRS, RAGRS, GZRS."
+  }
+}

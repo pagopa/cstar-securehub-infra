@@ -98,3 +98,9 @@ data "azurerm_monitor_action_group" "email" {
   resource_group_name = local.monitoring_core_rg_name
   name                = local.monitor_action_group_email
 }
+
+# 🌐 Public DNS Zone (mdc.dev.cstar.pagopa.it / mdc.uat.cstar.pagopa.it / mdc.cstar.pagopa.it)
+data "azurerm_dns_zone" "public_mdc" {
+  name                = var.dns_zone_public_name
+  resource_group_name = local.vnet_legacy_resource_group_name
+}
