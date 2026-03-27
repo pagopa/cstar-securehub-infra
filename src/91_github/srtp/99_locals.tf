@@ -21,8 +21,8 @@ locals {
       repository_secrets = [
         {
           SLACK_WEBHOOK_URL = data.azurerm_key_vault_secret.slack_webhook.value
-          GIT_PAT           = data.azurerm_key_vault_secret.git_pat.value
-          SONAR_TOKEN       = data.azurerm_key_vault_secret.sonar_token.value
+          GIT_PAT           = data.azurerm_key_vault_secret.git_pat[0].value
+          SONAR_TOKEN       = data.azurerm_key_vault_secret.sonar_token[0].value
         }
       ]
       repository_variables = []
@@ -33,8 +33,8 @@ locals {
       repository_secrets = [
         {
           SLACK_WEBHOOK_URL = data.azurerm_key_vault_secret.slack_webhook.value
-          GIT_PAT           = data.azurerm_key_vault_secret.git_pat.value
-          SONAR_TOKEN       = data.azurerm_key_vault_secret.sonar_token.value
+          GIT_PAT           = data.azurerm_key_vault_secret.git_pat[0].value
+          SONAR_TOKEN       = data.azurerm_key_vault_secret.sonar_token[0].value
         }
       ]
       repository_variables = []
@@ -45,8 +45,8 @@ locals {
       repository_secrets = [
         {
           SLACK_WEBHOOK_URL = data.azurerm_key_vault_secret.slack_webhook.value
-          GIT_PAT           = data.azurerm_key_vault_secret.git_pat.value
-          SONAR_TOKEN       = data.azurerm_key_vault_secret.sonar_token.value
+          GIT_PAT           = data.azurerm_key_vault_secret.git_pat[0].value
+          SONAR_TOKEN       = data.azurerm_key_vault_secret.sonar_token[0].value
         }
       ]
       repository_variables = []
@@ -57,8 +57,8 @@ locals {
       repository_secrets = [
         {
           SLACK_WEBHOOK_URL = data.azurerm_key_vault_secret.slack_webhook.value
-          GIT_PAT           = data.azurerm_key_vault_secret.git_pat.value
-          SONAR_TOKEN       = data.azurerm_key_vault_secret.sonar_token.value
+          GIT_PAT           = data.azurerm_key_vault_secret.git_pat[0].value
+          SONAR_TOKEN       = data.azurerm_key_vault_secret.sonar_token[0].value
         }
       ]
       repository_variables = []
