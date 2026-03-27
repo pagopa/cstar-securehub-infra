@@ -69,11 +69,11 @@ provider "argocd" {
 provider "keycloak" {
   client_id     = "terraform"
   client_secret = data.azurerm_key_vault_secret.terraform_client_secret_for_keycloak.value
-  url           = "https://${data.azurerm_key_vault_secret.keycloak_url.value}"
+  url           = data.azurerm_key_vault_secret.keycloak_url.value
   realm         = "master"
 }
 
 module "__v4__" {
-  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v9.5.1
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=53cecee3498d51bca45110c84c4434aee1416732"
+  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v9.7.0
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=19f11e31ecbbe89f50bf41d659d825653132cd8a"
 }

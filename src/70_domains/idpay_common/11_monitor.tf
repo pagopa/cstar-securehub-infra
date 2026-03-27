@@ -2,12 +2,9 @@ resource "azurerm_log_analytics_workspace" "log_analytics_workspace" {
   name                = "${local.project}-law"
   location            = data.azurerm_resource_group.idpay_monitoring_rg.location
   resource_group_name = data.azurerm_resource_group.idpay_monitoring_rg.name
-  tags                = module.tag_config.tags
-
-
-  sku               = var.law_sku
-  retention_in_days = var.law_retention_in_days
-  daily_quota_gb    = var.law_daily_quota_gb
+  sku                 = var.law_sku
+  retention_in_days   = var.law_retention_in_days
+  daily_quota_gb      = var.law_daily_quota_gb
 
 
   lifecycle {
@@ -15,6 +12,7 @@ resource "azurerm_log_analytics_workspace" "log_analytics_workspace" {
       sku
     ]
   }
+  tags = module.tag_config.tags
 }
 
 ### 🔍 Application insights
@@ -23,13 +21,13 @@ resource "azurerm_application_insights" "idpay_application_insights" {
   location             = data.azurerm_resource_group.idpay_monitoring_rg.location
   resource_group_name  = data.azurerm_resource_group.idpay_monitoring_rg.name
   daily_data_cap_in_gb = var.law_daily_quota_gb
-  tags                 = module.tag_config.tags
   retention_in_days    = var.law_retention_in_days
 
   application_type = "other"
 
   workspace_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
 
+  tags = module.tag_config.tags
 }
 
 
@@ -61,6 +59,7 @@ resource "azurerm_monitor_action_group" "email" {
       use_common_alert_schema = false
     }
   }
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_monitor_action_group" "idpay_opsgenie" { #
