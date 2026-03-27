@@ -10,14 +10,15 @@ module "eventhub_namespace" {
   location            = var.location
   name                = "${local.project}-evh"
   product_name        = var.prefix
-  resource_group_name = data.azurerm_resource_group.mdc_data_rg.name
+  resource_group_name = local.data_rg
 
   embedded_subnet = {
     enabled      = true
     vnet_rg_name = local.vnet_network_rg
     vnet_name    = local.vnet_spoke_data_name
   }
-  private_endpoint_resource_group_name = data.azurerm_resource_group.mdc_data_rg.name
+  resource_group_nsg_name              = local.network_rg
+  private_endpoint_resource_group_name = local.data_rg
   private_dns_zones_ids                = [data.azurerm_private_dns_zone.eventhub.id]
 
   tags = module.tag_config.tags
@@ -27,7 +28,7 @@ module "eventhub_configuration" {
   source = "./.terraform/modules/__v4__/eventhub_configuration"
 
   event_hub_namespace_name                = module.eventhub_namespace.name
-  event_hub_namespace_resource_group_name = data.azurerm_resource_group.mdc_data_rg.name
+  event_hub_namespace_resource_group_name = local.data_rg
 
   eventhubs = [
     {
@@ -94,19 +95,4 @@ resource "azurerm_key_vault_secret" "eventhub_primary_connection_strings" {
   key_vault_id = data.azurerm_key_vault.kv_domain.id
 
   tags = module.tag_config.tags
-}
-
-moved {
-  from = module.eventhub_namespace[0].azurerm_eventhub_namespace.this
-  to   = module.eventhub_namespace.module.event_hub.azurerm_eventhub_namespace.this
-}
-
-moved {
-  from = module.eventhub_namespace[0].azurerm_private_endpoint.eventhub[0]
-  to   = module.eventhub_namespace.module.event_hub.azurerm_private_endpoint.eventhub[0]
-}
-
-moved {
-  from = module.eventhub_configuration[0]
-  to   = module.eventhub_configuration
 }
