@@ -11,8 +11,9 @@ resource "azurerm_monitor_action_group" "alerts" {
     for_each = each.value.email_addresses
 
     content {
-      name          = "email-${email_receiver.key}"
-      email_address = email_receiver.value
+      name                    = "email-${email_receiver.key}"
+      email_address           = email_receiver.value
+      use_common_alert_schema = true
     }
   }
 
