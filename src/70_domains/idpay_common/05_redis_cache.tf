@@ -18,7 +18,7 @@ module "redis_v2" {
   embedded_subnet = {
     enabled              = true
     vnet_name            = local.vnet_spoke_data_name
-    vnet_rg_name         = local.network_rg
+    vnet_rg_name         = local.core_network_rg
     private_dns_zone_ids = [data.azurerm_private_dns_zone.redis.id]
   }
 }
