@@ -4,7 +4,6 @@ locals {
       requires_duplicate_detection            = true
       duplicate_detection_history_time_window = "P1D"
       dead_lettering_on_message_expiration    = true
-      requires_session                        = true
       authorization_rules = [
         {
           name   = "idpay-onboarding-request-producer"
@@ -46,6 +45,26 @@ locals {
         },
         {
           name   = "idpay-admissibility-request-processor"
+          listen = true
+          send   = true
+          manage = false
+        }
+      ]
+    }
+    idpay-onboarding-request-session = {
+      requires_duplicate_detection            = true
+      duplicate_detection_history_time_window = "P1D"
+      dead_lettering_on_message_expiration    = true
+      requires_session                        = true
+      authorization_rules = [
+        {
+          name   = "idpay-session-onboarding-request-session-producer"
+          listen = false
+          send   = true
+          manage = false
+        },
+        {
+          name   = "idpay-session-onboarding-request-session-processor"
           listen = true
           send   = true
           manage = false
