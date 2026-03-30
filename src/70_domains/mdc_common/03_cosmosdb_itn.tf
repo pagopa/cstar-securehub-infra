@@ -5,7 +5,7 @@ module "cosmos_account" {
   product_name        = var.prefix
   env                 = var.env
   location            = var.location
-  resource_group_name = data.azurerm_resource_group.mdc_data_rg.name
+  resource_group_name = local.data_rg
   tags = merge(
     module.tag_config.tags,
     {
@@ -22,12 +22,14 @@ module "cosmos_account" {
 
   # Network
   subnet_id = module.cosmos_snet.id
+
   private_endpoint_config = {
     enabled                       = true
     name_mongo                    = "${local.project}-cosmos-pe"
     service_connection_name_mongo = "${local.project}-cosmos-pe"
     private_dns_zone_mongo_ids    = [data.azurerm_private_dns_zone.cosmos.id]
   }
+  resource_group_nsg_name = local.network_rg
 
   main_geo_location_location = var.location
   additional_geo_locations   = var.additional_geo_locations
@@ -38,7 +40,7 @@ module "cosmos_account" {
 #-----------------------------------------------------------------------------------------------------------------------
 resource "azurerm_cosmosdb_mongo_database" "mongo_db" {
   name                = var.domain
-  resource_group_name = data.azurerm_resource_group.mdc_data_rg.name
+  resource_group_name = local.data_rg
   account_name        = module.cosmos_account.name
 
   dynamic "autoscale_settings" {
@@ -57,7 +59,7 @@ module "cosmosdb_collections" {
   for_each = { for index, coll in local.collections : coll.name => coll }
 
   name                = each.value.name
-  resource_group_name = data.azurerm_resource_group.mdc_data_rg.name
+  resource_group_name = local.data_rg
 
   cosmosdb_mongo_account_name  = module.cosmos_account.name
   cosmosdb_mongo_database_name = azurerm_cosmosdb_mongo_database.mongo_db.name
@@ -88,7 +90,7 @@ resource "azurerm_monitor_metric_alert" "cosmos_db_normalized_ru_exceeded" {
   count = var.env_short == "p" ? 1 : 0
 
   name                = "[${var.domain != null ? "${var.domain} | " : ""}${module.cosmos_account.name}] Normalized RU Exceeded"
-  resource_group_name = data.azurerm_resource_group.mdc_data_rg.name
+  resource_group_name = local.data_rg
   scopes              = [module.cosmos_account.id]
   description         = "A collection Normalized RU/s exceed provisioned throughput, and it's raising latency. Please, consider to increase RU."
   severity            = 0

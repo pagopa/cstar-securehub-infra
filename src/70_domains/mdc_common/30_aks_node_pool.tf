@@ -16,6 +16,8 @@ module "aks_node_pool" {
   node_tags             = {}
   node_taints           = ["${var.domain}Only=true:NoSchedule"]
   kubernetes_cluster_id = data.azurerm_kubernetes_cluster.aks.id
+
+  resource_group_nsg_name = local.network_rg
   embedded_subnet = {
     enabled      = true
     subnet_name  = local.project
