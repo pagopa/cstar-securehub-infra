@@ -14,6 +14,9 @@ module "cosmos_snet" {
     "Microsoft.Web",
     "Microsoft.AzureCosmosDB"
   ]
+
+  resource_group_nsg_name = local.network_rg
+
   tags = module.tag_config.tags
 }
 
@@ -32,6 +35,9 @@ module "eventhub_snet" {
   service_endpoints = [
     "Microsoft.EventHub"
   ]
+
+  resource_group_nsg_name = local.network_rg
+
   tags = module.tag_config.tags
 }
 
@@ -46,6 +52,8 @@ module "storage_snet" {
   virtual_network_name = local.vnet_spoke_data_name
 
   idh_resource_tier = "slash28_privatelink_true"
+
+  resource_group_nsg_name = local.network_rg
 
   service_endpoints = [
     "Microsoft.Storage"
@@ -64,7 +72,10 @@ module "redis_snet" {
   virtual_network_name = local.vnet_spoke_data_name
 
   idh_resource_tier = "slash28_privatelink_true"
-  tags              = module.tag_config.tags
+
+  resource_group_nsg_name = local.network_rg
+
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_private_dns_a_record" "ingress" {

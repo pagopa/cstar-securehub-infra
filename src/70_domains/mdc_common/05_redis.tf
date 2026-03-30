@@ -6,12 +6,13 @@ module "redis" {
   env                 = var.env
   idh_resource_tier   = var.redis_idh_tier
   location            = var.location
-  resource_group_name = data.azurerm_resource_group.mdc_data_rg.name
+  resource_group_name = local.data_rg
 
   private_endpoint = {
     subnet_id            = module.redis_snet.id
     private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_redis.id]
   }
+  resource_group_nsg_name = local.network_rg
 
   tags = merge(
     module.tag_config.tags,

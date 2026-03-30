@@ -1,7 +1,7 @@
 resource "azurerm_log_analytics_workspace" "log_analytics_workspace" {
   name                = "${local.project}-law"
   location            = var.location
-  resource_group_name = local.monitoring_rg_name
+  resource_group_name = local.monitor_rg
   tags                = module.tag_config.tags
 
 
@@ -21,7 +21,7 @@ resource "azurerm_log_analytics_workspace" "log_analytics_workspace" {
 resource "azurerm_application_insights" "application_insights" {
   name                 = "${local.project}-appinsights"
   location             = var.location
-  resource_group_name  = local.monitoring_rg_name
+  resource_group_name  = local.monitor_rg
   daily_data_cap_in_gb = var.law_daily_quota_gb
   tags                 = module.tag_config.tags
 
@@ -66,7 +66,7 @@ resource "azurerm_monitor_action_group" "opsgenie" { #
   count = var.env_short == "p" ? 1 : 0
 
   name                = "${title(var.domain)}Opsgenie"
-  resource_group_name = local.monitoring_rg_name
+  resource_group_name = local.monitor_rg
   short_name          = "${title(var.domain)}Opsgenie" # -> Max 12 char
 
   webhook_receiver {
