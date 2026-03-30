@@ -52,7 +52,7 @@ module "cdn_mdc_backoffice" {
   delivery_rule_rewrites = [
     {
       name  = "RewriteDefaultToIndex"
-      order = 1
+      order = 2
 
       url_path_conditions = [{
         operator         = "Equal"
@@ -69,7 +69,7 @@ module "cdn_mdc_backoffice" {
     {
       # SPA fallback: path senza estensione → index.html (React Router)
       name  = "RewriteSPAFallback"
-      order = 2
+      order = 3
 
       url_path_conditions = [{
         operator         = "BeginsWith"
