@@ -9,51 +9,13 @@
         "type": 3,
         "content": {
           "version": "KqlItem/1.0",
-          "query": "ApiManagementGatewayLogs\n| where TimeGenerated {evaluation_window:query}\n| where OperationId == \"getAccessTokens\"\n| mv-expand TraceRecords\n| where TraceRecords.metadata.key == \"counterKey\"\n| summarize count=count() by client_id=tostring(TraceRecords.message), ResponseCode\n| sort by client_id asc, ResponseCode asc",
-          "size": 0,
-          "title": "Panoramica stacco del token (MIL)",
-          "timeContext": {
-            "durationMs": 86400000
-          },
-          "queryType": 0,
-          "resourceType": "microsoft.operationalinsights/workspaces",
-          "crossComponentResources": [
-            "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-law"
-          ],
-          "chartSettings": {
-            "seriesLabelSettings": [
-              {
-                "seriesName": "200",
-                "color": "green"
-              },
-              {
-                "seriesName": "401",
-                "color": "redBright"
-              }
-            ]
-          }
-        },
-        "name": "Panoramica stacco del token (MIL)"
-      },
-      {
-        "type": 3,
-        "content": {
-          "version": "KqlItem/1.0",
-          "query": "ApiManagementGatewayLogs\n| where TimeGenerated {evaluation_window:query}\n| where OperationId == \"getKeycloakAccessTokens\"\n\n//| mv-expand TraceRecords\n//| where TraceRecords.metadata.key == \"counterKey\"\n//| summarize count=count() by client_id=tostring(TraceRecords.message), ResponseCode\n//| sort by client_id asc, ResponseCode asc",
+          "query": "ApiManagementGatewayLogs\n| where TimeGenerated {evaluation_window:query}\n| where ApiId == \"${prefix}-${env_short}-${location_short}-mcshared-auth\"\n| where isnotempty(TraceRecords)\n| mv-expand trace = parse_json(TraceRecords)\n| where trace.source == \"KeycloakTokenIssued\"\n| extend\n    client_id   = tostring(trace.metadata.client_id),\n    sub         = tostring(trace.metadata.sub),\n    duration_ms = TotalTime\n| summarize\n    ['Token emessi']      = count(),\n    ['Ultima emissione']  = max(TimeGenerated),\n    ['Prima emissione']   = min(TimeGenerated),\n    ['Latenza media (ms)'] = round(avg(duration_ms), 0)\n    by client_id, sub\n| extend\n    ['Ultima emissione'] = format_datetime(['Ultima emissione'], \"yyyy-MM-dd HH:mm:ss\"),\n    ['Prima emissione']  = format_datetime(['Prima emissione'],  \"yyyy-MM-dd HH:mm:ss\")\n| order by ['Token emessi'] desc\n| project\n    ['Client ID']          = client_id,\n    ['Soggetto (sub)']     = sub,\n    ['Token emessi'],\n    ['Latenza media (ms)'],\n    ['Prima emissione'],\n    ['Ultima emissione']\n",
           "size": 0,
           "title": "Panoramica stacco del token (Keycloak)",
           "queryType": 0,
           "resourceType": "microsoft.operationalinsights/workspaces",
           "crossComponentResources": [
-            "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law",
-            "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-law",
-            "/subscriptions/${subscription_id}/resourceGroups/defaultresourcegroup-weu/providers/microsoft.operationalinsights/workspaces/defaultworkspace-${subscription_id}-weu",
-            "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-core-law",
-            "/subscriptions/${subscription_id}/resourceGroups/cstar-d-itn-platform-synthetic-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-d-itn-platform-synthetic-law",
-            "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-platform-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-d-itn-platform-monitoring-law",
-            "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-mdc-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-mdc-law",
-            "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-mcshared-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-mcshared-law",
-            "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-idpay-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-idpay-law"
+            "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-law"
           ],
           "chartSettings": {
             "seriesLabelSettings": [

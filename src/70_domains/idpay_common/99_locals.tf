@@ -7,11 +7,9 @@ locals {
   project_entra     = "${var.prefix}-${var.env_short}-${var.domain}"
 
   # Default Domain Resource Group
-  data_rg     = "${local.project}-data-rg"
-  security_rg = "${local.project}-security-rg"
-  compute_rg  = "${local.project}-compute-rg"
-  cicd_rg     = "${local.project}-cicd-rg"
-  monitor_rg  = "${local.project}-monitoring-rg"
+  data_rg    = "${local.project}-data-rg"
+  monitor_rg = "${local.project}-monitoring-rg"
+  network_rg = "${local.project}-network-rg"
 
   # SMTP
   ses_smtp_port = 465
@@ -20,7 +18,7 @@ locals {
   # 🌐 Network
   #
   vnet_legacy_core_rg     = "${local.product}-vnet-rg"
-  network_rg              = "${local.project_core}-network-rg"
+  core_network_rg         = "${local.project_core}-network-rg"
   vnet_spoke_data_rg_name = "${local.project_core}-network-rg"
   vnet_spoke_data_name    = "${local.project_core}-spoke-data-vnet"
   vnet_spoke_compute_name = "${local.project_core}-spoke-compute-vnet"
@@ -133,4 +131,27 @@ locals {
 
   #Notify URL API email
   notify_url = "https://api-io.${data.azurerm_dns_zone.public_cstar.name}/idpay-itn/email-notification/export/notify"
+
+  ad_group_rbac = flatten([
+    {
+      object_id    = data.azuread_group.adgroup_idpay_admin.object_id
+      display_name = data.azuread_group.adgroup_idpay_admin.display_name
+    },
+    var.env_short != "p" ? [
+      {
+        object_id    = data.azuread_group.adgroup_idpay_developers.object_id
+        display_name = data.azuread_group.adgroup_idpay_developers.display_name
+      },
+      {
+        object_id    = data.azuread_group.adgroup_idpay_externals.object_id
+        display_name = data.azuread_group.adgroup_idpay_externals.display_name
+      }
+    ] : [],
+    var.env_short == "p" ? [
+      {
+        object_id    = data.azuread_group.adgroup_idpay_oncall[0].object_id
+        display_name = data.azuread_group.adgroup_idpay_oncall[0].display_name
+      }
+    ] : []
+  ])
 }

@@ -1144,7 +1144,7 @@
                 "queryType": 0,
                 "resourceType": "microsoft.operationalinsights/workspaces",
                 "crossComponentResources": [
-                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-core-law"
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
                 ],
                 "visualization": "table"
               },
@@ -2046,11 +2046,18 @@
               "name": "query - 2"
             },
             {
+              "type": 1,
+              "content": {
+                "json": "## 📊 Cosmos DB - Shared Throughput Analysis\n---\n**Come leggere questa griglia:**\n\n| Colonna | Cosa indica | Quando preoccuparsi |\n|---|---|---|\n| **Total RU Consumed** | Costo effettivo in Request Units per collection | Una collection consuma >80% del totale |\n| **Mongo Requests** | Numero di operazioni MongoDB | Rapporto requests/documenti molto alto (es. polling) |\n| **Document Count** | Numero di documenti nella collection | — |\n| **Data Usage / Index Usage** | Storage dati e indici | Data Usage sproporzionato rispetto al Document Count |\n| **Normalized RU %** | % di utilizzo del throughput condiviso (0-100%) | >70% = attenzione, >90% = throttling imminente |\n| **Autoscale Max Throughput** | RU massime configurate (a livello database) | Se Normalized RU è costantemente alto, aumentare questo valore |\n| **Throttled (429/16500)** | Richieste rifiutate per throughput insufficiente | Qualsiasi valore >0 indica un problema attivo |\n\n⚠️ **Nota:** Il throughput è **shared a livello database** — tutte le collection competono per le stesse RU. Se una collection domina il consumo, le altre possono subire throttling."
+              },
+              "name": "text - rtp-throughput-info"
+            },
+            {
               "type": 10,
               "content": {
                 "chartId": "workbook9ee57fd6-b139-4730-ac8b-ae263ee8cb58",
                 "version": "MetricsItem/2.0",
-                "size": 1,
+                "size": 0,
                 "chartType": 0,
                 "resourceType": "microsoft.documentdb/databaseaccounts",
                 "metricScope": 0,
@@ -2064,13 +2071,24 @@
                 "metrics": [
                   {
                     "namespace": "microsoft.documentdb/databaseaccounts",
+                    "metric": "microsoft.documentdb/databaseaccounts-Requests-TotalRequestUnits",
+                    "aggregation": 1,
+                    "splitBy": [
+                      "CollectionName"
+                    ],
+                    "splitBySortOrder": -1,
+                    "splitByLimit": 10,
+                    "columnName": "Total RU Consumed"
+                  },
+                  {
+                    "namespace": "microsoft.documentdb/databaseaccounts",
                     "metric": "microsoft.documentdb/databaseaccounts-Requests-MongoRequests",
                     "aggregation": 7,
                     "splitBy": [
                       "CollectionName"
                     ],
                     "splitBySortOrder": -1,
-                    "splitByLimit": 5,
+                    "splitByLimit": 10,
                     "columnName": "Mongo Client Requests"
                   },
                   {
@@ -2081,7 +2099,7 @@
                       "CollectionName"
                     ],
                     "splitBySortOrder": -1,
-                    "splitByLimit": 5
+                    "splitByLimit": 10
                   },
                   {
                     "namespace": "microsoft.documentdb/databaseaccounts",
@@ -2091,7 +2109,7 @@
                       "CollectionName"
                     ],
                     "splitBySortOrder": -1,
-                    "splitByLimit": 5
+                    "splitByLimit": 10
                   },
                   {
                     "namespace": "microsoft.documentdb/databaseaccounts",
@@ -2101,17 +2119,7 @@
                       "CollectionName"
                     ],
                     "splitBySortOrder": -1,
-                    "splitByLimit": 5
-                  },
-                  {
-                    "namespace": "microsoft.documentdb/databaseaccounts",
-                    "metric": "microsoft.documentdb/databaseaccounts-Requests-ProvisionedThroughput",
-                    "aggregation": 3,
-                    "splitBy": [
-                      "CollectionName"
-                    ],
-                    "splitBySortOrder": -1,
-                    "splitByLimit": 5
+                    "splitByLimit": 10
                   },
                   {
                     "namespace": "microsoft.documentdb/databaseaccounts",
@@ -2121,21 +2129,43 @@
                       "CollectionName"
                     ],
                     "splitBySortOrder": -1,
-                    "splitByLimit": 5,
-                    "columnName": "Highest RU Consuming Shard"
+                    "splitByLimit": 10,
+                    "columnName": "Normalized RU % (Max)"
+                  },
+                  {
+                    "namespace": "microsoft.documentdb/databaseaccounts",
+                    "metric": "microsoft.documentdb/databaseaccounts-Requests-AutoscaleMaxThroughput",
+                    "aggregation": 3,
+                    "splitBy": [
+                      "DatabaseName"
+                    ],
+                    "splitBySortOrder": -1,
+                    "splitByLimit": 5
+                  },
+                  {
+                    "namespace": "microsoft.documentdb/databaseaccounts",
+                    "metric": "microsoft.documentdb/databaseaccounts-Requests-MongoRequests",
+                    "aggregation": 7,
+                    "splitBy": [
+                      "CollectionName"
+                    ],
+                    "splitBySortOrder": -1,
+                    "splitByLimit": 10,
+                    "columnName": "Throttled Requests (16500)",
+                    "filters": [
+                      {
+                        "key": "ErrorCode",
+                        "operator": 0,
+                        "values": [
+                          "16500"
+                        ]
+                      }
+                    ]
                   }
                 ],
-                "title": "Cosmos DB Account Metrics By Collection",
+                "title": "Cosmos DB - Shared Throughput Analysis (Database: rtp)",
                 "gridFormatType": 2,
                 "filters": [
-                  {
-                    "id": "1",
-                    "key": "CollectionName",
-                    "operator": 0,
-                    "values": [
-                      "rtps"
-                    ]
-                  },
                   {
                     "id": "2",
                     "key": "DatabaseName",
@@ -2169,7 +2199,33 @@
                       "formatter": 5
                     },
                     {
-                      "columnMatch": "microsoft.documentdb/databaseaccounts-Requests-TotalRequests",
+                      "columnMatch": "Total RU Consumed",
+                      "formatter": 8,
+                      "formatOptions": {
+                        "min": 0,
+                        "palette": "red",
+                        "aggregation": "Sum"
+                      },
+                      "numberFormat": {
+                        "unit": 17,
+                        "options": {
+                          "style": "decimal",
+                          "useGrouping": true,
+                          "maximumFractionDigits": 1
+                        }
+                      }
+                    },
+                    {
+                      "columnMatch": "Total RU Consumed Timeline",
+                      "formatter": 9,
+                      "formatOptions": {
+                        "min": 0,
+                        "palette": "red",
+                        "aggregation": "Sum"
+                      }
+                    },
+                    {
+                      "columnMatch": "Mongo Client Requests",
                       "formatter": 8,
                       "formatOptions": {
                         "min": 0,
@@ -2180,19 +2236,14 @@
                         "unit": 17,
                         "options": {
                           "style": "decimal",
-                          "useGrouping": false,
+                          "useGrouping": true,
                           "maximumFractionDigits": 1
                         }
                       }
                     },
                     {
-                      "columnMatch": "microsoft.documentdb/databaseaccounts-Requests-TotalRequests Timeline",
-                      "formatter": 9,
-                      "formatOptions": {
-                        "min": 0,
-                        "palette": "blue",
-                        "aggregation": "Sum"
-                      }
+                      "columnMatch": "Mongo Client Requests Timeline",
+                      "formatter": 5
                     },
                     {
                       "columnMatch": "microsoft.documentdb/databaseaccounts-Requests-DocumentCount",
@@ -2255,68 +2306,71 @@
                       "formatter": 5
                     },
                     {
-                      "columnMatch": "microsoft.documentdb/databaseaccounts-Requests-ProvisionedThroughput",
+                      "columnMatch": "Normalized RU % (Max)",
                       "formatter": 8,
                       "formatOptions": {
                         "min": 0,
-                        "palette": "purple",
+                        "max": 100,
+                        "palette": "redGreen",
                         "aggregation": "Max"
+                      },
+                      "numberFormat": {
+                        "unit": 1,
+                        "options": {
+                          "style": "decimal",
+                          "maximumFractionDigits": 1
+                        }
+                      }
+                    },
+                    {
+                      "columnMatch": "Normalized RU % (Max) Timeline",
+                      "formatter": 9,
+                      "formatOptions": {
+                        "min": 0,
+                        "max": 100,
+                        "palette": "redGreen",
+                        "aggregation": "Max"
+                      }
+                    },
+                    {
+                      "columnMatch": "microsoft.documentdb/databaseaccounts-Requests-AutoscaleMaxThroughput",
+                      "formatter": 1,
+                      "numberFormat": {
+                        "unit": 0,
+                        "options": {
+                          "style": "decimal",
+                          "useGrouping": true
+                        }
+                      }
+                    },
+                    {
+                      "columnMatch": "microsoft.documentdb/databaseaccounts-Requests-AutoscaleMaxThroughput Timeline",
+                      "formatter": 5
+                    },
+                    {
+                      "columnMatch": "Throttled Requests (16500)",
+                      "formatter": 8,
+                      "formatOptions": {
+                        "min": 0,
+                        "palette": "redBright",
+                        "aggregation": "Sum"
                       },
                       "numberFormat": {
                         "unit": 17,
                         "options": {
                           "style": "decimal",
-                          "useGrouping": false,
-                          "maximumFractionDigits": 1
+                          "useGrouping": true,
+                          "maximumFractionDigits": 0
                         }
                       }
                     },
                     {
-                      "columnMatch": "microsoft.documentdb/databaseaccounts-Requests-ProvisionedThroughput Timeline",
-                      "formatter": 5
-                    },
-                    {
-                      "columnMatch": "microsoft.documentdb/databaseaccounts-Requests-NormalizedRUConsumption",
-                      "formatter": 8,
+                      "columnMatch": "Throttled Requests (16500) Timeline",
+                      "formatter": 9,
                       "formatOptions": {
                         "min": 0,
-                        "palette": "blue",
-                        "aggregation": "Max"
-                      },
-                      "numberFormat": {
-                        "unit": 1,
-                        "options": {
-                          "style": "decimal",
-                          "maximumFractionDigits": 1
-                        }
-                      }
-                    },
-                    {
-                      "columnMatch": "microsoft.documentdb/databaseaccounts-Requests-NormalizedRUConsumption Timeline",
-                      "formatter": 5
-                    },
-                    {
-                      "columnMatch": "Mongo Client Requests Timeline",
-                      "formatter": 5
-                    },
-                    {
-                      "columnMatch": "Highest RU Consuming Shard Timeline",
-                      "formatter": 5
-                    },
-                    {
-                      "columnMatch": "Highest RU Consuming Shard",
-                      "formatter": 1,
-                      "numberFormat": {
-                        "unit": 1,
-                        "options": null
-                      }
-                    },
-                    {
-                      "columnMatch": "Mongo Client Requests",
-                      "formatter": 1,
-                      "numberFormat": {
-                        "unit": 0,
-                        "options": null
+                        "palette": "redBright",
+                        "aggregation": "Sum"
                       }
                     }
                   ],
@@ -2344,12 +2398,20 @@
                       "label": "Collection"
                     },
                     {
+                      "columnId": "Total RU Consumed",
+                      "label": "Total RU Consumed (Sum)"
+                    },
+                    {
+                      "columnId": "Total RU Consumed Timeline",
+                      "label": "RU Consumed Timeline"
+                    },
+                    {
                       "columnId": "Mongo Client Requests",
-                      "label": "Mongo Client Requests"
+                      "label": "Mongo Requests (Count)"
                     },
                     {
                       "columnId": "Mongo Client Requests Timeline",
-                      "label": "Mongo Client Requests Timeline"
+                      "label": "Mongo Requests Timeline"
                     },
                     {
                       "columnId": "microsoft.documentdb/databaseaccounts-Requests-DocumentCount",
@@ -2357,39 +2419,47 @@
                     },
                     {
                       "columnId": "microsoft.documentdb/databaseaccounts-Requests-DocumentCount Timeline",
-                      "label": "Document Count (Avg) Timeline"
+                      "label": "Document Count Timeline"
                     },
                     {
                       "columnId": "microsoft.documentdb/databaseaccounts-Requests-DataUsage",
-                      "label": "Data Usage (Average)"
+                      "label": "Data Usage (Avg)"
                     },
                     {
                       "columnId": "microsoft.documentdb/databaseaccounts-Requests-DataUsage Timeline",
-                      "label": "Data Usage (Average) Timeline"
+                      "label": "Data Usage Timeline"
                     },
                     {
                       "columnId": "microsoft.documentdb/databaseaccounts-Requests-IndexUsage",
-                      "label": "Index Usage (Average)"
+                      "label": "Index Usage (Avg)"
                     },
                     {
                       "columnId": "microsoft.documentdb/databaseaccounts-Requests-IndexUsage Timeline",
-                      "label": "Index Usage (Average) Timeline"
+                      "label": "Index Usage Timeline"
                     },
                     {
-                      "columnId": "microsoft.documentdb/databaseaccounts-Requests-ProvisionedThroughput",
-                      "label": "Provisioned Throughput (Max)"
+                      "columnId": "Normalized RU % (Max)",
+                      "label": "Normalized RU % (Max)"
                     },
                     {
-                      "columnId": "microsoft.documentdb/databaseaccounts-Requests-ProvisionedThroughput Timeline",
-                      "label": "Provisioned Throughput (Max) Timeline"
+                      "columnId": "Normalized RU % (Max) Timeline",
+                      "label": "Normalized RU % Timeline"
                     },
                     {
-                      "columnId": "Highest RU Consuming Shard",
-                      "label": "Highest RU Consuming Shard"
+                      "columnId": "microsoft.documentdb/databaseaccounts-Requests-AutoscaleMaxThroughput",
+                      "label": "Autoscale Max Throughput (Max)"
                     },
                     {
-                      "columnId": "Highest RU Consuming Shard Timeline",
-                      "label": "Highest RU Consuming Shard Timeline"
+                      "columnId": "microsoft.documentdb/databaseaccounts-Requests-AutoscaleMaxThroughput Timeline",
+                      "label": "Autoscale Max Throughput Timeline"
+                    },
+                    {
+                      "columnId": "Throttled Requests (16500)",
+                      "label": "Throttled (429/16500)"
+                    },
+                    {
+                      "columnId": "Throttled Requests (16500) Timeline",
+                      "label": "Throttled Timeline"
                     }
                   ]
                 },
@@ -2423,20 +2493,19 @@
                     "aggregation": 3,
                     "splitBy": [
                       "CollectionName"
-                    ]
+                    ],
+                    "columnName": "Normalized RU % by Collection"
+                  },
+                  {
+                    "namespace": "microsoft.documentdb/databaseaccounts",
+                    "metric": "microsoft.documentdb/databaseaccounts-Requests-TotalRequestUnits",
+                    "aggregation": 1,
+                    "columnName": "RU Consumed by Collection"
                   }
                 ],
-                "title": "Highest RU Consuming Shard RTP",
+                "title": "Normalized RU Consumption & RU Cost by Collection (Database: rtp)",
                 "showOpenInMe": true,
                 "filters": [
-                  {
-                    "id": "1",
-                    "key": "CollectionName",
-                    "operator": 0,
-                    "values": [
-                      "rtps"
-                    ]
-                  },
                   {
                     "id": "2",
                     "key": "DatabaseName",
@@ -2450,8 +2519,7 @@
                   "rowLimit": 10000
                 }
               },
-              "showPin": false,
-              "name": "NormalizedRUConsumption"
+              "name": "NormalizedRUConsumption by Collection"
             },
             {
               "type": 10,
@@ -2473,20 +2541,31 @@
                   {
                     "namespace": "microsoft.documentdb/databaseaccounts",
                     "metric": "microsoft.documentdb/databaseaccounts-Requests-TotalRequestUnits",
-                    "aggregation": 1
+                    "aggregation": 1,
+                    "splitBy": [
+                      "CollectionName"
+                    ],
+                    "columnName": "RU Consumed"
+                  },
+                  {
+                    "namespace": "microsoft.documentdb/databaseaccounts",
+                    "metric": "microsoft.documentdb/databaseaccounts-Requests-MongoRequests",
+                    "aggregation": 7,
+                    "columnName": "Throttled Requests",
+                    "filters": [
+                      {
+                        "key": "ErrorCode",
+                        "operator": 0,
+                        "values": [
+                          "16500"
+                        ]
+                      }
+                    ]
                   }
                 ],
-                "title": "Total RUs RTP",
+                "title": "Total RU Consumed & Throttling by Collection (Database: rtp)",
                 "showOpenInMe": true,
                 "filters": [
-                  {
-                    "id": "1",
-                    "key": "CollectionName",
-                    "operator": 0,
-                    "values": [
-                      "rtps"
-                    ]
-                  },
                   {
                     "id": "2",
                     "key": "DatabaseName",
@@ -2500,8 +2579,7 @@
                   "rowLimit": 10000
                 }
               },
-              "showPin": false,
-              "name": "metric - 5"
+              "name": "Total RU by Collection"
             },
             {
               "type": 10,
@@ -2525,11 +2603,14 @@
                     "metric": "microsoft.documentdb/databaseaccounts-Requests-TotalRequestUnits",
                     "aggregation": 1,
                     "splitBy": [
+                      "CollectionName",
                       "OperationType"
-                    ]
+                    ],
+                    "columnName": "RU by Collection & Operation"
                   }
                 ],
-                "title": "Total RUs by Request Type",
+                "title": "Total RU Cost by Collection & Operation Type (Database: rtp)",
+                "showOpenInMe": true,
                 "filters": [
                   {
                     "id": "1",
@@ -2538,21 +2619,13 @@
                     "values": [
                       "rtp"
                     ]
-                  },
-                  {
-                    "id": "2",
-                    "key": "CollectionName",
-                    "operator": 0,
-                    "values": [
-                      "rtps"
-                    ]
                   }
                 ],
                 "gridSettings": {
                   "rowLimit": 10000
                 }
               },
-              "name": "metric - 10"
+              "name": "RU by Collection and Operation Type"
             },
             {
               "type": 10,
@@ -2576,22 +2649,21 @@
                     "metric": "microsoft.documentdb/databaseaccounts-Requests-MongoRequests",
                     "aggregation": 7,
                     "splitBy": [
+                      "CollectionName",
                       "CommandName"
                     ],
-                    "columnName": "MongoDB Client Requests"
+                    "columnName": "Requests by Collection & Command"
+                  },
+                  {
+                    "namespace": "microsoft.documentdb/databaseaccounts",
+                    "metric": "microsoft.documentdb/databaseaccounts-Requests-MongoRequests",
+                    "aggregation": 7,
+                    "columnName": "Requests by Collection & Status"
                   }
                 ],
-                "title": "Client Requests RTP",
+                "title": "MongoDB Requests by Collection, Command & Error Code (Database: rtp)",
                 "showOpenInMe": true,
                 "filters": [
-                  {
-                    "id": "1",
-                    "key": "CollectionName",
-                    "operator": 0,
-                    "values": [
-                      "rtps"
-                    ]
-                  },
                   {
                     "id": "2",
                     "key": "DatabaseName",
@@ -2605,7 +2677,7 @@
                   "rowLimit": 10000
                 }
               },
-              "name": "metric - 3"
+              "name": "MongoDB Requests by Collection and Command"
             },
             {
               "type": 10,
@@ -2629,23 +2701,23 @@
                     "metric": "microsoft.documentdb/databaseaccounts-Requests-MongoRequests",
                     "aggregation": 7,
                     "splitBy": [
-                      "CommandName"
-                    ]
+                      "CollectionName",
+                      "ErrorCode"
+                    ],
+                    "columnName": "Failed Requests by Collection & Error"
+                  },
+                  {
+                    "namespace": "microsoft.documentdb/databaseaccounts",
+                    "metric": "microsoft.documentdb/databaseaccounts-Requests-MongoRequests",
+                    "aggregation": 7,
+                    "columnName": "Failed Requests by Collection & Command"
                   }
                 ],
-                "title": "Failed Client Requests by Operation Type RTP",
+                "title": "Failed Requests by Collection, Error Code & Command (Database: rtp)",
                 "showOpenInMe": true,
                 "filters": [
                   {
-                    "id": "1",
-                    "key": "CollectionName",
-                    "operator": 0,
-                    "values": [
-                      "rtps"
-                    ]
-                  },
-                  {
-                    "id": "2",
+                    "id": "3",
                     "key": "DatabaseName",
                     "operator": 0,
                     "values": [
@@ -2665,7 +2737,7 @@
                   "rowLimit": 10000
                 }
               },
-              "name": "metric - 4"
+              "name": "Failed Requests by Collection and Error"
             },
             {
               "type": 10,
@@ -2687,15 +2759,20 @@
                   {
                     "namespace": "microsoft.documentdb/databaseaccounts",
                     "metric": "microsoft.documentdb/databaseaccounts-Requests-DataUsage",
-                    "aggregation": 1
+                    "aggregation": 4,
+                    "splitBy": [
+                      "CollectionName"
+                    ],
+                    "columnName": "Data Usage"
                   },
                   {
                     "namespace": "microsoft.documentdb/databaseaccounts",
                     "metric": "microsoft.documentdb/databaseaccounts-Requests-IndexUsage",
-                    "aggregation": 1
+                    "aggregation": 4,
+                    "columnName": "Index Usage"
                   }
                 ],
-                "title": "Data & Index Usage",
+                "title": "Data & Index Usage by Collection (Database: rtp)",
                 "showOpenInMe": true,
                 "filters": [
                   {
@@ -2705,21 +2782,13 @@
                     "values": [
                       "rtp"
                     ]
-                  },
-                  {
-                    "id": "2",
-                    "key": "CollectionName",
-                    "operator": 0,
-                    "values": [
-                      "rtps"
-                    ]
                   }
                 ],
                 "gridSettings": {
                   "rowLimit": 10000
                 }
               },
-              "name": "metric - 6"
+              "name": "Data and Index Usage by Collection"
             },
             {
               "type": 10,
@@ -2741,26 +2810,23 @@
                   {
                     "namespace": "microsoft.documentdb/databaseaccounts",
                     "metric": "microsoft.documentdb/databaseaccounts-Requests-ServiceAvailability",
-                    "aggregation": 4
+                    "aggregation": 4,
+                    "columnName": "Availability (Avg %)"
                   },
                   {
                     "namespace": "microsoft.documentdb/databaseaccounts",
                     "metric": "microsoft.documentdb/databaseaccounts-Requests-ServiceAvailability",
-                    "aggregation": 2
-                  },
-                  {
-                    "namespace": "microsoft.documentdb/databaseaccounts",
-                    "metric": "microsoft.documentdb/databaseaccounts-Requests-ServiceAvailability",
-                    "aggregation": 3
+                    "aggregation": 2,
+                    "columnName": "Availability (Min %)"
                   }
                 ],
-                "title": "Service Availability (min/max/avg in %)",
+                "title": "Service Availability - Min & Avg % (Account Level)",
+                "showOpenInMe": true,
                 "gridSettings": {
                   "rowLimit": 10000
                 }
               },
-              "showPin": false,
-              "name": "metric - 7"
+              "name": "Service Availability"
             },
             {
               "type": 10,
@@ -2783,12 +2849,16 @@
                     "namespace": "microsoft.documentdb/databaseaccounts",
                     "metric": "microsoft.documentdb/databaseaccounts-Requests-ServerSideLatencyGateway",
                     "aggregation": 4,
-                    "splitBy": [
-                      "Region"
-                    ]
+                    "columnName": "Latency Avg (ms)"
+                  },
+                  {
+                    "namespace": "microsoft.documentdb/databaseaccounts",
+                    "metric": "microsoft.documentdb/databaseaccounts-Requests-ServerSideLatencyGateway",
+                    "aggregation": 3,
+                    "columnName": "Latency Max (ms)"
                   }
                 ],
-                "title": "Server Side Latency (Avg) By Region RTP",
+                "title": "Server Side Latency by Collection - Avg & Max (Database: rtp)",
                 "showOpenInMe": true,
                 "filters": [
                   {
@@ -2797,14 +2867,6 @@
                     "operator": 0,
                     "values": [
                       "rtp"
-                    ]
-                  },
-                  {
-                    "id": "2",
-                    "key": "CollectionName",
-                    "operator": 0,
-                    "values": [
-                      "rtps"
                     ]
                   },
                   {
@@ -2820,12 +2882,7 @@
                   "rowLimit": 10000
                 }
               },
-              "customWidth": "50",
-              "name": "metric - 8",
-              "styleSettings": {
-                "maxWidth": "50",
-                "showBorder": true
-              }
+              "name": "Server Side Latency by Collection"
             },
             {
               "type": 10,
@@ -2849,11 +2906,13 @@
                     "metric": "microsoft.documentdb/databaseaccounts-Requests-ServerSideLatencyGateway",
                     "aggregation": 4,
                     "splitBy": [
+                      "CollectionName",
                       "OperationType"
-                    ]
+                    ],
+                    "columnName": "Latency Avg by Collection & Op"
                   }
                 ],
-                "title": " Server Side Latency (Avg) By Operation RTP",
+                "title": "Server Side Latency (Avg) by Collection & Operation (Database: rtp)",
                 "showOpenInMe": true,
                 "filters": [
                   {
@@ -2862,14 +2921,6 @@
                     "operator": 0,
                     "values": [
                       "rtp"
-                    ]
-                  },
-                  {
-                    "id": "2",
-                    "key": "CollectionName",
-                    "operator": 0,
-                    "values": [
-                      "rtps"
                     ]
                   },
                   {
@@ -2885,12 +2936,7 @@
                   "rowLimit": 10000
                 }
               },
-              "customWidth": "50",
-              "name": "metric - 9",
-              "styleSettings": {
-                "maxWidth": "50",
-                "showBorder": true
-              }
+              "name": "Server Side Latency by Collection and Operation"
             }
           ]
         },

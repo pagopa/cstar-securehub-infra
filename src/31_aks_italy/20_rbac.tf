@@ -320,3 +320,21 @@ resource "kubernetes_cluster_role" "kube_system_reader" {
     module.aks
   ]
 }
+
+resource "kubernetes_cluster_role" "rbac_reader" {
+  metadata {
+    name = "rbac-reader"
+  }
+
+  rule {
+    api_groups = ["rbac.authorization.k8s.io"]
+    resources  = ["rolebindings", "roles", "clusterroles", "clusterrolebindings"]
+    verbs      = ["get", "list", "watch"]
+  }
+
+  rule {
+    api_groups = [""]
+    resources  = ["namespaces"]
+    verbs      = ["get", "list", "watch"]
+  }
+}
