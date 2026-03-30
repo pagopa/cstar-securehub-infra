@@ -19,7 +19,7 @@ resource "kubernetes_config_map" "idpay-payment-initiatives-property-validation"
   data = {
     spring_application_json = jsonencode({
       app = {
-        barCode = {
+        bar-code = {
           "additional-properties-validation" = {
             initiatives = {
               (var.idpay_bel_initiative_id) = "PRODUCT_GTIN"
