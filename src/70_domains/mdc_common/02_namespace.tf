@@ -1,15 +1,3 @@
-# resource "kubernetes_namespace" "namespace" {
-#   metadata {
-#     name = var.domain
-#   }
-# }
-#
-# resource "kubernetes_namespace" "namespace_system" {
-#   metadata {
-#     name = "${var.domain}-system"
-#   }
-# }
-
 module "namespace_role_bindings" {
   source = "./.terraform/modules/__v4__/kubernetes_namespace_role_binding"
 
@@ -42,14 +30,4 @@ resource "kubernetes_cluster_role_binding" "rbac_reader_global" {
     name      = each.value.object_id
     api_group = "rbac.authorization.k8s.io"
   }
-}
-
-moved {
-  from = kubernetes_namespace.namespace
-  to   = module.namespace_role_bindings.kubernetes_namespace.this
-}
-
-moved {
-  from = kubernetes_namespace.namespace_system
-  to   = module.namespace_system_role_bindings.kubernetes_namespace.this
 }
