@@ -32,13 +32,13 @@ data "azurerm_key_vault_secret" "slack_webhook" {
 }
 
 data "azurerm_key_vault_secret" "git_pat" {
-  count        = var.env == "prod" ? 1 : 0
+  count        = var.env_short == "p" ? 1 : 0
   key_vault_id = data.azurerm_key_vault.rtp-kv.id
   name         = "git-pat"
 }
 
 data "azurerm_key_vault_secret" "sonar_token" {
-  count        = var.env == "prod" ? 1 : 0
+  count        = var.env_short == "p" ? 1 : 0
   key_vault_id = data.azurerm_key_vault.rtp-kv.id
   name         = "sonar-token"
 }
