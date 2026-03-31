@@ -76,3 +76,19 @@ resource "kubernetes_role_binding" "system_deployer_binding" {
     namespace = "${var.domain}-system"
   }
 }
+
+resource "kubernetes_cluster_role_binding" "system_deployer_cluster_binding" {
+  metadata {
+    name = "${var.domain}-system-deployer-binding"
+  }
+  role_ref {
+    api_group = "rbac.authorization.k8s.io"
+    kind      = "ClusterRole"
+    name      = "system-cluster-deployer"
+  }
+  subject {
+    kind      = "ServiceAccount"
+    name      = "azure-devops"
+    namespace = "${var.domain}-system"
+  }
+}

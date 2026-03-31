@@ -135,7 +135,7 @@ resource "keycloak_custom_identity_provider_mapper" "domain_admin_realm_mapper" 
   extra_config = {
     syncMode      = "FORCE"
     claim         = "groups"
-    "claim.value" = data.azuread_group.adgroup_idpay_admin.object_id
+    "claim.value" = data.azuread_group.adgroup_domain_admin.object_id
     role          = keycloak_role.domain_admin_role[each.key].name
   }
 }
@@ -151,7 +151,7 @@ resource "keycloak_custom_identity_provider_mapper" "domain_developers_realm_map
   extra_config = {
     syncMode      = "FORCE"
     claim         = "groups"
-    "claim.value" = data.azuread_group.adgroup_idpay_developers.object_id
+    "claim.value" = data.azuread_group.adgroup_domain_developers.object_id
     role          = keycloak_role.domain_admin_role[each.key].name
   }
 }
@@ -167,7 +167,7 @@ resource "keycloak_custom_identity_provider_mapper" "domain_externals_realm_mapp
   extra_config = {
     syncMode      = "FORCE"
     claim         = "groups"
-    "claim.value" = data.azuread_group.adgroup_idpay_externals.object_id
+    "claim.value" = data.azuread_group.adgroup_domain_externals.object_id
     role          = keycloak_role.domain_view_role[each.key].name
   }
 }
