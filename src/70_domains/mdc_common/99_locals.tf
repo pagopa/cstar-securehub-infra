@@ -16,6 +16,8 @@ locals {
   vnet_spoke_compute_name = "${local.project_core}-spoke-compute-vnet"
   vnet_spoke_data_name    = "${local.project_core}-spoke-data-vnet"
 
+  public_dns_zone_name = var.dns_zone_public_name
+
   # 🔎 DNS
   internal_dns_zone_name                = "${var.dns_zone_internal_prefix}.${var.external_domain}"
   internal_dns_zone_resource_group_name = "${local.product}-vnet-rg"
@@ -43,6 +45,12 @@ locals {
 
   # 🔗 API Management
   apim_name = "${local.product}-apim"
+
+
+  mcshared_api_url           = "https://api-mcshared.${local.public_dns_zone_name}"
+  keycloak_external_hostname = "${local.mcshared_api_url}/auth-itn"
+  selfcare_issuer            = var.env == "prod" ? "https://selfcare.${var.external_domain}" : "https://${var.env}.selfcare.${var.external_domain}"
+  keycloak_realm             = [keycloak_realm.mdc]
 
   # Default Domain Resource Group
   data_rg    = "${local.project}-data-rg"
