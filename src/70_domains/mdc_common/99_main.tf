@@ -18,6 +18,10 @@ terraform {
       source  = "argoproj-labs/argocd"
       version = "~> 7.0"
     }
+    keycloak = {
+      source  = "keycloak/keycloak"
+      version = ">= 5.0.0"
+    }
     helm = {
       source  = "hashicorp/helm"
       version = "~> 2.0"
@@ -56,6 +60,13 @@ provider "helm" {
   kubernetes {
     config_path = "${var.k8s_kube_config_path_prefix}/config-${local.aks_name}"
   }
+}
+
+provider "keycloak" {
+  client_id     = "terraform"
+  client_secret = data.azurerm_key_vault_secret.terraform_client_secret_for_keycloak.value
+  url           = data.azurerm_key_vault_secret.keycloak_url.value
+  realm         = "master"
 }
 
 module "__v4__" {
