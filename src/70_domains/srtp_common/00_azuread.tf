@@ -23,7 +23,6 @@ data "azuread_group" "adgroup_domain_externals" {
 }
 
 data "azuread_group" "adgroup_domain_project_managers" {
-  count        = var.env == "prod" ? 1 : 0
   display_name = "${local.project_entra}-adgroup-project-managers"
 }
 

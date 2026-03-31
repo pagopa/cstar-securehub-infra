@@ -4,24 +4,27 @@ locals {
   ### ArgoCD Groups ---------------------------------------------
   argocd_groups_admin = var.env == "prod" ? [
     data.azuread_group.adgroup_admin.object_id,
-    data.azuread_group.adgroup_domain_admin.object_id,
-    data.azuread_group.adgroup_domain_oncall[0].object_id
+    data.azuread_group.adgroup_domain_oncall[0].object_id,
+    data.azuread_group.adgroup_domain_admin.object_id
     ] : [
     data.azuread_group.adgroup_admin.object_id,
-    data.azuread_group.adgroup_domain_admin.object_id,
+    data.azuread_group.adgroup_domain_admin.object_id
   ]
 
-  argocd_groups_developer = [
+  argocd_groups_developer = var.env == "prod" ? [
     data.azuread_group.adgroup_domain_developers.object_id,
+    ] : [
+    data.azuread_group.adgroup_domain_developers.object_id,
+    data.azuread_group.adgroup_domain_project_managers.object_id
   ]
 
   argocd_groups_reader = var.env == "prod" ? [
-    data.azuread_group.adgroup_domain_project_managers[0].object_id,
+    data.azuread_group.adgroup_domain_project_managers.object_id,
   ] : []
 
-  argocd_groups_external = [
+  argocd_groups_external = var.env != "prod" ? [
     data.azuread_group.adgroup_domain_externals.object_id,
-  ]
+  ] : null
 }
 
 #
