@@ -14,43 +14,43 @@ resource "keycloak_realm" "mdc" {
 
 # create send client
 resource "keycloak_openid_client" "emd_pagopa_mdc_send_client" {
-  realm_id                  = keycloak_realm.mdc.id
-  name                      = "send client"
+  realm_id = keycloak_realm.mdc.id
+  name     = "send client"
 
-  client_id                 = data.azurerm_key_vault_secret.send_client_id.value
-  client_secret             = data.azurerm_key_vault_secret.send_client_secret.value
+  client_id     = data.azurerm_key_vault_secret.send_client_id.value
+  client_secret = data.azurerm_key_vault_secret.send_client_secret.value
 
-  enabled                   = true
-  access_type               = "CONFIDENTIAL"
-  service_accounts_enabled  = true
+  enabled                  = true
+  access_type              = "CONFIDENTIAL"
+  service_accounts_enabled = true
 
 }
 
 # create pagopa client
 resource "keycloak_openid_client" "emd_pagopa_mdc_pagopa_client" {
-  realm_id                  = keycloak_realm.mdc.id
-  name                      = "pagopa client"
+  realm_id = keycloak_realm.mdc.id
+  name     = "pagopa client"
 
-  client_id                 = data.azurerm_key_vault_secret.emd_pagopa_client_id.value
-  client_secret             = data.azurerm_key_vault_secret.emd_pagopa_client_secret.value
+  client_id     = data.azurerm_key_vault_secret.emd_pagopa_client_id.value
+  client_secret = data.azurerm_key_vault_secret.emd_pagopa_client_secret.value
 
-  enabled                   = true
-  access_type               = "CONFIDENTIAL"
-  service_accounts_enabled  = true
+  enabled                  = true
+  access_type              = "CONFIDENTIAL"
+  service_accounts_enabled = true
 
 }
 
 # create emd-tpp-test client
 resource "keycloak_openid_client" "emd_pagopa_mdc_emd_tpp_test_client" {
-  realm_id                  = keycloak_realm.mdc.id
-  name                      = "emd-tpp-test client"
+  realm_id = keycloak_realm.mdc.id
+  name     = "emd-tpp-test client"
 
-  client_id                 = data.azurerm_key_vault_secret.emd_tpp_test_client_id.value
-  client_secret             = data.azurerm_key_vault_secret.emd_tpp_test_client_secret.value
+  client_id     = data.azurerm_key_vault_secret.emd_tpp_test_client_id.value
+  client_secret = data.azurerm_key_vault_secret.emd_tpp_test_client_secret.value
 
-  enabled                   = true
-  access_type               = "CONFIDENTIAL"
-  service_accounts_enabled  = true
+  enabled                  = true
+  access_type              = "CONFIDENTIAL"
+  service_accounts_enabled = true
 
 }
 
