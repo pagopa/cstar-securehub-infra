@@ -4,10 +4,10 @@ resource "keycloak_realm" "mdc" {
   enabled      = true
   display_name = "Messaggi di cortesia"
 
-  # Durata dei token (opzionale)
+  # Token lifespan (optional)
   access_token_lifespan = "30m"
 
-  # Algoritmo di firma predefinito
+  # Default signature algorithm
   default_signature_algorithm = "RS256"
 
 }
@@ -33,20 +33,20 @@ resource "keycloak_openid_group_membership_protocol_mapper" "groups_mapper" {
 
 # Add audience to the token
 resource "keycloak_openid_audience_protocol_mapper" "aud_mapper" {
-  realm_id        = keycloak_realm.mdc.id
-  client_scope_id = keycloak_openid_client_scope.mdc_base_claims.id
-  name            = "audience-mapper"
-  included_custom_audience = "keycloak.pagopa.it" # Valore dell'audience per tutti
+  realm_id                 = keycloak_realm.mdc.id
+  client_scope_id          = keycloak_openid_client_scope.mdc_base_claims.id
+  name                     = "audience-mapper"
+  included_custom_audience = "keycloak.pagopa.it" # Audience value for all
   add_to_access_token      = true
 }
 
 # Mapper for clientId - The User Session Note Mapper extract the current client_id
 resource "keycloak_openid_user_session_note_protocol_mapper" "client_id_mapper" {
-  realm_id        = keycloak_realm.mdc.id
-  client_scope_id = keycloak_openid_client_scope.mdc_base_claims.id
-  name            = "client-id-mapper"
-  claim_name      = "clientId"
-  session_note    = "client_id"
+  realm_id            = keycloak_realm.mdc.id
+  client_scope_id     = keycloak_openid_client_scope.mdc_base_claims.id
+  name                = "client-id-mapper"
+  claim_name          = "clientId"
+  session_note        = "client_id"
   add_to_access_token = true
 }
 
@@ -76,7 +76,7 @@ resource "keycloak_openid_client_default_scopes" "emd_pagopa_mdc_send_client_def
   ]
 }
 
-# create pagopa client
+# Create pagopa client
 resource "keycloak_openid_client" "emd_pagopa_mdc_pagopa_client" {
   realm_id = keycloak_realm.mdc.id
   name     = "pagopa client"
@@ -102,7 +102,7 @@ resource "keycloak_openid_client_default_scopes" "emd_pagopa_mdc_pagopa_client_d
   ]
 }
 
-# create emd-tpp-test client
+# Create emd-tpp-test client
 resource "keycloak_openid_client" "emd_pagopa_mdc_emd_tpp_test_client" {
   realm_id = keycloak_realm.mdc.id
   name     = "emd-tpp-test client"
