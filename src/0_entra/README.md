@@ -37,13 +37,13 @@ Re-enable all the resource, commented before to complete the procedure
 | Name | Version |
 |------|---------|
 | <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 3.8.0 |
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.61.0 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.66.0 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | c1d2665e49fbc59996c5d2807f77d4391d8f593e |
+| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | b08aa6d9dc188ffaf98423c974a90ab9f0cece1f |
 | <a name="module_argocd_entra"></a> [argocd\_entra](#module\_argocd\_entra) | ./.terraform/modules/__v4__/kubernetes_argocd_entra | n/a |
 | <a name="module_keycloak_app"></a> [keycloak\_app](#module\_keycloak\_app) | ./.terraform/modules/__v4__/keycloak_entra | n/a |
 | <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../tag_config | n/a |

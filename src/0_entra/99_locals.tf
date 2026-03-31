@@ -21,14 +21,17 @@ locals {
     #SRTP Groups
     "${local.product}-srtp-adgroup-admin",
     "${local.product}-srtp-adgroup-developers",
+    "${local.product}-srtp-adgroup-project-managers",
     "${local.product}-srtp-adgroup-externals",
     #IDPay Groups
     "${local.product}-idpay-adgroup-admin",
     "${local.product}-idpay-adgroup-developers",
+    "${local.product}-idpay-adgroup-project-managers",
     "${local.product}-idpay-adgroup-externals",
     #MDC Groups
     "${local.product}-mdc-adgroup-admin",
     "${local.product}-mdc-adgroup-developers",
+    "${local.product}-mdc-adgroup-project-managers",
     "${local.product}-mdc-adgroup-externals",
     ],
 
