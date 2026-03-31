@@ -109,21 +109,21 @@ locals {
     }],
     # IDPAY GROUP
     [{
-      id             = data.azuread_group.adgroup_idpay_admin.object_id,
-      name           = data.azuread_group.adgroup_idpay_admin.display_name
+      id             = data.azuread_group.adgroup_domain_admin.object_id,
+      name           = data.azuread_group.adgroup_domain_admin.display_name
       role           = "Admin"
       principal_type = "Group"
     }],
     [
       {
-        id             = data.azuread_group.adgroup_idpay_developers.object_id,
-        name           = data.azuread_group.adgroup_idpay_developers.display_name
+        id             = data.azuread_group.adgroup_domain_developers.object_id,
+        name           = data.azuread_group.adgroup_domain_developers.display_name
         role           = var.env_short == "p" ? "Viewer" : "Admin"
         principal_type = "Group"
       }
     ],
     [
-      for g in data.azuread_group.adgroup_idpay_oncall[*] : {
+      for g in data.azuread_group.adgroup_domain_oncall[*] : {
         id             = g.object_id,
         name           = g.display_name
         role           = "Admin"
@@ -131,8 +131,8 @@ locals {
       }
     ],
     contains(["d", "u"], var.env_short) ? [{
-      id             = data.azuread_group.adgroup_idpay_externals.object_id,
-      name           = data.azuread_group.adgroup_idpay_externals.display_name
+      id             = data.azuread_group.adgroup_domain_externals.object_id,
+      name           = data.azuread_group.adgroup_domain_externals.display_name
       role           = "Admin"
       principal_type = "Group"
     }] : [],

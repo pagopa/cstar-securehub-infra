@@ -5,13 +5,13 @@ resource "kubernetes_cluster_role" "system_cluster_deployer" {
 
   rule {
     api_groups = [""]
-    resources  = ["namespaces", "services", "configmaps", "secrets", "serviceaccounts", ]
+    resources  = ["namespaces", "services", "configmaps", "secrets", "serviceaccounts"]
     verbs      = ["get", "list", "watch", ]
   }
 
   rule {
     api_groups = ["rbac.authorization.k8s.io"]
-    resources  = ["rolebindings", "roles"]
+    resources  = ["rolebindings", "roles", "clusterrolebindings"]
     verbs      = ["get", "list", "watch", ]
   }
 

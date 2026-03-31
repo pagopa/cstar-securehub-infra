@@ -65,6 +65,21 @@ resource "kubernetes_role_binding" "kube_system_reader_binding" {
   }
 }
 
+resource "kubernetes_cluster_role_binding" "system_deployer_cluster_binding" {
+  metadata {
+    name = "${var.domain}-system-deployer-binding"
+  }
+  role_ref {
+    api_group = "rbac.authorization.k8s.io"
+    kind      = "ClusterRole"
+    name      = "system-cluster-deployer"
+  }
+  subject {
+    kind      = "ServiceAccount"
+    name      = "azure-devops"
+    namespace = "${var.domain}-system"
+  }
+}
 
 #tfsec:ignore:AZU023
 resource "azurerm_key_vault_secret" "azure_devops_sa_token" {
