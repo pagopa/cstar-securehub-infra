@@ -10,6 +10,10 @@ resource "keycloak_realm" "mdc" {
   # Default signature algorithm
   default_signature_algorithm = "RS256"
 
+  attributes = {
+    frontendUrl = local.keycloak_external_hostname
+  }
+
 }
 
 ### Client settings ###
