@@ -33,20 +33,20 @@ resource "keycloak_openid_group_membership_protocol_mapper" "groups_mapper" {
 
 # Add audience to the token
 resource "keycloak_openid_audience_protocol_mapper" "aud_mapper" {
-  realm_id        = keycloak_realm.mdc.id
-  client_scope_id = keycloak_openid_client_scope.mdc_base_claims.id
-  name            = "audience-mapper"
+  realm_id                 = keycloak_realm.mdc.id
+  client_scope_id          = keycloak_openid_client_scope.mdc_base_claims.id
+  name                     = "audience-mapper"
   included_custom_audience = "keycloak.pagopa.it" # Valore dell'audience per tutti
   add_to_access_token      = true
 }
 
 # Mapper for clientId - The User Session Note Mapper extract the current client_id
 resource "keycloak_openid_user_session_note_protocol_mapper" "client_id_mapper" {
-  realm_id        = keycloak_realm.mdc.id
-  client_scope_id = keycloak_openid_client_scope.mdc_base_claims.id
-  name            = "client-id-mapper"
-  claim_name      = "clientId"
-  session_note    = "client_id"
+  realm_id            = keycloak_realm.mdc.id
+  client_scope_id     = keycloak_openid_client_scope.mdc_base_claims.id
+  name                = "client-id-mapper"
+  claim_name          = "clientId"
+  session_note        = "client_id"
   add_to_access_token = true
 }
 
@@ -172,3 +172,74 @@ resource "keycloak_user_groups" "service_account_group_membership_emd-tpp-test" 
     keycloak_group.emd_pagopa_mdc_emd_tpp_group.id
   ]
 }
+
+# create hype client
+resource "keycloak_openid_client" "emd_pagopa_mdc_hype_client" {
+  realm_id = keycloak_realm.mdc.id
+  name     = "hype client"
+
+  client_id     = "c357afa2-1bbb-42f9-b284-38fe141661da"
+  client_secret = "zJnzg7t2HW8Ahr1kytLRFBeBSZAi0fAU5niF"
+
+  enabled                  = true
+  access_type              = "CONFIDENTIAL"
+  service_accounts_enabled = true
+
+}
+
+# Hype client default scopes
+resource "keycloak_openid_client_default_scopes" "emd_pagopa_mdc_hype_client_default_scopes" {
+  realm_id  = keycloak_realm.mdc.id
+  client_id = keycloak_openid_client.emd_pagopa_mdc_hype_client.id
+
+  default_scopes = [
+    "openid",
+    "profile",
+    keycloak_openid_client_scope.mdc_base_claims.name,
+  ]
+}
+
+# create bdf client
+resource "keycloak_openid_client" "emd_pagopa_mdc_bdf_client" {
+  realm_id = keycloak_realm.mdc.id
+  name     = "bdf client"
+
+  client_id     = "5487f838-f231-44ec-85e0-015f13b1fc19"
+  client_secret = "Fs90vpnXbDLwGd25almbndgI9Hi6AqcY7VoB"
+
+  enabled                  = true
+  access_type              = "CONFIDENTIAL"
+  service_accounts_enabled = true
+
+}
+
+# Bdf client default scopes
+resource "keycloak_openid_client_default_scopes" "emd_pagopa_mdc_bdf_client_default_scopes" {
+  realm_id  = keycloak_realm.mdc.id
+  client_id = keycloak_openid_client.emd_pagopa_mdc_bdf_client.id
+
+  default_scopes = [
+    "openid",
+    "profile",
+    keycloak_openid_client_scope.mdc_base_claims.name,
+  ]
+}
+
+# Assign hype client to group
+resource "keycloak_user_groups" "service_account_group_membership_hype" {
+  realm_id = keycloak_realm.mdc.id
+  user_id  = keycloak_openid_client.emd_pagopa_mdc_hype_client.service_account_user_id
+  group_ids = [
+    keycloak_group.emd_pagopa_mdc_emd_tpp_group.id
+  ]
+}
+
+# Assign bdf client to group
+resource "keycloak_user_groups" "service_account_group_membership_bdf" {
+  realm_id = keycloak_realm.mdc.id
+  user_id  = keycloak_openid_client.emd_pagopa_mdc_bdf_client.service_account_user_id
+  group_ids = [
+    keycloak_group.emd_pagopa_mdc_emd_tpp_group.id
+  ]
+}
+
