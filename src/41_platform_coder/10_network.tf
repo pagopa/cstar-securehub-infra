@@ -14,6 +14,8 @@ module "aks_user_keycloak_snet" {
   idh_resource_tier = "aks_overlay"
 
   service_endpoints = []
+
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_subnet_nat_gateway_association" "nat_gateway_association" {
