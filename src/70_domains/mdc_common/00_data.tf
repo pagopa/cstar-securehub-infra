@@ -60,6 +60,37 @@ data "azurerm_key_vault_secret" "keycloak_url" {
   key_vault_id = data.azurerm_key_vault.kv_domain.id
 }
 
+# client id and secret
+data "azurerm_key_vault_secret" "send_client_id" {
+  name         = "send-client-id"
+  key_vault_id = data.azurerm_key_vault.kv_domain.id
+}
+
+data "azurerm_key_vault_secret" "send_client_secret" {
+  name         = "send-client-secret"
+  key_vault_id = data.azurerm_key_vault.kv_domain.id
+}
+
+data "azurerm_key_vault_secret" "emd_pagopa_client_id" {
+  name         = "emd-pagopa-client-id"
+  key_vault_id = data.azurerm_key_vault.kv_domain.id
+}
+
+data "azurerm_key_vault_secret" "emd_pagopa_client_secret" {
+  name         = "emd-pagopa-client-secret"
+  key_vault_id = data.azurerm_key_vault.kv_domain.id
+}
+
+data "azurerm_key_vault_secret" "emd_tpp_test_client_id" {
+  name         = "emd-tpp-test-client-id"
+  key_vault_id = data.azurerm_key_vault.kv_domain.id
+}
+
+data "azurerm_key_vault_secret" "emd_tpp_test_client_secret" {
+  name         = "emd-tpp-test-client-secret"
+  key_vault_id = data.azurerm_key_vault.kv_domain.id
+}
+
 # 🔎 DNS
 data "azurerm_private_dns_zone" "internal" {
   name                = local.internal_dns_zone_name
