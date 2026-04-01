@@ -344,6 +344,8 @@ resource "kubernetes_cron_job_v1" "cancel_empty_reward_batches" {
     timezone           = "Europe/Rome"
     concurrency_policy = "Forbid"
 
+    suspend = true
+
     job_template {
       metadata {
         name = "cancel-empty-reward-batches-job"
