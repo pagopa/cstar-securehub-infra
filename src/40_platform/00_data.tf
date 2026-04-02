@@ -164,5 +164,5 @@ data "azuread_group" "adgroup_domain_project_managers" {
 data "azuread_group" "adgroup_domain_oncall" {
   for_each = var.env == "prod" ? local.domains : []
 
-  display_name = "${local.product}-${each.key}-adgroup-adgroup-oncall"
+  display_name = "${local.product}-${each.key}-adgroup-oncall"
 }
