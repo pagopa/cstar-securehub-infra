@@ -62,8 +62,15 @@ provider "helm" {
   }
 }
 
+# provider "keycloak" {
+#   client_id     = "terraform"
+#   client_secret = data.azurerm_key_vault_secret.terraform_client_secret_for_keycloak.value
+#   url           = data.azurerm_key_vault_secret.keycloak_url.value
+#   realm         = "master"
+# }
+
 provider "keycloak" {
-  client_id     = "terraform"
+  client_id     = data.azurerm_key_vault_secret.terraform_client_id_for_keycloak.value
   client_secret = data.azurerm_key_vault_secret.terraform_client_secret_for_keycloak.value
   url           = data.azurerm_key_vault_secret.keycloak_url.value
   realm         = "master"
@@ -71,5 +78,5 @@ provider "keycloak" {
 
 module "__v4__" {
   # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v9.8.1
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=b08aa6d9dc188ffaf98423c974a90ab9f0cece1f"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=keycloak-realms-setup"
 }

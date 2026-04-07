@@ -89,7 +89,7 @@ resource "keycloak_role" "domain_admin_role" {
   for_each = { for i in local.keycloak_realm : i.realm => i }
 
   realm_id    = "master"
-  name        = "${var.domain}_${each.key}-realm_domain-admin-role"
+  name        = "${var.domain}-${each.key}-realm.domain-admin-role"
   description = "Minimal admin: users, clients, events"
 
   composite_roles = [
@@ -110,7 +110,7 @@ resource "keycloak_role" "domain_view_role" {
   for_each = { for i in local.keycloak_realm : i.realm => i }
 
   realm_id    = "master"
-  name        = "${var.domain}_${each.key}-realm_domain-viewer-role"
+  name        = "${var.domain}-${each.key}.realm-domain-viewer-role"
   description = "Viewer"
 
   composite_roles = [
