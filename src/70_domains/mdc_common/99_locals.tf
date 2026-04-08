@@ -50,7 +50,6 @@ locals {
   mcshared_api_url           = "https://api-mcshared.${local.public_dns_zone_name}"
   keycloak_external_hostname = "${local.mcshared_api_url}/auth-itn"
   selfcare_issuer            = var.env == "prod" ? "https://selfcare.${var.external_domain}" : "https://${var.env}.selfcare.${var.external_domain}"
-  keycloak_realm             = [keycloak_realm.mdc]
 
   # Default Domain Resource Group
   data_rg    = "${local.project}-data-rg"

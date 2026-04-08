@@ -1,32 +1,51 @@
-# Realm configuration for Keycloak
-resource "keycloak_realm" "mdc" {
-  realm        = "mdc"
-  enabled      = true
-  display_name = "Messaggi di cortesia"
+module "keycloak_realms" {
+  source = "./.terraform/modules/__v4__/keycloak_realms_setup"
 
-  # Token lifespan (optional)
-  access_token_lifespan = "30m"
+  realms_configuration = [
+    {
+      name         = var.domain
+      enabled      = true
+      display_name = "Messaggi di cortesia"
 
-  # Default signature algorithm
-  default_signature_algorithm = "RS256"
+      access_token_lifespan       = "30m"
+      default_signature_algorithm = "RS256"
 
-  attributes = {
-    frontendUrl = local.keycloak_external_hostname
-  }
+      attributes = {
+        frontendUrl = local.keycloak_external_hostname
+      }
+    }
+  ]
 
+  domain         = var.domain
+  key_vault_name = data.azurerm_key_vault.kv_domain.name
+  key_vault_rg   = data.azurerm_key_vault.kv_domain.resource_group_name
+
+  admin_entra_group_ids = concat(
+    var.env_short != "p" ? [data.azuread_group.adgroup_domain_externals.object_id] : [],
+    [
+      data.azuread_group.adgroup_domain_admin.object_id,
+      data.azuread_group.adgroup_domain_developers.object_id
+    ]
+  )
+
+  viewer_entra_group_ids = [
+    data.azuread_group.adgroup_domain_project_managers.object_id
+  ]
+
+  tags = module.tag_config.tags
 }
 
 ### Client settings ###
 
 # Create the scope for groups
 resource "keycloak_openid_client_scope" "mdc_base_claims" {
-  realm_id = keycloak_realm.mdc.id
+  realm_id = module.keycloak_realms.realm_ids[var.domain]
   name     = "mdc-claims"
 }
 
 # Add the mapper to the scope to include group information in the token
 resource "keycloak_openid_group_membership_protocol_mapper" "groups_mapper" {
-  realm_id            = keycloak_realm.mdc.id
+  realm_id            = module.keycloak_realms.realm_ids[var.domain]
   client_scope_id     = keycloak_openid_client_scope.mdc_base_claims.id
   name                = "groups-mapper"
   claim_name          = "groups"
@@ -37,7 +56,7 @@ resource "keycloak_openid_group_membership_protocol_mapper" "groups_mapper" {
 
 # Add audience to the token
 resource "keycloak_openid_audience_protocol_mapper" "aud_mapper" {
-  realm_id                 = keycloak_realm.mdc.id
+  realm_id                 = module.keycloak_realms.realm_ids[var.domain]
   client_scope_id          = keycloak_openid_client_scope.mdc_base_claims.id
   name                     = "audience-mapper"
   included_custom_audience = "keycloak.pagopa.it" # Audience value for all
@@ -46,7 +65,7 @@ resource "keycloak_openid_audience_protocol_mapper" "aud_mapper" {
 
 # Mapper for clientId - The User Session Note Mapper extract the current client_id
 resource "keycloak_openid_user_session_note_protocol_mapper" "client_id_mapper" {
-  realm_id            = keycloak_realm.mdc.id
+  realm_id            = module.keycloak_realms.realm_ids[var.domain]
   client_scope_id     = keycloak_openid_client_scope.mdc_base_claims.id
   name                = "client-id-mapper"
   claim_name          = "clientId"
@@ -56,7 +75,7 @@ resource "keycloak_openid_user_session_note_protocol_mapper" "client_id_mapper" 
 
 # Create send client
 resource "keycloak_openid_client" "emd_pagopa_mdc_send_client" {
-  realm_id = keycloak_realm.mdc.id
+  realm_id = module.keycloak_realms.realm_ids[var.domain]
   name     = "send client"
 
   client_id     = data.azurerm_key_vault_secret.send_client_id.value
@@ -70,7 +89,7 @@ resource "keycloak_openid_client" "emd_pagopa_mdc_send_client" {
 
 # Send client default scopes
 resource "keycloak_openid_client_default_scopes" "emd_pagopa_mdc_send_client_default_scopes" {
-  realm_id  = keycloak_realm.mdc.id
+  realm_id  = module.keycloak_realms.realm_ids[var.domain]
   client_id = keycloak_openid_client.emd_pagopa_mdc_send_client.id
 
   default_scopes = [
@@ -82,7 +101,7 @@ resource "keycloak_openid_client_default_scopes" "emd_pagopa_mdc_send_client_def
 
 # Create pagopa client
 resource "keycloak_openid_client" "emd_pagopa_mdc_pagopa_client" {
-  realm_id = keycloak_realm.mdc.id
+  realm_id = module.keycloak_realms.realm_ids[var.domain]
   name     = "pagopa client"
 
   client_id     = data.azurerm_key_vault_secret.emd_pagopa_client_id.value
@@ -96,7 +115,7 @@ resource "keycloak_openid_client" "emd_pagopa_mdc_pagopa_client" {
 
 # Pagopa client default scopes
 resource "keycloak_openid_client_default_scopes" "emd_pagopa_mdc_pagopa_client_default_scopes" {
-  realm_id  = keycloak_realm.mdc.id
+  realm_id  = module.keycloak_realms.realm_ids[var.domain]
   client_id = keycloak_openid_client.emd_pagopa_mdc_pagopa_client.id
 
   default_scopes = [
@@ -108,7 +127,7 @@ resource "keycloak_openid_client_default_scopes" "emd_pagopa_mdc_pagopa_client_d
 
 # Create emd-tpp-test client
 resource "keycloak_openid_client" "emd_pagopa_mdc_emd_tpp_test_client" {
-  realm_id = keycloak_realm.mdc.id
+  realm_id = module.keycloak_realms.realm_ids[var.domain]
   name     = "emd-tpp-test client"
 
   client_id     = data.azurerm_key_vault_secret.emd_tpp_test_client_id.value
@@ -122,7 +141,7 @@ resource "keycloak_openid_client" "emd_pagopa_mdc_emd_tpp_test_client" {
 
 # Emd-tpp-test client default scopes
 resource "keycloak_openid_client_default_scopes" "emd_pagopa_mdc_emd_tpp_test_client_default_scopes" {
-  realm_id  = keycloak_realm.mdc.id
+  realm_id  = module.keycloak_realms.realm_ids[var.domain]
   client_id = keycloak_openid_client.emd_pagopa_mdc_emd_tpp_test_client.id
 
   default_scopes = [
@@ -134,25 +153,25 @@ resource "keycloak_openid_client_default_scopes" "emd_pagopa_mdc_emd_tpp_test_cl
 
 # Send group
 resource "keycloak_group" "emd_pagopa_mdc_send_group" {
-  realm_id = keycloak_realm.mdc.id
+  realm_id = module.keycloak_realms.realm_ids[var.domain]
   name     = "send"
 }
 
 # Pagopa group
 resource "keycloak_group" "emd_pagopa_mdc_pagopa_group" {
-  realm_id = keycloak_realm.mdc.id
+  realm_id = module.keycloak_realms.realm_ids[var.domain]
   name     = "emd-pagopa"
 }
 
 # Emd-tpp group
 resource "keycloak_group" "emd_pagopa_mdc_emd_tpp_group" {
-  realm_id = keycloak_realm.mdc.id
+  realm_id = module.keycloak_realms.realm_ids[var.domain]
   name     = "emd-tpp"
 }
 
 # Assign send client to group
 resource "keycloak_user_groups" "service_account_group_membership_send" {
-  realm_id = keycloak_realm.mdc.id
+  realm_id = module.keycloak_realms.realm_ids[var.domain]
   user_id  = keycloak_openid_client.emd_pagopa_mdc_send_client.service_account_user_id
   group_ids = [
     keycloak_group.emd_pagopa_mdc_send_group.id
@@ -161,7 +180,7 @@ resource "keycloak_user_groups" "service_account_group_membership_send" {
 
 # Assign pagopa client to group
 resource "keycloak_user_groups" "service_account_group_membership_pagopa" {
-  realm_id = keycloak_realm.mdc.id
+  realm_id = module.keycloak_realms.realm_ids[var.domain]
   user_id  = keycloak_openid_client.emd_pagopa_mdc_pagopa_client.service_account_user_id
   group_ids = [
     keycloak_group.emd_pagopa_mdc_pagopa_group.id
@@ -169,8 +188,8 @@ resource "keycloak_user_groups" "service_account_group_membership_pagopa" {
 }
 
 # Assign emd-tpp-test client to group
-resource "keycloak_user_groups" "service_account_group_membership_emd-tpp-test" {
-  realm_id = keycloak_realm.mdc.id
+resource "keycloak_user_groups" "service_account_group_membership_emd_tpp_test" {
+  realm_id = module.keycloak_realms.realm_ids[var.domain]
   user_id  = keycloak_openid_client.emd_pagopa_mdc_emd_tpp_test_client.service_account_user_id
   group_ids = [
     keycloak_group.emd_pagopa_mdc_emd_tpp_group.id
