@@ -46,15 +46,24 @@ data "azurerm_key_vault" "kv_domain" {
   resource_group_name = local.kv_domain_rg_name
 }
 
-data "azurerm_key_vault_secret" "terraform_client_id_for_keycloak" {
+data "azurerm_key_vault_secret" "client_id_for_keycloak" {
   name         = "keycloak-terraform-admin-client-id"
   key_vault_id = data.azurerm_key_vault.kv_domain.id
 }
 
-data "azurerm_key_vault_secret" "terraform_client_secret_for_keycloak" {
+data "azurerm_key_vault_secret" "client_secret_for_keycloak" {
   name         = "keycloak-terraform-admin-client-secret"
   key_vault_id = data.azurerm_key_vault.kv_domain.id
 }
+
+
+#
+# Use this provider only during realm creation
+#
+# data "azurerm_key_vault_secret" "terraform_client_secret_for_keycloak" {
+#   name         = "terraform-client-secret-for-keycloak"
+#   key_vault_id = data.azurerm_key_vault.kv_domain.id
+# }
 
 data "azurerm_key_vault_secret" "keycloak_url" {
   name         = "keycloak-url"

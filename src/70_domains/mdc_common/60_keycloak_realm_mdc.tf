@@ -93,7 +93,6 @@ resource "keycloak_openid_client_default_scopes" "emd_pagopa_mdc_send_client_def
   client_id = keycloak_openid_client.emd_pagopa_mdc_send_client.id
 
   default_scopes = [
-    "openid",
     "profile",
     keycloak_openid_client_scope.mdc_base_claims.name,
   ]
@@ -119,7 +118,6 @@ resource "keycloak_openid_client_default_scopes" "emd_pagopa_mdc_pagopa_client_d
   client_id = keycloak_openid_client.emd_pagopa_mdc_pagopa_client.id
 
   default_scopes = [
-    "openid",
     "profile",
     keycloak_openid_client_scope.mdc_base_claims.name,
   ]
@@ -145,7 +143,6 @@ resource "keycloak_openid_client_default_scopes" "emd_pagopa_mdc_emd_tpp_test_cl
   client_id = keycloak_openid_client.emd_pagopa_mdc_emd_tpp_test_client.id
 
   default_scopes = [
-    "openid",
     "profile",
     keycloak_openid_client_scope.mdc_base_claims.name,
   ]
