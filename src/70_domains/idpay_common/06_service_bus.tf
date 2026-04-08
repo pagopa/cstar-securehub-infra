@@ -58,13 +58,13 @@ locals {
       requires_session                        = true
       authorization_rules = [
         {
-          name   = "idpay-session-onboarding-request-session-producer"
+          name   = "idpay-onboarding-request-session-producer"
           listen = false
           send   = true
           manage = false
         },
         {
-          name   = "idpay-session-onboarding-request-session-processor"
+          name   = "idpay-onboarding-request-session-processor"
           listen = true
           send   = true
           manage = false
