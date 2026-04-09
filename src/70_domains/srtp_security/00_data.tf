@@ -15,7 +15,9 @@ data "azuread_group" "adgroup_externals" {
   display_name = "${local.product}-adgroup-externals"
 }
 
-# Azure AD srtp
+#---------------------------------------------------------------------------
+# Domain Groups
+#---------------------------------------------------------------------------
 data "azuread_group" "srtp_adgroup_admin" {
   display_name = "${local.project_entra}-adgroup-admin"
 }
@@ -28,13 +30,6 @@ data "azuread_group" "srtp_adgroup_externals" {
   display_name = "${local.project_entra}-adgroup-externals"
 }
 
-#---------------------------------------------------------------------------
-# Domain Groups
-#---------------------------------------------------------------------------
-
-data "azuread_group" "adgroup_domain_externals" {
-  display_name = "${local.project_entra}-adgroup-externals"
-}
 
 #
 # Azure Resource Groups

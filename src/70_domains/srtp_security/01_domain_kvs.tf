@@ -58,7 +58,7 @@ module "externals_policy" {
   env               = var.env
   key_vault_id      = module.key_vault[each.key].id
   tenant_id         = data.azurerm_client_config.current.tenant_id
-  object_id         = data.azuread_group.adgroup_domain_externals.object_id
+  object_id         = data.azuread_group.adgroup_externals.object_id
 }
 
 module "srtp_admins_policy" {
