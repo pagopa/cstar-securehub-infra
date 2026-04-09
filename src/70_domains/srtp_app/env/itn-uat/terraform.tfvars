@@ -5,4 +5,4 @@ env                 = "uat"
 domain              = "srtp"
 location            = "italynorth"
 location_short      = "itn"
-srtp_alerts_enabled = true
+srtp_alerts_enabled = false
