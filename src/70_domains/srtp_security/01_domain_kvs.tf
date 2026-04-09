@@ -60,3 +60,42 @@ module "externals_policy" {
   tenant_id         = data.azurerm_client_config.current.tenant_id
   object_id         = data.azuread_group.adgroup_domain_externals.object_id
 }
+
+module "srtp_admins_policy" {
+  source = "./.terraform/modules/__v4__/IDH/key_vault_access_policy"
+
+  for_each = toset(local.secrets_folders_kv)
+
+  product_name      = "cstar"
+  idh_resource_tier = "admin" # or developer, external
+  env               = var.env # or prod, uat, etc.
+  key_vault_id      = module.key_vault[each.key].id
+  tenant_id         = data.azurerm_client_config.current.tenant_id
+  object_id         = data.azuread_group.srtp_adgroup_admin.object_id
+}
+
+module "srtp_developers_policy" {
+  source = "./.terraform/modules/__v4__//IDH/key_vault_access_policy"
+
+  for_each = toset(local.secrets_folders_kv)
+
+  product_name      = "cstar"
+  idh_resource_tier = "developer" # or developer, external
+  env               = var.env     # or prod, uat, etc.
+  key_vault_id      = module.key_vault[each.key].id
+  tenant_id         = data.azurerm_client_config.current.tenant_id
+  object_id         = data.azuread_group.srtp_adgroup_developers.object_id
+}
+
+module "srtp_externals_policy" {
+  source = "./.terraform/modules/__v4__/IDH/key_vault_access_policy"
+
+  for_each = var.env == "dev" ? toset(local.secrets_folders_kv) : []
+
+  product_name      = "cstar"
+  idh_resource_tier = "external" # or developer, external
+  env               = var.env
+  key_vault_id      = module.key_vault[each.key].id
+  tenant_id         = data.azurerm_client_config.current.tenant_id
+  object_id         = data.azuread_group.srtp_adgroup_externals.object_id
+}
