@@ -82,6 +82,13 @@ data "azurerm_nat_gateway" "compute_nat_gateway" {
   resource_group_name = local.network_rg
 }
 
+data "azurerm_public_ip" "nat_ips" {
+  for_each = toset(data.azurerm_nat_gateway.compute_nat_gateway.public_ip_address_ids)
+
+  resource_group_name = split("/", each.value)[4]
+  name                = split("/", each.value)[8]
+}
+
 # 🔎 DNS
 data "azurerm_private_dns_zone" "cosmos_mongo" {
   name                = "privatelink.mongo.cosmos.azure.com"

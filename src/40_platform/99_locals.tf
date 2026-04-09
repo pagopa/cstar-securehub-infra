@@ -140,4 +140,98 @@ locals {
       additional_resource_groups = []
     }
   }
+
+
+
+  azdo_iac_managed_identities_write = [
+    "azdo-${var.env}-${var.prefix}-iac-deploy-v2",
+    "azdo-${var.env}-${var.prefix}-app-deploy-v2"
+  ]
+  azdo_managed_identity_rg_name = "${var.prefix}-${var.env_short}-identity-rg"
+
+  domains = toset(["idpay", "mdc", "srtp"])
+  adx_databases = {
+    idpay = ["idpay"]
+    srtp  = ["srtp"]
+  }
+
+  global_adx_principals = flatten([
+    # General Admins
+    {
+      id             = data.azuread_group.adgroup_admin.object_id
+      name           = data.azuread_group.adgroup_admin.display_name
+      role           = "Admin"
+      principal_type = "Group"
+    },
+    # Data Factory Managed Identity
+    {
+      id             = module.data_factory.principal_id
+      name           = "adf-managed-identity"
+      role           = "Admin"
+      principal_type = "App"
+    },
+    # IaC Managed Identities
+    [
+      for i in local.azdo_iac_managed_identities_write : {
+        id             = data.azurerm_user_assigned_identity.iac_federated_azdo[i].principal_id
+        name           = data.azurerm_user_assigned_identity.iac_federated_azdo[i].name
+        role           = "Admin"
+        principal_type = "App"
+      }
+    ]
+  ])
+
+  domain_adx_principals = {
+    for i in local.domains : i => flatten([
+      {
+        id             = data.azuread_group.adgroup_domain_admin[i].object_id
+        name           = data.azuread_group.adgroup_domain_admin[i].display_name
+        role           = "Admin"
+        principal_type = "Group"
+      },
+      {
+        id             = data.azuread_group.adgroup_domain_developers[i].object_id
+        name           = data.azuread_group.adgroup_domain_developers[i].display_name
+        role           = "Admin"
+        principal_type = "Group"
+      },
+      {
+        id             = data.azuread_group.adgroup_domain_project_managers[i].object_id
+        name           = data.azuread_group.adgroup_domain_project_managers[i].display_name
+        role           = var.env_short == "p" ? "User" : "Admin"
+        principal_type = "Group"
+      },
+      var.env_short != "p" ? [
+        {
+          id             = data.azuread_group.adgroup_domain_externals[i].object_id
+          name           = data.azuread_group.adgroup_domain_externals[i].display_name
+          role           = "Admin"
+          principal_type = "Group"
+        }
+        ] : [
+        {
+          id             = data.azuread_group.adgroup_domain_oncall[i].object_id
+          name           = data.azuread_group.adgroup_domain_oncall[i].display_name
+          role           = "Admin"
+          principal_type = "Group"
+      }]
+    ])
+  }
+
+  db_group_flatten = flatten([
+    for project, db_list in local.adx_databases : [
+      for db_name in db_list : [
+        for principal in concat(
+          local.global_adx_principals,
+          lookup(local.domain_adx_principals, project, [])
+          ) : {
+          db_key         = db_name
+          ad_group_id    = principal.id
+          ad_group_name  = principal.name
+          role           = principal.role
+          principal_type = principal.principal_type
+        }
+      ]
+    ]
+  ])
 }

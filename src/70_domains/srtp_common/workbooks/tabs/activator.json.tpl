@@ -67,7 +67,7 @@
                 ],
                 "showDefault": false
               },
-              "jsonData": "[\n    { \"value\": \"UNCRITMM\", \"label\": \"Unicredit\" },\n    { \"value\": \"ICRAITRRXXX\", \"label\": \"ICCREA\" },\n    { \"value\": \"BNCMITRR\", \"label\": \"Bancomat\" },\n    { \"value\": \"PPAYITR1XXX\", \"label\": \"Poste\" },\n    { \"value\": \"HYEEIT22XXX\", \"label\": \"Hype\" },\n    { \"value\": \"UNKNOWN\", \"label\": \"UNKNOWN\" },\n    { \"value\": \"FAKESP01\", \"label\": \"FAKESP01\" },\n    { \"value\": \"MOCKSP01\", \"label\": \"MOCKSP01\" },\n    { \"value\": \"MOCKSP04\", \"label\": \"MOCKSP04\" },\n    { \"value\": \"TAKEOV01\", \"label\": \"TAKEOV01\" },  \n { \"value\": \"FAKESP02\", \"label\": \"FAKESP02\" },  \n { \"value\": \"00348170101\", \"label\": \"00348170101\" }, \n { \"value\": \"984500A9EB6B07AC2G71\", \"label\": \"984500A9EB6B07AC2G71\" }]",
+              "jsonData": "[\n    { \"value\": \"UNCRITMM\", \"label\": \"Unicredit\" },\n    { \"value\": \"ICRAITRRXXX\", \"label\": \"ICCREA\" },\n    { \"value\": \"BNCMITRR\", \"label\": \"Bancomat\" },\n    { \"value\": \"PPAYITR1XXX\", \"label\": \"Poste\" },\n    { \"value\": \"HYEEIT22XXX\", \"label\": \"Hype\" },\n    { \"value\": \"TASTASMMXXX\", \"label\": \"TASGROUP\" },\n    { \"value\": \"UNKNOWN\", \"label\": \"UNKNOWN\" },\n    { \"value\": \"FAKESP01\", \"label\": \"FAKESP01\" },\n    { \"value\": \"MOCKSP01\", \"label\": \"MOCKSP01\" },\n    { \"value\": \"MOCKSP04\", \"label\": \"MOCKSP04\" },\n    { \"value\": \"TAKEOV01\", \"label\": \"TAKEOV01\" },  \n { \"value\": \"FAKESP02\", \"label\": \"FAKESP02\" },  \n { \"value\": \"00348170101\", \"label\": \"00348170101\" }, \n { \"value\": \"984500A9EB6B07AC2G71\", \"label\": \"984500A9EB6B07AC2G71\" }]",
               "timeContext": {
                 "durationMs": 86400000
               },
@@ -105,8 +105,8 @@
                 "queryType": 0,
                 "resourceType": "microsoft.operationalinsights/workspaces",
                 "crossComponentResources": [
-                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-law",
-                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law",
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-law"
                 ],
                 "visualization": "piechart",
                 "chartSettings": {

@@ -21,6 +21,13 @@ locals {
           target_branch = "main"
           env           = ["dev", "uat", "prod"]
         }
+      },
+      {
+        "rtp-payees" = {
+          name          = "rtp-payees"
+          target_branch = "main"
+          env           = ["dev", "uat", "prod"]
+        }
       }
     )
     "mid" = {}

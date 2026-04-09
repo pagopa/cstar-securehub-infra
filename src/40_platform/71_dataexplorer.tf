@@ -61,6 +61,9 @@ resource "azurerm_private_dns_a_record" "kusto_record" {
   tags = module.tag_config.tags
 }
 
+# =================================================================
+# ADX Permissions
+# =================================================================
 resource "azurerm_kusto_cluster_principal_assignment" "grafana_viewer" {
   name                = "${local.project}-grafana-viewer"
   resource_group_name = azurerm_kusto_cluster.data_explorer_cluster.resource_group_name
@@ -70,4 +73,21 @@ resource "azurerm_kusto_cluster_principal_assignment" "grafana_viewer" {
   principal_id   = azurerm_dashboard_grafana.grafana_managed.identity[0].principal_id
   principal_type = "App"
   role           = "AllDatabasesViewer"
+}
+
+
+resource "azurerm_kusto_database_principal_assignment" "kusto_ad_groups" {
+  for_each = {
+    for i in local.db_group_flatten : "${i.ad_group_name}-db-${i.db_key}" => i
+  }
+
+  name                = "ad-group-${each.value.ad_group_name}"
+  database_name       = each.value.db_key
+  cluster_name        = azurerm_kusto_cluster.data_explorer_cluster.name
+  resource_group_name = azurerm_kusto_cluster.data_explorer_cluster.resource_group_name
+
+  principal_id   = each.value.ad_group_id
+  principal_type = each.value.principal_type
+  tenant_id      = data.azurerm_client_config.current.tenant_id
+  role           = each.value.role
 }
