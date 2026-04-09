@@ -65,21 +65,21 @@ provider "helm" {
 #
 # Use this provider only during realm creation
 #
-# provider "keycloak" {
-#   client_id     = "terraform"
-#   client_secret = data.azurerm_key_vault_secret.terraform_client_secret_for_keycloak.value
-#   url           = data.azurerm_key_vault_secret.keycloak_url.value
-#   realm         = "master"
-# }
-
 provider "keycloak" {
-  client_id     = data.azurerm_key_vault_secret.client_id_for_keycloak.value
-  client_secret = data.azurerm_key_vault_secret.client_secret_for_keycloak.value
+  client_id     = "terraform"
+  client_secret = data.azurerm_key_vault_secret.terraform_client_secret_for_keycloak.value
   url           = data.azurerm_key_vault_secret.keycloak_url.value
   realm         = "master"
 }
 
+# provider "keycloak" {
+#   client_id     = data.azurerm_key_vault_secret.client_id_for_keycloak.value
+#   client_secret = data.azurerm_key_vault_secret.client_secret_for_keycloak.value
+#   url           = data.azurerm_key_vault_secret.keycloak_url.value
+#   realm         = "master"
+# }
+
 module "__v4__" {
-  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v9.8.1
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=keycloak-realms-setup"
+  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v10.1.0
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=449bbc3cca4e52febcef3015e1e76a02a370aa84"
 }

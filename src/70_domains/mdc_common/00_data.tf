@@ -58,12 +58,12 @@ data "azurerm_key_vault_secret" "client_secret_for_keycloak" {
 
 
 #
-# Use this provider only during realm creation
+# Use this resource only during realm creation
 #
-# data "azurerm_key_vault_secret" "terraform_client_secret_for_keycloak" {
-#   name         = "terraform-client-secret-for-keycloak"
-#   key_vault_id = data.azurerm_key_vault.kv_domain.id
-# }
+data "azurerm_key_vault_secret" "terraform_client_secret_for_keycloak" {
+  name         = "terraform-client-secret-for-keycloak"
+  key_vault_id = data.azurerm_key_vault.kv_domain.id
+}
 
 data "azurerm_key_vault_secret" "keycloak_url" {
   name         = "keycloak-url"
