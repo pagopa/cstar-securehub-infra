@@ -29,8 +29,8 @@
 | <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | 9017adf2e89d80d014b3787eb95974835b31f08e |
 | <a name="module_admin_domain_policy"></a> [admin\_domain\_policy](#module\_admin\_domain\_policy) | ./.terraform/modules/__v4__/IDH/key_vault_access_policy | n/a |
 | <a name="module_admins_policy"></a> [admins\_policy](#module\_admins\_policy) | ./.terraform/modules/__v4__/IDH/key_vault_access_policy | n/a |
-| <a name="module_developers_policy"></a> [developers\_policy](#module\_developers\_policy) | ./.terraform/modules/__v4__/IDH/key_vault_access_policy | n/a |
-| <a name="module_externals_policy"></a> [externals\_policy](#module\_externals\_policy) | ./.terraform/modules/__v4__/IDH/key_vault_access_policy | n/a |
+| <a name="module_developers_domain_policy"></a> [developers\_domain\_policy](#module\_developers\_domain\_policy) | ./.terraform/modules/__v4__/IDH/key_vault_access_policy | n/a |
+| <a name="module_externals_domain_policy"></a> [externals\_domain\_policy](#module\_externals\_domain\_policy) | ./.terraform/modules/__v4__/IDH/key_vault_access_policy | n/a |
 | <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | ./.terraform/modules/__v4__/key_vault | n/a |
 | <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../../tag_config | n/a |
 
