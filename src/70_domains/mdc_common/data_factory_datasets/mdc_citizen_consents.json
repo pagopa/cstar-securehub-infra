@@ -1,5 +1,5 @@
 {
-  "name": "ds_citizen_consents",
+  "name": "mdc_citizen_consents",
   "properties": {
     "type": "CosmosDbMongoDbApiCollection",
     "linkedServiceName": {

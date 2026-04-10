@@ -110,4 +110,3 @@ data "azurerm_kusto_cluster" "kusto_cluster" {
   name                = local.data_explorer_name
   resource_group_name = local.data_explorer_rg_name
 }
-

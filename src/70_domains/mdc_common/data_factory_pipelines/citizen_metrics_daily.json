@@ -26,10 +26,10 @@
           }
         },
         "inputs": [
-          { "referenceName": "ds_citizen_consents", "type": "DatasetReference" }
+          { "referenceName": "mdc_citizen_consents", "type": "DatasetReference" }
         ],
         "outputs": [
-          { "referenceName": "ds_citizen_metrics_snapshot", "type": "DatasetReference" }
+          { "referenceName": "mdc_citizen_metrics_snapshot", "type": "DatasetReference" }
         ]
       },
       {

@@ -1,17 +1,16 @@
 resource "azurerm_kusto_database" "mdc" {
   name                = var.domain
-  resource_group_name = local.data_explorer_rg_name
-  location            = var.location
+  resource_group_name = data.azurerm_kusto_cluster.kusto_cluster.resource_group_name
+  location            = data.azurerm_kusto_cluster.kusto_cluster.location
   cluster_name        = data.azurerm_kusto_cluster.kusto_cluster.name
 
   hot_cache_period   = "P5D"
   soft_delete_period = "P7D"
 }
 
-# Script KQL
 resource "null_resource" "trigger_create_tables_mdc" {
   triggers = {
-    file_hash = filesha256("${path.module}/adf_pipelines/pipeline_citizen_metrics.json")
+    file_hash = filesha256("${path.module}/data_explorer_kql/create_tables_mdc.kql")
   }
 }
 
@@ -26,6 +25,8 @@ resource "azapi_resource" "create_tables_mdc" {
       continueOnErrors = false
     }
   }
+
+  response_export_values = ["properties.provisioningState"]
 
   depends_on = [azurerm_kusto_database.mdc]
 
