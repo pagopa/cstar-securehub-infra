@@ -1,0 +1,20 @@
+{
+  "name": "ds_citizen_metrics_snapshot",
+  "properties": {
+    "type": "AzureDataExplorerTable",
+    "linkedServiceName": {
+      "referenceName": "mdc-Kusto-mdc-ls",
+      "type": "LinkedServiceReference"
+    },
+    "typeProperties": {
+      "table": "CitizenMetricsSnapshot"
+    },
+    "schema": [
+      { "name": "snapshot_date", "type": "DateTime" },
+      { "name": "fiscal_code", "type": "String" },
+      { "name": "first_active_date", "type": "DateTime" },
+      { "name": "is_active_today", "type": "Boolean" },
+      { "name": "last_activity_date", "type": "DateTime" }
+    ]
+  }
+}

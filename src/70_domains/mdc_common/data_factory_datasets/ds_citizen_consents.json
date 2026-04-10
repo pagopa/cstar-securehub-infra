@@ -1,0 +1,13 @@
+{
+  "name": "ds_citizen_consents",
+  "properties": {
+    "type": "CosmosDbMongoDbApiCollection",
+    "linkedServiceName": {
+      "referenceName": "mdc-CosmosDB-mdc-ls",
+      "type": "LinkedServiceReference"
+    },
+    "typeProperties": {
+      "collection": "citizen_consents"
+    }
+  }
+}
