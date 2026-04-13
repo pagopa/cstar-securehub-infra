@@ -153,6 +153,7 @@ locals {
   adx_databases = {
     idpay = ["idpay"]
     srtp  = ["srtp"]
+    mdc   = ["mdc"]
   }
 
   global_adx_principals = flatten([
