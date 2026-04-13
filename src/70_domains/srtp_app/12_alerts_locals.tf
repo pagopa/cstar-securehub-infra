@@ -104,15 +104,13 @@ locals {
       frequency   = 30
       time_window = 30
       query       = <<-QUERY
-            AppTraces
-            | where AppRoleName == "rtp-consumer"
-            | where Message startswith "New GPD message received" or Message startswith "Error processing message."
-            | summarize TotalMessages = count()
-            | where TotalMessages == 0
-          QUERY
+        AppTraces
+        | where AppRoleName == "rtp-consumer"
+        | where Message startswith "New GPD message received" or Message startswith "Error processing message."
+      QUERY
       trigger = {
-        operator  = "GreaterThanOrEqual"
-        threshold = 1
+        operator  = "LessThanOrEqual"
+        threshold = 0
       }
       # Use both email and slack for this alert
       action_groups = compact([
