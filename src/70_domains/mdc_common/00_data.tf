@@ -90,16 +90,6 @@ data "azurerm_key_vault_secret" "emd_pagopa_client_secret" {
   key_vault_id = data.azurerm_key_vault.kv_domain.id
 }
 
-data "azurerm_key_vault_secret" "emd_backoffice_client_id" {
-  name         = "emd-backoffice-client-id"
-  key_vault_id = data.azurerm_key_vault.kv_domain.id
-}
-
-data "azurerm_key_vault_secret" "emd_backoffice_client_secret" {
-  name         = "emd-backoffice-client-secret"
-  key_vault_id = data.azurerm_key_vault.kv_domain.id
-}
-
 data "azurerm_key_vault_secret" "emd_tpp_test_client_id" {
   name         = "emd-tpp-test-client-id"
   key_vault_id = data.azurerm_key_vault.kv_domain.id

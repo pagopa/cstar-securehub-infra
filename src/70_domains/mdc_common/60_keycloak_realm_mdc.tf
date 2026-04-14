@@ -123,31 +123,6 @@ resource "keycloak_openid_client_default_scopes" "emd_pagopa_mdc_pagopa_client_d
   ]
 }
 
-# Create backoffice client
-resource "keycloak_openid_client" "emd_pagopa_mdc_backoffice_client" {
-  realm_id = module.keycloak_realms.realm_ids[var.domain]
-  name     = "backoffice client"
-
-  client_id     = data.azurerm_key_vault_secret.emd_backoffice_client_id.value
-  client_secret = data.azurerm_key_vault_secret.emd_backoffice_client_secret.value
-
-  enabled                  = true
-  access_type              = "CONFIDENTIAL"
-  service_accounts_enabled = true
-
-}
-
-# Backoffice default scopes
-resource "keycloak_openid_client_default_scopes" "emd_pagopa_mdc_backoffice_client_default_scopes" {
-  realm_id  = module.keycloak_realms.realm_ids[var.domain]
-  client_id = keycloak_openid_client.emd_pagopa_mdc_backoffice_client.id
-
-  default_scopes = [
-    "profile",
-    keycloak_openid_client_scope.mdc_base_claims.name,
-  ]
-}
-
 # Create emd-tpp-test client
 resource "keycloak_openid_client" "emd_pagopa_mdc_emd_tpp_test_client" {
   realm_id = module.keycloak_realms.realm_ids[var.domain]
@@ -204,15 +179,6 @@ resource "keycloak_user_groups" "service_account_group_membership_send" {
 resource "keycloak_user_groups" "service_account_group_membership_pagopa" {
   realm_id = module.keycloak_realms.realm_ids[var.domain]
   user_id  = keycloak_openid_client.emd_pagopa_mdc_pagopa_client.service_account_user_id
-  group_ids = [
-    keycloak_group.emd_pagopa_mdc_pagopa_group.id
-  ]
-}
-
-# Assign backoffice client to group
-resource "keycloak_user_groups" "service_account_group_membership_backoffice" {
-  realm_id = module.keycloak_realms.realm_ids[var.domain]
-  user_id  = keycloak_openid_client.emd_pagopa_mdc_backoffice_client.service_account_user_id
   group_ids = [
     keycloak_group.emd_pagopa_mdc_pagopa_group.id
   ]
