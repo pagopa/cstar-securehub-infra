@@ -173,4 +173,7 @@ locals {
       soft_delete_period = "P7D"
     }
   }
+
+  # Workload Identity
+  rtp_sender_workload_identity_name = "${local.project}-sender-id"
 }
