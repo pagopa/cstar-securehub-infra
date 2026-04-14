@@ -343,6 +343,7 @@ resource "kubernetes_cron_job_v1" "cancel_empty_reward_batches" {
     schedule           = "20 0 * * *" # runs at 00:20 every day
     timezone           = "Europe/Rome"
     concurrency_policy = "Forbid"
+    suspend            = true
 
     job_template {
       metadata {
