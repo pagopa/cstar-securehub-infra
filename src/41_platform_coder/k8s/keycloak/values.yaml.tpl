@@ -3,10 +3,6 @@ forceDeployVersion: ${force_deploy_version}
 production: true
 proxy: "edge"
 
-global:
-  security:
-    allowInsecureImages: true
-
 image:
   registry: ${image_registry}
   repository: ${image_repository}
