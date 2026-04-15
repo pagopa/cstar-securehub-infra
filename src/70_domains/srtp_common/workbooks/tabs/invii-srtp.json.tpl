@@ -266,7 +266,7 @@
                 "query": "AppTraces\n| where AppRoleName == 'rtp-consumer'\n| where TimeGenerated {evaluation_window:query}\n| where Message startswith \"Payload:\"\n| extend\n    msg_id          = extract(@\"id=(\\d+)\", 1, Message),\n    operation       = extract(@\"operation=(\\w+)\", 1, Message),\n    status          = extract(@\"status=([A-Z_]+)\", 1, Message),\n    ec_tax_code     = extract(@\"ec_tax_code=([^,\\]]+)\", 1, Message),\n    debtor_tax_code = extract(@\"debtor_tax_code=([^,\\]]+)\", 1, Message),\n    iuv             = extract(@\"iuv=([^,\\]]+)\", 1, Message)\n| where isnotempty(msg_id)\n| summarize\n    [\"Consegne EVH\"]     = count(),\n    [\"Prima consegna\"]   = min(TimeGenerated),\n    [\"Ultima consegna\"]  = max(TimeGenerated),\n    [\"Operazione\"]       = take_any(operation),\n    [\"Status GPD\"]       = take_any(status),\n    [\"EC Tax Code\"]      = take_any(ec_tax_code),\n    [\"Debtor Tax Code\"]  = take_any(debtor_tax_code),\n    [\"IUV\"]              = take_any(iuv)\n    by msg_id\n| where [\"Consegne EVH\"] > 1\n| project\n    [\"Message ID\"]      = msg_id,\n    [\"Consegne EVH\"]    = [\"Consegne EVH\"],\n    [\"Prima consegna\"]  = [\"Prima consegna\"],\n    [\"Ultima consegna\"] = [\"Ultima consegna\"],\n    [\"Operazione\"]      = [\"Operazione\"],\n    [\"Status GPD\"]      = [\"Status GPD\"],\n    [\"EC Tax Code\"]     = [\"EC Tax Code\"],\n    [\"Debtor Tax Code\"] = [\"Debtor Tax Code\"],\n    [\"IUV\"]             = [\"IUV\"]\n| sort by [\"Consegne EVH\"] desc\n| limit 100",
                 "size": 0,
                 "title": "🔁 MessageId ricevuti più volte dall'EVH (duplicati di consegna)",
-                "noDataMessageStyle": 5,
+                "noDataMessageStyle": 3,
                 "queryType": 0,
                 "resourceType": "microsoft.operationalinsights/workspaces",
                 "crossComponentResources": [
@@ -287,7 +287,7 @@
                 "query": "let payloads = AppTraces\n| where AppRoleName == 'rtp-consumer'\n| where TimeGenerated {evaluation_window:query}\n| where Message startswith \"Payload:\"\n| extend\n    msg_id = extract(@\"id=(\\d+)\", 1, Message),\n    operation = extract(@\"operation=(\\w+)\", 1, Message)\n| where isnotempty(msg_id) and isnotempty(operation);\nlet outcomes = AppTraces\n| where AppRoleName == 'rtp-consumer'\n| where TimeGenerated {evaluation_window:query}\n| where Message startswith \"Message processed successfully\" or Message startswith \"Error processing message.\"\n| extend\n    msg_id = tostring(Properties.message_id),\n    esito = iff(Message startswith \"Message processed successfully\", \"Successo\", \"Errore\");\npayloads\n| join kind=inner outcomes on msg_id\n| where esito == \"Successo\"\n| summarize [\"Messaggi\"] = count() by [\"Operazione\"] = operation\n| sort by [\"Operazione\"] asc",
                 "size": 0,
                 "title": "✅ Messaggi processati con successo per Operazione (CREATE / UPDATE / DELETE)",
-                "noDataMessageStyle": 3,
+                "noDataMessageStyle": 5,
                 "queryType": 0,
                 "resourceType": "microsoft.operationalinsights/workspaces",
                 "crossComponentResources": [
