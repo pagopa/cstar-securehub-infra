@@ -93,9 +93,19 @@ resource "keycloak_openid_client_default_scopes" "emd_pagopa_mdc_send_client_def
   client_id = keycloak_openid_client.emd_pagopa_mdc_send_client.id
 
   default_scopes = [
-    "profile",
     keycloak_openid_client_scope.mdc_base_claims.name,
   ]
+}
+
+# SEND custom SUB
+resource "keycloak_openid_hardcoded_claim_protocol_mapper" "emd_pagopa_mdc_send_sub_override" {
+  realm_id   = module.keycloak_realms.realm_ids[var.domain]
+  client_id  = keycloak_openid_client.emd_pagopa_mdc_send_client.id
+  name       = "send-sub-override"
+  claim_name = "sub"
+  claim_value = "SEND"
+  add_to_access_token = true
+  add_to_id_token     = true
 }
 
 # Create pagopa client
@@ -118,9 +128,19 @@ resource "keycloak_openid_client_default_scopes" "emd_pagopa_mdc_pagopa_client_d
   client_id = keycloak_openid_client.emd_pagopa_mdc_pagopa_client.id
 
   default_scopes = [
-    "profile",
     keycloak_openid_client_scope.mdc_base_claims.name,
   ]
+}
+
+# Pagopa custom SUB
+resource "keycloak_openid_hardcoded_claim_protocol_mapper" "emd_pagopa_mdc_pagopa_sub_override" {
+  realm_id   = module.keycloak_realms.realm_ids[var.domain]
+  client_id  = keycloak_openid_client.emd_pagopa_mdc_pagopa_client.id
+  name       = "pagopa-sub-override"
+  claim_name = "sub"
+  claim_value = "15376371009"
+  add_to_access_token = true
+  add_to_id_token     = true
 }
 
 # Create emd-tpp-test client
@@ -143,9 +163,19 @@ resource "keycloak_openid_client_default_scopes" "emd_pagopa_mdc_emd_tpp_test_cl
   client_id = keycloak_openid_client.emd_pagopa_mdc_emd_tpp_test_client.id
 
   default_scopes = [
-    "profile",
     keycloak_openid_client_scope.mdc_base_claims.name,
   ]
+}
+
+# Emd-tpp-test custom SUB
+resource "keycloak_openid_hardcoded_claim_protocol_mapper" "emd_pagopa_mdc_emd_tpp_test_sub_override" {
+  realm_id   = module.keycloak_realms.realm_ids[var.domain]
+  client_id  = keycloak_openid_client.emd_pagopa_mdc_emd_tpp_test_client.id
+  name       = "emd-tpp-test-sub-override"
+  claim_name = "sub"
+  claim_value = "99999999999"
+  add_to_access_token = true
+  add_to_id_token     = true
 }
 
 # Send group
