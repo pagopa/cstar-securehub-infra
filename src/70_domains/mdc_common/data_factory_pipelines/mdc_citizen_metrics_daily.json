@@ -58,21 +58,6 @@
         "outputs": [
           { "referenceName": "mdc_citizen_metrics_snapshot", "type": "DatasetReference" }
         ]
-      },
-      {
-        "name": "Aggregate citizen metrics",
-        "type": "AzureDataExplorerCommand",
-        "dependsOn": [
-          { "activity": "Copy citizen consents", "dependencyConditions": ["Succeeded"] }
-        ],
-        "typeProperties": {
-          "command": ".set-or-append CitizenMetricsAggregate <|\n  let today = startofday(now());\n  CitizenMetricsSnapshot \n  | extend consentsObj =  parse_json(consents) \n  | mv-expand key = bag_keys(consentsObj)\n  | extend consent_entry = consentsObj[tostring(key)]\n  | extend tpp_active = tobool(consent_entry.tppState) == true \n  | summarize active_count = countif(tpp_active) by fiscal_code \n  | extend has_active_consent = active_count > 0 \n  | summarize \n total_citizens = count(),\n citizens_with_active_consent = countif(has_active_consent),\n  citizens_inactive            = countif(not(has_active_consent))\n  | project\n  metric_date = today,\n  total_citizens,\n  citizens_with_active_consent,\n  snapshot_timestamp = now(),\n citizens_inactive",
-          "commandTimeout": "00:30:00"
-        },
-        "linkedServiceName": {
-          "referenceName": "mdc-Kusto-mdc-ls",
-          "type": "LinkedServiceReference"
-        }
       }
     ]
   }

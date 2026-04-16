@@ -2,11 +2,3 @@
     fiscal_code: string,
     consents: dynamic
 )
-
-.create-merge table CitizenMetricsAggregate (
-    metric_date: datetime,
-    total_citizens: long,
-    citizens_with_active_consent: long,
-    citizens_inactive:            long,
-    snapshot_timestamp: datetime
-)
