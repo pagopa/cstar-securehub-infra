@@ -162,3 +162,21 @@ data "azurerm_kusto_cluster" "kusto_cluster" {
   name                = local.kusto_cluster_name
   resource_group_name = local.kusto_cluster_rg_name
 }
+
+#
+# Github Pull
+#
+data "azurerm_key_vault_secret" "github_docker_pull_email" {
+  name         = "github-docker-pull-email"
+  key_vault_id = data.azurerm_key_vault.domain_kv.id
+}
+
+data "azurerm_key_vault_secret" "github_docker_pull_user" {
+  name         = "github-docker-pull-user"
+  key_vault_id = data.azurerm_key_vault.domain_kv.id
+}
+
+data "azurerm_key_vault_secret" "github_docker_pull_token" {
+  name         = "github-docker-pull-token"
+  key_vault_id = data.azurerm_key_vault.domain_kv.id
+}
