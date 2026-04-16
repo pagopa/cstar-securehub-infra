@@ -6,14 +6,11 @@
       "referenceName": "mdc-Kusto-mdc-ls",
       "type": "LinkedServiceReference"
     },
-    "typeProperties": {
-      "table": "CitizenMetricsAggregate"
-    },
+    "typeProperties": { "table": "CitizenMetricsAggregate" },
     "schema": [
       { "name": "metric_date", "type": "DateTime" },
-      { "name": "total_unique_active_alltime", "type": "Int64" },
-      { "name": "active_in_last_30_days", "type": "Int64" },
-      { "name": "active_today", "type": "Int64" },
+      { "name": "total_citizens", "type": "Int64" },
+      { "name": "citizens_with_active_consent", "type": "Int64" },
       { "name": "snapshot_timestamp", "type": "DateTime" }
     ]
   }

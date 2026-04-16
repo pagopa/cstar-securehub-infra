@@ -1,5 +1,5 @@
 resource "azurerm_data_factory_linked_custom_service" "adf_cosmosdb_mdc_ls" {
-  name            = "${var.domain}-CosmosDB-${var.domain}-ls" # → mdc-CosmosDB-mdc-ls
+  name            = "${var.domain}-CosmosDB-${var.domain}-ls"
   data_factory_id = data.azurerm_data_factory.data_factory.id
   type            = "CosmosDbMongoDbApi"
 
@@ -46,7 +46,5 @@ resource "azapi_resource_action" "cosmos_approve_pe" {
       }
     }
   }
-  timeouts {
-    create = "5m"
-  }
+
 }

@@ -1,15 +1,12 @@
-.create table CitizenMetricsSnapshot (
-    snapshot_date: datetime,
+.create-merge table CitizenMetricsSnapshot (
     fiscal_code: string,
-    first_active_date: datetime,
-    is_active_today: bool,
-    last_activity_date: datetime
+    consents: dynamic
 )
 
-.create table CitizenMetricsAggregate (
+.create-merge table CitizenMetricsAggregate (
     metric_date: datetime,
-    total_unique_active_alltime: long,
-    active_in_last_30_days: long,
-    active_today: long,
+    total_citizens: long,
+    citizens_with_active_consent: long,
+    citizens_inactive:            long,
     snapshot_timestamp: datetime
 )
