@@ -32,3 +32,14 @@ data "azuread_group" "mdc_adgroup_domain_oncall" {
 
   display_name = "${local.product}-mdc-adgroup-oncall"
 }
+
+## SRTP Groups
+data "azuread_group" "srtp_adgroup_domain_admin" {
+  display_name = "${local.product}-srtp-adgroup-admin"
+}
+
+data "azuread_group" "srtp_adgroup_domain_oncall" {
+  count = var.env == "prod" ? 1 : 0
+
+  display_name = "${local.product}-srtp-adgroup-oncall"
+}

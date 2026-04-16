@@ -16,6 +16,10 @@ locals {
         object_id    = data.azuread_group.mdc_adgroup_domain_admin.object_id
         display_name = data.azuread_group.mdc_adgroup_domain_admin.display_name
       },
+      {
+        object_id    = data.azuread_group.srtp_adgroup_domain_admin.object_id
+        display_name = data.azuread_group.srtp_adgroup_domain_admin.display_name
+      },
     ] : []
   ])
 }
