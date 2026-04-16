@@ -49,7 +49,7 @@
       },
       "gridPos": {
         "h": 5,
-        "w": 5,
+        "w": 8,
         "x": 0,
         "y": 0
       },
@@ -134,8 +134,8 @@
       },
       "gridPos": {
         "h": 5,
-        "w": 5,
-        "x": 5,
+        "w": 8,
+        "x": 8,
         "y": 0
       },
       "id": 15,
@@ -190,6 +190,91 @@
             "steps": [
               {
                 "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 8,
+        "x": 16,
+        "y": 0
+      },
+      "id": 16,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.6.9",
+      "targets": [
+        {
+          "OpenAI": false,
+          "database": "idpay",
+          "datasource": {
+            "type": "grafana-azure-data-explorer-datasource",
+            "uid": "${ds}"
+          },
+          "expression": {
+            "groupBy": {
+              "expressions": [],
+              "type": "and"
+            },
+            "reduce": {
+              "expressions": [],
+              "type": "and"
+            },
+            "where": {
+              "expressions": [],
+              "type": "and"
+            }
+          },
+          "pluginVersion": "7.2.2",
+          "query": "wallet \n| where status == 'REFUNDABLE' and accruedCents > 0 and amountCents > 0\n| summarize count()",
+          "querySource": "raw",
+          "queryType": "KQL",
+          "rawMode": true,
+          "refId": "A",
+          "resultFormat": "table"
+        }
+      ],
+      "title": "Wallet utilizzati ma ancora con budget residuo",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-data-explorer-datasource",
+        "uid": "${ds}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
               }
             ]
           }
@@ -198,7 +283,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "disavanzo"
+              "options": "disallineati"
             },
             "properties": [
               {
@@ -268,7 +353,7 @@
             }
           },
           "pluginVersion": "7.2.2",
-          "query": "wallet\n| extend min_validita = datetime_diff('minute', datetime_add( 'second', 86399, voucherEndDate), now())\n| summarize \n  utilizzati = countif(status == 'REFUNDABLE' and accruedCents > 0), \n  attivi = countif(min_validita > 0 and status == 'REFUNDABLE' and amountCents > 0),\n  scadutistornati=countif(status == 'UNSUBSCRIBED'),\n  totali = count()\n| extend somma = utilizzati + attivi + scadutistornati\n| extend disavanzo =totali - somma\n| project-away somma",
+          "query": "let non_assegnati = toscalar(\n    onboarding_citizen\n    | join kind=leftanti (wallet) on userId, initiativeId\n    | summarize count()\n);\nwallet\n| extend min_validita = datetime_diff('minute', datetime_add( 'second', 86399, voucherEndDate), now())\n| summarize \n  utilizzati = countif(status == 'REFUNDABLE' and accruedCents > 0), \n  attivi = countif(min_validita > 0 and status == 'REFUNDABLE' and amountCents > 0),\n  scaduti_stornati=countif(status == 'UNSUBSCRIBED'),\n  totali = count()\n| extend somma = utilizzati + attivi + scaduti_stornati\n| extend disallineati =totali - somma, non_assegnati\n| project-away somma\n",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -329,7 +414,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 15,
+        "h": 12,
         "w": 5,
         "x": 0,
         "y": 13
@@ -855,7 +940,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 28
+        "y": 25
       },
       "id": 10,
       "panels": [],
@@ -907,7 +992,7 @@
         "h": 3,
         "w": 5,
         "x": 0,
-        "y": 29
+        "y": 26
       },
       "id": 2,
       "options": {
@@ -1006,7 +1091,7 @@
         "h": 3,
         "w": 6,
         "x": 5,
-        "y": 29
+        "y": 26
       },
       "id": 8,
       "options": {
@@ -1105,7 +1190,7 @@
         "h": 3,
         "w": 5,
         "x": 11,
-        "y": 29
+        "y": 26
       },
       "id": 11,
       "options": {
@@ -1341,5 +1426,5 @@
   "timezone": "browser",
   "title": "Quadrature",
   "uid": "df76d6k1v7cw0c",
-  "version": 45
+  "version": 51
 }
