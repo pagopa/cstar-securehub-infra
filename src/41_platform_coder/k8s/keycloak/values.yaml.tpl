@@ -3,6 +3,10 @@ forceDeployVersion: ${force_deploy_version}
 production: true
 proxy: "edge"
 
+global:
+  security:
+    allowInsecureImages: true
+
 image:
   registry: ${image_registry}
   repository: ${image_repository}
@@ -42,6 +46,12 @@ externalDatabase:
 
 # TLS/SSL per la connessione al DB
 extraEnvVars:
+  - name: KC_HTTP_ENABLED
+    value: "true"
+  - name: KC_PROXY_HEADERS
+    value: "xforwarded"
+  - name: KC_PROXY
+    value: "edge"
   - name: KC_DB_URL_PROPERTIES
     value: "sslmode=require"
   - name: KC_HOSTNAME
