@@ -51,11 +51,11 @@ locals {
 
 
   ad_group_rbac = flatten([
-    {
-      object_id    = data.azuread_group.adgroup_domain_admin.object_id
-      display_name = data.azuread_group.adgroup_domain_admin.display_name
-    },
     var.env_short != "p" ? [
+      {
+        object_id    = data.azuread_group.adgroup_domain_admin.object_id
+        display_name = data.azuread_group.adgroup_domain_admin.display_name
+      },
       {
         object_id    = data.azuread_group.adgroup_domain_developers.object_id
         display_name = data.azuread_group.adgroup_domain_developers.display_name
@@ -63,14 +63,12 @@ locals {
       {
         object_id    = data.azuread_group.adgroup_domain_externals.object_id
         display_name = data.azuread_group.adgroup_domain_externals.display_name
-      }
-    ] : [],
-    var.env_short == "p" ? [
+      },
       {
         object_id    = data.azuread_group.adgroup_domain_oncall[0].object_id
         display_name = data.azuread_group.adgroup_domain_oncall[0].display_name
       }
-    ] : []
+    ] : [],
   ])
 
 }
