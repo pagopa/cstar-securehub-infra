@@ -7,6 +7,10 @@ module "secrets" {
   secrets = compact([
     "argocd-admin-username",
     "argocd-admin-password",
-    var.env_short == "p" ? "opsgenie-api-key" : null
+    var.env_short == "p" ? "opsgenie-api-key" : null,
+    "ar-backoffice-client-id",
+    "ar-backoffice-client-secret",
+    "ar-backoffice-admin-client-id",
+    "ar-backoffice-admin-client-secret"
   ])
 }
