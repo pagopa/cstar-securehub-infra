@@ -176,7 +176,7 @@ locals {
 
   # Workload Identity
   rtp_sender_workload_identity_name = "${local.project}-sender-id"
-    
+
   ad_group_rbac = flatten([
     var.env_short != "p" ? [
       {
