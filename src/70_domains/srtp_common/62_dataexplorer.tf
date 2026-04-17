@@ -50,7 +50,7 @@ resource "azurerm_data_factory_linked_service_kusto" "kusto" {
 }
 
 resource "azurerm_kusto_database_principal_assignment" "rtp_sender_adx_viewer" {
-  name                = "rtp-sender-viewer"
+  name                = "rtp-role-viewer"
   resource_group_name = data.azurerm_kusto_cluster.kusto_cluster.resource_group_name
   cluster_name        = data.azurerm_kusto_cluster.kusto_cluster.name
   database_name       = azurerm_kusto_database.db[var.domain].name
