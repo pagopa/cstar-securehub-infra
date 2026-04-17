@@ -55,7 +55,7 @@ resource "azurerm_kusto_database_principal_assignment" "rtp_sender_adx_viewer" {
   cluster_name        = data.azurerm_kusto_cluster.kusto_cluster.name
   database_name       = azurerm_kusto_database.db[var.domain].name
 
-  principal_id   = data.azurerm_user_assigned_identity.rtp_sender_workload_identity.principal_id
+  principal_id   = data.azurerm_user_assigned_identity.rtp_sender_workload_identity.client_id
   principal_type = "App"
   tenant_id      = data.azurerm_client_config.current.tenant_id
   role           = "Viewer"
