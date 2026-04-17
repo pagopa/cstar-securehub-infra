@@ -29,13 +29,16 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | aa982defd677c691e38ecc6b2122950f176e69bd |
+| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | b8192d32acb18e57c9957c634819c4a875a67135 |
 | <a name="module_aks_overlay_snet"></a> [aks\_overlay\_snet](#module\_aks\_overlay\_snet) | ./.terraform/modules/__v4__/IDH/subnet | n/a |
 | <a name="module_aks_srtp_node_pool_blue"></a> [aks\_srtp\_node\_pool\_blue](#module\_aks\_srtp\_node\_pool\_blue) | ./.terraform/modules/__v4__/IDH/aks_node_pool | n/a |
 | <a name="module_aks_srtp_node_pool_green"></a> [aks\_srtp\_node\_pool\_green](#module\_aks\_srtp\_node\_pool\_green) | ./.terraform/modules/__v4__/IDH/aks_node_pool | n/a |
 | <a name="module_cdn"></a> [cdn](#module\_cdn) | ./.terraform/modules/__v4__/cdn | n/a |
 | <a name="module_cosmos_db_account"></a> [cosmos\_db\_account](#module\_cosmos\_db\_account) | ./.terraform/modules/__v4__/IDH/cosmosdb_account | n/a |
 | <a name="module_kubernetes_service_account"></a> [kubernetes\_service\_account](#module\_kubernetes\_service\_account) | ./.terraform/modules/__v4__/kubernetes_service_account | n/a |
+| <a name="module_namespace_keycloak_role_bindings"></a> [namespace\_keycloak\_role\_bindings](#module\_namespace\_keycloak\_role\_bindings) | ./.terraform/modules/__v4__/kubernetes_namespace_role_binding | n/a |
+| <a name="module_namespace_role_bindings"></a> [namespace\_role\_bindings](#module\_namespace\_role\_bindings) | ./.terraform/modules/__v4__/kubernetes_namespace_role_binding | n/a |
+| <a name="module_namespace_system_role_bindings"></a> [namespace\_system\_role\_bindings](#module\_namespace\_system\_role\_bindings) | ./.terraform/modules/__v4__/kubernetes_namespace_role_binding | n/a |
 | <a name="module_private_endpoint_cosmos_snet"></a> [private\_endpoint\_cosmos\_snet](#module\_private\_endpoint\_cosmos\_snet) | ./.terraform/modules/__v4__/IDH/subnet | n/a |
 | <a name="module_redis"></a> [redis](#module\_redis) | ./.terraform/modules/__v4__/IDH/redis | n/a |
 | <a name="module_share_storage_account"></a> [share\_storage\_account](#module\_share\_storage\_account) | ./.terraform/modules/__v4__/IDH/storage_account | n/a |
@@ -111,6 +114,7 @@
 | [keycloak_role.read_service_registry](https://registry.terraform.io/providers/keycloak/keycloak/latest/docs/resources/role) | resource |
 | [keycloak_role.write_rtp_activations](https://registry.terraform.io/providers/keycloak/keycloak/latest/docs/resources/role) | resource |
 | [keycloak_role.write_rtp_send](https://registry.terraform.io/providers/keycloak/keycloak/latest/docs/resources/role) | resource |
+| [kubernetes_cluster_role_binding.rbac_reader_global](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/cluster_role_binding) | resource |
 | [kubernetes_cluster_role_binding.system_deployer_cluster_binding](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/cluster_role_binding) | resource |
 | [kubernetes_namespace.namespace](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/namespace) | resource |
 | [kubernetes_namespace.system_domain_namespace](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/namespace) | resource |

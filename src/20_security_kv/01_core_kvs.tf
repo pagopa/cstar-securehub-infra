@@ -89,3 +89,24 @@ resource "azurerm_key_vault_access_policy" "adgroup_externals_policy" {
   storage_permissions     = []
   certificate_permissions = ["Get", "List"]
 }
+
+module "domain_admins_reader_policy_core" {
+  source = "./.terraform/modules/__v4__/IDH/key_vault_access_policy"
+
+  for_each = { for group in local.domain_ad_group_rbac : group.object_id => group }
+
+  product_name      = "cstar"
+  idh_resource_tier = "reader"
+  env               = var.env
+  key_vault_id      = module.key_vault["core"].id
+  tenant_id         = data.azurerm_client_config.current.tenant_id
+  object_id         = each.value.object_id
+}
+
+resource "azurerm_role_assignment" "domain_kv_reader_core" {
+  for_each = { for group in local.domain_ad_group_rbac : group.object_id => group }
+
+  scope                = module.key_vault["core"].id
+  role_definition_name = "Key Vault Reader"
+  principal_id         = each.value.object_id
+}
