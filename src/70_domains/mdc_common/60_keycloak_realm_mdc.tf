@@ -173,7 +173,7 @@ resource "keycloak_openid_hardcoded_claim_protocol_mapper" "emd_pagopa_mdc_emd_t
   client_id           = keycloak_openid_client.emd_pagopa_mdc_emd_tpp_test_client.id
   name                = "emd-tpp-test-sub-override"
   claim_name          = "sub"
-  claim_value         = var.env == "p" ? "15376371009" : "99999999999"
+  claim_value         = var.env_short == "p" ? "15376371009" : "99999999999"
   add_to_access_token = true
   add_to_id_token     = true
 }
