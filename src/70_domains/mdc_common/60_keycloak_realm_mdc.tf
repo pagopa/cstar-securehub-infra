@@ -99,11 +99,11 @@ resource "keycloak_openid_client_default_scopes" "emd_pagopa_mdc_send_client_def
 
 # SEND custom SUB
 resource "keycloak_openid_hardcoded_claim_protocol_mapper" "emd_pagopa_mdc_send_sub_override" {
-  realm_id   = local.keycloak_realm_id
-  client_id  = keycloak_openid_client.emd_pagopa_mdc_send_client.id
-  name       = "send-sub-override"
-  claim_name = "sub"
-  claim_value = "SEND"
+  realm_id            = local.keycloak_realm_id
+  client_id           = keycloak_openid_client.emd_pagopa_mdc_send_client.id
+  name                = "send-sub-override"
+  claim_name          = "sub"
+  claim_value         = "SEND"
   add_to_access_token = true
   add_to_id_token     = true
 }
@@ -134,11 +134,11 @@ resource "keycloak_openid_client_default_scopes" "emd_pagopa_mdc_pagopa_client_d
 
 # Pagopa custom SUB
 resource "keycloak_openid_hardcoded_claim_protocol_mapper" "emd_pagopa_mdc_pagopa_sub_override" {
-  realm_id   = local.keycloak_realm_id
-  client_id  = keycloak_openid_client.emd_pagopa_mdc_pagopa_client.id
-  name       = "pagopa-sub-override"
-  claim_name = "sub"
-  claim_value = "15376371009"
+  realm_id            = local.keycloak_realm_id
+  client_id           = keycloak_openid_client.emd_pagopa_mdc_pagopa_client.id
+  name                = "pagopa-sub-override"
+  claim_name          = "sub"
+  claim_value         = "15376371009"
   add_to_access_token = true
   add_to_id_token     = true
 }
@@ -169,11 +169,11 @@ resource "keycloak_openid_client_default_scopes" "emd_pagopa_mdc_emd_tpp_test_cl
 
 # Emd-tpp-test custom SUB
 resource "keycloak_openid_hardcoded_claim_protocol_mapper" "emd_pagopa_mdc_emd_tpp_test_sub_override" {
-  realm_id   = local.keycloak_realm_id
-  client_id  = keycloak_openid_client.emd_pagopa_mdc_emd_tpp_test_client.id
-  name       = "emd-tpp-test-sub-override"
-  claim_name = "sub"
-  claim_value = "99999999999"
+  realm_id            = local.keycloak_realm_id
+  client_id           = keycloak_openid_client.emd_pagopa_mdc_emd_tpp_test_client.id
+  name                = "emd-tpp-test-sub-override"
+  claim_name          = "sub"
+  claim_value         = "99999999999"
   add_to_access_token = true
   add_to_id_token     = true
 }
