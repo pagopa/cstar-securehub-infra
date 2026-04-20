@@ -49,11 +49,8 @@ locals {
 
   # 🔑 Keycloak
   keycloak_external_hostname     = "${local.mcshared_api_url}/auth-itn"
-  selfcare_issuer                = var.env == "prod" ? "https://selfcare.${var.external_domain}" : "https://${var.env}.selfcare.${var.external_domain}"
   keycloak_realm_name            = var.domain
   keycloak_realm_id              = module.keycloak_realms.realm_ids[var.domain]
-  keycloak_selfcare_idp_te       = var.env == "prod" ? "SelfCare IDP for TE" : "SelfCare ${var.env} IDP for TE"
-  keycloak_selfcare_idp_te_alias = var.env == "prod" ? "selfcare-jwt-grant" : "selfcare-${var.env}-jwt-grant"
 
   # Default Domain Resource Group
   data_rg    = "${local.project}-data-rg"
@@ -62,11 +59,11 @@ locals {
 
 
   ad_group_rbac = flatten([
+    {
+      object_id    = data.azuread_group.adgroup_domain_admin.object_id
+      display_name = data.azuread_group.adgroup_domain_admin.display_name
+    },
     var.env_short != "p" ? [
-      {
-        object_id    = data.azuread_group.adgroup_domain_admin.object_id
-        display_name = data.azuread_group.adgroup_domain_admin.display_name
-      },
       {
         object_id    = data.azuread_group.adgroup_domain_developers.object_id
         display_name = data.azuread_group.adgroup_domain_developers.display_name
@@ -74,12 +71,14 @@ locals {
       {
         object_id    = data.azuread_group.adgroup_domain_externals.object_id
         display_name = data.azuread_group.adgroup_domain_externals.display_name
-      },
+      }
+    ] : [],
+    var.env_short == "p" ? [
       {
         object_id    = data.azuread_group.adgroup_domain_oncall[0].object_id
         display_name = data.azuread_group.adgroup_domain_oncall[0].display_name
       }
-    ] : [],
+    ] : []
   ])
 
 }
