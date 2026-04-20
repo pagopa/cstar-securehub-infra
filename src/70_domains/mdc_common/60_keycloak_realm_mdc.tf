@@ -21,10 +21,9 @@ module "keycloak_realms" {
   key_vault_rg   = data.azurerm_key_vault.kv_domain.resource_group_name
 
   admin_entra_group_ids = concat(
-    var.env_short != "p" ? [data.azuread_group.adgroup_domain_externals.object_id] : [],
+    var.env_short != "p" ? [data.azuread_group.adgroup_domain_externals.object_id, data.azuread_group.adgroup_domain_developers.object_id] : [],
     [
-      data.azuread_group.adgroup_domain_admin.object_id,
-      data.azuread_group.adgroup_domain_developers.object_id
+      data.azuread_group.adgroup_domain_admin.object_id
     ]
   )
 
