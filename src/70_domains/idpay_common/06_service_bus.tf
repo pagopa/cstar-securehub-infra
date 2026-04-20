@@ -51,6 +51,26 @@ locals {
         }
       ]
     }
+    idpay-onboarding-request-session = {
+      requires_duplicate_detection            = true
+      duplicate_detection_history_time_window = "P1D"
+      dead_lettering_on_message_expiration    = true
+      requires_session                        = true
+      authorization_rules = [
+        {
+          name   = "idpay-onboarding-request-session-producer"
+          listen = false
+          send   = true
+          manage = false
+        },
+        {
+          name   = "idpay-onboarding-request-session-processor"
+          listen = true
+          send   = true
+          manage = false
+        }
+      ]
+    }
   }
 
   servicebus_namespace_auth_rules = [
@@ -109,6 +129,7 @@ resource "azurerm_servicebus_queue" "queues" {
   requires_duplicate_detection            = each.value.requires_duplicate_detection
   duplicate_detection_history_time_window = each.value.duplicate_detection_history_time_window
   dead_lettering_on_message_expiration    = each.value.dead_lettering_on_message_expiration
+  requires_session                        = try(each.value.requires_session, false)
 }
 
 resource "azurerm_servicebus_queue_authorization_rule" "queue_auth_rules" {
