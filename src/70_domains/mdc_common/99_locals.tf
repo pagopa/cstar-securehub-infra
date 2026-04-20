@@ -48,9 +48,9 @@ locals {
   mcshared_api_url = "https://api-mcshared.${local.public_dns_zone_name}"
 
   # 🔑 Keycloak
-  keycloak_external_hostname     = "${local.mcshared_api_url}/auth-itn"
-  keycloak_realm_name            = var.domain
-  keycloak_realm_id              = module.keycloak_realms.realm_ids[var.domain]
+  keycloak_external_hostname = "${local.mcshared_api_url}/auth-itn"
+  keycloak_realm_name        = var.domain
+  keycloak_realm_id          = module.keycloak_realms.realm_ids[var.domain]
 
   # Default Domain Resource Group
   data_rg    = "${local.project}-data-rg"
