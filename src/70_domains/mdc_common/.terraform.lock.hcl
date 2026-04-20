@@ -5,6 +5,7 @@ provider "registry.terraform.io/argoproj-labs/argocd" {
   version     = "7.15.1"
   constraints = "~> 7.0"
   hashes = [
+    "h1:4T4TmHRlxedxl4+GAwqv8a7GNCB826U9H0U2E1UKfwo=",
     "h1:6Zo1nrnfc/X1IYQ/NLMkZt4A19cw/0qS1JgZi2GNAUo=",
     "h1:J8iWZ1tpWM5DGH9MztTXYE4w5TK+GXsrIOSIz0Oz9X4=",
     "zh:05a3495d70f66cfcaaab80c11ac05dd067a7442b124c2b854ab42611c3da5e9d",
@@ -46,6 +47,7 @@ provider "registry.terraform.io/hashicorp/azuread" {
   hashes = [
     "h1:5nlEb2pLnQmbOIWvHOOsYD3dV6zpw/MbPB6//XPSxP4=",
     "h1:E2YWNE3Qry4bQMlmmZ33X4hLY5hOGrEZrlRg4anI2uw=",
+    "h1:kIEmiknJFWKe44U9ePG5vXwoloKep0Dbi/mQ8uqCbw0=",
     "zh:0d26cfbf9417acd1c2295ccd5b0052abeac85ad1c3f6422ff09bf6a1ce16f00d",
     "zh:144d4ea92fed541a6376bc76ad65ba4738dfd7bcab4c9d6cc20d35001338d06d",
     "zh:1c3e89cf19118fc07d7b04257251fc9897e722c16e0a0df7b07fcd261f8c12e7",
@@ -65,7 +67,11 @@ provider "registry.terraform.io/hashicorp/azurerm" {
   version     = "4.66.0"
   constraints = "~> 4.0, ~> 4.36"
   hashes = [
+<<<<<<< MMC-464-add-data-factory-and-data-explorer-mdc
     "h1:BkrEqHVR2JJtnOhQFqzgoGCY3SpukmN49zh6oPZ/q40=",
+=======
+    "h1:dxkh3j4CkfXVtYuv2FoPRg1hkwOh0l4B5fuSrL+3n4Y=",
+>>>>>>> main
     "h1:oBfHaKKlZRG7UQFUwzNi81wWLJEHHmGAaG3thfTwe2c=",
     "zh:00f3d73192f7d7824daaccf9732ff228f40ff9910aab4aba608dd2bd96f0c8b4",
     "zh:43ea71556d83257060dc24f18aa4bed0414b0c46686b6815a387eb56082a2b16",
@@ -87,7 +93,11 @@ provider "registry.terraform.io/hashicorp/external" {
   constraints = "~> 2.0"
   hashes = [
     "h1:FnUk98MI5nOh3VJ16cHf8mchQLewLfN1qZG/MqNgPrI=",
+<<<<<<< MMC-464-add-data-factory-and-data-explorer-mdc
     "h1:ORX3G4aEHO9sFP3dyv821JJTF9qa8J9XVp441SvvjvA=",
+=======
+    "h1:smKSos4zs57pJjQrNuvGBpSWth2el9SgePPbPHo0aps=",
+>>>>>>> main
     "zh:6e89509d056091266532fa64de8c06950010498adf9070bf6ff85bc485a82562",
     "zh:78d5eefdd9e494defcb3c68d282b8f96630502cac21d1ea161f53cfe9bb483b3",
     "zh:86868aec05b58dc0aa1904646a2c26b9367d69b890c9ad70c33c0d3aa7b1485a",
@@ -107,6 +117,7 @@ provider "registry.terraform.io/hashicorp/helm" {
   version     = "2.17.0"
   constraints = "~> 2.0, ~> 2.12"
   hashes = [
+    "h1:K5FEjxvDnxb1JF1kG1xr8J3pNGxoaR3Z0IBG9Csm/Is=",
     "h1:kQMkcPVvHOguOqnxoEU2sm1ND9vCHiT8TvZ2x6v/Rsw=",
     "h1:rsqAO9oKyDMLiysQqrWEzf9CNtU9NJtwEGk7bSItC9g=",
     "zh:06fb4e9932f0afc1904d2279e6e99353c2ddac0d765305ce90519af410706bd4",
@@ -128,7 +139,11 @@ provider "registry.terraform.io/hashicorp/kubernetes" {
   version     = "2.38.0"
   constraints = "~> 2.0"
   hashes = [
+<<<<<<< MMC-464-add-data-factory-and-data-explorer-mdc
     "h1:1OF0rDUteVdoX04BrtmTc0T4NOo6+D0utmK6hM0EzZw=",
+=======
+    "h1:5CkveFo5ynsLdzKk+Kv+r7+U9rMrNjfZPT3a0N/fhgE=",
+>>>>>>> main
     "h1:soK8Lt0SZ6dB+HsypFRDzuX/npqlMU6M0fvyaR1yW0k=",
     "zh:0af928d776eb269b192dc0ea0f8a3f0f5ec117224cd644bdacdc682300f84ba0",
     "zh:1be998e67206f7cfc4ffe77c01a09ac91ce725de0abaec9030b22c0a832af44f",
@@ -151,6 +166,7 @@ provider "registry.terraform.io/hashicorp/null" {
   hashes = [
     "h1:+Ag4hSb4qQjNtAS6gj2+gsGl7v0iB/Bif6zZZU8lXsw=",
     "h1:L5V05xwp/Gto1leRryuesxjMfgZwjb7oool4WS1UEFQ=",
+    "h1:hkf5w5B6q8e2A42ND2CjAvgvSN3puAosDmOJb3zCVQM=",
     "zh:59f6b52ab4ff35739647f9509ee6d93d7c032985d9f8c6237d1f8a59471bbbe2",
     "zh:78d5eefdd9e494defcb3c68d282b8f96630502cac21d1ea161f53cfe9bb483b3",
     "zh:795c897119ff082133150121d39ff26cb5f89a730a2c8c26f3a9c1abf81a9c43",
@@ -170,7 +186,11 @@ provider "registry.terraform.io/hashicorp/random" {
   version     = "3.8.1"
   constraints = "~> 3.0"
   hashes = [
+<<<<<<< MMC-464-add-data-factory-and-data-explorer-mdc
     "h1:osH3aBqEARwOz3VBJKdpFKJJCNIdgRC6k8vPojkLmlY=",
+=======
+    "h1:Eexl06+6J+s75uD46+WnZtpJZYRVUMB0AiuPBifK6Jc=",
+>>>>>>> main
     "h1:u8AKlWVDTH5r9YLSeswoVEjiY72Rt4/ch7U+61ZDkiQ=",
     "zh:08dd03b918c7b55713026037c5400c48af5b9f468f483463321bd18e17b907b4",
     "zh:0eee654a5542dc1d41920bbf2419032d6f0d5625b03bd81339e5b33394a3e0ae",
@@ -188,9 +208,11 @@ provider "registry.terraform.io/hashicorp/random" {
 }
 
 provider "registry.terraform.io/keycloak/keycloak" {
-  version = "5.7.0"
+  version     = "5.7.0"
+  constraints = ">= 5.0.0, ~> 5.0"
   hashes = [
     "h1:3DuKdVeOxwULh7l6bvJKWZvsgSZo92rtnrdvyp+X2Lc=",
+    "h1:VSlrHkPQm4mczl+5ttuj6jAh2eVvupaoeymEn9Qi5vo=",
     "zh:19be4505b17e4818db121a82917cb6723019cf379cfb82b720eaa2886f15bede",
     "zh:2bd1565ed22db6a9fb50d60626e22c277f3b034a71f65e6c0011e42f56cad2bb",
     "zh:34a9e2dfb06331dc6146491c4a0721001195c6a769cdc2d4546edb2acf2b39bd",

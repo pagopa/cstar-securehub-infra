@@ -174,6 +174,10 @@ locals {
     }
   }
 
+  # Workload Identity
+  rtp_sender_workload_identity_name    = "${var.domain}-${var.location_short}-workload-identity"
+  rtp_sender_workload_identity_rg_name = local.aks_resource_group_name
+
   ad_group_rbac = flatten([
     var.env_short != "p" ? [
       {

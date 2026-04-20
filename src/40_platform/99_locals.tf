@@ -153,6 +153,7 @@ locals {
   adx_databases = {
     idpay = ["idpay"]
     srtp  = ["srtp"]
+    mdc   = ["mdc"]
   }
 
   global_adx_principals = flatten([
@@ -192,7 +193,7 @@ locals {
       {
         id             = data.azuread_group.adgroup_domain_developers[i].object_id
         name           = data.azuread_group.adgroup_domain_developers[i].display_name
-        role           = "Admin"
+        role           = var.env_short == "p" ? "User" : "Admin"
         principal_type = "Group"
       },
       {

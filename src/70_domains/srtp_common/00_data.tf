@@ -162,3 +162,11 @@ data "azurerm_kusto_cluster" "kusto_cluster" {
   name                = local.kusto_cluster_name
   resource_group_name = local.kusto_cluster_rg_name
 }
+
+#
+# Workload Identity
+#
+data "azurerm_user_assigned_identity" "rtp_sender_workload_identity" {
+  name                = local.rtp_sender_workload_identity_name
+  resource_group_name = local.rtp_sender_workload_identity_rg_name
+}

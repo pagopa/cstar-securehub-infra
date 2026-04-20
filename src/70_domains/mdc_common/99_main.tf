@@ -18,6 +18,10 @@ terraform {
       source  = "argoproj-labs/argocd"
       version = "~> 7.0"
     }
+    keycloak = {
+      source  = "keycloak/keycloak"
+      version = ">= 5.0.0"
+    }
     helm = {
       source  = "hashicorp/helm"
       version = "~> 2.0"
@@ -62,7 +66,24 @@ provider "helm" {
   }
 }
 
+#
+# Use this provider only during realm creation
+#
+# provider "keycloak" {
+#   client_id     = "terraform"
+#   client_secret = data.azurerm_key_vault_secret.terraform_client_secret_for_keycloak.value
+#   url           = data.azurerm_key_vault_secret.keycloak_url.value
+#   realm         = "master"
+# }
+
+provider "keycloak" {
+  client_id     = data.azurerm_key_vault_secret.client_id_for_keycloak.value
+  client_secret = data.azurerm_key_vault_secret.client_secret_for_keycloak.value
+  url           = data.azurerm_key_vault_secret.keycloak_url.value
+  realm         = "master"
+}
+
 module "__v4__" {
-  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v10.3.1
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=b8192d32acb18e57c9957c634819c4a875a67135"
+  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v10.4.1
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=7daabc5d931b095b03e12a3f911fa89d4bf6d1c0"
 }

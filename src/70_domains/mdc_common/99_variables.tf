@@ -147,3 +147,8 @@ variable "additional_geo_locations" {
   default     = []
   description = "Specifies a list of additional geo_location resources, used to define where data should be replicated."
 }
+
+variable "dns_zone_public_name" {
+  type        = string
+  description = "Public DNS zone name, e.g. 'dev.cstar.pagopa.it'"
+}
