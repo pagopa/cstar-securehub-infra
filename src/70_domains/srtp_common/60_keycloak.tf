@@ -58,6 +58,12 @@ resource "keycloak_role" "read_rtp_send" {
   description = "Role to read RTPs"
 }
 
+resource "keycloak_role" "read-rtp-payees-consents" {
+  realm_id    = keycloak_realm.srtp.id
+  name        = "read-rtp-payees-consents"
+  description = "Role to read RTPs Consents Information"
+}
+
 resource "keycloak_role" "read_rtp_all" {
   realm_id    = keycloak_realm.srtp.id
   name        = "read_rtp_all"
