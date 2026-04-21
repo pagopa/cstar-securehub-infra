@@ -1,8 +1,8 @@
 # Apply online with the terraform user that has admin access to keycloak
 resource "keycloak_oidc_identity_provider" "selfcare_te_oidc" {
-  realm             = local.keycloak_realm_id
-  alias             = local.keycloak_selfcare_idp_te_alias
-  enabled           = true
+  realm   = local.keycloak_realm_id
+  alias   = local.keycloak_selfcare_idp_te_alias
+  enabled = true
 
   authorization_url = "https://dummy.com/auth"
   token_url         = "https://dummy.com/token"
