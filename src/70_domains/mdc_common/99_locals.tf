@@ -48,9 +48,12 @@ locals {
   mcshared_api_url = "https://api-mcshared.${local.public_dns_zone_name}"
 
   # 🔑 Keycloak
-  keycloak_external_hostname = "${local.mcshared_api_url}/auth-itn"
-  keycloak_realm_name        = var.domain
-  keycloak_realm_id          = module.keycloak_realms.realm_ids[var.domain]
+  keycloak_external_hostname     = "${local.mcshared_api_url}/auth-itn"
+  keycloak_realm_name            = var.domain
+  keycloak_realm_id              = module.keycloak_realms.realm_ids[var.domain]
+  selfcare_issuer                = var.env == "prod" ? "https://selfcare.${var.external_domain}" : "https://${var.env}.selfcare.${var.external_domain}"
+  keycloak_selfcare_idp_te       = var.env == "prod" ? "SelfCare IDP for TE" : "SelfCare ${var.env} IDP for TE"
+  keycloak_selfcare_idp_te_alias = var.env == "prod" ? "selfcare-jwt-grant" : "selfcare-${var.env}-jwt-grant"
 
   # Default Domain Resource Group
   data_rg    = "${local.project}-data-rg"
