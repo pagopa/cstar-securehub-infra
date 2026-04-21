@@ -8,6 +8,7 @@ location_short = "itn"
 # 🔎 DNS
 external_domain          = "pagopa.it"
 dns_zone_internal_prefix = "internal.dev.cstar"
+dns_zone_public_name     = "dev.cstar.pagopa.it"
 
 #Monitoring
 law_sku               = "PerGB2018"

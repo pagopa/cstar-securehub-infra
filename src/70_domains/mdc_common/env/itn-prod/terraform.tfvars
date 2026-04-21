@@ -8,6 +8,7 @@ location_short = "itn"
 # 🔎 DNS
 external_domain          = "pagopa.it"
 dns_zone_internal_prefix = "internal.cstar"
+dns_zone_public_name     = "cstar.pagopa.it"
 
 redis_idh_tier = "standard_C1_v6"
 
