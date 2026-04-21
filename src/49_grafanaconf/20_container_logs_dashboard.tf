@@ -88,6 +88,11 @@ resource "grafana_folder_permission" "admin_permission" {
     permission = "Admin"
   }
   permissions {
+    role       = "Editor"
+    permission = "View"
+  }
+
+  permissions {
     role       = "Viewer"
     permission = "View"
   }
