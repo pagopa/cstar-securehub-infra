@@ -11,28 +11,35 @@ team_groups = {
     "cstar-p-idpay-adgroup-admin"            = { permission = "Admin" }
     "cstar-p-idpay-adgroup-developers"       = { permission = "View" }
     "cstar-p-idpay-adgroup-externals"        = { permission = "View" }
+    "cstar-p-idpay-adgroup-oncall"           = { permission = "View" }
     "cstar-p-idpay-adgroup-project-managers" = { permission = "View" }
   }
   keycloak = {
     "cstar-p-idpay-adgroup-admin"            = { permission = "Admin" }
     "cstar-p-idpay-adgroup-developers"       = { permission = "View" }
     "cstar-p-idpay-adgroup-externals"        = { permission = "View" }
+    "cstar-p-idpay-adgroup-oncall"           = { permission = "View" }
     "cstar-p-idpay-adgroup-project-managers" = { permission = "View" }
     "cstar-p-mdc-adgroup-admin"              = { permission = "Admin" }
     "cstar-p-mdc-adgroup-developers"         = { permission = "View" }
     "cstar-p-mdc-adgroup-externals"          = { permission = "View" }
     "cstar-p-mdc-adgroup-project-managers"   = { permission = "View" }
+    "cstar-p-mdc-adgroup-oncall"             = { permission = "View" }
   }
   srtp = {
-    "cstar-p-srtp-adgroup-admin"      = { permission = "Admin" }
-    "cstar-p-srtp-adgroup-developers" = { permission = "View" }
-    "cstar-p-srtp-adgroup-externals"  = { permission = "View" }
+    "cstar-p-srtp-adgroup-admin"            = { permission = "Admin" }
+    "cstar-p-srtp-adgroup-developers"       = { permission = "View" }
+    "cstar-p-srtp-adgroup-externals"        = { permission = "View" }
+    "cstar-p-srtp-adgroup-project-managers" = { permission = "View" }
+    "cstar-p-srtp-adgroup-oncall"           = { permission = "View" }
+
   }
   mdc = {
     "cstar-p-mdc-adgroup-admin"            = { permission = "Admin" }
     "cstar-p-mdc-adgroup-developers"       = { permission = "View" }
     "cstar-p-mdc-adgroup-externals"        = { permission = "View" }
     "cstar-p-mdc-adgroup-project-managers" = { permission = "View" }
+    "cstar-p-mdc-adgroup-oncall"           = { permission = "View" }
   }
 }
 
