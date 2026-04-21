@@ -1,0 +1,4 @@
+.create-merge table CitizenMetricsSnapshot (
+    fiscal_code: string,
+    consents: dynamic
+)
