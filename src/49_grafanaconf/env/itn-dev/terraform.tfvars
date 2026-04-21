@@ -17,8 +17,8 @@ team_groups = {
     "cstar-d-idpay-adgroup-developers" = { permission = "View" }
     "cstar-d-idpay-adgroup-externals"  = { permission = "View" }
     "cstar-d-mdc-adgroup-admin"        = { permission = "Admin" }
-    "cstar-d-mdc-adgroup-developers"   = { permission = "Edit" }
-    "cstar-d-mdc-adgroup-externals"    = { permission = "Edit" }
+    "cstar-d-mdc-adgroup-developers"   = { permission = "View" }
+    "cstar-d-mdc-adgroup-externals"    = { permission = "View" }
   }
   srtp = {
     "cstar-d-srtp-adgroup-admin"      = { permission = "Admin" }
