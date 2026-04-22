@@ -68,7 +68,7 @@ extraEnvVars:
   - name: KC_EVENT_METRICS_USER_EVENTS
     value: login,client_login,authreqid_to_token
   - name: KC_EVENT_METRICS_USER_TAGS
-    value: realm, idp, clientId
+    value: realm,idp,clientId
   - name: KC_TRACING_ENABLED
     value: "true"
   - name: KC_LOG_LEVEL_ORG_INFINISPAN
