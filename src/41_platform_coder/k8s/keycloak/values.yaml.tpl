@@ -3,6 +3,9 @@ forceDeployVersion: ${force_deploy_version}
 production: true
 proxy: "edge"
 
+cache:
+  stack: ""
+
 global:
   security:
     allowInsecureImages: true
@@ -50,8 +53,6 @@ extraEnvVars:
     value: "true"
   - name: KC_PROXY_HEADERS
     value: "xforwarded"
-  - name: KC_PROXY
-    value: "edge"
   - name: KC_DB_URL_PROPERTIES
     value: "sslmode=require"
   - name: KC_HOSTNAME
@@ -62,10 +63,14 @@ extraEnvVars:
     value: "https://${keycloak_ingress_hostname}"
   - name: KC_METRICS_ENABLED
     value: "true"
+  - name: KC_EVENT_METRICS_USER_ENABLED
+    value: "true"
   - name: KC_TRACING_ENABLED
     value: "true"
   - name: KC_LOG_LEVEL_ORG_INFINISPAN
     value: "WARN"
+  - name: KEYCLOAK_EXTRA_ARGS
+    value: ""
   - name: APPLICATIONINSIGHTS_SELF_DIAGNOSTICS_LEVEL
     value: "WARN"
     # suppress noisy logs from opentelemetry exporter - the export is handled by the app insights java agent
@@ -78,7 +83,7 @@ extraEnvVars:
   - name: KC_SPI_CONNECTIONS_HTTP_CLIENT_DEFAULT_MAX_CONNECTION_IDLE_TIME_MILLIS
     value: "${keycloak_http_client_connection_max_idle_millis}"
   - name: JAVA_OPTS
-    value: "-javaagent:/opt/bitnami/keycloak/agent/applicationinsights-agent.jar -XX:+UseG1GC -XX:+UseLargePages -Xmx4096m"
+    value: "-javaagent:/opt/bitnami/keycloak/agent/applicationinsights-agent.jar -XX:+UseG1GC -Xmx4096m"
   - name: KC_DB_POOL_MAX_SIZE
     value: "75"
   - name: KC_DB_POOL_MIN_SIZE
