@@ -4,7 +4,7 @@ production: true
 proxy: "edge"
 
 cache:
-  stack: ""
+  stack: "jdbc-ping"
 
 global:
   security:
@@ -69,8 +69,6 @@ extraEnvVars:
     value: "true"
   - name: KC_LOG_LEVEL_ORG_INFINISPAN
     value: "WARN"
-  - name: KEYCLOAK_EXTRA_ARGS
-    value: ""
   - name: APPLICATIONINSIGHTS_SELF_DIAGNOSTICS_LEVEL
     value: "WARN"
     # suppress noisy logs from opentelemetry exporter - the export is handled by the app insights java agent
