@@ -16,6 +16,8 @@ locals {
   vnet_spoke_compute_name = "${local.project_core}-spoke-compute-vnet"
   vnet_spoke_data_name    = "${local.project_core}-spoke-data-vnet"
 
+  public_dns_zone_name = var.dns_zone_public_name
+
   # 🔎 DNS
   internal_dns_zone_name                = "${var.dns_zone_internal_prefix}.${var.external_domain}"
   internal_dns_zone_resource_group_name = "${local.product}-vnet-rg"
@@ -42,7 +44,13 @@ locals {
   argocd_internal_url = "argocd.${var.location_short}.${var.dns_zone_internal_prefix}.${var.external_domain}"
 
   # 🔗 API Management
-  apim_name = "${local.product}-apim"
+  apim_name        = "${local.product}-apim"
+  mcshared_api_url = "https://api-mcshared.${local.public_dns_zone_name}"
+
+  # 🔑 Keycloak
+  keycloak_external_hostname = "${local.mcshared_api_url}/auth-itn"
+  keycloak_realm_name        = var.domain
+  keycloak_realm_id          = module.keycloak_realms.realm_ids[var.domain]
 
   # Default Domain Resource Group
   data_rg    = "${local.project}-data-rg"

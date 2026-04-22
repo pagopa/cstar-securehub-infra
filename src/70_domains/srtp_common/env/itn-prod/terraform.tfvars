@@ -22,16 +22,17 @@ cosmos_otp_ttl = 3600
 
 # AKS
 aks_nodepool_blue = {
-  vm_sku_name    = "Standard_D4ads_v5_active" # CHANGE in Standard_D4ads_v5_active when PROD is ready
-  node_count_min = 3                          # CHANGE in 3 when PROD is ready
-  node_count_max = 4
+  vm_sku_name       = "Standard_D4ads_v5_passive" # CHANGE in Standard_D4ads_v5_active when PROD is ready
+  autoscale_enabled = false
+  node_count_min    = 0 # CHANGE in 3 when PROD is ready
+  node_count_max    = 0
 }
 
 aks_nodepool_green = {
-  vm_sku_name       = "Standard_D4ads_v5_passive"
-  autoscale_enabled = false
-  node_count_min    = 0
-  node_count_max    = 0
+  vm_sku_name       = "Standard_D4ads_v5_active"
+  autoscale_enabled = true
+  node_count_min    = 3
+  node_count_max    = 4
 }
 
 ### CosmosDB
