@@ -26,9 +26,9 @@ keycloak_pgflex_params = {
 
 # TODO restore replicas to 2-3 after load test
 keycloak_configuration = {
-  image_registry                              = "docker.io"
-  image_repository                            = "bitnamilegacy/keycloak"
-  image_tag                                   = "26.3.1-debian-12-r1"
+  image_registry                              = "public.ecr.aws"
+  image_repository                            = "bitnami/keycloak"
+  image_tag                                   = "26.6.1-debian-12-r0"
   chart_version                               = "24.7.7"
   replica_count_min                           = 1
   replica_count_max                           = 1
