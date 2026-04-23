@@ -1,7 +1,9 @@
 locals {
-  theme_dir   = "${path.module}/k8s/keycloak/themes/pagopa"
-  files       = fileset(local.theme_dir, "**")
-  binary_exts = [".png", ".jpg", ".jpeg", ".ico", ".woff", ".woff2"]
+  theme_dir      = "${path.module}/k8s/keycloak/themes/pagopa"
+  files          = fileset(local.theme_dir, "**")
+  binary_exts    = [".png", ".jpg", ".jpeg", ".ico", ".woff", ".woff2"]
+  provider_dir   = "${path.module}/k8s/keycloak/providers"
+  provider_files = fileset(local.provider_dir, "*.jar")
 
   flattened_key = { for f in local.files : f => replace(f, "/", "__") }
 
@@ -36,26 +38,26 @@ locals {
     if !endswith(f, "/")
   ]
 
-  # Merge volume mount
-  keycloak_extra_volume_mounts = concat(local.fixed_volume_mounts, local.theme_volume_mounts, [local.provider_volume_mount])
+  provider_volume_mounts = [
+    for f in local.provider_files : {
+      name      = "keycloak-providers"
+      mountPath = "/opt/bitnami/keycloak/providers/${f}"
+      subPath   = f
+      readOnly  = true
+    }
+  ]
 
-  # ConfigMap for JAR provider
-  keycloak_provider_jar_path = "${path.module}/k8s/keycloak/providers/keycloak-idp-strip-tinit-1.0.0.jar"
-  keycloak_provider_cm_name  = "keycloak-providers"
-  keycloak_provider_file     = basename(local.keycloak_provider_jar_path)
+  # Merge volume mount
+  keycloak_extra_volume_mounts = concat(local.fixed_volume_mounts, local.theme_volume_mounts, local.provider_volume_mounts)
+
+  keycloak_provider_cm_name = "keycloak-providers"
+
   # Volume for providers
   provider_volume = {
     name = "keycloak-providers"
     configMap = {
       name = kubernetes_config_map.keycloak_providers.metadata[0].name
     }
-  }
-  # Mount for single JAR with subPath in /opt/bitnami/keycloak/providers
-  provider_volume_mount = {
-    name      = "keycloak-providers"
-    mountPath = "/opt/bitnami/keycloak/providers/${local.keycloak_provider_file}"
-    subPath   = local.keycloak_provider_file
-    readOnly  = true
   }
 
 }
@@ -147,11 +149,42 @@ resource "kubernetes_config_map" "keycloak-terraform-client-config" {
     name      = "keycloak-terraform-client-config"
     namespace = local.keycloak_namespace
   }
-  data = {
+  data = merge({
     "terraform_client.json" = templatefile("${path.module}/k8s/keycloak/terraform_client.json.tpl", {
       keycloak_terraform_client_secret = azurerm_key_vault_secret.terraform_client_secret_for_keycloak.value
     })
-  }
+    }, var.it_wallet_oid4vp_provider.enabled ? {
+    "user_it_wallet_oid4vp_provider.json" = templatefile("${path.module}/k8s/keycloak/user_it_wallet_oid4vp_provider.json.tpl", {
+      alias                            = var.it_wallet_oid4vp_provider.alias
+      display_name                     = var.it_wallet_oid4vp_provider.display_name
+      realm_name                       = var.it_wallet_oid4vp_provider.realm_name
+      credential_format                = var.it_wallet_oid4vp_provider.credential_format
+      credential_type                  = var.it_wallet_oid4vp_provider.credential_type
+      first_name_claim                 = var.it_wallet_oid4vp_provider.first_name_claim
+      last_name_claim                  = var.it_wallet_oid4vp_provider.last_name_claim
+      date_of_birth_claim              = var.it_wallet_oid4vp_provider.date_of_birth_claim
+      username_claim                   = var.it_wallet_oid4vp_provider.username_claim
+      fiscal_number_claim              = var.it_wallet_oid4vp_provider.fiscal_number_claim
+      user_mapping_claim               = var.it_wallet_oid4vp_provider.user_mapping_claim
+      user_mapping_claim_mdoc          = var.it_wallet_oid4vp_provider.user_mapping_claim_mdoc
+      same_device_enabled              = tostring(var.it_wallet_oid4vp_provider.same_device_enabled)
+      cross_device_enabled             = tostring(var.it_wallet_oid4vp_provider.cross_device_enabled)
+      wallet_scheme                    = var.it_wallet_oid4vp_provider.wallet_scheme
+      response_mode                    = var.it_wallet_oid4vp_provider.response_mode
+      client_id_scheme                 = var.it_wallet_oid4vp_provider.client_id_scheme
+      enforce_haip                     = tostring(var.it_wallet_oid4vp_provider.enforce_haip)
+      credential_set_mode              = var.it_wallet_oid4vp_provider.credential_set_mode
+      credential_set_purpose_json      = jsonencode(var.it_wallet_oid4vp_provider.credential_set_purpose)
+      dcql_query_json                  = jsonencode(var.it_wallet_oid4vp_provider.dcql_query)
+      verifier_info_json               = jsonencode(var.it_wallet_oid4vp_provider.verifier_info)
+      x509_certificate_pem_json        = {} //todo jsonencode(try(data.azurerm_key_vault_secret.it_wallet_x509_certificate_pem[0].value, ""))
+      trust_list_url_json              = jsonencode(var.it_wallet_oid4vp_provider.trust_list_url)
+      trust_list_lote_type_json        = jsonencode(var.it_wallet_oid4vp_provider.trust_list_lote_type)
+      trusted_authorities_mode         = var.it_wallet_oid4vp_provider.trusted_authorities_mode
+      trust_list_signing_cert_pem_json = {} //todo jsonencode(try(data.azurerm_key_vault_secret.it_wallet_trust_list_signing_cert_pem[0].value, ""))
+      allowed_issuers                  = var.it_wallet_oid4vp_provider.allowed_issuers
+    })
+  } : {})
 
   depends_on = [azurerm_key_vault_secret.terraform_client_secret_for_keycloak]
 }
@@ -173,7 +206,7 @@ resource "kubernetes_config_map" "keycloak_providers" {
   }
 
   binary_data = {
-    "${local.keycloak_provider_file}" = filebase64(local.keycloak_provider_jar_path)
+    for f in local.provider_files : f => filebase64("${local.provider_dir}/${f}")
   }
 }
 

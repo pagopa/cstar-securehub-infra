@@ -50,3 +50,13 @@ aks_user_node_pool_keycloak = {
   os_disk_size_gb   = 300
   os_disk_type      = "Managed"
 }
+
+it_wallet_oid4vp_provider = {
+  enabled = false
+  credential_type                         = "urn:eudi:pid:it:1"
+  user_mapping_claim                      = "tax_id_code"
+  x509_certificate_pem_secret_name        = "__TODO_IT_WALLET_X509_CERTIFICATE_PEM_SECRET_NAME__"
+  trust_list_url                          = "__TODO_IT_WALLET_TRUST_LIST_URL__"
+  trust_list_lote_type                    = "__TODO_IT_WALLET_TRUST_LIST_LOTE_TYPE__"
+  trust_list_signing_cert_pem_secret_name = "__TODO_IT_WALLET_TRUST_LIST_SIGNING_CERT_PEM_SECRET_NAME__"
+}
