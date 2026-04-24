@@ -203,6 +203,8 @@ resource "kubernetes_cron_job_v1" "evaluate_sent_reward_batch" {
         }
       }
       spec {
+        active_deadline_seconds = local.idpay_transactions_job_deadline_seconds
+
         template {
           metadata {
             labels = {
@@ -213,12 +215,15 @@ resource "kubernetes_cron_job_v1" "evaluate_sent_reward_batch" {
             container {
               name  = "evaluate-sent-reward-batch"
               image = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
-              args = [
-                "-X", "POST",
-                "-H", "Content-Type: application/json",
-                "-d", "{}",
-                "https://${local.idpay_ingress_url}/idpaytransactions/idpay/merchant/portal/initiatives/${var.idpay_bel_initiative_id}/reward-batches/evaluate"
-              ]
+              args = concat(
+                local.idpay_transactions_curl_args,
+                [
+                  "-X", "POST",
+                  "-H", "Content-Type: application/json",
+                  "-d", "{}",
+                  "${local.idpay_transactions_service_url}/idpay/merchant/portal/initiatives/${var.idpay_bel_initiative_id}/reward-batches/evaluate",
+                ]
+              )
             }
             restart_policy = "OnFailure"
           }
@@ -253,6 +258,8 @@ resource "kubernetes_cron_job_v1" "evaluate_approve_reward_batch" {
         }
       }
       spec {
+        active_deadline_seconds = local.idpay_transactions_job_deadline_seconds
+
         template {
           metadata {
             labels = {
@@ -263,12 +270,15 @@ resource "kubernetes_cron_job_v1" "evaluate_approve_reward_batch" {
             container {
               name  = "evaluate-approve-reward-batch"
               image = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
-              args = [
-                "-X", "POST",
-                "-H", "Content-Type: application/json",
-                "-d", "{}",
-                "https://${local.idpay_ingress_url}/idpaytransactions/idpay/merchant/portal/initiatives/${var.idpay_bel_initiative_id}/reward-batches/approved"
-              ]
+              args = concat(
+                local.idpay_transactions_curl_args,
+                [
+                  "-X", "POST",
+                  "-H", "Content-Type: application/json",
+                  "-d", "{}",
+                  "${local.idpay_transactions_service_url}/idpay/merchant/portal/initiatives/${var.idpay_bel_initiative_id}/reward-batches/approved",
+                ]
+              )
             }
             restart_policy = "OnFailure"
           }
@@ -354,6 +364,8 @@ resource "kubernetes_cron_job_v1" "cancel_empty_reward_batches" {
       }
 
       spec {
+        active_deadline_seconds = local.idpay_transactions_job_deadline_seconds
+
         template {
           metadata {
             labels = {
@@ -366,12 +378,13 @@ resource "kubernetes_cron_job_v1" "cancel_empty_reward_batches" {
               name  = "cancel-empty-reward-batches"
               image = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
 
-              args = [
-                "--fail",
-                "--max-time", "30",
-                "-X", "DELETE",
-                "https://${local.idpay_ingress_url}/idpaytransactions/idpay/merchant/portal/empty-reward-batches"
-              ]
+              args = concat(
+                local.idpay_transactions_curl_args,
+                [
+                  "-X", "DELETE",
+                  "${local.idpay_transactions_service_url}/idpay/merchant/portal/empty-reward-batches",
+                ]
+              )
             }
 
             restart_policy = "OnFailure"
@@ -407,6 +420,8 @@ resource "kubernetes_cron_job_v1" "delivery_reward_batch" {
         }
       }
       spec {
+        active_deadline_seconds = local.idpay_transactions_job_deadline_seconds
+
         template {
           metadata {
             labels = {
@@ -417,12 +432,15 @@ resource "kubernetes_cron_job_v1" "delivery_reward_batch" {
             container {
               name  = "delivery-reward-batch"
               image = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
-              args = [
-                "-X", "POST",
-                "-H", "Content-Type: application/json",
-                "-d", "{}",
-                "https://${local.idpay_ingress_url}/idpaytransactions/idpay/merchant/portal/initiatives/${var.idpay_bel_initiative_id}/reward-batches/delivery"
-              ]
+              args = concat(
+                local.idpay_transactions_curl_args,
+                [
+                  "-X", "POST",
+                  "-H", "Content-Type: application/json",
+                  "-d", "{}",
+                  "${local.idpay_transactions_service_url}/idpay/merchant/portal/initiatives/${var.idpay_bel_initiative_id}/reward-batches/delivery",
+                ]
+              )
             }
             restart_policy = "OnFailure"
           }
@@ -458,6 +476,8 @@ resource "kubernetes_cron_job_v1" "delivery_check_outcome_reward_batch" {
         }
       }
       spec {
+        active_deadline_seconds = local.idpay_transactions_job_deadline_seconds
+
         template {
           metadata {
             labels = {
@@ -468,12 +488,15 @@ resource "kubernetes_cron_job_v1" "delivery_check_outcome_reward_batch" {
             container {
               name  = "delivery-check-outcome-reward-batch"
               image = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
-              args = [
-                "-X", "POST",
-                "-H", "Content-Type: application/json",
-                "-d", "{}",
-                "https://${local.idpay_ingress_url}/idpaytransactions/idpay/merchant/portal/initiatives/${var.idpay_bel_initiative_id}/reward-batches/check-outcomes"
-              ]
+              args = concat(
+                local.idpay_transactions_curl_args,
+                [
+                  "-X", "POST",
+                  "-H", "Content-Type: application/json",
+                  "-d", "{}",
+                  "${local.idpay_transactions_service_url}/idpay/merchant/portal/initiatives/${var.idpay_bel_initiative_id}/reward-batches/check-outcomes",
+                ]
+              )
             }
             restart_policy = "OnFailure"
           }
