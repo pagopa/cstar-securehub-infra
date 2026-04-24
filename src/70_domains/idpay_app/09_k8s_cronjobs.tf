@@ -20,6 +20,8 @@ resource "kubernetes_cron_job_v1" "cancel_pending_transactions" {
         }
       }
       spec {
+        active_deadline_seconds = local.idpay_batch_job_deadline_seconds
+
         template {
           metadata {
             labels = {
@@ -30,10 +32,13 @@ resource "kubernetes_cron_job_v1" "cancel_pending_transactions" {
             container {
               name  = "cancel-pending-transactions"
               image = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
-              args = [
-                "-X", "DELETE",
-                "https://${local.idpay_ingress_url}/idpaypayment/idpay/payment/pendingTransactions"
-              ]
+              args = concat(
+                local.idpay_batch_curl_args,
+                [
+                  "-X", "DELETE",
+                  "${local.idpay_payment_service_url}/idpay/payment/pendingTransactions",
+                ]
+              )
             }
             restart_policy = "OnFailure"
           }
@@ -65,6 +70,8 @@ resource "kubernetes_cron_job_v1" "transaction_reaper" {
         }
       }
       spec {
+        active_deadline_seconds = local.idpay_batch_job_deadline_seconds
+
         template {
           metadata {
             labels = {
@@ -75,10 +82,13 @@ resource "kubernetes_cron_job_v1" "transaction_reaper" {
             container {
               name  = "delete-lapsed-transaction"
               image = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
-              args = [
-                "-X", "DELETE",
-                "https://${local.idpay_ingress_url}/idpaypayment/idpay/payment/deleteLapsedTransaction/${var.idpay_bel_initiative_id}"
-              ]
+              args = concat(
+                local.idpay_batch_curl_args,
+                [
+                  "-X", "DELETE",
+                  "${local.idpay_payment_service_url}/idpay/payment/deleteLapsedTransaction/${var.idpay_bel_initiative_id}",
+                ]
+              )
             }
             restart_policy = "OnFailure"
           }
@@ -110,6 +120,8 @@ resource "kubernetes_cron_job_v1" "cancel_expired_vouchers" {
         }
       }
       spec {
+        active_deadline_seconds = local.idpay_batch_job_deadline_seconds
+
         template {
           metadata {
             labels = {
@@ -120,10 +132,13 @@ resource "kubernetes_cron_job_v1" "cancel_expired_vouchers" {
             container {
               name  = "cancel-expired-vouchers"
               image = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
-              args = [
-                "-X", "POST",
-                "https://${local.idpay_ingress_url}/idpaypayment/idpay/transactions/expired/initiatives/${var.idpay_bel_initiative_id}/update-status"
-              ]
+              args = concat(
+                local.idpay_batch_curl_args,
+                [
+                  "-X", "POST",
+                  "${local.idpay_payment_service_url}/idpay/transactions/expired/initiatives/${var.idpay_bel_initiative_id}/update-status",
+                ]
+              )
             }
             restart_policy = "OnFailure"
           }
@@ -155,6 +170,8 @@ resource "kubernetes_cron_job_v1" "reminder_voucher_expiration" {
         }
       }
       spec {
+        active_deadline_seconds = local.idpay_batch_job_deadline_seconds
+
         template {
           metadata {
             labels = {
@@ -165,10 +182,13 @@ resource "kubernetes_cron_job_v1" "reminder_voucher_expiration" {
             container {
               name  = "reminder-voucher-expiration"
               image = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
-              args = [
-                "-X", "POST",
-                "https://${local.idpay_ingress_url}/idpaywallet/idpay/wallet/batch/run/${var.idpay_bel_initiative_id}"
-              ]
+              args = concat(
+                local.idpay_batch_curl_args,
+                [
+                  "-X", "POST",
+                  "${local.idpay_wallet_service_url}/idpay/wallet/batch/run/${var.idpay_bel_initiative_id}",
+                ]
+              )
             }
             restart_policy = "OnFailure"
           }
@@ -311,6 +331,8 @@ resource "kubernetes_cron_job_v1" "delete_invoiced_transactions" {
       }
 
       spec {
+        active_deadline_seconds = local.idpay_batch_job_deadline_seconds
+
         template {
           metadata {
             labels = {
@@ -323,12 +345,13 @@ resource "kubernetes_cron_job_v1" "delete_invoiced_transactions" {
               name  = "delete-invoiced-transactions"
               image = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
 
-              args = [
-                "--fail",
-                "--max-time", "30",
-                "-X", "DELETE",
-                "https://${local.idpay_ingress_url}/idpaypayment/idpay/payment/deleteInvoicedTransaction"
-              ]
+              args = concat(
+                local.idpay_batch_curl_args,
+                [
+                  "-X", "DELETE",
+                  "${local.idpay_payment_service_url}/idpay/payment/deleteInvoicedTransaction",
+                ]
+              )
             }
 
             restart_policy = "OnFailure"

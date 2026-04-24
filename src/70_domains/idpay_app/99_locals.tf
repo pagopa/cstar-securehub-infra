@@ -44,8 +44,10 @@ locals {
   #
   # IDPAY
   #
-  idpay_ingress_url                      = "${var.domain}.${var.location_short}.${var.dns_zone_internal_prefix}.${var.external_domain}"
-  idpay_transactions_service_url         = "http://idpay-transactions-microservice-chart.${local.domain_namespace}.svc.cluster.local:8080"
+  idpay_ingress_url              = "${var.domain}.${var.location_short}.${var.dns_zone_internal_prefix}.${var.external_domain}"
+  idpay_payment_service_url      = "http://idpay-payment-microservice-chart.${local.domain_namespace}.svc.cluster.local:8080"
+  idpay_transactions_service_url = "http://idpay-transactions-microservice-chart.${local.domain_namespace}.svc.cluster.local:8080"
+  idpay_wallet_service_url       = "http://idpay-wallet-microservice-chart.${local.domain_namespace}.svc.cluster.local:8080"
   idpay_transactions_curl_args = [
     "--silent",
     "--show-error",
@@ -53,6 +55,8 @@ locals {
     "--connect-timeout", "10",
   ]
   idpay_transactions_job_deadline_seconds = 28800
+  idpay_batch_curl_args                   = local.idpay_transactions_curl_args
+  idpay_batch_job_deadline_seconds        = local.idpay_transactions_job_deadline_seconds
 
   #
   # Eventhub
