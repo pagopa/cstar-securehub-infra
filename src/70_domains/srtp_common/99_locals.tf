@@ -145,6 +145,23 @@ locals {
         }
       }
     }
+    payee = {
+      # Database-level throughput: RU are shared across all collections
+      db_autoscale_max_throughput = var.cosmos_payee_db_autoscale_max_throughput
+      collections = {
+        payees = {
+          autoscale_max_throughput          = null
+          cosmos_collections_max_throughput = null
+          default_ttl_seconds               = -1
+          indexes = [
+            {
+              keys = ["_id"]
+              unique = true
+            }
+          ]
+        }
+      }
+    }
   }
   cosmos_collections = flatten([
     for db_name, db in local.cosmos_db : [
