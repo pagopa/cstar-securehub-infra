@@ -54,7 +54,7 @@ locals {
     "--fail",
     "--connect-timeout", "10",
   ]
-  idpay_transactions_job_deadline_seconds = 28800
+  idpay_transactions_job_deadline_seconds = 3600
   idpay_batch_curl_args                   = local.idpay_transactions_curl_args
   idpay_batch_job_deadline_seconds        = local.idpay_transactions_job_deadline_seconds
 
