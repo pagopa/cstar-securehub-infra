@@ -45,7 +45,7 @@ locals {
   # IDPAY
   #
   idpay_ingress_url                      = "${var.domain}.${var.location_short}.${var.dns_zone_internal_prefix}.${var.external_domain}"
-  idpay_transactions_service_url         = "http://idpay-transactions.${local.domain_namespace}.svc.cluster.local:8080"
+  idpay_transactions_service_url         = "http://idpay-transactions-microservice-chart.${local.domain_namespace}.svc.cluster.local:8080"
   idpay_transactions_curl_args = [
     "--silent",
     "--show-error",
