@@ -25,7 +25,7 @@ resource "keycloak_oidc_identity_provider" "selfcare_te_oidc" {
   }
 }
 
-resource "keycloak_openid_client" "admin_client" {
+resource "keycloak_openid_client" "ar_backoffice_admin_client" {
   realm_id      = local.keycloak_realm_id
   client_id     = module.secrets.values["ar-backoffice-admin-client-id"].value
   client_secret = module.secrets.values["ar-backoffice-admin-client-secret"].value
@@ -39,6 +39,15 @@ resource "keycloak_openid_client" "admin_client" {
   direct_access_grants_enabled = false
 }
 
+resource "keycloak_openid_client_default_scopes" "ar_backoffice_admin_client_default_scopes" {
+  realm_id  = local.keycloak_realm_id
+  client_id = keycloak_openid_client.ar_backoffice_admin_client.id
+
+  default_scopes = [
+    keycloak_openid_client_scope.mdc_base_claims.name,
+  ]
+}
+
 data "keycloak_openid_client" "realm_management" {
   realm_id  = local.keycloak_realm_id
   client_id = "realm-management"
@@ -49,14 +58,14 @@ data "keycloak_role" "manage_users" {
   name      = "manage-users"
 }
 
-resource "keycloak_openid_client_service_account_role" "admin_client_manage_users" {
+resource "keycloak_openid_client_service_account_role" "ar_backoffice_admin_client_manage_users" {
   realm_id                = local.keycloak_realm_id
-  service_account_user_id = keycloak_openid_client.admin_client.service_account_user_id
+  service_account_user_id = keycloak_openid_client.ar_backoffice_admin_client.service_account_user_id
   client_id               = data.keycloak_openid_client.realm_management.id
   role                    = data.keycloak_role.manage_users.name
 }
 
-resource "keycloak_openid_client" "backoffice_client" {
+resource "keycloak_openid_client" "ar_backoffice_client" {
   realm_id      = local.keycloak_realm_id
   client_id     = module.secrets.values["ar-backoffice-client-id"].value
   client_secret = module.secrets.values["ar-backoffice-client-secret"].value
@@ -72,4 +81,27 @@ resource "keycloak_openid_client" "backoffice_client" {
     "oauth2.jwt.authorization.grant.enabled" = "true"
     "oauth2.jwt.authorization.grant.idp"     = local.keycloak_selfcare_idp_te_alias
   }
+}
+
+resource "keycloak_openid_user_attribute_protocol_mapper" "ar_backoffice_client_username_mapper" {
+  realm_id  = local.keycloak_realm_id
+  client_id = keycloak_openid_client.ar_backoffice_client.id
+
+  name             = "username-mapper"
+  user_attribute   = "username"
+  claim_name       = "username"
+  claim_value_type = "String"
+
+  add_to_access_token = true
+  add_to_id_token     = true
+  add_to_userinfo     = true
+}
+
+resource "keycloak_openid_client_default_scopes" "ar_backoffice_client_default_scopes" {
+  realm_id  = local.keycloak_realm_id
+  client_id = keycloak_openid_client.ar_backoffice_client.id
+
+  default_scopes = [
+    keycloak_openid_client_scope.mdc_base_claims.name
+  ]
 }
