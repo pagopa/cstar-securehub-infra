@@ -155,7 +155,7 @@ locals {
           default_ttl_seconds               = -1
           indexes = [
             {
-              keys = ["_id"]
+              keys   = ["_id"]
               unique = true
             }
           ]
