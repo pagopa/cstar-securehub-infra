@@ -110,6 +110,7 @@
 | [keycloak_role.read_rtp_activations](https://registry.terraform.io/providers/keycloak/keycloak/latest/docs/resources/role) | resource |
 | [keycloak_role.read_rtp_all](https://registry.terraform.io/providers/keycloak/keycloak/latest/docs/resources/role) | resource |
 | [keycloak_role.read_rtp_payees](https://registry.terraform.io/providers/keycloak/keycloak/latest/docs/resources/role) | resource |
+| [keycloak_role.read_rtp_payees_consents](https://registry.terraform.io/providers/keycloak/keycloak/latest/docs/resources/role) | resource |
 | [keycloak_role.read_rtp_send](https://registry.terraform.io/providers/keycloak/keycloak/latest/docs/resources/role) | resource |
 | [keycloak_role.read_service_registry](https://registry.terraform.io/providers/keycloak/keycloak/latest/docs/resources/role) | resource |
 | [keycloak_role.write_rtp_activations](https://registry.terraform.io/providers/keycloak/keycloak/latest/docs/resources/role) | resource |
