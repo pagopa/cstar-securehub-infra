@@ -3,7 +3,7 @@
 ## Requirements
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >=1.3.0 |
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | ~> 2.53 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 4.33 |
@@ -13,13 +13,13 @@
 ## Providers
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.53.0 |
 
 ## Modules
 
 | Name | Source | Version |
-|------|--------|---------|
+| ---- | ------ | ------- |
 | <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | 2af8a000f8e3ac6c78944d1aad6be020ad8f0f63 |
 | <a name="module_azdoa_linux_app"></a> [azdoa\_linux\_app](#module\_azdoa\_linux\_app) | ./.terraform/modules/__v4__/azure_devops_agent | n/a |
 | <a name="module_azdoa_linux_infra"></a> [azdoa\_linux\_infra](#module\_azdoa\_linux\_infra) | ./.terraform/modules/__v4__/azure_devops_agent | n/a |
@@ -29,7 +29,7 @@
 ## Resources
 
 | Name | Type |
-|------|------|
+| ---- | ---- |
 | [azurerm_application_insights.application_insights](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/application_insights) | resource |
 | [azurerm_key_vault_access_policy.azdevops_iac_managed_identities_cicd](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
 | [azurerm_key_vault_access_policy.azdevops_iac_managed_identities_core](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
@@ -57,7 +57,7 @@
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
+| ---- | ----------- | ---- | ------- | :------: |
 | <a name="input_azdo_agent_image_version"></a> [azdo\_agent\_image\_version](#input\_azdo\_agent\_image\_version) | Version as suffix to define the image related to azdo agent | `string` | n/a | yes |
 | <a name="input_azdo_agent_perf_vm_sku"></a> [azdo\_agent\_perf\_vm\_sku](#input\_azdo\_agent\_perf\_vm\_sku) | VM SKU for Azure DevOps Agent | `string` | n/a | yes |
 | <a name="input_devops_agent_balance_zones"></a> [devops\_agent\_balance\_zones](#input\_devops\_agent\_balance\_zones) | (Optional) True if the devops agent instances must be evenly balanced between the configured zones | `bool` | `false` | no |

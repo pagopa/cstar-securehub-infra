@@ -3,7 +3,7 @@
 ## Requirements
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.10.0 |
 | <a name="requirement_argocd"></a> [argocd](#requirement\_argocd) | ~> 7.0 |
 | <a name="requirement_azapi"></a> [azapi](#requirement\_azapi) | ~> 2.0 |
@@ -16,7 +16,7 @@
 ## Providers
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="provider_argocd"></a> [argocd](#provider\_argocd) | 7.15.3 |
 | <a name="provider_azapi"></a> [azapi](#provider\_azapi) | 2.9.0 |
 | <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 2.53.1 |
@@ -28,7 +28,7 @@
 ## Modules
 
 | Name | Source | Version |
-|------|--------|---------|
+| ---- | ------ | ------- |
 | <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | a8f4c9f446b46bfec080b1f39206dd29e2975b95 |
 | <a name="module_aks_overlay_snet"></a> [aks\_overlay\_snet](#module\_aks\_overlay\_snet) | ./.terraform/modules/__v4__/IDH/subnet | n/a |
 | <a name="module_aks_srtp_node_pool_blue"></a> [aks\_srtp\_node\_pool\_blue](#module\_aks\_srtp\_node\_pool\_blue) | ./.terraform/modules/__v4__/IDH/aks_node_pool | n/a |
@@ -50,7 +50,7 @@
 ## Resources
 
 | Name | Type |
-|------|------|
+| ---- | ---- |
 | [argocd_project.domain_project](https://registry.terraform.io/providers/argoproj-labs/argocd/latest/docs/resources/project) | resource |
 | [azapi_resource.create_tables_srtp](https://registry.terraform.io/providers/azure/azapi/latest/docs/resources/resource) | resource |
 | [azapi_resource_action.cosmos_approve_pe](https://registry.terraform.io/providers/azure/azapi/latest/docs/resources/resource_action) | resource |
@@ -165,7 +165,7 @@
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
+| ---- | ----------- | ---- | ------- | :------: |
 | <a name="input_additional_geo_locations"></a> [additional\_geo\_locations](#input\_additional\_geo\_locations) | Specifies a list of additional geo\_location resources, used to define where data should be replicated. | <pre>list(object({<br/>    location          = string<br/>    failover_priority = number<br/>    zone_redundant    = bool<br/>  }))</pre> | `[]` | no |
 | <a name="input_aks_nodepool_blue"></a> [aks\_nodepool\_blue](#input\_aks\_nodepool\_blue) | Parameters for blue node pool | <pre>object({<br/>    vm_sku_name       = string<br/>    autoscale_enabled = optional(bool, true)<br/>    node_count_min    = number<br/>    node_count_max    = number<br/>  })</pre> | n/a | yes |
 | <a name="input_aks_nodepool_green"></a> [aks\_nodepool\_green](#input\_aks\_nodepool\_green) | Parameters for green node pool | <pre>object({<br/>    vm_sku_name       = string<br/>    autoscale_enabled = optional(bool, true)<br/>    node_count_min    = number<br/>    node_count_max    = number<br/>  })</pre> | n/a | yes |

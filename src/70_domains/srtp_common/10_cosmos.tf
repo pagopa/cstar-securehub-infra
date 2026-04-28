@@ -99,4 +99,7 @@ resource "azurerm_cosmosdb_mongo_collection" "mongo_collection" {
       unique = index.value.unique
     }
   }
+  depends_on = [
+    azurerm_cosmosdb_mongo_database.mongo_database
+  ]
 }

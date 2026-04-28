@@ -89,7 +89,7 @@ jobs:
 
           TARGET_FILES=$(find . -type f -name "*.tf" ! -path "*/.terraform/*" ! -path "./src/90_aws/*")
 
-          TAG=v1.99.2@sha256:34f6cef8b944d571ea22be316a960d8353fcc0571adea35302cbd9ab80bf2758
+          TAG=v1.105.0@sha256:4ef4b8323b27fc263535ad88c9d2f20488fcb3b520258e5e7f0553ed5f6692b5
           docker run \
             -v "$(pwd)":/lint \
             -v /tmp/.terraform.d/plugin-cache:/tmp/.terraform.d/plugin-cache \
