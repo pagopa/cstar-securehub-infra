@@ -17,10 +17,10 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_argocd"></a> [argocd](#provider\_argocd) | 7.15.0 |
+| <a name="provider_argocd"></a> [argocd](#provider\_argocd) | 7.15.3 |
 | <a name="provider_azapi"></a> [azapi](#provider\_azapi) | 2.9.0 |
 | <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 2.53.1 |
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.63.0 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.69.0 |
 | <a name="provider_keycloak"></a> [keycloak](#provider\_keycloak) | 5.7.0 |
 | <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | 2.38.0 |
 | <a name="provider_null"></a> [null](#provider\_null) | 3.2.4 |
@@ -29,11 +29,11 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | b8192d32acb18e57c9957c634819c4a875a67135 |
+| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | a8f4c9f446b46bfec080b1f39206dd29e2975b95 |
 | <a name="module_aks_overlay_snet"></a> [aks\_overlay\_snet](#module\_aks\_overlay\_snet) | ./.terraform/modules/__v4__/IDH/subnet | n/a |
 | <a name="module_aks_srtp_node_pool_blue"></a> [aks\_srtp\_node\_pool\_blue](#module\_aks\_srtp\_node\_pool\_blue) | ./.terraform/modules/__v4__/IDH/aks_node_pool | n/a |
 | <a name="module_aks_srtp_node_pool_green"></a> [aks\_srtp\_node\_pool\_green](#module\_aks\_srtp\_node\_pool\_green) | ./.terraform/modules/__v4__/IDH/aks_node_pool | n/a |
-| <a name="module_cdn"></a> [cdn](#module\_cdn) | ./.terraform/modules/__v4__/cdn | n/a |
+| <a name="module_cdn_frontdoor"></a> [cdn\_frontdoor](#module\_cdn\_frontdoor) | ./.terraform/modules/__v4__/cdn_frontdoor | n/a |
 | <a name="module_cosmos_db_account"></a> [cosmos\_db\_account](#module\_cosmos\_db\_account) | ./.terraform/modules/__v4__/IDH/cosmosdb_account | n/a |
 | <a name="module_kubernetes_service_account"></a> [kubernetes\_service\_account](#module\_kubernetes\_service\_account) | ./.terraform/modules/__v4__/kubernetes_service_account | n/a |
 | <a name="module_namespace_keycloak_role_bindings"></a> [namespace\_keycloak\_role\_bindings](#module\_namespace\_keycloak\_role\_bindings) | ./.terraform/modules/__v4__/kubernetes_namespace_role_binding | n/a |
@@ -174,6 +174,7 @@
 | <a name="input_cosmos_activation_db_autoscale_max_throughput"></a> [cosmos\_activation\_db\_autoscale\_max\_throughput](#input\_cosmos\_activation\_db\_autoscale\_max\_throughput) | Max throughput for activation database (shared across collections) | `number` | `null` | no |
 | <a name="input_cosmos_collections_max_throughput"></a> [cosmos\_collections\_max\_throughput](#input\_cosmos\_collections\_max\_throughput) | Max throughput for collections | `number` | `null` | no |
 | <a name="input_cosmos_otp_ttl"></a> [cosmos\_otp\_ttl](#input\_cosmos\_otp\_ttl) | TTL for otps collection. | `number` | `null` | no |
+| <a name="input_cosmos_payee_db_autoscale_max_throughput"></a> [cosmos\_payee\_db\_autoscale\_max\_throughput](#input\_cosmos\_payee\_db\_autoscale\_max\_throughput) | Max throughput for payee database (shared across collections) | `number` | `null` | no |
 | <a name="input_cosmos_rtp_db_autoscale_max_throughput"></a> [cosmos\_rtp\_db\_autoscale\_max\_throughput](#input\_cosmos\_rtp\_db\_autoscale\_max\_throughput) | Max throughput for rtp database (shared across collections) | `number` | `null` | no |
 | <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | n/a | yes |
 | <a name="input_enable_cdn"></a> [enable\_cdn](#input\_enable\_cdn) | Enable CDN for the domain | `bool` | n/a | yes |

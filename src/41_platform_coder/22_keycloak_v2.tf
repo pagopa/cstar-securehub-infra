@@ -183,8 +183,7 @@ resource "helm_release" "keycloak" {
   #https://github.com/bitnami/charts/tree/main/bitnami/keycloak
   repository = "oci://registry-1.docker.io/bitnamicharts"
   #https://artifacthub.io/packages/helm/bitnami/keycloak/
-  #https://hub.docker.com/r/keycloak/keycloak
-  #https://hub.docker.com/r/bitnamilegacy/keycloak/tags
+  #https://gallery.ecr.aws/bitnami/keycloak
   chart   = "keycloak"
   version = var.keycloak_configuration.chart_version
 
