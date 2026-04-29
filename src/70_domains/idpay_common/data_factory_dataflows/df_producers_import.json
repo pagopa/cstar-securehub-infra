@@ -1,0 +1,76 @@
+{
+  "name": "df_producers_import",
+  "properties": {
+    "type": "MappingDataFlow",
+    "typeProperties": {
+      "sources": [
+        {
+          "dataset": {
+            "referenceName": "ds_producers_blob_csv",
+            "type": "DatasetReference"
+          },
+          "name": "source1"
+        }
+      ],
+      "sinks": [
+        {
+          "dataset": {
+            "referenceName": "ds_producers_json_out",
+            "type": "DatasetReference"
+          },
+          "name": "sink1"
+        }
+      ],
+      "transformations": [
+        {
+          "name": "select1"
+        },
+        {
+          "name": "derivedColumn1"
+        }
+      ],
+      "scriptLines": [
+        "source(output(",
+        "          producerId as string,",
+        "          initiativeId as string,",
+        "          initiativeName as string,",
+        "          initiativeStatus as string,",
+        "          initiativeStartDate as string,",
+        "          initiativeEndDate as string,",
+        "          initiativeServiceId as string,",
+        "          initiativeOrganizationName as string",
+        "     ),",
+        "     allowSchemaDrift: true,",
+        "     validateSchema: false,",
+        "     inferDriftedColumnTypes: true,",
+        "     ignoreNoFilesFound: false) ~> source1",
+        "derivedColumn1 select(mapColumn(",
+        "          {_id},",
+        "          producerId,",
+        "          initiativeId,",
+        "          initiativeName,",
+        "          InitiativeStatus = initiativeStatus,",
+        "          initiativeStartDate,",
+        "          initiativeEndDate,",
+        "          initiativeServiceId,",
+        "          initiativeOrganizationName,",
+        "          enabled,",
+        "          source,",
+        "          createdAt,",
+        "          updateAt",
+        "     ),",
+        "     skipDuplicateMapInputs: true,",
+        "     skipDuplicateMapOutputs: true) ~> select1",
+        "source1 derive({_id} = concat(producerId,'_',initiativeId),",
+        "          enabled = true(),",
+        "          source = \"CSV\",",
+        "          createdAt = currentDate('UTC'),",
+        "          updateAt = currentDate('UTC')) ~> derivedColumn1",
+        "select1 sink(allowSchemaDrift: true,",
+        "     validateSchema: false,",
+        "     skipDuplicateMapInputs: true,",
+        "     skipDuplicateMapOutputs: true) ~> sink1"
+      ]
+    }
+  }
+}

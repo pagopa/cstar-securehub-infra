@@ -1,0 +1,25 @@
+{
+  "name": "ds_producers_blob_csv",
+  "properties": {
+    "linkedServiceName": {
+      "referenceName": "ls_export_test",
+      "type": "LinkedServiceReference"
+    },
+    "annotations": [],
+    "type": "DelimitedText",
+    "typeProperties": {
+      "location": {
+        "type": "AzureBlobStorageLocation",
+        "fileName": "produttori.csv",
+        "folderPath": "Producers",
+        "container": "export"
+      },
+      "columnDelimiter": ",",
+      "escapeChar": "\\",
+      "firstRowAsHeader": true,
+      "quoteChar": "\""
+    },
+    "schema": []
+  },
+  "type": "Microsoft.DataFactory/factories/datasets"
+}

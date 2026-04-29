@@ -1,0 +1,21 @@
+{
+  "name": "ds_producers_json_out",
+  "properties": {
+    "linkedServiceName": {
+      "referenceName": "ls_export_test",
+      "type": "LinkedServiceReference"
+    },
+    "annotations": [],
+    "type": "Json",
+    "typeProperties": {
+      "location": {
+        "type": "AzureBlobStorageLocation",
+        "fileName": "producers.json",
+        "folderPath": "Producers",
+        "container": "export"
+      }
+    },
+    "schema": {}
+  },
+  "type": "Microsoft.DataFactory/factories/datasets"
+}
