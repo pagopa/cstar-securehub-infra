@@ -31,27 +31,3 @@
     precStatus: string,
     triggerEvent: string
 )
-
-.create-merge table RtpsStaging (
-    _idRaw: string,
-    noticeNumber: string,
-    amount: decimal,
-    description: string,
-    expiryDateMs: long,
-    payerName: string,
-    payerId: string,
-    payeeName: string,
-    payeeId: string,
-    subject: string,
-    savingDateTimeMs: long,
-    serviceProviderDebtor: string,
-    iban: string,
-    payTrxRef: string,
-    flgConf: string,
-    status: string,
-    serviceProviderCreditor: string,
-    operationId: long,
-    eventDispatcher: string,
-    operationDispatcherKey: string,
-    eventsRaw: string
-)
