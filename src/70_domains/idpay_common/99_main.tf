@@ -74,6 +74,6 @@ provider "keycloak" {
 }
 
 module "__v4__" {
-  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v10.3.1
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=b8192d32acb18e57c9957c634819c4a875a67135"
+  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v10.8.0
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=fix/idh-output-connection-string"
 }

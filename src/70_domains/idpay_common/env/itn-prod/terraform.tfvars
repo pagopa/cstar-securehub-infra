@@ -21,9 +21,6 @@ cosmos_mongo_db_idpay_params = {
   max_throughput = 1000
 }
 
-### Redis Cache
-redis_idh_resource_tier = "standard_C1_v6"
-
 ### Service bus
 service_bus_namespace = {
   sku                          = "Premium"
