@@ -578,7 +578,7 @@
               "type": 3,
               "content": {
                 "version": "KqlItem/1.0",
-                "query": "AppTraces\n| where AppRoleName == 'rtp-consumer'\n| where TimeGenerated {evaluation_window:query}\n| where Message startswith \"Retries exhausted after attempts\"\n| summarize errorCount = count()\n| extend totalRequestsString = tostring(errorCount)",
+                "query": "AppTraces\n| where AppRoleName == 'rtp-consumer'\n| where TimeGenerated {evaluation_window:query}\n| where Message startswith \"Retries exhausted after attempts\"\n| extend retry_msg_id = extract(@\"message_id:\\s*(\\d+)\", 1, Message)\n| summarize errorCount = count()\n| extend totalRequestsString = tostring(errorCount)",
                 "size": 0,
                 "title": "❌ Retry esauriti Consumer → Sender",
                 "noDataMessageStyle": 3,
@@ -609,6 +609,40 @@
               "styleSettings": {
                 "showBorder": true
               }
+            },
+            {
+              "type": 3,
+              "content": {
+                "version": "KqlItem/1.0",
+                "query": "let payloads = AppTraces\n| where AppRoleName == 'rtp-consumer'\n| where TimeGenerated {evaluation_window:query}\n| where Message startswith \"Payload:\"\n| extend\n    msg_id          = extract(@\"id=(\\d+)\", 1, Message),\n    operation       = extract(@\"operation=(\\w+)\", 1, Message),\n    status          = extract(@\"status=([A-Z_]+)\", 1, Message),\n    ec_tax_code     = extract(@\"ec_tax_code=([^,\\]]+)\", 1, Message),\n    debtor_tax_code = extract(@\"debtor_tax_code=([^,\\]]+)\", 1, Message),\n    iuv             = extract(@\"iuv=([^,\\]]+)\", 1, Message)\n| where isnotempty(msg_id);\nlet retries_exhausted = AppTraces\n| where AppRoleName == 'rtp-consumer'\n| where TimeGenerated {evaluation_window:query}\n| where Message startswith \"Retries exhausted after attempts\"\n| extend\n    msg_id   = extract(@\"message_id:\\s*(\\d+)\", 1, Message),\n    attempts = extract(@\"attempts:\\s*(\\d+)\", 1, Message);\nlet errors = AppTraces\n| where AppRoleName == 'rtp-consumer'\n| where TimeGenerated {evaluation_window:query}\n| where Message startswith \"Error providing message to rtp-sender\"\n| extend\n    msg_id    = tostring(Properties.message_id),\n    error_msg = extract(@\"message='([^']+)'\", 1, Message);\nretries_exhausted\n| join kind=leftouter payloads on msg_id\n| join kind=leftouter errors on msg_id\n| project\n    [\"Data\"]            = TimeGenerated,\n    [\"Message ID\"]      = msg_id,\n    [\"Tentativi\"]       = attempts,\n    [\"Operazione\"]      = operation,\n    [\"Status GPD\"]      = status,\n    [\"EC Tax Code\"]     = ec_tax_code,\n    [\"Debtor Tax Code\"] = debtor_tax_code,\n    [\"IUV\"]             = iuv,\n    [\"Errore\"]          = error_msg\n| sort by [\"Data\"] desc\n| limit 50",
+                "size": 0,
+                "title": "❌ Retry esauriti Consumer → Sender",
+                "noDataMessageStyle": 3,
+                "queryType": 0,
+                "resourceType": "microsoft.operationalinsights/workspaces",
+                "crossComponentResources": [
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
+                ],
+                "statSettings": {
+                  "valueField": "totalRequestsString",
+                  "valueAggregation": "None",
+                  "colorSettings": {
+                    "type": "static",
+                    "mode": "background",
+                    "heatmapPalette": "greenRed",
+                    "thresholdsGrid": []
+                  },
+                  "iconSettings": {
+                    "thresholdsGrid": []
+                  },
+                  "tagText": "",
+                  "valueFontStyle": "auto"
+                }
+              },
+              "name": "❌ Retry esauriti Consumer → Sender - Copy",
+              "styleSettings": {
+                "showBorder": true
+              }
             }
           ]
         },
@@ -629,585 +663,7 @@
               "type": 3,
               "content": {
                 "version": "KqlItem/1.0",
-                "query": "AppTraces\n| where AppRoleName == 'rtp-sender'\n| where TimeGenerated {evaluation_window:query}\n| where Message startswith \"Message processed successfully, rtp created with id\"\n| summarize errorCount = count()\n| extend totalRequestsString = tostring(errorCount)",
-                "size": 0,
-                "title": "✅ Messaggi ricevuti dal Sender tramite Consumer",
-                "noDataMessageStyle": 3,
-                "queryType": 0,
-                "resourceType": "microsoft.operationalinsights/workspaces",
-                "crossComponentResources": [
-                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
-                ],
-                "visualization": "stat",
-                "statSettings": {
-                  "valueField": "totalRequestsString",
-                  "valueAggregation": "None",
-                  "colorSettings": {
-                    "type": "static",
-                    "mode": "background",
-                    "heatmapPalette": "greenRed",
-                    "thresholdsGrid": []
-                  },
-                  "iconSettings": {
-                    "thresholdsGrid": []
-                  },
-                  "tagText": "",
-                  "valueFontStyle": "auto"
-                }
-              },
-              "customWidth": "25",
-              "name": "Messaggi inviati da Consumer a Sender",
-              "styleSettings": {
-                "showBorder": true
-              }
-            },
-            {
-              "type": 3,
-              "content": {
-                "version": "KqlItem/1.0",
-                "query": "AppTraces\n| where AppRoleName == 'rtp-sender'\n| where TimeGenerated {evaluation_window:query}\n| where Message startswith \"Error while processing GPD message for requestId\"\n| summarize errorCount = count()\n| extend totalRequestsString = tostring(errorCount)",
-                "size": 0,
-                "title": "❌ Fallimenti ricezione messaggi Sender da Consumer",
-                "noDataMessageStyle": 3,
-                "queryType": 0,
-                "resourceType": "microsoft.operationalinsights/workspaces",
-                "crossComponentResources": [
-                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
-                ],
-                "visualization": "stat",
-                "statSettings": {
-                  "valueField": "totalRequestsString",
-                  "valueAggregation": "None",
-                  "colorSettings": {
-                    "type": "static",
-                    "mode": "background",
-                    "heatmapPalette": "greenRed",
-                    "thresholdsGrid": []
-                  },
-                  "iconSettings": {
-                    "thresholdsGrid": []
-                  },
-                  "tagText": "",
-                  "valueFontStyle": "auto"
-                }
-              },
-              "customWidth": "25",
-              "name": "Messaggi falliti da Consumer a Sender - Copy",
-              "styleSettings": {
-                "showBorder": true
-              }
-            },
-            {
-              "type": 3,
-              "content": {
-                "version": "KqlItem/1.0",
-                "query": "AppTraces\n| where AppRoleName == 'rtp-sender'\n| where TimeGenerated {evaluation_window:query}\n| where Message startswith \"Rtp sent successfully with id:\"\n| summarize errorCount = count()\n| extend totalRequestsString = tostring(errorCount)",
-                "size": 0,
-                "title": "✅ Invii totali con successo (APIM + CODA)",
-                "queryType": 0,
-                "resourceType": "microsoft.operationalinsights/workspaces",
-                "crossComponentResources": [
-                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
-                ],
-                "visualization": "stat",
-                "statSettings": {
-                  "valueAggregation": "None",
-                  "colorSettings": {
-                    "type": "static",
-                    "mode": "background",
-                    "heatmapPalette": "greenRed",
-                    "thresholdsGrid": []
-                  },
-                  "iconSettings": {
-                    "thresholdsGrid": []
-                  },
-                  "numberFormatSettings": {
-                    "unit": 0,
-                    "options": {
-                      "style": "decimal"
-                    }
-                  },
-                  "tagText": "",
-                  "valueFontStyle": "auto"
-                }
-              },
-              "customWidth": "25",
-              "name": "✅ Invii totali con successo (APIM + CODA)",
-              "styleSettings": {
-                "showBorder": true
-              }
-            },
-            {
-              "type": 3,
-              "content": {
-                "version": "KqlItem/1.0",
-                "query": "AppTraces\n| where AppRoleName == 'rtp-sender'\n| where TimeGenerated {evaluation_window:query}\n| where Message startswith \"Error finding activation data with resourceId:\"\n| summarize errorCount = count()\n| extend totalRequestsString = tostring(errorCount)",
-                "size": 0,
-                "title": "❌ RTP non creato - attivazione inesistente per il Codice Fiscale",
-                "noDataMessageStyle": 3,
-                "queryType": 0,
-                "resourceType": "microsoft.operationalinsights/workspaces",
-                "crossComponentResources": [
-                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
-                ],
-                "visualization": "stat",
-                "statSettings": {
-                  "valueField": "totalRequestsString",
-                  "valueAggregation": "None",
-                  "colorSettings": {
-                    "type": "static",
-                    "mode": "background",
-                    "heatmapPalette": "greenRed",
-                    "thresholdsGrid": []
-                  },
-                  "iconSettings": {
-                    "thresholdsGrid": []
-                  },
-                  "tagText": "",
-                  "valueFontStyle": "auto"
-                }
-              },
-              "customWidth": "25",
-              "name": "❌ Invii falliti (Servizio)",
-              "styleSettings": {
-                "showBorder": true
-              }
-            },
-            {
-              "type": 3,
-              "content": {
-                "version": "KqlItem/1.0",
-                "query": "AppTraces\n| where AppRoleName == 'rtp-sender'\n| where TimeGenerated {evaluation_window:query}\n| where Message startswith \"Error saving Rtp to be sent:\"\n| summarize errorCount = count()\n| extend totalRequestsString = tostring(errorCount)",
-                "size": 0,
-                "title": "❌ Errore nel salvataggio a DB del RTP",
-                "noDataMessageStyle": 3,
-                "queryType": 0,
-                "resourceType": "microsoft.operationalinsights/workspaces",
-                "crossComponentResources": [
-                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
-                ],
-                "visualization": "stat",
-                "statSettings": {
-                  "valueField": "totalRequestsString",
-                  "valueAggregation": "None",
-                  "colorSettings": {
-                    "type": "static",
-                    "mode": "background",
-                    "heatmapPalette": "greenRed",
-                    "thresholdsGrid": []
-                  },
-                  "iconSettings": {
-                    "thresholdsGrid": []
-                  },
-                  "tagText": "",
-                  "valueFontStyle": "auto"
-                }
-              },
-              "customWidth": "25",
-              "name": "❌ Invii falliti (Servizio) - Copy",
-              "styleSettings": {
-                "showBorder": true
-              }
-            },
-            {
-              "type": 3,
-              "content": {
-                "version": "KqlItem/1.0",
-                "query": "AppTraces\n| where AppRoleName == 'rtp-sender'\n| where TimeGenerated {evaluation_window:query}\n| where Message startswith \"Error sending Rtp to be sent:\"\n| summarize errorCount = count()\n| extend totalRequestsString = tostring(errorCount)",
-                "size": 0,
-                "title": "❌ Errore nell'invio del RTP",
-                "noDataMessageStyle": 3,
-                "queryType": 0,
-                "resourceType": "microsoft.operationalinsights/workspaces",
-                "crossComponentResources": [
-                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
-                ],
-                "visualization": "stat",
-                "statSettings": {
-                  "valueField": "totalRequestsString",
-                  "valueAggregation": "None",
-                  "colorSettings": {
-                    "type": "static",
-                    "mode": "background",
-                    "heatmapPalette": "greenRed",
-                    "thresholdsGrid": []
-                  },
-                  "iconSettings": {
-                    "thresholdsGrid": []
-                  },
-                  "tagText": "",
-                  "valueFontStyle": "auto"
-                }
-              },
-              "customWidth": "25",
-              "name": "❌ Invii falliti (Servizio) - Copy - Copy",
-              "styleSettings": {
-                "showBorder": true
-              }
-            },
-            {
-              "type": 3,
-              "content": {
-                "version": "KqlItem/1.0",
-                "query": "AppTraces\n| where AppRoleName == 'rtp-sender'\n| where TimeGenerated {evaluation_window:query}\n| where Message startswith \"Send RTP request rejected for\"\n| summarize errorCount = count()\n| extend totalRequestsString = tostring(errorCount)",
-                "size": 0,
-                "title": "❌ RTP rifiutati dal Service Provider",
-                "noDataMessageStyle": 3,
-                "queryType": 0,
-                "resourceType": "microsoft.operationalinsights/workspaces",
-                "crossComponentResources": [
-                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
-                ],
-                "visualization": "stat",
-                "statSettings": {
-                  "valueField": "totalRequestsString",
-                  "valueAggregation": "None",
-                  "colorSettings": {
-                    "type": "static",
-                    "mode": "background",
-                    "heatmapPalette": "greenRed",
-                    "thresholdsGrid": []
-                  },
-                  "iconSettings": {
-                    "thresholdsGrid": []
-                  },
-                  "tagText": "",
-                  "valueFontStyle": "auto"
-                }
-              },
-              "customWidth": "25",
-              "name": "❌ RTP rifiutati dal Service Provider",
-              "styleSettings": {
-                "showBorder": true
-              }
-            },
-            {
-              "type": 3,
-              "content": {
-                "version": "KqlItem/1.0",
-                "query": "AppTraces\n| where AppRoleName == 'rtp-sender'\n| where TimeGenerated {evaluation_window:query}\n| where Message startswith \"An unexpected error occurred while sending RTP\"\n| summarize errorCount = count()\n| extend totalRequestsString = tostring(errorCount)",
-                "size": 0,
-                "title": "❌ Errori inattesi nell'invio",
-                "noDataMessageStyle": 3,
-                "queryType": 0,
-                "resourceType": "microsoft.operationalinsights/workspaces",
-                "crossComponentResources": [
-                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
-                ],
-                "visualization": "stat",
-                "statSettings": {
-                  "valueField": "totalRequestsString",
-                  "valueAggregation": "None",
-                  "colorSettings": {
-                    "type": "static",
-                    "mode": "background",
-                    "heatmapPalette": "greenRed",
-                    "thresholdsGrid": []
-                  },
-                  "iconSettings": {
-                    "thresholdsGrid": []
-                  },
-                  "tagText": "",
-                  "valueFontStyle": "auto"
-                }
-              },
-              "customWidth": "25",
-              "name": "❌ Errori inattesi nell'invio",
-              "styleSettings": {
-                "showBorder": true
-              }
-            },
-            {
-              "type": 3,
-              "content": {
-                "version": "KqlItem/1.0",
-                "query": "AppTraces\n| where AppRoleName == 'rtp-sender'\n| where TimeGenerated {evaluation_window:query}\n| where Message startswith \"Error retrieving registry data\"\n| summarize errorCount = count()\n| extend totalRequestsString = tostring(errorCount)",
-                "size": 0,
-                "title": "❌ Errori Registry Service Provider",
-                "noDataMessageStyle": 3,
-                "queryType": 0,
-                "resourceType": "microsoft.operationalinsights/workspaces",
-                "crossComponentResources": [
-                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
-                ],
-                "visualization": "stat",
-                "statSettings": {
-                  "valueField": "totalRequestsString",
-                  "valueAggregation": "None",
-                  "colorSettings": {
-                    "type": "static",
-                    "mode": "background",
-                    "heatmapPalette": "greenRed",
-                    "thresholdsGrid": []
-                  },
-                  "iconSettings": {
-                    "thresholdsGrid": []
-                  },
-                  "tagText": "",
-                  "valueFontStyle": "auto"
-                }
-              },
-              "customWidth": "25",
-              "name": "❌ Errori Registry Service Provider",
-              "styleSettings": {
-                "showBorder": true
-              }
-            },
-            {
-              "type": 3,
-              "content": {
-                "version": "KqlItem/1.0",
-                "query": "AppTraces\n| where AppRoleName == 'rtp-sender'\n| where TimeGenerated {evaluation_window:query}\n| where Message startswith \"Error while getting Payees list\"\n| summarize errorCount = count()\n| extend totalRequestsString = tostring(errorCount)",
-                "size": 0,
-                "title": "❌ Errori Payee Registry",
-                "noDataMessageStyle": 3,
-                "queryType": 0,
-                "resourceType": "microsoft.operationalinsights/workspaces",
-                "crossComponentResources": [
-                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
-                ],
-                "visualization": "stat",
-                "statSettings": {
-                  "valueField": "totalRequestsString",
-                  "valueAggregation": "None",
-                  "colorSettings": {
-                    "type": "static",
-                    "mode": "background",
-                    "heatmapPalette": "greenRed",
-                    "thresholdsGrid": []
-                  },
-                  "iconSettings": {
-                    "thresholdsGrid": []
-                  },
-                  "tagText": "",
-                  "valueFontStyle": "auto"
-                }
-              },
-              "customWidth": "25",
-              "name": "❌ Errori Payee Registry",
-              "styleSettings": {
-                "showBorder": true
-              }
-            },
-            {
-              "type": 3,
-              "content": {
-                "version": "KqlItem/1.0",
-                "query": "AppTraces\n| where AppRoleName == 'rtp-sender'\n| where TimeGenerated {evaluation_window:query}\n| where Message startswith \"Error sending Rtp to be sent:\"\n| extend _err = trim(\" \", replace_string(Message, \"Error sending Rtp to be sent:\", \"\"))\n| extend Categoria = case(\n    _err contains \"payer is not activated\",              \"Payer non attivato\",\n    _err contains \"rejected\" or _err contains \"Reject\",  \"Rejection SEPA\",\n    _err contains \"imout\" or _err contains \"Timeout\",    \"Timeout\",\n    _err contains \"Connection\" or _err contains \"refused\",\"Errore di rete\",\n    _err contains \"MongoWrite\" or _err contains \"Mongo\",  \"Errore DB Mongo\",\n    \"Altro / non classificato\"\n)\n| summarize Errori = count() by Categoria\n| sort by Errori desc",
-                "size": 0,
-                "title": "Classificazione errori di invio per tipo",
-                "noDataMessageStyle": 3,
-                "queryType": 0,
-                "resourceType": "microsoft.operationalinsights/workspaces",
-                "crossComponentResources": [
-                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
-                ],
-                "visualization": "piechart"
-              },
-              "customWidth": "50",
-              "name": "Classificazione errori di invio per tipo",
-              "styleSettings": {
-                "showBorder": true
-              }
-            },
-            {
-              "type": 3,
-              "content": {
-                "version": "KqlItem/1.0",
-                "query": "AppExceptions\n| where AppRoleName == 'rtp-sender'\n| where TimeGenerated {evaluation_window:query}\n| summarize\n    [\"Occorrenze\"] = count(),\n    [\"Ultimo messaggio\"] = arg_max(TimeGenerated, OuterMessage)\n    by [\"Tipo eccezione\"] = ExceptionType\n| sort by [\"Occorrenze\"] desc",
-                "size": 0,
-                "title": "Eccezioni Java rtp-sender (AppExceptions)",
-                "noDataMessageStyle": 3,
-                "queryType": 0,
-                "resourceType": "microsoft.operationalinsights/workspaces",
-                "crossComponentResources": [
-                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
-                ],
-                "visualization": "table"
-              },
-              "customWidth": "100",
-              "name": "Eccezioni Java rtp-sender (AppExceptions)",
-              "styleSettings": {
-                "showBorder": true
-              }
-            },
-            {
-              "type": 3,
-              "content": {
-                "version": "KqlItem/1.0",
-                "query": "AppTraces\n| where AppRoleName == 'rtp-sender'\n| where TimeGenerated {evaluation_window:query}\n| where Message startswith \"Send RTP request rejected for\"\n| extend\n    service_provider = extract(@\"Send RTP request rejected for (\\S+):\", 1, Message),\n    rejection_reason = extract(@\"Send RTP request rejected for \\S+: (.+)$\", 1, Message)\n| summarize\n    [\"Rifiuti\"] = count(),\n    [\"Ultimo motivo\"] = arg_max(TimeGenerated, rejection_reason)\n    by [\"Service Provider\"] = service_provider\n| sort by [\"Rifiuti\"] desc",
-                "size": 0,
-                "title": "❌ RTP rifiutati per Service Provider (dettaglio)",
-                "noDataMessageStyle": 3,
-                "queryType": 0,
-                "resourceType": "microsoft.operationalinsights/workspaces",
-                "crossComponentResources": [
-                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
-                ],
-                "visualization": "table"
-              },
-              "customWidth": "50",
-              "name": "❌ RTP rifiutati per Service Provider (dettaglio)",
-              "styleSettings": {
-                "showBorder": true
-              }
-            },
-            {
-              "type": 3,
-              "content": {
-                "version": "KqlItem/1.0",
-                "query": "AppTraces\n| where AppRoleName == 'rtp-sender'\n| where TimeGenerated {evaluation_window:query}\n| where Message startswith \"An unexpected error occurred while sending RTP\"\n| extend\n    service_provider = tostring(Properties.serviceProviderDebtor),\n    error_msg = extract(@\"Error: (.+)$\", 1, Message)\n| summarize\n    [\"Errori\"] = count(),\n    [\"Ultimo errore\"] = arg_max(TimeGenerated, error_msg)\n    by [\"Service Provider\"] = service_provider\n| sort by [\"Errori\"] desc",
-                "size": 0,
-                "title": "❌ Errori inattesi per Service Provider (dettaglio)",
-                "noDataMessageStyle": 3,
-                "queryType": 0,
-                "resourceType": "microsoft.operationalinsights/workspaces",
-                "crossComponentResources": [
-                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
-                ],
-                "visualization": "table"
-              },
-              "customWidth": "50",
-              "name": "❌ Errori inattesi per Service Provider (dettaglio)",
-              "styleSettings": {
-                "showBorder": true
-              }
-            },
-            {
-              "type": 3,
-              "content": {
-                "version": "KqlItem/1.0",
-                "query": "AppTraces\n| where AppRoleName == \"rtp-sender\"\n| where TimeGenerated {evaluation_window:query}\n| where Message startswith \"Rtp sent successfully with id:\"\n| extend\n    rtp_id     = extract(@\"Rtp sent successfully with id: (\\S+)\", 1, Message),\n    resource_id = tostring(Properties.resource_id),\n    payee_name  = tostring(Properties.payee_name)\n| project\n    [\"Data\"]           = TimeGenerated,\n    [\"RTP ID\"]         = rtp_id,\n    [\"Resource ID\"]    = resource_id,\n    [\"Ente Creditore\"] = payee_name\n| sort by [\"Data\"] desc\n| limit 250",
-                "size": 0,
-                "title": "✅ Ultimi invii con successo per Resource ID - Limit 250",
-                "queryType": 0,
-                "resourceType": "microsoft.operationalinsights/workspaces",
-                "crossComponentResources": [
-                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
-                ],
-                "visualization": "table"
-              },
-              "customWidth": "50",
-              "name": "✅ Ultimi invii con successo per Resource ID",
-              "styleSettings": {
-                "showBorder": true
-              }
-            },
-            {
-              "type": 3,
-              "content": {
-                "version": "KqlItem/1.0",
-                "query": "AppTraces\n| where AppRoleName == \"rtp-sender\"\n| where TimeGenerated {evaluation_window:query}\n| where Message startswith \"Error sending Rtp to be sent:\"\n| extend\n    resource_id = tostring(Properties.resource_id),\n    errorMessage = replace_string(Message, \"Error sending Rtp to be sent:\", \"\")\n| where errorMessage !contains \"The payer is not activated\"\n| summarize\n    errorCount = count(),\n    lastError = arg_max(TimeGenerated, errorMessage)\n        by resource_id\n| project-rename\n    [\"RTP id\"] = resource_id,\n    [\"Errori\"] = errorCount,\n    [\"Ultimo errore\"] = lastError\n| sort by [\"Errori\"] desc\n| limit 250",
-                "size": 0,
-                "title": "❌ Invii falliti per RTP Resource ID (Errori Generici) - Limit 250",
-                "noDataMessageStyle": 3,
-                "queryType": 0,
-                "resourceType": "microsoft.operationalinsights/workspaces",
-                "crossComponentResources": [
-                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
-                ]
-              },
-              "customWidth": "50",
-              "name": "Invii falliti per RTP resource id (Errori Generici)",
-              "styleSettings": {
-                "showBorder": true
-              }
-            },
-            {
-              "type": 3,
-              "content": {
-                "version": "KqlItem/1.0",
-                "query": "AppTraces\n| where AppRoleName == \"rtp-sender\"\n| where TimeGenerated {evaluation_window:query}\n| where Message startswith \"Error sending Rtp to be sent:\"\n| extend\n    resource_id = tostring(Properties.resource_id),\n    errorMessage = replace_string(Message, \"Error sending Rtp to be sent:\", \"\")\n| where errorMessage contains \"The payer is not activated\"\n| summarize\n    errorCount = count(),\n    lastError = arg_max(TimeGenerated, errorMessage)\n        by resource_id\n| project-rename\n    [\"RTP id\"] = resource_id,\n    [\"Errori\"] = errorCount,\n    [\"Ultimo errore\"] = lastError\n| sort by [\"Errori\"] desc\n| limit 250",
-                "size": 0,
-                "title": "❌ Invii falliti per RTP Resource ID (Payer Non Attivato) - Limit 250",
-                "noDataMessageStyle": 3,
-                "queryType": 0,
-                "resourceType": "microsoft.operationalinsights/workspaces",
-                "crossComponentResources": [
-                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
-                ]
-              },
-              "customWidth": "50",
-              "name": "Invii falliti per RTP resource id (Payer Non Attivato)",
-              "styleSettings": {
-                "showBorder": true
-              }
-            },
-            {
-              "type": 3,
-              "content": {
-                "version": "KqlItem/1.0",
-                "query": "AppTraces\n| where AppRoleName == \"rtp-sender\"\n| where TimeGenerated {evaluation_window:query}\n| where Message startswith \"Retries exhausted after attempts\"\n| extend ServiceProvider = tostring(Properties.debtor_service_provider)\n| extend ServiceProvider = iff(isempty(ServiceProvider), \"N/A\", ServiceProvider)\n| summarize retries = count() by ServiceProvider\n| order by retries desc\n",
-                "size": 0,
-                "title": "Retry per invii SRTP",
-                "noDataMessageStyle": 3,
-                "queryType": 0,
-                "resourceType": "microsoft.operationalinsights/workspaces",
-                "crossComponentResources": [
-                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
-                ],
-                "visualization": "table"
-              },
-              "customWidth": "50",
-              "name": "Retry per invii SRTP",
-              "styleSettings": {
-                "showBorder": true
-              }
-            },
-            {
-              "type": 3,
-              "content": {
-                "version": "KqlItem/1.0",
-                "query": "AppTraces\n| where AppRoleName == \"rtp-sender\"\n| where TimeGenerated {evaluation_window:query}\n| where Message contains \"Message discarded due to out of order timestamp\"\n| parse Message with * \"messageTimestamp: \" messageTimestamp \n                       \", lastProcessedTimestamp: \" lastProcessedTimestamp \n                       \", status: \" status\n                       \", operation: \" operation\n                       \", id: \" id\n| extend \n    message_time = unixtime_milliseconds_todatetime(tolong(messageTimestamp)),\n    last_processed_time = unixtime_milliseconds_todatetime(tolong(lastProcessedTimestamp)),\n    time_difference = tolong(lastProcessedTimestamp) - tolong(messageTimestamp)\n| project \n    ['Log Time'] = TimeGenerated,\n    ['Message Time'] = message_time, \n    ['Last Processed Time'] = last_processed_time, \n    ['Time Difference Milliseconds'] = time_difference,\n    ['Time Difference Days'] = time_difference / (1000 * 60 * 60 * 24),\n    ['Message Timestamp'] = messageTimestamp, \n    ['Last Processed Timestamp'] = lastProcessedTimestamp,\n    ['Status'] = status, \n    ['Operation'] = operation, \n    ['Message Id'] = id\n| order by ['Log Time'] desc\n",
-                "size": 0,
-                "title": "❌ Messaggi scartati per Out-of-order Timestamp",
-                "noDataMessageStyle": 3,
-                "timeContext": {
-                  "durationMs": 2592000000
-                },
-                "showExportToExcel": true,
-                "queryType": 0,
-                "resourceType": "microsoft.operationalinsights/workspaces",
-                "crossComponentResources": [
-                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
-                ],
-                "gridSettings": {
-                  "rowLimit": 10000
-                }
-              },
-              "name": "❌ Messaggi scartati per Out-of-order Timestamp"
-            },
-            {
-              "type": 3,
-              "content": {
-                "version": "KqlItem/1.0",
-                "query": "AppTraces\n| where TimeGenerated {evaluation_window:query}\n| where AppRoleName == \"rtp-sender\"\n| summarize\n    Successo   = countif(Message startswith \"Rtp sent successfully with id:\"),\n    Errori     = countif(\n                    Message startswith \"Error finding activation data with resourceId:\" \n                    or Message startswith \"Error saving Rtp to be sent:\" \n                    or Message startswith \"Error sending Rtp to be sent:\"\n                 )\n  by bin(TimeGenerated, 1h)\n| project TimeGenerated, Successo, Errori\n| render timechart\n",
-                "size": 0,
-                "title": "Invii RTP nel tempo (Successi vs Fallimenti) in bin 1 ora",
-                "queryType": 0,
-                "resourceType": "microsoft.operationalinsights/workspaces",
-                "crossComponentResources": [
-                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
-                ],
-                "chartSettings": {
-                  "xSettings": {
-                    "numberFormatSettings": {
-                      "unit": 0,
-                      "options": {
-                        "style": "decimal",
-                        "useGrouping": true
-                      }
-                    }
-                  }
-                }
-              },
-              "name": "query - 12"
-            },
-            {
-              "type": 3,
-              "content": {
-                "version": "KqlItem/1.0",
-                "query": "AppTraces\n| where TimeGenerated {evaluation_window:query}\n| where AppRoleName == 'rtp-sender'\n| where Message startswith \"Rtp sent successfully with id:\"\n| summarize \n    [\"Invii con successo\"] = count() \n  by \n    [\"Debtor Service Provider\"] = tostring(Properties.service_provider)\n| sort by [\"Invii con successo\"] desc\n",
+                "query": " let saveLog = AppTraces\n | where TimeGenerated {evaluation_window:query}\n | where AppRoleName == \"rtp-sender\"\n | where Message startswith \"Rtp to be sent saved with id:\"\n | extend DebtorSP = extract(@\"service_provider:\\s*(\\S+)\", 1, Message)\n | project OperationId, DebtorSP;\n AppTraces\n | where TimeGenerated {evaluation_window:query}\n | where AppRoleName == \"rtp-sender\"\n | where Message startswith \"Rtp sent successfully with id:\"\n | join kind=inner saveLog on OperationId\n | summarize [\"Invii con successo\"] = count() by [\"Debtor Service Provider\"] = DebtorSP\n | sort by [\"Invii con successo\"] desc",
                 "size": 0,
                 "title": "✅ Invii con successo per Service Provider del debitore",
                 "queryType": 0,
@@ -1287,6 +743,480 @@
               "type": 3,
               "content": {
                 "version": "KqlItem/1.0",
+                "query": " let ops = AppTraces\n | where TimeGenerated {evaluation_window:query}\n | where AppRoleName == \"rtp-sender\"\n | where Message startswith \"Operation: \"\n | extend Operation = extract(@\"Operation: (\\w+)\", 1, Message)\n | summarize Operation = any(Operation) by OperationId;\n let successes = AppTraces\n | where TimeGenerated {evaluation_window:query}\n | where AppRoleName == \"rtp-sender\"\n | where Message == \"Successfully processed message.\"\n | summarize TimeGenerated = min(TimeGenerated) by OperationId;\n let errors = AppTraces\n | where TimeGenerated {evaluation_window:query}\n | where AppRoleName == \"rtp-sender\"\n | where Message startswith \"Error processing message.\"\n | where Message !contains \"PayerNotActivatedException\"\n | where Message !contains \"InvalidTransitionException\"\n | where Message !contains \"RtpNotFoundException\"\n | summarize TimeGenerated = min(TimeGenerated) by OperationId;\n union\n     (successes | join kind=inner ops on OperationId | extend Series = strcat(\"✅ \", Operation)),\n     (errors    | join kind=inner ops on OperationId | extend Series = strcat(\"❌ \", Operation))\n | summarize Count = count() by bin(TimeGenerated, 1h), Series\n | render timechart",
+                "size": 0,
+                "title": "Invii RTP nel tempo (Successi vs Fallimenti) in bin 1 ora",
+                "queryType": 0,
+                "resourceType": "microsoft.operationalinsights/workspaces",
+                "crossComponentResources": [
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
+                ],
+                "visualization": "timechart",
+                "chartSettings": {
+                  "xSettings": {
+                    "numberFormatSettings": {
+                      "unit": 0,
+                      "options": {
+                        "style": "decimal",
+                        "useGrouping": true
+                      }
+                    }
+                  }
+                }
+              },
+              "name": "Invii RTP nel tempo (Successi vs Fallimenti) in bin 1 ora"
+            },
+            {
+              "type": 3,
+              "content": {
+                "version": "KqlItem/1.0",
+                "query": "let fallimenti = AppTraces\n | where AppRoleName == 'rtp-sender'\n | where TimeGenerated {evaluation_window:query}\n | where SeverityLevel == 3\n | where Message startswith \"Error sending Rtp to be sent:\"\n | extend _err = trim(\" \", replace_string(Message, \"Error sending Rtp to be sent:\", \"\"))\n | extend Categoria = case(\n     _err contains \"payer is not activated\",                \"⚠️ Payer non attivato\",\n     _err contains \"rejected\" or _err contains \"Reject\",   \"❌ Rejection SEPA\",\n     _err contains \"imeout\",                               \"❌ Timeout\",\n     _err contains \"Connection\" or _err contains \"refused\", \"❌ Errore di rete\",\n     _err contains \"MongoWrite\" or _err contains \"Mongo\"\n         or _err contains \"TooManyRequest\",                \"❌ Errore DB Mongo\",\n     _err contains \"PayeeNotFound\"\n         or _err contains \"ServiceProviderNotFound\",       \"❌ Payee/SP non trovato\",\n     _err contains \"InvalidTransition\"\n         or _err contains \"InvalidStatus\",                 \"❌ Transizione invalida\",\n     \"❌ Altro / non classificato\"\n )\n | summarize Conteggio = count() by Categoria\n | extend Tipo = \"Fallimento\";\n \n let successi = AppTraces\n | where AppRoleName == 'rtp-sender'\n | where TimeGenerated {evaluation_window:query}\n | where SeverityLevel == 1\n | where Message startswith \"Rtp sent successfully with id:\"\n | summarize Conteggio = count()\n | extend Categoria = \"✅ Successo\", Tipo = \"Successo\";\n \n let dettaglio = union fallimenti, successi;\n \n let totali = dettaglio\n | summarize Conteggio = sum(Conteggio) by Tipo\n | extend Categoria = strcat(\"📊 Totale \", Tipo);\n \n union dettaglio, totali\n | project Categoria, Tipo, Conteggio\n | sort by Tipo asc, Conteggio desc",
+                "size": 0,
+                "title": "Monitoraggio di invii falliti o non processati per tipologia",
+                "noDataMessageStyle": 3,
+                "queryType": 0,
+                "resourceType": "microsoft.operationalinsights/workspaces",
+                "crossComponentResources": [
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
+                ],
+                "visualization": "piechart",
+                "chartSettings": {
+                  "ySettings": {
+                    "numberFormatSettings": {
+                      "unit": 0,
+                      "options": {
+                        "style": "decimal",
+                        "useGrouping": true
+                      }
+                    }
+                  }
+                }
+              },
+              "name": "Monitoraggio globale degli Invii RTP",
+              "styleSettings": {
+                "showBorder": true
+              }
+            },
+            {
+              "type": 3,
+              "content": {
+                "version": "KqlItem/1.0",
+                "query": "AppTraces\n| where AppRoleName == 'rtp-sender'\n| where TimeGenerated {evaluation_window:query}\n| where Message startswith \"Rtp sent successfully with id:\"\n| summarize errorCount = count()\n| extend totalRequestsString = tostring(errorCount)",
+                "size": 0,
+                "title": "✅ Invii totali con successo (APIM + CODA)",
+                "queryType": 0,
+                "resourceType": "microsoft.operationalinsights/workspaces",
+                "crossComponentResources": [
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
+                ],
+                "visualization": "stat",
+                "statSettings": {
+                  "valueAggregation": "None",
+                  "colorSettings": {
+                    "type": "static",
+                    "mode": "background",
+                    "heatmapPalette": "greenRed",
+                    "thresholdsGrid": []
+                  },
+                  "iconSettings": {
+                    "thresholdsGrid": []
+                  },
+                  "numberFormatSettings": {
+                    "unit": 0,
+                    "options": {
+                      "style": "decimal"
+                    }
+                  },
+                  "tagText": "",
+                  "valueFontStyle": "auto"
+                }
+              },
+              "customWidth": "25",
+              "name": "✅ Invii totali con successo (APIM + CODA)",
+              "styleSettings": {
+                "showBorder": true
+              }
+            },
+            {
+              "type": 3,
+              "content": {
+                "version": "KqlItem/1.0",
+                "query": " AppTraces\n | where AppRoleName == 'rtp-sender'\n | where TimeGenerated {evaluation_window:query}\n | where SeverityLevel == 3\n | where Message startswith \"Send RTP request rejected for\"\n | extend service_provider = extract(@\"Send RTP request rejected for ([^:]+):\", 1, Message)\n | extend rtp_operation_id = extract(@\"RTP Id:\\s*(\\d+)\", 1, Message)\n | project\n     TimeGenerated,\n     service_provider,\n     rtp_operation_id,\n     correlation_id = Properties[\"correlation_id\"],\n     resource_id    = Properties[\"resource_id\"]\n | top 100 by TimeGenerated desc",
+                "size": 0,
+                "title": "✅ Invii totali con successo (APIM + CODA)",
+                "queryType": 0,
+                "resourceType": "microsoft.operationalinsights/workspaces",
+                "crossComponentResources": [
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
+                ],
+                "visualization": "table",
+                "statSettings": {
+                  "valueAggregation": "None",
+                  "colorSettings": {
+                    "type": "static",
+                    "mode": "background",
+                    "heatmapPalette": "greenRed",
+                    "thresholdsGrid": []
+                  },
+                  "iconSettings": {
+                    "thresholdsGrid": []
+                  },
+                  "numberFormatSettings": {
+                    "unit": 0,
+                    "options": {
+                      "style": "decimal"
+                    }
+                  },
+                  "tagText": "",
+                  "valueFontStyle": "auto"
+                }
+              },
+              "customWidth": "75",
+              "name": "✅ Invii totali con successo (APIM + CODA)",
+              "styleSettings": {
+                "showBorder": true
+              }
+            },
+            {
+              "type": 3,
+              "content": {
+                "version": "KqlItem/1.0",
+                "query": "AppTraces\n| where AppRoleName == 'rtp-sender'\n| where TimeGenerated {evaluation_window:query}\n| where Message startswith \"Error sending Rtp to be sent:\" or Message startswith \"Send RTP request rejected for \" or Message startswith \"Error while handling RTP send for \"\n| summarize errorCount = count()\n| extend totalRequestsString = tostring(errorCount)",
+                "size": 0,
+                "title": "❌ Errore nell'invio del RTP",
+                "noDataMessageStyle": 3,
+                "queryType": 0,
+                "resourceType": "microsoft.operationalinsights/workspaces",
+                "crossComponentResources": [
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
+                ],
+                "visualization": "stat",
+                "statSettings": {
+                  "valueField": "totalRequestsString",
+                  "valueAggregation": "None",
+                  "colorSettings": {
+                    "type": "static",
+                    "mode": "background",
+                    "heatmapPalette": "greenRed",
+                    "thresholdsGrid": []
+                  },
+                  "iconSettings": {
+                    "thresholdsGrid": []
+                  },
+                  "tagText": "",
+                  "valueFontStyle": "auto"
+                }
+              },
+              "customWidth": "25",
+              "name": "❌ Invii falliti (Servizio) - Copy - Copy",
+              "styleSettings": {
+                "showBorder": true
+              }
+            },
+            {
+              "type": 3,
+              "content": {
+                "version": "KqlItem/1.0",
+                "query": " AppTraces\n | where AppRoleName == 'rtp-sender'\n | where TimeGenerated {evaluation_window:query}\n | where SeverityLevel == 3\n | where Message startswith \"Error sending Rtp to be sent:\"\n | where Message !contains \"payer is not activated\"\n | extend errorMessage = trim(\" \", replace_string(Message, \"Error sending Rtp to be sent:\", \"\"))\n | extend Categoria = case(\n     errorMessage contains \"TooMany\" or errorMessage contains \"429\",          \"Troppe richieste MongoDB\",\n     errorMessage contains \"DuplicateKey\" or errorMessage contains \"dup key\", \"Chiave duplicata MongoDB\",\n     errorMessage contains \"MongoWrite\" or errorMessage contains \"Mongo\",     \"Errore MongoDB\",\n     errorMessage contains \"imeout\",                                          \"Timeout\",\n     errorMessage contains \"Connection\" or errorMessage contains \"refused\",   \"Errore di rete\",\n     errorMessage contains \"rejected\" or errorMessage contains \"Reject\",      \"Rejection SEPA\",\n     \"Altro\"\n )\n | project\n     TimeGenerated,\n     Categoria,\n     errorMessage,\n     creditor_service_provider = Properties[\"creditor_service_provider\"],\n     correlation_id            = Properties[\"correlation_id\"],\n     resource_id               = Properties[\"resource_id\"]\n | top 250 by TimeGenerated desc",
+                "size": 0,
+                "title": "❌ Catch-all errori invio",
+                "noDataMessageStyle": 3,
+                "queryType": 0,
+                "resourceType": "microsoft.operationalinsights/workspaces",
+                "crossComponentResources": [
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
+                ],
+                "statSettings": {
+                  "valueField": "totalRequestsString",
+                  "valueAggregation": "None",
+                  "colorSettings": {
+                    "type": "static",
+                    "mode": "background",
+                    "heatmapPalette": "greenRed",
+                    "thresholdsGrid": []
+                  },
+                  "iconSettings": {
+                    "thresholdsGrid": []
+                  },
+                  "tagText": "",
+                  "valueFontStyle": "auto"
+                }
+              },
+              "customWidth": "75",
+              "name": "❌ Catch-all errori invio",
+              "styleSettings": {
+                "showBorder": true
+              }
+            },
+            {
+              "type": 3,
+              "content": {
+                "version": "KqlItem/1.0",
+                "query": " AppTraces\n | where AppRoleName == 'rtp-sender'\n | where TimeGenerated {evaluation_window:query}\n | where SeverityLevel == 3\n | where Message startswith \"Send RTP request rejected for\"\n | extend service_provider = extract(@\"Send RTP request rejected for ([^:]+):\", 1, Message)\n | extend rtp_operation_id = extract(@\"RTP Id:\\s*(\\d+)\", 1, Message)\n | extend errorMessage     = trim(\" \", extract(@\"Send RTP request rejected for [^:]+:\\s*(.+)$\", 1, Message))\n | project\n     TimeGenerated,\n     service_provider,\n     rtp_operation_id,\n     errorMessage,\n     correlation_id = Properties[\"correlation_id\"],\n     resource_id    = Properties[\"resource_id\"]\n | top 250 by TimeGenerated desc",
+                "size": 0,
+                "title": "❌ REJECTION esplicita EPC",
+                "noDataMessageStyle": 3,
+                "queryType": 0,
+                "resourceType": "microsoft.operationalinsights/workspaces",
+                "crossComponentResources": [
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
+                ],
+                "statSettings": {
+                  "valueField": "totalRequestsString",
+                  "valueAggregation": "None",
+                  "colorSettings": {
+                    "type": "static",
+                    "mode": "background",
+                    "heatmapPalette": "greenRed",
+                    "thresholdsGrid": []
+                  },
+                  "iconSettings": {
+                    "thresholdsGrid": []
+                  },
+                  "tagText": "",
+                  "valueFontStyle": "auto"
+                }
+              },
+              "name": "❌ REJECTION esplicita EPC",
+              "styleSettings": {
+                "showBorder": true
+              }
+            },
+            {
+              "type": 3,
+              "content": {
+                "version": "KqlItem/1.0",
+                "query": "\n AppTraces\n | where AppRoleName == 'rtp-sender'\n | where TimeGenerated {evaluation_window:query}\n | where SeverityLevel == 3\n | where Message startswith \"Error while handling RTP send for\"\n | extend resource_id_msg = extract(@\"Error while handling RTP send for ([^\\s]+)\", 1, Message)\n | extend errorMessage    = trim(\" \", extract(@\"Error while handling RTP send for [^\\s]+\\s(.+)$\", 1, Message))\n | project\n     TimeGenerated,\n     errorMessage,\n     resource_id               = coalesce(tostring(Properties[\"resource_id\"]), resource_id_msg),\n     creditor_service_provider = Properties[\"creditor_service_provider\"],\n     correlation_id            = Properties[\"correlation_id\"]\n | top 50 by TimeGenerated desc",
+                "size": 0,
+                "title": "❌ Errore Handler post retry",
+                "noDataMessageStyle": 3,
+                "queryType": 0,
+                "resourceType": "microsoft.operationalinsights/workspaces",
+                "crossComponentResources": [
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
+                ],
+                "statSettings": {
+                  "valueField": "totalRequestsString",
+                  "valueAggregation": "None",
+                  "colorSettings": {
+                    "type": "static",
+                    "mode": "background",
+                    "heatmapPalette": "greenRed",
+                    "thresholdsGrid": []
+                  },
+                  "iconSettings": {
+                    "thresholdsGrid": []
+                  },
+                  "tagText": "",
+                  "valueFontStyle": "auto"
+                }
+              },
+              "name": "❌ Errore Handler post retry",
+              "styleSettings": {
+                "showBorder": true
+              }
+            },
+            {
+              "type": 3,
+              "content": {
+                "version": "KqlItem/1.0",
+                "query": "AppTraces\n| where AppRoleName == 'rtp-sender'\n| where TimeGenerated {evaluation_window:query}\n| where SeverityLevel == 3\n| where Message startswith \"Error saving Rtp to be sent:\"\n| where Message !contains \"payer is not activated\"\n| extend error_detail = trim(@\"\\.\", extract(@\"Error saving Rtp to be sent:\\s*(.+)$\", 1, Message))\n| extend Categoria = case(\n    error_detail contains \"TooMany\" or error_detail contains \"429\",          \"Troppe richieste MongoDB\",\n    error_detail contains \"DuplicateKey\" or error_detail contains \"dup key\", \"Chiave duplicata\",\n    error_detail contains \"MongoWrite\" or error_detail contains \"Write\",     \"Errore scrittura MongoDB\",\n    error_detail contains \"imeout\",                                          \"Timeout\",\n    error_detail contains \"Connection\" or error_detail contains \"refused\",   \"Errore connessione MongoDB\",\n    \"Altro\"\n)\n| project\n    TimeGenerated,\n    Categoria,\n    error_detail,\n    message_id     = Properties[\"message_id\"],\n    correlation_id = Properties[\"correlation_id\"],\n    resource_id    = Properties[\"resource_id\"]\n| top 50 by TimeGenerated desc",
+                "size": 0,
+                "title": "❌ Errore nel salvataggio a DB del RTP",
+                "noDataMessageStyle": 3,
+                "queryType": 0,
+                "resourceType": "microsoft.operationalinsights/workspaces",
+                "crossComponentResources": [
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
+                ],
+                "statSettings": {
+                  "valueField": "totalRequestsString",
+                  "valueAggregation": "None",
+                  "colorSettings": {
+                    "type": "static",
+                    "mode": "background",
+                    "heatmapPalette": "greenRed",
+                    "thresholdsGrid": []
+                  },
+                  "iconSettings": {
+                    "thresholdsGrid": []
+                  },
+                  "tagText": "",
+                  "valueFontStyle": "auto"
+                }
+              },
+              "name": "❌ Errore nel salvataggio a DB del RTP",
+              "styleSettings": {
+                "showBorder": true
+              }
+            },
+            {
+              "type": 3,
+              "content": {
+                "version": "KqlItem/1.0",
+                "query": " AppTraces\n | where AppRoleName == 'rtp-sender'\n | where TimeGenerated {evaluation_window:query}\n | where Message startswith \"Send RTP request rejected for\"\n | extend service_provider  = extract(@\"Send RTP request rejected for ([^:]+):\", 1, Message)\n | extend rtp_operation_id  = extract(@\"RTP Id:\\s*(\\d+)\", 1, Message)\n | project\n     TimeGenerated,\n     service_provider,\n     rtp_operation_id,\n     message_id     = Properties[\"message_id\"],\n     correlation_id = Properties[\"correlation_id\"],\n     resource_id    = Properties[\"resource_id\"]\n | top 50 by TimeGenerated desc",
+                "size": 0,
+                "title": "❌ RTP rifiutati dal Service Provider",
+                "noDataMessageStyle": 3,
+                "queryType": 0,
+                "resourceType": "microsoft.operationalinsights/workspaces",
+                "crossComponentResources": [
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
+                ],
+                "statSettings": {
+                  "valueField": "totalRequestsString",
+                  "valueAggregation": "None",
+                  "colorSettings": {
+                    "type": "static",
+                    "mode": "background",
+                    "heatmapPalette": "greenRed",
+                    "thresholdsGrid": []
+                  },
+                  "iconSettings": {
+                    "thresholdsGrid": []
+                  },
+                  "tagText": "",
+                  "valueFontStyle": "auto"
+                }
+              },
+              "name": "❌ RTP rifiutati dal Service Provider",
+              "styleSettings": {
+                "showBorder": true
+              }
+            },
+            {
+              "type": 3,
+              "content": {
+                "version": "KqlItem/1.0",
+                "query": "AppTraces\n| where AppRoleName == 'rtp-sender'\n| where TimeGenerated {evaluation_window:query}\n| where SeverityLevel == 3\n| where Message startswith \"An unexpected error occurred while sending RTP\"\n| extend\n    service_provider = tostring(Properties[\"debtor_service_provider\"]),\n    error_msg        = extract(@\"Error:\\s*(.+)$\", 1, Message)\n| summarize\n    Errori             = count(),\n    [\"Ultimo errore\"]  = arg_max(TimeGenerated, error_msg)\n    by [\"Service Provider\"] = service_provider\n| sort by Errori desc",
+                "size": 0,
+                "title": "❌ Errori inattesi per Service Provider",
+                "noDataMessageStyle": 3,
+                "queryType": 0,
+                "resourceType": "microsoft.operationalinsights/workspaces",
+                "crossComponentResources": [
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
+                ],
+                "visualization": "table"
+              },
+              "name": "❌ Errori inattesi per Service Provider",
+              "styleSettings": {
+                "showBorder": true
+              }
+            },
+            {
+              "type": 3,
+              "content": {
+                "version": "KqlItem/1.0",
+                "query": "AppTraces\n| where AppRoleName == 'rtp-sender'\n| where TimeGenerated {evaluation_window:query}\n| where SeverityLevel == 3\n| where Message startswith \"An unexpected error occurred while sending RTP\"\n| extend service_provider = extract(@\"to ([^\\s.]+)\\.\", 1, Message)\n| extend error_detail     = extract(@\"Error:\\s*(.+)$\", 1, Message)\n| extend Categoria = case(\n    error_detail contains \"imeout\",                                    \"Timeout\",\n    error_detail contains \"Connection\"\n        or error_detail contains \"refused\"\n        or error_detail contains \"Network\",                            \"Errore di rete\",\n    error_detail contains \"SSL\" or error_detail contains \"TLS\",        \"Errore SSL/TLS\",\n    error_detail contains \"reset\" or error_detail contains \"closed\",   \"Connessione chiusa\",\n    \"Altro\"\n)\n| project\n    TimeGenerated,\n    Categoria,\n    service_provider,\n    error_detail,\n    message_id     = Properties[\"message_id\"],\n    correlation_id = Properties[\"correlation_id\"],\n    resource_id    = Properties[\"resource_id\"]\n| top 50 by TimeGenerated desc",
+                "size": 0,
+                "title": "❌ Errori inattesi nell'invio",
+                "noDataMessageStyle": 3,
+                "queryType": 0,
+                "resourceType": "microsoft.operationalinsights/workspaces",
+                "crossComponentResources": [
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
+                ],
+                "statSettings": {
+                  "valueField": "totalRequestsString",
+                  "valueAggregation": "None",
+                  "colorSettings": {
+                    "type": "static",
+                    "mode": "background",
+                    "heatmapPalette": "greenRed",
+                    "thresholdsGrid": []
+                  },
+                  "iconSettings": {
+                    "thresholdsGrid": []
+                  },
+                  "tagText": "",
+                  "valueFontStyle": "auto"
+                }
+              },
+              "name": "❌ Errori inattesi nell'invio",
+              "styleSettings": {
+                "showBorder": true
+              }
+            },
+            {
+              "type": 3,
+              "content": {
+                "version": "KqlItem/1.0",
+                "query": "AppTraces\n| where AppRoleName == 'rtp-sender'\n| where TimeGenerated {evaluation_window:query}\n| where SeverityLevel == 3\n| where Message startswith \"WebClientResponseException while fetching payees\"\n    or Message startswith \"An unexpected error occurred while fetching payees\"\n| extend Categoria = case(\n    Message startswith \"WebClientResponseException while fetching payees\",\n        strcat(\"HTTP \", extract(@\"Status Code\\s*:\\s*(\\S+)\", 1, Message)),\n    extract(@\"Error:\\s*(.+)\", 1, Message)\n)\n| project\n    TimeGenerated,\n    Categoria,\n    message_id     = Properties[\"message_id\"],\n    correlation_id = Properties[\"correlation_id\"],\n    resource_id    = Properties[\"resource_id\"]\n| top 50 by TimeGenerated desc",
+                "size": 0,
+                "title": "❌ Errori nel recupero della lista enti dal microservizio",
+                "noDataMessageStyle": 3,
+                "queryType": 0,
+                "resourceType": "microsoft.operationalinsights/workspaces",
+                "crossComponentResources": [
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
+                ],
+                "statSettings": {
+                  "valueField": "totalRequestsString",
+                  "valueAggregation": "None",
+                  "colorSettings": {
+                    "type": "static",
+                    "mode": "background",
+                    "heatmapPalette": "greenRed",
+                    "thresholdsGrid": []
+                  },
+                  "iconSettings": {
+                    "thresholdsGrid": []
+                  },
+                  "tagText": "",
+                  "valueFontStyle": "auto"
+                }
+              },
+              "name": "❌ Errori nel recupero della lista enti dal microservizio",
+              "styleSettings": {
+                "showBorder": true
+              }
+            },
+            {
+              "type": 3,
+              "content": {
+                "version": "KqlItem/1.0",
+                "query": "AppExceptions\n| where AppRoleName == 'rtp-sender'\n| where TimeGenerated {evaluation_window:query}\n| summarize\n    [\"Occorrenze\"] = count(),\n    [\"Ultimo messaggio\"] = arg_max(TimeGenerated, OuterMessage)\n    by [\"Tipo eccezione\"] = ExceptionType\n| sort by [\"Occorrenze\"] desc",
+                "size": 0,
+                "title": "Eccezioni Java rtp-sender (AppExceptions)",
+                "noDataMessageStyle": 3,
+                "queryType": 0,
+                "resourceType": "microsoft.operationalinsights/workspaces",
+                "crossComponentResources": [
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
+                ],
+                "visualization": "table"
+              },
+              "customWidth": "100",
+              "name": "Eccezioni Java rtp-sender (AppExceptions)",
+              "styleSettings": {
+                "showBorder": true
+              }
+            },
+            {
+              "type": 3,
+              "content": {
+                "version": "KqlItem/1.0",
+                "query": "AppTraces\n| where AppRoleName == \"rtp-sender\"\n| where TimeGenerated {evaluation_window:query}\n| where Message startswith \"Retries exhausted after attempts\"\n| extend ServiceProvider = tostring(Properties.debtor_service_provider)\n| extend ServiceProvider = iff(isempty(ServiceProvider), \"N/A\", ServiceProvider)\n| summarize retries = count() by ServiceProvider\n| order by retries desc\n",
+                "size": 0,
+                "title": "Retry per invii SRTP",
+                "noDataMessageStyle": 3,
+                "queryType": 0,
+                "resourceType": "microsoft.operationalinsights/workspaces",
+                "crossComponentResources": [
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
+                ],
+                "visualization": "table"
+              },
+              "name": "Retry per invii SRTP",
+              "styleSettings": {
+                "showBorder": true
+              }
+            },
+            {
+              "type": 3,
+              "content": {
+                "version": "KqlItem/1.0",
                 "query": "let Sent =\nAppTraces\n| where AppRoleName == \"rtp-sender\"\n| where TimeGenerated {evaluation_window:query}\n| where Message startswith \"Rtp sent successfully with id:\"\n| summarize sentCount = count()\n| extend key = 1;\n\nlet PaidThroughOtherChannel =\nAppTraces\n| where AppRoleName == \"rtp-sender\"\n| where TimeGenerated {evaluation_window:query}\n| where Message has \"Successfully updated paid RTP with different psp scenario\"\n| extend pspBic = coalesce(extract(@\"PSP BIC:\\s*([^,\\s}]+)\", 1, Message), \"unknown\")\n| summarize paidOtherCount = count(), distinctPsp = dcountif(pspBic, pspBic != \"unknown\")\n| extend key = 1;\n\nSent\n| join kind=fullouter PaidThroughOtherChannel on key\n| extend sentCount = coalesce(sentCount, 0),\n         paidOtherCount = coalesce(paidOtherCount, 0),\n         distinctPsp = coalesce(distinctPsp, 0)\n| extend paidOtherPercentage = iff(sentCount > 0, 100.0 * todouble(paidOtherCount) / todouble(sentCount), 0.0)\n| project [\"RTP inviati\"] = sentCount,\n          [\"RTP pagati attraverso altro canale\"] = paidOtherCount,\n          [\"PSP distinti\"] = distinctPsp,\n          [\"% pagati attraverso altro canale\"] = paidOtherPercentage\n",
                 "size": 0,
                 "title": "RTP pagati tramite altro canale",
@@ -1294,6 +1224,20 @@
                 "resourceType": "microsoft.operationalinsights/workspaces",
                 "crossComponentResources": [
                   "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
+                ],
+                "gridSettings": {
+                  "sortBy": [
+                    {
+                      "itemKey": "RTP pagati attraverso altro canale",
+                      "sortOrder": 1
+                    }
+                  ]
+                },
+                "sortBy": [
+                  {
+                    "itemKey": "RTP pagati attraverso altro canale",
+                    "sortOrder": 1
+                  }
                 ]
               },
               "name": "query - 19",
@@ -1385,43 +1329,24 @@
               "type": 3,
               "content": {
                 "version": "KqlItem/1.0",
-                "query": "AppTraces\n| where AppRoleName == \"rtp-sender\"\n| where TimeGenerated {evaluation_window:query}\n| where Message startswith \"Rtp sent successfully with id:\"\n| extend\n    rtp_id     = extract(@\"Rtp sent successfully with id: (\\S+)\", 1, Message),\n    resource_id = tostring(Properties.resource_id),\n    payee_name  = tostring(Properties.payee_name)\n| project\n    [\"Data\"]           = TimeGenerated,\n    [\"RTP ID\"]         = rtp_id,\n    [\"Resource ID\"]    = resource_id,\n    [\"Ente Creditore\"] = payee_name\n| sort by [\"Data\"] desc\n| limit 50",
+                "query": "AppTraces\n| where AppRoleName == \"rtp-sender\"\n| where TimeGenerated {evaluation_window:query}\n| where Message contains \"Message discarded due to out of order timestamp\"\n| parse Message with * \"messageTimestamp: \" messageTimestamp \n                       \", lastProcessedTimestamp: \" lastProcessedTimestamp \n                       \", status: \" status\n                       \", operation: \" operation\n                       \", id: \" id\n| extend \n    message_time = unixtime_milliseconds_todatetime(tolong(messageTimestamp)),\n    last_processed_time = unixtime_milliseconds_todatetime(tolong(lastProcessedTimestamp)),\n    time_difference = tolong(lastProcessedTimestamp) - tolong(messageTimestamp)\n| project \n    ['Log Time'] = TimeGenerated,\n    ['Message Time'] = message_time, \n    ['Last Processed Time'] = last_processed_time, \n    ['Time Difference Milliseconds'] = time_difference,\n    ['Time Difference Days'] = time_difference / (1000 * 60 * 60 * 24),\n    ['Message Timestamp'] = messageTimestamp, \n    ['Last Processed Timestamp'] = lastProcessedTimestamp,\n    ['Status'] = status, \n    ['Operation'] = operation, \n    ['Message Id'] = id\n| order by ['Log Time'] desc\n",
                 "size": 0,
-                "title": "✅ Ultimi 50 invii con successo",
-                "noDataMessageStyle": 5,
-                "queryType": 0,
-                "resourceType": "microsoft.operationalinsights/workspaces",
-                "crossComponentResources": [
-                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
-                ],
-                "visualization": "table"
-              },
-              "customWidth": "50",
-              "name": "✅ Ultimi 50 invii con successo",
-              "styleSettings": {
-                "showBorder": true
-              }
-            },
-            {
-              "type": 3,
-              "content": {
-                "version": "KqlItem/1.0",
-                "query": "AppTraces\n| where AppRoleName == \"rtp-sender\"\n| where TimeGenerated {evaluation_window:query}\n| where Message startswith \"Error sending Rtp to be sent:\"\n    or Message startswith \"Error finding activation data with resourceId:\"\n    or Message startswith \"Error saving Rtp to be sent:\"\n| extend\n    resource_id = tostring(Properties.resource_id),\n    payee_name  = tostring(Properties.payee_name),\n    raw_msg     = trim(\" \", Message)\n| extend Categoria = case(\n    raw_msg contains \"payer is not activated\",             \"Payer non attivato\",\n    raw_msg contains \"rejected\" or raw_msg contains \"Reject\", \"Rejection SEPA\",\n    raw_msg contains \"imout\" or raw_msg contains \"Timeout\",   \"Timeout\",\n    raw_msg contains \"Connection\" or raw_msg contains \"refused\", \"Errore di rete\",\n    raw_msg contains \"MongoWrite\" or raw_msg contains \"Mongo\",   \"Errore DB Mongo\",\n    raw_msg contains \"activation data\",                   \"Attivazione non trovata\",\n    \"Altro\"\n)\n| project\n    [\"Data\"]            = TimeGenerated,\n    [\"Resource ID\"]     = resource_id,\n    [\"Ente Creditore\"]  = payee_name,\n    [\"Categoria\"]       = Categoria,\n    [\"Messaggio errore\"] = raw_msg\n| sort by [\"Data\"] desc\n| limit 50",
-                "size": 0,
-                "title": "❌ Ultimi 50 fallimenti invio",
+                "title": "❌ Messaggi scartati per Out-of-order Timestamp",
                 "noDataMessageStyle": 3,
+                "timeContext": {
+                  "durationMs": 2592000000
+                },
+                "showExportToExcel": true,
                 "queryType": 0,
                 "resourceType": "microsoft.operationalinsights/workspaces",
                 "crossComponentResources": [
                   "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
                 ],
-                "visualization": "table"
+                "gridSettings": {
+                  "rowLimit": 10000
+                }
               },
-              "customWidth": "50",
-              "name": "❌ Ultimi 50 fallimenti invio",
-              "styleSettings": {
-                "showBorder": true
-              }
+              "name": "❌ Messaggi scartati per Out-of-order Timestamp"
             }
           ]
         },
@@ -1442,9 +1367,95 @@
               "type": 3,
               "content": {
                 "version": "KqlItem/1.0",
-                "query": "AppTraces\n| where AppRoleName == 'rtp-sender'\n| where TimeGenerated {evaluation_window:query}\n| where Message startswith \"Successfully cancelled RTP to service provider debtor\"\n| summarize errorCount = count()\n| extend totalRequestsString = tostring(errorCount)",
+                "query": "AppTraces\n| where TimeGenerated {evaluation_window:query}\n| where AppRoleName == \"rtp-sender\"\n| where Message startswith \"RTP cancellation succeeded\"\n| extend DebtorSP = extract(@\"service_provider:\\s*(\\S+)\", 1, Message)\n| where isnotempty(DebtorSP)\n| summarize [\"Cancellazioni con successo\"] = count() by [\"Debtor Service Provider\"] = DebtorSP\n| sort by [\"Cancellazioni con successo\"] desc",
                 "size": 0,
-                "title": "✅ Cancellazioni totali con successo (CODA + API)",
+                "title": "✅ Cancellazioni con successo per Service Provider del debitore",
+                "queryType": 0,
+                "resourceType": "microsoft.operationalinsights/workspaces",
+                "crossComponentResources": [
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
+                ],
+                "visualization": "barchart",
+                "sortBy": [],
+                "chartSettings": {
+                  "ySettings": {
+                    "numberFormatSettings": {
+                      "unit": 0,
+                      "options": {
+                        "style": "decimal",
+                        "useGrouping": true
+                      }
+                    }
+                  }
+                }
+              },
+              "name": "✅ Cancellazioni con successo per Service Provider del debitore"
+            },
+            {
+              "type": 3,
+              "content": {
+                "version": "KqlItem/1.0",
+                "query": "let successes = AppTraces\n| where TimeGenerated {evaluation_window:query}\n| where AppRoleName == \"rtp-sender\"\n| where Message startswith \"RTP cancellation succeeded\"\n| extend DebtorSP = extract(@\"service_provider:\\s*(\\S+)\", 1, Message)\n| summarize TimeGenerated = min(TimeGenerated) by OperationId, DebtorSP;\nlet errors = AppTraces\n| where TimeGenerated {evaluation_window:query}\n| where AppRoleName == \"rtp-sender\"\n| where Message startswith \"Error cancel RTP:\"\n| extend DebtorSP = extract(@\"service_provider:\\s*(\\S+)\", 1, Message)\n| summarize TimeGenerated = min(TimeGenerated) by OperationId, DebtorSP;\nunion\n    (successes | extend Series = strcat(\"✅ \", DebtorSP)),\n    (errors    | extend Series = strcat(\"❌ \", DebtorSP))\n| summarize Count = count() by bin(TimeGenerated, 1h), Series\n| render timechart",
+                "size": 0,
+                "title": "Cancellazioni nel tempo (Successi vs Fallimenti) in bin 1 ora",
+                "queryType": 0,
+                "resourceType": "microsoft.operationalinsights/workspaces",
+                "crossComponentResources": [
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
+                ],
+                "visualization": "timechart",
+                "chartSettings": {
+                  "xSettings": {
+                    "numberFormatSettings": {
+                      "unit": 0,
+                      "options": {
+                        "style": "decimal",
+                        "useGrouping": true
+                      }
+                    }
+                  }
+                }
+              },
+              "name": "Cancellazioni nel tempo (Successi vs Fallimenti) in bin 1 ora"
+            },
+            {
+              "type": 3,
+              "content": {
+                "version": "KqlItem/1.0",
+                "query": "let fallimenti = AppTraces\n| where AppRoleName == 'rtp-sender'\n| where TimeGenerated {evaluation_window:query}\n| where Message startswith \"Error cancel RTP:\"\n| extend _err = trim(\" \", extract(@\"Error cancel RTP:\\s*(.+?)\\. service_provider:\", 1, Message))\n| extend Categoria = case(\n    _err contains \"rejected\" or _err contains \"Reject\",    \"❌ Rejection SEPA\",\n    _err contains \"imeout\",                                \"❌ Timeout\",\n    _err contains \"Connection\" or _err contains \"refused\", \"❌ Errore di rete\",\n    _err contains \"Mongo\" or _err contains \"TooManyRequest\", \"❌ Errore DB Mongo\",\n    _err contains \"NotFound\" or _err contains \"not found\",  \"❌ RTP non trovato\",\n    _err contains \"InvalidTransition\" or _err contains \"InvalidStatus\", \"❌ Transizione invalida\",\n    \"❌ Altro / non classificato\"\n)\n| summarize Conteggio = count() by Categoria\n| extend Tipo = \"Fallimento\";\nlet successi = AppTraces\n| where AppRoleName == 'rtp-sender'\n| where TimeGenerated {evaluation_window:query}\n| where Message startswith \"RTP cancellation succeeded\"\n| summarize Conteggio = count()\n| extend Categoria = \"✅ Successo\", Tipo = \"Successo\";\nlet dettaglio = union fallimenti, successi;\nlet totali = dettaglio\n| summarize Conteggio = sum(Conteggio) by Tipo\n| extend Categoria = strcat(\"📊 Totale \", Tipo);\nunion dettaglio, totali\n| project Categoria, Tipo, Conteggio\n| sort by Tipo asc, Conteggio desc",
+                "size": 0,
+                "title": "Monitoraggio globale delle Cancellazioni per tipologia",
+                "noDataMessageStyle": 3,
+                "queryType": 0,
+                "resourceType": "microsoft.operationalinsights/workspaces",
+                "crossComponentResources": [
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
+                ],
+                "visualization": "piechart",
+                "chartSettings": {
+                  "ySettings": {
+                    "numberFormatSettings": {
+                      "unit": 0,
+                      "options": {
+                        "style": "decimal",
+                        "useGrouping": true
+                      }
+                    }
+                  }
+                }
+              },
+              "name": "Monitoraggio globale delle Cancellazioni per tipologia",
+              "styleSettings": {
+                "showBorder": true
+              }
+            },
+            {
+              "type": 3,
+              "content": {
+                "version": "KqlItem/1.0",
+                "query": "AppTraces\n| where AppRoleName == 'rtp-sender'\n| where TimeGenerated {evaluation_window:query}\n| where Message startswith \"RTP cancellation succeeded\"\n| summarize errorCount = count()\n| extend totalRequestsString = tostring(errorCount)",
+                "size": 0,
+                "title": "✅ Cancellazioni totali con successo",
                 "queryType": 0,
                 "resourceType": "microsoft.operationalinsights/workspaces",
                 "crossComponentResources": [
@@ -1452,7 +1463,6 @@
                 ],
                 "visualization": "stat",
                 "statSettings": {
-                  "valueField": "totalRequestsString",
                   "valueAggregation": "None",
                   "colorSettings": {
                     "type": "static",
@@ -1462,6 +1472,12 @@
                   },
                   "iconSettings": {
                     "thresholdsGrid": []
+                  },
+                  "numberFormatSettings": {
+                    "unit": 0,
+                    "options": {
+                      "style": "decimal"
+                    }
                   },
                   "tagText": "",
                   "valueFontStyle": "auto"
@@ -1477,9 +1493,9 @@
               "type": 3,
               "content": {
                 "version": "KqlItem/1.0",
-                "query": "AppTraces\n| where AppRoleName == 'rtp-sender'\n| where TimeGenerated {evaluation_window:query}\n| where Message startswith \"Error cancel RTP:\" or Message startswith \"Error retrieving RTP:\"\n// \"Error retrieving RTP:\" -> API log\n| summarize errorCount = count()\n| extend totalRequestsString = tostring(errorCount)",
+                "query": "AppTraces\n| where AppRoleName == 'rtp-sender'\n| where TimeGenerated {evaluation_window:query}\n| where Message startswith \"Error cancel RTP:\"\n| summarize errorCount = count()\n| extend totalRequestsString = tostring(errorCount)",
                 "size": 0,
-                "title": "❌ Cancellazioni totali falliti (CODA + API)",
+                "title": "❌ Cancellazioni totali fallite",
                 "queryType": 0,
                 "resourceType": "microsoft.operationalinsights/workspaces",
                 "crossComponentResources": [
@@ -1487,7 +1503,6 @@
                 ],
                 "visualization": "stat",
                 "statSettings": {
-                  "valueField": "totalRequestsString",
                   "valueAggregation": "None",
                   "colorSettings": {
                     "type": "static",
@@ -1498,12 +1513,18 @@
                   "iconSettings": {
                     "thresholdsGrid": []
                   },
+                  "numberFormatSettings": {
+                    "unit": 0,
+                    "options": {
+                      "style": "decimal"
+                    }
+                  },
                   "tagText": "",
                   "valueFontStyle": "auto"
                 }
               },
               "customWidth": "25",
-              "name": "❌ Cancellazioni totali falliti",
+              "name": "❌ Cancellazioni totali fallite",
               "styleSettings": {
                 "showBorder": true
               }
@@ -1512,9 +1533,49 @@
               "type": 3,
               "content": {
                 "version": "KqlItem/1.0",
-                "query": "AppTraces\n| where AppRoleName == \"rtp-sender\"\n| where TimeGenerated {evaluation_window:query}\n| where Message startswith_cs \"DELETE_GDP_RTP_NOT_FOUND\"\n| extend\n    OperationId    = extract(@\"operationId=(\\d+)\", 1, Message),\n    EventDispatcher = extract(@\"eventDispatcher=([^,]+)\", 1, Message),\n    GdpMessageId   = extract(@\"gdpMessageId=(\\d+)\", 1, Message)\n| project\n    ['Time Generated']  = TimeGenerated,\n    ['Operation Id']    = OperationId,\n    ['Event Dispatcher'] = EventDispatcher,\n    ['GDP Message Id']  = GdpMessageId,\n    ['Message']         = Message\n| order by ['Time Generated'] desc\n",
+                "query": "AppTraces\n| where AppRoleName == 'rtp-sender'\n| where TimeGenerated {evaluation_window:query}\n| where Message startswith \"Retries exhausted after attempts:\"\n| summarize errorCount = count()\n| extend totalRequestsString = tostring(errorCount)",
                 "size": 0,
-                "title": "❌ Delete fallite su RTP non presenti a DB",
+                "title": "❌ Retry esauriti (cancellazioni SRTP)",
+                "queryType": 0,
+                "resourceType": "microsoft.operationalinsights/workspaces",
+                "crossComponentResources": [
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
+                ],
+                "visualization": "stat",
+                "statSettings": {
+                  "valueAggregation": "None",
+                  "colorSettings": {
+                    "type": "static",
+                    "mode": "background",
+                    "heatmapPalette": "greenRed",
+                    "thresholdsGrid": []
+                  },
+                  "iconSettings": {
+                    "thresholdsGrid": []
+                  },
+                  "numberFormatSettings": {
+                    "unit": 0,
+                    "options": {
+                      "style": "decimal"
+                    }
+                  },
+                  "tagText": "",
+                  "valueFontStyle": "auto"
+                }
+              },
+              "customWidth": "25",
+              "name": "❌ Retry esauriti (cancellazioni SRTP)",
+              "styleSettings": {
+                "showBorder": true
+              }
+            },
+            {
+              "type": 3,
+              "content": {
+                "version": "KqlItem/1.0",
+                "query": "AppTraces\n| where AppRoleName == 'rtp-sender'\n| where TimeGenerated {evaluation_window:query}\n| where SeverityLevel == 3\n| where Message startswith \"Handling SendRequestRejectedException during RTP cancellation\"\n| project\n    TimeGenerated,\n    resource_id               = Properties[\"resource_id\"],\n    debtor_service_provider   = Properties[\"debtor_service_provider\"],\n    creditor_service_provider = Properties[\"creditor_service_provider\"],\n    payee_name                = Properties[\"payee_name\"],\n    correlation_id            = Properties[\"correlation_id\"],\n    Message\n| top 100 by TimeGenerated desc",
+                "size": 0,
+                "title": "❌ REJECTION EPC anomala durante cancellazione (RJCT imprevisto)",
                 "noDataMessageStyle": 3,
                 "queryType": 0,
                 "resourceType": "microsoft.operationalinsights/workspaces",
@@ -1522,8 +1583,7 @@
                   "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
                 ]
               },
-              "customWidth": "50",
-              "name": "query - 18",
+              "name": "❌ REJECTION EPC anomala durante cancellazione (RJCT imprevisto)",
               "styleSettings": {
                 "showBorder": true
               }
@@ -1532,89 +1592,66 @@
               "type": 3,
               "content": {
                 "version": "KqlItem/1.0",
-                "query": "AppTraces\n| where TimeGenerated {evaluation_window:query}\n| where AppRoleName == \"rtp-sender\"\n| summarize\n    Successo   = countif(Message hasprefix \"Successfully cancelled RTP to service provider debtor\"),\n    Fallimento = countif(Message hasprefix \"Error cancel RTP:\")\n  by bin(TimeGenerated, 1h)\n| project TimeGenerated, Successo, Fallimento\n| render timechart",
+                "query": "AppTraces\n| where AppRoleName == 'rtp-sender'\n| where TimeGenerated {evaluation_window:query}\n| where SeverityLevel == 3\n| where Message startswith \"Error cancel RTP:\"\n| extend errorMessage = trim(\" \", extract(@\"Error cancel RTP:\\s*(.+?)\\. service_provider:\", 1, Message))\n| extend service_provider = extract(@\"service_provider:\\s*(\\S+)\", 1, Message)\n| extend Categoria = case(\n    errorMessage contains \"TooMany\" or errorMessage contains \"429\",          \"Troppe richieste MongoDB\",\n    errorMessage contains \"DuplicateKey\" or errorMessage contains \"dup key\", \"Chiave duplicata MongoDB\",\n    errorMessage contains \"MongoWrite\" or errorMessage contains \"Mongo\",     \"Errore MongoDB\",\n    errorMessage contains \"imeout\",                                          \"Timeout\",\n    errorMessage contains \"Connection\" or errorMessage contains \"refused\",   \"Errore di rete\",\n    errorMessage contains \"rejected\" or errorMessage contains \"Reject\",      \"Rejection SEPA\",\n    \"Altro\"\n)\n| project\n    TimeGenerated,\n    Categoria,\n    service_provider,\n    errorMessage,\n    correlation_id = Properties[\"correlation_id\"],\n    resource_id    = Properties[\"resource_id\"]\n| top 250 by TimeGenerated desc",
                 "size": 0,
-                "title": "Cancellazioni nel tempo (Successi vs Fallimenti)",
+                "title": "❌ Catch-all errori cancellazione per tipologia",
+                "noDataMessageStyle": 3,
                 "queryType": 0,
                 "resourceType": "microsoft.operationalinsights/workspaces",
                 "crossComponentResources": [
                   "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
-                ],
-                "chartSettings": {
-                  "ySettings": {
-                    "numberFormatSettings": {
-                      "unit": 0,
-                      "options": {
-                        "style": "decimal",
-                        "useGrouping": true
-                      }
-                    }
-                  }
-                }
+                ]
               },
-              "name": "Cancellazioni nel tempo (Successi vs Fallimenti)"
+              "name": "❌ Catch-all errori cancellazione per tipologia",
+              "styleSettings": {
+                "showBorder": true
+              }
             },
             {
               "type": 3,
               "content": {
                 "version": "KqlItem/1.0",
-                "query": "AppTraces\n| where TimeGenerated {evaluation_window:query}\n| where AppRoleName == 'rtp-sender'\n| where Message startswith \"RTP cancellation succeeded\" \n| summarize\n    [\"Cancellazioni con successo\"] = count()\n   by\n    [\"Debtor Service Provider\"] = tostring(Properties.service_provider)\n| sort by [\"Cancellazioni con successo\"] desc\n",
+                "query": "AppTraces\n| where AppRoleName == 'rtp-sender'\n| where TimeGenerated {evaluation_window:query}\n| where SeverityLevel == 3\n| where Message startswith \"An unexpected error occurred while cancelling RTP\"\n| extend\n    service_provider = tostring(Properties[\"debtor_service_provider\"]),\n    error_msg        = extract(@\"Error:\\s*(.+)$\", 1, Message)\n| summarize\n    Errori = count(),\n    arg_max(TimeGenerated, error_msg)\n    by [\"Service Provider\"] = service_provider\n| project [\"Service Provider\"], Errori, [\"Ultimo errore\"] = error_msg\n| sort by Errori desc",
                 "size": 0,
-                "title": "✅ Cancellazioni con successo per Service Provider",
+                "title": "❌ Errori inattesi per Service Provider (cancellazioni)",
+                "noDataMessageStyle": 3,
                 "queryType": 0,
                 "resourceType": "microsoft.operationalinsights/workspaces",
                 "crossComponentResources": [
                   "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
-                ],
-                "visualization": "unstackedbar",
-                "chartSettings": {
-                  "ySettings": {
-                    "numberFormatSettings": {
-                      "unit": 0,
-                      "options": {
-                        "style": "decimal",
-                        "useGrouping": true
-                      }
-                    }
-                  }
-                }
+                ]
               },
-              "name": "✅ Cancellazioni con successo per Service Provider"
+              "name": "❌ Errori inattesi per Service Provider (cancellazioni)",
+              "styleSettings": {
+                "showBorder": true
+              }
             },
             {
               "type": 3,
               "content": {
                 "version": "KqlItem/1.0",
-                "query": "AppTraces\n| where TimeGenerated {evaluation_window:query}\n| where AppRoleName == 'rtp-sender'\n| where Message startswith \"Error cancel RTP\" \n| summarize\n    [\"Cancellazioni con fallimento\"] = count()\n   by\n    [\"Debtor Service Provider\"] = tostring(Properties.service_provider)\n| sort by [\"Cancellazioni con fallimento\"] desc",
+                "query": "AppTraces\n| where AppRoleName == 'rtp-sender'\n| where TimeGenerated {evaluation_window:query}\n| where SeverityLevel == 3\n| where Message startswith \"An unexpected error occurred while cancelling RTP\"\n| extend error_detail = extract(@\"Error:\\s*(.+)$\", 1, Message)\n| extend Categoria = case(\n    error_detail contains \"imeout\",                                     \"Timeout\",\n    error_detail contains \"Connection\"\n        or error_detail contains \"refused\"\n        or error_detail contains \"Network\",                             \"Errore di rete\",\n    error_detail contains \"SSL\" or error_detail contains \"TLS\",         \"Errore SSL/TLS\",\n    error_detail contains \"reset\" or error_detail contains \"closed\",    \"Connessione chiusa\",\n    \"Altro\"\n)\n| project\n    TimeGenerated,\n    Categoria,\n    debtor_service_provider   = Properties[\"debtor_service_provider\"],\n    creditor_service_provider = Properties[\"creditor_service_provider\"],\n    error_detail,\n    correlation_id = Properties[\"correlation_id\"],\n    resource_id    = Properties[\"resource_id\"]\n| top 100 by TimeGenerated desc",
                 "size": 0,
-                "title": "❌ Cancellazioni fallite per Service Provider",
+                "title": "❌ Errori inattesi nella cancellazione — dettaglio",
+                "noDataMessageStyle": 3,
                 "queryType": 0,
                 "resourceType": "microsoft.operationalinsights/workspaces",
                 "crossComponentResources": [
                   "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
-                ],
-                "visualization": "table",
-                "chartSettings": {
-                  "ySettings": {
-                    "numberFormatSettings": {
-                      "unit": 0,
-                      "options": {
-                        "style": "decimal",
-                        "useGrouping": true
-                      }
-                    }
-                  }
-                }
+                ]
               },
-              "name": "❌ Cancellazioni fallite per Service Provider"
+              "name": "❌ Errori inattesi nella cancellazione — dettaglio",
+              "styleSettings": {
+                "showBorder": true
+              }
             },
             {
               "type": 3,
               "content": {
                 "version": "KqlItem/1.0",
-                "query": "AppTraces\n| where AppRoleName == 'rtp-sender'\n| where TimeGenerated {evaluation_window:query}\n| where Message startswith \"Successfully cancelled draft RTP with id:\"\n| summarize errorCount = count()\n| extend totalRequestsString = tostring(errorCount)",
+                "query": "AppTraces\n| where AppRoleName == 'rtp-sender'\n| where TimeGenerated {evaluation_window:query}\n| where Message startswith \"Successfully cancelled draft RTP\"\n| summarize errorCount = count()\n| extend totalRequestsString = tostring(errorCount)",
                 "size": 0,
-                "title": "✅ Cancellazioni draft con successo (GPD DELETE)",
+                "title": "✅ Cancellazioni draft con successo (GPD UPDATE_DRAFT)",
                 "queryType": 0,
                 "resourceType": "microsoft.operationalinsights/workspaces",
                 "crossComponentResources": [
@@ -1622,7 +1659,6 @@
                 ],
                 "visualization": "stat",
                 "statSettings": {
-                  "valueField": "totalRequestsString",
                   "valueAggregation": "None",
                   "colorSettings": {
                     "type": "static",
@@ -1633,12 +1669,18 @@
                   "iconSettings": {
                     "thresholdsGrid": []
                   },
+                  "numberFormatSettings": {
+                    "unit": 0,
+                    "options": {
+                      "style": "decimal"
+                    }
+                  },
                   "tagText": "",
                   "valueFontStyle": "auto"
                 }
               },
               "customWidth": "25",
-              "name": "✅ Cancellazioni draft con successo (GPD DELETE)",
+              "name": "✅ Cancellazioni draft con successo (GPD UPDATE_DRAFT)",
               "styleSettings": {
                 "showBorder": true
               }
@@ -1649,8 +1691,7 @@
                 "version": "KqlItem/1.0",
                 "query": "AppTraces\n| where AppRoleName == 'rtp-sender'\n| where TimeGenerated {evaluation_window:query}\n| where Message startswith \"Error cancelling draft RTP:\"\n| summarize errorCount = count()\n| extend totalRequestsString = tostring(errorCount)",
                 "size": 0,
-                "title": "❌ Errori cancellazioni draft (GPD DELETE)",
-                "noDataMessageStyle": 3,
+                "title": "❌ Errori cancellazioni draft (GPD UPDATE_DRAFT)",
                 "queryType": 0,
                 "resourceType": "microsoft.operationalinsights/workspaces",
                 "crossComponentResources": [
@@ -1658,7 +1699,6 @@
                 ],
                 "visualization": "stat",
                 "statSettings": {
-                  "valueField": "totalRequestsString",
                   "valueAggregation": "None",
                   "colorSettings": {
                     "type": "static",
@@ -1669,12 +1709,18 @@
                   "iconSettings": {
                     "thresholdsGrid": []
                   },
+                  "numberFormatSettings": {
+                    "unit": 0,
+                    "options": {
+                      "style": "decimal"
+                    }
+                  },
                   "tagText": "",
                   "valueFontStyle": "auto"
                 }
               },
               "customWidth": "25",
-              "name": "❌ Errori cancellazioni draft (GPD DELETE)",
+              "name": "❌ Errori cancellazioni draft (GPD UPDATE_DRAFT)",
               "styleSettings": {
                 "showBorder": true
               }
@@ -1683,10 +1729,29 @@
               "type": 3,
               "content": {
                 "version": "KqlItem/1.0",
-                "query": "AppTraces\n| where AppRoleName == 'rtp-sender'\n| where TimeGenerated {evaluation_window:query}\n| where Message startswith \"Handling SendRequestRejectedException during RTP cancellation\"\n| summarize errorCount = count()\n| extend totalRequestsString = tostring(errorCount)",
+                "query": "AppTraces\n| where AppRoleName == 'rtp-sender'\n| where TimeGenerated {evaluation_window:query}\n| where SeverityLevel == 3\n| where Message startswith \"Error cancelling draft RTP:\"\n| project\n    TimeGenerated,\n    debtor_service_provider   = Properties[\"debtor_service_provider\"],\n    creditor_service_provider = Properties[\"creditor_service_provider\"],\n    resource_id               = Properties[\"resource_id\"],\n    correlation_id            = Properties[\"correlation_id\"],\n    Message\n| top 100 by TimeGenerated desc",
                 "size": 0,
-                "title": "❌ Cancellazioni anomale (RJCT imprevisto)",
+                "title": "❌ Errori cancellazioni draft — dettaglio",
                 "noDataMessageStyle": 3,
+                "queryType": 0,
+                "resourceType": "microsoft.operationalinsights/workspaces",
+                "crossComponentResources": [
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
+                ]
+              },
+              "customWidth": "50",
+              "name": "❌ Errori cancellazioni draft — dettaglio",
+              "styleSettings": {
+                "showBorder": true
+              }
+            },
+            {
+              "type": 3,
+              "content": {
+                "version": "KqlItem/1.0",
+                "query": "AppTraces\n| where AppRoleName == 'rtp-sender'\n| where TimeGenerated {evaluation_window:query}\n| where Message startswith \"Triggering CANCEL transition for RTP\"\n| summarize errorCount = count()\n| extend totalRequestsString = tostring(errorCount)",
+                "size": 0,
+                "title": "✅ Callback CNCL — CANCEL confermati",
                 "queryType": 0,
                 "resourceType": "microsoft.operationalinsights/workspaces",
                 "crossComponentResources": [
@@ -1694,7 +1759,6 @@
                 ],
                 "visualization": "stat",
                 "statSettings": {
-                  "valueField": "totalRequestsString",
                   "valueAggregation": "None",
                   "colorSettings": {
                     "type": "static",
@@ -1705,12 +1769,18 @@
                   "iconSettings": {
                     "thresholdsGrid": []
                   },
+                  "numberFormatSettings": {
+                    "unit": 0,
+                    "options": {
+                      "style": "decimal"
+                    }
+                  },
                   "tagText": "",
                   "valueFontStyle": "auto"
                 }
               },
-              "customWidth": "25",
-              "name": "❌ Cancellazioni anomale (RJCT imprevisto)",
+              "customWidth": "50",
+              "name": "✅ Callback CNCL — CANCEL confermati",
               "styleSettings": {
                 "showBorder": true
               }
@@ -1719,19 +1789,38 @@
               "type": 3,
               "content": {
                 "version": "KqlItem/1.0",
-                "query": "AppTraces\n| where AppRoleName == 'rtp-sender'\n| where TimeGenerated {evaluation_window:query}\n| where Message startswith \"Start processing INVALID update\"\n    or Message startswith \"Start processing EXPIRED update\"\n| extend\n    event_type = extract(@\"Start processing (\\w+) update\", 1, Message),\n    rtp_id = extract(@\"rtpId=([^,\\s]+)\", 1, Message)\n| summarize\n    [\"Totale\"] = count()\n    by [\"Tipo evento GPD\"] = event_type\n| sort by [\"Totale\"] desc",
+                "query": "AppTraces\n| where AppRoleName == 'rtp-sender'\n| where TimeGenerated {evaluation_window:query}\n| where Message startswith \"Triggering ERROR_CANCEL transition for RTP\"\n| summarize errorCount = count()\n| extend totalRequestsString = tostring(errorCount)",
                 "size": 0,
-                "title": "Cancellazioni per evento GPD (INVALID / EXPIRED)",
-                "noDataMessageStyle": 3,
+                "title": "❌ Callback RJCR — CANCEL rifiutati",
                 "queryType": 0,
                 "resourceType": "microsoft.operationalinsights/workspaces",
                 "crossComponentResources": [
                   "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
                 ],
-                "visualization": "table"
+                "visualization": "stat",
+                "statSettings": {
+                  "valueAggregation": "None",
+                  "colorSettings": {
+                    "type": "static",
+                    "mode": "background",
+                    "heatmapPalette": "greenRed",
+                    "thresholdsGrid": []
+                  },
+                  "iconSettings": {
+                    "thresholdsGrid": []
+                  },
+                  "numberFormatSettings": {
+                    "unit": 0,
+                    "options": {
+                      "style": "decimal"
+                    }
+                  },
+                  "tagText": "",
+                  "valueFontStyle": "auto"
+                }
               },
               "customWidth": "50",
-              "name": "Cancellazioni per evento GPD (INVALID / EXPIRED)",
+              "name": "❌ Callback RJCR — CANCEL rifiutati",
               "styleSettings": {
                 "showBorder": true
               }
@@ -1740,19 +1829,17 @@
               "type": 3,
               "content": {
                 "version": "KqlItem/1.0",
-                "query": "AppTraces\n| where AppRoleName == 'rtp-sender'\n| where TimeGenerated {evaluation_window:query}\n| where Message startswith \"Error cancel RTP:\"\n    or Message startswith \"Error cancelling draft RTP:\"\n| extend _err = trim(\" \", coalesce(\n    replace_string(Message, \"Error cancel RTP:\", \"\"),\n    replace_string(Message, \"Error cancelling draft RTP:\", \"\")\n))\n| extend Categoria = case(\n    _err contains \"imout\" or _err contains \"Timeout\",    \"Timeout\",\n    _err contains \"400\"   or _err contains \"Bad Request\", \"4xx Service Provider\",\n    _err contains \"500\"   or _err contains \"Server Error\",\"5xx Service Provider\",\n    _err contains \"not found\" or _err contains \"404\",     \"RTP non trovato\",\n    _err contains \"MongoWrite\" or _err contains \"Mongo\",  \"Errore DB Mongo\",\n    \"Altro / non classificato\"\n)\n| summarize Errori = count() by Categoria\n| sort by Errori desc",
+                "query": "AppTraces\n| where AppRoleName == 'rtp-sender'\n| where TimeGenerated {evaluation_window:query}\n| where (Message startswith \"Extraction error:\" or Message startswith \"No valid confirmation status found\")\n| extend TipoErrore = case(\n    Message startswith \"Extraction error:\", \"❌ Estrazione campo fallita\",\n    \"⚠️ Status di conferma non trovato\"\n)\n| project\n    TimeGenerated,\n    TipoErrore,\n    debtor_service_provider = Properties[\"debtor_service_provider\"],\n    resource_id             = Properties[\"resource_id\"],\n    correlation_id          = Properties[\"correlation_id\"],\n    Message\n| top 100 by TimeGenerated desc",
                 "size": 0,
-                "title": "Classificazione errori di cancellazione per tipo",
+                "title": "❌ Callback cancellazioni — errori parsing",
                 "noDataMessageStyle": 3,
                 "queryType": 0,
                 "resourceType": "microsoft.operationalinsights/workspaces",
                 "crossComponentResources": [
                   "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
-                ],
-                "visualization": "piechart"
+                ]
               },
-              "customWidth": "50",
-              "name": "Classificazione errori di cancellazione per tipo",
+              "name": "❌ Callback cancellazioni — errori parsing",
               "styleSettings": {
                 "showBorder": true
               }
@@ -1761,7 +1848,7 @@
               "type": 3,
               "content": {
                 "version": "KqlItem/1.0",
-                "query": "AppExceptions\n| where AppRoleName == 'rtp-sender'\n| where TimeGenerated {evaluation_window:query}\n| where ExceptionType !contains \"WebClientResponseException\"\n| summarize\n    [\"Occorrenze\"] = count(),\n    [\"Ultimo messaggio\"] = arg_max(TimeGenerated, OuterMessage)\n    by [\"Tipo eccezione\"] = ExceptionType\n| sort by [\"Occorrenze\"] desc",
+                "query": "AppExceptions\n| where TimeGenerated {evaluation_window:query}\n| where AppRoleName == 'rtp-sender'\n| where (\n    OuterMessage contains \"cancel\" or OuterMessage contains \"Cancel\"\n    or OuterMessage contains \"DELETE\" or OuterMessage contains \"cancell\"\n    or InnermostType contains \"Cancel\" or InnermostType contains \"Delete\"\n)\n| project\n    TimeGenerated,\n    InnermostType,\n    OuterMessage,\n    resource_id             = tostring(Properties[\"resource_id\"]),\n    debtor_service_provider = tostring(Properties[\"debtor_service_provider\"]),\n    ExceptionType\n| top 100 by TimeGenerated desc",
                 "size": 0,
                 "title": "Eccezioni Java rtp-sender — flusso cancellazione",
                 "noDataMessageStyle": 3,
@@ -1769,11 +1856,28 @@
                 "resourceType": "microsoft.operationalinsights/workspaces",
                 "crossComponentResources": [
                   "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
-                ],
-                "visualization": "table"
+                ]
               },
-              "customWidth": "50",
               "name": "Eccezioni Java rtp-sender — flusso cancellazione",
+              "styleSettings": {
+                "showBorder": true
+              }
+            },
+            {
+              "type": 3,
+              "content": {
+                "version": "KqlItem/1.0",
+                "query": "AppTraces\n| where AppRoleName == \"rtp-sender\"\n| where TimeGenerated {evaluation_window:query}\n| where Message startswith \"Retries exhausted after attempts\"\n| extend ServiceProvider = tostring(Properties.debtor_service_provider)\n| extend ServiceProvider = iff(isempty(ServiceProvider), \"N/A\", ServiceProvider)\n| summarize retries = count() by ServiceProvider\n| order by retries desc",
+                "size": 0,
+                "title": "Retry per cancellazioni SRTP — per Service Provider",
+                "noDataMessageStyle": 3,
+                "queryType": 0,
+                "resourceType": "microsoft.operationalinsights/workspaces",
+                "crossComponentResources": [
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
+                ]
+              },
+              "name": "Retry per cancellazioni SRTP — per Service Provider",
               "styleSettings": {
                 "showBorder": true
               }
