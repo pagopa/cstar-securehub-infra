@@ -160,3 +160,8 @@ data "azurerm_kusto_cluster" "kusto_cluster" {
   name                = local.data_explorer_name
   resource_group_name = local.data_explorer_rg_name
 }
+
+data "azurerm_log_analytics_workspace" "domain_log_analytics" {
+  name                = local.log_analytics_workspace_name
+  resource_group_name = local.monitor_rg
+}

@@ -1,0 +1,11 @@
+{
+  "name": "mdc_message_volume_source",
+  "properties": {
+    "type": "AzureLogAnalytics",
+    "linkedServiceName": {
+      "referenceName": "mdc-LogAnalytics-mdc-ls",
+      "type": "LinkedServiceReference"
+    },
+    "typeProperties": {}
+  }
+}

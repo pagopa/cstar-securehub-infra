@@ -1,0 +1,36 @@
+{
+  "name": "mdc_message_volume_daily",
+  "properties": {
+    "activities": [
+      {
+        "name": "Copy message volume",
+        "type": "Copy",
+        "inputs": [
+          { "referenceName": "mdc_message_volume_source", "type": "DatasetReference" }
+        ],
+        "outputs": [
+          { "referenceName": "mdc_message_volume_snapshot", "type": "DatasetReference" }
+        ],
+        "typeProperties": {
+          "source": {
+            "type": "AzureLogAnalyticsSource",
+            "query": "AppRequests | where TimeGenerated >= startofday(ago(1d)) and TimeGenerated < startofday(now()) | where Url has 'emd/message-core/sendMessage' | where ResultCode in ('200', '202') | summarize message_count = count(), message_sent_count = countif(ResultCode == '200'), message_discarded_count = countif(ResultCode == '202') by window_start = bin(TimeGenerated, 15m) | order by window_start asc"
+          },
+          "sink": {
+            "type": "AzureDataExplorerSink",
+            "flushImmediately": false
+          },
+          "translator": {
+            "type": "TabularTranslator",
+            "mappings": [
+              { "source": { "name": "window_start"            }, "sink": { "name": "window_start"            } },
+              { "source": { "name": "message_count"           }, "sink": { "name": "message_count"           } },
+              { "source": { "name": "message_sent_count"      }, "sink": { "name": "message_sent_count"      } },
+              { "source": { "name": "message_discarded_count" }, "sink": { "name": "message_discarded_count" } }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

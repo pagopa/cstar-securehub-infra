@@ -1,7 +1,8 @@
 locals {
   # Daily pipelines
   pipelines_daily = [
-    "mdc_citizen_metrics_daily"
+    "mdc_citizen_metrics_daily",
+    "mdc_message_volume_daily"
   ]
 
   pipelines_indexed = {

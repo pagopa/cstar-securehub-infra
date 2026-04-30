@@ -2,3 +2,16 @@
     fiscal_code: string,
     consents: dynamic
 )
+
+.create-merge table MessageVolumeSnapshot (
+    window_start:            datetime,
+    message_count:           long,
+    message_sent_count:      long,
+    message_discarded_count: long
+)
+
+.alter table MessageVolumeSnapshot policy retention
+{
+  "SoftDeletePeriod": "365.00:00:00",
+  "Recoverability": "Enabled"
+}
