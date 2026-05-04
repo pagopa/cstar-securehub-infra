@@ -4,14 +4,13 @@
 )
 
 .create-merge table MessageVolumeSnapshot (
-    window_start:            datetime,
-    message_count:           long,
-    message_sent_count:      long,
-    message_discarded_count: long
+    window_start: datetime,
+    message_total_count: long,
+    message_sent_count: long,
+    message_discarded_count: long,
+    sent_with_payment: long,
+    sent_without_payment: long
 )
 
 .alter table MessageVolumeSnapshot policy retention
-{
-  "SoftDeletePeriod": "365.00:00:00",
-  "Recoverability": "Enabled"
-}
+@'{"SoftDeletePeriod": "365.00:00:00", "Recoverability": "Enabled"}'

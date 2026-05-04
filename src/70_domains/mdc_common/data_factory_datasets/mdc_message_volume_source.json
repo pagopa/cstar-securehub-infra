@@ -1,11 +1,13 @@
 {
   "name": "mdc_message_volume_source",
   "properties": {
-    "type": "AzureLogAnalytics",
+    "type": "RestResource",
     "linkedServiceName": {
       "referenceName": "mdc-LogAnalytics-mdc-ls",
       "type": "LinkedServiceReference"
     },
-    "typeProperties": {}
+    "typeProperties": {
+      "relativeUrl": "query"
+    }
   }
 }

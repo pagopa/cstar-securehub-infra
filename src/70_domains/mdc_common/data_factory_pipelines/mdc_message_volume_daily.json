@@ -13,8 +13,15 @@
         ],
         "typeProperties": {
           "source": {
-            "type": "AzureLogAnalyticsSource",
-            "query": "AppRequests | where TimeGenerated >= startofday(ago(1d)) and TimeGenerated < startofday(now()) | where Url has 'emd/message-core/sendMessage' | where ResultCode in ('200', '202') | summarize message_count = count(), message_sent_count = countif(ResultCode == '200'), message_discarded_count = countif(ResultCode == '202') by window_start = bin(TimeGenerated, 15m) | order by window_start asc"
+            "type": "RestSource",
+            "requestMethod": "POST",
+            "requestBody": "{\"query\": \"AppTraces | where TimeGenerated >= startofday(ago(1d)) and TimeGenerated < startofday(now()) | where Message has '[MESSAGE-CORE][SEND]' | where Message has 'Fiscal code check passed' or Message has 'Fiscal code check failed' | extend status = case(Message has 'Fiscal code check passed', 'sent', Message has 'Fiscal code check failed', 'discarded', 'unknown') | extend associated_payment = tobool(extract(@'associatedPayment: (\\w+)', 1, Message)) | summarize message_total_count = count(), message_sent_count = countif(status == 'sent'), message_discarded_count = countif(status == 'discarded'), sent_with_payment = countif(status == 'sent' and associated_payment == true), sent_without_payment = countif(status == 'sent' and associated_payment == false) by window_start = bin(TimeGenerated, 15m) | order by window_start asc\"}",
+            "additionalHeaders": {
+              "Content-Type": "application/json"
+            },
+            "paginationRules": {
+              "supportRFC5988": "true"
+            }
           },
           "sink": {
             "type": "AzureDataExplorerSink",
@@ -23,10 +30,12 @@
           "translator": {
             "type": "TabularTranslator",
             "mappings": [
-              { "source": { "name": "window_start"            }, "sink": { "name": "window_start"            } },
-              { "source": { "name": "message_count"           }, "sink": { "name": "message_count"           } },
-              { "source": { "name": "message_sent_count"      }, "sink": { "name": "message_sent_count"      } },
-              { "source": { "name": "message_discarded_count" }, "sink": { "name": "message_discarded_count" } }
+              { "source": { "path": "$.tables[0].rows[*][0]" }, "sink": { "name": "window_start"            } },
+              { "source": { "path": "$.tables[0].rows[*][1]" }, "sink": { "name": "message_total_count"     } },
+              { "source": { "path": "$.tables[0].rows[*][2]" }, "sink": { "name": "message_sent_count"      } },
+              { "source": { "path": "$.tables[0].rows[*][3]" }, "sink": { "name": "message_discarded_count" } },
+              { "source": { "path": "$.tables[0].rows[*][4]" }, "sink": { "name": "sent_with_payment"       } },
+              { "source": { "path": "$.tables[0].rows[*][5]" }, "sink": { "name": "sent_without_payment"    } }
             ]
           }
         }
