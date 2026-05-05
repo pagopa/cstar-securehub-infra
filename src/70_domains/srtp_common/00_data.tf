@@ -112,7 +112,7 @@ data "azurerm_private_dns_zone" "table_storage" {
 
 data "azurerm_private_dns_zone" "kusto" {
   name                = "privatelink.${var.location}.kusto.windows.net"
-  resource_group_name = "cstar-d-itn-core-network-rg"
+  resource_group_name = local.network_rg
 }
 
 

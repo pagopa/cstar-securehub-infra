@@ -222,4 +222,18 @@ locals {
     ] : []
   ])
 
+  kusto_private_endpoint_name = "${local.project_no_domain}-platform-prv-endpoint-kusto"
+  kusto_private_endpoint_id = format(
+    "/subscriptions/%s/resourceGroups/%s/providers/Microsoft.Network/privateEndpoints/%s",
+    data.azurerm_subscription.current.subscription_id,
+    local.kusto_cluster_rg_name,
+    local.kusto_private_endpoint_name
+  )
+  kusto_private_dns_zones = {
+    kusto = data.azurerm_private_dns_zone.kusto.id
+    blob  = data.azurerm_private_dns_zone.blob_storage.id
+    queue = data.azurerm_private_dns_zone.queue_storage.id
+    table = data.azurerm_private_dns_zone.table_storage.id
+  }
+
 }
