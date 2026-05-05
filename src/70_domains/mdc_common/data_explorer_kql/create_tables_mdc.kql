@@ -9,7 +9,9 @@
     message_sent_count: long,
     message_discarded_count: long,
     sent_with_payment: long,
-    sent_without_payment: long
+    sent_without_payment: long,
+    discarded_with_payment: long,
+    discarded_without_payment: long
 )
 
 .alter table MessageVolumeSnapshot policy retention
