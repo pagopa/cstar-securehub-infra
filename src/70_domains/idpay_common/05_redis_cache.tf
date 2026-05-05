@@ -1,29 +1,3 @@
-module "redis_v2" {
-  source = "./.terraform/modules/__v4__/IDH/redis"
-
-  # General
-  product_name        = var.prefix
-  env                 = var.env
-  location            = var.location
-  resource_group_name = local.data_rg
-  tags                = module.tag_config.tags
-
-  # IDH Resources
-  idh_resource_tier = "basic"
-
-  # Redis Settings
-  name = "${local.project}-v2-redis"
-
-  # Network
-
-  embedded_subnet = {
-    enabled              = true
-    vnet_name            = local.vnet_spoke_data_name
-    vnet_rg_name         = local.core_network_rg
-    private_dns_zone_ids = [data.azurerm_private_dns_zone.redis.id]
-  }
-}
-
 module "redis" {
   source = "./.terraform/modules/__v4__/IDH/managed_redis"
 
