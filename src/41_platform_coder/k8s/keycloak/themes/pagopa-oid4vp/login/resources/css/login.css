@@ -1,0 +1,162 @@
+:root {
+  --pagopa-primary-blue: #0073e6;
+  --pagopa-light-grey-bg: #f5f7fa;
+  --pagopa-text-dark: #17324d;
+  --pagopa-border-color: #e3e7eb;
+  --pagopa-white: #ffffff;
+  --pagopa-box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body.pagopa-oid4vp-body {
+  margin: 0;
+  font-family: "Titillium Web", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  background: var(--pagopa-light-grey-bg);
+  color: var(--pagopa-text-dark);
+}
+
+.page-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  background: var(--pagopa-white);
+  border-bottom: 1px solid var(--pagopa-border-color);
+  padding: 16px 48px;
+}
+
+.header-logo {
+  font-weight: 700;
+}
+
+.main-content {
+  flex: 1;
+  padding: 40px 20px;
+}
+
+.pagopa-oid4vp-shell .pf-v5-c-login__container {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.pagopa-oid4vp-shell .pf-v5-c-login__main {
+  background: var(--pagopa-white);
+  border-radius: 16px;
+  box-shadow: var(--pagopa-box-shadow);
+  border: 1px solid var(--pagopa-border-color);
+}
+
+#oid4vp-open-wallet {
+  background-color: var(--pagopa-primary-blue) !important;
+  border-color: var(--pagopa-primary-blue) !important;
+  color: var(--pagopa-white) !important;
+}
+
+#oid4vp-open-wallet:hover {
+  background-color: #005bb5 !important;
+  border-color: #005bb5 !important;
+}
+
+.oid4vp-qr-wrap {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.oid4vp-qr-label {
+  margin-bottom: 12px;
+}
+
+#oid4vp-qr-code {
+  max-width: 250px;
+  border: 1px solid #ddd;
+  padding: 10px;
+  background: white;
+}
+
+.footer {
+  background-color: var(--pagopa-white);
+  padding: 48px;
+  font-size: 14px;
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-columns {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 32px;
+  padding-bottom: 32px;
+}
+
+.footer-column {
+  min-width: 180px;
+}
+
+.footer-column h2 {
+  font-size: 14px;
+  text-transform: uppercase;
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+
+.footer-column ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-column ul li {
+  margin-bottom: 12px;
+}
+
+.footer-column a {
+  color: var(--pagopa-text-dark);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.footer-column a:hover {
+  text-decoration: underline;
+}
+
+.pagopa-logo {
+  width: 120px;
+  fill: rgb(0, 197, 202);
+}
+
+.social-icons {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.social-icons a {
+  display: inline-flex;
+  width: 30px;
+  height: 30px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--pagopa-border-color);
+  border-radius: 50%;
+}
+
+.eu-logo img {
+  max-width: 150px;
+  margin-top: 24px;
+}
+
+.sub-footer {
+  border-top: 1px solid var(--pagopa-border-color);
+  padding-top: 24px;
+  margin-top: 24px;
+  font-size: 12px;
+}
