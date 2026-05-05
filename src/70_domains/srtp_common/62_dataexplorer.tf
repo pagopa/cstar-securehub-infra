@@ -72,3 +72,40 @@ resource "azurerm_kusto_database_principal_assignment" "rtp_sender_adx_ingestor"
   tenant_id      = data.azurerm_client_config.current.tenant_id
   role           = "Ingestor"
 }
+
+resource "azapi_resource" "kusto_pe_dns_zone_group" {
+  type      = "Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2023-11-01"
+  name      = "default"
+  parent_id = "/subscriptions/${data.azurerm_subscription.current.subscription_id}/resourceGroups/cstar-d-itn-platform-data-rg/providers/Microsoft.Network/privateEndpoints/cstar-d-itn-platform-prv-endpoint-kusto"
+
+  body = {
+    properties = {
+      privateDnsZoneConfigs = [
+        {
+          name = "kusto"
+          properties = {
+            privateDnsZoneId = data.azurerm_private_dns_zone.kusto.id
+          }
+        },
+        {
+          name = "blob"
+          properties = {
+            privateDnsZoneId = data.azurerm_private_dns_zone.blob_storage.id
+          }
+        },
+        {
+          name = "queue"
+          properties = {
+            privateDnsZoneId = data.azurerm_private_dns_zone.queue_storage.id
+          }
+        },
+        {
+          name = "table"
+          properties = {
+            privateDnsZoneId = data.azurerm_private_dns_zone.table_storage.id
+          }
+        }
+      ]
+    }
+  }
+}

@@ -100,6 +100,22 @@ data "azurerm_private_dns_zone" "blob_storage" {
   resource_group_name = local.vnet_legacy_core_rg
 }
 
+data "azurerm_private_dns_zone" "queue_storage" {
+  name                = "privatelink.queue.core.windows.net"
+  resource_group_name = local.vnet_legacy_core_rg
+}
+
+data "azurerm_private_dns_zone" "table_storage" {
+  name                = "privatelink.table.core.windows.net"
+  resource_group_name = local.vnet_legacy_core_rg
+}
+
+data "azurerm_private_dns_zone" "kusto" {
+  name                = "privatelink.${var.location}.kusto.windows.net"
+  resource_group_name = "cstar-d-itn-core-network-rg"
+}
+
+
 data "azurerm_private_dns_zone" "file_storage" {
   name                = "privatelink.file.core.windows.net"
   resource_group_name = local.network_rg
