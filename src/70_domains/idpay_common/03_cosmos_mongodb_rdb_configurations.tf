@@ -33,6 +33,23 @@ locals {
       ]
     },
     {
+      name = "producers_initiative"
+      indexes = [
+        {
+          keys   = ["_id"]
+          unique = true
+        },
+        {
+          keys   = ["producersId"]
+          unique = false
+        },
+        {
+          keys   = ["initiativeId"]
+          unique = false
+        }
+      ]
+    },
+    {
       name = "product"
       indexes = [
         {
