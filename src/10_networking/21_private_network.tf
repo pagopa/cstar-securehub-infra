@@ -79,7 +79,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "kusto_private_endpoint
 }
 
 # ------------------------------------------------------------------------------
-# Azure Cache for Redis
+# Azure Managed Redis
 # ------------------------------------------------------------------------------
 resource "azurerm_private_dns_zone" "managed_redis" {
   name                = "privatelink.redis.azure.net"
