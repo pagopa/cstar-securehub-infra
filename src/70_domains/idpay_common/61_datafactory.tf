@@ -82,6 +82,43 @@ resource "azurerm_data_factory_linked_custom_service" "idpay_blob_assets_produce
   }
 }
 
+resource "azurerm_data_factory_managed_private_endpoint" "adf_assets_mpe" {
+  name               = "${local.product}-storage-blob-assets-mpe"
+  data_factory_id    = data.azurerm_data_factory.data_factory.id
+  target_resource_id = module.storage_idpay_asset.id
+  subresource_name   = "blob"
+}
+
+data "azapi_resource_list" "storage_pe_connections" {
+  parent_id = module.storage_idpay_asset.id
+  type      = "Microsoft.Storage/storageAccounts/privateEndpointConnections@2021-04-01"
+
+  depends_on = [azurerm_data_factory_managed_private_endpoint.adf_assets_mpe]
+}
+
+locals {
+  all_connections = data.azapi_resource_list.storage_pe_connections.output.value
+
+  target_conn = [
+    for conn in local.all_connections : conn
+    if length(regexall(azurerm_data_factory_managed_private_endpoint.adf_assets_mpe.name, conn.properties.privateLinkServiceConnectionState.description)) > 0
+  ][0]
+}
+
+resource "azapi_resource_action" "approve_blob_assets_pe" {
+  type        = "Microsoft.Storage/storageAccounts/privateEndpointConnections@2021-04-01"
+  resource_id = local.target_conn.id
+  method      = "PUT"
+
+  body = {
+    properties = {
+      privateLinkServiceConnectionState = {
+        description = "Approved via Terraform - ${azurerm_data_factory_managed_private_endpoint.adf_assets_mpe.name}"
+        status      = "Approved"
+      }
+    }
+  }
+}
 
 resource "azurerm_data_factory_managed_private_endpoint" "adf_cosmosdb_mpe" {
   name               = "${local.product}-cosmosdb-mongo-mpe"
