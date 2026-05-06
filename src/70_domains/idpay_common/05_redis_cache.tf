@@ -9,7 +9,7 @@ module "redis" {
   tags                = module.tag_config.tags
 
   # IDH Resources
-  idh_resource_tier = "balanced_0_5gb"
+  idh_resource_tier = var.env_short != "p" ? "balanced_0_5gb" : "balanced_1gb"
 
   # Redis Settings
   name = local.project
