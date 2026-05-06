@@ -6,6 +6,7 @@ resource "keycloak_realm" "user" {
   enabled                  = true
   display_name             = "user"
   duplicate_emails_allowed = true
+  login_theme = "pagopa-oid4vp"
   attributes = {
     frontendUrl = local.keycloak_external_hostname
   }
