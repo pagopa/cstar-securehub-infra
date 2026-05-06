@@ -108,8 +108,8 @@
                 "queryType": 0,
                 "resourceType": "microsoft.operationalinsights/workspaces",
                 "crossComponentResources": [
-                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-law",
-                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law",
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-law"
                 ],
                 "visualization": "piechart",
                 "chartSettings": {
@@ -272,8 +272,8 @@
                 "queryType": 0,
                 "resourceType": "microsoft.operationalinsights/workspaces",
                 "crossComponentResources": [
-                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-law",
-                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law",
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-law"
                 ],
                 "visualization": "unstackedbar",
                 "chartSettings": {
@@ -332,7 +332,7 @@
               "type": 3,
               "content": {
                 "version": "KqlItem/1.0",
-                "query": "AppTraces\n| where AppRoleName == \"rtp-activator\"\n| where TimeGenerated {evaluation_window:query}\n| where Message hasprefix \"Error during activation process Authenticated user doesn't have permission to perform this action\"\n| extend tokenSpId = extract(@\"tokenSpId:\\s*([^\\s]+)\", 1, Message)\n| extend props = todynamic(Properties)\n| extend serviceProvider = tostring(props[\"service_provider\"])\n| where isnotempty(tokenSpId) and isnotempty(serviceProvider)\n| summarize\n    ['Error Count'] = count(),\n    ['Service Providers'] = make_set(serviceProvider, 100)\n  by ['Token SP ID'] = tostring(tokenSpId)\n| order by ['Error Count'] desc\n",
+                "query": "AppTraces\n| where AppRoleName == \"rtp-activator\"\n| where TimeGenerated {evaluation_window:query}\n| where Message has \"Error during activation process for SP\"\n    and Message has \"Authenticated user doesn't have permission to perform this action\"\n| extend props = todynamic(Properties)\n| extend tokenSpId = tostring(props[\"sub_token\"])\n| extend spId = extract(@\"Error during activation process for SP\\s+([^:]+):\", 1, Message)\n| where isnotempty(tokenSpId)\n| where isnotempty(spId)\n| summarize\n    ['Error Count'] = count(),\n    ['SP IDs (from request)'] = make_set(spId, 100)\n  by ['Token SP ID'] = tokenSpId\n| order by ['Error Count'] desc",
                 "size": 1,
                 "title": "❌ Mismatch del Service Provider tra Token e Body",
                 "noDataMessageStyle": 3,
