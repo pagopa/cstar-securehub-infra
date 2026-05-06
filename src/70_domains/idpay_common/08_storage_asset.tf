@@ -45,25 +45,11 @@ resource "azurerm_role_assignment" "asset_storage_data_contributor" {
   ]
 }
 
-# ADF MI -> can read/write asset storage blobs
-resource "azurerm_role_assignment" "adf_can_access_asset_storage" {
+# ADF read-only access
+resource "azurerm_role_assignment" "adf_can_read_asset_storage" {
   scope                = module.storage_idpay_asset.id
-  role_definition_name = "Storage Blob Data Contributor"
+  role_definition_name = "Storage Blob Data Reader"
   principal_id         = data.azurerm_data_factory.data_factory.identity[0].principal_id
-
-  depends_on = [
-    module.storage_idpay_asset
-  ]
-}
-
-#
-# ADF Managed Private Endpoint -> Asset Storage Blob
-#
-resource "azurerm_data_factory_managed_private_endpoint" "adf_asset_blob_mpe" {
-  name               = "${local.product}-asset-blob-mpe"
-  data_factory_id    = data.azurerm_data_factory.data_factory.id
-  target_resource_id = module.storage_idpay_asset.id
-  subresource_name   = "blob"
 
   depends_on = [
     module.storage_idpay_asset
