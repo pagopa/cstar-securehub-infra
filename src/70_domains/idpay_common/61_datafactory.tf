@@ -67,6 +67,21 @@ resource "azurerm_data_factory_linked_custom_service" "idpay_exports_blobfs_ls" 
   depends_on = [azurerm_role_assignment.adf_can_access_exports_storage]
 }
 
+resource "azurerm_data_factory_linked_custom_service" "idpay_blob_assets_producer_importer_linked_service" {
+
+  name            = "${var.domain}-blob-assets-producer-importer-ls"
+  data_factory_id = data.azurerm_data_factory.data_factory.id
+  type            = "AzureBlobStorage"
+  description     = "Import Producer Blob Storage Account linked service for IdPay"
+  type_properties_json = jsonencode({
+    connectionString = module.storage_idpay_asset.primary_connection_string
+  })
+
+  integration_runtime {
+    name = "AutoResolveIntegrationRuntime"
+  }
+}
+
 
 resource "azurerm_data_factory_managed_private_endpoint" "adf_cosmosdb_mpe" {
   name               = "${local.product}-cosmosdb-mongo-mpe"

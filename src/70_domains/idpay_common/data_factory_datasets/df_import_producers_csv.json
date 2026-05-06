@@ -1,0 +1,25 @@
+{
+  "name": "df_import_producers_csv",
+  "properties": {
+    "linkedServiceName": {
+      "referenceName": "idpay-blob-assets-producer-importer-ls",
+      "type": "LinkedServiceReference"
+    },
+    "annotations": [],
+    "type": "DelimitedText",
+    "typeProperties": {
+      "location": {
+        "type": "AzureBlobStorageLocation",
+        "fileName": "produttori.csv",
+        "folderPath": "Producers",
+        "container": "asset"
+      },
+      "columnDelimiter": ",",
+      "escapeChar": "\\",
+      "firstRowAsHeader": true,
+      "quoteChar": "\""
+    },
+    "schema": []
+  },
+  "type": "Microsoft.DataFactory/factories/datasets"
+}
