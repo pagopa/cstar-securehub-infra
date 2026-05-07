@@ -23,7 +23,9 @@ module "managed_redis" {
     private_dns_zone_ids = [data.azurerm_private_dns_zone.managed_redis.id]
   }
 
-  alert_action_group_ids = []
+  alert_action_group_ids = [
+    data.azurerm_monitor_action_group.slack.id
+  ]
 }
 
 #
