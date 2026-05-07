@@ -172,6 +172,7 @@ data "azurerm_user_assigned_identity" "rtp_sender_workload_identity" {
 }
 
 data "azurerm_monitor_action_group" "slack" {
+  count               = var.env_short == "p" ? 1 : 0
   name                = "${local.project}-slack-ag"
   resource_group_name = local.monitor_rg_name
 }
