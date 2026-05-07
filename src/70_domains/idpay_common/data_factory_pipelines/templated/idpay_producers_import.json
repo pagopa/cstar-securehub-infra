@@ -58,7 +58,7 @@
             "Content-Type": "application/json"
           },
           "url": {
-            "value": "https://cstar-d-itn-idpay-kv.vault.azure.net/secrets/idpay-df-subscription-key?api-version=7.3",
+            "value": "${kv_url}secrets/idpay-df-subscription-key?api-version=7.3",
             "type": "Expression"
           },
           "connectVia": {
@@ -99,7 +99,7 @@
             }
           },
           "url": {
-            "value": "https://api-io.dev.cstar.pagopa.it/idpay-itn/df/producers",
+            "value": "${data_factory_api_base_url}/producers",
             "type": "Expression"
           },
           "connectVia": {
