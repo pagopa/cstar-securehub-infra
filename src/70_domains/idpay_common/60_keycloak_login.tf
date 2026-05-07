@@ -1,3 +1,43 @@
+##################
+# Realms: User
+##################
+
+module "keycloak_setup" {
+  source = "./.terraform/modules/__v4__/keycloak_realms_setup"
+
+  domain = var.domain
+
+  realms_configuration = [
+    {
+      name         = "test-1",
+      display_name = "TEST 1",
+      description  = "Test 1"
+      enabled      = true
+    },
+    {
+      name         = "test-2",
+      display_name = "TEST 2",
+      description  = "Test 2"
+      enabled      = true
+    }
+  ]
+
+  key_vault_rg   = local.idpay_kv_rg_name
+  key_vault_name = data.azurerm_key_vault.domain_kv.name
+
+  admin_entra_group_ids = concat(
+    var.env_short != "p" ? [data.azuread_group.adgroup_domain_externals.object_id, data.azuread_group.adgroup_domain_developers.object_id] : [],
+    [
+      data.azuread_group.adgroup_domain_admin.object_id
+    ]
+  )
+
+  viewer_entra_group_ids = [
+    data.azuread_group.adgroup_domain_project_managers.object_id
+  ]
+  tags = module.tag_config.tags
+}
+
 data "keycloak_openid_client" "management_client" {
   for_each = { for i in local.keycloak_realm : i.realm => i }
 

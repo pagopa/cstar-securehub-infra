@@ -1,4 +1,4 @@
-##############\####
+##################
 # USER REALM
 ##################
 resource "keycloak_realm" "user" {
