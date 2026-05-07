@@ -141,6 +141,12 @@ data "azurerm_private_dns_zone" "redis" {
   resource_group_name = local.vnet_legacy_core_rg
 }
 
+# Azure Managed Redis
+data "azurerm_private_dns_zone" "managed_redis" {
+  name                = "privatelink.redis.azure.net"
+  resource_group_name = local.network_rg
+}
+
 data "azurerm_client_config" "current" {}
 
 #

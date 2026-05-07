@@ -1,5 +1,5 @@
-module "redis" {
-  source = "./.terraform/modules/__v4__/IDH/redis"
+module "managed_redis" {
+  source = "./.terraform/modules/__v4__/IDH/managed_redis"
 
   # General
   product_name        = var.prefix
@@ -9,18 +9,21 @@ module "redis" {
   tags                = module.tag_config.tags
 
   # IDH Resources
-  idh_resource_tier = var.redis_idh_resource_tier
+  idh_resource_tier = var.env_short != "p" ? "balanced_0_5gb" : "balanced_1gb"
 
   # Redis Settings
-  name = "${local.project}-redis"
+  name = local.project
 
   # Network
+
   embedded_subnet = {
     enabled              = true
     vnet_name            = local.vnet_spoke_data_name
     vnet_rg_name         = local.network_rg
-    private_dns_zone_ids = [data.azurerm_private_dns_zone.redis.id]
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.managed_redis.id]
   }
+
+  alert_action_group_ids = []
 }
 
 #
@@ -28,11 +31,11 @@ module "redis" {
 #
 locals {
   redis_kv_values = {
-    "srtp-redis-primary-connection-string"   = module.redis.primary_connection_string
-    "srtp-redis-primary-connection-url"      = module.redis.primary_connection_url
-    "srtp-redis-secondary-connection-string" = module.redis.secondary_connection_string
+    "srtp-redis-primary-connection-string"   = module.managed_redis.primary_access_key
+    "srtp-redis-primary-connection-url"      = module.managed_redis.primary_connection_url
+    "srtp-redis-secondary-connection-string" = module.managed_redis.secondary_access_key
     # The double “s” in rediss:// for TLS is not a typo.
-    "srtp-redis-secondary-connection-url" = module.redis.secondary_connection_url
+    "srtp-redis-secondary-connection-url" = module.managed_redis.secondary_connection_url
   }
 }
 
