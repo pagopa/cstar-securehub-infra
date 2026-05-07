@@ -3,7 +3,7 @@
 ## Requirements
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >=1.10.0 |
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | ~> 2.53 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 4.0 |
@@ -11,13 +11,13 @@
 ## Providers
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.38.1 |
 
 ## Modules
 
 | Name | Source | Version |
-| ---- | ------ | ------- |
+|------|--------|---------|
 | <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | 40a33b4b83bc0746150b16505ea839925a94321a |
 | <a name="module_cae_env_snet"></a> [cae\_env\_snet](#module\_cae\_env\_snet) | ./.terraform/modules/__v4__/IDH/subnet | n/a |
 | <a name="module_container_app_environment"></a> [container\_app\_environment](#module\_container\_app\_environment) | ./.terraform/modules/__v4__/container_app_environment | n/a |
@@ -29,7 +29,7 @@
 ## Resources
 
 | Name | Type |
-| ---- | ---- |
+|------|------|
 | [azurerm_api_management_logger.apim_logger](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_logger) | resource |
 | [azurerm_application_insights.application_insights](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/application_insights) | resource |
 | [azurerm_application_insights_workbook.workbook](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/application_insights_workbook) | resource |
@@ -61,7 +61,7 @@
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-| ---- | ----------- | ---- | ------- | :------: |
+|------|-------------|------|---------|:--------:|
 | <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | n/a | yes |
 | <a name="input_env"></a> [env](#input\_env) | Environment | `string` | n/a | yes |
 | <a name="input_env_short"></a> [env\_short](#input\_env\_short) | n/a | `string` | n/a | yes |
