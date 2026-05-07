@@ -57,12 +57,24 @@ data "keycloak_role" "manage_users" {
   client_id = data.keycloak_openid_client.realm_management.id
   name      = "manage-users"
 }
+data "keycloak_role" "manage_clients" {
+  realm_id  = local.keycloak_realm_id
+  client_id = data.keycloak_openid_client.realm_management.id
+  name      = "manage-clients"
+}
 
 resource "keycloak_openid_client_service_account_role" "ar_backoffice_admin_client_manage_users" {
   realm_id                = local.keycloak_realm_id
   service_account_user_id = keycloak_openid_client.ar_backoffice_admin_client.service_account_user_id
   client_id               = data.keycloak_openid_client.realm_management.id
   role                    = data.keycloak_role.manage_users.name
+}
+
+resource "keycloak_openid_client_service_account_role" "ar_backoffice_admin_client_manage_clients" {
+  realm_id                = local.keycloak_realm_id
+  service_account_user_id = keycloak_openid_client.ar_backoffice_admin_client.service_account_user_id
+  client_id               = data.keycloak_openid_client.realm_management.id
+  role                    = data.keycloak_role.manage_clients.name
 }
 
 resource "keycloak_openid_client" "ar_backoffice_client" {
