@@ -44,22 +44,22 @@ data "azurerm_dns_zone" "bonus_elettrodomestici_apex" {
 #
 # Private DNS Zones
 #
-# Cosmos MongoDB private dns zone
+# Cosmos MongoDB
 data "azurerm_private_dns_zone" "cosmos_mongo" {
   name                = "privatelink.mongo.cosmos.azure.com"
   resource_group_name = local.vnet_legacy_core_rg
 }
 
-# Eventhub private dns zone
+# Eventhub
 data "azurerm_private_dns_zone" "eventhub" {
   name                = "privatelink.servicebus.windows.net"
   resource_group_name = local.vnet_legacy_core_rg
 }
 
-# Redis private dns zone
-data "azurerm_private_dns_zone" "redis" {
-  name                = "privatelink.redis.cache.windows.net"
-  resource_group_name = local.vnet_legacy_core_rg
+# Azure Managed Redis
+data "azurerm_private_dns_zone" "managed_redis" {
+  name                = "privatelink.redis.azure.net"
+  resource_group_name = local.core_network_rg
 }
 
 data "azurerm_private_dns_zone" "blob_storage" {
@@ -115,10 +115,6 @@ data "azurerm_log_analytics_workspace" "core_log_analytics" {
   resource_group_name = local.core_monitor_resource_group_name
 }
 
-data "azurerm_resource_group" "core_monitor_rg" {
-  name = local.core_monitor_resource_group_name
-}
-
 data "azurerm_resource_group" "apim_rg" {
   name = local.apim_rg_name
 }
@@ -126,6 +122,13 @@ data "azurerm_resource_group" "apim_rg" {
 data "azurerm_api_management" "apim_core" {
   name                = local.apim_name
   resource_group_name = data.azurerm_resource_group.apim_rg.name
+}
+
+data "azurerm_monitor_action_group" "alerts_opsgenie" {
+  count = var.env_short == "p" ? 1 : 0
+
+  name                = local.monitor_alert_opsgenie_group_name
+  resource_group_name = local.monitor_rg
 }
 
 #

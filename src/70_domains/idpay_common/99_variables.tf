@@ -287,11 +287,3 @@ variable "data_factory_api_base_url" {
   type        = string
   description = "Internal API for Data Factory"
 }
-
-#----------------------------------------------------------------------
-# Redis
-#----------------------------------------------------------------------
-variable "redis_idh_resource_tier" {
-  type        = string
-  description = "The SKU of the Redis Cache to deploy"
-}
