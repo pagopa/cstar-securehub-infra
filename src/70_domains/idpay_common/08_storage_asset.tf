@@ -45,17 +45,6 @@ resource "azurerm_role_assignment" "asset_storage_data_contributor" {
   ]
 }
 
-# ADF read-only access
-resource "azurerm_role_assignment" "adf_can_read_asset_storage" {
-  scope                = module.storage_idpay_asset.id
-  role_definition_name = "Storage Blob Data Contributor"
-  principal_id         = data.azurerm_data_factory.data_factory.identity[0].principal_id
-
-  depends_on = [
-    module.storage_idpay_asset
-  ]
-}
-
 #
 # 🔑 Secrets
 #
