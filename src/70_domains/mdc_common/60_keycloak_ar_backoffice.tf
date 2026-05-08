@@ -1,29 +1,29 @@
 # Apply online with the terraform user that has admin access to keycloak
-resource "keycloak_oidc_identity_provider" "selfcare_te_oidc" {
-  realm   = local.keycloak_realm_id
-  alias   = local.keycloak_selfcare_idp_te_alias
-  enabled = true
-
-  authorization_url = "https://dummy.com/auth"
-  token_url         = "https://dummy.com/token"
-  client_id         = "dummy"
-  client_secret     = "dummy" # In TF è obbligatorio se si usa auth method client_secret_post
-
-  issuer             = local.selfcare_issuer
-  jwks_url           = "${local.selfcare_issuer}/.well-known/jwks.json"
-  validate_signature = true
-  sync_mode          = "IMPORT"
-
-  extra_config = {
-    "jwtAuthorizationGrantEnabled"                       = "true"
-    "jwtAuthorizationGrantMaxAllowedAssertionExpiration" = "300"
-    "jwtAuthorizationGrantAssertionReuseAllowed"         = "false"
-    "jwtAuthorizationGrantLimitAccessTokenExp"           = "false"
-    "jwtAuthorizationGrantAssertionSignatureAlg"         = ""
-    "allowClientIdAsAudience"                            = "false"
-    "clientAuthMethod"                                   = "client_secret_post"
-  }
-}
+# resource "keycloak_oidc_identity_provider" "selfcare_te_oidc" {
+#   realm   = local.keycloak_realm_id
+#   alias   = local.keycloak_selfcare_idp_te_alias
+#   enabled = true
+#
+#   authorization_url = "https://dummy.com/auth"
+#   token_url         = "https://dummy.com/token"
+#   client_id         = "dummy"
+#   client_secret     = "dummy" # In TF è obbligatorio se si usa auth method client_secret_post
+#
+#   issuer             = local.selfcare_issuer
+#   jwks_url           = "${local.selfcare_issuer}/.well-known/jwks.json"
+#   validate_signature = true
+#   sync_mode          = "IMPORT"
+#
+#   extra_config = {
+#     "jwtAuthorizationGrantEnabled"                       = "true"
+#     "jwtAuthorizationGrantMaxAllowedAssertionExpiration" = "300"
+#     "jwtAuthorizationGrantAssertionReuseAllowed"         = "false"
+#     "jwtAuthorizationGrantLimitAccessTokenExp"           = "false"
+#     "jwtAuthorizationGrantAssertionSignatureAlg"         = ""
+#     "allowClientIdAsAudience"                            = "false"
+#     "clientAuthMethod"                                   = "client_secret_post"
+#   }
+# }
 
 resource "keycloak_openid_client" "ar_backoffice_admin_client" {
   realm_id      = local.keycloak_realm_id
@@ -102,6 +102,49 @@ resource "keycloak_openid_user_attribute_protocol_mapper" "ar_backoffice_client_
   name             = "username-mapper"
   user_attribute   = "username"
   claim_name       = "username"
+  claim_value_type = "String"
+
+  add_to_access_token = true
+  add_to_id_token     = true
+  add_to_userinfo     = true
+}
+
+resource "keycloak_openid_user_attribute_protocol_mapper" "ar_backoffice_client_org_id_mapper" {
+  realm_id  = local.keycloak_realm_id
+  client_id = keycloak_openid_client.ar_backoffice_client.id
+
+  name             = "org-id-mapper"
+  user_attribute   = "orgId"
+  claim_name       = "orgId"
+  claim_value_type = "String"
+
+  add_to_access_token = true
+  add_to_id_token     = true
+  add_to_userinfo     = true
+}
+
+resource "keycloak_openid_user_attribute_protocol_mapper" "ar_backoffice_client_org_roles_mapper" {
+  realm_id  = local.keycloak_realm_id
+  client_id = keycloak_openid_client.ar_backoffice_client.id
+
+  name             = "org-roles-mapper"
+  user_attribute   = "orgRoles"
+  claim_name       = "orgRoles"
+  claim_value_type = "String"
+  multivalued      = true
+
+  add_to_access_token = true
+  add_to_id_token     = true
+  add_to_userinfo     = true
+}
+
+resource "keycloak_openid_user_attribute_protocol_mapper" "ar_backoffice_client_org_fiscal_code_mapper" {
+  realm_id  = local.keycloak_realm_id
+  client_id = keycloak_openid_client.ar_backoffice_client.id
+
+  name             = "org-fiscal-code-mapper"
+  user_attribute   = "orgFiscalCode"
+  claim_name       = "orgFiscalCode"
   claim_value_type = "String"
 
   add_to_access_token = true
