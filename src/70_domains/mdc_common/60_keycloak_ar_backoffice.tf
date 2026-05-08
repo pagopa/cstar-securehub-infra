@@ -1,29 +1,29 @@
 # Apply online with the terraform user that has admin access to keycloak
-# resource "keycloak_oidc_identity_provider" "selfcare_te_oidc" {
-#   realm   = local.keycloak_realm_id
-#   alias   = local.keycloak_selfcare_idp_te_alias
-#   enabled = true
-#
-#   authorization_url = "https://dummy.com/auth"
-#   token_url         = "https://dummy.com/token"
-#   client_id         = "dummy"
-#   client_secret     = "dummy" # In TF è obbligatorio se si usa auth method client_secret_post
-#
-#   issuer             = local.selfcare_issuer
-#   jwks_url           = "${local.selfcare_issuer}/.well-known/jwks.json"
-#   validate_signature = true
-#   sync_mode          = "IMPORT"
-#
-#   extra_config = {
-#     "jwtAuthorizationGrantEnabled"                       = "true"
-#     "jwtAuthorizationGrantMaxAllowedAssertionExpiration" = "300"
-#     "jwtAuthorizationGrantAssertionReuseAllowed"         = "false"
-#     "jwtAuthorizationGrantLimitAccessTokenExp"           = "false"
-#     "jwtAuthorizationGrantAssertionSignatureAlg"         = ""
-#     "allowClientIdAsAudience"                            = "false"
-#     "clientAuthMethod"                                   = "client_secret_post"
-#   }
-# }
+resource "keycloak_oidc_identity_provider" "selfcare_te_oidc" {
+  realm   = local.keycloak_realm_id
+  alias   = local.keycloak_selfcare_idp_te_alias
+  enabled = true
+
+  authorization_url = "https://dummy.com/auth"
+  token_url         = "https://dummy.com/token"
+  client_id         = "dummy"
+  client_secret     = "dummy" # In TF è obbligatorio se si usa auth method client_secret_post
+
+  issuer             = local.selfcare_issuer
+  jwks_url           = "${local.selfcare_issuer}/.well-known/jwks.json"
+  validate_signature = true
+  sync_mode          = "IMPORT"
+
+  extra_config = {
+    "jwtAuthorizationGrantEnabled"                       = "true"
+    "jwtAuthorizationGrantMaxAllowedAssertionExpiration" = "300"
+    "jwtAuthorizationGrantAssertionReuseAllowed"         = "false"
+    "jwtAuthorizationGrantLimitAccessTokenExp"           = "false"
+    "jwtAuthorizationGrantAssertionSignatureAlg"         = ""
+    "allowClientIdAsAudience"                            = "false"
+    "clientAuthMethod"                                   = "client_secret_post"
+  }
+}
 
 resource "keycloak_openid_client" "ar_backoffice_admin_client" {
   realm_id      = local.keycloak_realm_id
