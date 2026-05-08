@@ -151,10 +151,10 @@ data "azurerm_user_assigned_identity" "iac_federated_azdo" {
   resource_group_name = local.azdo_managed_identity_rg_name
 }
 
-# Redis private dns zone
-data "azurerm_private_dns_zone" "redis" {
-  name                = "privatelink.redis.cache.windows.net"
-  resource_group_name = local.vnet_legacy_core_rg
+# Azure Managed Redis
+data "azurerm_private_dns_zone" "managed_redis" {
+  name                = "privatelink.redis.azure.net"
+  resource_group_name = local.network_rg
 }
 
 data "azurerm_client_config" "current" {}
@@ -185,4 +185,10 @@ data "azurerm_kusto_cluster" "kusto_cluster" {
 data "azurerm_user_assigned_identity" "rtp_sender_workload_identity" {
   name                = local.rtp_sender_workload_identity_name
   resource_group_name = local.rtp_sender_workload_identity_rg_name
+}
+
+data "azurerm_monitor_action_group" "slack" {
+  count               = var.env_short == "p" ? 1 : 0
+  name                = "${local.project}-slack-ag"
+  resource_group_name = local.monitor_rg_name
 }

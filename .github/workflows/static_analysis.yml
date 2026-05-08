@@ -77,7 +77,7 @@ jobs:
           echo    "+ 1️⃣  SHOW PRECOMMIT VERSION 1️⃣  +"
           echo -e "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n"
 
-          TAG=v1.99.2@sha256:34f6cef8b944d571ea22be316a960d8353fcc0571adea35302cbd9ab80bf2758
+          TAG=v1.105.0@sha256:4ef4b8323b27fc263535ad88c9d2f20488fcb3b520258e5e7f0553ed5f6692b5
           docker run --rm --entrypoint cat ghcr.io/antonbabenko/pre-commit-terraform:$TAG /usr/bin/tools_versions_info
 
       - name: 🚨 Run precommit

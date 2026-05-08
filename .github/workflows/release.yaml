@@ -18,6 +18,6 @@ jobs:
     steps:
       - name: Release action
         id: release
-        uses: pagopa/eng-github-actions-iac-template/global/release-action@main #
+        uses: pagopa/eng-github-actions-iac-template/global/release-action@fa09a2b6def96e72c1b529ade6bd031c18562978 # 1.25.1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}

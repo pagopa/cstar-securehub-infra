@@ -3,7 +3,7 @@
 ## Requirements
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >=1.10.0 |
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | ~> 3 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 4.32.0 |
@@ -15,7 +15,7 @@
 ## Providers
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 3.4.0 |
 | <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.32.0 |
 | <a name="provider_helm"></a> [helm](#provider\_helm) | 2.17.0 |
@@ -26,8 +26,8 @@
 ## Modules
 
 | Name | Source | Version |
-| ---- | ------ | ------- |
-| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | 311a2259d5a0af6ffdde4a4f08f2761e3e7d7f53 |
+|------|--------|---------|
+| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | d284d9fd868fd314f99c51c57a5ff71f41160815 |
 | <a name="module_aks_user_keycloak_snet"></a> [aks\_user\_keycloak\_snet](#module\_aks\_user\_keycloak\_snet) | ./.terraform/modules/__v4__/IDH/subnet | n/a |
 | <a name="module_aks_user_node_pool_keycloak"></a> [aks\_user\_node\_pool\_keycloak](#module\_aks\_user\_node\_pool\_keycloak) | ./.terraform/modules/__v4__/IDH/aks_node_pool | n/a |
 | <a name="module_cert_mounter"></a> [cert\_mounter](#module\_cert\_mounter) | ./.terraform/modules/__v4__/cert_mounter | n/a |
@@ -40,7 +40,7 @@
 ## Resources
 
 | Name | Type |
-| ---- | ---- |
+|------|------|
 | [azurerm_key_vault_secret.keycloak_admin_password](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.keycloak_admin_username](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.keycloak_db_admin_password](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
@@ -93,7 +93,7 @@
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-| ---- | ----------- | ---- | ------- | :------: |
+|------|-------------|------|---------|:--------:|
 | <a name="input_aks_user_node_pool_keycloak"></a> [aks\_user\_node\_pool\_keycloak](#input\_aks\_user\_node\_pool\_keycloak) | n/a | <pre>object({<br/>    idh_resource_tier = string<br/>    node_count_min    = number<br/>    node_count_max    = number<br/>    os_disk_size_gb   = optional(number, null)<br/>    os_disk_type      = optional(string, null)<br/>  })</pre> | n/a | yes |
 | <a name="input_dns_zone_internal_prefix"></a> [dns\_zone\_internal\_prefix](#input\_dns\_zone\_internal\_prefix) | The dns subdomain. | `string` | `""` | no |
 | <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | n/a | yes |
