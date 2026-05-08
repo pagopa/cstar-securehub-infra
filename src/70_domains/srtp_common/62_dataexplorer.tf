@@ -72,22 +72,3 @@ resource "azurerm_kusto_database_principal_assignment" "rtp_sender_adx_ingestor"
   tenant_id      = data.azurerm_client_config.current.tenant_id
   role           = "Ingestor"
 }
-
-resource "azapi_resource" "kusto_pe_dns_zone_group" {
-  type      = "Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2023-11-01"
-  name      = "default"
-  parent_id = local.kusto_private_endpoint_id
-
-  body = {
-    properties = {
-      privateDnsZoneConfigs = [
-        for name, zone_id in local.kusto_private_dns_zones : {
-          name = name
-          properties = {
-            privateDnsZoneId = zone_id
-          }
-        }
-      ]
-    }
-  }
-}
