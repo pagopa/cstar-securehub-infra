@@ -75,5 +75,5 @@ provider "keycloak" {
 
 module "__v4__" {
   # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v10.8.1
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=e67713eb310a4f948e740e00e08c07778ce91c9d"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=fix/keycloak_realm_setup"
 }
