@@ -24,7 +24,7 @@ resource "azurerm_data_factory_linked_custom_service" "log_analytics_ls" {
   type            = "RestService"
 
   type_properties_json = jsonencode({
-    url                = "https://api.loganalytics.io/v1/workspaces/${data.azurerm_log_analytics_workspace.domain_log_analytics.workspace_id}/"
+    url                = "https://api.loganalytics.io/v1/workspaces/${azurerm_log_analytics_workspace.log_analytics_workspace.workspace_id}/"
     authenticationType = "ManagedServiceIdentity"
     aadResourceId      = "https://api.loganalytics.io/"
   })
@@ -32,6 +32,10 @@ resource "azurerm_data_factory_linked_custom_service" "log_analytics_ls" {
   integration_runtime {
     name = "AutoResolveIntegrationRuntime"
   }
+
+  depends_on = [
+    azurerm_log_analytics_workspace.log_analytics_workspace
+  ]
 }
 
 resource "azurerm_data_factory_managed_private_endpoint" "adf_cosmosdb_mpe" {
