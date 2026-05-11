@@ -21,7 +21,7 @@ resource "keycloak_openid_client" "merchant_operator_frontend" {
   ], formatlist("https://%s/*", local.public_dns_zone_bonus_elettrodomestici.zones)])
 
   depends_on = [
-    module.keycloak_setup.realm_ids,
+    module.keycloak_setup,
   ]
 }
 
