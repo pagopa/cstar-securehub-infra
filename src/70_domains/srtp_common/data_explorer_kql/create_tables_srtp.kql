@@ -31,3 +31,43 @@
     precStatus: string,
     triggerEvent: string
 )
+
+.create-or-alter table Rtps ingestion json mapping 'RtpsMapping'
+'['
+'{"column":"_id","path":"$._id","datatype":"string"},'
+'{"column":"noticeNumber","path":"$.noticeNumber","datatype":"string"},'
+'{"column":"amount","path":"$.amount","datatype":"decimal"},'
+'{"column":"description","path":"$.description","datatype":"string"},'
+'{"column":"expiryDate","path":"$.expiryDate","datatype":"datetime"},'
+'{"column":"payerName","path":"$.payerName","datatype":"string"},'
+'{"column":"payerId","path":"$.payerId","datatype":"string"},'
+'{"column":"payeeName","path":"$.payeeName","datatype":"string"},'
+'{"column":"payeeId","path":"$.payeeId","datatype":"string"},'
+'{"column":"subject","path":"$.subject","datatype":"string"},'
+'{"column":"savingDateTime","path":"$.savingDateTime","datatype":"datetime"},'
+'{"column":"serviceProviderDebtor","path":"$.serviceProviderDebtor","datatype":"string"},'
+'{"column":"iban","path":"$.iban","datatype":"string"},'
+'{"column":"payTrxRef","path":"$.payTrxRef","datatype":"string"},'
+'{"column":"flgConf","path":"$.flgConf","datatype":"string"},'
+'{"column":"status","path":"$.status","datatype":"string"},'
+'{"column":"serviceProviderCreditor","path":"$.serviceProviderCreditor","datatype":"string"},'
+'{"column":"operationId","path":"$.operationId","datatype":"long"},'
+'{"column":"eventDispatcher","path":"$.eventDispatcher","datatype":"string"},'
+'{"column":"operationDispatcherKey","path":"$.operationDispatcherKey","datatype":"string"}'
+']'
+
+.create-or-alter table RtpEvents ingestion json mapping 'RtpEventsMapping'
+'['
+'{"column":"_id","path":"$._id","datatype":"string"},'
+'{"column":"rtpResourceId","path":"$.rtpResourceId","datatype":"string"},'
+'{"column":"timestamp","path":"$.timestamp","datatype":"datetime"},'
+'{"column":"rtpSavingDateTime","path":"$.rtpSavingDateTime","datatype":"datetime"},'
+'{"column":"eventDispatcher","path":"$.eventDispatcher","datatype":"string"},'
+'{"column":"foreignStatus","path":"$.foreignStatus","datatype":"string"},'
+'{"column":"precStatus","path":"$.precStatus","datatype":"string"},'
+'{"column":"triggerEvent","path":"$.triggerEvent","datatype":"string"}'
+']'
+
+.alter table Rtps policy streamingingestion enable
+
+.alter table RtpEvents policy streamingingestion enable

@@ -48,6 +48,12 @@ resource "azurerm_private_endpoint" "kusto" {
     is_manual_connection           = false
     subresource_names              = ["cluster"]
   }
+
+  private_dns_zone_group {
+    name                 = "default"
+    private_dns_zone_ids = [for zone in local.kusto_private_dns_zones : zone.id]
+  }
+
   tags = module.tag_config.tags
 }
 
