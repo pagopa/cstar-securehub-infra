@@ -40,12 +40,16 @@ locals {
           unique = true
         },
         {
-          keys   = ["producersId"]
+          keys   = ["producerId"]
           unique = false
         },
         {
           keys   = ["initiativeId"]
           unique = false
+        },
+        {
+          keys   = ["initiativeName"]
+          unique = true
         }
       ]
     },
