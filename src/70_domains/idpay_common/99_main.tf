@@ -66,9 +66,19 @@ provider "argocd" {
   }
 }
 
+#
+# Use this provider only during realm creation
+#
+# provider "keycloak" {
+#   client_id     = "terraform"
+#   client_secret = data.azurerm_key_vault_secret.terraform_client_secret_for_keycloak.value
+#   url           = data.azurerm_key_vault_secret.keycloak_url.value
+#   realm         = "master"
+# }
+
 provider "keycloak" {
-  client_id     = "terraform"
-  client_secret = data.azurerm_key_vault_secret.terraform_client_secret_for_keycloak.value
+  client_id     = data.azurerm_key_vault_secret.client_id_for_keycloak.value
+  client_secret = data.azurerm_key_vault_secret.client_secret_for_keycloak.value
   url           = data.azurerm_key_vault_secret.keycloak_url.value
   realm         = "master"
 }
