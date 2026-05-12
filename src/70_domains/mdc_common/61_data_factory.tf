@@ -18,6 +18,26 @@ resource "azurerm_data_factory_linked_custom_service" "adf_cosmosdb_mdc_ls" {
   depends_on = [azurerm_data_factory_managed_private_endpoint.adf_cosmosdb_mpe]
 }
 
+resource "azurerm_data_factory_linked_custom_service" "log_analytics_ls" {
+  name            = "${var.domain}-LogAnalytics-${var.domain}-ls"
+  data_factory_id = data.azurerm_data_factory.data_factory.id
+  type            = "RestService"
+
+  type_properties_json = jsonencode({
+    url                = "https://api.loganalytics.io/v1/workspaces/${azurerm_log_analytics_workspace.log_analytics_workspace.workspace_id}/"
+    authenticationType = "ManagedServiceIdentity"
+    aadResourceId      = "https://api.loganalytics.io/"
+  })
+
+  integration_runtime {
+    name = "AutoResolveIntegrationRuntime"
+  }
+
+  depends_on = [
+    azurerm_log_analytics_workspace.log_analytics_workspace
+  ]
+}
+
 resource "azurerm_data_factory_managed_private_endpoint" "adf_cosmosdb_mpe" {
   name               = "${local.project}-cosmosdb-mongo-mpe"
   data_factory_id    = data.azurerm_data_factory.data_factory.id
