@@ -96,6 +96,12 @@ variable "cosmos_rtp_db_autoscale_max_throughput" {
   default     = null
 }
 
+variable "cosmos_payee_db_autoscale_max_throughput" {
+  type        = number
+  description = "Max throughput for payee database (shared across collections)"
+  default     = null
+}
+
 variable "cosmos_otp_ttl" {
   type        = number
   description = "TTL for otps collection."

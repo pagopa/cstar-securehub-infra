@@ -17,6 +17,18 @@ resource "azurerm_log_analytics_workspace" "log_analytics_workspace" {
   }
 }
 
+resource "azurerm_role_assignment" "platform_dex_to_mdc_law" {
+  scope                = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  role_definition_name = "Log Analytics Data Reader"
+  principal_id         = data.azurerm_kusto_cluster.kusto_cluster.identity[0].principal_id
+}
+
+resource "azurerm_role_assignment" "platform_adf_to_mdc_law" {
+  scope                = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  role_definition_name = "Log Analytics Data Reader"
+  principal_id         = data.azurerm_data_factory.data_factory.identity[0].principal_id
+}
+
 ### 🔍 Application insights
 resource "azurerm_application_insights" "application_insights" {
   name                 = "${local.project}-appinsights"
