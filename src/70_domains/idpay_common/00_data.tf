@@ -134,8 +134,18 @@ data "azurerm_monitor_action_group" "alerts_opsgenie" {
 #
 # KV Secrets
 #
-data "azurerm_key_vault_secret" "terraform_client_secret_for_keycloak" {
-  name         = "terraform-client-secret-for-keycloak"
+# data "azurerm_key_vault_secret" "terraform_client_secret_for_keycloak" {
+#   name         = "terraform-client-secret-for-keycloak"
+#   key_vault_id = data.azurerm_key_vault.domain_kv.id
+# }
+
+data "azurerm_key_vault_secret" "client_id_for_keycloak" {
+  name         = "keycloak-terraform-admin-client-id"
+  key_vault_id = data.azurerm_key_vault.domain_kv.id
+}
+
+data "azurerm_key_vault_secret" "client_secret_for_keycloak" {
+  name         = "keycloak-terraform-admin-client-secret"
   key_vault_id = data.azurerm_key_vault.domain_kv.id
 }
 

@@ -66,14 +66,24 @@ provider "argocd" {
   }
 }
 
+#
+# Use this provider only during realm creation
+#
+# provider "keycloak" {
+#   client_id     = "terraform"
+#   client_secret = data.azurerm_key_vault_secret.terraform_client_secret_for_keycloak.value
+#   url           = data.azurerm_key_vault_secret.keycloak_url.value
+#   realm         = "master"
+# }
+
 provider "keycloak" {
-  client_id     = "terraform"
-  client_secret = data.azurerm_key_vault_secret.terraform_client_secret_for_keycloak.value
+  client_id     = data.azurerm_key_vault_secret.client_id_for_keycloak.value
+  client_secret = data.azurerm_key_vault_secret.client_secret_for_keycloak.value
   url           = data.azurerm_key_vault_secret.keycloak_url.value
   realm         = "master"
 }
 
 module "__v4__" {
-  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v10.8.1
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=e67713eb310a4f948e740e00e08c07778ce91c9d"
+  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v10.9.3
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=3513f264531ed44bef33f3c093752bbdf0349dc5"
 }
