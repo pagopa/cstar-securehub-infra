@@ -49,7 +49,7 @@ locals {
         },
         {
           keys   = ["initiativeName"]
-          unique = true
+          unique = false
         }
       ]
     },
