@@ -106,6 +106,28 @@ variable "keycloak_configuration" {
   })
 }
 
+variable "listmonk_configuration" {
+  type = object({
+    chart_version     = string
+    image_repository  = string
+    image_tag         = string
+    replica_count     = number
+    postgres_ssl_mode = string
+  })
+
+  validation {
+    condition = contains([
+      "allow",
+      "disable",
+      "prefer",
+      "require",
+      "verify-ca",
+      "verify-full"
+    ], var.listmonk_configuration.postgres_ssl_mode)
+    error_message = "listmonk_configuration.postgres_ssl_mode must be one of: allow, disable, prefer, require, verify-ca, verify-full."
+  }
+}
+
 variable "aks_user_node_pool_keycloak" {
   type = object({
     idh_resource_tier = string
