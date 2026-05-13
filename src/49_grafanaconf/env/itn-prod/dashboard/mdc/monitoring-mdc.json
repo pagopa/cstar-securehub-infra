@@ -118,7 +118,7 @@
             }
           },
           "pluginVersion": "7.2.2",
-          "query": "MessageVolumeSnapshot\n| project\n    ['Messaggi inviati'] = message_sent_count",
+          "query": "MessageVolumeSnapshot\n| project\n    ['Messaggi accettati'] = message_sent_count",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -126,7 +126,7 @@
           "resultFormat": "table"
         }
       ],
-      "title": "Messaggi inviati",
+      "title": "Messaggi accettati",
       "type": "stat"
     },
     {
@@ -301,7 +301,7 @@
             }
           },
           "pluginVersion": "7.2.2",
-          "query": "MessageVolumeSnapshot\n| project\n    ['Inviati con pagamento']    = sent_with_payment,\n    ['Inviati senza pagamento']  = sent_without_payment,\n    ['Scartati con pagamento']   = discarded_with_payment,\n    ['Scartati senza pagamento'] = discarded_without_payment",
+          "query": "MessageVolumeSnapshot\n| project\n    ['Accettati con pagamento']    = sent_with_payment,\n    ['Accettati senza pagamento']  = sent_without_payment,\n    ['Scartati con pagamento']   = discarded_with_payment,\n    ['Scartati senza pagamento'] = discarded_without_payment",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -432,7 +432,7 @@
             }
           },
           "pluginVersion": "7.2.2",
-          "query": "MessageVolumeSnapshot\n| project window_start, \n          ['Messaggi inviati'] = message_sent_count, \n          ['Messaggi scartati'] = message_discarded_count\n| where $__timeFilter(window_start)\n| order by window_start asc",
+          "query": "MessageVolumeSnapshot\n| project window_start, \n          ['Messaggi accettati'] = message_sent_count, \n          ['Messaggi scartati'] = message_discarded_count\n| where $__timeFilter(window_start)\n| order by window_start asc",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -440,7 +440,7 @@
           "resultFormat": "table"
         }
       ],
-      "title": "Inviati e scartati nel tempo",
+      "title": "Accettati e scartati nel tempo",
       "type": "timeseries"
     },
     {
@@ -487,7 +487,7 @@
       "id": 2,
       "options": {
         "colorMode": "value",
-        "graphMode": "area",
+        "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "auto",
         "percentChangeColorMode": "standard",
@@ -581,7 +581,7 @@
       "id": 1,
       "options": {
         "colorMode": "value",
-        "graphMode": "area",
+        "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "auto",
         "percentChangeColorMode": "standard",
@@ -748,7 +748,7 @@
             }
           },
           "pluginVersion": "7.2.2",
-          "query": "CitizenMetricsSnapshot\r\n| extend consents_dynamic = todynamic(consents)\r\n| extend consent_keys = bag_keys(consents_dynamic)\r\n| mv-expand key = consent_keys to typeof(string)\r\n| extend consent_obj = consents_dynamic[key]\r\n| extend tppState = tobool(consent_obj[\"tppState\"])\r\n| extend tcDate = unixtime_milliseconds_todatetime(tolong(consent_obj[\"tcDate\"][\"$date\"]))\r\n| where tcDate >= $__timeFrom and tcDate <= $__timeTo  // Va in base alla data deffinita da grafana\r\n| summarize \r\n    has_any_true    = countif(tppState == true),\r\n    last_true_date  = maxif(tcDate, tppState == true),\r\n    last_false_date = maxif(tcDate, tppState == false)\r\n  by fiscal_code\r\n| extend stato = iff(has_any_true > 0, \"Attivi\", \"Inattivi \")\r\n| extend relevant_date = iff(stato == \"Attivi\", last_true_date, last_false_date)\r\n| summarize \r\n    Attivi    = dcountif(fiscal_code, stato == \"Attivi\"),\r\n    NonAttivi = dcountif(fiscal_code, stato == \"Inattivi\")\r\n  by bin(relevant_date, 1d)\r\n| order by relevant_date asc",
+          "query": "CitizenMetricsSnapshot\r\n| extend consents_dynamic = todynamic(consents)\r\n| extend consent_keys = bag_keys(consents_dynamic)\r\n| mv-expand key = consent_keys to typeof(string)\r\n| extend consent_obj = consents_dynamic[key]\r\n| extend tppState = tobool(consent_obj[\"tppState\"])\r\n| extend tcDate = unixtime_milliseconds_todatetime(tolong(consent_obj[\"tcDate\"][\"$date\"]))\r\n| where tcDate >= $__timeFrom and tcDate <= $__timeTo  // Va in base alla data deffinita da grafana\r\n| summarize \r\n    has_any_true    = countif(tppState == true),\r\n    last_true_date  = maxif(tcDate, tppState == true),\r\n    last_false_date = maxif(tcDate, tppState == false)\r\n  by fiscal_code\r\n| extend stato = iff(has_any_true > 0, \"Attivi\", \"Inattivi\")\r\n| extend relevant_date = iff(stato == \"Attivi\", last_true_date, last_false_date)\r\n| summarize \r\n    Attivi    = dcountif(fiscal_code, stato == \"Attivi\"),\r\n    NonAttivi = dcountif(fiscal_code, stato == \"Inattivi\")\r\n  by bin(relevant_date, 1d)\r\n| order by relevant_date asc",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -803,5 +803,5 @@
   "timezone": "browser",
   "title": "Monitoraggio MDC",
   "uid": "efj6fhop10um8c",
-  "version": 18
+  "version": 19
 }
