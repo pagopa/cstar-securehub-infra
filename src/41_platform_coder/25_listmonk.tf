@@ -4,20 +4,25 @@ data "kubernetes_namespace" "idpay" {
   }
 }
 
+data "azurerm_key_vault" "key_vault_idpay" {
+  name                = "${local.product_nodomain}-idpay-kv"
+  resource_group_name = "cstar-d-itn-idpay-security-rg"
+}
+
 resource "azurerm_key_vault_secret" "listmonk_url" {
   name         = "listmonk-url"
   value        = local.listmonk_ingress_hostname
-  key_vault_id = data.azurerm_key_vault.key_vault_core.id
+  key_vault_id = data.azurerm_key_vault.key_vault_idpay.id
 
   tags = module.tag_config.tags
 }
 
-resource "azurerm_postgresql_flexible_server_database" "listmonk_db" {
-  name      = local.listmonk_db_name
-  server_id = module.keycloak_pgflex.id
-  charset   = "UTF8"
-  collation = "en_US.utf8"
-}
+# resource "azurerm_postgresql_flexible_server_database" "listmonk_db" {
+#   name      = local.listmonk_db_name
+#   server_id = module.keycloak_pgflex.id
+#   charset   = "UTF8"
+#   collation = "en_US.utf8"
+# }
 
 resource "kubernetes_secret" "listmonk_db" {
   metadata {
@@ -53,7 +58,7 @@ resource "helm_release" "listmonk" {
   ]
 
   depends_on = [
-    azurerm_postgresql_flexible_server_database.listmonk_db,
+    #azurerm_postgresql_flexible_server_database.listmonk_db,
     kubernetes_secret.listmonk_db,
     data.kubernetes_namespace.idpay #local.listmonk_namespace
   ]
