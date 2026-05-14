@@ -1234,7 +1234,7 @@
             }
           },
           "pluginVersion": "6.2.0",
-          "query": "// Conteggio batch approvati senza filename per Stat Panel\r\nrewards_batch\r\n| where status == \"APPROVED\"\r\n| where isempty(filename) and month == $month\r\n| count",
+          "query": "// Conteggio batch approvati senza filename per Stat Panel\r\nrewards_batch\r\n| where status == \"APPROVED\"\r\n| where isempty(filename) and month == $month\r\n| where numberOfTransactions > 0 \r\n| count",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
