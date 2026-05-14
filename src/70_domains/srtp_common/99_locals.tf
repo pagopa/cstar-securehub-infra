@@ -186,8 +186,8 @@ locals {
   kusto_cluster_rg_name = "${local.project_no_domain}-platform-data-rg"
   kusto_database = {
     (var.domain) = {
-      hot_cache_period   = "P5D"
-      soft_delete_period = "P7D"
+      hot_cache_period   = var.adx_hot_cache_period
+      soft_delete_period = var.adx_soft_delete_period
     }
   }
 

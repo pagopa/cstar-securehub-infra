@@ -47,3 +47,7 @@ additional_geo_locations = [{
 
 ### Redis Cache
 redis_idh_resource_tier = "standard_C1_v6"
+
+### ADX
+adx_soft_delete_period = "P7305D"
+adx_hot_cache_period   = "P30D"

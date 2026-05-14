@@ -150,3 +150,13 @@ variable "redis_idh_resource_tier" {
   type        = string
   description = "The SKU of the Redis Cache to deploy"
 }
+
+variable "adx_soft_delete_period" {
+  type        = string
+  description = "Soft delete period for ADX database"
+}
+
+variable "adx_hot_cache_period" {
+  type        = string
+  description = "Hot cache period for ADX database"
+}
