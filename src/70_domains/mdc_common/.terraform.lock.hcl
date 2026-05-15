@@ -24,6 +24,7 @@ provider "registry.terraform.io/azure/azapi" {
   version = "2.9.0"
   hashes = [
     "h1:ivmN39jnMJRZXlPuX8r5TTXM8lyF8ZocPQQgEUy61eM=",
+    "h1:tF2SjvM2Vj+7MTbFXhssLYu1Uc9uK/cVWBYIH8heDqM=",
     "zh:0a4eee8c9362db6ca19d371eccf38701c8306be761182da87b624294f7e8f867",
     "zh:4df87bee5b8f4cce27461ae26132a599542583cdf035942b42b0259a514ab46e",
     "zh:57dc1f4227f1d0eab630fcf868d6c9a1b4dc4c165608ce5a4d7028a482770547",
