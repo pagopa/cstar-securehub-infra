@@ -67,10 +67,18 @@ locals {
     }
   }
 
+  # Alert active only on UAT (subset of alerts_mdc)
+  alerts_uat = {
+    api_5xx_errors = local.alerts_mdc.api_5xx_errors
+  }
 
   # Merge base config + alert-specific data.
   final_alerts = {
-    for key, alert in local.alerts_mdc :
+    for key, alert in(
+      var.env_short == "p" ? local.alerts_mdc :
+      var.env_short == "u" ? local.alerts_uat :
+      {}
+    ) :
     key => merge(local.base_alert_config, alert)
   }
 }

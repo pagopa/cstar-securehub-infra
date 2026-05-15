@@ -13,7 +13,7 @@ resource "keycloak_realm" "user" {
 }
 
 resource "keycloak_openid_client" "user_frontend" {
-  realm_id  = keycloak_realm.user.id
+  realm_id  = module.keycloak_setup.realm_ids["user"]
   client_id = "frontend"
   name      = "Portal User Frontend"
   enabled   = true
@@ -35,12 +35,12 @@ resource "keycloak_openid_client" "user_frontend" {
   ], formatlist("https://%s/*", local.public_dns_zone_bonus_elettrodomestici.zones)])
 
   depends_on = [
-    keycloak_realm.user,
+    module.keycloak_setup
   ]
 }
 
 resource "keycloak_oidc_identity_provider" "one_identity_provider" {
-  realm                 = keycloak_realm.user.id
+  realm                 = module.keycloak_setup.realm_ids["user"]
   alias                 = "oneid-keycloak"
   display_name          = "OneIdentity"
   authorization_url     = "${var.oneidentity_base_url}/login"
@@ -62,7 +62,7 @@ resource "keycloak_oidc_identity_provider" "one_identity_provider" {
 }
 
 resource "keycloak_attribute_importer_identity_provider_mapper" "first_name_mapper" {
-  realm                   = keycloak_realm.user.id
+  realm                   = module.keycloak_setup.realm_ids["user"]
   name                    = "first-name-mapper"
   claim_name              = "name"
   identity_provider_alias = keycloak_oidc_identity_provider.one_identity_provider.alias
@@ -75,7 +75,7 @@ resource "keycloak_attribute_importer_identity_provider_mapper" "first_name_mapp
 }
 
 resource "keycloak_attribute_importer_identity_provider_mapper" "last_name_mapper" {
-  realm                   = keycloak_realm.user.id
+  realm                   = module.keycloak_setup.realm_ids["user"]
   name                    = "last-name-mapper"
   claim_name              = "familyName"
   identity_provider_alias = keycloak_oidc_identity_provider.one_identity_provider.alias
@@ -88,7 +88,7 @@ resource "keycloak_attribute_importer_identity_provider_mapper" "last_name_mappe
 }
 
 resource "keycloak_attribute_importer_identity_provider_mapper" "username_mapper" {
-  realm                   = keycloak_realm.user.id
+  realm                   = module.keycloak_setup.realm_ids["user"]
   name                    = "username-mapper"
   claim_name              = "fiscalNumber"
   identity_provider_alias = keycloak_oidc_identity_provider.one_identity_provider.alias
@@ -101,7 +101,7 @@ resource "keycloak_attribute_importer_identity_provider_mapper" "username_mapper
 }
 
 resource "keycloak_user_template_importer_identity_provider_mapper" "userid_template_importer" {
-  realm                   = keycloak_realm.user.id
+  realm                   = module.keycloak_setup.realm_ids["user"]
   name                    = "userid-template-importer"
   identity_provider_alias = keycloak_oidc_identity_provider.one_identity_provider.alias
   template                = "$${ALIAS}.$${CLAIM.fiscalNumber}"
@@ -114,7 +114,7 @@ resource "keycloak_user_template_importer_identity_provider_mapper" "userid_temp
 }
 
 resource "keycloak_hardcoded_attribute_identity_provider_mapper" "email_importer" {
-  realm                   = keycloak_realm.user.id
+  realm                   = module.keycloak_setup.realm_ids["user"]
   identity_provider_alias = keycloak_oidc_identity_provider.one_identity_provider.alias
 
   name = "email-importer"
@@ -136,7 +136,7 @@ resource "keycloak_hardcoded_attribute_identity_provider_mapper" "email_importer
 
 
 resource "keycloak_custom_identity_provider_mapper" "strip_tinit_fiscalnumber" {
-  realm                    = keycloak_realm.user.id
+  realm                    = module.keycloak_setup.realm_ids["user"]
   name                     = "fiscal-number-mapper"
   identity_provider_alias  = keycloak_oidc_identity_provider.one_identity_provider.alias
   identity_provider_mapper = "oidc-strip-tinit-idp-attr-mapper"
@@ -151,7 +151,7 @@ resource "keycloak_custom_identity_provider_mapper" "strip_tinit_fiscalnumber" {
 }
 
 resource "keycloak_attribute_importer_identity_provider_mapper" "date_of_birth_mapper" {
-  realm                   = keycloak_realm.user.id
+  realm                   = module.keycloak_setup.realm_ids["user"]
   name                    = "date-of-birth-mapper"
   claim_name              = "dateOfBirth"
   identity_provider_alias = keycloak_oidc_identity_provider.one_identity_provider.alias
@@ -165,7 +165,7 @@ resource "keycloak_attribute_importer_identity_provider_mapper" "date_of_birth_m
 
 
 resource "keycloak_realm_user_profile" "user_profile" {
-  realm_id = keycloak_realm.user.id
+  realm_id = module.keycloak_setup.realm_ids["user"]
 
   unmanaged_attribute_policy = "ENABLED"
 
@@ -248,14 +248,14 @@ resource "keycloak_realm_user_profile" "user_profile" {
 
 # Client Scope dedicated per fiscalNumber
 resource "keycloak_openid_client_scope" "fiscal_number_scope" {
-  realm_id    = keycloak_realm.user.id
+  realm_id    = module.keycloak_setup.realm_ids["user"]
   name        = "fiscal-number-scope"
   description = "Scope to expose fiscalNumber claim"
 }
 
 # Mapper per fiscalNumber into scope
 resource "keycloak_openid_user_attribute_protocol_mapper" "fiscal_number_mapper" {
-  realm_id            = keycloak_realm.user.id
+  realm_id            = module.keycloak_setup.realm_ids["user"]
   client_scope_id     = keycloak_openid_client_scope.fiscal_number_scope.id
   name                = "fiscalNumber"
   user_attribute      = "fiscalNumber"
@@ -269,7 +269,7 @@ resource "keycloak_openid_user_attribute_protocol_mapper" "fiscal_number_mapper"
 }
 
 resource "keycloak_openid_client_default_scopes" "default_scopes_user_frontend" {
-  realm_id  = keycloak_realm.user.id
+  realm_id  = module.keycloak_setup.realm_ids["user"]
   client_id = keycloak_openid_client.user_frontend.id
 
   default_scopes = [
@@ -282,14 +282,14 @@ resource "keycloak_openid_client_default_scopes" "default_scopes_user_frontend" 
 
 # Client Scope dedicated for dateOfBirth
 resource "keycloak_openid_client_scope" "date_of_birth_scope" {
-  realm_id    = keycloak_realm.user.id
+  realm_id    = module.keycloak_setup.realm_ids["user"]
   name        = "date-of-birth-scope"
   description = "Scope to expose dateOfBirth claim"
 }
 
 # Mapper for dateOfBirth into scope
 resource "keycloak_openid_user_attribute_protocol_mapper" "date_of_birth_mapper" {
-  realm_id            = keycloak_realm.user.id
+  realm_id            = module.keycloak_setup.realm_ids["user"]
   client_scope_id     = keycloak_openid_client_scope.date_of_birth_scope.id
   name                = "dateOfBirth"
   user_attribute      = "dateOfBirth"
@@ -315,7 +315,7 @@ resource "azurerm_key_vault_secret" "keycloak_perf_test_client_secret" {
 }
 
 resource "keycloak_openid_client" "merchant_operator_perf_test" {
-  realm_id  = keycloak_realm.merchant_operator.id
+  realm_id  = module.keycloak_setup.realm_ids["merchant-operator"]
   client_id = "performance-test-client"
   name      = "Performance Test Client"
   enabled   = true
@@ -342,13 +342,13 @@ resource "keycloak_openid_client" "merchant_operator_perf_test" {
   ], formatlist("https://%s/*", local.public_dns_zone_bonus_elettrodomestici.zones)])
 
   depends_on = [
-    keycloak_realm.merchant_operator,
+    module.keycloak_setup.realm_ids,
     random_password.keycloak_perf_test_client_secret
   ]
 }
 
 resource "keycloak_openid_client_default_scopes" "merchant_operator_perf_test_defaults" {
-  realm_id  = keycloak_realm.merchant_operator.id
+  realm_id  = module.keycloak_setup.realm_ids["merchant-operator"]
   client_id = keycloak_openid_client.merchant_operator_perf_test.id
 
   default_scopes = [
@@ -364,7 +364,7 @@ resource "keycloak_openid_client_default_scopes" "merchant_operator_perf_test_de
 }
 
 resource "keycloak_openid_client" "users_operator_perf_test" {
-  realm_id = keycloak_realm.user.id
+  realm_id = module.keycloak_setup.realm_ids["user"]
   name     = "Performance Test Client"
   enabled  = true
 
@@ -379,7 +379,7 @@ resource "keycloak_openid_client" "users_operator_perf_test" {
 }
 
 resource "keycloak_openid_client_default_scopes" "users_operator_perf_test_defaults" {
-  realm_id  = keycloak_realm.user.id
+  realm_id  = module.keycloak_setup.realm_ids["user"]
   client_id = keycloak_openid_client.users_operator_perf_test.id
 
   default_scopes = [

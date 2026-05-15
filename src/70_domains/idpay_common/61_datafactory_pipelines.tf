@@ -17,6 +17,13 @@ locals {
     data_factory_api_base_url = var.data_factory_api_base_url,
     kv_url                    = data.azurerm_key_vault.domain_kv.vault_uri
   }))
+
+  # path to the producers import pipeline
+  pipeline_producers_import = "${path.module}/data_factory_pipelines/templated/idpay_producers_import.json"
+  pipeline_producers_import_json = jsondecode(templatefile(local.pipeline_producers_import, {
+    data_factory_api_base_url = var.data_factory_api_base_url,
+    kv_url                    = data.azurerm_key_vault.domain_kv.vault_uri
+  }))
 }
 
 resource "azurerm_data_factory_pipeline" "pipelines" {
@@ -70,4 +77,21 @@ resource "azurerm_data_factory_pipeline" "idpay_user_details_report" {
     {}
   )
   activities_json = jsonencode(local.pipeline_user_details_report_json.properties.activities)
+}
+
+resource "azurerm_data_factory_pipeline" "idpay_producers_import" {
+  name            = local.pipeline_producers_import_json.name
+  data_factory_id = data.azurerm_data_factory.data_factory.id
+
+  description = try(local.pipeline_producers_import_json.properties.description, null)
+  concurrency = try(local.pipeline_producers_import_json.properties.concurrency, null)
+  annotations = try(local.pipeline_producers_import_json.properties.annotations, [])
+  parameters = try(
+    {
+      for k, v in local.pipeline_producers_import_json.properties.parameters :
+      k => try(v.defaultValue, "")
+    },
+    {}
+  )
+  activities_json = jsonencode(local.pipeline_producers_import_json.properties.activities)
 }

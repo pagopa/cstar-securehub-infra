@@ -219,6 +219,13 @@ locals {
     ])
   }
 
+  kusto_private_dns_zones = [
+    data.azurerm_private_dns_zone.kusto,
+    data.azurerm_private_dns_zone.storage_account_blob,
+    data.azurerm_private_dns_zone.storage_account_queue,
+    data.azurerm_private_dns_zone.storage_account_table,
+  ]
+
   db_group_flatten = flatten([
     for project, db_list in local.adx_databases : [
       for db_name in db_list : [

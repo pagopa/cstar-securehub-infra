@@ -45,17 +45,17 @@ aks_system_node_pool = {
 # AKS
 #----------------------------------------------------------------
 aks_nodepool_blue = {
-  vm_sku_name       = "Standard_D4ads_v5_active"
-  autoscale_enabled = true
-  node_count_min    = 3
-  node_count_max    = 9
-}
-
-aks_nodepool_green = {
   vm_sku_name       = "Standard_D4ads_v5_passive"
   autoscale_enabled = false
   node_count_min    = 0
   node_count_max    = 0
+}
+
+aks_nodepool_green = {
+  vm_sku_name       = "Standard_D4ads_v5_active"
+  autoscale_enabled = true
+  node_count_min    = 3
+  node_count_max    = 4
 }
 
 aks_cidr_subnet      = ["10.10.1.0/24"] # 10.10.1.0 -> 10.10.1.255
