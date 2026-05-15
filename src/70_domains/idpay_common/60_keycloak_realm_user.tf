@@ -1,17 +1,3 @@
-##############\####
-# USER REALM
-##################
-resource "keycloak_realm" "user" {
-  realm                    = "user"
-  enabled                  = true
-  display_name             = "user"
-  duplicate_emails_allowed = true
-  login_theme = "pagopa-oid4vp"
-  attributes = {
-    frontendUrl = local.keycloak_external_hostname
-  }
-}
-
 resource "keycloak_openid_client" "user_frontend" {
   realm_id  = module.keycloak_setup.realm_ids["user"]
   client_id = "frontend"
