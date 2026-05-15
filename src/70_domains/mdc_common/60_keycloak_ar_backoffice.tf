@@ -86,8 +86,10 @@ resource "keycloak_openid_client" "ar_backoffice_client" {
   enabled     = true
   access_type = "CONFIDENTIAL"
 
-  standard_flow_enabled        = false
+  standard_flow_enabled        = true
   direct_access_grants_enabled = false
+
+  use_refresh_tokens = true
 
   extra_config = {
     "oauth2.jwt.authorization.grant.enabled" = "true"
@@ -157,6 +159,7 @@ resource "keycloak_openid_client_default_scopes" "ar_backoffice_client_default_s
   client_id = keycloak_openid_client.ar_backoffice_client.id
 
   default_scopes = [
+    "offline_access",
     keycloak_openid_client_scope.mdc_base_claims.name
   ]
 }
