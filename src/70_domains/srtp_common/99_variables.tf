@@ -151,12 +151,24 @@ variable "redis_idh_resource_tier" {
   description = "The SKU of the Redis Cache to deploy"
 }
 
-variable "adx_soft_delete_period" {
-  type        = string
-  description = "Soft delete period for ADX database"
+variable "adx_db_soft_delete_period_days" {
+  type        = number
+  description = "Default soft delete period for ADX database (in days)"
 }
 
-variable "adx_hot_cache_period" {
-  type        = string
-  description = "Hot cache period for ADX database"
+variable "adx_db_hot_cache_period_days" {
+  type        = number
+  description = "Default hot cache period for ADX database (in days)"
+}
+
+variable "adx_table_soft_delete_period_days" {
+  type        = number
+  description = "Soft delete period override for specific ADX tables (in days). If null, falls back to DB default."
+  default     = null
+}
+
+variable "adx_table_hot_cache_period_days" {
+  type        = number
+  description = "Hot cache period override for specific ADX tables (in days). If null, falls back to DB default."
+  default     = null
 }

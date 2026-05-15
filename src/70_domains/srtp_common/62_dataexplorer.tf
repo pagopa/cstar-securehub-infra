@@ -12,7 +12,11 @@ resource "azurerm_kusto_database" "db" {
 
 resource "null_resource" "trigger_create_tables_srtp" {
   triggers = {
-    file_hash = filesha256("${path.module}/data_explorer_kql/create_tables_srtp.kql")
+    file_hash = sha256(templatefile("${path.module}/data_explorer_kql/create_tables_srtp.kql.tftpl", {
+      soft_delete_period        = "${coalesce(var.adx_table_soft_delete_period_days, var.adx_db_soft_delete_period_days)}.00:00:00"
+      hot_cache_period_timespan = "${coalesce(var.adx_table_hot_cache_period_days, var.adx_db_hot_cache_period_days)}.00:00:00"
+      hot_cache_period          = "${coalesce(var.adx_table_hot_cache_period_days, var.adx_db_hot_cache_period_days)}d"
+    }))
   }
 }
 
@@ -23,7 +27,11 @@ resource "azapi_resource" "create_tables_srtp" {
 
   body = {
     properties = {
-      scriptContent    = file("${path.module}/data_explorer_kql/create_tables_srtp.kql")
+      scriptContent = templatefile("${path.module}/data_explorer_kql/create_tables_srtp.kql.tftpl", {
+        soft_delete_period        = "${coalesce(var.adx_table_soft_delete_period_days, var.adx_db_soft_delete_period_days)}.00:00:00"
+        hot_cache_period_timespan = "${coalesce(var.adx_table_hot_cache_period_days, var.adx_db_hot_cache_period_days)}.00:00:00"
+        hot_cache_period          = "${coalesce(var.adx_table_hot_cache_period_days, var.adx_db_hot_cache_period_days)}d"
+      })
       continueOnErrors = false
     }
   }
