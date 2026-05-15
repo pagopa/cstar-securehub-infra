@@ -88,7 +88,7 @@ resource "keycloak_openid_client" "ar_backoffice_client" {
 
   standard_flow_enabled        = false
   direct_access_grants_enabled = false
-  service_accounts_enabled = true
+  service_accounts_enabled     = true
 
   use_refresh_tokens = true
 
