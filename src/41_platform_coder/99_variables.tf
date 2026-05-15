@@ -148,5 +148,13 @@ variable "it_wallet_oid4vp_provider" {
     trusted_authorities_mode                = optional(string, "none")
     trust_list_signing_cert_pem_secret_name = optional(string, "")
     allowed_issuers                         = optional(string, "*")
+    client_metadata = optional(object({
+      application_type = optional(string, "web")
+      client_id        = optional(string, "")
+      client_name      = optional(string, "")
+      logo_uri         = optional(string, "")
+      request_uris     = optional(list(string), [])
+      response_uris    = optional(list(string), [])
+    }), {})
   })
 }

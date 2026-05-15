@@ -183,6 +183,7 @@ resource "kubernetes_config_map" "keycloak-terraform-client-config" {
       trusted_authorities_mode         = var.it_wallet_oid4vp_provider.trusted_authorities_mode
       trust_list_signing_cert_pem_json = "" //todo jsonencode(try(data.azurerm_key_vault_secret.it_wallet_trust_list_signing_cert_pem[0].value, ""))
       allowed_issuers                  = var.it_wallet_oid4vp_provider.allowed_issuers
+      client_metadata_json             = jsonencode(var.it_wallet_oid4vp_provider.client_metadata)
     })
   } : {})
 

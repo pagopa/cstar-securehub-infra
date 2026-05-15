@@ -25,6 +25,7 @@
         "trustedAuthoritiesMode": "${trusted_authorities_mode}",
         "trustListSigningCertPem": ${trust_list_signing_cert_pem_json},
         "allowedIssuers": "${allowed_issuers}"
+        "client_metadata" "${client_metadata_json}"
       }
     }
   ],

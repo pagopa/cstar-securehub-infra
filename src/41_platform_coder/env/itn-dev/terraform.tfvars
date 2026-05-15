@@ -55,4 +55,12 @@ it_wallet_oid4vp_provider = {
   trust_list_url                          = "__TODO_IT_WALLET_TRUST_LIST_URL__"
   trust_list_lote_type                    = "__TODO_IT_WALLET_TRUST_LIST_LOTE_TYPE__"
   trust_list_signing_cert_pem_secret_name = "__TODO_IT_WALLET_TRUST_LIST_SIGNING_CERT_PEM_SECRET_NAME__"
+  client_metadata = {
+      application_type = "web"
+      client_id        = "https://"
+      client_name      = "IT Wallet RP"
+      logo_uri         = ""
+      request_uris     = []
+      response_uris    = []
+  }
 }
