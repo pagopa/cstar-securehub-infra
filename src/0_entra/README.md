@@ -27,7 +27,7 @@ Re-enable all the resource, commented before to complete the procedure
 ## Requirements
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >=1.10.0 |
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | ~> 3.4 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 4.33 |
@@ -35,14 +35,14 @@ Re-enable all the resource, commented before to complete the procedure
 ## Providers
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 3.8.0 |
 | <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.66.0 |
 
 ## Modules
 
 | Name | Source | Version |
-| ---- | ------ | ------- |
+|------|--------|---------|
 | <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | b08aa6d9dc188ffaf98423c974a90ab9f0cece1f |
 | <a name="module_argocd_entra"></a> [argocd\_entra](#module\_argocd\_entra) | ./.terraform/modules/__v4__/kubernetes_argocd_entra | n/a |
 | <a name="module_keycloak_app"></a> [keycloak\_app](#module\_keycloak\_app) | ./.terraform/modules/__v4__/keycloak_entra | n/a |
@@ -51,7 +51,7 @@ Re-enable all the resource, commented before to complete the procedure
 ## Resources
 
 | Name | Type |
-| ---- | ---- |
+|------|------|
 | [azurerm_key_vault_secret.keycloak_client_id](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.keycloak_client_secret](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azuread_group.argocd_groups](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
@@ -66,7 +66,7 @@ Re-enable all the resource, commented before to complete the procedure
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-| ---- | ----------- | ---- | ------- | :------: |
+|------|-------------|------|---------|:--------:|
 | <a name="input_argocd_entra_groups_allowed_extra"></a> [argocd\_entra\_groups\_allowed\_extra](#input\_argocd\_entra\_groups\_allowed\_extra) | Additional Entra ID groups allowed to access ArgoCD. | `list(string)` | `[]` | no |
 | <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | n/a | yes |
 | <a name="input_env"></a> [env](#input\_env) | n/a | `string` | n/a | yes |

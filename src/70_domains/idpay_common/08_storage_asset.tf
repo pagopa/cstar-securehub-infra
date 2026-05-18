@@ -33,6 +33,8 @@ resource "azurerm_storage_container" "idpay_asset_container" {
 #
 # Roles
 #
+
+# APIM -> can read/write asset storage blobs
 resource "azurerm_role_assignment" "asset_storage_data_contributor" {
   scope                = module.storage_idpay_asset.id
   role_definition_name = "Storage Blob Data Contributor"

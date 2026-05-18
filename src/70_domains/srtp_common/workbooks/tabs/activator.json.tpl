@@ -332,7 +332,7 @@
               "type": 3,
               "content": {
                 "version": "KqlItem/1.0",
-                "query": "AppTraces\n| where AppRoleName == \"rtp-activator\"\n| where TimeGenerated {evaluation_window:query}\n| where Message has \"Error during activation process for SP\"\n    and Message has \"Authenticated user doesn't have permission to perform this action\"\n| extend props = todynamic(Properties)\n| extend tokenSpId = tostring(props[\"sub_token\"])\n| extend spId = extract(@\"Error during activation process for SP\\s+([^:]+):\", 1, Message)\n| where isnotempty(tokenSpId)\n| where isnotempty(spId)\n| summarize\n    ['Error Count'] = count(),\n    ['SP IDs (from request)'] = make_set(spId, 100)\n  by ['Token SP ID'] = tokenSpId\n| order by ['Error Count'] desc",
+                "query": "AppTraces\n| where AppRoleName == \"rtp-activator\"\n| where TimeGenerated {evaluation_window:query}\n| where Message has \"Error during activation process for SP\"\n    and Message has \"Authenticated user doesn't have permission to perform this action\"\n| extend props = todynamic(Properties)\n| extend tokenSpId = tostring(props[\"sub_token\"])\n| extend spId = extract(@\"Error during activation process for SP\\s+([^:]+):\", 1, Message)\n| summarize\n    ['Error Count'] = count(),\n    ['SP IDs (from request)'] = make_set(spId, 100)\n  by ['Token SP ID'] = tokenSpId\n| order by ['Error Count'] desc",
                 "size": 1,
                 "title": "❌ Mismatch del Service Provider tra Token e Body",
                 "noDataMessageStyle": 3,
