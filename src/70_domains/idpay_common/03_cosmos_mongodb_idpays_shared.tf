@@ -445,7 +445,7 @@ locals {
       name                = "initiative"
       shard_key           = null
       default_ttl_seconds = null
-      indexes             = [
+      indexes = [
         { keys = ["_id"], unique = true },
         { keys = ["initiativeName"], unique = false }
       ]
