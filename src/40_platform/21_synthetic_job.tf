@@ -3,7 +3,6 @@
 #
 module "synthetic_monitoring_jobs" {
   source = "./.terraform/modules/__v4__/monitoring_function"
-  # source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//monitoring_function?ref=PAYMCLOUD-401-v-4-synthetic-aggiornamento-codice"
 
   location              = var.location
   location_display_name = var.location_display_name
@@ -34,6 +33,7 @@ module "synthetic_monitoring_jobs" {
   storage_account_settings = {
     private_endpoint_enabled  = true
     table_private_dns_zone_id = data.azurerm_private_dns_zone.storage_account_table.id
+    queue_private_dns_zone_id = data.azurerm_private_dns_zone.storage_account_queue.id
     replication_type          = var.synthetic_storage_account_replication_type
   }
 
