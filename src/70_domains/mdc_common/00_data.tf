@@ -148,3 +148,15 @@ data "azurerm_monitor_action_group" "email" {
   resource_group_name = local.monitoring_core_rg_name
   name                = local.monitor_action_group_email
 }
+
+# Azure Data Factory
+data "azurerm_data_factory" "data_factory" {
+  name                = local.data_factory_name
+  resource_group_name = local.data_factory_rg_name
+}
+
+# cluster ADX
+data "azurerm_kusto_cluster" "kusto_cluster" {
+  name                = local.data_explorer_name
+  resource_group_name = local.data_explorer_rg_name
+}

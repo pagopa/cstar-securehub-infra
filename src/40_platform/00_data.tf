@@ -33,6 +33,16 @@ data "azurerm_private_dns_zone" "privatelink_servicebus_windows_net" {
   resource_group_name = local.legacy_vnet_core_rg_name
 }
 
+data "azurerm_private_dns_zone" "storage_account_blob" {
+  name                = "privatelink.blob.core.windows.net"
+  resource_group_name = local.legacy_vnet_core_rg_name
+}
+
+data "azurerm_private_dns_zone" "storage_account_queue" {
+  name                = "privatelink.queue.core.windows.net"
+  resource_group_name = local.legacy_vnet_core_rg_name
+}
+
 data "azurerm_private_dns_zone" "storage_account_table" {
   name                = "privatelink.table.core.windows.net"
   resource_group_name = local.legacy_vnet_core_rg_name

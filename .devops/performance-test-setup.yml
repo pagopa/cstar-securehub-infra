@@ -23,7 +23,7 @@ parameters:
 
 variables:
   - name: TIME_OUT
-    value: 60
+    value: 220
 
   - name: azureServiceConnectionApplyName
     ${{ if eq(parameters.ENV, 'dev') }}:

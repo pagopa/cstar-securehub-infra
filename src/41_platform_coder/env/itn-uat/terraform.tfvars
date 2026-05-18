@@ -15,7 +15,7 @@ mcshared_dns_zone_prefix = "api-mcshared.uat"
 ## Postgres
 keycloak_pgflex_params = {
   enabled                                = true
-  idh_resource_tier                      = "pgflex8"
+  idh_resource_tier                      = "pgflex2"
   geo_replication_enabled                = false
   zone                                   = 1
   pgres_flex_pgbouncer_enabled           = false
@@ -24,18 +24,17 @@ keycloak_pgflex_params = {
   storage_tier                           = "P30"
 }
 
-# TODO restore replicas to 2-3 after load test
 keycloak_configuration = {
-  image_registry                              = "docker.io"
-  image_repository                            = "bitnamilegacy/keycloak"
-  image_tag                                   = "26.3.1-debian-12-r1"
+  image_registry                              = "public.ecr.aws"
+  image_repository                            = "bitnami/keycloak"
+  image_tag                                   = "26.6.1-debian-12-r0"
   chart_version                               = "24.7.7"
   replica_count_min                           = 1
-  replica_count_max                           = 1
-  cpu_request                                 = "3"
-  cpu_limit                                   = "7"
-  memory_request                              = "4Gi"
-  memory_limit                                = "6Gi"
+  replica_count_max                           = 2
+  cpu_request                                 = "500m"
+  cpu_limit                                   = "1"
+  memory_request                              = "1Gi"
+  memory_limit                                = "2Gi"
   http_client_connection_ttl_millis           = 180000
   http_client_connection_max_idle_time_millis = 180000
   image_registry_config_cli                   = "public.ecr.aws"
@@ -44,7 +43,7 @@ keycloak_configuration = {
 }
 
 aks_user_node_pool_keycloak = {
-  idh_resource_tier = "Standard_D8ds_v5_active"
+  idh_resource_tier = "Standard_D4ads_v5_active"
   node_count_min    = 1
   node_count_max    = 1
   os_disk_size_gb   = 300

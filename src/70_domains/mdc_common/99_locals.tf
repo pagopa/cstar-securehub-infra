@@ -1,11 +1,13 @@
 locals {
-  product       = "${var.prefix}-${var.env_short}"
-  project       = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
-  project_core  = "${var.prefix}-${var.env_short}-${var.location_short}-core"
-  project_entra = "${var.prefix}-${var.env_short}-${var.domain}"
+  product           = "${var.prefix}-${var.env_short}"
+  product_no_domain = "${var.prefix}-${var.env_short}-${var.location_short}"
+  project           = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
+  project_core      = "${var.prefix}-${var.env_short}-${var.location_short}-core"
+  project_entra     = "${var.prefix}-${var.env_short}-${var.domain}"
 
   # 📊 Monitoring
-  monitoring_core_rg_name = "${local.project_core}-monitor-rg"
+  monitoring_core_rg_name      = "${local.project_core}-monitor-rg"
+  log_analytics_workspace_name = "${local.project}-law"
 
   monitor_action_group_slack = "SlackPagoPA"
   monitor_action_group_email = "PagoPA"
@@ -84,4 +86,11 @@ locals {
     ] : []
   ])
 
+  # Data Factory
+  data_factory_name    = "${local.product_no_domain}-platform-adf"
+  data_factory_rg_name = "${local.product_no_domain}-platform-data-rg"
+
+  # Azure Data Explorer — cluster condiviso nella platform
+  data_explorer_name    = "${local.product_no_domain}-platform"
+  data_explorer_rg_name = "${local.product_no_domain}-platform-data-rg"
 }
