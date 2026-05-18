@@ -153,6 +153,8 @@ data "azurerm_monitor_action_group" "email" {
 data "azurerm_dns_zone" "public_mdc" {
   name                = var.dns_zone_public_name
   resource_group_name = local.vnet_legacy_resource_group_name
+}
+
 # Azure Data Factory
 data "azurerm_data_factory" "data_factory" {
   name                = local.data_factory_name
