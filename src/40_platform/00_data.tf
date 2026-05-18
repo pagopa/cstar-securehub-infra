@@ -33,6 +33,16 @@ data "azurerm_private_dns_zone" "privatelink_servicebus_windows_net" {
   resource_group_name = local.legacy_vnet_core_rg_name
 }
 
+data "azurerm_private_dns_zone" "storage_account_blob" {
+  name                = "privatelink.blob.core.windows.net"
+  resource_group_name = local.legacy_vnet_core_rg_name
+}
+
+data "azurerm_private_dns_zone" "storage_account_queue" {
+  name                = "privatelink.queue.core.windows.net"
+  resource_group_name = local.legacy_vnet_core_rg_name
+}
+
 data "azurerm_private_dns_zone" "storage_account_table" {
   name                = "privatelink.table.core.windows.net"
   resource_group_name = local.legacy_vnet_core_rg_name
@@ -124,4 +134,45 @@ data "azurerm_log_analytics_workspace" "logs_workspace" {
 data "azurerm_kubernetes_cluster" "aks" {
   name                = local.aks_cluster_name
   resource_group_name = local.aks_resource_group_name
+}
+
+#---------------------------------------------------------------
+# AZDO
+#---------------------------------------------------------------
+data "azurerm_user_assigned_identity" "iac_federated_azdo" {
+  for_each = toset(local.azdo_iac_managed_identities_write)
+
+  name                = each.key
+  resource_group_name = local.azdo_managed_identity_rg_name
+}
+
+#---------------------------------------------------------------
+# AD Groups
+#---------------------------------------------------------------
+data "azuread_group" "adgroup_domain_admin" {
+  for_each     = local.domains
+  display_name = "${local.product}-${each.key}-adgroup-admin"
+}
+
+data "azuread_group" "adgroup_domain_developers" {
+  for_each     = local.domains
+  display_name = "${local.product}-${each.key}-adgroup-developers"
+}
+
+data "azuread_group" "adgroup_domain_externals" {
+  for_each = local.domains
+
+  display_name = "${local.product}-${each.key}-adgroup-externals"
+}
+
+data "azuread_group" "adgroup_domain_project_managers" {
+  for_each = local.domains
+
+  display_name = "${local.product}-${each.key}-adgroup-project-managers"
+}
+
+data "azuread_group" "adgroup_domain_oncall" {
+  for_each = var.env == "prod" ? local.domains : []
+
+  display_name = "${local.product}-${each.key}-adgroup-oncall"
 }

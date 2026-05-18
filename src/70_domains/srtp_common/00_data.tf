@@ -82,6 +82,13 @@ data "azurerm_nat_gateway" "compute_nat_gateway" {
   resource_group_name = local.network_rg
 }
 
+data "azurerm_public_ip" "nat_ips" {
+  for_each = toset(data.azurerm_nat_gateway.compute_nat_gateway.public_ip_address_ids)
+
+  resource_group_name = split("/", each.value)[4]
+  name                = split("/", each.value)[8]
+}
+
 # 🔎 DNS
 data "azurerm_private_dns_zone" "cosmos_mongo" {
   name                = "privatelink.mongo.cosmos.azure.com"
@@ -92,6 +99,22 @@ data "azurerm_private_dns_zone" "blob_storage" {
   name                = "privatelink.blob.core.windows.net"
   resource_group_name = local.vnet_legacy_core_rg
 }
+
+data "azurerm_private_dns_zone" "queue_storage" {
+  name                = "privatelink.queue.core.windows.net"
+  resource_group_name = local.vnet_legacy_core_rg
+}
+
+data "azurerm_private_dns_zone" "table_storage" {
+  name                = "privatelink.table.core.windows.net"
+  resource_group_name = local.vnet_legacy_core_rg
+}
+
+data "azurerm_private_dns_zone" "kusto" {
+  name                = "privatelink.${var.location}.kusto.windows.net"
+  resource_group_name = local.network_rg
+}
+
 
 data "azurerm_private_dns_zone" "file_storage" {
   name                = "privatelink.file.core.windows.net"
@@ -128,10 +151,10 @@ data "azurerm_user_assigned_identity" "iac_federated_azdo" {
   resource_group_name = local.azdo_managed_identity_rg_name
 }
 
-# Redis private dns zone
-data "azurerm_private_dns_zone" "redis" {
-  name                = "privatelink.redis.cache.windows.net"
-  resource_group_name = local.vnet_legacy_core_rg
+# Azure Managed Redis
+data "azurerm_private_dns_zone" "managed_redis" {
+  name                = "privatelink.redis.azure.net"
+  resource_group_name = local.network_rg
 }
 
 data "azurerm_client_config" "current" {}
@@ -154,4 +177,18 @@ data "azurerm_resource_group" "platform_data" {
 data "azurerm_kusto_cluster" "kusto_cluster" {
   name                = local.kusto_cluster_name
   resource_group_name = local.kusto_cluster_rg_name
+}
+
+#
+# Workload Identity
+#
+data "azurerm_user_assigned_identity" "rtp_sender_workload_identity" {
+  name                = local.rtp_sender_workload_identity_name
+  resource_group_name = local.rtp_sender_workload_identity_rg_name
+}
+
+data "azurerm_monitor_action_group" "slack" {
+  count               = var.env_short == "p" ? 1 : 0
+  name                = "${local.project}-slack-ag"
+  resource_group_name = local.monitor_rg_name
 }

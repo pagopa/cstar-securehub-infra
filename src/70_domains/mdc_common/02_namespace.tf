@@ -12,6 +12,14 @@ module "namespace_system_role_bindings" {
   ad_group_ids = [for i in local.ad_group_rbac : i.object_id]
 }
 
+module "namespace_keycloak_role_bindings" {
+  source = "./.terraform/modules/__v4__/kubernetes_namespace_role_binding"
+
+  name             = "keycloak"
+  ad_group_ids     = [for i in local.ad_group_rbac : i.object_id]
+  create_namespace = false
+}
+
 resource "kubernetes_cluster_role_binding" "rbac_reader_global" {
   for_each = { for i in local.ad_group_rbac : i.object_id => i }
 

@@ -12,7 +12,11 @@ resource "azurerm_kusto_database" "db" {
 
 resource "null_resource" "trigger_create_tables_srtp" {
   triggers = {
-    file_hash = filesha256("${path.module}/data_explorer_kql/create_tables_srtp.kql")
+    file_hash = sha256(templatefile("${path.module}/data_explorer_kql/create_tables_srtp.kql.tftpl", {
+      soft_delete_period        = "${coalesce(var.adx_table_soft_delete_period_days, var.adx_db_soft_delete_period_days)}.00:00:00"
+      hot_cache_period_timespan = "${coalesce(var.adx_table_hot_cache_period_days, var.adx_db_hot_cache_period_days)}.00:00:00"
+      hot_cache_period          = "${coalesce(var.adx_table_hot_cache_period_days, var.adx_db_hot_cache_period_days)}d"
+    }))
   }
 }
 
@@ -23,7 +27,11 @@ resource "azapi_resource" "create_tables_srtp" {
 
   body = {
     properties = {
-      scriptContent    = file("${path.module}/data_explorer_kql/create_tables_srtp.kql")
+      scriptContent = templatefile("${path.module}/data_explorer_kql/create_tables_srtp.kql.tftpl", {
+        soft_delete_period        = "${coalesce(var.adx_table_soft_delete_period_days, var.adx_db_soft_delete_period_days)}.00:00:00"
+        hot_cache_period_timespan = "${coalesce(var.adx_table_hot_cache_period_days, var.adx_db_hot_cache_period_days)}.00:00:00"
+        hot_cache_period          = "${coalesce(var.adx_table_hot_cache_period_days, var.adx_db_hot_cache_period_days)}d"
+      })
       continueOnErrors = false
     }
   }
@@ -49,97 +57,26 @@ resource "azurerm_data_factory_linked_service_kusto" "kusto" {
   integration_runtime_name = "AutoResolveIntegrationRuntime"
 }
 
-resource "azurerm_kusto_database_principal_assignment" "adf_mi" {
-  for_each = local.kusto_database
-
-  name                = "adf-managed-identity"
-  database_name       = azurerm_kusto_database.db[each.key].name
-  cluster_name        = data.azurerm_kusto_cluster.kusto_cluster.name
+resource "azurerm_kusto_database_principal_assignment" "rtp_sender_adx_viewer" {
+  name                = "rtp-role-viewer"
   resource_group_name = data.azurerm_kusto_cluster.kusto_cluster.resource_group_name
+  cluster_name        = data.azurerm_kusto_cluster.kusto_cluster.name
+  database_name       = azurerm_kusto_database.db[var.domain].name
 
-  principal_id   = data.azurerm_data_factory.data_factory.identity[0].principal_id
+  principal_id   = data.azurerm_user_assigned_identity.rtp_sender_workload_identity.client_id
   principal_type = "App"
   tenant_id      = data.azurerm_client_config.current.tenant_id
-  role           = "Admin"
+  role           = "Viewer"
 }
 
-locals {
-  ad_groups_adx = flatten([
-    # General Group
-    [{
-      id             = data.azuread_group.adgroup_admin.object_id
-      name           = data.azuread_group.adgroup_admin.display_name
-      role           = "Admin"
-      principal_type = "Group"
-    }],
-    # SRTP Domain Admin Group
-    [{
-      id             = data.azuread_group.adgroup_domain_admin.object_id,
-      name           = data.azuread_group.adgroup_domain_admin.display_name
-      role           = "Admin"
-      principal_type = "Group"
-    }],
-    # SRTP Domain Developers
-    [
-      {
-        id             = data.azuread_group.adgroup_domain_developers.object_id,
-        name           = data.azuread_group.adgroup_domain_developers.display_name
-        role           = var.env_short == "p" ? "Viewer" : "Admin"
-        principal_type = "Group"
-      }
-    ],
-    # SRTP Domain On-Call (prod only)
-    [
-      for g in data.azuread_group.adgroup_domain_oncall[*] : {
-        id             = g.object_id,
-        name           = g.display_name
-        role           = "Admin"
-        principal_type = "Group"
-      }
-    ],
-    # SRTP Domain Externals (dev/uat only)
-    contains(["d", "u"], var.env_short) ? [{
-      id             = data.azuread_group.adgroup_domain_externals.object_id,
-      name           = data.azuread_group.adgroup_domain_externals.display_name
-      role           = "Admin"
-      principal_type = "Group"
-    }] : [],
-    # IAC managed identities
-    [
-      for i in local.azdo_iac_managed_identities : {
-        id             = data.azurerm_user_assigned_identity.iac_federated_azdo[i].principal_id
-        name           = data.azurerm_user_assigned_identity.iac_federated_azdo[i].name
-        role           = "Admin"
-        principal_type = "App"
-      }
-    ]
-  ])
-
-  db_group_flatten = flatten([
-    for db in keys(local.kusto_database) : [
-      for ad_group in local.ad_groups_adx : {
-        db_key         = db
-        ad_group_id    = ad_group.id
-        ad_group_name  = ad_group.name
-        role           = ad_group.role
-        principal_type = ad_group.principal_type
-      }
-    ]
-  ])
-}
-
-resource "azurerm_kusto_database_principal_assignment" "kusto_ad_groups" {
-  for_each = {
-    for i in local.db_group_flatten : "${i.db_key}-${i.ad_group_name}" => i
-  }
-
-  name                = "ad-group-${each.value.ad_group_name}"
-  database_name       = azurerm_kusto_database.db[each.value.db_key].name
-  cluster_name        = data.azurerm_kusto_cluster.kusto_cluster.name
+resource "azurerm_kusto_database_principal_assignment" "rtp_sender_adx_ingestor" {
+  name                = "rtp-role-ingestor"
   resource_group_name = data.azurerm_kusto_cluster.kusto_cluster.resource_group_name
+  cluster_name        = data.azurerm_kusto_cluster.kusto_cluster.name
+  database_name       = azurerm_kusto_database.db[var.domain].name
 
-  principal_id   = each.value.ad_group_id
-  principal_type = each.value.principal_type
+  principal_id   = data.azurerm_user_assigned_identity.rtp_sender_workload_identity.client_id
+  principal_type = "App"
   tenant_id      = data.azurerm_client_config.current.tenant_id
-  role           = each.value.role
+  role           = "Ingestor"
 }

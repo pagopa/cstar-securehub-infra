@@ -61,20 +61,23 @@
               "multiSelect": true,
               "quote": "'",
               "delimiter": ",",
+              "query": "AppDependencies\n| where TimeGenerated {evaluation_window:query}\n| where Name startswith \"POST\" and Name contains \"/rtpactivator/activations\"\n| extend JWT_Subject = tostring(Properties[\"Request-X-JWT-Subject\"])\n| where isnotempty(JWT_Subject)\n| distinct JWT_Subject\n| sort by JWT_Subject asc",
+              "crossComponentResources": [
+                "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
+              ],
               "typeSettings": {
                 "additionalResourceOptions": [
                   "value::all"
                 ],
                 "showDefault": false
               },
-              "jsonData": "[\n    { \"value\": \"UNCRITMM\", \"label\": \"Unicredit\" },\n    { \"value\": \"ICRAITRRXXX\", \"label\": \"ICCREA\" },\n    { \"value\": \"BNCMITRR\", \"label\": \"Bancomat\" },\n    { \"value\": \"PPAYITR1XXX\", \"label\": \"Poste\" },\n    { \"value\": \"HYEEIT22XXX\", \"label\": \"Hype\" },\n    { \"value\": \"TASTASMMXXX\", \"label\": \"TASGROUP\" },\n    { \"value\": \"UNKNOWN\", \"label\": \"UNKNOWN\" },\n    { \"value\": \"FAKESP01\", \"label\": \"FAKESP01\" },\n    { \"value\": \"MOCKSP01\", \"label\": \"MOCKSP01\" },\n    { \"value\": \"MOCKSP04\", \"label\": \"MOCKSP04\" },\n    { \"value\": \"TAKEOV01\", \"label\": \"TAKEOV01\" },  \n { \"value\": \"FAKESP02\", \"label\": \"FAKESP02\" },  \n { \"value\": \"00348170101\", \"label\": \"00348170101\" }, \n { \"value\": \"984500A9EB6B07AC2G71\", \"label\": \"984500A9EB6B07AC2G71\" }]",
-              "timeContext": {
-                "durationMs": 86400000
-              },
+              "timeContextFromParameter": "evaluation_window",
               "defaultValue": "value::all",
               "value": [
                 "value::all"
-              ]
+              ],
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces"
             }
           ],
           "style": "pills",
@@ -98,7 +101,7 @@
               "type": 3,
               "content": {
                 "version": "KqlItem/1.0",
-                "query": "let data = AppRequests\n| where TimeGenerated {evaluation_window:query}\n| where AppRoleName == \"rtp-activator\"\n| where Name startswith \"POST\" and Name contains \"activations\"\n| summarize count() by StatusCode = ResultCode;\ndata\n| union (\n    data\n    | where StatusCode !in (\"201\", \"409\")\n    | summarize count_ = sum(count_)\n    | extend StatusCode = \"Total Errors\"\n)\n| order by count_ desc\n| render piechart",
+                "query": "let validOps = \n    AppDependencies\n    | where TimeGenerated {evaluation_window:query}\n    | where Name startswith \"POST\" and Name contains \"/rtpactivator/activations\"\n    | distinct OperationId;\n\nlet deps =\n    AppDependencies\n    | where TimeGenerated {evaluation_window:query}\n    | where Name startswith \"POST\" and Name contains \"/rtpactivator/activations\"\n    | extend JWT_Subject = tostring(Properties[\"Request-X-JWT-Subject\"])\n    | summarize JWT_Subject = any(JWT_Subject) by OperationId;\n\nlet data = AppRequests\n    | where TimeGenerated {evaluation_window:query}\n    | where AppRoleName == \"rtp-activator\"\n    | where Name startswith \"POST\" and Name contains \"activations\"\n    | join kind=inner validOps on OperationId\n    | join kind=leftouter deps on OperationId\n    | extend JWT_Subject = iif(isempty(JWT_Subject), \"UNKNOWN\", JWT_Subject)\n    | where JWT_Subject in ({SubjectParam})\n    | summarize count() by StatusCode = ResultCode;\ndata\n| union (\n    data\n    | where StatusCode !in (\"201\", \"409\")\n    | summarize count_ = sum(count_)\n    | extend StatusCode = \"Total Errors\"\n)\n| order by count_ desc\n| render piechart",
                 "size": 0,
                 "title": "Panoramica delle attivazioni totali con status code",
                 "noDataMessageStyle": 3,
@@ -160,7 +163,7 @@
               "type": 3,
               "content": {
                 "version": "KqlItem/1.0",
-                "query": "AppDependencies\n| where Name == \"POST /rtpactivator/activations\"\n| where Success == false\n| extend JWT_Subject = tostring(Properties[\"Request-X-JWT-Subject\"])\n| extend JWT_Subject = iif(isempty(JWT_Subject), \"UNKNOWN\", JWT_Subject)\n| where JWT_Subject in ({SubjectParam})\n| extend RC = trim(\" \", tostring(ResultCode))\n| extend RC = iif(isempty(RC) or RC == \"0\", \"500\", RC)\n| extend Label = strcat(JWT_Subject, \" (\", RC, \")\")\n| summarize NumeroEventi = count() by Label",
+                "query": "let validOps = \n    AppDependencies\n    | where TimeGenerated {evaluation_window:query}\n    | where Name startswith \"POST\" and Name contains \"/rtpactivator/activations\"\n    | distinct OperationId;\n\nlet deps =\n    AppDependencies\n    | where TimeGenerated {evaluation_window:query}\n    | where Name startswith \"POST\" and Name contains \"/rtpactivator/activations\"\n    | extend JWT_Subject = tostring(Properties[\"Request-X-JWT-Subject\"])\n    | summarize JWT_Subject = any(JWT_Subject) by OperationId;\n\nAppRequests\n| where TimeGenerated {evaluation_window:query}\n| where AppRoleName == \"rtp-activator\"\n| where Name startswith \"POST\" and Name contains \"activations\"\n| join kind=inner validOps on OperationId\n| where ResultCode != \"201\" and ResultCode != \"409\"\n| project OperationId, ResultCode\n| join kind=leftouter deps on OperationId\n| extend JWT_Subject = iif(isempty(JWT_Subject), \"UNKNOWN\", JWT_Subject)\n| where JWT_Subject in ({SubjectParam})\n| extend Label = strcat(JWT_Subject, \" (\", ResultCode, \")\")\n| summarize NumeroEventi = count() by Label\n| extend Label = strcat(Label, \" — \", NumeroEventi)\n| project Label, NumeroEventi",
                 "size": 0,
                 "title": "❌ Distribuzione Errori per Subject e Status Code",
                 "noDataMessageStyle": 3,
@@ -187,7 +190,7 @@
               "type": 3,
               "content": {
                 "version": "KqlItem/1.0",
-                "query": "let deps =\n    AppDependencies\n    | where Name startswith \"POST\" and Name contains \"/rtpactivator/activations\"\n    | extend JWT_Subject = tostring(Properties[\"Request-X-JWT-Subject\"])\n    | summarize JWT_Subject = any(JWT_Subject) by OperationId;\n \nlet ex =\n    AppExceptions\n    | where AppRoleName == \"rtp-activator\"\n    | summarize InnermostMessage = any(InnermostMessage) by OperationId;\n \nAppRequests\n| where TimeGenerated {evaluation_window:query}\n| where AppRoleName == \"rtp-activator\"\n| where Name startswith \"POST\" and Name contains \"activations\"\n| where ResultCode == \"400\"\n| project OperationId, TimeGenerated, Name\n| join kind=leftouter deps on OperationId\n| join kind=leftouter ex on OperationId\n| extend JWT_Subject = iif(isempty(JWT_Subject), \"UNKNOWN\", JWT_Subject)\n| extend Motivo = iif(isempty(InnermostMessage), \"N/A\", InnermostMessage)\n| where JWT_Subject in ({SubjectParam})\n| summarize Conteggio = count() by [\"Service Provider\"]=JWT_Subject, Motivo\n| order by Conteggio desc",
+                "query": "let validOps = \n    AppDependencies\n    | where TimeGenerated {evaluation_window:query}\n    | where Name startswith \"POST\" and Name contains \"/rtpactivator/activations\"\n    | distinct OperationId;\n\nlet deps =\n    AppDependencies\n    | where Name startswith \"POST\" and Name contains \"/rtpactivator/activations\"\n    | extend JWT_Subject = tostring(Properties[\"Request-X-JWT-Subject\"])\n    | summarize JWT_Subject = any(JWT_Subject) by OperationId;\n\nlet ex =\n    AppExceptions\n    | where AppRoleName == \"rtp-activator\"\n    | summarize InnermostMessage = any(InnermostMessage) by OperationId;\n\nAppRequests\n| where TimeGenerated {evaluation_window:query}\n| where AppRoleName == \"rtp-activator\"\n| where Name startswith \"POST\" and Name contains \"activations\"\n| join kind=inner validOps on OperationId\n| where ResultCode == \"400\"\n| project OperationId, TimeGenerated, Name\n| join kind=leftouter deps on OperationId\n| join kind=leftouter ex on OperationId\n| extend JWT_Subject = iif(isempty(JWT_Subject), \"UNKNOWN\", JWT_Subject)\n| extend Motivo = iif(isempty(InnermostMessage), \"N/A\", InnermostMessage)\n| where JWT_Subject in ({SubjectParam})\n| summarize Conteggio = count() by [\"Service Provider\"]=JWT_Subject, Motivo\n| order by Conteggio desc",
                 "size": 0,
                 "title": "❌ Distribuzione Errori 400 per Subject",
                 "noDataMessageStyle": 3,
@@ -208,7 +211,7 @@
               "type": 3,
               "content": {
                 "version": "KqlItem/1.0",
-                "query": "let deps =\n    AppDependencies\n    | where Name startswith \"POST\" and Name contains \"/rtpactivator/activations\"\n    | where Success == false\n    | extend JWT_Subject = tostring(Properties[\"Request-X-JWT-Subject\"])\n    | summarize JWT_Subject = any(JWT_Subject) by OperationId;\n\nlet ex =\n    AppExceptions\n    | where AppRoleName == \"rtp-activator\"\n    | summarize InnermostMessage = any(InnermostMessage) by OperationId;\n\nlet tr =\n    AppTraces\n    | where AppRoleName == \"rtp-activator\"\n    | summarize HasTrace = any(true) by OperationId;\n\nAppRequests\n| where TimeGenerated {evaluation_window:query}\n| where AppRoleName == \"rtp-activator\"\n| where Name startswith \"POST\" and Name contains \"activations\"\n| where ResultCode != \"201\" and ResultCode != \"409\" and ResultCode != \"400\"\n| project OperationId, TimeGenerated, Name, ResultCode\n| join kind=leftouter deps on OperationId\n| join kind=leftouter ex on OperationId\n| join kind=leftouter tr on OperationId\n| extend JWT_Subject = iif(isempty(JWT_Subject), \"UNKNOWN\", JWT_Subject)\n| extend Motivo = iif(isempty(InnermostMessage), \"N/A\", InnermostMessage)\n| where JWT_Subject in ({SubjectParam})\n| summarize Conteggio = count()\n    by [\"Service Provider\"] = JWT_Subject,\n       [\"Status Code\"] = ResultCode,\n       Motivo\n| order by Conteggio desc",
+                "query": "let validOps = \n    AppDependencies\n    | where TimeGenerated {evaluation_window:query}\n    | where Name startswith \"POST\" and Name contains \"/rtpactivator/activations\"\n    | distinct OperationId;\n\nlet deps =\n    AppDependencies\n    | where TimeGenerated {evaluation_window:query}\n    | where Name startswith \"POST\" and Name contains \"/rtpactivator/activations\"\n    | extend JWT_Subject = tostring(Properties[\"Request-X-JWT-Subject\"])\n    | summarize JWT_Subject = any(JWT_Subject) by OperationId;\n\nlet ex =\n    AppExceptions\n    | where AppRoleName == \"rtp-activator\"\n    | summarize InnermostMessage = any(InnermostMessage) by OperationId;\n\nlet tr =\n    AppTraces\n    | where AppRoleName == \"rtp-activator\"\n    | summarize HasTrace = any(true) by OperationId;\n\nAppRequests\n| where TimeGenerated {evaluation_window:query}\n| where AppRoleName == \"rtp-activator\"\n| where Name startswith \"POST\" and Name contains \"activations\"\n| join kind=inner validOps on OperationId\n| where ResultCode != \"201\" and ResultCode != \"409\" and ResultCode != \"400\"\n| project OperationId, TimeGenerated, Name, ResultCode\n| join kind=leftouter deps on OperationId\n| join kind=leftouter ex on OperationId\n| join kind=leftouter tr on OperationId\n| extend JWT_Subject = iif(isempty(JWT_Subject), \"UNKNOWN\", JWT_Subject)\n| where JWT_Subject in ({SubjectParam})\n| extend Motivo = iif(isempty(InnermostMessage), \"N/A\", InnermostMessage)\n| summarize Conteggio = count()\n    by [\"Service Provider\"] = JWT_Subject,\n       [\"Status Code\"] = ResultCode,\n       Motivo\n| order by Conteggio desc",
                 "size": 0,
                 "title": "❌ Distribuzione Altri Errori (esclusi 400) per Service Provider",
                 "noDataMessageStyle": 3,
@@ -229,15 +232,15 @@
               "type": 3,
               "content": {
                 "version": "KqlItem/1.0",
-                "query": "let deps =\n    AppDependencies\n    | where Name startswith \"POST\" and Name contains \"/rtpactivator/activations\"\n    | extend JWT_Subject = tostring(Properties[\"Request-X-JWT-Subject\"])\n    | summarize JWT_Subject = any(JWT_Subject) by OperationId;\n\nAppRequests\n| where TimeGenerated {evaluation_window:query}\n| where AppRoleName == \"rtp-activator\"\n| where Name startswith \"POST\" and Name contains \"activations\"\n| where ResultCode != \"409\"\n| project OperationId, TimeGenerated, ResultCode\n| join kind=leftouter deps on OperationId\n| extend JWT_Subject = iif(isempty(JWT_Subject), \"UNKNOWN\", JWT_Subject)\n| where JWT_Subject in ({SubjectParam})\n| extend Esito = iif(ResultCode == \"201\", \"✅ Successo\", \"❌ Fallimento\")\n| summarize Conteggio = count() by bin(TimeGenerated, 1h), Serie = strcat(JWT_Subject, \" - \", Esito)\n| render timechart with (series=Serie, title=\"Attivazioni nel tempo\")",
+                "query": "let validOps = \n    AppDependencies\n    | where TimeGenerated {evaluation_window:query}\n    | where Name startswith \"POST\" and Name contains \"/rtpactivator/activations\"\n    | distinct OperationId;\n\nlet deps =\n    AppDependencies\n    | where Name startswith \"POST\" and Name contains \"/rtpactivator/activations\"\n    | extend JWT_Subject = tostring(Properties[\"Request-X-JWT-Subject\"])\n    | summarize JWT_Subject = any(JWT_Subject) by OperationId;\n\nAppRequests\n| where TimeGenerated {evaluation_window:query}\n| where AppRoleName == \"rtp-activator\"\n| where Name startswith \"POST\" and Name contains \"activations\"\n| join kind=inner validOps on OperationId\n| where ResultCode != \"409\"\n| project OperationId, TimeGenerated, ResultCode\n| join kind=leftouter deps on OperationId\n| extend JWT_Subject = iif(isempty(JWT_Subject), \"UNKNOWN\", JWT_Subject)\n| where JWT_Subject in ({SubjectParam})\n| extend Esito = iif(ResultCode == \"201\", \"✅ Successo\", \"❌ Fallimento\")\n| summarize Conteggio = count() by bin(TimeGenerated, 1h), Serie = strcat(JWT_Subject, \" - \", Esito)\n| render timechart with (series=Serie, title=\"Attivazioni nel tempo\")",
                 "size": 0,
                 "title": "Attivazioni nel tempo (Successi vs Fallimenti) in bin 1 ora",
                 "noDataMessageStyle": 3,
                 "queryType": 0,
                 "resourceType": "microsoft.operationalinsights/workspaces",
                 "crossComponentResources": [
-                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-law",
-                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law",
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-law"
                 ],
                 "visualization": "timechart",
                 "chartSettings": {
@@ -261,7 +264,7 @@
               "type": 3,
               "content": {
                 "version": "KqlItem/1.0",
-                "query": "let deps =\n    AppDependencies\n    | where Name startswith \"POST\" and Name contains \"/rtpactivator/activations\"\n    | extend JWT_Subject = tostring(Properties[\"Request-X-JWT-Subject\"])\n    | summarize JWT_Subject = any(JWT_Subject) by OperationId;\n\nAppRequests\n| where TimeGenerated {evaluation_window:query}\n| where AppRoleName == \"rtp-activator\"\n| where Name startswith \"POST\" and Name contains \"activations\"\n| where ResultCode == \"201\"\n| project OperationId\n| join kind=leftouter deps on OperationId\n| extend JWT_Subject = iif(isempty(JWT_Subject), \"UNKNOWN\", JWT_Subject)\n| where JWT_Subject in ({SubjectParam})\n| summarize Count = count() by [\"Service Provider\"] = JWT_Subject\n| order by Count desc",
+                "query": "let validOps = \n    AppDependencies\n    | where TimeGenerated {evaluation_window:query}\n    | where Name startswith \"POST\" and Name contains \"/rtpactivator/activations\"\n    | distinct OperationId;\n\nlet deps =\n    AppDependencies\n    | where TimeGenerated {evaluation_window:query}\n    | where Name startswith \"POST\" and Name contains \"/rtpactivator/activations\"\n    | extend JWT_Subject = tostring(Properties[\"Request-X-JWT-Subject\"])\n    | summarize JWT_Subject = any(JWT_Subject) by OperationId;\n\nAppRequests\n| where TimeGenerated {evaluation_window:query}\n| where AppRoleName == \"rtp-activator\"\n| where Name startswith \"POST\" and Name contains \"activations\"\n| join kind=inner validOps on OperationId\n| where ResultCode == \"201\"\n| project OperationId\n| join kind=leftouter deps on OperationId\n| extend JWT_Subject = iif(isempty(JWT_Subject), \"UNKNOWN\", JWT_Subject)\n| where JWT_Subject in ({SubjectParam})\n| summarize Count = count() by [\"Service Provider\"] = JWT_Subject\n| order by Count desc",
                 "size": 0,
                 "aggregation": 5,
                 "title": "✅ Attivazioni con successo per Service Provider",
@@ -269,8 +272,8 @@
                 "queryType": 0,
                 "resourceType": "microsoft.operationalinsights/workspaces",
                 "crossComponentResources": [
-                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-law",
-                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law",
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-law"
                 ],
                 "visualization": "unstackedbar",
                 "chartSettings": {
@@ -295,7 +298,7 @@
               "type": 3,
               "content": {
                 "version": "KqlItem/1.0",
-                "query": "let deps =\n    AppDependencies\n    | where Name startswith \"POST\" and Name contains \"/rtpactivator/activations\"\n    | extend JWT_Subject = tostring(Properties[\"Request-X-JWT-Subject\"])\n    | summarize JWT_Subject = any(JWT_Subject) by OperationId;\n\nAppRequests\n| where TimeGenerated {evaluation_window:query}\n| where AppRoleName == \"rtp-activator\"\n| where Name startswith \"POST\" and Name contains \"activations\"\n| where ResultCode != \"201\" and ResultCode != \"409\"\n| project OperationId\n| join kind=leftouter deps on OperationId\n| extend JWT_Subject = iif(isempty(JWT_Subject), \"UNKNOWN\", JWT_Subject)\n| where JWT_Subject in ({SubjectParam})\n| summarize Count = count() by [\"Service Provider\"] = JWT_Subject\n| order by Count desc",
+                "query": "let validOps = \n    AppDependencies\n    | where TimeGenerated {evaluation_window:query}\n    | where Name startswith \"POST\" and Name contains \"/rtpactivator/activations\"\n    | distinct OperationId;\n\nlet deps =\n    AppDependencies\n    | where TimeGenerated {evaluation_window:query}\n    | where Name startswith \"POST\" and Name contains \"/rtpactivator/activations\"\n    | extend JWT_Subject = tostring(Properties[\"Request-X-JWT-Subject\"])\n    | summarize JWT_Subject = any(JWT_Subject) by OperationId;\n\nAppRequests\n| where TimeGenerated {evaluation_window:query}\n| where AppRoleName == \"rtp-activator\"\n| where Name startswith \"POST\" and Name contains \"activations\"\n| join kind=inner validOps on OperationId\n| where ResultCode != \"201\" and ResultCode != \"409\"\n| project OperationId\n| join kind=leftouter deps on OperationId\n| extend JWT_Subject = iif(isempty(JWT_Subject), \"UNKNOWN\", JWT_Subject)\n| where JWT_Subject in ({SubjectParam})\n| summarize Count = count() by [\"Service Provider\"] = JWT_Subject\n| order by Count desc",
                 "size": 0,
                 "aggregation": 5,
                 "title": "❌ Attivazioni fallite per Service Provider",
@@ -303,8 +306,8 @@
                 "queryType": 0,
                 "resourceType": "microsoft.operationalinsights/workspaces",
                 "crossComponentResources": [
-                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-law",
-                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law",
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-law"
                 ],
                 "visualization": "unstackedbar",
                 "chartSettings": {
@@ -329,7 +332,7 @@
               "type": 3,
               "content": {
                 "version": "KqlItem/1.0",
-                "query": "AppTraces\n| where AppRoleName == \"rtp-activator\"\n| where TimeGenerated {evaluation_window:query}\n| where Message hasprefix \"Error during activation process Authenticated user doesn't have permission to perform this action\"\n| extend tokenSpId = extract(@\"tokenSpId:\\s*([^\\s]+)\", 1, Message)\n| extend props = todynamic(Properties)\n| extend serviceProvider = tostring(props[\"service_provider\"])\n| where isnotempty(tokenSpId) and isnotempty(serviceProvider)\n| summarize\n    ['Error Count'] = count(),\n    ['Service Providers'] = make_set(serviceProvider, 100)\n  by ['Token SP ID'] = tostring(tokenSpId)\n| order by ['Error Count'] desc\n",
+                "query": "AppTraces\n| where AppRoleName == \"rtp-activator\"\n| where TimeGenerated {evaluation_window:query}\n| where Message has \"Error during activation process for SP\"\n    and Message has \"Authenticated user doesn't have permission to perform this action\"\n| extend props = todynamic(Properties)\n| extend tokenSpId = tostring(props[\"sub_token\"])\n| extend spId = extract(@\"Error during activation process for SP\\s+([^:]+):\", 1, Message)\n| summarize\n    ['Error Count'] = count(),\n    ['SP IDs (from request)'] = make_set(spId, 100)\n  by ['Token SP ID'] = tokenSpId\n| order by ['Error Count'] desc",
                 "size": 1,
                 "title": "❌ Mismatch del Service Provider tra Token e Body",
                 "noDataMessageStyle": 3,
@@ -406,7 +409,7 @@
               "type": 3,
               "content": {
                 "version": "KqlItem/1.0",
-                "query": "let data = AppRequests\n| where TimeGenerated {evaluation_window:query}\n| where AppRoleName == \"rtp-activator\"\n| where Name startswith \"POST\" and Name contains \"takeover\"\n| summarize count() by StatusCode = ResultCode;\ndata\n| union (\n    data\n    | where StatusCode !in (\"201\", \"409\")\n    | summarize count_ = sum(count_)\n    | extend StatusCode = \"Total Errors\"\n)\n| order by count_ desc\n| render piechart",
+                "query": "let validOps = \n    AppDependencies\n    | where TimeGenerated {evaluation_window:query}\n    | where Name startswith \"POST\" and Name contains \"/rtpactivator/activations/takeover\"\n    | distinct OperationId;\n\nlet deps =\n    AppDependencies\n    | where TimeGenerated {evaluation_window:query}\n    | where Name startswith \"POST\" and Name contains \"/rtpactivator/activations/takeover\"\n    | extend JWT_Subject = tostring(Properties[\"Request-X-JWT-Subject\"])\n    | summarize JWT_Subject = any(JWT_Subject) by OperationId;\n\nlet data = AppRequests\n    | where TimeGenerated {evaluation_window:query}\n    | where AppRoleName == \"rtp-activator\"\n    | where Name startswith \"POST\" and Name contains \"takeover\"\n    | join kind=inner validOps on OperationId\n    | join kind=leftouter deps on OperationId\n    | extend JWT_Subject = iif(isempty(JWT_Subject), \"UNKNOWN\", JWT_Subject)\n    | where JWT_Subject in ({SubjectParam})\n    | summarize count() by StatusCode = ResultCode;\ndata\n| union (\n    data\n    | where StatusCode !in (\"201\", \"409\")\n    | summarize count_ = sum(count_)\n    | extend StatusCode = \"Total Errors\"\n)\n| order by count_ desc\n| render piechart",
                 "size": 0,
                 "title": "Panoramica degli status code per il Subentro",
                 "noDataMessageStyle": 3,
@@ -467,7 +470,7 @@
               "type": 3,
               "content": {
                 "version": "KqlItem/1.0",
-                "query": "AppDependencies\n| where Name has \"POST /rtpactivator/activations/takeover\"\n| where Success == false\n| extend JWT_Subject = tostring(Properties[\"Request-X-JWT-Subject\"])\n| extend JWT_Subject = iif(isempty(JWT_Subject), \"UNKNOWN\", JWT_Subject)\n| where JWT_Subject in ({SubjectParam})\n| extend RC = trim(\" \", tostring(ResultCode))\n| extend RC = iif(isempty(RC) or RC == \"0\", \"500\", RC)\n| extend Label = strcat(JWT_Subject, \" (\", RC, \")\")\n| summarize NumeroEventi = count() by Label",
+                "query": "let validOps = \n    AppDependencies\n    | where TimeGenerated {evaluation_window:query}\n    | where Name has \"POST /rtpactivator/activations/takeover\"\n    | distinct OperationId;\n\nlet deps =\n    AppDependencies\n    | where TimeGenerated {evaluation_window:query}\n    | where Name has \"POST /rtpactivator/activations/takeover\"\n    | extend JWT_Subject = tostring(Properties[\"Request-X-JWT-Subject\"])\n    | summarize JWT_Subject = any(JWT_Subject) by OperationId;\n\nAppRequests\n| where TimeGenerated {evaluation_window:query}\n| where AppRoleName == \"rtp-activator\"\n| where Name startswith \"POST\" and Name contains \"takeover\"\n| join kind=inner validOps on OperationId\n| where ResultCode != \"201\" and ResultCode != \"409\"\n| project OperationId, ResultCode\n| join kind=leftouter deps on OperationId\n| extend JWT_Subject = iif(isempty(JWT_Subject), \"UNKNOWN\", JWT_Subject)\n| where JWT_Subject in ({SubjectParam})\n| extend Label = strcat(JWT_Subject, \" (\", ResultCode, \")\")\n| summarize NumeroEventi = count() by Label\n| extend Label = strcat(Label, \" — \", NumeroEventi)\n| project Label, NumeroEventi",
                 "size": 0,
                 "title": "❌ Distribuzione Errori per Subject e Status Code",
                 "noDataMessageStyle": 3,
@@ -532,7 +535,7 @@
               "type": 3,
               "content": {
                 "version": "KqlItem/1.0",
-                "query": "AppRequests\n| where TimeGenerated {evaluation_window:query}\n| where AppRoleName == \"rtp-activator\"\n| where Name startswith \"POST\" and Name contains \"takeover\"\n| where ResultCode != \"201\" and ResultCode != \"409\"\n| project OperationId, TimeGenerated, Name, ResultCode\n| join kind=leftouter (\n    AppDependencies\n    | where Name has \"takeover\"\n    | extend JWT_Subject = tostring(Properties[\"Request-X-JWT-Subject\"])\n    | extend activation_id = extract(@\"activations/([^/]+)/takeover\", 1, Name)\n    | project OperationId, JWT_Subject, activation_id\n) on OperationId\n| join kind=leftouter (\n    AppExceptions\n    | where AppRoleName == \"rtp-activator\"\n    | project OperationId, InnermostMessage\n) on OperationId\n| join kind=leftouter (\n    AppTraces\n    | where AppRoleName == \"rtp-activator\"\n    | extend activation_id = tostring(Properties.activation_id)\n    | where isnotempty(activation_id)\n    | project OperationId, activation_id\n) on OperationId\n| extend JWT_Subject = iif(isempty(JWT_Subject), \"UNKNOWN\", JWT_Subject)\n| extend activation_id = coalesce(activation_id, activation_id1, \"N/A\")\n| extend Motivo = iif(isempty(InnermostMessage), \"N/A\", InnermostMessage)\n| where JWT_Subject in ({SubjectParam})\n| summarize Conteggio = count() by [\"Activation ID\"] = activation_id, [\"Service Provider\"] = JWT_Subject, [\"Status Code\"] = ResultCode, Motivo\n| order by Conteggio desc",
+                "query": "let validOps = \n    AppDependencies\n    | where TimeGenerated {evaluation_window:query}\n    | where Name has \"POST /rtpactivator/activations\" and Name has \"takeover\"\n    | distinct OperationId;\n\nAppRequests\n| where TimeGenerated {evaluation_window:query}\n| where AppRoleName == \"rtp-activator\"\n| where Name startswith \"POST\" and Name contains \"takeover\"\n| join kind=inner validOps on OperationId\n| where ResultCode != \"201\" and ResultCode != \"409\"\n| project OperationId, TimeGenerated, Name, ResultCode\n| join kind=leftouter (\n    AppDependencies\n    | where Name has \"takeover\"\n    | extend JWT_Subject = tostring(Properties[\"Request-X-JWT-Subject\"])\n    | extend activation_id = extract(@\"activations/([^/]+)/takeover\", 1, Name)\n    | project OperationId, JWT_Subject, activation_id\n) on OperationId\n| join kind=leftouter (\n    AppExceptions\n    | where AppRoleName == \"rtp-activator\"\n    | project OperationId, InnermostMessage\n) on OperationId\n| join kind=leftouter (\n    AppTraces\n    | where AppRoleName == \"rtp-activator\"\n    | extend activation_id = tostring(Properties.activation_id)\n    | where isnotempty(activation_id)\n    | project OperationId, activation_id\n) on OperationId\n| extend JWT_Subject = iif(isempty(JWT_Subject), \"UNKNOWN\", JWT_Subject)\n| extend activation_id = coalesce(activation_id, activation_id1, \"N/A\")\n| extend Motivo = iif(isempty(InnermostMessage), \"N/A\", InnermostMessage)\n| where JWT_Subject in ({SubjectParam})\n| summarize Conteggio = count() by [\"Activation ID\"] = activation_id, [\"Service Provider\"] = JWT_Subject, [\"Status Code\"] = ResultCode, Motivo\n| order by Conteggio desc",
                 "size": 0,
                 "title": "❌ Subentri falliti per Activation ID",
                 "noDataMessageStyle": 3,
@@ -553,7 +556,7 @@
               "type": 3,
               "content": {
                 "version": "KqlItem/1.0",
-                "query": "AppRequests\n| where TimeGenerated {evaluation_window:query}\n| where AppRoleName == \"rtp-activator\"\n| where Name startswith \"POST\" and Name contains \"takeover\"\n| where ResultCode != \"201\" and ResultCode != \"409\" and ResultCode != \"400\"\n| project OperationId, TimeGenerated, Name, ResultCode\n| join kind=leftouter (\n    AppDependencies\n    | where Name has \"takeover\"\n    | extend JWT_Subject = tostring(Properties[\"Request-X-JWT-Subject\"])\n    | project OperationId, JWT_Subject\n) on OperationId\n| join kind=leftouter (\n    AppExceptions\n    | where AppRoleName == \"rtp-activator\"\n    | project OperationId, InnermostMessage\n) on OperationId\n| extend JWT_Subject = iif(isempty(JWT_Subject), \"UNKNOWN\", JWT_Subject)\n| extend Motivo = iif(isempty(InnermostMessage), \"N/A\", InnermostMessage)\n| where JWT_Subject in ({SubjectParam})\n| summarize Conteggio = count() by [\"Service Provider\"] = JWT_Subject, [\"Status Code\"] = ResultCode, Motivo\n| order by Conteggio desc",
+                "query": "let validOps = \n    AppDependencies\n    | where TimeGenerated {evaluation_window:query}\n    | where Name has \"POST /rtpactivator/activations\" and Name has \"takeover\"\n    | distinct OperationId;\n\nAppRequests\n| where TimeGenerated {evaluation_window:query}\n| where AppRoleName == \"rtp-activator\"\n| where Name startswith \"POST\" and Name contains \"takeover\"\n| join kind=inner validOps on OperationId\n| where ResultCode != \"201\" and ResultCode != \"409\" and ResultCode != \"400\"\n| project OperationId, TimeGenerated, Name, ResultCode\n| join kind=leftouter (\n    AppDependencies\n    | where Name has \"takeover\"\n    | extend JWT_Subject = tostring(Properties[\"Request-X-JWT-Subject\"])\n    | project OperationId, JWT_Subject\n) on OperationId\n| join kind=leftouter (\n    AppExceptions\n    | where AppRoleName == \"rtp-activator\"\n    | project OperationId, InnermostMessage\n) on OperationId\n| extend JWT_Subject = iif(isempty(JWT_Subject), \"UNKNOWN\", JWT_Subject)\n| extend Motivo = iif(isempty(InnermostMessage), \"N/A\", InnermostMessage)\n| where JWT_Subject in ({SubjectParam})\n| summarize Conteggio = count() by [\"Service Provider\"] = JWT_Subject, [\"Status Code\"] = ResultCode, Motivo\n| order by Conteggio desc",
                 "size": 0,
                 "title": "❌ Distribuzione Altri Errori (esclusi 400) per Service Provider",
                 "noDataMessageStyle": 3,
@@ -574,15 +577,15 @@
               "type": 3,
               "content": {
                 "version": "KqlItem/1.0",
-                "query": "AppRequests\n| where TimeGenerated {evaluation_window:query}\n| where AppRoleName == \"rtp-activator\"\n| where Name startswith \"POST\" and Name contains \"takeover\"\n| project OperationId, TimeGenerated, ResultCode\n| join kind=leftouter (\n    AppDependencies\n    | where Name has \"takeover\"\n    | extend JWT_Subject = tostring(Properties[\"Request-X-JWT-Subject\"])\n    | project OperationId, JWT_Subject\n) on OperationId\n| extend JWT_Subject = iif(isempty(JWT_Subject), \"UNKNOWN\", JWT_Subject)\n| where JWT_Subject in ({SubjectParam})\n| extend Esito = iif(ResultCode == \"201\", \"✅ Successo\", \"❌ Fallimento\")\n| summarize Conteggio = count() by bin(TimeGenerated, 1h), Serie = strcat(JWT_Subject, \" - \", Esito)\n| render timechart with (series=Serie)",
+                "query": "let validOps = \n    AppDependencies\n    | where TimeGenerated {evaluation_window:query}\n    | where Name has \"POST /rtpactivator/activations\" and Name has \"takeover\"\n    | distinct OperationId;\n\nAppRequests\n| where TimeGenerated {evaluation_window:query}\n| where AppRoleName == \"rtp-activator\"\n| where Name startswith \"POST\" and Name contains \"takeover\"\n| join kind=inner validOps on OperationId\n| project OperationId, TimeGenerated, ResultCode\n| join kind=leftouter (\n    AppDependencies\n    | where Name has \"takeover\"\n    | extend JWT_Subject = tostring(Properties[\"Request-X-JWT-Subject\"])\n    | project OperationId, JWT_Subject\n) on OperationId\n| extend JWT_Subject = iif(isempty(JWT_Subject), \"UNKNOWN\", JWT_Subject)\n| where JWT_Subject in ({SubjectParam})\n| extend Esito = iif(ResultCode == \"201\", \"✅ Successo\", \"❌ Fallimento\")\n| summarize Conteggio = count() by bin(TimeGenerated, 1h), Serie = strcat(JWT_Subject, \" - \", Esito)\n| render timechart with (series=Serie)",
                 "size": 0,
                 "title": "Subentri nel tempo (Successi vs Fallimenti) in bin 1 ora",
                 "noDataMessageStyle": 3,
                 "queryType": 0,
                 "resourceType": "microsoft.operationalinsights/workspaces",
                 "crossComponentResources": [
-                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law",
-                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-law"
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-law",
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
                 ],
                 "visualization": "timechart",
                 "chartSettings": {
@@ -731,15 +734,15 @@
               "type": 3,
               "content": {
                 "version": "KqlItem/1.0",
-                "query": "let data = AppRequests\n| where TimeGenerated {evaluation_window:query}\n| where AppRoleName == \"rtp-activator\"\n| where Name has \"DELETE\" and Name contains \"activations\"\n| summarize count() by StatusCode = ResultCode;\ndata\n| union (\n    data\n    | where StatusCode !in (\"204\", \"409\")\n    | summarize count_ = sum(count_)\n    | extend StatusCode = \"Total Errors\"\n)\n| order by count_ desc\n| render piechart",
+                "query": "let validOps = \n    AppDependencies\n    | where TimeGenerated {evaluation_window:query}\n    | where Name has \"DELETE /rtpactivator/activations/\"\n    | distinct OperationId;\n\nlet deps =\n    AppDependencies\n    | where TimeGenerated {evaluation_window:query}\n    | where Name has \"DELETE /rtpactivator/activations/\"\n    | extend JWT_Subject = tostring(Properties[\"Request-X-JWT-Subject\"])\n    | summarize JWT_Subject = any(JWT_Subject) by OperationId;\n\nlet data = AppRequests\n    | where TimeGenerated {evaluation_window:query}\n    | where AppRoleName == \"rtp-activator\"\n    | where Name has \"DELETE\" and Name contains \"activations\"\n    | join kind=inner validOps on OperationId\n    | join kind=leftouter deps on OperationId\n    | extend JWT_Subject = iif(isempty(JWT_Subject), \"UNKNOWN\", JWT_Subject)\n    | where JWT_Subject in ({SubjectParam})\n    | summarize count() by StatusCode = ResultCode;\ndata\n| union (\n    data\n    | where StatusCode !in (\"204\", \"409\")\n    | summarize count_ = sum(count_)\n    | extend StatusCode = \"Total Errors\"\n)\n| order by count_ desc\n| render piechart",
                 "size": 0,
                 "title": "Panoramica delle disattivazioni totali con status code",
                 "noDataMessageStyle": 3,
                 "queryType": 0,
                 "resourceType": "microsoft.operationalinsights/workspaces",
                 "crossComponentResources": [
-                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-law",
-                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law",
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-law"
                 ],
                 "visualization": "piechart",
                 "chartSettings": {
@@ -792,7 +795,7 @@
               "type": 3,
               "content": {
                 "version": "KqlItem/1.0",
-                "query": "AppDependencies\n| where Name has \"DELETE /rtpactivator/activations/\"\n| where Success == false\n| extend JWT_Subject = tostring(Properties[\"Request-X-JWT-Subject\"])\n| extend JWT_Subject = iif(isempty(JWT_Subject), \"UNKNOWN\", JWT_Subject)\n| where JWT_Subject in ({SubjectParam})\n| extend RC = trim(\" \", tostring(ResultCode))\n| extend RC = iif(isempty(RC) or RC == \"0\", \"500\", RC)\n| extend Label = strcat(JWT_Subject, \" (\", RC, \")\")\n| summarize NumeroEventi = count() by Label",
+                "query": "let validOps = \n    AppDependencies\n    | where TimeGenerated {evaluation_window:query}\n    | where Name has \"DELETE /rtpactivator/activations/\"\n    | distinct OperationId;\n\nlet deps =\n    AppDependencies\n    | where TimeGenerated {evaluation_window:query}\n    | where Name has \"DELETE /rtpactivator/activations/\"\n    | extend JWT_Subject = tostring(Properties[\"Request-X-JWT-Subject\"])\n    | summarize JWT_Subject = any(JWT_Subject) by OperationId;\n\nAppRequests\n| where TimeGenerated {evaluation_window:query}\n| where AppRoleName == \"rtp-activator\"\n| where Name has \"DELETE\" and Name contains \"activations\"\n| join kind=inner validOps on OperationId\n| where ResultCode != \"204\" and ResultCode != \"409\"\n| project OperationId, ResultCode\n| join kind=leftouter deps on OperationId\n| extend JWT_Subject = iif(isempty(JWT_Subject), \"UNKNOWN\", JWT_Subject)\n| where JWT_Subject in ({SubjectParam})\n| extend Label = strcat(JWT_Subject, \" (\", ResultCode, \")\")\n| summarize NumeroEventi = count() by Label\n| extend Label = strcat(Label, \" — \", NumeroEventi)\n| project Label, NumeroEventi",
                 "size": 0,
                 "title": "❌ Distribuzione Errori per Subject e Status Code",
                 "noDataMessageStyle": 3,
@@ -819,17 +822,31 @@
               "type": 3,
               "content": {
                 "version": "KqlItem/1.0",
-                "query": "AppRequests\n| where TimeGenerated {evaluation_window:query}\n| where AppRoleName == \"rtp-activator\"\n| where Name has \"DELETE\" and Name contains \"activations\"\n| where ResultCode != \"204\"\n| project OperationId, TimeGenerated, ResultCode\n| join kind=leftouter (\n    AppDependencies\n    | where Name has \"DELETE /rtpactivator/activations/\"\n    | extend JWT_Subject = tostring(Properties[\"Request-X-JWT-Subject\"])\n    | extend activation_id = extract(@\"activations/([^/]+)\", 1, Name)\n    | project OperationId, JWT_Subject, activation_id\n) on OperationId\n| join kind=leftouter (\n    AppExceptions\n    | where AppRoleName == \"rtp-activator\"\n    | project OperationId, InnermostMessage\n) on OperationId\n| extend JWT_Subject = iif(isempty(JWT_Subject), \"UNKNOWN\", JWT_Subject)\n| extend Motivo = iif(isempty(InnermostMessage), \"N/A\", InnermostMessage)\n| extend activation_id = iif(isempty(activation_id), \"N/A\", activation_id)\n| where JWT_Subject in ({SubjectParam})\n| summarize Conteggio = count() by [\"Activation ID\"] = activation_id, [\"Service Provider\"] = JWT_Subject, [\"Status Code\"] = ResultCode, [\"Motivo\"] = Motivo\n| order by Conteggio desc",
+                "query": "let validOps = \n    AppDependencies\n    | where TimeGenerated {evaluation_window:query}\n    | where Name has \"DELETE /rtpactivator/activations/\"\n    | distinct OperationId;\n\nAppRequests\n| where TimeGenerated {evaluation_window:query}\n| where AppRoleName == \"rtp-activator\"\n| where Name has \"DELETE\" and Name contains \"activations\"\n| join kind=inner validOps on OperationId\n| where ResultCode == \"400\"\n| project OperationId, TimeGenerated, ResultCode\n| join kind=leftouter (\n    AppDependencies\n    | where TimeGenerated {evaluation_window:query}\n    | where Name has \"DELETE /rtpactivator/activations/\"\n    | extend JWT_Subject = tostring(Properties[\"Request-X-JWT-Subject\"])\n    | extend activation_id = extract(@\"activations/([^/]+)\", 1, Name)\n    | project OperationId, JWT_Subject, activation_id\n) on OperationId\n| join kind=leftouter (\n    AppExceptions\n    | where AppRoleName == \"rtp-activator\"\n    | summarize InnermostMessage = any(InnermostMessage) by OperationId\n) on OperationId\n| extend JWT_Subject = iif(isempty(JWT_Subject), \"UNKNOWN\", JWT_Subject)\n| where JWT_Subject in ({SubjectParam})\n| extend Motivo = iif(isempty(InnermostMessage), \"N/A\", InnermostMessage)\n| extend activation_id = iif(isempty(activation_id), \"N/A\", activation_id)\n| summarize Conteggio = count() by [\"Activation ID\"] = activation_id, [\"Service Provider\"] = JWT_Subject, Motivo\n| order by Conteggio desc",
                 "size": 0,
                 "title": "❌ Disattivazioni fallite per Activation ID",
                 "noDataMessageStyle": 3,
                 "queryType": 0,
                 "resourceType": "microsoft.operationalinsights/workspaces",
                 "crossComponentResources": [
-                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-law",
-                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law",
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-law"
                 ],
-                "visualization": "table"
+                "visualization": "table",
+                "gridSettings": {
+                  "sortBy": [
+                    {
+                      "itemKey": "Service Provider",
+                      "sortOrder": 1
+                    }
+                  ]
+                },
+                "sortBy": [
+                  {
+                    "itemKey": "Service Provider",
+                    "sortOrder": 1
+                  }
+                ]
               },
               "name": "Disattivazioni fallite per Activation ID",
               "styleSettings": {
@@ -840,7 +857,7 @@
               "type": 3,
               "content": {
                 "version": "KqlItem/1.0",
-                "query": "AppRequests\n| where TimeGenerated {evaluation_window:query}\n| where AppRoleName == \"rtp-activator\"\n| where Name has \"DELETE\" and Name contains \"activations\"\n| where ResultCode != \"204\" and ResultCode != \"400\"\n| project OperationId, TimeGenerated, Name, ResultCode\n| join kind=leftouter (\n    AppDependencies\n    | where Name has \"DELETE /rtpactivator/activations/\"\n    | extend JWT_Subject = tostring(Properties[\"Request-X-JWT-Subject\"])\n    | project OperationId, JWT_Subject\n) on OperationId\n| join kind=leftouter (\n    AppExceptions\n    | where AppRoleName == \"rtp-activator\"\n    | project OperationId, InnermostMessage\n) on OperationId\n| extend JWT_Subject = iif(isempty(JWT_Subject), \"UNKNOWN\", JWT_Subject)\n| extend Motivo = iif(isempty(InnermostMessage), \"N/A\", InnermostMessage)\n| where JWT_Subject in ({SubjectParam})\n| summarize Conteggio = count() by [\"Service Provider\"] = JWT_Subject, [\"Status Code\"] = ResultCode, Motivo\n| order by Conteggio desc",
+                "query": "let validOps = \n    AppDependencies\n    | where TimeGenerated {evaluation_window:query}\n    | where Name has \"DELETE /rtpactivator/activations/\"\n    | distinct OperationId;\n\nAppRequests\n| where TimeGenerated {evaluation_window:query}\n| where AppRoleName == \"rtp-activator\"\n| where Name has \"DELETE\" and Name contains \"activations\"\n| join kind=inner validOps on OperationId\n| where ResultCode != \"204\" and ResultCode != \"400\"\n| project OperationId, TimeGenerated, Name, ResultCode\n| join kind=leftouter (\n    AppDependencies\n    | where Name has \"DELETE /rtpactivator/activations/\"\n    | extend JWT_Subject = tostring(Properties[\"Request-X-JWT-Subject\"])\n    | project OperationId, JWT_Subject\n) on OperationId\n| join kind=leftouter (\n    AppExceptions\n    | where AppRoleName == \"rtp-activator\"\n    | project OperationId, InnermostMessage\n) on OperationId\n| extend JWT_Subject = iif(isempty(JWT_Subject), \"UNKNOWN\", JWT_Subject)\n| extend Motivo = iif(isempty(InnermostMessage), \"N/A\", InnermostMessage)\n| where JWT_Subject in ({SubjectParam})\n| summarize Conteggio = count() by [\"Service Provider\"] = JWT_Subject, [\"Status Code\"] = ResultCode, Motivo\n| order by Conteggio desc",
                 "size": 0,
                 "title": "❌ Distribuzione Altri Errori (esclusi 400) per Service Provider",
                 "noDataMessageStyle": 3,
@@ -861,15 +878,15 @@
               "type": 3,
               "content": {
                 "version": "KqlItem/1.0",
-                "query": "AppRequests\n| where TimeGenerated {evaluation_window:query}\n| where AppRoleName == \"rtp-activator\"\n| where Name has \"DELETE\" and Name contains \"activations\"\n| project OperationId, TimeGenerated, ResultCode\n| join kind=leftouter (\n    AppDependencies\n    | where Name has \"DELETE /rtpactivator/activations/\"\n    | extend JWT_Subject = tostring(Properties[\"Request-X-JWT-Subject\"])\n    | project OperationId, JWT_Subject\n) on OperationId\n| extend JWT_Subject = iif(isempty(JWT_Subject), \"UNKNOWN\", JWT_Subject)\n| where JWT_Subject in ({SubjectParam})\n| extend Esito = iif(ResultCode == \"204\", \"✅ Successo\", \"❌ Fallimento\")\n| summarize Conteggio = count() by bin(TimeGenerated, 1h), Serie = strcat(JWT_Subject, \" - \", Esito)\n| render timechart with (series=Serie)",
+                "query": "let validOps = \n    AppDependencies\n    | where TimeGenerated {evaluation_window:query}\n    | where Name has \"DELETE /rtpactivator/activations/\"\n    | distinct OperationId;\n\nAppRequests\n| where TimeGenerated {evaluation_window:query}\n| where AppRoleName == \"rtp-activator\"\n| where Name has \"DELETE\" and Name contains \"activations\"\n| join kind=inner validOps on OperationId\n| project OperationId, TimeGenerated, ResultCode\n| join kind=leftouter (\n    AppDependencies\n    | where Name has \"DELETE /rtpactivator/activations/\"\n    | extend JWT_Subject = tostring(Properties[\"Request-X-JWT-Subject\"])\n    | project OperationId, JWT_Subject\n) on OperationId\n| extend JWT_Subject = iif(isempty(JWT_Subject), \"UNKNOWN\", JWT_Subject)\n| where JWT_Subject in ({SubjectParam})\n| extend Esito = iif(ResultCode == \"204\", \"✅ Successo\", \"❌ Fallimento\")\n| summarize Conteggio = count() by bin(TimeGenerated, 1h), Serie = strcat(JWT_Subject, \" - \", Esito)\n| render timechart with (series=Serie)",
                 "size": 0,
                 "title": "Disattivazioni nel tempo (Successi vs Fallimenti) in bin di 1 ora",
                 "noDataMessageStyle": 3,
                 "queryType": 0,
                 "resourceType": "microsoft.operationalinsights/workspaces",
                 "crossComponentResources": [
-                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law",
-                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-law"
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-law",
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
                 ],
                 "visualization": "timechart",
                 "chartSettings": {
@@ -893,7 +910,7 @@
               "type": 3,
               "content": {
                 "version": "KqlItem/1.0",
-                "query": "AppRequests\n| where TimeGenerated {evaluation_window:query}\n| where AppRoleName == \"rtp-activator\"\n| where Name has \"DELETE\" and Name contains \"activations\"\n| where ResultCode == \"204\"\n| project OperationId\n| join kind=leftouter (\n    AppDependencies\n    | where Name has \"DELETE /rtpactivator/activations/\"\n    | extend JWT_Subject = tostring(Properties[\"Request-X-JWT-Subject\"])\n    | project OperationId, JWT_Subject\n) on OperationId\n| extend JWT_Subject = iif(isempty(JWT_Subject), \"UNKNOWN\", JWT_Subject)\n| where JWT_Subject in ({SubjectParam})\n| summarize [\"Conteggio\"] = count() by [\"Service Provider\"] = JWT_Subject",
+                "query": "let validOps = \n    AppDependencies\n    | where TimeGenerated {evaluation_window:query}\n    | where Name has \"DELETE /rtpactivator/activations/\"\n    | distinct OperationId;\n\nAppRequests\n| where TimeGenerated {evaluation_window:query}\n| where AppRoleName == \"rtp-activator\"\n| where Name has \"DELETE\" and Name contains \"activations\"\n| join kind=inner validOps on OperationId\n| where ResultCode == \"204\"\n| project OperationId\n| join kind=leftouter (\n    AppDependencies\n    | where Name has \"DELETE /rtpactivator/activations/\"\n    | extend JWT_Subject = tostring(Properties[\"Request-X-JWT-Subject\"])\n    | project OperationId, JWT_Subject\n) on OperationId\n| extend JWT_Subject = iif(isempty(JWT_Subject), \"UNKNOWN\", JWT_Subject)\n| where JWT_Subject in ({SubjectParam})\n| summarize [\"Conteggio\"] = count() by [\"Service Provider\"] = JWT_Subject",
                 "size": 0,
                 "title": "✅ Disattivazioni con successo per Service Provider",
                 "noDataMessageStyle": 3,
@@ -925,7 +942,7 @@
               "type": 3,
               "content": {
                 "version": "KqlItem/1.0",
-                "query": "AppRequests\n| where TimeGenerated {evaluation_window:query}\n| where AppRoleName == \"rtp-activator\"\n| where Name has \"DELETE\" and Name contains \"activations\"\n| where ResultCode != \"204\"\n| project OperationId\n| join kind=leftouter (\n    AppDependencies\n    | where Name has \"DELETE /rtpactivator/activations/\"\n    | extend JWT_Subject = tostring(Properties[\"Request-X-JWT-Subject\"])\n    | project OperationId, JWT_Subject\n) on OperationId\n| extend JWT_Subject = iif(isempty(JWT_Subject), \"UNKNOWN\", JWT_Subject)\n| where JWT_Subject in ({SubjectParam})\n| summarize [\"Conteggio\"] = count() by [\"Service Provider\"] = JWT_Subject",
+                "query": "let validOps = \n    AppDependencies\n    | where TimeGenerated {evaluation_window:query}\n    | where Name has \"DELETE /rtpactivator/activations/\"\n    | distinct OperationId;\n\nAppRequests\n| where TimeGenerated {evaluation_window:query}\n| where AppRoleName == \"rtp-activator\"\n| where Name has \"DELETE\" and Name contains \"activations\"\n| join kind=inner validOps on OperationId\n| where ResultCode != \"204\"\n| project OperationId\n| join kind=leftouter (\n    AppDependencies\n    | where Name has \"DELETE /rtpactivator/activations/\"\n    | extend JWT_Subject = tostring(Properties[\"Request-X-JWT-Subject\"])\n    | project OperationId, JWT_Subject\n) on OperationId\n| extend JWT_Subject = iif(isempty(JWT_Subject), \"UNKNOWN\", JWT_Subject)\n| where JWT_Subject in ({SubjectParam})\n| summarize [\"Conteggio\"] = count() by [\"Service Provider\"] = JWT_Subject",
                 "size": 0,
                 "title": "❌ Disattivazioni fallite per Service Provider",
                 "noDataMessageStyle": 3,
@@ -1097,7 +1114,8 @@
                 ],
                 "timeContextFromParameter": "evaluation_window",
                 "timeContext": {
-                  "durationMs": 604800000
+                  "durationMs": 8377200000,
+                  "endTime": "2026-04-08T09:37:00.000Z"
                 },
                 "metrics": [
                   {
@@ -1513,7 +1531,8 @@
                 ],
                 "timeContextFromParameter": "evaluation_window",
                 "timeContext": {
-                  "durationMs": 604800000
+                  "durationMs": 8377200000,
+                  "endTime": "2026-04-08T09:37:00.000Z"
                 },
                 "timeGrain": "PT1H",
                 "metrics": [
@@ -1565,7 +1584,8 @@
                 ],
                 "timeContextFromParameter": "evaluation_window",
                 "timeContext": {
-                  "durationMs": 604800000
+                  "durationMs": 8377200000,
+                  "endTime": "2026-04-08T09:37:00.000Z"
                 },
                 "metrics": [
                   {
@@ -1625,7 +1645,8 @@
                 ],
                 "timeContextFromParameter": "evaluation_window",
                 "timeContext": {
-                  "durationMs": 604800000
+                  "durationMs": 8377200000,
+                  "endTime": "2026-04-08T09:37:00.000Z"
                 },
                 "metrics": [
                   {
@@ -1671,7 +1692,8 @@
                 ],
                 "timeContextFromParameter": "evaluation_window",
                 "timeContext": {
-                  "durationMs": 604800000
+                  "durationMs": 8377200000,
+                  "endTime": "2026-04-08T09:37:00.000Z"
                 },
                 "metrics": [
                   {
@@ -1723,7 +1745,8 @@
                 ],
                 "timeContextFromParameter": "evaluation_window",
                 "timeContext": {
-                  "durationMs": 604800000
+                  "durationMs": 8377200000,
+                  "endTime": "2026-04-08T09:37:00.000Z"
                 },
                 "metrics": [
                   {
@@ -1783,7 +1806,8 @@
                 ],
                 "timeContextFromParameter": "evaluation_window",
                 "timeContext": {
-                  "durationMs": 604800000
+                  "durationMs": 8377200000,
+                  "endTime": "2026-04-08T09:37:00.000Z"
                 },
                 "metrics": [
                   {
@@ -1834,7 +1858,8 @@
                 ],
                 "timeContextFromParameter": "evaluation_window",
                 "timeContext": {
-                  "durationMs": 604800000
+                  "durationMs": 8377200000,
+                  "endTime": "2026-04-08T09:37:00.000Z"
                 },
                 "metrics": [
                   {
@@ -1872,7 +1897,8 @@
                 ],
                 "timeContextFromParameter": "evaluation_window",
                 "timeContext": {
-                  "durationMs": 604800000
+                  "durationMs": 8377200000,
+                  "endTime": "2026-04-08T09:37:00.000Z"
                 },
                 "metrics": [
                   {
@@ -1928,7 +1954,8 @@
                 ],
                 "timeContextFromParameter": "evaluation_window",
                 "timeContext": {
-                  "durationMs": 604800000
+                  "durationMs": 8377200000,
+                  "endTime": "2026-04-08T09:37:00.000Z"
                 },
                 "metrics": [
                   {

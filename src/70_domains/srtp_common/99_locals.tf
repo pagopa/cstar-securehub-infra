@@ -46,7 +46,7 @@ locals {
   dns_zone_internal                = "internal.${local.dns_zone_name}"
   ingress_private_load_balancer_ip = "10.10.1.250"
 
-  repositories = ["rtp-sender", "rtp-activator", "rtp-consumer"]
+  repositories = ["rtp-sender", "rtp-activator", "rtp-consumer", "rtp-payees"]
 
   # AKS
   aks_name                = "${local.project_no_domain}-${var.env}-aks"
@@ -145,6 +145,23 @@ locals {
         }
       }
     }
+    payee = {
+      # Database-level throughput: RU are shared across all collections
+      db_autoscale_max_throughput = var.cosmos_payee_db_autoscale_max_throughput
+      collections = {
+        payees = {
+          autoscale_max_throughput          = null
+          cosmos_collections_max_throughput = null
+          default_ttl_seconds               = -1
+          indexes = [
+            {
+              keys   = ["_id"]
+              unique = true
+            }
+          ]
+        }
+      }
+    }
   }
   cosmos_collections = flatten([
     for db_name, db in local.cosmos_db : [
@@ -169,8 +186,40 @@ locals {
   kusto_cluster_rg_name = "${local.project_no_domain}-platform-data-rg"
   kusto_database = {
     (var.domain) = {
-      hot_cache_period   = "P5D"
-      soft_delete_period = "P7D"
+      hot_cache_period   = "P${var.adx_db_hot_cache_period_days}D"
+      soft_delete_period = "P${var.adx_db_soft_delete_period_days}D"
     }
   }
+
+  # Workload Identity
+  rtp_sender_workload_identity_name    = "${var.domain}-${var.location_short}-workload-identity"
+  rtp_sender_workload_identity_rg_name = local.aks_resource_group_name
+
+  ad_group_rbac = flatten([
+    var.env_short != "p" ? [
+      {
+        object_id    = data.azuread_group.adgroup_domain_admin.object_id
+        display_name = data.azuread_group.adgroup_domain_admin.display_name
+      },
+      {
+        object_id    = data.azuread_group.adgroup_domain_developers.object_id
+        display_name = data.azuread_group.adgroup_domain_developers.display_name
+      },
+      {
+        object_id    = data.azuread_group.adgroup_domain_externals.object_id
+        display_name = data.azuread_group.adgroup_domain_externals.display_name
+      }
+    ] : [],
+    var.env_short == "p" ? [
+      {
+        object_id    = data.azuread_group.adgroup_domain_admin.object_id
+        display_name = data.azuread_group.adgroup_domain_admin.display_name
+      },
+      {
+        object_id    = data.azuread_group.adgroup_domain_oncall[0].object_id
+        display_name = data.azuread_group.adgroup_domain_oncall[0].display_name
+      }
+    ] : []
+  ])
+
 }
