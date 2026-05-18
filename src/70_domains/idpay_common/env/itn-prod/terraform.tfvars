@@ -21,9 +21,6 @@ cosmos_mongo_db_idpay_params = {
   max_throughput = 1000
 }
 
-### Redis Cache
-redis_idh_resource_tier = "standard_C1_v6"
-
 ### Service bus
 service_bus_namespace = {
   sku                          = "Premium"
@@ -75,17 +72,17 @@ single_page_applications_portal_merchants_operator_roots_dirs = [
 # AKS
 #----------------------------------------------------------------
 aks_nodepool_blue = {
-  vm_sku_name       = "Standard_D8ads_v5_active"
-  autoscale_enabled = true
-  node_count_min    = 3
-  node_count_max    = 12
-}
-
-aks_nodepool_green = {
   vm_sku_name       = "Standard_D8ads_v5_passive"
   autoscale_enabled = false
   node_count_min    = 0
   node_count_max    = 0
+}
+
+aks_nodepool_green = {
+  vm_sku_name       = "Standard_D8ads_v5_active"
+  autoscale_enabled = true
+  node_count_min    = 3
+  node_count_max    = 6
 }
 
 ### Monitoring

@@ -1,0 +1,120 @@
+{
+  "name": "idpay_producers_import",
+  "properties": {
+    "activities": [
+      {
+        "name": "Lookup1",
+        "type": "Lookup",
+        "dependsOn": [],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "userProperties": [],
+        "typeProperties": {
+          "source": {
+            "type": "DelimitedTextSource",
+            "storeSettings": {
+              "type": "AzureBlobStorageReadSettings",
+              "recursive": true,
+              "enablePartitionDiscovery": false
+            },
+            "formatSettings": {
+              "type": "DelimitedTextReadSettings"
+            }
+          },
+          "dataset": {
+            "referenceName": "df_import_producers_csv",
+            "type": "DatasetReference"
+          },
+          "firstRowOnly": false
+        }
+      },
+      {
+        "name": "Get_SubKey",
+        "type": "WebActivity",
+        "dependsOn": [
+          {
+            "activity": "Lookup1",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 3,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": true,
+          "secureInput": true
+        },
+        "userProperties": [],
+        "typeProperties": {
+          "method": "GET",
+          "headers": {
+            "Content-Type": "application/json"
+          },
+          "url": {
+            "value": "${kv_url}secrets/idpay-df-subscription-key?api-version=7.3",
+            "type": "Expression"
+          },
+          "connectVia": {
+            "referenceName": "AutoResolveIntegrationRuntime",
+            "type": "IntegrationRuntimeReference"
+          },
+          "authentication": {
+            "type": "MSI",
+            "resource": "https://vault.azure.net"
+          }
+        }
+      },
+      {
+        "name": "Web1",
+        "type": "WebActivity",
+        "dependsOn": [
+          {
+            "activity": "Get_SubKey",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "userProperties": [],
+        "typeProperties": {
+          "method": "POST",
+          "headers": {
+            "Ocp-Apim-Subscription-Key": {
+              "value": "@activity('Get_SubKey').output.value",
+              "type": "Expression"
+            }
+          },
+          "url": {
+            "value": "${data_factory_api_base_url}/producers",
+            "type": "Expression"
+          },
+          "connectVia": {
+            "referenceName": "AutoResolveIntegrationRuntime",
+            "type": "IntegrationRuntimeReference"
+          },
+          "body": {
+            "value": "@string(activity('Lookup1').output.value)",
+            "type": "Expression"
+          }
+        }
+      }
+    ],
+    "annotations": [],
+    "lastPublishTime": "2026-05-06T10:17:14Z"
+  },
+  "type": "Microsoft.DataFactory/factories/pipelines"
+}

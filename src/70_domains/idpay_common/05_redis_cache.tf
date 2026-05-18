@@ -1,5 +1,5 @@
-module "redis_v2" {
-  source = "./.terraform/modules/__v4__/IDH/redis"
+module "redis" {
+  source = "./.terraform/modules/__v4__/IDH/managed_redis"
 
   # General
   product_name        = var.prefix
@@ -9,10 +9,10 @@ module "redis_v2" {
   tags                = module.tag_config.tags
 
   # IDH Resources
-  idh_resource_tier = var.redis_idh_resource_tier
+  idh_resource_tier = var.env_short != "p" ? "balanced_0_5gb" : "balanced_1gb"
 
   # Redis Settings
-  name = "${local.project}-v2-redis"
+  name = local.project
 
   # Network
 
@@ -20,8 +20,12 @@ module "redis_v2" {
     enabled              = true
     vnet_name            = local.vnet_spoke_data_name
     vnet_rg_name         = local.core_network_rg
-    private_dns_zone_ids = [data.azurerm_private_dns_zone.redis.id]
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.managed_redis.id]
   }
+
+  alert_action_group_ids = [
+    var.env_short == "p" ? data.azurerm_monitor_action_group.alerts_opsgenie[0].id : null
+  ]
 }
 
 #
@@ -29,11 +33,11 @@ module "redis_v2" {
 #
 locals {
   redis_kv_values = {
-    "idpay-redis-primary-connection-string"   = module.redis_v2.primary_connection_string
-    "idpay-redis-primary-connection-url"      = module.redis_v2.primary_connection_url
-    "idpay-redis-secondary-connection-string" = module.redis_v2.secondary_connection_string
+    "idpay-redis-primary-connection-string"   = module.redis.primary_access_key
+    "idpay-redis-primary-connection-url"      = module.redis.primary_connection_url
+    "idpay-redis-secondary-connection-string" = module.redis.secondary_access_key
     # The double “s” in rediss:// for TLS is not a typo.
-    "idpay-redis-secondary-connection-url" = module.redis_v2.secondary_connection_url
+    "idpay-redis-secondary-connection-url" = module.redis.secondary_connection_url
   }
 }
 
