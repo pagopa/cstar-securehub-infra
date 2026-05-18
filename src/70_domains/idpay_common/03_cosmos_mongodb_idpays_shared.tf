@@ -445,7 +445,10 @@ locals {
       name                = "initiative"
       shard_key           = null
       default_ttl_seconds = null
-      indexes             = [{ keys = ["_id"], unique = true }]
+      indexes             = [
+        { keys = ["_id"], unique = true },
+        { keys = ["initiativeName"], unique = false }
+      ]
     },
     {
       name                = "initiative_statistics"
