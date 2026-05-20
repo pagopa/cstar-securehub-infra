@@ -71,3 +71,21 @@
 .alter table Rtps policy streamingingestion enable
 
 .alter table RtpEvents policy streamingingestion enable
+
+.alter table Rtps policy retention ```
+{
+  "SoftDeletePeriod": "${soft_delete_period}",
+  "Recoverability": "Enabled"
+}
+```
+
+.alter table RtpEvents policy retention ```
+{
+  "SoftDeletePeriod": "${soft_delete_period}",
+  "Recoverability": "Enabled"
+}
+```
+
+.alter table Rtps policy caching hot = ${hot_cache_period}
+
+.alter table RtpEvents policy caching hot = ${hot_cache_period}

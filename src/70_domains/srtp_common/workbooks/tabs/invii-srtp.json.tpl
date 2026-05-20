@@ -64,7 +64,7 @@
               "type": 3,
               "content": {
                 "version": "KqlItem/1.0",
-                "query": "AppTraces\n| where AppRoleName == 'rtp-consumer'\n| where TimeGenerated {evaluation_window:query}\n| where Message startswith \"Message processed successfully\"\n| summarize successCount = count()\n| extend totalRequestsString = tostring(successCount)",
+                "query": "AppTraces\n| where AppRoleName == 'rtp-consumer'\n| where TimeGenerated {evaluation_window:query}\n| where Message startswith \"New GPD message received\"\n| summarize successCount = count()\n| extend totalRequestsString = tostring(successCount)",
                 "size": 0,
                 "title": "✅ Messaggi ingeriti con successo",
                 "noDataMessageStyle": 5,
@@ -136,7 +136,7 @@
               "type": 3,
               "content": {
                 "version": "KqlItem/1.0",
-                "query": "AppTraces\n| where AppRoleName == 'rtp-consumer'\n| where TimeGenerated {evaluation_window:query}\n| where Message startswith \"Message processed successfully\"\n| extend messageId = tostring(Properties.message_id)\n| where isnotempty(messageId)\n| summarize uniqueCount = dcount(messageId)\n| extend totalRequestsString = tostring(uniqueCount)",
+                "query": "AppTraces\n| where AppRoleName == 'rtp-consumer'\n| where TimeGenerated {evaluation_window:query}\n| where Message startswith \"New GPD message received\"\n| extend messageId = tostring(Properties.message_id)\n| where isnotempty(messageId)\n| summarize uniqueCount = dcount(messageId)\n| extend totalRequestsString = tostring(uniqueCount)",
                 "size": 0,
                 "title": "✅ Messaggi unici ingeriti con successo",
                 "noDataMessageStyle": 5,
@@ -827,9 +827,9 @@
               "type": 3,
               "content": {
                 "version": "KqlItem/1.0",
-                "query": " AppTraces\n | where AppRoleName == 'rtp-sender'\n | where TimeGenerated {evaluation_window:query}\n | where SeverityLevel == 3\n | where Message startswith \"Send RTP request rejected for\"\n | extend service_provider = extract(@\"Send RTP request rejected for ([^:]+):\", 1, Message)\n | extend rtp_operation_id = extract(@\"RTP Id:\\s*(\\d+)\", 1, Message)\n | project\n     TimeGenerated,\n     service_provider,\n     rtp_operation_id,\n     correlation_id = Properties[\"correlation_id\"],\n     resource_id    = Properties[\"resource_id\"]\n | top 100 by TimeGenerated desc",
+                "query": " let saveLog =\n     AppTraces\n     | where AppRoleName == \"rtp-sender\"\n     | where TimeGenerated {evaluation_window:query}\n     | where Message startswith \"Rtp to be sent saved with id:\"\n     | extend\n         rtp_id       = extract(@\"Rtp to be sent saved with id:\\s*([^\\s.]+)\", 1, Message),\n         service_provider = extract(@\"service_provider:\\s*(\\S+)\", 1, Message)\n     | project OperationId, rtp_id, service_provider;\n AppTraces\n | where AppRoleName == \"rtp-sender\"\n | where TimeGenerated {evaluation_window:query}\n | where SeverityLevel == 1\n | where Message startswith \"Rtp sent successfully with id:\"\n | extend rtp_operation_id = extract(@\"Rtp sent successfully with id:\\s*([^\\s.]+)\", 1, Message)\n | join kind=inner saveLog on OperationId\n | project\n     TimeGenerated,\n     service_provider,\n     rtp_operation_id,\n     correlation_id = Properties[\"correlation_id\"],\n     resource_id    = Properties[\"resource_id\"]\n | top 100 by TimeGenerated desc",
                 "size": 0,
-                "title": "❌ RTP rifiutati dal Service Provider - Dettaglio",
+                "title": "✅ Invii totali con successo (APIM + CODA)",
                 "queryType": 0,
                 "resourceType": "microsoft.operationalinsights/workspaces",
                 "crossComponentResources": [
@@ -858,7 +858,7 @@
                 }
               },
               "customWidth": "75",
-              "name": "❌ RTP rifiutati dal Service Provider - Dettaglio",
+              "name": "✅ Invii totali con successo (APIM + CODA)",
               "styleSettings": {
                 "showBorder": true
               }
