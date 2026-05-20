@@ -10,6 +10,18 @@ terraform {
       source  = "hashicorp/azurerm"
       version = "~> 4.0"
     }
+    helm = {
+      source  = "hashicorp/helm"
+      version = "~> 2.0"
+    }
+    kubernetes = {
+      source  = "hashicorp/kubernetes"
+      version = "~> 2.0"
+    }
+    external = {
+      source  = "hashicorp/external"
+      version = "~> 2.0"
+    }
     random = {
       source  = "hashicorp/random"
       version = "~> 3.0"
@@ -25,6 +37,10 @@ terraform {
     azapi = {
       source  = "Azure/azapi"
       version = "~> 2.6.0"
+    }
+    grafana = {
+      source  = "grafana/grafana"
+      version = "~> 3.0"
     }
   }
 
@@ -63,6 +79,6 @@ provider "argocd" {
 }
 
 module "__v4__" {
-  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v9.9.1
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=346504d04529ccc269b63aaa42c1ee537e4a03d2"
+  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v10.10.0
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=c474c98742d71e8829292e38e2a5b9f73e23163f"
 }
