@@ -75,6 +75,14 @@
         "linkLabel": "Autenticazione",
         "subTarget": "autenticazione",
         "style": "link"
+      },
+      {
+        "id": "ad51d1d6-bdde-43fc-b847-0342448ba783",
+        "cellValue": "tab",
+        "linkTarget": "parameter",
+        "linkLabel": "Accessi Get Enti",
+        "subTarget": "getPayees",
+        "style": "link"
       }
     ]
   },

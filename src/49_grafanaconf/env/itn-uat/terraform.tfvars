@@ -8,37 +8,27 @@ domain                = "platform"
 
 team_groups = {
   idpay = {
-    "cstar-u-idpay-adgroup-admin" = {
-      permission = "Admin"
-    }
-    "cstar-u-idpay-adgroup-developers" = {
-      permission = "View"
-    }
-    "cstar-u-idpay-adgroup-externals" = {
-      permission = "View"
-    }
+    "cstar-u-idpay-adgroup-admin"      = { permission = "Admin" }
+    "cstar-u-idpay-adgroup-developers" = { permission = "View" }
+    "cstar-u-idpay-adgroup-externals"  = { permission = "View" }
   }
   keycloak = {
-    "cstar-u-idpay-adgroup-admin" = {
-      permission = "Admin"
-    }
-    "cstar-u-idpay-adgroup-developers" = {
-      permission = "View"
-    }
-    "cstar-u-idpay-adgroup-externals" = {
-      permission = "View"
-    }
+    "cstar-u-idpay-adgroup-admin"      = { permission = "Admin" }
+    "cstar-u-idpay-adgroup-developers" = { permission = "View" }
+    "cstar-u-idpay-adgroup-externals"  = { permission = "View" }
+    "cstar-u-mdc-adgroup-admin"        = { permission = "Admin" }
+    "cstar-u-mdc-adgroup-developers"   = { permission = "View" }
+    "cstar-u-mdc-adgroup-externals"    = { permission = "View" }
   }
   srtp = {
-    "cstar-u-srtp-adgroup-admin" = {
-      permission = "Admin"
-    }
-    "cstar-u-srtp-adgroup-developers" = {
-      permission = "View"
-    }
-    "cstar-u-srtp-adgroup-externals" = {
-      permission = "View"
-    }
+    "cstar-u-srtp-adgroup-admin"      = { permission = "Admin" }
+    "cstar-u-srtp-adgroup-developers" = { permission = "View" }
+    "cstar-u-srtp-adgroup-externals"  = { permission = "View" }
+  }
+  mdc = {
+    "cstar-u-mdc-adgroup-admin"      = { permission = "Admin" }
+    "cstar-u-mdc-adgroup-developers" = { permission = "View" }
+    "cstar-u-mdc-adgroup-externals"  = { permission = "View" }
   }
 }
 

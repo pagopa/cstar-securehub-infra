@@ -46,7 +46,7 @@ module "admin_domain_policy" {
   object_id         = data.azuread_group.adgroup_domain_admin.object_id
 }
 
-module "developers_policy" {
+module "developers_domain_policy" {
   source = "./.terraform/modules/__v4__/IDH/key_vault_access_policy"
 
   for_each = toset(local.secrets_folders_kv)
@@ -59,10 +59,10 @@ module "developers_policy" {
   object_id         = data.azuread_group.adgroup_domain_developers.object_id
 }
 
-module "externals_policy" {
+module "externals_domain_policy" {
   source = "./.terraform/modules/__v4__/IDH/key_vault_access_policy"
 
-  for_each = var.env == "dev" ? toset(local.secrets_folders_kv) : []
+  for_each = var.env != "prod" ? toset(local.secrets_folders_kv) : []
 
   product_name      = "cstar"
   idh_resource_tier = "external" # or developer, external

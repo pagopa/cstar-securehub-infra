@@ -1,0 +1,64 @@
+{
+  "name": "mdc_citizen_metrics_daily",
+  "properties": {
+    "activities": [
+      {
+        "name": "Clear snapshot table",
+        "type": "AzureDataExplorerCommand",
+        "typeProperties": {
+          "command": ".clear table CitizenMetricsSnapshot data",
+          "commandTimeout": "00:10:00"
+        },
+        "linkedServiceName": {
+          "referenceName": "mdc-Kusto-mdc-ls",
+          "type": "LinkedServiceReference"
+        }
+      },
+      {
+        "name": "Copy citizen consents",
+        "type": "Copy",
+        "dependsOn": [
+          { "activity": "Clear snapshot table", "dependencyConditions": ["Succeeded"] }
+        ],
+        "typeProperties": {
+          "source": {
+            "type": "CosmosDbMongoDbApiSource",
+            "batchSize": 100
+          },
+          "sink": {
+            "type": "AzureDataExplorerSink"
+          },
+          "enableStaging": false,
+          "translator": {
+            "type": "TabularTranslator",
+            "mappings": [
+              {
+                "source": {
+                  "path": "$['fiscalCode']"
+                },
+                "sink": {
+                  "name": "fiscal_code"
+                }
+              },
+              {
+                "source": {
+                  "path": "$['consents']"
+                },
+                "sink": {
+                  "name": "consents"
+                }
+              }
+            ],
+            "mapComplexValuesToString": true
+          }
+        },
+        "inputs": [
+          { "referenceName": "mdc_citizen_consents", "type": "DatasetReference" }
+        ],
+        "outputs": [
+          { "referenceName": "mdc_citizen_metrics_snapshot", "type": "DatasetReference" }
+        ]
+      }
+    ]
+  }
+}

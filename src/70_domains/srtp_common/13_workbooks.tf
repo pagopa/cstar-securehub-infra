@@ -44,6 +44,10 @@ locals {
       name     = "Cancellazioni RTP (API)"
       filePath = "${path.module}/workbooks/tabs/cancellazioneAPI.json.tpl"
     },
+    {
+      name     = "Accessi Get Enti"
+      filePath = "${path.module}/workbooks/tabs/getPayees.json.tpl"
+    },
   ]
 
   workbook_items = join(",", [

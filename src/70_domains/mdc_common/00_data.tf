@@ -11,10 +11,6 @@ data "azuread_group" "adgroup_externals" {
   display_name = "${local.product}-adgroup-externals"
 }
 
-data "azuread_group" "adgroup_security" {
-  display_name = "${local.product}-adgroup-security"
-}
-
 data "azuread_group" "adgroup_domain_admin" {
   display_name = "${local.project_entra}-adgroup-admin"
 }
@@ -48,6 +44,60 @@ data "azurerm_resource_group" "mdc_data_rg" {
 data "azurerm_key_vault" "kv_domain" {
   name                = local.kv_domain_name
   resource_group_name = local.kv_domain_rg_name
+}
+
+data "azurerm_key_vault_secret" "client_id_for_keycloak" {
+  name         = "keycloak-terraform-admin-client-id"
+  key_vault_id = data.azurerm_key_vault.kv_domain.id
+}
+
+data "azurerm_key_vault_secret" "client_secret_for_keycloak" {
+  name         = "keycloak-terraform-admin-client-secret"
+  key_vault_id = data.azurerm_key_vault.kv_domain.id
+}
+
+#
+# Use this resource only during realm creation
+#
+# data "azurerm_key_vault_secret" "terraform_client_secret_for_keycloak" {
+#   name         = "terraform-client-secret-for-keycloak"
+#   key_vault_id = data.azurerm_key_vault.kv_domain.id
+# }
+
+data "azurerm_key_vault_secret" "keycloak_url" {
+  name         = "keycloak-url"
+  key_vault_id = data.azurerm_key_vault.kv_domain.id
+}
+
+# client id and secret
+data "azurerm_key_vault_secret" "send_client_id" {
+  name         = "send-client-id"
+  key_vault_id = data.azurerm_key_vault.kv_domain.id
+}
+
+data "azurerm_key_vault_secret" "send_client_secret" {
+  name         = "send-client-secret"
+  key_vault_id = data.azurerm_key_vault.kv_domain.id
+}
+
+data "azurerm_key_vault_secret" "emd_pagopa_client_id" {
+  name         = "emd-pagopa-client-id"
+  key_vault_id = data.azurerm_key_vault.kv_domain.id
+}
+
+data "azurerm_key_vault_secret" "emd_pagopa_client_secret" {
+  name         = "emd-pagopa-client-secret"
+  key_vault_id = data.azurerm_key_vault.kv_domain.id
+}
+
+data "azurerm_key_vault_secret" "emd_tpp_test_client_id" {
+  name         = "emd-tpp-test-client-id"
+  key_vault_id = data.azurerm_key_vault.kv_domain.id
+}
+
+data "azurerm_key_vault_secret" "emd_tpp_test_client_secret" {
+  name         = "emd-tpp-test-client-secret"
+  key_vault_id = data.azurerm_key_vault.kv_domain.id
 }
 
 # 🔎 DNS
@@ -97,4 +147,16 @@ data "azurerm_monitor_action_group" "slack" {
 data "azurerm_monitor_action_group" "email" {
   resource_group_name = local.monitoring_core_rg_name
   name                = local.monitor_action_group_email
+}
+
+# Azure Data Factory
+data "azurerm_data_factory" "data_factory" {
+  name                = local.data_factory_name
+  resource_group_name = local.data_factory_rg_name
+}
+
+# cluster ADX
+data "azurerm_kusto_cluster" "kusto_cluster" {
+  name                = local.data_explorer_name
+  resource_group_name = local.data_explorer_rg_name
 }
