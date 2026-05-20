@@ -4,15 +4,15 @@ terraform {
   required_providers {
     azuread = {
       source  = "hashicorp/azuread"
-      version = "~> 2.53"
+      version = "~> 2.0"
     }
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~> 4"
+      version = "~> 4.0"
     }
     external = {
       source  = "hashicorp/external"
-      version = "~> 2.3"
+      version = "~> 2.0"
     }
   }
 
@@ -28,6 +28,6 @@ provider "azurerm" {
 }
 
 module "__v4__" {
-  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v7.54.1
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=049e72640e8e8bc743d34f64af65169765cb30dd"
+  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v10.11.0
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=70693c3d31279e8c2d2b5365223fb551b3cfd112"
 }
