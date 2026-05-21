@@ -88,9 +88,6 @@ resource "keycloak_openid_client" "ar_backoffice_client" {
 
   standard_flow_enabled        = false
   direct_access_grants_enabled = false
-  service_accounts_enabled     = true
-
-  use_refresh_tokens = true
 
   extra_config = {
     "oauth2.jwt.authorization.grant.enabled" = "true"
@@ -155,21 +152,11 @@ resource "keycloak_openid_user_attribute_protocol_mapper" "ar_backoffice_client_
   add_to_userinfo     = true
 }
 
-resource "keycloak_openid_client_optional_scopes" "ar_backoffice_client_optional_scopes" {
-  realm_id  = local.keycloak_realm_id
-  client_id = keycloak_openid_client.ar_backoffice_client.id
-
-  optional_scopes = []
-}
-
 resource "keycloak_openid_client_default_scopes" "ar_backoffice_client_default_scopes" {
   realm_id  = local.keycloak_realm_id
   client_id = keycloak_openid_client.ar_backoffice_client.id
 
   default_scopes = [
-    "offline_access",
     keycloak_openid_client_scope.mdc_base_claims.name
   ]
-
-  depends_on = [keycloak_openid_client_optional_scopes.ar_backoffice_client_optional_scopes]
 }
