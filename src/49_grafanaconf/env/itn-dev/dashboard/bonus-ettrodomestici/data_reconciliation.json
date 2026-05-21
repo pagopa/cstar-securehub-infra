@@ -30,7 +30,7 @@
       },
       "id": 17,
       "panels": [],
-      "title": "Row title",
+      "title": "Riconciliazione dati",
       "type": "row"
     },
     {
@@ -53,7 +53,7 @@
               },
               {
                 "color": "red",
-                "value": 0
+                "value": 1
               }
             ]
           }
@@ -122,7 +122,7 @@
               },
               {
                 "color": "red",
-                "value": 0
+                "value": 1
               }
             ]
           }
@@ -208,7 +208,7 @@
               },
               {
                 "color": "red",
-                "value": 0
+                "value": 1
               }
             ]
           }
@@ -294,7 +294,7 @@
               },
               {
                 "color": "red",
-                "value": 0
+                "value": 1
               }
             ]
           }
@@ -357,7 +357,7 @@
           "resultFormat": "table"
         }
       ],
-      "title": "Lotti con numero trx disallineate",
+      "title": "Lotti con numero trx disallineati",
       "type": "stat"
     },
     {
@@ -399,7 +399,7 @@
                     },
                     {
                       "color": "red",
-                      "value": 0
+                      "value": 1
                     }
                   ]
                 }
