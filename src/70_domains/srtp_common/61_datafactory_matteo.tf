@@ -55,15 +55,6 @@ resource "azapi_resource" "sink_dataset" {
   }
 }
 
-# Il Mapping Data Flow viene definito tramite azurerm_data_factory_data_flow.
-# Il provider Terraform non espone una DSL nativa per i Data Flow:
-# la logica viene passata come script inline (formato proprietario ADF).
-#
-# Struttura del Data Flow:
-#   source (sourceCosmosDb)
-#     → filter (filterByCondition)   — filtra per campo/valore configurabile
-#     → derivedColumn (setTtl)       — imposta _ttl = costante (variabile)
-#     → sink (sinkCosmosDb)          — upsert su _id, scrive solo _ttl
 
 resource "azurerm_data_factory_data_flow" "update_ttl" {
   name            = "df_UpdateCosmosDbTTL_Matteo"
@@ -155,3 +146,19 @@ resource "azurerm_data_factory_pipeline" "update_ttl" {
     }
   ])
 }
+
+
+# # Trigger di schedulazione (ogni N minuti, configurabile via variabile)
+# resource "azurerm_data_factory_trigger_schedule" "update_ttl_schedule" {
+#   name            = "trg_UpdateCosmosDbTTL_Schedule"
+#   data_factory_id = data.azurerm_data_factory.data_factory.id
+#   pipeline_name   = azurerm_data_factory_pipeline.update_ttl.name
+
+#   interval  = var.pipeline_schedule_interval
+#   frequency = "Minute"
+
+#   # Il trigger parte attivo; mettilo a false se vuoi deployare in pausa
+#   activated = true
+
+#   annotations = []
+# }
