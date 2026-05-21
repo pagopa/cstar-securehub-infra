@@ -432,8 +432,8 @@ resource "kubernetes_cron_job_v1" "delivery_reward_batch" {
     timezone           = "Europe/Rome"
     concurrency_policy = "Forbid"
 
-    #Disable in DEV, UAT and PROD
-    suspend = true
+    #Active only in PROD
+    suspend = var.env_short != "p"
 
     job_template {
       metadata {
@@ -488,8 +488,8 @@ resource "kubernetes_cron_job_v1" "delivery_check_outcome_reward_batch" {
     timezone           = "Europe/Rome"
     concurrency_policy = "Forbid"
 
-    #Disable in DEV, UAT and PROD
-    suspend = true
+    #Active only in PROD
+    suspend = var.env_short != "p"
 
     job_template {
       metadata {
