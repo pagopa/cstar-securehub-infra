@@ -98,7 +98,7 @@ locals {
               unique = true
             },
             {
-              keys   = ["noticeNumber"]
+              keys   = ["message.nav"]
               unique = false
             },
             {
