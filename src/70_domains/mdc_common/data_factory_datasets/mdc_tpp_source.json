@@ -1,0 +1,15 @@
+{
+    "name": "mdc_tpp_source",
+    "properties": {
+        "linkedServiceName": {
+          "referenceName": "mdc-CosmosDB-mdc-ls",
+          "type": "LinkedServiceReference"
+        },
+        "annotations": [],
+        "type": "CosmosDbMongoDbApiCollection",
+        "typeProperties": {
+          "collection": "tpp"
+        }
+    },
+    "type": "Microsoft.DataFactory/factories/datasets"
+}

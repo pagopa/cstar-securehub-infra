@@ -1,0 +1,73 @@
+{
+  "name": "mdc_tpp_daily",
+  "properties": {
+    "activities": [
+      {
+        "name": "Clear Tpp table",
+        "type": "AzureDataExplorerCommand",
+        "typeProperties": {
+          "command": ".clear table TppDataSnapshot data",
+          "commandTimeout": "00:10:00"
+        },
+        "linkedServiceName": {
+          "referenceName": "mdc-Kusto-mdc-ls",
+          "type": "LinkedServiceReference"
+        }
+      },
+      {
+        "name": "Copy tpp data",
+        "type": "Copy",
+        "dependsOn": [
+          {
+            "activity": "Clear Tpp table",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "typeProperties": {
+          "source": {
+            "type": "CosmosDbMongoDbApiSource"
+          },
+          "sink": {
+            "type": "AzureDataExplorerSink"
+          },
+          "enableStaging": false,
+          "translator": {
+            "type": "TabularTranslator",
+            "mappings": [
+              {
+                "source": {
+                  "path": "$['tppId']"
+                },
+                "sink": {
+                  "name": "tpp_id"
+                }
+              },
+              {
+                "source": {
+                  "path": "$['businessName']"
+                },
+                "sink": {
+                  "name": "business_name"
+                }
+              }
+            ]
+          }
+        },
+        "inputs": [
+          {
+            "referenceName": "mdc_tpp_source",
+            "type": "DatasetReference"
+          }
+        ],
+        "outputs": [
+          {
+            "referenceName": "mdc_tpp_snapshot",
+            "type": "DatasetReference"
+          }
+        ]
+      }
+    ]
+  }
+}
