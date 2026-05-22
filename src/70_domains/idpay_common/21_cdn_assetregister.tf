@@ -31,6 +31,58 @@ locals {
       }
     }
   ]
+
+  # ──────────────────────────────────────────────────────────────────────────
+  # 🔒 Content Security Policy - CDN Asset Register
+  # ──────────────────────────────────────────────────────────────────────────
+  assetregister_csp_header_name = contains(["d"], var.env_short) ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
+
+  assetregister_csp_img_src = join(" ", [
+    "'self'",
+    "https://cdn.cookielaw.org/",
+    "https://selc${var.env_short}checkoutsa.z6.web.core.windows.net/",
+  ])
+
+  assetregister_csp_connect_src = join(" ", [
+    "'self'",
+    "https://api-io.${var.dns_zone_prefix}.${var.external_domain}/",
+    "https://api-eu.mixpanel.com/track/",
+    "https://cdn.cookielaw.org",
+    "https://privacyportal-de.onetrust.com",
+    "https://privacyportalde-cdn.onetrust.com",
+  ])
+
+  assetregister_csp_script_src = join(" ", [
+    "'self'",
+    "https://cdn.cookielaw.org",
+    "https://privacyportal-de.onetrust.com",
+    "https://privacyportalde-cdn.onetrust.com",
+  ])
+
+  assetregister_csp_style_src = join(" ", [
+    "'self'",
+    "'unsafe-inline'",
+    "https://${local.selfare_subdomain}.pagopa.it/assets/font/selfhostedfonts.css",
+    "https://privacyportal-de.onetrust.com",
+    "https://cdn.cookielaw.org",
+    "https://privacyportalde-cdn.onetrust.com",
+  ])
+
+  assetregister_csp_font_src = join(" ", [
+    "'self'",
+    "https://selfcare.pagopa.it/assets/font/",
+  ])
+
+  assetregister_csp_value = join("; ", [
+    "default-src 'self'",
+    "img-src ${local.assetregister_csp_img_src}",
+    "object-src 'none'",
+    "connect-src ${local.assetregister_csp_connect_src}",
+    "script-src ${local.assetregister_csp_script_src}",
+    "style-src ${local.assetregister_csp_style_src}",
+    "worker-src 'none'",
+    "font-src ${local.assetregister_csp_font_src}",
+  ])
 }
 
 /**
@@ -66,21 +118,12 @@ module "cdn_idpay_assetregister" {
     order = 1
     # HSTS
     modify_response_header_actions = [
+      # Content-Security-Policy (single header, Report-Only in dev)
       {
-        action = "Append"
-        name   = contains(["d"], var.env_short) ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
-        value  = "default-src 'self'; object-src 'none'; connect-src 'self' https://api-io.${var.dns_zone_prefix}.${var.external_domain}/ https://api-eu.mixpanel.com/track/ https://cdn.cookielaw.org https://privacyportal-de.onetrust.com https://privacyportalde-cdn.onetrust.com; script-src 'self' https://cdn.cookielaw.org https://privacyportal-de.onetrust.com https://privacyportalde-cdn.onetrust.com;"
+        action = "Overwrite"
+        name   = local.assetregister_csp_header_name
+        value  = local.assetregister_csp_value
       },
-      {
-        action = "Append"
-        name   = contains(["d"], var.env_short) ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
-        value  = "script-src 'self'  https://cdn.cookielaw.org https://privacyportalde-cdn.onetrust.com; style-src 'self' 'unsafe-inline' https://${local.selfare_subdomain}.pagopa.it/assets/font/selfhostedfonts.css https://privacyportal-de.onetrust.com https://cdn.cookielaw.org https://privacyportalde-cdn.onetrust.com; worker-src 'none'; font-src 'self' https://selfcare.pagopa.it/assets/font/; img-src 'self' https://cdn.cookielaw.org/ https://selc${var.env_short}checkoutsa.z6.web.core.windows.net/"
-      },
-      # {
-      #   action = "Append"
-      #   name   = "Content-Security-Policy-Report-Only"
-      #   value  = "img-src 'self' https://assets.cdn.io.italia.it https://${module.cdn_idpay_assetregister.storage_primary_web_host} https://${var.env != "prod" ? "${var.env}." : ""}{local.selfare_subdomain}.pagopa.it https://selc${var.env_short}checkoutsa.z6.web.core.windows.net/institutions/ data:; "
-      # },
 
     ]
     },

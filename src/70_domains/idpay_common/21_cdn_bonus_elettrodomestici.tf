@@ -65,25 +65,79 @@ locals {
 
   # Security Headers - Applied globally to all responses
   # These headers enhance security by preventing common attacks
+  #
+  # ──────────────────────────────────────────────────────────────────────────
+  # 🔒 Content Security Policy - CDN Bonus Elettrodomestici
+  # ──────────────────────────────────────────────────────────────────────────
+  bonus_csp_header_name = contains(["d"], var.env_short) ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
+
+  bonus_csp_img_src = join(" ", [
+    "'self'",
+    "https://assets.cdn.io.italia.it",
+    "https://${module.cdn_idpay_bonuselettrodomestici.storage_primary_web_host}",
+    "https://cdn.cookielaw.org",
+    "https://www.pagopa.it",
+    "data:",
+  ])
+
+  bonus_csp_frame_src = join(" ", [
+    "'self'",
+    "https://api-io.${var.dns_zone_prefix}.${var.external_domain}/",
+    "${local.mcshared_api_url}/",
+  ])
+
+  bonus_csp_connect_src = join(" ", [
+    "'self'",
+    "https://selfcare.pagopa.it",
+    "https://api-io.${var.dns_zone_prefix}.${var.external_domain}/",
+    "${local.mcshared_api_url}/",
+    "https://api-eu.mixpanel.com/track/",
+    "https://cdn.cookielaw.org",
+    "https://privacyportalde-cdn.onetrust.com",
+  ])
+
+  bonus_csp_script_src = join(" ", [
+    "'self'",
+    "'unsafe-inline'",
+    "https://cdn.cookielaw.org",
+    "https://privacyportalde-cdn.onetrust.com",
+  ])
+
+  bonus_csp_style_src = join(" ", [
+    "'self'",
+    "'unsafe-inline'",
+    "https://${local.selfare_subdomain}.pagopa.it/assets/font/selfhostedfonts.css",
+    "https://cdn.cookielaw.org",
+    "https://privacyportalde-cdn.onetrust.com",
+  ])
+
+  bonus_csp_font_src = join(" ", [
+    "'self'",
+    "https://${local.selfare_subdomain}.pagopa.it/assets/font/",
+  ])
+
+  bonus_csp_value = join("; ", [
+    "default-src 'self'",
+    "img-src ${local.bonus_csp_img_src}",
+    "object-src 'none'",
+    "frame-src ${local.bonus_csp_frame_src}",
+    "connect-src ${local.bonus_csp_connect_src}",
+    "script-src ${local.bonus_csp_script_src}",
+    "style-src ${local.bonus_csp_style_src}",
+    "worker-src 'none'",
+    "font-src ${local.bonus_csp_font_src}",
+  ])
+
   global_delivery_rules = [
     {
       order = 1
       modify_response_header_actions = [
+        # Content-Security-Policy (single header, Report-Only in dev)
         {
           action = "Overwrite"
-          name   = contains(["d"], var.env_short) ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
-          value  = "default-src 'self'; object-src 'none'; frame-src 'self' https://api-io.${var.dns_zone_prefix}.${var.external_domain}/ ${local.mcshared_api_url}/; connect-src 'self' https://selfcare.pagopa.it https://api-io.${var.dns_zone_prefix}.${var.external_domain}/ ${local.mcshared_api_url}/ https://api-eu.mixpanel.com/track/ https://cdn.cookielaw.org https://privacyportalde-cdn.onetrust.com;"
+          name   = local.bonus_csp_header_name
+          value  = local.bonus_csp_value
         },
-        {
-          action = "Append"
-          name   = contains(["d"], var.env_short) ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
-          value  = "script-src 'self' 'unsafe-inline' https://cdn.cookielaw.org https://privacyportalde-cdn.onetrust.com; style-src 'self' 'unsafe-inline' https://${local.selfare_subdomain}.pagopa.it/assets/font/selfhostedfonts.css https://cdn.cookielaw.org https://privacyportalde-cdn.onetrust.com; worker-src 'none'; font-src 'self' https://${local.selfare_subdomain}.pagopa.it/assets/font/;"
-        },
-        {
-          action = "Append"
-          name   = contains(["d"], var.env_short) ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
-          value  = "img-src 'self' https://assets.cdn.io.italia.it https://${module.cdn_idpay_bonuselettrodomestici.storage_primary_web_host} https://cdn.cookielaw.org https://www.pagopa.it data:;"
-        }
       ]
     },
     {
