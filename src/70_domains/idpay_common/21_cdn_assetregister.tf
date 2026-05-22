@@ -116,7 +116,6 @@ module "cdn_idpay_assetregister" {
 
   global_delivery_rules = [{
     order = 1
-    # HSTS
     modify_response_header_actions = [
       # Content-Security-Policy (single header, Report-Only in dev)
       {

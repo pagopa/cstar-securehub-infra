@@ -114,7 +114,6 @@ module "cdn_idpay_welfare" {
 
   global_delivery_rules = [{
     order = 1
-    # Content-Security-Policy
     modify_response_header_actions = [
       # Content-Security-Policy (single header, Report-Only in dev)
       {
