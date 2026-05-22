@@ -94,6 +94,30 @@ resource "azurerm_data_factory_data_flow" "update_ttl" {
         enableChangeFeed: false,
         format: 'document') ~> sourceCosmosDb
 
+    sourceCosmosDb filter(
+        toString(byName('status')) == 'RFC_SENT'
+    ) ~> filterByCondition
+
+    filterByCondition derive(
+        _ttl = 1
+    ) ~> setTtl
+
+    setTtl sink(
+        allowSchemaDrift: true,
+        validateSchema: false,
+        format: 'document',
+        deletable: false,
+        insertable: false,
+        updateable: false,
+        upsertable: true,
+        keys: ['_id'],
+        saveOrder: 1,
+        mapColumn(
+            _id,
+            _ttl
+        )
+    ) ~> sinkCosmosDb
+
   SCRIPT
 }
 
