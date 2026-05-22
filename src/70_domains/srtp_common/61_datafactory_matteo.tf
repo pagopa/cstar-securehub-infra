@@ -1,14 +1,21 @@
 ### test matteo
-resource "azurerm_data_factory_linked_service_cosmosdb_mongoapi" "cosmos_mongo" {
+
+resource "azurerm_data_factory_linked_custom_service" "cosmos_mongo" {
+
   name            = "ls_cosmosdb_mongo_matteo"
   data_factory_id = data.azurerm_data_factory.data_factory.id
+  type            = "CosmosDbMongoDbApi"
+  type_properties_json = jsonencode({
+    connectionString       = module.cosmos_db_account.primary_connection_strings
+    account                = module.cosmos_db_account.name
+    database               = "rtp"
+    isServerVersionAbove32 = true
+  })
 
-  connection_string =  module.cosmos_db_account.primary_connection_strings
-  
-
-  database = "rtp"
+  integration_runtime {
+    name = "AutoResolveIntegrationRuntime"
+  }
 }
-
 
 
 resource "azapi_resource" "source_dataset" {
@@ -22,7 +29,7 @@ resource "azapi_resource" "source_dataset" {
       type        = "CosmosDbMongoDbApiCollection"
 
       linkedServiceName = {
-        referenceName = azurerm_data_factory_linked_service_cosmosdb_mongoapi.cosmos_mongo.name
+        referenceName = azurerm_data_factory_linked_custom_service.cosmos_mongo.name
         type          = "LinkedServiceReference"
       }
 
@@ -44,7 +51,7 @@ resource "azapi_resource" "sink_dataset" {
       type        = "CosmosDbMongoDbApiCollection"
 
       linkedServiceName = {
-        referenceName = azurerm_data_factory_linked_service_cosmosdb_mongoapi.cosmos_mongo.name
+        referenceName = azurerm_data_factory_linked_custom_service.cosmos_mongo.name
         type          = "LinkedServiceReference"
       }
 
@@ -87,29 +94,6 @@ resource "azurerm_data_factory_data_flow" "update_ttl" {
         enableChangeFeed: false,
         format: 'document') ~> sourceCosmosDb
 
-    sourceCosmosDb filter(
-        toString(byName('status')) == 'send') // Condizione di filtro: solo documenti con campo 'status' uguale a 'send'
-    ) ~> filterByCondition
-
-    filterByCondition derive(
-        _ttl = 1 // Valore TTL da impostare, configurabile tramite variabile Terraform
-    ) ~> setTtl
-
-    setTtl sink(
-        allowSchemaDrift: true,
-        validateSchema: false,
-        format: 'document',
-        deletable: false,
-        insertable: false,
-        updateable: false,
-        upsertable: true,
-        keys: ['_id'],
-        saveOrder: 1,
-        mapColumn(
-            _id,
-            _ttl
-        )
-    ) ~> sinkCosmosDb
   SCRIPT
 }
 
