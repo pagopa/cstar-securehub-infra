@@ -32,14 +32,16 @@ locals {
   # ──────────────────────────────────────────────────────────────────────────
   welfare_csp_header_name = contains(["d"], var.env_short) ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
 
+  # Azure Static Website host derived from storage account name (avoids circular dependency with module output)
+  welfare_storage_web_host = "${local.project}welcdnsa.${local.azure_web_zone}.web.core.windows.net"
+
   welfare_csp_img_src = join(" ", [
     "'self'",
     "https://assets.cdn.io.italia.it",
-    "https://${module.cdn_idpay_welfare.storage_primary_web_host}",
+    "https://${local.welfare_storage_web_host}",
     "https://${var.env != "prod" ? "${var.env}." : ""}${local.selfare_subdomain}.pagopa.it",
     "https://selc${var.env_short}checkoutsa.z6.web.core.windows.net/",
     "https://cdn.cookielaw.org/",
-    "https://selc${var.env_short}checkoutsa.z6.web.core.windows.net/",
     "data:",
   ])
 

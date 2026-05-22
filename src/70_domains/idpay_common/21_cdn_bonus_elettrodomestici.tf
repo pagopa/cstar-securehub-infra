@@ -71,10 +71,13 @@ locals {
   # ──────────────────────────────────────────────────────────────────────────
   bonus_csp_header_name = contains(["d"], var.env_short) ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
 
+  # Azure Static Website host derived from storage account name (avoids circular dependency with module output)
+  bonus_storage_web_host = "${local.cdn_storage_account_name}.${local.azure_web_zone}.web.core.windows.net"
+
   bonus_csp_img_src = join(" ", [
     "'self'",
     "https://assets.cdn.io.italia.it",
-    "https://${module.cdn_idpay_bonuselettrodomestici.storage_primary_web_host}",
+    "https://${local.bonus_storage_web_host}",
     "https://cdn.cookielaw.org",
     "https://www.pagopa.it",
     "data:",

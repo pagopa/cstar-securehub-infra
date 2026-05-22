@@ -27,6 +27,13 @@ locals {
 
   selfare_subdomain = "selfcare"
 
+  # Azure Static Website zone identifier (region-dependent, used to derive storage web host without circular deps)
+  azure_web_zone_by_location = {
+    "italynorth" = "z26"
+    "westeurope" = "z6"
+  }
+  azure_web_zone = lookup(local.azure_web_zone_by_location, var.location, "z26")
+
   ########################################
   # Bonus Elettrodomestici DNS Public zone
   ########################################
