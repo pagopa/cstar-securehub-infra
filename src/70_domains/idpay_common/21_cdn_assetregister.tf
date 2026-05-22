@@ -38,12 +38,12 @@ locals {
   assetregister_csp_header_name = contains(["d"], var.env_short) ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
 
   # Azure Static Website host derived from storage account name (avoids circular dependency with module output)
-  bonus_static_web_host_checkout = "selc${var.env_short}checkoutsa.z6.web.core.windows.net"
+  assetregister_static_web_host_checkout = "selc${var.env_short}checkoutsa.z6.web.core.windows.net"
 
   assetregister_csp_img_src = join(" ", [
     "'self'",
     "https://cdn.cookielaw.org/",
-    "https://${local.bonus_static_web_host_checkout}",
+    "https://${local.assetregister_static_web_host_checkout}",
   ])
 
   assetregister_csp_connect_src = join(" ", [
