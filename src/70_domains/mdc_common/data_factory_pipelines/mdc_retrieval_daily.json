@@ -1,0 +1,58 @@
+{
+  "name": "mdc_retrieval_daily",
+  "properties": {
+    "activities": [
+      {
+        "name": "Delete previous day data",
+        "type": "AzureDataExplorerCommand",
+        "typeProperties": {
+          "command": ".delete table RetrievalIdVolumeSnapshot records <| RetrievalIdVolumeSnapshot | where window_start >= startofday(ago(1d)) and window_start < startofday(now())",
+          "commandTimeout": "00:10:00"
+        },
+        "linkedServiceName": {
+          "referenceName": "mdc-Kusto-mdc-ls",
+          "type": "LinkedServiceReference"
+        }
+      },
+      {
+        "name": "Copy retrieval volume",
+        "type": "Copy",
+        "dependsOn": [
+          {
+            "activity": "Delete previous day data",
+            "dependencyConditions": [ "Succeeded" ]
+          }
+        ],
+        "inputs": [
+          { "referenceName": "mdc_retrieval_source", "type": "DatasetReference" }
+        ],
+        "outputs": [
+          { "referenceName": "mdc_retrieval_snapshot", "type": "DatasetReference" }
+        ],
+        "typeProperties": {
+          "source": {
+            "type": "RestSource",
+            "requestMethod": "POST",
+            "requestBody": "{\"query\": \"let start = startofday(ago(1d)); let end = startofday(now()); AppTraces | where TimeGenerated >= start and TimeGenerated < end | where Message has '[EMD][PAYMENT][GET-RETRIEVAL]' | extend tpp_id = tostring(Properties.tppId) | summarize retrieval_count = count() by window_start = bin(TimeGenerated, 1h), tpp_id | project window_start = tostring(window_start), tpp_id, retrieval_count | order by window_start asc\"}",
+            "additionalHeaders": {
+              "Content-Type": "application/json"
+            }
+          },
+          "sink": {
+            "type": "AzureDataExplorerSink",
+            "flushImmediately": true
+          },
+          "translator": {
+            "type": "TabularTranslator",
+            "mappings": [
+              { "source": { "path": "$[0]" }, "sink": { "name": "window_start", "type": "DateTime" } },
+              { "source": { "path": "$[1]" }, "sink": { "name": "tpp_id", "type": "String" } },
+              { "source": { "path": "$[2]" }, "sink": { "name": "retrieval_count", "type": "Int64" } }
+            ],
+            "collectionReference": "$.tables[0].rows"
+          }
+        }
+      }
+    ]
+  }
+}
