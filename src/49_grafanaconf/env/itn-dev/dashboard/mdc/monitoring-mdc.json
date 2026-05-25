@@ -965,7 +965,7 @@
             }
           },
           "pluginVersion": "7.2.2",
-          "query": "CitizenMetricsSnapshot\r\n| extend consents_dynamic = todynamic(consents)\r\n| mv-expand psp_id = bag_keys(consents_dynamic)\r\n| extend psp_id = tostring(psp_id)\r\n| extend tcDate_ms = tolong(consents_dynamic[psp_id].tcDate[\"$date\"])\r\n| extend tppDate = datetime(1970-01-01) + totimespan(tcDate_ms * 1ms)\r\n| where $__timeFilter(tppDate)\r\n| extend is_active = tobool(consents_dynamic[psp_id].tppState)\r\n| where is_active == true\r\n| lookup kind=leftouter TppDataSnapshot on $left.psp_id == $right.tpp_id\r\n| summarize ActiveCitizens = count_distinct(fiscal_code) by psp_name = coalesce(business_name, psp_id)\r\n| order by ActiveCitizens desc",
+          "query": "CitizenMetricsSnapshot\r\n| extend consents_dynamic = todynamic(consents)\r\n| mv-expand tpp_id = bag_keys(consents_dynamic)\r\n| extend tpp_id = tostring(tpp_id)\r\n| extend tcDate_ms = tolong(consents_dynamic[tpp_id].tcDate[\"$date\"])\r\n| extend tppDate = datetime(1970-01-01) + totimespan(tcDate_ms * 1ms)\r\n| where $__timeFilter(tppDate)\r\n| extend is_active = tobool(consents_dynamic[tpp_id].tppState)\r\n| where is_active == true\r\n| lookup kind=leftouter TppDataSnapshot on tpp_id\r\n|summarize ActiveCitizens = count_distinct(fiscal_code) by psp_name = coalesce(business_name, tpp_id)\r\n| order by ActiveCitizens desc",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
