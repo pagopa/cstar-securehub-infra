@@ -19,7 +19,7 @@
 
 .create-merge table RetrievalIdVolumeSnapshot (
     window_start: datetime,
-    tpp_id: string,
+    entity_id: string,
     retrieval_count: long
 )
 
