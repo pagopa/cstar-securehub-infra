@@ -1,6 +1,6 @@
 locals {
-  theme_dir      = "${path.module}/k8s/keycloak/themes/pagopa"
-  files          = fileset(local.theme_dir, "**")
+  themes_dir     = "${path.module}/k8s/keycloak/themes"
+  files          = fileset(local.themes_dir, "**")
   binary_exts    = [".png", ".jpg", ".jpeg", ".ico", ".woff", ".woff2"]
   provider_dir   = "${path.module}/k8s/keycloak/providers"
   provider_files = fileset(local.provider_dir, "*.jar")
@@ -9,13 +9,13 @@ locals {
 
   text_files = {
     for f in local.files :
-    local.flattened_key[f] => file("${local.theme_dir}/${f}")
+    local.flattened_key[f] => file("${local.themes_dir}/${f}")
     if !endswith(f, "/") && !contains(local.binary_exts, lower(substr(f, length(f) - 4, 5)))
   }
 
   binary_files = {
     for f in local.files :
-    local.flattened_key[f] => filebase64("${local.theme_dir}/${f}")
+    local.flattened_key[f] => filebase64("${local.themes_dir}/${f}")
     if !endswith(f, "/") && contains(local.binary_exts, lower(substr(f, length(f) - 4, 5)))
   }
 
@@ -31,7 +31,7 @@ locals {
   theme_volume_mounts = [
     for f in local.files : {
       name      = "pagopa-theme"
-      mountPath = "/opt/bitnami/keycloak/themes/pagopa/${f}"
+      mountPath = "/opt/bitnami/keycloak/themes/${f}"
       subPath   = local.flattened_key[f]
       readOnly  = true
     }
