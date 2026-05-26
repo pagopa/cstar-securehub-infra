@@ -45,6 +45,10 @@
                 }
               },
               {
+                "source": { "path": "$['entityId']" },
+                "sink": { "name": "entity_id" }
+              },
+              {
                 "source": {
                   "path": "$['businessName']"
                 },
