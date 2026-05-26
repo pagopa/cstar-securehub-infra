@@ -33,7 +33,7 @@
           "source": {
             "type": "RestSource",
             "requestMethod": "POST",
-            "requestBody": "{\"query\": \"let start = startofday(ago(1d)); let end = startofday(now()); AppTraces | where TimeGenerated >= start and TimeGenerated < end | where Message has '[EMD][PAYMENT][SAVE-RETRIEVAL]' | extend entity_id = extract('entityId:([0-9a-zA-Z]+)', 1, Message) | summarize retrieval_count = count() by window_start = bin(TimeGenerated, 1h), entity_id | project window_start = tostring(window_start), entity_id, retrieval_count | order by window_start asc\"}",
+            "requestBody": "{\"query\": \"let start = startofday(ago(1d)); let end = startofday(now()); AppTraces | where TimeGenerated >= start and TimeGenerated < end | where Message has '[EMD][PAYMENT][SAVE-RETRIEVAL]' | where Message has 'Saved retrieval' | extend entity_id = extract('entityId:([0-9a-zA-Z]+)', 1, Message) | summarize retrieval_count = count() by window_start = bin(TimeGenerated, 1h), entity_id | project window_start = tostring(window_start), entity_id, retrieval_count | order by window_start asc\"}",
             "additionalHeaders": {
               "Content-Type": "application/json"
             }
