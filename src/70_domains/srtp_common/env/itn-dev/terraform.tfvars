@@ -32,3 +32,7 @@ aks_nodepool_green = {
 
 ### Redis Cache
 redis_idh_resource_tier = "basic"
+
+### ADX
+adx_db_soft_delete_period_days = 7
+adx_db_hot_cache_period_days   = 3
