@@ -42,7 +42,7 @@ locals {
 
   assetregister_csp_img_src = join(" ", [
     "'self'",
-    "https://cdn.cookielaw.org/",
+    "https://*.cookielaw.org",
     "https://${local.assetregister_static_web_host_checkout}",
   ])
 
@@ -50,25 +50,22 @@ locals {
     "'self'",
     "https://api-io.${var.dns_zone_prefix}.${var.external_domain}/",
     "https://api-eu.mixpanel.com/track/",
-    "https://cdn.cookielaw.org",
-    "https://privacyportal-de.onetrust.com",
-    "https://privacyportalde-cdn.onetrust.com",
+    "https://*.cookielaw.org",
+    "https://*.onetrust.com",
   ])
 
   assetregister_csp_script_src = join(" ", [
     "'self'",
-    "https://cdn.cookielaw.org",
-    "https://privacyportal-de.onetrust.com",
-    "https://privacyportalde-cdn.onetrust.com",
+    "https://*.cookielaw.org",
+    "https://*.onetrust.com",
   ])
 
   assetregister_csp_style_src = join(" ", [
     "'self'",
     "'unsafe-inline'",
-    "https://${local.selfare_subdomain}.pagopa.it/assets/font/selfhostedfonts.css",
-    "https://privacyportal-de.onetrust.com",
-    "https://cdn.cookielaw.org",
-    "https://privacyportalde-cdn.onetrust.com",
+    "https://${local.selfare_subdomain}.pagopa.it",
+    "https://*.onetrust.com",
+    "https://*.cookielaw.org",
   ])
 
   assetregister_csp_font_src = join(" ", [
