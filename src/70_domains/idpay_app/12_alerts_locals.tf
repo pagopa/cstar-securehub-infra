@@ -1375,12 +1375,82 @@ locals {
     }
   }
 
+  # =============================================================
+  # 🧩 Cronjob alerts
+  # =============================================================
+
+  alerts_cronJob = {
+
+    # Batch evaluate/approve
+    batch_evaluate_or_approve_alert = {
+      name        = "batch_evaluate_or_approve_alert"
+      description = "Batch (evaluate or approve): error threshold exceeded (5xx > 5/5m for endpoint)"
+      severity    = 3
+
+      data_source_id = data.azurerm_application_insights.core_app_insights.id
+
+      query = format(<<-QUERY
+          requests
+          | where operation_Name matches regex @"^POST /idpay/merchant/portal/initiatives/[^/]+/reward-batches/(evaluate|approved)"
+          | where success == false
+        QUERY
+        , data.azurerm_application_insights.core_app_insights.id
+      )
+
+      trigger = {
+        operator  = "GreaterThanOrEqual"
+        threshold = 5
+      }
+
+      email_subject = "[PARI][BATCH] Batch evaluate or approve alert"
+    }
+  }
+
+  # =============================================================
+  # 🧩 ADX alerts
+  # =============================================================
+
+  alerts_adx = {
+
+    reward_batch_transaction_mismatch_alert = {
+      name        = "reward-batch-transaction-mismatch-alert"
+      description = "Reward batch transaction: count mismatch detected"
+      severity    = 4
+      frequency   = 1440
+      time_window = 1440
+
+      data_source_id = data.azurerm_kusto_cluster.kusto_cluster.id
+
+      query       = <<-QUERY
+            let TrxCountByBatch =
+            transaction
+            | where isnotempty(rewardBatchId)
+            | summarize trx_count = count() by rewardBatchId;
+            rewards_batch
+            | extend batch_id = tostring(_id), expected_count = tolong(numberOfTransactions)
+            | join kind=leftouter TrxCountByBatch on $left.batch_id == $right.rewardBatchId
+            | extend trx_count = coalesce(trx_count, 0)
+            | where expected_count != trx_count
+            | count
+          QUERY
+
+      trigger = {
+        operator  = "GreaterThanOrEqual"
+        threshold = 10
+      }
+
+      email_subject = "[PARI][ADX][LOW] Reward batch mismatch detected"
+    }
+  }
+
   # 🧱 Collection of alert groups
   alerts_groups = [
     local.alerts_eie,
     local.alerts_ese,
     local.alerts_upbe,
-    local.alerts_keycloak
+    local.alerts_keycloak,
+    local.alerts_cronJob,
+    local.alerts_adx
   ]
 
   # ✅ Final alerts map ready for consumption: flattens every group, applies the base config and exposes a single map consumed by azurerm_monitor_scheduled_query_rules_alert
