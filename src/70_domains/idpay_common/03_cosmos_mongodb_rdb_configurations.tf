@@ -94,6 +94,14 @@ locals {
           unique = false
         },
         {
+          keys   = ["productCode"]
+          unique = false
+        },
+        {
+          keys   = ["gtinCode"]
+          unique = false
+        },
+        {
           keys   = ["fullProductName"]
           unique = false
         },
