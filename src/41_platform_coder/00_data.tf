@@ -29,6 +29,11 @@ data "azurerm_key_vault_secret" "keycloak_url" {
   key_vault_id = data.azurerm_key_vault.key_vault_core.id
 }
 
+data "azurerm_key_vault_secret" "itwallet-oid4vp-x509-certificate-pem" {
+  name         = "itwallet-oid4vp-x509-certificate-pem"
+  key_vault_id = data.azurerm_key_vault.key_vault_core.id
+}
+
 module "core_secrets" {
   source = "./.terraform/modules/__v4__/key_vault_secrets_query"
 
