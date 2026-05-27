@@ -392,6 +392,20 @@ locals {
         }
       ]
     },
+    "idpay-product-catalog-portal" = {
+      repository_secrets = [
+        {
+          SONAR_TOKEN = data.azurerm_key_vault_secret.sonar_token.value
+        }
+      ]
+      repository_variables = [
+        {
+          SONARCLOUD_ORG          = "pagopa"
+          SONARCLOUD_PROJECT_KEY  = "pagopa_idpay-product-catalog-portal"
+          SONARCLOUD_PROJECT_NAME = "idpay-product-catalog-portal"
+        }
+      ]
+    },
     "idpay-outbox-processor" = {
       repository_secrets = [
         {
