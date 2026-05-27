@@ -1,7 +1,7 @@
 locals {
-  project      = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
-  project_core = "${var.prefix}-${var.env_short}-${var.location_short}-core"
-  product      = "${var.prefix}-${var.env_short}"
+  project           = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
+  project_core      = "${var.prefix}-${var.env_short}-${var.location_short}-core"
+  product           = "${var.prefix}-${var.env_short}"
   product_no_domain = "${var.prefix}-${var.env_short}-${var.location_short}"
 
   monitor_appinsights_name        = "${local.product}-appinsights"

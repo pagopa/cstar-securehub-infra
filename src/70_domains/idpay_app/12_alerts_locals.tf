@@ -1421,7 +1421,7 @@ locals {
 
       data_source_id = data.azurerm_kusto_cluster.kusto_cluster.id
 
-      query       = <<-QUERY
+      query = <<-QUERY
             let TrxCountByBatch =
             transaction
             | where isnotempty(rewardBatchId)
