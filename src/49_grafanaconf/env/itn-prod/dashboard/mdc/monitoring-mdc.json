@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 261,
+  "id": 0,
   "links": [],
   "panels": [
     {
@@ -536,6 +536,100 @@
         "x": 0,
         "y": 21
       },
+      "id": 15,
+      "panels": [],
+      "title": "Flusso messaggi accettati",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-data-explorer-datasource",
+        "uid": "${ds}"
+      },
+      "description": "Monitoraggio numero di notifiche lette dall'app",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 22
+      },
+      "id": 16,
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "OpenAI": false,
+          "database": "mdc",
+          "datasource": {
+            "type": "grafana-azure-data-explorer-datasource",
+            "uid": "${ds}"
+          },
+          "expression": {
+            "groupBy": {
+              "expressions": [],
+              "type": "and"
+            },
+            "reduce": {
+              "expressions": [],
+              "type": "and"
+            },
+            "where": {
+              "expressions": [],
+              "type": "and"
+            }
+          },
+          "pluginVersion": "7.2.2",
+          "query": "RetrievalIdVolumeSnapshot\r\n| where $__timeFilter(window_start)\r\n| join kind=inner (\r\n    MessageSnapshot\r\n    | summarize arg_max(window_start, associated_payment) by origin_id\r\n) on origin_id\r\n| join kind=inner TppDataSnapshot on entity_id\r\n| summarize \r\n    ['Lette con Pagamento'] = sumif(retrieval_count, associated_payment == true),\r\n    ['Lette senza Pagamento'] = sumif(retrieval_count, associated_payment == false),\r\n    ['Totale'] = sum(retrieval_count)\r\nby PSP = business_name\r\n| order by ['Totale'] desc",
+          "querySource": "raw",
+          "queryType": "KQL",
+          "rawMode": true,
+          "refId": "A",
+          "resultFormat": "table"
+        }
+      ],
+      "title": "Notifiche lette per PSP",
+      "type": "table"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 30
+      },
       "id": 8,
       "panels": [],
       "title": "Consensi cittadini",
@@ -568,7 +662,7 @@
         "h": 8,
         "w": 5,
         "x": 0,
-        "y": 22
+        "y": 31
       },
       "id": 2,
       "options": {
@@ -663,7 +757,7 @@
         "h": 8,
         "w": 5,
         "x": 5,
-        "y": 22
+        "y": 31
       },
       "id": 1,
       "options": {
@@ -790,7 +884,7 @@
         "h": 8,
         "w": 14,
         "x": 10,
-        "y": 22
+        "y": 31
       },
       "id": 3,
       "options": {
@@ -861,6 +955,116 @@
         }
       ],
       "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-data-explorer-datasource",
+        "uid": "${ds}"
+      },
+      "description": "Monitoraggio dei cittadini attivi aggregati per PSP",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 39
+      },
+      "id": 13,
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.97,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": true
+        },
+        "orientation": "auto",
+        "showValue": "never",
+        "stacking": "none",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "OpenAI": false,
+          "database": "mdc",
+          "datasource": {
+            "type": "grafana-azure-data-explorer-datasource",
+            "uid": "${ds}"
+          },
+          "expression": {
+            "groupBy": {
+              "expressions": [],
+              "type": "and"
+            },
+            "reduce": {
+              "expressions": [],
+              "type": "and"
+            },
+            "where": {
+              "expressions": [],
+              "type": "and"
+            }
+          },
+          "pluginVersion": "7.2.2",
+          "query": "CitizenMetricsSnapshot\r\n| extend consents_dynamic = todynamic(consents)\r\n| mv-expand tpp_id = bag_keys(consents_dynamic)\r\n| extend tpp_id = tostring(tpp_id)\r\n| extend tcDate_ms = tolong(consents_dynamic[tpp_id].tcDate[\"$date\"])\r\n| extend tppDate = datetime(1970-01-01) + totimespan(tcDate_ms * 1ms)\r\n| where $__timeFilter(tppDate)\r\n| extend is_active = tobool(consents_dynamic[tpp_id].tppState)\r\n| where is_active == true\r\n| lookup kind=leftouter TppDataSnapshot on tpp_id \r\n| summarize ['Cittadini attivi'] = count_distinct(fiscal_code) by PSP = coalesce(business_name, tpp_id)\r\n| order by ['Cittadini attivi'] desc",
+          "querySource": "raw",
+          "queryType": "KQL",
+          "rawMode": true,
+          "refId": "A",
+          "resultFormat": "table"
+        }
+      ],
+      "title": "Cittadini attivi per PSP",
+      "type": "barchart"
     }
   ],
   "preload": false,
@@ -892,5 +1096,5 @@
   "timezone": "utc",
   "title": "Monitoraggio MDC",
   "uid": "efj6fhop10um8c",
-  "version": 27
+  "version": 46
 }
