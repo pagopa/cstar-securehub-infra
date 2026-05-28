@@ -78,7 +78,7 @@ locals {
     "'self'",
     "https://assets.cdn.io.italia.it",
     "https://${local.bonus_static_web_host_checkout}",
-    "https://cdn.cookielaw.org",
+    "https://*.cookielaw.org",
     "https://www.pagopa.it",
     "data:",
   ])
@@ -95,23 +95,23 @@ locals {
     "https://api-io.${var.dns_zone_prefix}.${var.external_domain}/",
     "${local.mcshared_api_url}/",
     "https://api-eu.mixpanel.com/track/",
-    "https://cdn.cookielaw.org",
-    "https://privacyportalde-cdn.onetrust.com",
+    "https://*.cookielaw.org",
+    "https://*.onetrust.com",
   ])
 
   bonus_csp_script_src = join(" ", [
     "'self'",
     "'unsafe-inline'",
-    "https://cdn.cookielaw.org",
-    "https://privacyportalde-cdn.onetrust.com",
+    "https://*.cookielaw.org",
+    "https://*.onetrust.com",
   ])
 
   bonus_csp_style_src = join(" ", [
     "'self'",
     "'unsafe-inline'",
-    "https://${local.selfare_subdomain}.pagopa.it/assets/font/selfhostedfonts.css",
-    "https://cdn.cookielaw.org",
-    "https://privacyportalde-cdn.onetrust.com",
+    "https://${local.selfare_subdomain}.pagopa.it",
+    "https://*.cookielaw.org",
+    "https://*.onetrust.com",
   ])
 
   bonus_csp_font_src = join(" ", [
