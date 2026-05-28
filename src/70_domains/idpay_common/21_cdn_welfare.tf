@@ -40,7 +40,7 @@ locals {
     "https://assets.cdn.io.italia.it",
     "https://${local.welfare_static_web_host_checkout}",
     "https://${var.env != "prod" ? "${var.env}." : ""}${local.selfare_subdomain}.pagopa.it",
-    "https://cdn.cookielaw.org/",
+    "https://*.cookielaw.org",
     "data:",
   ])
 
@@ -48,24 +48,22 @@ locals {
     "'self'",
     "https://api-io.${var.dns_zone_prefix}.${var.external_domain}/",
     "https://api-eu.mixpanel.com/track/",
-    "https://cdn.cookielaw.org",
-    "https://privacyportal-de.onetrust.com",
-    "https://privacyportalde-cdn.onetrust.com",
+    "https://*.cookielaw.org",
+    "https://*.onetrust.com",
     "https://${module.storage_idpay_refund.name}.blob.core.windows.net",
   ])
 
   welfare_csp_script_src = join(" ", [
     "'self'",
-    "https://cdn.cookielaw.org",
-    "https://privacyportal-de.onetrust.com",
-    "https://privacyportalde-cdn.onetrust.com",
+    "https://*.cookielaw.org",
+    "https://*.onetrust.com",
   ])
 
   welfare_csp_style_src = join(" ", [
     "'self'",
     "'unsafe-inline'",
-    "https://${local.selfare_subdomain}.pagopa.it/assets/font/selfhostedfonts.css",
-    "https://privacyportalde-cdn.onetrust.com",
+    "https://${local.selfare_subdomain}.pagopa.it",
+    "https://*.onetrust.com",
   ])
 
   welfare_csp_font_src = join(" ", [
