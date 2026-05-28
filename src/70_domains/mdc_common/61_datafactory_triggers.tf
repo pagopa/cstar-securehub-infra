@@ -2,6 +2,7 @@ locals {
   # Daily pipelines — run on 00:xx
   pipelines_daily = [
     "mdc_citizen_metrics_daily",
+    "mdc_tpp_daily",
   ]
 
   # Daily pipelines for logs reading — run after 00:00UTC (>= 02:00 CEST)
