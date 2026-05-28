@@ -42,7 +42,7 @@ locals {
 
   assetregister_csp_img_src = join(" ", [
     "'self'",
-    "https://*.cookielaw.org",
+    "https://cdn.cookielaw.org/",
     "https://${local.assetregister_static_web_host_checkout}",
   ])
 
@@ -50,22 +50,25 @@ locals {
     "'self'",
     "https://api-io.${var.dns_zone_prefix}.${var.external_domain}/",
     "https://api-eu.mixpanel.com/track/",
-    "https://*.cookielaw.org",
-    "https://*.onetrust.com",
+    "https://cdn.cookielaw.org",
+    "https://privacyportal-de.onetrust.com",
+    "https://privacyportalde-cdn.onetrust.com",
   ])
 
   assetregister_csp_script_src = join(" ", [
     "'self'",
-    "https://*.cookielaw.org",
-    "https://*.onetrust.com",
+    "https://cdn.cookielaw.org",
+    "https://privacyportal-de.onetrust.com",
+    "https://privacyportalde-cdn.onetrust.com",
   ])
 
   assetregister_csp_style_src = join(" ", [
     "'self'",
     "'unsafe-inline'",
-    "https://${local.selfare_subdomain}.pagopa.it",
-    "https://*.onetrust.com",
-    "https://*.cookielaw.org",
+    "https://${local.selfare_subdomain}.pagopa.it/assets/font/selfhostedfonts.css",
+    "https://privacyportal-de.onetrust.com",
+    "https://cdn.cookielaw.org",
+    "https://privacyportalde-cdn.onetrust.com",
   ])
 
   assetregister_csp_font_src = join(" ", [
@@ -73,11 +76,14 @@ locals {
     "https://selfcare.pagopa.it/assets/font/",
   ])
 
-  assetregister_csp_value = join("; ", [
+  assetregister_csp_value_part1 = join("; ", [
     "default-src 'self'",
     "img-src ${local.assetregister_csp_img_src}",
     "object-src 'none'",
     "connect-src ${local.assetregister_csp_connect_src}",
+  ])
+
+  assetregister_csp_value_part2 = join("; ", [
     "script-src ${local.assetregister_csp_script_src}",
     "style-src ${local.assetregister_csp_style_src}",
     "worker-src 'none'",
@@ -117,13 +123,18 @@ module "cdn_idpay_assetregister" {
   global_delivery_rules = [{
     order = 1
     modify_response_header_actions = [
-      # Content-Security-Policy (single header, Report-Only in dev)
+      # Content-Security-Policy part 1 (Overwrite)
       {
         action = "Overwrite"
         name   = local.assetregister_csp_header_name
-        value  = local.assetregister_csp_value
+        value  = local.assetregister_csp_value_part1
       },
-
+      # Content-Security-Policy part 2 (Append)
+      {
+        action = "Append"
+        name   = local.assetregister_csp_header_name
+        value  = local.assetregister_csp_value_part2
+      },
     ]
     },
     {

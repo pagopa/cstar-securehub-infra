@@ -40,7 +40,7 @@ locals {
     "https://assets.cdn.io.italia.it",
     "https://${local.welfare_static_web_host_checkout}",
     "https://${var.env != "prod" ? "${var.env}." : ""}${local.selfare_subdomain}.pagopa.it",
-    "https://*.cookielaw.org",
+    "https://cdn.cookielaw.org/",
     "data:",
   ])
 
@@ -48,22 +48,24 @@ locals {
     "'self'",
     "https://api-io.${var.dns_zone_prefix}.${var.external_domain}/",
     "https://api-eu.mixpanel.com/track/",
-    "https://*.cookielaw.org",
-    "https://*.onetrust.com",
+    "https://cdn.cookielaw.org",
+    "https://privacyportal-de.onetrust.com",
+    "https://privacyportalde-cdn.onetrust.com",
     "https://${module.storage_idpay_refund.name}.blob.core.windows.net",
   ])
 
   welfare_csp_script_src = join(" ", [
     "'self'",
-    "https://*.cookielaw.org",
-    "https://*.onetrust.com",
+    "https://cdn.cookielaw.org",
+    "https://privacyportal-de.onetrust.com",
+    "https://privacyportalde-cdn.onetrust.com",
   ])
 
   welfare_csp_style_src = join(" ", [
     "'self'",
     "'unsafe-inline'",
-    "https://${local.selfare_subdomain}.pagopa.it",
-    "https://*.onetrust.com",
+    "https://${local.selfare_subdomain}.pagopa.it/assets/font/selfhostedfonts.css",
+    "https://privacyportalde-cdn.onetrust.com",
   ])
 
   welfare_csp_font_src = join(" ", [
@@ -71,11 +73,14 @@ locals {
     "https://${local.selfare_subdomain}.pagopa.it/assets/font/",
   ])
 
-  welfare_csp_value = join("; ", [
+  welfare_csp_value_part1 = join("; ", [
     "default-src 'self'",
     "img-src ${local.welfare_csp_img_src}",
     "object-src 'none'",
     "connect-src ${local.welfare_csp_connect_src}",
+  ])
+
+  welfare_csp_value_part2 = join("; ", [
     "script-src ${local.welfare_csp_script_src}",
     "style-src ${local.welfare_csp_style_src}",
     "worker-src 'none'",
@@ -113,11 +118,17 @@ module "cdn_idpay_welfare" {
   global_delivery_rules = [{
     order = 1
     modify_response_header_actions = [
-      # Content-Security-Policy (single header, Report-Only in dev)
+      # Content-Security-Policy part 1 (Overwrite)
       {
         action = "Overwrite"
         name   = local.welfare_csp_header_name
-        value  = local.welfare_csp_value
+        value  = local.welfare_csp_value_part1
+      },
+      # Content-Security-Policy part 2 (Append)
+      {
+        action = "Append"
+        name   = local.welfare_csp_header_name
+        value  = local.welfare_csp_value_part2
       },
     ]
     },
