@@ -527,7 +527,7 @@ locals {
         if contains(local.protected_branches_by_repo[repo_name], branch)
       ]
     }
-    if (contains(local.protected_branches_by_repo[repo_name], "uat") || contains(local.protected_branches_by_repo[repo_name], "main"))
+    if(contains(local.protected_branches_by_repo[repo_name], "uat") || contains(local.protected_branches_by_repo[repo_name], "main"))
   }
 
   # ----------------------------------------------------------------------------

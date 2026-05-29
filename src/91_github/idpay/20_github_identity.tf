@@ -29,11 +29,11 @@ resource "azurerm_user_assigned_identity" "github" {
 resource "azurerm_federated_identity_credential" "github" {
   for_each = local.repositories_with_federated_identity
 
-  name                = "${local.project}-github-${each.value}"
-  audience            = ["api://AzureADTokenExchange"]
-  issuer              = "https://token.actions.githubusercontent.com"
-  parent_id           = azurerm_user_assigned_identity.github.id
-  subject             = "repo:pagopa/${each.value}:environment:${var.location_short}-${var.env}"
+  name      = "${local.project}-github-${each.value}"
+  audience  = ["api://AzureADTokenExchange"]
+  issuer    = "https://token.actions.githubusercontent.com"
+  parent_id = azurerm_user_assigned_identity.github.id
+  subject   = "repo:pagopa/${each.value}:environment:${var.location_short}-${var.env}"
 }
 
 # ------------------------------------------------------------------------------
