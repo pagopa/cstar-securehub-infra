@@ -93,11 +93,11 @@
         "typeProperties": {
           "method": "POST",
           "headers": {
+            "Content-Type": "application/json",
             "Ocp-Apim-Subscription-Key": {
               "value": "@activity('Get_SubKey').output.value",
               "type": "Expression"
-            },
-            "Content-Type": "application/json"
+            }
           },
           "url": {
             "value": "${data_factory_api_base_url}/producers",
@@ -108,7 +108,7 @@
             "type": "IntegrationRuntimeReference"
           },
           "body": {
-            "value": "@concat(\n'{\"producers\":',\nstring(variables('producers')),\n'}'\n)",
+            "value": "@concat('{\"producers\":',string(variables('producers')),'}')",
             "type": "Expression"
           }
         }
@@ -139,7 +139,7 @@
               "typeProperties": {
                 "variableName": "producers",
                 "value": {
-                  "value": "@json(concat(\n'{',\n'\"producerId\":\"',trim(string(item().producerId)),'\",',\n'\"initiativeId\":\"',trim(string(item().initiativeId)),'\",',\n'\"producerName\":\"',trim(string(item().producerName)),'\",',\n'\"producerEmail\":\"',trim(string(item().producerEmail)),'\"',\n'}'\n))",
+                  "value": "@json(concat('{','\"producerId\":\"',trim(string(item().producerId)),'\",','\"initiativeId\":\"',trim(string(item().initiativeId)),'\",','\"producerName\":\"',trim(string(item().producerName)),'\",','\"producerEmail\":\"',trim(string(item().producerEmail)),'\"','}'))",
                   "type": "Expression"
                 }
               }
@@ -150,11 +150,11 @@
     ],
     "variables": {
       "producers": {
-        "type": "Array"
+        "type": "Array",
+        "defaultValue": []
       }
     },
-    "annotations": [],
-    "lastPublishTime": "2026-05-29T09:59:51Z"
+    "annotations": []
   },
   "type": "Microsoft.DataFactory/factories/pipelines"
 }
