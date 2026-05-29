@@ -126,6 +126,7 @@
         ],
         "userProperties": [],
         "typeProperties": {
+          "isSequential": true,
           "items": {
             "value": "@activity('producersLookUp').output.value",
             "type": "Expression"
@@ -139,7 +140,7 @@
               "typeProperties": {
                 "variableName": "producers",
                 "value": {
-                  "value": "@json(concat('{','\"producerId\":\"',trim(string(item().producerId)),'\",','\"initiativeId\":\"',trim(string(item().initiativeId)),'\",','\"producerName\":\"',trim(string(item().producerName)),'\",','\"producerEmail\":\"',trim(string(item().producerEmail)),'\"','}'))",
+                  "value": "@json(concat('{','\"producerId\":\"',trim(string(item().producerId)),'\",','\"initiativeId\":\"',trim(string(item().initiativeId)),'\",','\"producerName\":\"',replace(replace(trim(string(item().producerName)),'\\','\\\\'),'\"','\\\"'),'\",','\"producerEmail\":\"',trim(string(item().producerEmail)),'\"','}'))",
                   "type": "Expression"
                 }
               }
