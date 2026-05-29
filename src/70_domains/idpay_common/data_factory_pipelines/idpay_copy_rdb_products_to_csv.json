@@ -221,6 +221,8 @@
       {
         "name": "Generate_SAS",
         "type": "WebActivity",
+        "state": "Inactive",
+        "onInactiveMarkAs": "Succeeded",
         "dependsOn": [
           {
             "activity": "Copy_To_Bonus",
@@ -255,16 +257,15 @@
               "type": "Expression",
               "value": "@concat('/blob/', pipeline().parameters.exportAccountName, '/export/data/export_daily_', formatDateTime(utcNow(),'yyyy-MM-dd'), '.csv')"
             },
-            "signedResource": "b",
+            "signedExpiry": {
+              "type": "Expression",
+              "value": "@formatDateTime(addDays(utcNow(), 7), 'yyyy-MM-ddTHH:mm:ssZ')"
+            },
             "signedPermission": "r",
             "signedProtocol": "https",
             "signedStart": {
               "type": "Expression",
               "value": "@utcNow()"
-            },
-            "signedExpiry": {
-              "type": "Expression",
-              "value": "@formatDateTime(addDays(utcNow(), 7), 'yyyy-MM-ddTHH:mm:ssZ')"
             },
             "signedVersion": "2020-02-10"
           },
@@ -277,6 +278,8 @@
       {
         "name": "Get_SubKey",
         "type": "WebActivity",
+        "state": "Inactive",
+        "onInactiveMarkAs": "Succeeded",
         "dependsOn": [
           {
             "activity": "Generate_SAS",
@@ -303,6 +306,10 @@
             "value": "@concat(pipeline().parameters.kvUrl,'/secrets/', pipeline().parameters.kvSecretName, '?api-version=7.3')",
             "type": "Expression"
           },
+          "connectVia": {
+            "referenceName": "AutoResolveIntegrationRuntime",
+            "type": "IntegrationRuntimeReference"
+          },
           "authentication": {
             "type": "MSI",
             "resource": "https://vault.azure.net"
@@ -312,6 +319,8 @@
       {
         "name": "Get_NotifyTo",
         "type": "WebActivity",
+        "state": "Inactive",
+        "onInactiveMarkAs": "Succeeded",
         "dependsOn": [
           {
             "activity": "Get_SubKey",
@@ -338,6 +347,10 @@
             "value": "@concat(pipeline().parameters.kvUrl,'/secrets/', pipeline().parameters.notifyToSecretName, '?api-version=7.3')",
             "type": "Expression"
           },
+          "connectVia": {
+            "referenceName": "AutoResolveIntegrationRuntime",
+            "type": "IntegrationRuntimeReference"
+          },
           "authentication": {
             "type": "MSI",
             "resource": "https://vault.azure.net"
@@ -347,6 +360,8 @@
       {
         "name": "Notify_Email_via_MS",
         "type": "WebActivity",
+        "state": "Inactive",
+        "onInactiveMarkAs": "Succeeded",
         "dependsOn": [
           {
             "activity": "Get_NotifyTo",
@@ -434,7 +449,7 @@
       }
     },
     "annotations": [],
-    "lastPublishTime": "2025-11-12T16:12:33Z"
+    "lastPublishTime": "2026-05-29T08:04:17Z"
   },
   "type": "Microsoft.DataFactory/factories/pipelines"
 }
