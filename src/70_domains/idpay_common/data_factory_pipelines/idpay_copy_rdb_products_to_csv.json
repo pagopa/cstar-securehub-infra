@@ -261,6 +261,7 @@
               "type": "Expression",
               "value": "@formatDateTime(addDays(utcNow(), 7), 'yyyy-MM-ddTHH:mm:ssZ')"
             },
+            "signedResource": "b",
             "signedPermission": "r",
             "signedProtocol": "https",
             "signedStart": {
