@@ -548,7 +548,7 @@ locals {
   ]...)
 
   # ----------------------------------------------------------------------------
-  # Flattened maps for environment secrets.
+  # Flattened maps for environment variables.
   # ----------------------------------------------------------------------------
   env_variables_flattened = merge([
     for repo_name, repo_data in local.repository : merge([
