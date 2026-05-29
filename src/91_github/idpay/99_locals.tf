@@ -1,5 +1,6 @@
 locals {
   project                = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
+  github_environment     = "${var.location_short}-${var.env}"
   github_deployer_scopes = ["${var.prefix}-${var.env_short}-${var.location_short}-platform-compute-rg"]
 
   # ----------------------------------------------------------------------------
@@ -555,7 +556,7 @@ locals {
         for env_key, env_value in env_map :
         "${repo_name}@${env_key}" => {
           repository  = repo_name
-          environment = var.env
+          environment = local.github_environment
           env_key     = env_key
           env_value   = env_value
         }
@@ -588,7 +589,7 @@ locals {
         for secret_name, secret_value in secret_map :
         "${repo_name}@${secret_name}" => {
           repository  = repo_name
-          environment = var.env
+          environment = local.github_environment
           secret_name = secret_name
           value       = secret_value
         }

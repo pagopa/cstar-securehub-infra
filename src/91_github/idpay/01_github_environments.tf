@@ -31,13 +31,9 @@ resource "github_repository_environment" "env" {
   for_each = local.repositories_with_environment
 
   repository          = each.key
-  environment         = var.env
+  environment         = local.github_environment
   can_admins_bypass   = true
   prevent_self_review = true
-
-  reviewers {
-    teams = var.env_short == "d" ? [] : [data.github_team.admin.id]
-  }
 }
 
 # ------------------------------------------------------------------------------
@@ -47,7 +43,7 @@ resource "github_actions_environment_secret" "env_secrets" {
   for_each = local.env_secrets_flattened
 
   repository      = each.value.repository
-  environment     = var.env
+  environment     = each.value.environment
   secret_name     = each.value.secret_name
   plaintext_value = each.value.value
 
@@ -61,7 +57,7 @@ resource "github_actions_environment_variable" "env_variables" {
   for_each = local.env_variables_flattened
 
   repository    = each.value.repository
-  environment   = var.env
+  environment   = each.value.environment
   variable_name = each.value.env_key
   value         = each.value.env_value
 
