@@ -37,6 +37,7 @@
     window_start: datetime,
     entity_id: string,
     origin_id: string,
+    message_state string,
     associated_payment: bool
 )
 

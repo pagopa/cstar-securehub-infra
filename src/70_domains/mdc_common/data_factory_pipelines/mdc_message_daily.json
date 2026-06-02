@@ -29,6 +29,7 @@
               { "source": { "path": "messageRegistrationDate" }, "sink": { "name": "window_start", "type": "DateTime" } },
               { "source": { "path": "entityId" }, "sink": { "name": "entity_id", "type": "String" } },
               { "source": { "path": "originId" }, "sink": { "name": "origin_id", "type": "String" } },
+              { "source": { "path": "messageState" }, "sink": { "name": "message_state", "type": "String" } },
               { "source": { "path": "associatedPayment" }, "sink": { "name": "associated_payment", "type": "Boolean" } }
             ]
           }
