@@ -128,6 +128,7 @@ locals {
       frequency      = 5
       time_window    = 5
       data_source_id = data.azurerm_log_analytics_workspace.core_log_analytics_workspace.id
+      location       = data.azurerm_log_analytics_workspace.core_log_analytics_workspace.location
       query          = <<-QUERY
             AzureDiagnostics
             | where requestUri_s contains "rtp/gpd/message"
@@ -153,6 +154,7 @@ locals {
       frequency      = 5
       time_window    = 5
       data_source_id = data.azurerm_log_analytics_workspace.core_log_analytics_workspace.id
+      location       = data.azurerm_log_analytics_workspace.core_log_analytics_workspace.location
       query          = <<-QUERY
             AzureDiagnostics
             | where requestUri_s contains "rtp/gpd/message"
