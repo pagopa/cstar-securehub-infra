@@ -611,7 +611,7 @@
             }
           },
           "pluginVersion": "7.2.2",
-          "query": "RetrievalIdVolumeSnapshot\r\n| where $__timeFilter(window_start)\r\n| summarize arg_max(window_start, entity_id) by origin_id \r\n| join kind=inner (\r\n    MessageSnapshot\r\n    | summarize arg_max(window_start, associated_payment) by origin_id\r\n) on origin_id\r\n| join kind=inner TppDataSnapshot on entity_id\r\n| summarize \r\n    ['Lette con Pagamento'] = countif(associated_payment == true),\r\n    ['Lette senza Pagamento'] = countif(associated_payment == false),\r\n    ['Totale'] = count()\r\nby PSP = business_name\r\n| order by ['Totale'] desc",
+          "query": "RetrievalIdVolumeSnapshot\r\n| where $__timeFilter(window_start)\r\n| summarize arg_max(window_start, entity_id) by origin_id,entity_id \r\n| join kind=inner (\r\n    MessageSnapshot\r\n    | summarize arg_max(window_start, associated_payment) by origin_id\r\n) on origin_id\r\n| join kind=inner TppDataSnapshot on entity_id\r\n| summarize \r\n    ['Lette con Pagamento'] = countif(associated_payment == true),\r\n    ['Lette senza Pagamento'] = countif(associated_payment == false),\r\n    ['Totale'] = count()\r\nby PSP = business_name\r\n| order by ['Totale'] desc",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
