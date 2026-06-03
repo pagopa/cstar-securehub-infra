@@ -1389,13 +1389,11 @@ locals {
 
       data_source_id = data.azurerm_application_insights.core_app_insights.id
 
-      query = format(<<-QUERY
+      query = <<-QUERY
           requests
           | where operation_Name matches regex @"^POST /idpay/merchant/portal/initiatives/[^/]+/reward-batches/(evaluate|approved)"
           | where success == false
         QUERY
-        , data.azurerm_application_insights.core_app_insights.id
-      )
 
       trigger = {
         operator  = "GreaterThanOrEqual"
