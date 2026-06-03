@@ -1386,6 +1386,8 @@ locals {
       name        = "batch_evaluate_or_approve_alert"
       description = "Batch (evaluate or approve): error threshold exceeded (5xx > 5/5m for endpoint)"
       severity    = 3
+      frequency   = 1440
+      time_window = 1440
 
       data_source_id = data.azurerm_application_insights.core_app_insights.id
 
@@ -1397,7 +1399,7 @@ locals {
 
       trigger = {
         operator  = "GreaterThanOrEqual"
-        threshold = 5
+        threshold = 1
       }
 
       email_subject = "[PARI][BATCH] Batch evaluate or approve alert"
