@@ -119,6 +119,59 @@ locals {
       ])
       email_subject = "[RTP-CONSUMER][WARNING] 0 messages consumed by rtp-consumer in the last 30 minutes"
     }
+
+    # 🚨 GPD Message API 4xx Error
+    rtp_gpd_message_4xx_alert = {
+      name           = "rtp-gpd-message-4xx-alert"
+      description    = "Alert when the GPD Message API returns a 4xx error code"
+      severity       = 1
+      frequency      = 5
+      time_window    = 5
+      data_source_id = data.azurerm_log_analytics_workspace.core_log_analytics_workspace.id
+      location       = data.azurerm_log_analytics_workspace.core_log_analytics_workspace.location
+      query          = <<-QUERY
+            AzureDiagnostics
+            | where requestUri_s contains "rtp/gpd/message"
+            | where httpMethod_s == "POST"
+            | where toint(httpStatus_d) >= 400 and toint(httpStatus_d) < 500 and toint(httpStatus_d) != 404
+          QUERY
+      trigger = {
+        operator  = "GreaterThanOrEqual"
+        threshold = 1
+      }
+      # Use both email and slack for this alert
+      action_groups = compact([
+        try(azurerm_monitor_action_group.email[0].id, null),
+        try(azurerm_monitor_action_group.slack[0].id, null)
+      ])
+      email_subject = "[RTP-SENDER] [WARNING] GPD Message API 4xx Error"
+    }
+
+    rtp_gpd_message_5xx_alert = {
+      name           = "rtp-gpd-message-5xx-alert"
+      description    = "Alert when the GPD Message API returns a 5xx error code"
+      severity       = 1
+      frequency      = 5
+      time_window    = 5
+      data_source_id = data.azurerm_log_analytics_workspace.core_log_analytics_workspace.id
+      location       = data.azurerm_log_analytics_workspace.core_log_analytics_workspace.location
+      query          = <<-QUERY
+            AzureDiagnostics
+            | where requestUri_s contains "rtp/gpd/message"
+            | where httpMethod_s == "POST"
+            | where toint(httpStatus_d) >= 500
+          QUERY
+      trigger = {
+        operator  = "GreaterThanOrEqual"
+        threshold = 1
+      }
+      # Use both email and slack for this alert
+      action_groups = compact([
+        try(azurerm_monitor_action_group.email[0].id, null),
+        try(azurerm_monitor_action_group.slack[0].id, null)
+      ])
+      email_subject = "[RTP-SENDER] [CRITICAL] GPD Message API 5xx Error"
+    }
   }
 
   # 🧱 Collection of alert groups
