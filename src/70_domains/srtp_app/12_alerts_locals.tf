@@ -6,6 +6,7 @@ locals {
     frequency      = 5
     time_window    = 5
     data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
+    location       = null
   }
 
   alerts_rtp = {
