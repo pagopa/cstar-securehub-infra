@@ -536,6 +536,100 @@
         "x": 0,
         "y": 21
       },
+      "id": 15,
+      "panels": [],
+      "title": "Flusso messaggi accettati",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-data-explorer-datasource",
+        "uid": "${ds}"
+      },
+      "description": "Monitoraggio numero di notifiche lette dall'app",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 22
+      },
+      "id": 16,
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "OpenAI": false,
+          "database": "mdc",
+          "datasource": {
+            "type": "grafana-azure-data-explorer-datasource",
+            "uid": "${ds}"
+          },
+          "expression": {
+            "groupBy": {
+              "expressions": [],
+              "type": "and"
+            },
+            "reduce": {
+              "expressions": [],
+              "type": "and"
+            },
+            "where": {
+              "expressions": [],
+              "type": "and"
+            }
+          },
+          "pluginVersion": "7.2.2",
+          "query": "RetrievalIdVolumeSnapshot\r\n| where $__timeFilter(window_start)\r\n| summarize arg_max(window_start, entity_id) by origin_id,entity_id \r\n| join kind=inner (\r\n    MessageSnapshot\r\n    | summarize arg_max(window_start, associated_payment) by origin_id\r\n) on origin_id\r\n| join kind=inner TppDataSnapshot on entity_id\r\n| summarize \r\n    ['Lette con Pagamento'] = countif(associated_payment == true),\r\n    ['Lette senza Pagamento'] = countif(associated_payment == false),\r\n    ['Totale'] = count()\r\nby PSP = business_name\r\n| order by ['Totale'] desc",
+          "querySource": "raw",
+          "queryType": "KQL",
+          "rawMode": true,
+          "refId": "A",
+          "resultFormat": "table"
+        }
+      ],
+      "title": "Notifiche lette per PSP",
+      "type": "table"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 30
+      },
       "id": 8,
       "panels": [],
       "title": "Consensi cittadini",
@@ -568,7 +662,7 @@
         "h": 8,
         "w": 5,
         "x": 0,
-        "y": 22
+        "y": 31
       },
       "id": 2,
       "options": {
@@ -663,7 +757,7 @@
         "h": 8,
         "w": 5,
         "x": 5,
-        "y": 22
+        "y": 31
       },
       "id": 1,
       "options": {
@@ -790,7 +884,7 @@
         "h": 8,
         "w": 14,
         "x": 10,
-        "y": 22
+        "y": 31
       },
       "id": 3,
       "options": {
@@ -912,7 +1006,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 30
+        "y": 39
       },
       "id": 13,
       "options": {
@@ -1002,5 +1096,5 @@
   "timezone": "utc",
   "title": "Monitoraggio MDC",
   "uid": "efj6fhop10um8c",
-  "version": 37
+  "version": 47
 }
