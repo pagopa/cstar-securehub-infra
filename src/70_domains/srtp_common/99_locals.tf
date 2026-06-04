@@ -88,6 +88,25 @@ locals {
             }
           ]
         }
+        rtp_failed_messages = {
+          autoscale_max_throughput          = null
+          cosmos_collections_max_throughput = null
+          default_ttl_seconds               = -1
+          indexes = [
+            {
+              keys   = ["_id"]
+              unique = true
+            },
+            {
+              keys   = ["message.nav"]
+              unique = false
+            },
+            {
+              keys   = ["createdAt"]
+              unique = false
+            }
+          ]
+        }
       }
     }
     activation = {
@@ -176,10 +195,6 @@ locals {
       }
     ]
   ])
-
-  # Data Factory
-  data_factory_name    = "${local.project_no_domain}-platform-adf"
-  data_factory_rg_name = "${local.project_no_domain}-platform-data-rg"
 
   # Data Explorer (ADX / Kusto)
   kusto_cluster_name    = "${local.project_no_domain}-platform"

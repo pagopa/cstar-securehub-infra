@@ -16,3 +16,30 @@
 
 .alter table MessageVolumeSnapshot policy retention
 @'{"SoftDeletePeriod": "365.00:00:00", "Recoverability": "Enabled"}'
+
+.create-merge table RetrievalIdVolumeSnapshot (
+    window_start: datetime,
+    entity_id: string,
+    origin_id: string,
+    retrieval_count: long
+)
+
+.alter table RetrievalIdVolumeSnapshot policy retention
+@'{"SoftDeletePeriod": "365.00:00:00", "Recoverability": "Enabled"}'
+
+.create-merge table TppDataSnapshot (
+    tpp_id: string,
+    entity_id: string,
+    business_name: string
+)
+
+.create-merge table MessageSnapshot (
+    window_start: datetime,
+    entity_id: string,
+    origin_id: string,
+    message_state: string,
+    associated_payment: bool
+)
+
+.alter table MessageSnapshot policy retention
+@'{"SoftDeletePeriod": "365.00:00:00", "Recoverability": "Enabled"}'
