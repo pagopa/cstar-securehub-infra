@@ -1384,7 +1384,7 @@ locals {
     # Batch evaluate/approve
     batch_evaluate_or_approve_alert = {
       name        = "batch_evaluate_or_approve_alert"
-      description = "Batch (evaluate or approve): error threshold exceeded (5xx > 5/5m for endpoint)"
+      description = "Batch (evaluate or approve): error threshold exceeded"
       severity    = 3
       frequency   = 1440
       time_window = 1440
