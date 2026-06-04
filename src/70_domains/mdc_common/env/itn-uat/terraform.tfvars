@@ -10,6 +10,12 @@ external_domain          = "pagopa.it"
 dns_zone_internal_prefix = "internal.uat.cstar"
 dns_zone_public_name     = "uat.cstar.pagopa.it"
 
+# 🤖 Robots
+robots_indexed_paths = []
+
+# CDN
+backoffice_cdn_storage_replication_type = "LRS"
+
 # Redis
 redis_idh_tier = "basic"
 
