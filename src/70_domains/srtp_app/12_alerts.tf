@@ -3,7 +3,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "alerts" {
 
   name                = each.value.name
   resource_group_name = data.azurerm_resource_group.monitor_rg.name
-  location            = lookup(each.value, "location", var.location)
+  location            = try(each.value.location, null) != null ? each.value.location : var.location
 
   description = each.value.description
   enabled     = lookup(each.value, "enabled", true)
