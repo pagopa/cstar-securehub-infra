@@ -8,6 +8,8 @@ locals {
   # Daily pipelines for logs reading — run after 00:00UTC (>= 02:00 CEST)
   pipelines_daily_logs = [
     "mdc_message_volume_daily",
+    "mdc_retrieval_daily",
+    "mdc_message_daily"
   ]
 
   pipelines_indexed = {
