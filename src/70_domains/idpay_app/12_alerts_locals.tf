@@ -1423,10 +1423,10 @@ locals {
 
       query = <<-QUERY
             let TrxCountByBatch =
-            transaction
+            database("idpay").transaction
             | where isnotempty(rewardBatchId)
             | summarize trx_count = count() by rewardBatchId;
-            rewards_batch
+            database("idpay").rewards_batch
             | extend batch_id = tostring(_id), expected_count = tolong(numberOfTransactions)
             | join kind=leftouter TrxCountByBatch on $left.batch_id == $right.rewardBatchId
             | extend trx_count = coalesce(trx_count, 0)
