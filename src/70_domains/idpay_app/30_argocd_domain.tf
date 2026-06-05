@@ -60,6 +60,7 @@ locals {
         name          = "mcshared-datavault"
         target_branch = "main"
         env           = ["dev", "uat", "prod"]
+        autosync      = true
       }
     }
     "mid" = {
@@ -185,12 +186,15 @@ resource "argocd_application" "domain_argocd_applications" {
 
     sync_policy {
       # sync_options = []
-      #
-      # automated {
-      #   allow_empty = false
-      #   prune       = false
-      #   self_heal   = false
-      # }
+      dynamic "automated" {
+        for_each = try(each.value.autosync, false) ? [1] : []
+
+        content {
+          allow_empty = false
+          prune       = false
+          self_heal   = false
+        }
+      }
       #
       # retry {
       #   limit = "5"

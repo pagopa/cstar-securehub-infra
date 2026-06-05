@@ -30,7 +30,17 @@ data "azurerm_resource_group" "security_rg" {
   name = "${local.project}-security-rg"
 }
 
-data "azurerm_user_assigned_identity" "azdo_managed_identity" {
-  name                = local.azdo_managed_identity_name
+data "azurerm_user_assigned_identity" "iac_federated_azdo" {
+  for_each = toset(concat(
+    local.azdo_iac_managed_identities_read,
+    local.azdo_iac_managed_identities_write
+  ))
+
+  name                = each.key
+  resource_group_name = local.azdo_managed_identity_rg_name
+}
+
+data "azurerm_user_assigned_identity" "subscription_service_connection" {
+  name                = "${upper(var.env)}-${upper(var.prefix)}"
   resource_group_name = local.azdo_managed_identity_rg_name
 }

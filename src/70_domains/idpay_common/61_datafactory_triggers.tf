@@ -112,7 +112,7 @@ resource "azurerm_data_factory_trigger_schedule" "weekly_triggers" {
 resource "azurerm_data_factory_trigger_schedule" "idpay_copy_rdb_products_to_csv_daily" {
   name            = "trigger-idpay_copy_rdb_products_to_csv"
   data_factory_id = data.azurerm_data_factory.data_factory.id
-  activated       = false
+  activated       = var.env_short == "p"
   interval        = 1
   frequency       = "Day"
 
