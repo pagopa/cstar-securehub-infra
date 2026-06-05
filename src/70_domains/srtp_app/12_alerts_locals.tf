@@ -124,17 +124,17 @@ locals {
     # 🚨 GPD Message API 4xx Error
     rtp_gpd_message_4xx_alert = {
       name           = "rtp-gpd-message-4xx-alert"
-      description    = "Alert when the GPD Message API returns a 4xx error code"
+      description    = "Alert when the GPD Message API returns a 4xx error code (excluding 404 and 422)"
       severity       = 1
-      frequency      = 5
-      time_window    = 5
+      frequency      = 120
+      time_window    = 120
       data_source_id = data.azurerm_log_analytics_workspace.core_log_analytics_workspace.id
       location       = data.azurerm_log_analytics_workspace.core_log_analytics_workspace.location
       query          = <<-QUERY
             AzureDiagnostics
             | where requestUri_s contains "rtp/gpd/message"
             | where httpMethod_s == "POST"
-            | where toint(httpStatus_d) >= 400 and toint(httpStatus_d) < 500 and toint(httpStatus_d) != 404
+            | where toint(httpStatus_d) >= 400 and toint(httpStatus_d) < 500 and toint(httpStatus_d) != 404 and toint(httpStatus_d) != 422
           QUERY
       trigger = {
         operator  = "GreaterThanOrEqual"
@@ -148,12 +148,13 @@ locals {
       email_subject = "[RTP-SENDER] [WARNING] GPD Message API 4xx Error"
     }
 
+    # 🚨 GPD Message API 5xx Error
     rtp_gpd_message_5xx_alert = {
       name           = "rtp-gpd-message-5xx-alert"
       description    = "Alert when the GPD Message API returns a 5xx error code"
-      severity       = 1
-      frequency      = 5
-      time_window    = 5
+      severity       = 0
+      frequency      = 120
+      time_window    = 120
       data_source_id = data.azurerm_log_analytics_workspace.core_log_analytics_workspace.id
       location       = data.azurerm_log_analytics_workspace.core_log_analytics_workspace.location
       query          = <<-QUERY
