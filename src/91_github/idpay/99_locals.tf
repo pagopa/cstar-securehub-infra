@@ -451,7 +451,7 @@ locals {
       repository_variables = []
       env_secrets = [
         {
-          SERVICE_URL                 = var.datavault_service_url
+          SERVICE_URL = var.datavault_service_url
         }
       ]
       env_variables = []
