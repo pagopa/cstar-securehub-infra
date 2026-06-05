@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 261,
+  "id": 0,
   "links": [],
   "panels": [
     {
@@ -139,7 +139,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 10,
+        "h": 9,
         "w": 12,
         "x": 12,
         "y": 1
@@ -244,7 +244,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 7,
+        "h": 6,
         "w": 6,
         "x": 0,
         "y": 4
@@ -341,7 +341,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 7,
+        "h": 6,
         "w": 6,
         "x": 6,
         "y": 4
@@ -462,7 +462,7 @@
         "h": 10,
         "w": 24,
         "x": 0,
-        "y": 11
+        "y": 10
       },
       "id": 6,
       "options": {
@@ -534,7 +534,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 21
+        "y": 20
       },
       "id": 15,
       "panels": [],
@@ -546,7 +546,7 @@
         "type": "grafana-azure-data-explorer-datasource",
         "uid": "${ds}"
       },
-      "description": "Monitoraggio numero di notifiche lette dall'app",
+      "description": "Numero di notifiche inviate alle PSP",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -560,7 +560,8 @@
             "footer": {
               "reducers": []
             },
-            "inspect": false
+            "inspect": false,
+            "minWidth": 50
           },
           "mappings": [],
           "thresholds": {
@@ -577,15 +578,16 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
-        "w": 10,
+        "h": 7,
+        "w": 12,
         "x": 0,
-        "y": 22
+        "y": 21
       },
       "id": 16,
       "options": {
         "cellHeight": "sm",
-        "showHeader": true
+        "showHeader": true,
+        "sortBy": []
       },
       "pluginVersion": "12.3.1",
       "targets": [
@@ -611,7 +613,90 @@
             }
           },
           "pluginVersion": "7.2.2",
-          "query": "RetrievalIdVolumeSnapshot\r\n| where $__timeFilter(window_start)\r\n| summarize arg_max(window_start, entity_id) by origin_id,entity_id \r\n| join kind=inner (\r\n    MessageSnapshot\r\n    | summarize arg_max(window_start, associated_payment) by origin_id\r\n) on origin_id\r\n| join kind=inner TppDataSnapshot on entity_id\r\n| summarize \r\n    ['Lette con Pagamento'] = countif(associated_payment == true),\r\n    ['Lette senza Pagamento'] = countif(associated_payment == false),\r\n    ['Totale'] = count()\r\nby PSP = business_name\r\n| order by ['Totale'] desc",
+          "query": "MessageSnapshot\r\n| where message_state == \"SENT\"\r\n| summarize arg_max(window_start, associated_payment) by origin_id, entity_id\r\n| project origin_id, entity_id, associated_payment\r\n| join kind=inner TppDataSnapshot on entity_id\r\n| summarize\r\n    ['Con Pagamento']    = countif(associated_payment == true),\r\n    ['Senza Pagamento']  = countif(associated_payment == false),\r\n    ['Totale']           = count()\r\nby PSP = business_name\r\n| order by ['Totale'] desc",
+          "querySource": "raw",
+          "queryType": "KQL",
+          "rawMode": true,
+          "refId": "A",
+          "resultFormat": "table"
+        }
+      ],
+      "title": "Notifiche inviate per PSP",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-data-explorer-datasource",
+        "uid": "${ds}"
+      },
+      "description": "Numero di notifiche lette dall'app",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false,
+            "minWidth": 50
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 12,
+        "y": 21
+      },
+      "id": 17,
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "OpenAI": false,
+          "database": "mdc",
+          "datasource": {
+            "type": "grafana-azure-data-explorer-datasource",
+            "uid": "${ds}"
+          },
+          "expression": {
+            "groupBy": {
+              "expressions": [],
+              "type": "and"
+            },
+            "reduce": {
+              "expressions": [],
+              "type": "and"
+            },
+            "where": {
+              "expressions": [],
+              "type": "and"
+            }
+          },
+          "pluginVersion": "7.2.2",
+          "query": "let Sent = MessageSnapshot\r\n| where message_state == \"SENT\"\r\n| summarize arg_max(window_start, associated_payment) by origin_id\r\n| project origin_id, associated_payment;\r\n\r\nlet Lette = RetrievalIdVolumeSnapshot\r\n| where $__timeFilter(window_start)\r\n| summarize arg_max(window_start, entity_id) by origin_id, entity_id\r\n| project origin_id, entity_id;\r\n\r\nSent\r\n| join kind=inner Lette on origin_id\r\n| join kind=inner TppDataSnapshot on entity_id\r\n| summarize\r\n    ['Con Pagamento']    = countif(associated_payment == true),\r\n    ['Senza Pagamento']  = countif(associated_payment == false),\r\n    ['Totale']           = count()\r\nby PSP = business_name\r\n| order by ['Totale'] desc",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -628,7 +713,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 30
+        "y": 28
       },
       "id": 8,
       "panels": [],
@@ -662,7 +747,7 @@
         "h": 8,
         "w": 5,
         "x": 0,
-        "y": 31
+        "y": 29
       },
       "id": 2,
       "options": {
@@ -757,7 +842,7 @@
         "h": 8,
         "w": 5,
         "x": 5,
-        "y": 31
+        "y": 29
       },
       "id": 1,
       "options": {
@@ -884,7 +969,7 @@
         "h": 8,
         "w": 14,
         "x": 10,
-        "y": 31
+        "y": 29
       },
       "id": 3,
       "options": {
@@ -998,7 +1083,7 @@
         "h": 8,
         "w": 10,
         "x": 0,
-        "y": 39
+        "y": 37
       },
       "id": 13,
       "options": {
@@ -1071,5 +1156,5 @@
   "timezone": "utc",
   "title": "Monitoraggio MDC",
   "uid": "efj6fhop10um8c",
-  "version": 53
+  "version": 55
 }
