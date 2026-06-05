@@ -451,10 +451,6 @@ locals {
       repository_variables = []
       env_secrets = [
         {
-          AZURE_CLIENT_ID             = azurerm_user_assigned_identity.github.client_id
-          AZURE_SUBSCRIPTION_ID       = data.azurerm_subscription.current.subscription_id
-          ACA_ENV_NAME                = var.aca_env_name
-          ACA_ENV_RESOURCE_GROUP_NAME = var.aca_env_rg
           SERVICE_URL                 = var.datavault_service_url
         }
       ]
