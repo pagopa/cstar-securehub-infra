@@ -102,4 +102,5 @@ idpay_pgflex_params = {
   pgres_flex_pgbouncer_enabled           = true
   pgres_flex_diagnostic_settings_enabled = false
   auto_grow_enabled                      = false
+  storage_tier                           = "P4"
 }

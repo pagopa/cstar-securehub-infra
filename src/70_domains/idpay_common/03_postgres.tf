@@ -47,8 +47,8 @@ module "idpay_pgflex" {
 
   # Network configuration
   embedded_subnet = {
-    enabled = true
-    vnet_name = data.azurerm_virtual_network.vnet_spoke_data.name
+    enabled      = true
+    vnet_name    = data.azurerm_virtual_network.vnet_spoke_data.name
     vnet_rg_name = data.azurerm_virtual_network.vnet_spoke_data.resource_group_name
   }
   private_dns_zone_id = data.azurerm_private_dns_zone.postgres_flexible_privatelink.id
@@ -69,7 +69,6 @@ module "idpay_pgflex" {
   geo_replication = {
     enabled                     = var.idpay_pgflex_params.geo_replication_enabled
     name                        = "${local.project}-pgflex-replica"
-    # subnet_id                   = data.azurerm_subnet.platform_subnet.id
     location                    = "germanywestcentral"
     private_dns_registration_ve = true
   }
