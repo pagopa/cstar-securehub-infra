@@ -51,7 +51,8 @@ module "idpay_pgflex" {
     vnet_name    = data.azurerm_virtual_network.vnet_spoke_data.name
     vnet_rg_name = data.azurerm_virtual_network.vnet_spoke_data.resource_group_name
   }
-  private_dns_zone_id = data.azurerm_private_dns_zone.postgres_flexible_privatelink.id
+  private_dns_zone_id     = data.azurerm_private_dns_zone.postgres_flexible_privatelink.id
+  resource_group_nsg_name = local.network_rg
 
   # Authentication configuration
   administrator_login    = azurerm_key_vault_secret.idpay_db_admin_user.value
