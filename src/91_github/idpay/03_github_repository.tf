@@ -1,11 +1,8 @@
 #-------------------------------------------------------------------------------
 # GitHub repository settings.
-#
-# The repository settings are applied only when terraform is applied in prod
-# environment.
 #-------------------------------------------------------------------------------
 resource "github_repository" "repository_settings" {
-  for_each = var.env == "prod" ? local.repositories_with_settings : {}
+  for_each = local.repositories_with_settings
 
   allow_auto_merge            = try(each.value.settings.allow_auto_merge, false)
   allow_forking               = try(each.value.settings.allow_forking, false)

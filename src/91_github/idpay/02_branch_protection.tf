@@ -1,10 +1,8 @@
 # ------------------------------------------------------------------------------
 # Default branch: main
-#
-# This is applied only in prod environment.
 # ------------------------------------------------------------------------------
 resource "github_branch_default" "default" {
-  for_each = var.env == "prod" ? toset(keys(local.repository)) : toset([])
+  for_each = toset(keys(local.repository))
 
   repository = each.key
   branch     = "main"
@@ -12,11 +10,9 @@ resource "github_branch_default" "default" {
 
 # ------------------------------------------------------------------------------
 # Apply this ruleset only for repositories that have develop branch protected.
-#
-# The ruleset is applied only when terraform is applied in prod environment.
 # ------------------------------------------------------------------------------
 resource "github_repository_ruleset" "develop" {
-  for_each = var.env == "prod" ? local.repositories_with_develop_ruleset : {}
+  for_each = local.repositories_with_develop_ruleset
 
   name        = "develop"
   repository  = each.key
@@ -81,7 +77,7 @@ resource "github_repository_ruleset" "develop" {
 # The ruleset is applied only when terraform is applied in prod environment.
 # ------------------------------------------------------------------------------
 resource "github_repository_ruleset" "uat_and_main" {
-  for_each = var.env == "prod" ? local.repositories_with_uat_and_main_ruleset : {}
+  for_each = local.repositories_with_uat_and_main_ruleset
 
   name        = "uat_and_main"
   repository  = each.key
