@@ -11,8 +11,8 @@ resource "azurerm_monitor_scheduled_query_rules_alert_v2" "alerts" {
   enabled     = lookup(try(each.value.enabled_by_env, {}), var.env_short, lookup(each.value, "enabled", true))
   severity    = lookup(try(each.value.severity_by_env, {}), var.env_short, each.value.severity)
 
-  evaluation_frequency = "PT${each.value.evaluation_frequency}M"
-  window_duration      = "PT${each.value.window_duration}M"
+  evaluation_frequency = each.value.evaluation_frequency == 1440 ? "P1D" : "PT${each.value.evaluation_frequency}M"
+  window_duration      = each.value.window_duration == 1440 ? "P1D" : "PT${each.value.window_duration}M"
 
   criteria {
     query                   = each.value.query
