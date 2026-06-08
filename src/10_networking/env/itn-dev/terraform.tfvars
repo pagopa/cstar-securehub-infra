@@ -40,15 +40,7 @@ cidr_subnet_data_monitor_workspace = ["10.20.1.0/24"] # 10.20.1.0 --> 10.20.1.25
 #
 # VPN
 #
-vpn_sku     = "VpnGw1"
+vpn_sku     = "VpnGw1AZ"
 vpn_pip_sku = "Standard"
 
 dns_forwarder_vmss_image_version = "v20250514"
-
-#
-# DNS
-#
-
-external_domain          = "pagopa.it"
-dns_zone_prefix          = "dev.cstar"
-dns_zone_internal_prefix = "internal.dev.cstar"
