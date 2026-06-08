@@ -48,8 +48,7 @@
 .create-merge table FinalizedMessageSnapshot (
     window_start: datetime,
     tpp_id:       string,
-    origin_id:    string,
-    read_count:   long
+    origin_id:    string
 )
 
 .alter table FinalizedMessageSnapshot policy retention
