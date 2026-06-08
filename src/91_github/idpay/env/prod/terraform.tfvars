@@ -1,9 +1,6 @@
 prefix         = "cstar"
 env_short      = "p"
-env            = "prod"
 location_short = "itn"
+domain         = "idpay"
 
-aca_env_name = "cstar-p-itn-platform-github-cae"
-aca_env_rg   = "cstar-p-itn-platform-compute-rg"
-
-datavault_service_url = "https://idpay.itn.internal.cstar.pagopa.it/mcshareddatavault"
+datavault_service_url_for_uat = "https://idpay.itn.internal.cstar.pagopa.it/mcshareddatavault"

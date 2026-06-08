@@ -18,40 +18,17 @@ variable "env_short" {
   }
 }
 
-variable "env" {
-  type        = string
-  description = "Environment"
-}
-
 variable "location_short" {
   type        = string
   description = "Location short like eg: neu, weu.."
 }
 
-variable "location" {
-  type        = string
-  description = "Location extended like eg: northeurope, westeurope."
-  default     = "italynorth"
-}
-
 variable "domain" {
   type        = string
   description = "Domain used for tags."
-  default     = "idpay"
 }
 
-variable "datavault_service_url" {
+variable "datavault_service_url_for_uat" {
   type        = string
-  description = "URL of the datavault service."
-  default     = "https://idpay.itn.internal.uat.cstar.pagopa.it/mcshareddatavault"
-}
-
-variable "aca_env_name" {
-  type        = string
-  description = "Name of the ACA environment used for self-hosted runners."
-}
-
-variable "aca_env_rg" {
-  type        = string
-  description = "Name of the resource group where the ACA environment used for self-hosted runners is deployed."
+  description = "URL of the datavault service for UAT environment."
 }

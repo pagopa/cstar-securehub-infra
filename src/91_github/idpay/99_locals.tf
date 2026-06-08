@@ -1,8 +1,4 @@
 locals {
-  project                = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
-  github_environment     = "${var.location_short}-${var.env}"
-  github_deployer_scopes = ["${var.prefix}-${var.env_short}-${var.location_short}-platform-compute-rg"]
-
   # ----------------------------------------------------------------------------
   # Repository configuration.
   # ----------------------------------------------------------------------------
@@ -20,8 +16,7 @@ locals {
           SONARCLOUD_PROJECT_NAME = "idpay-asset-register-backend"
         }
       ]
-      env_secrets   = []
-      env_variables = []
+      env = []
     },
     "idpay-payment-instrument" = {
       repository_secrets = [
@@ -36,8 +31,7 @@ locals {
           SONARCLOUD_PROJECT_NAME = "idpay-payment-instrument"
         }
       ]
-      env_secrets   = []
-      env_variables = []
+      env = []
     },
     "idpay-portal-merchants-frontend" = {
       repository_secrets = [
@@ -52,8 +46,7 @@ locals {
           SONARCLOUD_PROJECT_NAME = "idpay-portal-merchants-frontend"
         }
       ]
-      env_secrets   = []
-      env_variables = []
+      env = []
     },
     "idpay-recovery-error-topic" = {
       repository_secrets = [
@@ -68,8 +61,7 @@ locals {
           SONARCLOUD_PROJECT_NAME = "idpay-recovery-error-topic"
         }
       ]
-      env_secrets   = []
-      env_variables = []
+      env = []
     },
     "idpay-reward-calculator" = {
       repository_secrets = [
@@ -84,8 +76,7 @@ locals {
           SONARCLOUD_PROJECT_NAME = "idpay-reward-calculator"
         }
       ]
-      env_secrets   = []
-      env_variables = []
+      env = []
     },
     "idpay-merchant" = {
       repository_secrets = [
@@ -100,8 +91,7 @@ locals {
           SONARCLOUD_PROJECT_NAME = "idpay-merchant"
         }
       ]
-      env_secrets   = []
-      env_variables = []
+      env = []
     },
     "idpay-transactions" = {
       repository_secrets = [
@@ -116,8 +106,7 @@ locals {
           SONARCLOUD_PROJECT_NAME = "idpay-transactions"
         }
       ]
-      env_secrets   = []
-      env_variables = []
+      env = []
     },
     "idpay-initiative-statistics" = {
       repository_secrets = [
@@ -132,8 +121,7 @@ locals {
           SONARCLOUD_PROJECT_NAME = "idpay-initiative-statistics"
         }
       ]
-      env_secrets   = []
-      env_variables = []
+      env = []
     },
     "idpay-onboarding-workflow" = {
       repository_secrets = [
@@ -148,8 +136,7 @@ locals {
           SONARCLOUD_PROJECT_NAME = "idpay-onboarding-workflow"
         }
       ]
-      env_secrets   = []
-      env_variables = []
+      env = []
     },
     "idpay-admissibility-assessor" = {
       repository_secrets = [
@@ -164,8 +151,7 @@ locals {
           SONARCLOUD_PROJECT_NAME = "idpay-admissibility-assessor"
         }
       ]
-      env_secrets   = []
-      env_variables = []
+      env = []
     },
     "idpay-wallet" = {
       repository_secrets = [
@@ -180,8 +166,7 @@ locals {
           SONARCLOUD_PROJECT_NAME = "idpay-wallet"
         }
       ]
-      env_secrets   = []
-      env_variables = []
+      env = []
     },
     "idpay-timeline" = {
       repository_secrets = [
@@ -196,8 +181,7 @@ locals {
           SONARCLOUD_PROJECT_NAME = "idpay-timeline"
         }
       ]
-      env_secrets   = []
-      env_variables = []
+      env = []
     },
     "idpay-portal-welfare-backend-initiative" = {
       repository_secrets = [
@@ -212,8 +196,7 @@ locals {
           SONARCLOUD_PROJECT_NAME = "idpay-portal-welfare-backend-initiative"
         }
       ]
-      env_secrets   = []
-      env_variables = []
+      env = []
     },
     "idpay-notification-email" = {
       repository_secrets = [
@@ -228,8 +211,7 @@ locals {
           SONARCLOUD_PROJECT_NAME = "idpay-notification-email"
         }
       ]
-      env_secrets   = []
-      env_variables = []
+      env = []
     },
     "idpay-notification-manager" = {
       repository_secrets = [
@@ -244,8 +226,7 @@ locals {
           SONARCLOUD_PROJECT_NAME = "idpay-notification-manager"
         }
       ]
-      env_secrets   = []
-      env_variables = []
+      env = []
     },
     "idpay-kafka-connect" = {
       repository_secrets = [
@@ -260,8 +241,7 @@ locals {
           SONARCLOUD_PROJECT_NAME = "idpay-kafka-connect"
         }
       ]
-      env_secrets   = []
-      env_variables = []
+      env = []
     },
     "idpay-mock" = {
       repository_secrets = [
@@ -276,8 +256,7 @@ locals {
           SONARCLOUD_PROJECT_NAME = "idpay-mock"
         }
       ]
-      env_secrets   = []
-      env_variables = []
+      env = []
     },
     "idpay-portal-users-frontend" = {
       repository_secrets = [
@@ -292,8 +271,7 @@ locals {
           SONARCLOUD_PROJECT_NAME = "idpay-portal-users-frontend"
         }
       ]
-      env_secrets   = []
-      env_variables = []
+      env = []
     },
     "idpay-payment" = {
       repository_secrets = [
@@ -308,8 +286,7 @@ locals {
           SONARCLOUD_PROJECT_NAME = "idpay-payment"
         }
       ]
-      env_secrets   = []
-      env_variables = []
+      env = []
     },
     "idpay-portal-merchants-operator-frontend" = {
       repository_secrets = [
@@ -324,8 +301,7 @@ locals {
           SONARCLOUD_PROJECT_NAME = "idpay-portal-merchants-operator-frontend"
         }
       ]
-      env_secrets   = []
-      env_variables = []
+      env = []
     },
     "idpay-portal-welfare-frontend" = {
       repository_secrets = [
@@ -340,8 +316,7 @@ locals {
           SONARCLOUD_PROJECT_NAME = "idpay-portal-welfare-frontend"
         }
       ]
-      env_secrets   = []
-      env_variables = []
+      env = []
     },
     "idpay-asset-register-frontend" = {
       repository_secrets = [
@@ -356,8 +331,7 @@ locals {
           SONARCLOUD_PROJECT_NAME = "idpay-asset-register-frontend"
         }
       ]
-      env_secrets   = []
-      env_variables = []
+      env = []
     },
     "idpay-product-catalog-portal" = {
       repository_secrets = [
@@ -372,8 +346,7 @@ locals {
           SONARCLOUD_PROJECT_NAME = "idpay-product-catalog-portal"
         }
       ]
-      env_secrets   = []
-      env_variables = []
+      env = []
     },
     "idpay-portal-welfare-backend-role-permission" = {
       repository_secrets = [
@@ -388,8 +361,7 @@ locals {
           SONARCLOUD_PROJECT_NAME = "idpay-portal-welfare-backend-role-permission"
         }
       ]
-      env_secrets   = []
-      env_variables = []
+      env = []
     },
     "idpay-ranker" = {
       repository_secrets = [
@@ -404,8 +376,7 @@ locals {
           SONARCLOUD_PROJECT_NAME = "idpay-ranker"
         }
       ]
-      env_secrets   = []
-      env_variables = []
+      env = []
     },
     "pari-performance-test" = {
       repository_secrets = [
@@ -420,10 +391,15 @@ locals {
           SONARCLOUD_PROJECT_NAME = "pari-performance-test"
         }
       ]
-      env_secrets   = []
-      env_variables = []
+      env = []
     },
     "mcshared-datavault" = {
+      settings = {
+        apply            = true
+        description      = "MC-Shared Data Vault"
+        primary_language = "Java"
+        visibility       = "internal"
+      }
       protected_branches = ["main"]
       repository_secrets = [
         {
@@ -437,50 +413,50 @@ locals {
           SONARCLOUD_PROJECT_NAME = "mcshared-datavault"
         }
       ]
-      env_secrets   = []
-      env_variables = []
+      env = []
     },
     "mcshared-datavault-test" = {
-      protected_branches = ["main"]
-      repository_secrets = [
-        {
-          AZURE_TENANT_ID = data.azurerm_client_config.current.tenant_id
-          GIT_PAT         = data.azurerm_key_vault_secret.gh_token.value
-        }
-      ]
+      settings = {
+        apply       = true
+        description = "MC-Shared Data Vault Test"
+        visibility  = "private"
+      }
+      protected_branches   = ["main"]
+      repository_secrets   = []
       repository_variables = []
-      env_secrets = [
+      env = [
         {
-          SERVICE_URL = var.datavault_service_url
+          name = "itn-uat"
+          secrets = {
+            SERVICE_URL = var.datavault_service_url_for_uat
+          }
         }
       ]
-      env_variables = []
-    },
+    }
   }
 
   # ----------------------------------------------------------------------------
-  # Repositories that have environment secrets or variables defined.
+  # Repositories that have one or more explicit environments defined.
   # ----------------------------------------------------------------------------
-  repositories_with_environment = {
+  repositories_with_environment = merge([
+    for repo_name, repo_data in local.repository : {
+      for env_cfg in try(repo_data.env, []) :
+      "${repo_name}@${env_cfg.name}" => {
+        repository  = repo_name
+        environment = env_cfg.name
+        variables   = try(env_cfg.variables, {})
+        secrets     = try(env_cfg.secrets, {})
+      }
+    }
+  ]...)
+
+  # ----------------------------------------------------------------------------
+  # Repositories that require repository settings management.
+  # ----------------------------------------------------------------------------
+  repositories_with_settings = {
     for repo_name, repo_data in local.repository : repo_name => repo_data
-    if length(repo_data.env_secrets) > 0 || length(repo_data.env_variables) > 0
+    if try(repo_data.settings.apply, false)
   }
-
-  # ----------------------------------------------------------------------------
-  # Repositories that require GitHub OIDC federation with Azure.
-  #
-  # A federated identity credential is created only for repositories that define
-  # AZURE_CLIENT_ID in repository or environment secrets/variables.
-  # ----------------------------------------------------------------------------
-  repositories_with_federated_identity = toset([
-    for repo_name, repo_data in local.repository : repo_name
-    if anytrue(concat(
-      [for secret_map in repo_data.repository_secrets : contains(keys(secret_map), "AZURE_CLIENT_ID")],
-      [for variable_map in repo_data.repository_variables : contains(keys(variable_map), "AZURE_CLIENT_ID")],
-      [for env_secret_map in repo_data.env_secrets : contains(keys(env_secret_map), "AZURE_CLIENT_ID")],
-      [for env_variable_map in repo_data.env_variables : contains(keys(env_variable_map), "AZURE_CLIENT_ID")]
-    ))
-  ])
 
   # ----------------------------------------------------------------------------
   # Default protected branches.
@@ -502,9 +478,6 @@ locals {
 
   # ----------------------------------------------------------------------------
   # Repositories that have develop branch protected.
-  #
-  # The develop ruleset is applied only when terraform is applied in prod
-  # environment.
   # ----------------------------------------------------------------------------
   repositories_with_develop_ruleset = {
     for repo_name, repo_data in local.repository : repo_name => repo_data
@@ -513,9 +486,6 @@ locals {
 
   # ----------------------------------------------------------------------------
   # Repositories that have either uat or main branch protected.
-  #
-  # The uat_and_main ruleset is applied only when terraform is applied in prod
-  # environment.
   # ----------------------------------------------------------------------------
   repositories_with_uat_and_main_ruleset = {
     for repo_name in keys(local.repository) : repo_name => {
@@ -534,7 +504,7 @@ locals {
     for repo_name, repo_data in local.repository : merge([
       for variable_map in repo_data.repository_variables : {
         for var_name, var_value in variable_map :
-        "${repo_name}_${var_name}" => {
+        "${repo_name}@${var_name}" => {
           repository    = repo_name
           variable_name = var_name
           value         = var_value
@@ -547,17 +517,15 @@ locals {
   # Flattened maps for environment variables.
   # ----------------------------------------------------------------------------
   env_variables_flattened = merge([
-    for repo_name, repo_data in local.repository : merge([
-      for env_map in repo_data.env_variables : {
-        for env_key, env_value in env_map :
-        "${repo_name}@${env_key}" => {
-          repository  = repo_name
-          environment = local.github_environment
-          env_key     = env_key
-          env_value   = env_value
-        }
+    for env_id, env_data in local.repositories_with_environment : {
+      for env_key, env_value in env_data.variables :
+      "${env_id}@${env_key}" => {
+        repository  = env_data.repository
+        environment = env_data.environment
+        env_key     = env_key
+        env_value   = env_value
       }
-    ]...)
+    }
   ]...)
 
   # ----------------------------------------------------------------------------
@@ -567,7 +535,7 @@ locals {
     for repo_name, repo_data in local.repository : merge([
       for secret_map in repo_data.repository_secrets : {
         for secret_name, secret_value in secret_map :
-        "${repo_name}_${secret_name}" => {
+        "${repo_name}@${secret_name}" => {
           repository  = repo_name
           secret_name = secret_name
           value       = secret_value
@@ -580,16 +548,14 @@ locals {
   # Flattened maps for environment secrets.
   # ----------------------------------------------------------------------------
   env_secrets_flattened = merge([
-    for repo_name, repo_data in local.repository : merge([
-      for secret_map in repo_data.env_secrets : {
-        for secret_name, secret_value in secret_map :
-        "${repo_name}@${secret_name}" => {
-          repository  = repo_name
-          environment = local.github_environment
-          secret_name = secret_name
-          value       = secret_value
-        }
+    for env_id, env_data in local.repositories_with_environment : {
+      for secret_name, secret_value in env_data.secrets :
+      "${env_id}@${secret_name}" => {
+        repository  = env_data.repository
+        environment = env_data.environment
+        secret_name = secret_name
+        value       = secret_value
       }
-    ]...)
+    }
   ]...)
 }
