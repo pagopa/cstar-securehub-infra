@@ -287,3 +287,19 @@ variable "data_factory_api_base_url" {
   type        = string
   description = "Internal API for Data Factory"
 }
+
+#
+# Postgres Flexible
+#
+variable "idpay_pgflex_params" {
+  type = object({
+    enabled                                = bool
+    zone                                   = number
+    idh_resource_tier                      = string
+    geo_replication_enabled                = bool
+    pgres_flex_pgbouncer_enabled           = bool
+    pgres_flex_diagnostic_settings_enabled = bool
+    auto_grow_enabled                      = bool
+    storage_tier                           = optional(string, null)
+  })
+}
