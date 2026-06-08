@@ -42,13 +42,9 @@
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_aca_env_name"></a> [aca\_env\_name](#input\_aca\_env\_name) | Name of the ACA environment used for self-hosted runners. | `string` | n/a | yes |
-| <a name="input_aca_env_rg"></a> [aca\_env\_rg](#input\_aca\_env\_rg) | Name of the resource group where the ACA environment used for self-hosted runners is deployed. | `string` | n/a | yes |
-| <a name="input_datavault_service_url"></a> [datavault\_service\_url](#input\_datavault\_service\_url) | URL of the datavault service. | `string` | `"https://idpay.itn.internal.uat.cstar.pagopa.it/mcshareddatavault"` | no |
-| <a name="input_domain"></a> [domain](#input\_domain) | Domain used for tags. | `string` | `"idpay"` | no |
-| <a name="input_env"></a> [env](#input\_env) | Environment | `string` | n/a | yes |
+| <a name="input_datavault_service_url_for_uat"></a> [datavault\_service\_url\_for\_uat](#input\_datavault\_service\_url\_for\_uat) | URL of the datavault service for UAT environment. | `string` | n/a | yes |
+| <a name="input_domain"></a> [domain](#input\_domain) | Domain used for tags. | `string` | n/a | yes |
 | <a name="input_env_short"></a> [env\_short](#input\_env\_short) | n/a | `string` | n/a | yes |
-| <a name="input_location"></a> [location](#input\_location) | Location extended like eg: northeurope, westeurope. | `string` | `"italynorth"` | no |
 | <a name="input_location_short"></a> [location\_short](#input\_location\_short) | Location short like eg: neu, weu.. | `string` | n/a | yes |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | n/a | yes |
 
