@@ -97,7 +97,7 @@ data_factory_api_base_url = "https://api-io.uat.cstar.pagopa.it/idpay-itn/df"
 
 ## Postgres
 idpay_pgflex_params = {
-  enabled                                = true
+  enabled                                = false
   idh_resource_tier                      = "pgflex2"
   geo_replication_enabled                = false
   zone                                   = 1
