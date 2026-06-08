@@ -1,8 +1,10 @@
 # ------------------------------------------------------------------------------
 # Default branch: main
+#
+# This is applied only in prod environment.
 # ------------------------------------------------------------------------------
 resource "github_branch_default" "default" {
-  for_each = toset(keys(local.repository))
+  for_each = var.env == "prod" ? toset(keys(local.repository)) : toset([])
 
   repository = each.key
   branch     = "main"
