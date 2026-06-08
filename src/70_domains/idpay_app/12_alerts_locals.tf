@@ -1431,7 +1431,6 @@ locals {
             | join kind=leftouter TrxCountByBatch on $left.batch_id == $right.rewardBatchId
             | extend trx_count = coalesce(trx_count, 0)
             | where expected_count != trx_count
-            | count
           QUERY
 
       criteria = {
