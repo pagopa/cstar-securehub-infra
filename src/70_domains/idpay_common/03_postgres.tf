@@ -46,8 +46,8 @@ module "idpay_pgflex" {
   env               = var.env
 
   # Network configuration
-  delegated_subnet_id = data.azurerm_subnet.platform_subnet.id
-  private_dns_zone_id = data.azurerm_private_dns_zone.postgres_flexible_privatelink.id
+  delegated_subnet_id = data.azurerm_subnet.platform_subnet.id # todo
+  private_dns_zone_id = data.azurerm_private_dns_zone.postgres_flexible_privatelink.id # todo
 
   # Authentication configuration
   administrator_login    = azurerm_key_vault_secret.idpay_db_admin_user.value
@@ -55,7 +55,7 @@ module "idpay_pgflex" {
 
   # Monitoring and performance settings
   diagnostic_settings_enabled = var.idpay_pgflex_params.pgres_flex_diagnostic_settings_enabled
-  log_analytics_workspace_id  = data.azurerm_log_analytics_workspace.logs_workspace.id
+  log_analytics_workspace_id  = data.azurerm_log_analytics_workspace.logs_workspace.id # todo LAW core or LAW idpay?
   private_dns_registration    = false
   pg_bouncer_enabled          = var.idpay_pgflex_params.pgres_flex_pgbouncer_enabled
   zone                        = var.idpay_pgflex_params.zone
@@ -65,7 +65,7 @@ module "idpay_pgflex" {
   geo_replication = {
     enabled                     = var.idpay_pgflex_params.geo_replication_enabled
     name                        = "${local.project}-pgflex-replica"
-    subnet_id                   = data.azurerm_subnet.platform_subnet.id
+    subnet_id                   = data.azurerm_subnet.platform_subnet.id # todo
     location                    = "germanywestcentral"
     private_dns_registration_ve = true
   }
