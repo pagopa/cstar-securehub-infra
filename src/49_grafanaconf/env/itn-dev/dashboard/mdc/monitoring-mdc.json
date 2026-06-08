@@ -613,7 +613,7 @@
             }
           },
           "pluginVersion": "7.2.2",
-          "query": "MessageSnapshot\r\n| where message_state == \"SENT\"\r\n| summarize arg_max(window_start, associated_payment) by origin_id, entity_id\r\n| project origin_id, entity_id, associated_payment\r\n| join kind=inner TppDataSnapshot on entity_id\r\n| summarize\r\n    ['Con Pagamento']    = countif(associated_payment == true),\r\n    ['Senza Pagamento']  = countif(associated_payment == false),\r\n    ['Totale']           = count()\r\nby PSP = business_name\r\n| order by ['Totale'] desc",
+          "query": "MessageSnapshot\r\n| where message_state == \"SENT\"\r\n| where $__timeFilter(window_start)\r\n| summarize arg_max(window_start, associated_payment) by origin_id, entity_id\r\n| project origin_id, entity_id, associated_payment\r\n| join kind=inner TppDataSnapshot on entity_id\r\n| summarize\r\n    ['Con Pagamento']    = countif(associated_payment == true),\r\n    ['Senza Pagamento']  = countif(associated_payment == false),\r\n    ['Totale']           = count()\r\n    by PSP = business_name\r\n| order by ['Totale'] desc",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -1156,5 +1156,5 @@
   "timezone": "utc",
   "title": "Monitoraggio MDC",
   "uid": "efj6fhop10um8c",
-  "version": 55
+  "version": 57
 }
