@@ -478,7 +478,7 @@ locals {
 
   # ----------------------------------------------------------------------------
   # Repositories that have develop branch protected.
-    # ----------------------------------------------------------------------------
+  # ----------------------------------------------------------------------------
   repositories_with_develop_ruleset = {
     for repo_name, repo_data in local.repository : repo_name => repo_data
     if contains(local.protected_branches_by_repo[repo_name], "develop")
@@ -520,10 +520,10 @@ locals {
     for env_id, env_data in local.repositories_with_environment : {
       for env_key, env_value in env_data.variables :
       "${env_id}@${env_key}" => {
-          repository  = env_data.repository
-          environment = env_data.environment
-          env_key     = env_key
-          env_value   = env_value
+        repository  = env_data.repository
+        environment = env_data.environment
+        env_key     = env_key
+        env_value   = env_value
       }
     }
   ]...)
@@ -551,10 +551,10 @@ locals {
     for env_id, env_data in local.repositories_with_environment : {
       for secret_name, secret_value in env_data.secrets :
       "${env_id}@${secret_name}" => {
-          repository  = env_data.repository
-          environment = env_data.environment
-          secret_name = secret_name
-          value       = secret_value
+        repository  = env_data.repository
+        environment = env_data.environment
+        secret_name = secret_name
+        value       = secret_value
       }
     }
   ]...)
