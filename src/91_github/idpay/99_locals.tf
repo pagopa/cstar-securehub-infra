@@ -1,7 +1,6 @@
 locals {
-  project                = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
-  github_environment     = "${var.location_short}-${var.env}"
-  github_deployer_scopes = ["${var.prefix}-${var.env_short}-${var.location_short}-platform-compute-rg"]
+  project            = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
+  github_environment = "${var.location_short}-${var.env}"
 
   # ----------------------------------------------------------------------------
   # Repository configuration.
@@ -424,6 +423,12 @@ locals {
       env_variables = []
     },
     "mcshared-datavault" = {
+      settings = {
+        apply            = true
+        description      = "MC-Shared Data Vault"
+        primary_language = "Java"
+        visibility       = "internal"
+      }
       protected_branches = ["main"]
       repository_secrets = [
         {
@@ -441,13 +446,13 @@ locals {
       env_variables = []
     },
     "mcshared-datavault-test" = {
-      protected_branches = ["main"]
-      repository_secrets = [
-        {
-          AZURE_TENANT_ID = data.azurerm_client_config.current.tenant_id
-          GIT_PAT         = data.azurerm_key_vault_secret.gh_token.value
-        }
-      ]
+      settings = {
+        apply       = true
+        description = "MC-Shared Data Vault Test"
+        visibility  = "private"
+      }
+      protected_branches   = ["main"]
+      repository_secrets   = []
       repository_variables = []
       env_secrets = [
         {
@@ -455,7 +460,7 @@ locals {
         }
       ]
       env_variables = []
-    },
+    }
   }
 
   # ----------------------------------------------------------------------------
@@ -467,20 +472,12 @@ locals {
   }
 
   # ----------------------------------------------------------------------------
-  # Repositories that require GitHub OIDC federation with Azure.
-  #
-  # A federated identity credential is created only for repositories that define
-  # AZURE_CLIENT_ID in repository or environment secrets/variables.
+  # Repositories that require repository settings management.
   # ----------------------------------------------------------------------------
-  repositories_with_federated_identity = toset([
-    for repo_name, repo_data in local.repository : repo_name
-    if anytrue(concat(
-      [for secret_map in repo_data.repository_secrets : contains(keys(secret_map), "AZURE_CLIENT_ID")],
-      [for variable_map in repo_data.repository_variables : contains(keys(variable_map), "AZURE_CLIENT_ID")],
-      [for env_secret_map in repo_data.env_secrets : contains(keys(env_secret_map), "AZURE_CLIENT_ID")],
-      [for env_variable_map in repo_data.env_variables : contains(keys(env_variable_map), "AZURE_CLIENT_ID")]
-    ))
-  ])
+  repositories_with_settings = {
+    for repo_name, repo_data in local.repository : repo_name => repo_data
+    if try(repo_data.settings.apply, false)
+  }
 
   # ----------------------------------------------------------------------------
   # Default protected branches.
