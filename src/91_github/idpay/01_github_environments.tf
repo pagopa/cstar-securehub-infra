@@ -1,10 +1,8 @@
 # ------------------------------------------------------------------------------
 # Repository variables.
-#
-# The variables are applied only when terraform is applied in prod environment.
 # ------------------------------------------------------------------------------
 resource "github_actions_variable" "repository_variables" {
-  for_each = var.env == "prod" ? local.repository_variables_flattened : {}
+  for_each = local.repository_variables_flattened
 
   repository    = each.value.repository
   variable_name = each.value.variable_name
@@ -13,11 +11,9 @@ resource "github_actions_variable" "repository_variables" {
 
 # ------------------------------------------------------------------------------
 # Repository secrets.
-#
-# The secrets are applied only when terraform is applied in prod environment.
 # ------------------------------------------------------------------------------
 resource "github_actions_secret" "repository_secrets" {
-  for_each = var.env == "prod" ? local.repository_secrets_flattened : {}
+  for_each = local.repository_secrets_flattened
 
   repository      = each.value.repository
   secret_name     = each.value.secret_name
@@ -30,8 +26,8 @@ resource "github_actions_secret" "repository_secrets" {
 resource "github_repository_environment" "env" {
   for_each = local.repositories_with_environment
 
-  repository          = each.key
-  environment         = local.github_environment
+  repository          = each.value.repository
+  environment         = each.value.environment
   can_admins_bypass   = true
   prevent_self_review = true
 }
