@@ -21,7 +21,7 @@ keycloak_pgflex_params = {
   pgres_flex_pgbouncer_enabled           = false
   pgres_flex_diagnostic_settings_enabled = false
   auto_grow_enabled                      = false
-  storage_tier                           = "P30"
+  storage_tier                           = "P10"
 }
 
 keycloak_configuration = {
@@ -33,8 +33,8 @@ keycloak_configuration = {
   replica_count_max                           = 2
   cpu_request                                 = "500m"
   cpu_limit                                   = "1"
-  memory_request                              = "1Gi"
-  memory_limit                                = "2Gi"
+  memory_request                              = "2Gi"
+  memory_limit                                = "3Gi"
   http_client_connection_ttl_millis           = 180000
   http_client_connection_max_idle_time_millis = 180000
   image_registry_config_cli                   = "public.ecr.aws"
@@ -45,7 +45,7 @@ keycloak_configuration = {
 aks_user_node_pool_keycloak = {
   idh_resource_tier = "Standard_D4ads_v5_active"
   node_count_min    = 1
-  node_count_max    = 1
+  node_count_max    = 3
   os_disk_size_gb   = 300
   os_disk_type      = "Managed"
 }

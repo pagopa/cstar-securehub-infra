@@ -22,6 +22,7 @@ module "redis" {
     vnet_rg_name         = local.core_network_rg
     private_dns_zone_ids = [data.azurerm_private_dns_zone.managed_redis.id]
   }
+  resource_group_nsg_name = local.network_rg
 
   alert_action_group_ids = [
     var.env_short == "p" ? data.azurerm_monitor_action_group.alerts_opsgenie[0].id : null

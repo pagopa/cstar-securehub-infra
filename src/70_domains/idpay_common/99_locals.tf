@@ -90,9 +90,11 @@ locals {
   # Monitoring
   #
 
-  core_monitor_resource_group_name  = "${local.project_core}-monitor-rg"
-  core_log_analytics_workspace_name = "${local.project_core}-law"
-  core_application_insights_name    = "${local.project_core}-appinsights"
+  core_monitor_resource_group_name    = "${local.project_core}-monitor-rg"
+  core_log_analytics_workspace_name   = "${local.project_core}-law"
+  core_application_insights_name      = "${local.project_core}-appinsights"
+  domain_monitor_resource_group_name  = "${local.project}-monitoring-rg"
+  domain_log_analytics_workspace_name = "${local.project}-law"
 
   #
   # APIM
