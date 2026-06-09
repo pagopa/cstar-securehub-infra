@@ -1,3 +1,7 @@
+data "github_team" "admin" {
+  slug = "idpay-approver-team"
+}
+
 data "azurerm_key_vault" "core_cicd" {
   name                = "${var.prefix}-${var.env_short}-${var.location_short}-cicd-kv"
   resource_group_name = "${var.prefix}-${var.env_short}-${var.location_short}-core-sec-rg"

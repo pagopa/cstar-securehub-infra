@@ -1,3 +1,6 @@
+# ------------------------------------------------------------------------------
+# Default branch: main
+# ------------------------------------------------------------------------------
 resource "github_branch_default" "default" {
   for_each = toset(keys(local.repository))
 
@@ -5,9 +8,11 @@ resource "github_branch_default" "default" {
   branch     = "main"
 }
 
-# iterate over the repositories and create branch protection rules for the develop branch
+# ------------------------------------------------------------------------------
+# Apply this ruleset only for repositories that have develop branch protected.
+# ------------------------------------------------------------------------------
 resource "github_repository_ruleset" "develop" {
-  for_each = local.repository
+  for_each = local.repositories_with_develop_ruleset
 
   name        = "develop"
   repository  = each.key
@@ -24,8 +29,7 @@ resource "github_repository_ruleset" "develop" {
   }
 
   bypass_actors {
-    # repository admin
-    actor_id    = 13205158
+    actor_id    = data.github_team.admin.id
     actor_type  = "Team"
     bypass_mode = "always"
   }
@@ -66,9 +70,14 @@ resource "github_repository_ruleset" "develop" {
   }
 }
 
-# iterate over the repositories and create branch protection rules for the develop branch
+# ------------------------------------------------------------------------------
+# Apply this ruleset only for repositories that have uat or main branch
+# protected.
+#
+# The ruleset is applied only when terraform is applied in prod environment.
+# ------------------------------------------------------------------------------
 resource "github_repository_ruleset" "uat_and_main" {
-  for_each = local.repository
+  for_each = local.repositories_with_uat_and_main_ruleset
 
   name        = "uat_and_main"
   repository  = each.key
@@ -77,17 +86,13 @@ resource "github_repository_ruleset" "uat_and_main" {
 
   conditions {
     ref_name {
-      include = [
-        "refs/heads/uat",
-        "refs/heads/main"
-      ]
+      include = each.value.include_refs
       exclude = []
     }
   }
 
   bypass_actors {
-    # repository admin
-    actor_id    = 13205158
+    actor_id    = data.github_team.admin.id
     actor_type  = "Team"
     bypass_mode = "always"
   }

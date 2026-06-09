@@ -39,3 +39,8 @@ data "azurerm_user_assigned_identity" "iac_federated_azdo" {
   name                = each.key
   resource_group_name = local.azdo_managed_identity_rg_name
 }
+
+data "azurerm_user_assigned_identity" "subscription_service_connection" {
+  name                = "${upper(var.env)}-${upper(var.prefix)}"
+  resource_group_name = local.azdo_managed_identity_rg_name
+}
