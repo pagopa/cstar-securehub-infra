@@ -546,7 +546,7 @@
         "type": "grafana-azure-data-explorer-datasource",
         "uid": "${ds}"
       },
-      "description": "Numero di notifiche inviate alle PSP",
+      "description": "Numero di messaggi inviati, letti e infine perfezionate suddivise per PSP",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -557,11 +557,14 @@
             "cellOptions": {
               "type": "auto"
             },
+            "filterable": false,
             "footer": {
               "reducers": []
             },
             "inspect": false,
-            "minWidth": 50
+            "minWidth": 50,
+            "wrapHeaderText": true,
+            "wrapText": true
           },
           "mappings": [],
           "thresholds": {
@@ -578,12 +581,12 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 7,
-        "w": 12,
+        "h": 8,
+        "w": 24,
         "x": 0,
         "y": 21
       },
-      "id": 16,
+      "id": 19,
       "options": {
         "cellHeight": "sm",
         "showHeader": true,
@@ -613,7 +616,7 @@
             }
           },
           "pluginVersion": "7.2.2",
-          "query": "MessageSnapshot\r\n| where message_state == \"SENT\"\r\n| where $__timeFilter(window_start)\r\n| summarize arg_max(window_start, associated_payment) by origin_id, entity_id\r\n| project origin_id, entity_id, associated_payment\r\n| join kind=inner TppDataSnapshot on entity_id\r\n| summarize\r\n    ['Con Pagamento']    = countif(associated_payment == true),\r\n    ['Senza Pagamento']  = countif(associated_payment == false),\r\n    ['Totale']           = count()\r\n    by PSP = business_name\r\n| order by ['Totale'] desc",
+          "query": "let payment_map =\r\n    MessageSnapshot\r\n    | summarize arg_max(window_start, associated_payment) by origin_id;\r\n    // ☝️ NO timeFilter — prende tutto lo storico per avere sempre associated_payment\r\n\r\nlet inviate =\r\n    MessageSnapshot\r\n    | where message_state == \"SENT\"\r\n    | where $__timeFilter(window_start)\r\n    | summarize arg_max(window_start, entity_id) by origin_id, entity_id\r\n    | project origin_id, entity_id, is_inviata = true;\r\n\r\nlet lette =\r\n    RetrievalIdVolumeSnapshot\r\n    | where $__timeFilter(window_start)\r\n    | summarize arg_max(window_start, entity_id) by origin_id, entity_id\r\n    | project origin_id, entity_id, is_letta = true;\r\n\r\nlet perfezionate =\r\n    FinalizedMessageSnapshot\r\n    | where $__timeFilter(window_start)\r\n    | summarize arg_max(window_start, tpp_id) by origin_id\r\n    | project origin_id, is_perfezionata = true;\r\n\r\n// Union di tutti gli origin_id che compaiono in almeno uno stato\r\nlet tutti =\r\n    inviate | project origin_id, entity_id\r\n    | union (lette | project origin_id, entity_id)\r\n    | summarize arg_max(origin_id, entity_id) by origin_id;\r\n\r\ntutti\r\n| join kind=leftouter payment_map on origin_id\r\n| join kind=inner TppDataSnapshot on entity_id\r\n| join kind=leftouter (inviate | project origin_id, is_inviata) on origin_id\r\n| join kind=leftouter (lette | project origin_id, is_letta) on origin_id\r\n| join kind=leftouter (perfezionate | project origin_id, is_perfezionata) on origin_id\r\n| summarize\r\n    ['Inv. Con Pagamento']    = dcountif(origin_id, associated_payment == true  and is_inviata == true),\r\n    ['Inv. Senza Pagamento']  = dcountif(origin_id, associated_payment == false and is_inviata == true),\r\n    ['Inviate Totale']        = dcountif(origin_id, is_inviata == true),\r\n    ['Lette Con Pagamento']   = dcountif(origin_id, associated_payment == true  and is_letta == true),\r\n    ['Lette Senza Pagamento'] = dcountif(origin_id, associated_payment == false and is_letta == true),\r\n    ['Lette Totale']          = dcountif(origin_id, is_letta == true),\r\n    ['Perf. Con Pagamento']   = dcountif(origin_id, associated_payment == true  and is_perfezionata == true),\r\n    ['Perf. Senza Pagamento'] = dcountif(origin_id, associated_payment == false and is_perfezionata == true),\r\n    ['Perfezionate Totale']   = dcountif(origin_id, is_perfezionata == true)\r\n  by PSP = business_name\r\n| order by ['Lette Totale'] desc",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -621,90 +624,7 @@
           "resultFormat": "table"
         }
       ],
-      "title": "Notifiche inviate per PSP",
-      "type": "table"
-    },
-    {
-      "datasource": {
-        "type": "grafana-azure-data-explorer-datasource",
-        "uid": "${ds}"
-      },
-      "description": "Numero di notifiche lette dall'app",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "custom": {
-            "align": "auto",
-            "cellOptions": {
-              "type": "auto"
-            },
-            "footer": {
-              "reducers": []
-            },
-            "inspect": false,
-            "minWidth": 50
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              }
-            ]
-          },
-          "unit": "short"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 7,
-        "w": 12,
-        "x": 12,
-        "y": 21
-      },
-      "id": 17,
-      "options": {
-        "cellHeight": "sm",
-        "showHeader": true,
-        "sortBy": []
-      },
-      "pluginVersion": "12.3.1",
-      "targets": [
-        {
-          "OpenAI": false,
-          "database": "mdc",
-          "datasource": {
-            "type": "grafana-azure-data-explorer-datasource",
-            "uid": "${ds}"
-          },
-          "expression": {
-            "groupBy": {
-              "expressions": [],
-              "type": "and"
-            },
-            "reduce": {
-              "expressions": [],
-              "type": "and"
-            },
-            "where": {
-              "expressions": [],
-              "type": "and"
-            }
-          },
-          "pluginVersion": "7.2.2",
-          "query": "let Sent = MessageSnapshot\r\n| where message_state == \"SENT\"\r\n| summarize arg_max(window_start, associated_payment) by origin_id\r\n| project origin_id, associated_payment;\r\n\r\nlet Lette = RetrievalIdVolumeSnapshot\r\n| where $__timeFilter(window_start)\r\n| summarize arg_max(window_start, entity_id) by origin_id, entity_id\r\n| project origin_id, entity_id;\r\n\r\nSent\r\n| join kind=inner Lette on origin_id\r\n| join kind=inner TppDataSnapshot on entity_id\r\n| summarize\r\n    ['Con Pagamento']    = countif(associated_payment == true),\r\n    ['Senza Pagamento']  = countif(associated_payment == false),\r\n    ['Totale']           = count()\r\nby PSP = business_name\r\n| order by ['Totale'] desc",
-          "querySource": "raw",
-          "queryType": "KQL",
-          "rawMode": true,
-          "refId": "A",
-          "resultFormat": "table"
-        }
-      ],
-      "title": "Notifiche lette per PSP",
+      "title": "Flusso messaggi accettati per PSP",
       "type": "table"
     },
     {
@@ -713,7 +633,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 28
+        "y": 29
       },
       "id": 8,
       "panels": [],
@@ -747,7 +667,7 @@
         "h": 8,
         "w": 5,
         "x": 0,
-        "y": 29
+        "y": 30
       },
       "id": 2,
       "options": {
@@ -842,7 +762,7 @@
         "h": 8,
         "w": 5,
         "x": 5,
-        "y": 29
+        "y": 30
       },
       "id": 1,
       "options": {
@@ -969,7 +889,7 @@
         "h": 8,
         "w": 14,
         "x": 10,
-        "y": 29
+        "y": 30
       },
       "id": 3,
       "options": {
@@ -1083,7 +1003,7 @@
         "h": 8,
         "w": 10,
         "x": 0,
-        "y": 37
+        "y": 38
       },
       "id": 13,
       "options": {
@@ -1156,5 +1076,5 @@
   "timezone": "utc",
   "title": "Monitoraggio MDC",
   "uid": "efj6fhop10um8c",
-  "version": 57
+  "version": 59
 }
