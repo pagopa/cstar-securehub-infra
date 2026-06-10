@@ -413,7 +413,28 @@ locals {
           SONARCLOUD_PROJECT_NAME = "mcshared-datavault"
         }
       ]
-      env = []
+      env = [
+        {
+          name = "prod"
+          variables = {
+            ARGOCD_SERVER = var.argocd_server_for_prod
+          }
+          secrets = {
+            ARGOCD_ADMIN_USERNAME = data.azurerm_key_vault_secret.argocd_admin_username_for_prod.value
+            ARGOCD_ADMIN_PASSWORD = data.azurerm_key_vault_secret.argocd_admin_password_for_prod.value
+          }
+        },
+        {
+          name = "uat"
+          variables = {
+            ARGOCD_SERVER = var.argocd_server_for_uat
+          }
+          secrets = {
+            ARGOCD_ADMIN_USERNAME = data.azurerm_key_vault_secret.argocd_admin_username_for_uat.value
+            ARGOCD_ADMIN_PASSWORD = data.azurerm_key_vault_secret.argocd_admin_password_for_uat.value
+          }
+        }
+      ]
     },
     "mcshared-datavault-test" = {
       settings = {
@@ -426,8 +447,8 @@ locals {
       repository_variables = []
       env = [
         {
-          name = "itn-uat"
-          secrets = {
+          name = "uat"
+          variables = {
             SERVICE_URL = var.datavault_service_url_for_uat
           }
         }
