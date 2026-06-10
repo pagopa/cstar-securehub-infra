@@ -46,7 +46,7 @@ locals {
   dns_zone_internal                = "internal.${local.dns_zone_name}"
   ingress_private_load_balancer_ip = "10.10.1.250"
 
-  repositories = ["rtp-sender", "rtp-activator", "rtp-consumer", "rtp-payees"]
+  repositories = ["rtp-sender", "rtp-sender-v2", "rtp-activator", "rtp-consumer", "rtp-payees"]
 
   # AKS
   aks_name                = "${local.project_no_domain}-${var.env}-aks"

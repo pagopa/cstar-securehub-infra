@@ -16,6 +16,13 @@ locals {
         }
       },
       {
+        "rtp-sender-v2" = {
+          name          = "rtp-sender-v2"
+          target_branch = "main"
+          env           = ["dev", "uat", "prod"]
+        }
+      },
+      {
         "rtp-consumer" = {
           name          = "rtp-consumer"
           target_branch = "main"

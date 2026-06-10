@@ -49,6 +49,31 @@ resource "azurerm_role_assignment" "storage_account_to_sender_identity" {
 }
 
 # ------------------------------------------------------------------------------
+# Identity for rtp-sender-v2 microservice.
+# ------------------------------------------------------------------------------
+resource "azurerm_user_assigned_identity" "sender_v2" {
+  resource_group_name = data.azurerm_resource_group.identities_rg.name
+  location            = data.azurerm_resource_group.identities_rg.location
+  name                = "${local.project}-sender-v2-id"
+  tags                = module.tag_config.tags
+}
+
+resource "azurerm_key_vault_access_policy" "access_policy_sender_v2_kv" {
+
+  key_vault_id = data.azurerm_key_vault.domain_kv.id
+  tenant_id    = data.azurerm_key_vault.domain_kv.tenant_id
+  object_id    = azurerm_user_assigned_identity.sender_v2.principal_id
+
+  secret_permissions = ["Get", "List"]
+}
+
+resource "azurerm_role_assignment" "storage_account_to_sender_v2_identity" {
+  scope                = data.azurerm_storage_account.rtp_storage_account.id
+  role_definition_name = "Storage Blob Data Reader"
+  principal_id         = azurerm_user_assigned_identity.sender_v2.principal_id
+}
+
+# ------------------------------------------------------------------------------
 # Role Assignment for srtp microservices.
 # ------------------------------------------------------------------------------
 
