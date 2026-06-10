@@ -13,13 +13,12 @@
 | Name | Version |
 |------|---------|
 | <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.76.0 |
+| <a name="provider_azurerm.uat"></a> [azurerm.uat](#provider\_azurerm.uat) | 4.76.0 |
 | <a name="provider_github"></a> [github](#provider\_github) | 6.12.1 |
 
 ## Modules
 
-| Name | Source | Version |
-|------|--------|---------|
-| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | 0a7c2d5439660df28f2154eb86f5a8af0bbe8892 |
+No modules.
 
 ## Resources
 
@@ -34,7 +33,12 @@
 | [github_repository_environment.env](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository_environment) | resource |
 | [github_repository_ruleset.develop](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository_ruleset) | resource |
 | [github_repository_ruleset.uat_and_main](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository_ruleset) | resource |
-| [azurerm_key_vault.core_cicd](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault) | data source |
+| [azurerm_key_vault.core_cicd_for_prod](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault) | data source |
+| [azurerm_key_vault.uat_core_cicd_for_uat](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault) | data source |
+| [azurerm_key_vault_secret.argocd_admin_password_for_prod](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.argocd_admin_password_for_uat](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.argocd_admin_username_for_prod](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.argocd_admin_username_for_uat](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.sonar_token](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [github_team.admin](https://registry.terraform.io/providers/integrations/github/latest/docs/data-sources/team) | data source |
 
@@ -42,11 +46,10 @@
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_argocd_server_for_prod"></a> [argocd\_server\_for\_prod](#input\_argocd\_server\_for\_prod) | Server of the ArgoCD server for PROD environment. | `string` | n/a | yes |
+| <a name="input_argocd_server_for_uat"></a> [argocd\_server\_for\_uat](#input\_argocd\_server\_for\_uat) | Server of the ArgoCD server for UAT environment. | `string` | n/a | yes |
 | <a name="input_datavault_service_url_for_uat"></a> [datavault\_service\_url\_for\_uat](#input\_datavault\_service\_url\_for\_uat) | URL of the datavault service for UAT environment. | `string` | n/a | yes |
-| <a name="input_domain"></a> [domain](#input\_domain) | Domain used for tags. | `string` | n/a | yes |
-| <a name="input_env_short"></a> [env\_short](#input\_env\_short) | n/a | `string` | n/a | yes |
-| <a name="input_location_short"></a> [location\_short](#input\_location\_short) | Location short like eg: neu, weu.. | `string` | n/a | yes |
-| <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | n/a | yes |
+| <a name="input_subscription_id_for_uat"></a> [subscription\_id\_for\_uat](#input\_subscription\_id\_for\_uat) | Subscription ID of the UAT environment, retrieved dynamically. | `string` | n/a | yes |
 
 ## Outputs
 
