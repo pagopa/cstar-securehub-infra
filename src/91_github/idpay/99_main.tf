@@ -23,11 +23,16 @@ provider "azurerm" {
   }
 }
 
-provider "github" {
-  owner = "pagopa"
+provider "azurerm" {
+  alias           = "uat"
+  subscription_id = var.subscription_id_for_uat
+  features {
+    key_vault {
+      purge_soft_delete_on_destroy = false
+    }
+  }
 }
 
-module "__v4__" {
-  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v7.12.0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=0a7c2d5439660df28f2154eb86f5a8af0bbe8892"
+provider "github" {
+  owner = "pagopa"
 }
