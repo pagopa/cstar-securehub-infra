@@ -13,6 +13,7 @@ resource "kubernetes_secret" "fileshare" {
 }
 
 resource "kubernetes_secret" "rtp_sender_v2_fileshare" {
+  count = var.env_short != "p" ? 1 : 0
   metadata {
     name      = "rtp-sender-v2-microservice-chart-azure-file"
     namespace = var.domain

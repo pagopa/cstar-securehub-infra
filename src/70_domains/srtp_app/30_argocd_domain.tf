@@ -19,7 +19,7 @@ locals {
         "rtp-sender-v2" = {
           name          = "rtp-sender-v2"
           target_branch = "main"
-          env           = ["dev", "uat", "prod"]
+          env           = ["dev", "uat"]
         }
       },
       {
