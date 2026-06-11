@@ -1,4 +1,4 @@
-datavault_service_url_for_uat = "https://idpay.itn.internal.uat.cstar.pagopa.it/mcshareddatavault"
-
-argocd_server_for_prod = "argocd.itn.internal.cstar.pagopa.it"
-argocd_server_for_uat  = "argocd.itn.internal.uat.cstar.pagopa.it"
+env            = "prod"
+cicd_kv_name   = "cstar-p-itn-cicd-kv"
+cicd_kv_rg     = "cstar-p-itn-core-sec-rg"
+argo_cd_server = "argocd.itn.internal.cstar.pagopa.it"

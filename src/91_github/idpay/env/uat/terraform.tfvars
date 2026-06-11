@@ -1,0 +1,5 @@
+env                   = "uat"
+cicd_kv_name          = "cstar-u-itn-cicd-kv"
+cicd_kv_rg            = "cstar-u-itn-core-sec-rg"
+datavault_service_url = "https://idpay.itn.internal.uat.cstar.pagopa.it/mcshareddatavault"
+argo_cd_server        = "argocd.itn.internal.uat.cstar.pagopa.it"

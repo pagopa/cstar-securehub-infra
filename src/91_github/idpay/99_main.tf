@@ -23,16 +23,6 @@ provider "azurerm" {
   }
 }
 
-provider "azurerm" {
-  alias           = "uat"
-  subscription_id = var.subscription_id_for_uat
-  features {
-    key_vault {
-      purge_soft_delete_on_destroy = false
-    }
-  }
-}
-
 provider "github" {
   owner = "pagopa"
 }

@@ -16,7 +16,6 @@ locals {
           SONARCLOUD_PROJECT_NAME = "idpay-asset-register-backend"
         }
       ]
-      env = []
     },
     "idpay-payment-instrument" = {
       repository_secrets = [
@@ -31,7 +30,6 @@ locals {
           SONARCLOUD_PROJECT_NAME = "idpay-payment-instrument"
         }
       ]
-      env = []
     },
     "idpay-portal-merchants-frontend" = {
       repository_secrets = [
@@ -46,7 +44,6 @@ locals {
           SONARCLOUD_PROJECT_NAME = "idpay-portal-merchants-frontend"
         }
       ]
-      env = []
     },
     "idpay-recovery-error-topic" = {
       repository_secrets = [
@@ -61,7 +58,6 @@ locals {
           SONARCLOUD_PROJECT_NAME = "idpay-recovery-error-topic"
         }
       ]
-      env = []
     },
     "idpay-reward-calculator" = {
       repository_secrets = [
@@ -76,7 +72,6 @@ locals {
           SONARCLOUD_PROJECT_NAME = "idpay-reward-calculator"
         }
       ]
-      env = []
     },
     "idpay-merchant" = {
       repository_secrets = [
@@ -91,7 +86,6 @@ locals {
           SONARCLOUD_PROJECT_NAME = "idpay-merchant"
         }
       ]
-      env = []
     },
     "idpay-transactions" = {
       repository_secrets = [
@@ -106,7 +100,6 @@ locals {
           SONARCLOUD_PROJECT_NAME = "idpay-transactions"
         }
       ]
-      env = []
     },
     "idpay-initiative-statistics" = {
       repository_secrets = [
@@ -121,7 +114,6 @@ locals {
           SONARCLOUD_PROJECT_NAME = "idpay-initiative-statistics"
         }
       ]
-      env = []
     },
     "idpay-onboarding-workflow" = {
       repository_secrets = [
@@ -136,7 +128,6 @@ locals {
           SONARCLOUD_PROJECT_NAME = "idpay-onboarding-workflow"
         }
       ]
-      env = []
     },
     "idpay-admissibility-assessor" = {
       repository_secrets = [
@@ -151,7 +142,6 @@ locals {
           SONARCLOUD_PROJECT_NAME = "idpay-admissibility-assessor"
         }
       ]
-      env = []
     },
     "idpay-wallet" = {
       repository_secrets = [
@@ -166,7 +156,6 @@ locals {
           SONARCLOUD_PROJECT_NAME = "idpay-wallet"
         }
       ]
-      env = []
     },
     "idpay-timeline" = {
       repository_secrets = [
@@ -181,7 +170,6 @@ locals {
           SONARCLOUD_PROJECT_NAME = "idpay-timeline"
         }
       ]
-      env = []
     },
     "idpay-portal-welfare-backend-initiative" = {
       repository_secrets = [
@@ -196,7 +184,6 @@ locals {
           SONARCLOUD_PROJECT_NAME = "idpay-portal-welfare-backend-initiative"
         }
       ]
-      env = []
     },
     "idpay-notification-email" = {
       repository_secrets = [
@@ -211,7 +198,6 @@ locals {
           SONARCLOUD_PROJECT_NAME = "idpay-notification-email"
         }
       ]
-      env = []
     },
     "idpay-notification-manager" = {
       repository_secrets = [
@@ -226,7 +212,6 @@ locals {
           SONARCLOUD_PROJECT_NAME = "idpay-notification-manager"
         }
       ]
-      env = []
     },
     "idpay-kafka-connect" = {
       repository_secrets = [
@@ -241,7 +226,6 @@ locals {
           SONARCLOUD_PROJECT_NAME = "idpay-kafka-connect"
         }
       ]
-      env = []
     },
     "idpay-mock" = {
       repository_secrets = [
@@ -256,7 +240,6 @@ locals {
           SONARCLOUD_PROJECT_NAME = "idpay-mock"
         }
       ]
-      env = []
     },
     "idpay-portal-users-frontend" = {
       repository_secrets = [
@@ -271,7 +254,6 @@ locals {
           SONARCLOUD_PROJECT_NAME = "idpay-portal-users-frontend"
         }
       ]
-      env = []
     },
     "idpay-payment" = {
       repository_secrets = [
@@ -286,7 +268,6 @@ locals {
           SONARCLOUD_PROJECT_NAME = "idpay-payment"
         }
       ]
-      env = []
     },
     "idpay-portal-merchants-operator-frontend" = {
       repository_secrets = [
@@ -301,7 +282,6 @@ locals {
           SONARCLOUD_PROJECT_NAME = "idpay-portal-merchants-operator-frontend"
         }
       ]
-      env = []
     },
     "idpay-portal-welfare-frontend" = {
       repository_secrets = [
@@ -316,7 +296,6 @@ locals {
           SONARCLOUD_PROJECT_NAME = "idpay-portal-welfare-frontend"
         }
       ]
-      env = []
     },
     "idpay-asset-register-frontend" = {
       repository_secrets = [
@@ -331,7 +310,6 @@ locals {
           SONARCLOUD_PROJECT_NAME = "idpay-asset-register-frontend"
         }
       ]
-      env = []
     },
     "idpay-product-catalog-portal" = {
       repository_secrets = [
@@ -346,7 +324,6 @@ locals {
           SONARCLOUD_PROJECT_NAME = "idpay-product-catalog-portal"
         }
       ]
-      env = []
     },
     "idpay-portal-welfare-backend-role-permission" = {
       repository_secrets = [
@@ -361,7 +338,6 @@ locals {
           SONARCLOUD_PROJECT_NAME = "idpay-portal-welfare-backend-role-permission"
         }
       ]
-      env = []
     },
     "idpay-ranker" = {
       repository_secrets = [
@@ -376,7 +352,6 @@ locals {
           SONARCLOUD_PROJECT_NAME = "idpay-ranker"
         }
       ]
-      env = []
     },
     "pari-performance-test" = {
       repository_secrets = [
@@ -391,7 +366,6 @@ locals {
           SONARCLOUD_PROJECT_NAME = "pari-performance-test"
         }
       ]
-      env = []
     },
     "mcshared-datavault" = {
       settings = {
@@ -413,28 +387,19 @@ locals {
           SONARCLOUD_PROJECT_NAME = "mcshared-datavault"
         }
       ]
-      env = [
-        {
-          name = "prod"
-          variables = {
-            ARGOCD_SERVER = var.argocd_server_for_prod
-          }
-          secrets = {
-            ARGOCD_ADMIN_USERNAME = data.azurerm_key_vault_secret.argocd_admin_username_for_prod.value
-            ARGOCD_ADMIN_PASSWORD = data.azurerm_key_vault_secret.argocd_admin_password_for_prod.value
-          }
-        },
-        {
-          name = "uat"
-          variables = {
-            ARGOCD_SERVER = var.argocd_server_for_uat
-          }
-          secrets = {
-            ARGOCD_ADMIN_USERNAME = data.azurerm_key_vault_secret.argocd_admin_username_for_uat.value
-            ARGOCD_ADMIN_PASSWORD = data.azurerm_key_vault_secret.argocd_admin_password_for_uat.value
-          }
+      env_secrets = {
+        envs = ["uat", "prod"]
+        secrets = {
+          ARGO_CD_USERNAME = data.azurerm_key_vault_secret.argo_cd_username.value
+          ARGO_CD_PASSWORD = data.azurerm_key_vault_secret.argo_cd_password.value
         }
-      ]
+      }
+      env_variables = {
+        envs = ["uat", "prod"]
+        variables = {
+          ARGOCD_SERVER = var.argo_cd_server
+        }
+      }
     },
     "mcshared-datavault-test" = {
       settings = {
@@ -445,30 +410,31 @@ locals {
       protected_branches   = ["main"]
       repository_secrets   = []
       repository_variables = []
-      env = [
-        {
-          name = "uat"
-          variables = {
-            SERVICE_URL = var.datavault_service_url_for_uat
-          }
+      env_variables = {
+        envs = ["uat"]
+        variables = {
+          SERVICE_URL = var.datavault_service_url
         }
-      ]
+      }
     }
   }
 
   # ----------------------------------------------------------------------------
-  # Repositories that have one or more explicit environments defined.
+  # Repositories with environment configuration.
   # ----------------------------------------------------------------------------
-  repositories_with_environment = merge([
+  repositories_with_environment = merge({}, [
     for repo_name, repo_data in local.repository : {
-      for env_cfg in try(repo_data.env, []) :
-      "${repo_name}@${env_cfg.name}" => {
+      "${repo_name}@${var.env}" = {
         repository  = repo_name
-        environment = env_cfg.name
-        variables   = try(env_cfg.variables, {})
-        secrets     = try(env_cfg.secrets, {})
+        environment = var.env
+        variables   = contains(try(repo_data.env_variables.envs, []), var.env) ? try(repo_data.env_variables.variables, {}) : {}
+        secrets     = contains(try(repo_data.env_secrets.envs, []), var.env) ? try(repo_data.env_secrets.secrets, {}) : {}
       }
     }
+    if(
+      contains(try(repo_data.env_variables.envs, []), var.env) ||
+      contains(try(repo_data.env_secrets.envs, []), var.env)
+    )
   ]...)
 
   # ----------------------------------------------------------------------------
@@ -537,7 +503,7 @@ locals {
   # ----------------------------------------------------------------------------
   # Flattened maps for environment variables.
   # ----------------------------------------------------------------------------
-  env_variables_flattened = merge([
+  env_variables_flattened = merge({}, [
     for env_id, env_data in local.repositories_with_environment : {
       for env_key, env_value in env_data.variables :
       "${env_id}@${env_key}" => {
@@ -547,6 +513,7 @@ locals {
         env_value   = env_value
       }
     }
+    if contains(try(local.repository[env_data.repository].env_variables.envs, []), var.env)
   ]...)
 
   # ----------------------------------------------------------------------------
@@ -568,7 +535,7 @@ locals {
   # ----------------------------------------------------------------------------
   # Flattened maps for environment secrets.
   # ----------------------------------------------------------------------------
-  env_secrets_flattened = merge([
+  env_secrets_flattened = merge({}, [
     for env_id, env_data in local.repositories_with_environment : {
       for secret_name, secret_value in env_data.secrets :
       "${env_id}@${secret_name}" => {
@@ -578,5 +545,6 @@ locals {
         value       = secret_value
       }
     }
+    if contains(try(local.repository[env_data.repository].env_secrets.envs, []), var.env)
   ]...)
 }
