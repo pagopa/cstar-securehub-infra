@@ -42,9 +42,9 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_argo_cd_server"></a> [argo\_cd\_server](#input\_argo\_cd\_server) | Server of the Argo CD (without https). | `string` | n/a | yes |
-| <a name="input_cicd_kv_name"></a> [cicd\_kv\_name](#input\_cicd\_kv\_name) | Name of the Key Vault where the CI/CD secrets are stored. | `string` | n/a | yes |
-| <a name="input_cicd_kv_rg"></a> [cicd\_kv\_rg](#input\_cicd\_kv\_rg) | Name of the resource group where the CI/CD Key Vault is located. | `string` | n/a | yes |
+| <a name="input_argo_cd_server"></a> [argo\_cd\_server](#input\_argo\_cd\_server) | Server of the Argo CD (without https). | `string` | `null` | no |
+| <a name="input_cicd_kv_name"></a> [cicd\_kv\_name](#input\_cicd\_kv\_name) | Name of the Key Vault where the CI/CD secrets are stored. | `string` | `null` | no |
+| <a name="input_cicd_kv_rg"></a> [cicd\_kv\_rg](#input\_cicd\_kv\_rg) | Name of the resource group where the CI/CD Key Vault is located. | `string` | `null` | no |
 | <a name="input_datavault_service_url"></a> [datavault\_service\_url](#input\_datavault\_service\_url) | URL of the datavault service. | `string` | `null` | no |
 | <a name="input_env"></a> [env](#input\_env) | Environment | `string` | n/a | yes |
 
