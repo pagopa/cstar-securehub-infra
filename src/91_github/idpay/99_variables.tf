@@ -11,13 +11,21 @@ variable "env" {
 variable "cicd_kv_name" {
   type        = string
   description = "Name of the Key Vault where the CI/CD secrets are stored."
-  default     = null
 }
 
 variable "cicd_kv_rg" {
   type        = string
   description = "Name of the resource group where the CI/CD Key Vault is located."
-  default     = null
+}
+
+variable "idpay_kv_name" {
+  type        = string
+  description = "Name of the Key Vault where the IDPay secrets are stored."
+}
+
+variable "idpay_kv_rg" {
+  type        = string
+  description = "Name of the resource group where the IDPay Key Vault is located."
 }
 
 variable "datavault_service_url" {

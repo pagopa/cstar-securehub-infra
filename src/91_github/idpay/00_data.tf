@@ -21,3 +21,13 @@ data "azurerm_key_vault_secret" "argo_cd_password" {
   key_vault_id = data.azurerm_key_vault.cicd.id
   name         = "argocd-admin-password"
 }
+
+data "azurerm_key_vault" "idpay" {
+  name                = var.idpay_kv_name
+  resource_group_name = var.idpay_kv_rg
+}
+
+data "azurerm_key_vault_secret" "gh_token" {
+  key_vault_id = data.azurerm_key_vault.idpay.id
+  name         = "idpay-bot-github-self-hosted-runners-TOKEN"
+}

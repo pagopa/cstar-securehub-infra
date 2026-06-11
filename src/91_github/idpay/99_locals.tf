@@ -377,6 +377,7 @@ locals {
       protected_branches = ["main"]
       repository_secrets = [
         {
+          GIT_PAT     = data.azurerm_key_vault_secret.gh_token.value
           SONAR_TOKEN = data.azurerm_key_vault_secret.sonar_token.value
         }
       ]

@@ -33,8 +33,10 @@ No modules.
 | [github_repository_ruleset.develop](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository_ruleset) | resource |
 | [github_repository_ruleset.uat_and_main](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository_ruleset) | resource |
 | [azurerm_key_vault.cicd](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault) | data source |
+| [azurerm_key_vault.idpay](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault) | data source |
 | [azurerm_key_vault_secret.argo_cd_password](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.argo_cd_username](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.gh_token](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.sonar_token](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [github_team.admin](https://registry.terraform.io/providers/integrations/github/latest/docs/data-sources/team) | data source |
 
@@ -43,10 +45,12 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_argo_cd_server"></a> [argo\_cd\_server](#input\_argo\_cd\_server) | Server of the Argo CD (without https). | `string` | `null` | no |
-| <a name="input_cicd_kv_name"></a> [cicd\_kv\_name](#input\_cicd\_kv\_name) | Name of the Key Vault where the CI/CD secrets are stored. | `string` | `null` | no |
-| <a name="input_cicd_kv_rg"></a> [cicd\_kv\_rg](#input\_cicd\_kv\_rg) | Name of the resource group where the CI/CD Key Vault is located. | `string` | `null` | no |
+| <a name="input_cicd_kv_name"></a> [cicd\_kv\_name](#input\_cicd\_kv\_name) | Name of the Key Vault where the CI/CD secrets are stored. | `string` | n/a | yes |
+| <a name="input_cicd_kv_rg"></a> [cicd\_kv\_rg](#input\_cicd\_kv\_rg) | Name of the resource group where the CI/CD Key Vault is located. | `string` | n/a | yes |
 | <a name="input_datavault_service_url"></a> [datavault\_service\_url](#input\_datavault\_service\_url) | URL of the datavault service. | `string` | `null` | no |
 | <a name="input_env"></a> [env](#input\_env) | Environment | `string` | n/a | yes |
+| <a name="input_idpay_kv_name"></a> [idpay\_kv\_name](#input\_idpay\_kv\_name) | Name of the Key Vault where the IDPay secrets are stored. | `string` | n/a | yes |
+| <a name="input_idpay_kv_rg"></a> [idpay\_kv\_rg](#input\_idpay\_kv\_rg) | Name of the resource group where the IDPay Key Vault is located. | `string` | n/a | yes |
 
 ## Outputs
 
