@@ -397,7 +397,7 @@ locals {
       env_variables = {
         envs = ["uat", "prod"]
         variables = {
-          ARGOCD_SERVER = var.argo_cd_server
+          ARGO_CD_SERVER = var.argo_cd_server
         }
       }
     },

@@ -4,7 +4,10 @@
 # APPLIED ONLY WHEN TERRAFORM IS APPLIED IN PROD ENVIRONMENT.
 #-------------------------------------------------------------------------------
 resource "github_repository" "repository_settings" {
-  for_each = var.env == "prod" ? local.repositories_with_settings : {}
+  for_each = {
+    for k, v in local.repositories_with_settings : k => v
+    if var.env == "prod"
+  }
 
   allow_auto_merge            = try(each.value.settings.allow_auto_merge, false)
   allow_forking               = try(each.value.settings.allow_forking, false)

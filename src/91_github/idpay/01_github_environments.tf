@@ -2,7 +2,7 @@
 # Repository variables.
 # ------------------------------------------------------------------------------
 resource "github_actions_variable" "repository_variables" {
-  for_each = local.repository_variables_flattened
+  for_each = var.env == "prod" ? local.repository_variables_flattened : {}
 
   repository    = each.value.repository
   variable_name = each.value.variable_name
@@ -13,7 +13,7 @@ resource "github_actions_variable" "repository_variables" {
 # Repository secrets.
 # ------------------------------------------------------------------------------
 resource "github_actions_secret" "repository_secrets" {
-  for_each = local.repository_secrets_flattened
+  for_each = var.env == "prod" ? local.repository_secrets_flattened : {}
 
   repository      = each.value.repository
   secret_name     = each.value.secret_name

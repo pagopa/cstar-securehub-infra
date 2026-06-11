@@ -3,7 +3,7 @@ variable "env" {
   description = "Environment"
 
   validation {
-    condition     = contains(["dev", "uat", "prod"], var.environment)
+    condition     = contains(["dev", "uat", "prod"], var.env)
     error_message = "Environment must be dev, uat, or prod."
   }
 }
@@ -11,11 +11,13 @@ variable "env" {
 variable "cicd_kv_name" {
   type        = string
   description = "Name of the Key Vault where the CI/CD secrets are stored."
+  default     = null
 }
 
 variable "cicd_kv_rg" {
   type        = string
   description = "Name of the resource group where the CI/CD Key Vault is located."
+  default     = null
 }
 
 variable "datavault_service_url" {
@@ -27,4 +29,5 @@ variable "datavault_service_url" {
 variable "argo_cd_server" {
   type        = string
   description = "Server of the Argo CD (without https)."
+  default     = null
 }
