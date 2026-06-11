@@ -105,6 +105,10 @@ locals {
     {
       name : "mcshared-datavault-test",
       short_name : "datavault-test"
+    },
+    {
+      name : "mcshared-datavault",
+      short_name : "datavault"
     }
   ]
 

@@ -1,6 +1,6 @@
-prefix         = "cstar"
-env_short      = "p"
-location_short = "itn"
-domain         = "idpay"
-
-datavault_service_url_for_uat = "https://idpay.itn.internal.uat.cstar.pagopa.it/mcshareddatavault"
+env            = "prod"
+cicd_kv_name   = "cstar-p-itn-cicd-kv"
+cicd_kv_rg     = "cstar-p-itn-core-sec-rg"
+idpay_kv_name  = "cstar-p-itn-idpay-kv"
+idpay_kv_rg    = "cstar-p-itn-idpay-security-rg"
+argo_cd_server = "argocd.itn.internal.cstar.pagopa.it"

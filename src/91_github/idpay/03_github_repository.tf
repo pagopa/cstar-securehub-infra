@@ -1,8 +1,13 @@
 #-------------------------------------------------------------------------------
 # GitHub repository settings.
+#
+# APPLIED ONLY WHEN TERRAFORM IS APPLIED IN PROD ENVIRONMENT.
 #-------------------------------------------------------------------------------
 resource "github_repository" "repository_settings" {
-  for_each = local.repositories_with_settings
+  for_each = {
+    for k, v in local.repositories_with_settings : k => v
+    if var.env == "prod"
+  }
 
   allow_auto_merge            = try(each.value.settings.allow_auto_merge, false)
   allow_forking               = try(each.value.settings.allow_forking, false)
@@ -13,7 +18,7 @@ resource "github_repository" "repository_settings" {
   archived                    = try(each.value.settings.archived, false)
   auto_init                   = try(each.value.settings.auto_init, false)
   delete_branch_on_merge      = try(each.value.settings.delete_branch_on_merge, true)
-  description                 = try(each.value.settings.description, "MC-Shared Data Vault")
+  description                 = try(each.value.settings.description, "")
   fork                        = try(each.value.settings.fork, false)
   has_discussions             = try(each.value.settings.has_discussions, false)
   has_issues                  = try(each.value.settings.has_issues, false)
