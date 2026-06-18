@@ -72,7 +72,7 @@ locals {
         {
           action = "Overwrite"
           name   = contains(["d"], var.env_short) ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
-          value  = "default-src 'self'; object-src 'none'; frame-src 'self' https://api-io.${var.dns_zone_prefix}.${var.external_domain}/ ${local.mcshared_api_url}/; connect-src 'self' https://selfcare.pagopa.it https://api-io.${var.dns_zone_prefix}.${var.external_domain}/ ${local.mcshared_api_url}/ https://api-eu.mixpanel.com/track/ https://cdn.cookielaw.org https://privacyportalde-cdn.onetrust.com;"
+          value  = "default-src 'self'; object-src 'none'; frame-src 'self' https://api-io.${var.dns_zone_prefix}.${var.external_domain}/ ${local.mcshared_api_url}/; connect-src 'self' https://selfcare.pagopa.it https://api-io.${var.dns_zone_prefix}.${var.external_domain}/ ${local.mcshared_api_url}/ https://api-eu.mixpanel.com/track/ https://cdn.cookielaw.org https://privacyportalde-cdn.onetrust.com https://cstar${var.env_short}itnidpayrefundsa.blob.core.windows.net;"
         },
         {
           action = "Append"
@@ -82,7 +82,7 @@ locals {
         {
           action = "Append"
           name   = contains(["d"], var.env_short) ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
-          value  = "img-src 'self' https://assets.cdn.io.italia.it https://${module.cdn_idpay_bonuselettrodomestici.storage_primary_web_host} https://cdn.cookielaw.org https://www.pagopa.it data:;"
+          value  = "img-src 'self' https://assets.cdn.io.italia.it https://${module.cdn_idpay_bonuselettrodomestici.storage_primary_web_host} https://cdn.cookielaw.org https://www.pagopa.it https://selcdcheckoutsa.z6.web.core.windows.net data:;"
         }
       ]
     },
