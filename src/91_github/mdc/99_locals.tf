@@ -336,6 +336,37 @@ locals {
         }
       }
     }
+    "emd-testing" = {
+      settings = {
+        apply                       = true
+        allow_forking               = true
+        allow_merge_commit          = false
+        allow_update_branch         = true
+        description                 = "Repository per test automation su progetto Messaggi di cortesia"
+        merge_commit_message        = "PR_TITLE"
+        merge_commit_title          = "MERGE_MESSAGE"
+        primary_language            = "Python"
+        visibility                  = "internal"
+      }
+      protected_branches = ["main"]
+      repository_secrets = []
+      repository_variables = []
+      repository_dependabot_secrets = []
+      env_secrets = {
+        envs = ["uat"]
+        secrets = {
+          TPP_KEYCLOAK_CLIENT_ID = try(module.secrets.values["emd-tpp-test-client-id"].value, null)
+          TPP_KEYCLOAK_CLIENT_SECRET = try(module.secrets.values["emd-tpp-test-client-secret"].value, null)
+          SEND_KEYCLOAK_CLIENT_ID = try(module.secrets.values["send-client-id"].value, null)
+          SEND_KEYCLOAK_CLIENT_SECRET = try(module.secrets.values["send-client-secret"].value, null)
+          KEYCLOAK_URL = try(module.secrets.values["keycloak-url"].value, null)
+        }
+      }
+      env_variables = {
+        envs = []
+        variables = {}
+      }
+    }
   }
 
   # ----------------------------------------------------------------------------
