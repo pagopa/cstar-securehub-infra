@@ -38,7 +38,8 @@ keycloak_configuration = {
   http_client_connection_max_idle_time_millis = 180000
   image_registry_config_cli                   = "docker.io"
   image_repository_config_cli                 = "adorsys/keycloak-config-cli"
-  image_tag_config_cli                        = "6.4.0-26.1.0@sha256:6795d2cbf9ed7c96e9d19c39781d383d12df36b5cbe81f0024bca4fa4d392681"
+  image_tag_config_cli                        = "6.4.0-26.1.0"
+  image_digest_config_cli                     = "sha256:6795d2cbf9ed7c96e9d19c39781d383d12df36b5cbe81f0024bca4fa4d392681"
 }
 
 aks_user_node_pool_keycloak = {
