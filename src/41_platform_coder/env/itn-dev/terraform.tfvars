@@ -48,11 +48,11 @@ aks_user_node_pool_keycloak = {
 }
 
 it_wallet_oid4vp_provider = {
-  enabled = true
-  credential_type                         = "urn:eudi:pid:it:1"
-  user_mapping_claim                      = "personal_administrative_number"
-  x509_certificate_pem_secret_name        = data.azurerm_key_vault_secret.itwallet-oid4vp-x509-certificate-pem.value
-  allowUntrustedX5cDevMode                = true
+  enabled                          = true
+  credential_type                  = "urn:eudi:pid:it:1"
+  user_mapping_claim               = "personal_administrative_number"
+  x509_certificate_pem_secret_name = "itwallet-oid4vp-x509-certificate-pem"
+  allowUntrustedX5cDevMode         = true
   // NOT REQUIRED FOR THE POC
   //trust_list_url                          = "__TODO_IT_WALLET_TRUST_LIST_URL__"
   //trust_list_lote_type                    = "__TODO_IT_WALLET_TRUST_LIST_LOTE_TYPE__"

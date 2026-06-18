@@ -177,7 +177,7 @@ resource "kubernetes_config_map" "keycloak-terraform-client-config" {
       credential_set_purpose_json      = jsonencode(var.it_wallet_oid4vp_provider.credential_set_purpose)
       dcql_query_json                  = jsonencode(var.it_wallet_oid4vp_provider.dcql_query)
       verifier_info_json               = jsonencode(var.it_wallet_oid4vp_provider.verifier_info)
-      x509_certificate_pem_json        = "" //todo jsonencode(try(data.azurerm_key_vault_secret.it_wallet_x509_certificate_pem[0].value, ""))
+      x509_certificate_pem_json        = jsonencode(data.azurerm_key_vault_secret.itwallet-oid4vp-x509-certificate-pem.value)
       trust_list_url_json              = jsonencode(var.it_wallet_oid4vp_provider.trust_list_url)
       trust_list_lote_type_json        = jsonencode(var.it_wallet_oid4vp_provider.trust_list_lote_type)
       trusted_authorities_mode         = var.it_wallet_oid4vp_provider.trusted_authorities_mode
