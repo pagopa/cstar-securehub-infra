@@ -32,6 +32,13 @@
         <section class="oid4vp-card" aria-labelledby="kc-page-title">
             <div class="oid4vp-card__header">
                 <h1 class="oid4vp-card__title" id="kc-page-title"><#nested "header"></h1>
+                <#if (sameDeviceEnabled!false) && (sameDeviceWalletUrl!'')?has_content>
+                    <a class="oid4vp-refresh-button oid4vp-open-wallet-button"
+                       href="${sameDeviceWalletUrl!''}">
+                        Apri l'app
+                    </a>
+                    <p class="oid4vp-card__separator">oppure</p>
+                </#if>
                 <p class="oid4vp-card__description">
                     Usa la sezione &lsquo;Inquadra&rsquo; di app <strong>IO - l'app dei servizi pubblici</strong>, oppure la fotocamera del tuo dispositivo, per scansionare il QR Code e accedere ai servizi.
                 </p>
