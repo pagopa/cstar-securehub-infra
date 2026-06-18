@@ -103,6 +103,7 @@ variable "keycloak_configuration" {
     image_registry_config_cli                   = string
     image_repository_config_cli                 = string
     image_tag_config_cli                        = string
+    image_digest_config_cli                     = optional(string, "")
   })
 }
 

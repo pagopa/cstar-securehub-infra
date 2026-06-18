@@ -79,19 +79,17 @@ resource "azurerm_data_factory_pipeline" "idpay_user_details_report" {
   activities_json = jsonencode(local.pipeline_user_details_report_json.properties.activities)
 }
 
-resource "azurerm_data_factory_pipeline" "idpay_producers_import" {
-  name            = local.pipeline_producers_import_json.name
-  data_factory_id = data.azurerm_data_factory.data_factory.id
+resource "azapi_resource" "idpay_producers_import" {
+  type      = "Microsoft.DataFactory/factories/pipelines@2018-06-01"
+  name      = local.pipeline_producers_import_json.name
+  parent_id = data.azurerm_data_factory.data_factory.id
 
-  description = try(local.pipeline_producers_import_json.properties.description, null)
-  concurrency = try(local.pipeline_producers_import_json.properties.concurrency, null)
-  annotations = try(local.pipeline_producers_import_json.properties.annotations, [])
-  parameters = try(
-    {
-      for k, v in local.pipeline_producers_import_json.properties.parameters :
-      k => try(v.defaultValue, "")
-    },
-    {}
-  )
-  activities_json = jsonencode(local.pipeline_producers_import_json.properties.activities)
+  body = {
+    properties = {
+      activities  = local.pipeline_producers_import_json.properties.activities
+      variables   = local.pipeline_producers_import_json.properties.variables
+      parameters  = try(local.pipeline_producers_import_json.properties.parameters, {})
+      annotations = try(local.pipeline_producers_import_json.properties.annotations, [])
+    }
+  }
 }

@@ -180,7 +180,9 @@ keycloakConfigCli:
     registry: ${image_registry_config_cli}
     repository: ${image_repository_config_cli}
     tag: ${image_tag_config_cli}
-    digest: ""
+    digest: ${image_digest_config_cli}
+  # Chart 24.7.7 hardcodes the Bitnami jar path in `command`, so Adorsys must override `command`.
+  command: ${keycloak_config_cli_command}
 
 nodeSelector:
   domain: keycloak
