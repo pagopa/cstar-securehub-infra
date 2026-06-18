@@ -2,6 +2,7 @@
 # 🔒 KV
 #
 resource "azurerm_key_vault_secret" "idpay_db_admin_user" {
+  count        = var.idpay_pgflex_params.enabled ? 1 : 0
   name         = "idpay-db-admin-user"
   value        = "idpaydbadmin"
   key_vault_id = data.azurerm_key_vault.domain_kv.id
@@ -12,6 +13,7 @@ resource "azurerm_key_vault_secret" "idpay_db_admin_user" {
 }
 
 resource "random_password" "idpay_db_admin_password" {
+  count       = var.idpay_pgflex_params.enabled ? 1 : 0
   length      = 20
   special     = true
   min_special = 1
@@ -23,8 +25,9 @@ resource "random_password" "idpay_db_admin_password" {
 }
 
 resource "azurerm_key_vault_secret" "idpay_db_admin_password" {
+  count        = var.idpay_pgflex_params.enabled ? 1 : 0
   name         = "idpay-db-admin-password"
-  value        = random_password.idpay_db_admin_password.result
+  value        = random_password.idpay_db_admin_password[0].result
   key_vault_id = data.azurerm_key_vault.domain_kv.id
 
   content_type = "text/plain"
@@ -33,6 +36,7 @@ resource "azurerm_key_vault_secret" "idpay_db_admin_password" {
 }
 
 module "idpay_pgflex" {
+  count  = var.idpay_pgflex_params.enabled ? 1 : 0
   source = "./.terraform/modules/__v4__/IDH/postgres_flexible_server"
 
   # Basic server configuration
@@ -55,8 +59,8 @@ module "idpay_pgflex" {
   resource_group_nsg_name = local.network_rg
 
   # Authentication configuration
-  administrator_login    = azurerm_key_vault_secret.idpay_db_admin_user.value
-  administrator_password = azurerm_key_vault_secret.idpay_db_admin_password.value
+  administrator_login    = azurerm_key_vault_secret.idpay_db_admin_user[0].value
+  administrator_password = azurerm_key_vault_secret.idpay_db_admin_password[0].value
 
   # Monitoring and performance settings
   diagnostic_settings_enabled = var.idpay_pgflex_params.pgres_flex_diagnostic_settings_enabled
