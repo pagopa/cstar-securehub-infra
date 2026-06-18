@@ -1,7 +1,7 @@
 <#import "oid4vp-template.ftl" as layout>
 <@layout.registrationLayout displayInfo=false; section>
     <#if section = "header">
-        ${msg("oid4vpLoginTitle")}
+        Entra con IT-Wallet
     <#elseif section = "form">
         <form id="oid4vpForm" action="${formActionUrl!''}" method="post">
             <input type="hidden" id="state" name="state" value="${state!''}"/>
@@ -13,58 +13,23 @@
             <input type="hidden" id="error_description" name="error_description"/>
         </form>
 
-        <#if (sameDeviceEnabled!false) && (sameDeviceWalletUrl!'')?has_content>
-            <div class="${properties.kcFormGroupClass!}">
-                <a id="oid4vp-open-wallet"
-                   href="${sameDeviceWalletUrl!''}"
-                   class="${properties.kcButtonClass!} ${properties.kcButtonPrimaryClass!} ${properties.kcButtonBlockClass!} ${properties.kcButtonLargeClass!}">
-                    ${msg("oid4vpOpenWalletApp")}
-                </a>
-            </div>
-        </#if>
-
         <#if (crossDeviceEnabled!false) && (qrCodeBase64!'')?has_content>
-            <div class="${properties.kcFormGroupClass!} oid4vp-qr-wrap">
-                <#if (sameDeviceEnabled!false)>
-                    <p class="oid4vp-qr-label">${msg("oid4vpScanWithPhone")}</p>
-                <#else>
-                    <p class="oid4vp-qr-label">${msg("oid4vpScanWithWalletApp")}</p>
-                </#if>
-                <img id="oid4vp-qr-code"
-                     src="data:image/png;base64,${qrCodeBase64!''}"
-                     alt="${msg("oid4vpQrCodeAlt")}"
-                     data-wallet-url="${crossDeviceWalletUrl!''}"/>
-            </div>
-        </#if>
-
-        <#assign hasAlternativeProvider = false>
-        <#if social.providers?? && social.providers?size gt 0>
-            <#list social.providers as p>
-                <#if p.alias != (currentBrokerAlias!'')>
-                    <#assign hasAlternativeProvider = true>
-                    <#break>
-                </#if>
-            </#list>
-        </#if>
-
-        <#if hasAlternativeProvider>
-            <div class="${properties.kcFormGroupClass!} oid4vp-alt-methods">
-                <hr/>
-                <p>${msg("oid4vpAlternativeMethods")}</p>
-                <ul class="${properties.kcFormSocialAccountListClass!}">
-                    <#list social.providers as p>
-                        <#if p.alias != (currentBrokerAlias!'')>
-                            <li class="${properties.kcFormSocialAccountListItemClass!}">
-                                <a href="${p.loginUrl}" id="social-${p.alias}" class="${properties.kcFormSocialAccountButtonClass!}">
-                                    <#if p.iconClasses?has_content>
-                                        <i class="${properties.kcFormSocialAccountButtonTextClass!} ${p.iconClasses!}" aria-hidden="true"></i>
-                                    </#if>
-                                    <span class="${properties.kcFormSocialAccountButtonText!}">${p.displayName!}</span>
-                                </a>
-                            </li>
-                        </#if>
-                    </#list>
-                </ul>
+            <div class="oid4vp-qr-wrap">
+                <div class="oid4vp-qr-frame">
+                    <img id="oid4vp-qr-code"
+                         src="data:image/png;base64,${qrCodeBase64!''}"
+                         alt="${msg("oid4vpQrCodeAlt")}"
+                         data-wallet-url="${crossDeviceWalletUrl!''}"/>
+                </div>
+                <#--
+                <p class="oid4vp-qr-status">
+                    Il QR Code &egrave; scaduto
+                </p>
+                -->
+                <button type="button"
+                        class="oid4vp-refresh-button">
+                    Aggiorna QR Code
+                </button>
             </div>
         </#if>
 
