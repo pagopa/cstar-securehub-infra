@@ -9,7 +9,7 @@
         "type": 3,
         "content": {
           "version": "KqlItem/1.0",
-          "query": "AppDependencies\n| where TimeGenerated {evaluation_window:query}\n| where AppRoleName == 'rtp-sender'\n| where Data contains 'https://stgcbiglobeopenbankingapigateway.nexi.it/nexi/oauth/v2/token'\n| summarize count() by tostring(toint(ResultCode))\n\n",
+          "query": "AppDependencies\n| where TimeGenerated {evaluation_window:query}\n| where AppRoleName == 'rtp-sender'\n| where Data contains '${env_short == "p" ? "https://cbiglobeopenbankingapigateway.nexi.it/nexi/oauth/v2/token" : "https://stgcbiglobeopenbankingapigateway.nexi.it/nexi/oauth/v2/token"}'\n| summarize count() by tostring(toint(ResultCode))\n\n",
           "size": 0,
           "title": "Status code chiamate verso endpoint di stacco token CBI",
           "queryType": 0,
@@ -37,7 +37,7 @@
         "type": 3,
         "content": {
           "version": "KqlItem/1.0",
-          "query": "AppDependencies\n| where TimeGenerated {evaluation_window:query}\n| where AppRoleName == 'rtp-sender'\n| where Data contains 'https://login.microsoftonline.com/08b638e8-0676-45cc-b677-5c038b17d28a/oauth2/v2.0/token'\n| summarize count() by tostring(toint(ResultCode))\n\n",
+          "query": "AppDependencies\n| where TimeGenerated {evaluation_window:query}\n| where AppRoleName == 'rtp-sender'\n| where Data contains '${env_short == "p" ? "https://login.microsoftonline.com/761de76f-3d5c-4174-917c-5ad4d06360cb/oauth2/v2.0/token" : "https://login.microsoftonline.com/08b638e8-0676-45cc-b677-5c038b17d28a/oauth2/v2.0/token"}'\n| summarize count() by tostring(toint(ResultCode))\n\n",
           "size": 0,
           "title": "Status code chiamate verso endpoint di stacco token Poste",
           "queryType": 0,

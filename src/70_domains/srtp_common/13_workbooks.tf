@@ -17,10 +17,6 @@ locals {
       filePath = "${path.module}/workbooks/tabs/invii-srtp.json.tpl"
     },
     {
-      name     = "Servizi per gli Enti"
-      filePath = "${path.module}/workbooks/tabs/servizienti.json.tpl"
-    },
-    {
       name     = "Accessi Account Storage"
       filePath = "${path.module}/workbooks/tabs/accessi-account-storage.json.tpl"
     },
@@ -43,6 +39,10 @@ locals {
     {
       name     = "Cancellazioni RTP (API)"
       filePath = "${path.module}/workbooks/tabs/cancellazioneAPI.json.tpl"
+    },
+    {
+      name     = "Servizi per gli Enti"
+      filePath = "${path.module}/workbooks/tabs/servizienti.json.tpl"
     },
     {
       name     = "Accessi Get Enti"
