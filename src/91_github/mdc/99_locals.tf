@@ -20,7 +20,7 @@ locals {
           repository = "template-payments-java-repository"
         }
       }
-      protected_branches = []
+      protected_branches = ["main"]
       repository_secrets = [
         {
           EMD_BOT_RW_TOKEN = data.azurerm_key_vault_secret.emd-bot-github-rw-token.value
@@ -48,46 +48,40 @@ locals {
         variables = {}
       }
     }
-    # "emd-ar-backoffice-fe" = {
-    #   settings = {
-    #     apply                       = true
-    #     allow_forking               = true
-    #     allow_merge_commit          = false
-    #     allow_update_branch         = true
-    #     description                 = "Frontend React Backoffice dell'Area Riservata di Messaggi di Cortesia"
-    #     merge_commit_message        = "PR_TITLE"
-    #     merge_commit_title          = "MERGE_MESSAGE"
-    #     primary_language            = "TypeScript"
-    #     visibility                  = "public"
-    #   }
-    #   protected_branches = []
-    #   repository_secrets = [
-    #     {
-    #       EMD_BOT_RW_TOKEN = data.azurerm_key_vault_secret.emd-bot-github-rw-token.value
-    #       SONAR_TOKEN = data.azurerm_key_vault_secret.sonar_token.value
-    #     }
-    #   ]
-    #   repository_dependabot_secrets = [
-    #     {
-    #       EMD_BOT_RW_TOKEN = data.azurerm_key_vault_secret.emd-bot-github-rw-token.value
-    #       MIL_BOT_TOKEN = data.azurerm_key_vault_secret.mil-gh-bot-token.value
-    #     }
-    #   ]
-    #   repository_variables = [
-    #     {
-    #       SONARCLOUD_ORG = "pagopa"
-    #       SONARCLOUD_PROJECT_KEY = "pagopa_emd-ar-backoffice-fe"
-    #     }
-    #   ]
-    #   env_secrets = {
-    #     envs = []
-    #     secrets = {}
-    #   }
-    #   env_variables = {
-    #     envs = []
-    #     variables = {}
-    #   }
-    # }
+    "emd-ar-backoffice-fe" = {
+      settings = {
+        apply                       = true
+        allow_forking               = true
+        allow_merge_commit          = false
+        allow_update_branch         = true
+        description                 = "Frontend React Backoffice dell'Area Riservata di Messaggi di Cortesia"
+        merge_commit_message        = "PR_TITLE"
+        merge_commit_title          = "MERGE_MESSAGE"
+        primary_language            = "TypeScript"
+        visibility                  = "public"
+      }
+      protected_branches = ["main"]
+      repository_secrets = [
+        {
+          SONAR_TOKEN = data.azurerm_key_vault_secret.sonar_token.value
+        }
+      ]
+      repository_dependabot_secrets = []
+      repository_variables = [
+        {
+          SONARCLOUD_ORG = "pagopa"
+          SONARCLOUD_PROJECT_KEY = "pagopa_emd-ar-backoffice-fe"
+        }
+      ]
+      env_secrets = {
+        envs = []
+        secrets = {}
+      }
+      env_variables = {
+        envs = []
+        variables = {}
+      }
+    }
     "emd-message-core" = {
       settings = {
         apply                       = true
