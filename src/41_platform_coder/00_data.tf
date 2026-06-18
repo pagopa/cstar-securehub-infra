@@ -19,6 +19,11 @@ data "azurerm_key_vault" "key_vault_core" {
   resource_group_name = local.kv_core_resource_group_name
 }
 
+data "azurerm_key_vault" "key_vault_idpay" {
+  name                = local.kv_idpay_name
+  resource_group_name = local.kv_idpay_resource_group_name
+}
+
 data "azurerm_key_vault_secret" "terraform_client_secret_for_keycloak" {
   name         = "terraform-client-secret-for-keycloak"
   key_vault_id = data.azurerm_key_vault.key_vault_core.id
@@ -29,9 +34,10 @@ data "azurerm_key_vault_secret" "keycloak_url" {
   key_vault_id = data.azurerm_key_vault.key_vault_core.id
 }
 
+# This secret is created in idpay-security domain
 data "azurerm_key_vault_secret" "itwallet-oid4vp-x509-certificate-pem" {
   name         = "itwallet-oid4vp-x509-certificate-pem"
-  key_vault_id = data.azurerm_key_vault.key_vault_core.id
+  key_vault_id = data.azurerm_key_vault.key_vault_idpay.id
 }
 
 module "core_secrets" {
