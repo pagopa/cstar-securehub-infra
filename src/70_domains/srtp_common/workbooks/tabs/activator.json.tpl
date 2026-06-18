@@ -1228,6 +1228,901 @@
                 "json": "## 📊 Cosmos DB - Shared Throughput Analysis\n---\n**Come leggere questa griglia:**\n\n| Colonna | Cosa indica | Quando preoccuparsi |\n|---|---|---|\n| **Total RU Consumed** | Costo effettivo in Request Units per collection | Una collection consuma >80% del totale |\n| **Mongo Requests** | Numero di operazioni MongoDB | Rapporto requests/documenti molto alto (es. polling) |\n| **Document Count** | Numero di documenti nella collection | — |\n| **Data Usage / Index Usage** | Storage dati e indici | Data Usage sproporzionato rispetto al Document Count |\n| **Normalized RU %** | % di utilizzo del throughput condiviso (0-100%) | >70% = attenzione, >90% = throttling imminente |\n| **Autoscale Max Throughput** | RU massime configurate (a livello database) | Se Normalized RU è costantemente alto, aumentare questo valore |\n| **Throttled (429/16500)** | Richieste rifiutate per throughput insufficiente | Qualsiasi valore >0 indica un problema attivo |\n\n⚠️ **Nota:** Il throughput è **shared a livello database** — tutte le collection competono per le stesse RU. Se una collection domina il consumo, le altre possono subire throttling."
               },
               "name": "text - 5"
+            },
+            {
+              "type": 10,
+              "content": {
+                "chartId": "workbook9ee57fd6-b139-4730-ac8b-ae263ee8cb58",
+                "version": "MetricsItem/2.0",
+                "size": 0,
+                "chartType": 0,
+                "resourceType": "microsoft.documentdb/databaseaccounts",
+                "metricScope": 0,
+                "resourceIds": [
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-data-rg/providers/Microsoft.DocumentDB/databaseAccounts/${prefix}-${env_short}-${location_short}-${domain}-cosmos-account"
+                ],
+                "timeContextFromParameter": "evaluation_window",
+                "timeContext": {
+                  "durationMs": 8377200000,
+                  "endTime": "2026-04-08T09:37:00.000Z"
+                },
+                "metrics": [
+                  {
+                    "namespace": "microsoft.documentdb/databaseaccounts",
+                    "metric": "microsoft.documentdb/databaseaccounts-Requests-TotalRequestUnits",
+                    "aggregation": 1,
+                    "splitBy": [
+                      "CollectionName"
+                    ],
+                    "splitBySortOrder": -1,
+                    "splitByLimit": 10,
+                    "columnName": "Total RU Consumed"
+                  },
+                  {
+                    "namespace": "microsoft.documentdb/databaseaccounts",
+                    "metric": "microsoft.documentdb/databaseaccounts-Requests-MongoRequests",
+                    "aggregation": 7,
+                    "splitBy": [
+                      "CollectionName"
+                    ],
+                    "splitBySortOrder": -1,
+                    "splitByLimit": 10,
+                    "columnName": "Mongo Client Requests"
+                  },
+                  {
+                    "namespace": "microsoft.documentdb/databaseaccounts",
+                    "metric": "microsoft.documentdb/databaseaccounts-Requests-DocumentCount",
+                    "aggregation": 4,
+                    "splitBy": [
+                      "CollectionName"
+                    ],
+                    "splitBySortOrder": -1,
+                    "splitByLimit": 10
+                  },
+                  {
+                    "namespace": "microsoft.documentdb/databaseaccounts",
+                    "metric": "microsoft.documentdb/databaseaccounts-Requests-DataUsage",
+                    "aggregation": 4,
+                    "splitBy": [
+                      "CollectionName"
+                    ],
+                    "splitBySortOrder": -1,
+                    "splitByLimit": 10
+                  },
+                  {
+                    "namespace": "microsoft.documentdb/databaseaccounts",
+                    "metric": "microsoft.documentdb/databaseaccounts-Requests-IndexUsage",
+                    "aggregation": 4,
+                    "splitBy": [
+                      "CollectionName"
+                    ],
+                    "splitBySortOrder": -1,
+                    "splitByLimit": 10
+                  },
+                  {
+                    "namespace": "microsoft.documentdb/databaseaccounts",
+                    "metric": "microsoft.documentdb/databaseaccounts-Requests-NormalizedRUConsumption",
+                    "aggregation": 3,
+                    "splitBy": [
+                      "CollectionName"
+                    ],
+                    "splitBySortOrder": -1,
+                    "splitByLimit": 10,
+                    "columnName": "Normalized RU % (Max)"
+                  },
+                  {
+                    "namespace": "microsoft.documentdb/databaseaccounts",
+                    "metric": "microsoft.documentdb/databaseaccounts-Requests-AutoscaleMaxThroughput",
+                    "aggregation": 3,
+                    "splitBy": [
+                      "DatabaseName"
+                    ],
+                    "splitBySortOrder": -1,
+                    "splitByLimit": 5
+                  },
+                  {
+                    "namespace": "microsoft.documentdb/databaseaccounts",
+                    "metric": "microsoft.documentdb/databaseaccounts-Requests-MongoRequests",
+                    "aggregation": 7,
+                    "splitBy": [
+                      "CollectionName"
+                    ],
+                    "splitBySortOrder": -1,
+                    "splitByLimit": 10,
+                    "columnName": "Throttled Requests (16500)",
+                    "filters": [
+                      {
+                        "key": "ErrorCode",
+                        "operator": 0,
+                        "values": [
+                          "16500"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "title": "Cosmos DB - Shared Throughput Analysis (Database: activation)",
+                "gridFormatType": 2,
+                "filters": [
+                  {
+                    "id": "2",
+                    "key": "DatabaseName",
+                    "operator": 0,
+                    "values": [
+                      "activation"
+                    ]
+                  }
+                ],
+                "showExpandCollapseGrid": true,
+                "gridSettings": {
+                  "formatters": [
+                    {
+                      "columnMatch": "$gen_group",
+                      "formatter": 13,
+                      "formatOptions": {
+                        "linkTarget": "Resource",
+                        "showIcon": true
+                      }
+                    },
+                    {
+                      "columnMatch": "Subscription",
+                      "formatter": 5
+                    },
+                    {
+                      "columnMatch": "Name",
+                      "formatter": 5
+                    },
+                    {
+                      "columnMatch": "Segment",
+                      "formatter": 5
+                    },
+                    {
+                      "columnMatch": "Total RU Consumed",
+                      "formatter": 8,
+                      "formatOptions": {
+                        "min": 0,
+                        "palette": "red",
+                        "aggregation": "Sum"
+                      },
+                      "numberFormat": {
+                        "unit": 17,
+                        "options": {
+                          "style": "decimal",
+                          "useGrouping": true,
+                          "maximumFractionDigits": 1
+                        }
+                      }
+                    },
+                    {
+                      "columnMatch": "Total RU Consumed Timeline",
+                      "formatter": 9,
+                      "formatOptions": {
+                        "min": 0,
+                        "palette": "red",
+                        "aggregation": "Sum"
+                      }
+                    },
+                    {
+                      "columnMatch": "Mongo Client Requests",
+                      "formatter": 8,
+                      "formatOptions": {
+                        "min": 0,
+                        "palette": "blue",
+                        "aggregation": "Sum"
+                      },
+                      "numberFormat": {
+                        "unit": 17,
+                        "options": {
+                          "style": "decimal",
+                          "useGrouping": true,
+                          "maximumFractionDigits": 1
+                        }
+                      }
+                    },
+                    {
+                      "columnMatch": "Mongo Client Requests Timeline",
+                      "formatter": 5
+                    },
+                    {
+                      "columnMatch": "microsoft.documentdb/databaseaccounts-Requests-DocumentCount",
+                      "formatter": 8,
+                      "formatOptions": {
+                        "min": 0,
+                        "palette": "yellow",
+                        "aggregation": "Sum"
+                      },
+                      "numberFormat": {
+                        "unit": 17,
+                        "options": {
+                          "style": "decimal",
+                          "maximumFractionDigits": 1
+                        }
+                      }
+                    },
+                    {
+                      "columnMatch": "microsoft.documentdb/databaseaccounts-Requests-DocumentCount Timeline",
+                      "formatter": 5
+                    },
+                    {
+                      "columnMatch": "microsoft.documentdb/databaseaccounts-Requests-DataUsage",
+                      "formatter": 8,
+                      "formatOptions": {
+                        "min": 0,
+                        "palette": "green",
+                        "aggregation": "Sum"
+                      },
+                      "numberFormat": {
+                        "unit": 2,
+                        "options": {
+                          "style": "decimal",
+                          "maximumFractionDigits": 1
+                        }
+                      }
+                    },
+                    {
+                      "columnMatch": "microsoft.documentdb/databaseaccounts-Requests-DataUsage Timeline",
+                      "formatter": 5
+                    },
+                    {
+                      "columnMatch": "microsoft.documentdb/databaseaccounts-Requests-IndexUsage",
+                      "formatter": 8,
+                      "formatOptions": {
+                        "min": 0,
+                        "palette": "green",
+                        "aggregation": "Sum"
+                      },
+                      "numberFormat": {
+                        "unit": 2,
+                        "options": {
+                          "style": "decimal",
+                          "maximumFractionDigits": 1
+                        }
+                      }
+                    },
+                    {
+                      "columnMatch": "microsoft.documentdb/databaseaccounts-Requests-IndexUsage Timeline",
+                      "formatter": 5
+                    },
+                    {
+                      "columnMatch": "Normalized RU % (Max)",
+                      "formatter": 8,
+                      "formatOptions": {
+                        "min": 0,
+                        "max": 100,
+                        "palette": "redGreen",
+                        "aggregation": "Max"
+                      },
+                      "numberFormat": {
+                        "unit": 1,
+                        "options": {
+                          "style": "decimal",
+                          "maximumFractionDigits": 1
+                        }
+                      }
+                    },
+                    {
+                      "columnMatch": "Normalized RU % (Max) Timeline",
+                      "formatter": 9,
+                      "formatOptions": {
+                        "min": 0,
+                        "max": 100,
+                        "palette": "redGreen",
+                        "aggregation": "Max"
+                      }
+                    },
+                    {
+                      "columnMatch": "microsoft.documentdb/databaseaccounts-Requests-AutoscaleMaxThroughput",
+                      "formatter": 1,
+                      "numberFormat": {
+                        "unit": 0,
+                        "options": {
+                          "style": "decimal",
+                          "useGrouping": true
+                        }
+                      }
+                    },
+                    {
+                      "columnMatch": "microsoft.documentdb/databaseaccounts-Requests-AutoscaleMaxThroughput Timeline",
+                      "formatter": 5
+                    },
+                    {
+                      "columnMatch": "Throttled Requests (16500)",
+                      "formatter": 8,
+                      "formatOptions": {
+                        "min": 0,
+                        "palette": "redBright",
+                        "aggregation": "Sum"
+                      },
+                      "numberFormat": {
+                        "unit": 17,
+                        "options": {
+                          "style": "decimal",
+                          "useGrouping": true,
+                          "maximumFractionDigits": 0
+                        }
+                      }
+                    },
+                    {
+                      "columnMatch": "Throttled Requests (16500) Timeline",
+                      "formatter": 9,
+                      "formatOptions": {
+                        "min": 0,
+                        "palette": "redBright",
+                        "aggregation": "Sum"
+                      }
+                    }
+                  ],
+                  "rowLimit": 10000,
+                  "filter": true,
+                  "hierarchySettings": {
+                    "treeType": 1,
+                    "groupBy": [
+                      "Name"
+                    ],
+                    "expandTopLevel": true,
+                    "finalBy": "Segment"
+                  },
+                  "labelSettings": [
+                    {
+                      "columnId": "Subscription",
+                      "label": "Subscription/Database/Collection"
+                    },
+                    {
+                      "columnId": "Name",
+                      "label": "Collections"
+                    },
+                    {
+                      "columnId": "Segment",
+                      "label": "Collection"
+                    },
+                    {
+                      "columnId": "Total RU Consumed",
+                      "label": "Total RU Consumed (Sum)"
+                    },
+                    {
+                      "columnId": "Total RU Consumed Timeline",
+                      "label": "RU Consumed Timeline"
+                    },
+                    {
+                      "columnId": "Mongo Client Requests",
+                      "label": "Mongo Requests (Count)"
+                    },
+                    {
+                      "columnId": "Mongo Client Requests Timeline",
+                      "label": "Mongo Requests Timeline"
+                    },
+                    {
+                      "columnId": "microsoft.documentdb/databaseaccounts-Requests-DocumentCount",
+                      "label": "Document Count (Avg)"
+                    },
+                    {
+                      "columnId": "microsoft.documentdb/databaseaccounts-Requests-DocumentCount Timeline",
+                      "label": "Document Count Timeline"
+                    },
+                    {
+                      "columnId": "microsoft.documentdb/databaseaccounts-Requests-DataUsage",
+                      "label": "Data Usage (Avg)"
+                    },
+                    {
+                      "columnId": "microsoft.documentdb/databaseaccounts-Requests-DataUsage Timeline",
+                      "label": "Data Usage Timeline"
+                    },
+                    {
+                      "columnId": "microsoft.documentdb/databaseaccounts-Requests-IndexUsage",
+                      "label": "Index Usage (Avg)"
+                    },
+                    {
+                      "columnId": "microsoft.documentdb/databaseaccounts-Requests-IndexUsage Timeline",
+                      "label": "Index Usage Timeline"
+                    },
+                    {
+                      "columnId": "Normalized RU % (Max)",
+                      "label": "Normalized RU % (Max)"
+                    },
+                    {
+                      "columnId": "Normalized RU % (Max) Timeline",
+                      "label": "Normalized RU % Timeline"
+                    },
+                    {
+                      "columnId": "microsoft.documentdb/databaseaccounts-Requests-AutoscaleMaxThroughput",
+                      "label": "Autoscale Max Throughput (Max)"
+                    },
+                    {
+                      "columnId": "microsoft.documentdb/databaseaccounts-Requests-AutoscaleMaxThroughput Timeline",
+                      "label": "Autoscale Max Throughput Timeline"
+                    },
+                    {
+                      "columnId": "Throttled Requests (16500)",
+                      "label": "Throttled (429/16500)"
+                    },
+                    {
+                      "columnId": "Throttled Requests (16500) Timeline",
+                      "label": "Throttled Timeline"
+                    }
+                  ]
+                },
+                "sortBy": [],
+                "showExportToExcel": true
+              },
+              "name": "Cosmos DB - Shared Throughput Analysis"
+            },
+            {
+              "type": 10,
+              "content": {
+                "chartId": "workbook859d09ea-f343-478c-a0a0-5eaf79f8ac34",
+                "version": "MetricsItem/2.0",
+                "size": 0,
+                "chartType": 2,
+                "resourceType": "microsoft.documentdb/databaseaccounts",
+                "metricScope": 0,
+                "resourceIds": [
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-data-rg/providers/Microsoft.DocumentDB/databaseAccounts/${prefix}-${env_short}-${location_short}-${domain}-cosmos-account"
+                ],
+                "timeContextFromParameter": "evaluation_window",
+                "timeContext": {
+                  "durationMs": 8377200000,
+                  "endTime": "2026-04-08T09:37:00.000Z"
+                },
+                "timeGrain": "PT1H",
+                "metrics": [
+                  {
+                    "namespace": "microsoft.documentdb/databaseaccounts",
+                    "metric": "microsoft.documentdb/databaseaccounts-Requests-NormalizedRUConsumption",
+                    "aggregation": 3,
+                    "splitBy": [
+                      "CollectionName"
+                    ],
+                    "columnName": "Normalized RU % by Collection"
+                  },
+                  {
+                    "namespace": "microsoft.documentdb/databaseaccounts",
+                    "metric": "microsoft.documentdb/databaseaccounts-Requests-TotalRequestUnits",
+                    "aggregation": 1,
+                    "columnName": "RU Consumed by Collection"
+                  }
+                ],
+                "title": "Normalized RU Consumption & RU Cost by Collection (Database: activation)",
+                "showOpenInMe": true,
+                "filters": [
+                  {
+                    "id": "2",
+                    "key": "DatabaseName",
+                    "operator": 0,
+                    "values": [
+                      "activation"
+                    ]
+                  }
+                ],
+                "gridSettings": {
+                  "rowLimit": 10000
+                }
+              },
+              "name": "NormalizedRUConsumption by Collection"
+            },
+            {
+              "type": 10,
+              "content": {
+                "chartId": "workbookaf172b5e-e51e-4ea3-a191-0de5841b33b6",
+                "version": "MetricsItem/2.0",
+                "size": 0,
+                "chartType": 2,
+                "resourceType": "microsoft.documentdb/databaseaccounts",
+                "metricScope": 0,
+                "resourceIds": [
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-data-rg/providers/Microsoft.DocumentDB/databaseAccounts/${prefix}-${env_short}-${location_short}-${domain}-cosmos-account"
+                ],
+                "timeContextFromParameter": "evaluation_window",
+                "timeContext": {
+                  "durationMs": 8377200000,
+                  "endTime": "2026-04-08T09:37:00.000Z"
+                },
+                "metrics": [
+                  {
+                    "namespace": "microsoft.documentdb/databaseaccounts",
+                    "metric": "microsoft.documentdb/databaseaccounts-Requests-TotalRequestUnits",
+                    "aggregation": 1,
+                    "splitBy": [
+                      "CollectionName"
+                    ],
+                    "columnName": "RU Consumed"
+                  },
+                  {
+                    "namespace": "microsoft.documentdb/databaseaccounts",
+                    "metric": "microsoft.documentdb/databaseaccounts-Requests-MongoRequests",
+                    "aggregation": 7,
+                    "columnName": "Throttled Requests",
+                    "filters": [
+                      {
+                        "key": "ErrorCode",
+                        "operator": 0,
+                        "values": [
+                          "16500"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "title": "Total RU Consumed & Throttling by Collection (Database: activation)",
+                "showOpenInMe": true,
+                "filters": [
+                  {
+                    "id": "2",
+                    "key": "DatabaseName",
+                    "operator": 0,
+                    "values": [
+                      "activation"
+                    ]
+                  }
+                ],
+                "gridSettings": {
+                  "rowLimit": 10000
+                }
+              },
+              "name": "Total RU by Collection"
+            },
+            {
+              "type": 10,
+              "content": {
+                "chartId": "workbook2a2620ac-8baa-40e1-98cf-4ebad54f82db",
+                "version": "MetricsItem/2.0",
+                "size": 0,
+                "chartType": 2,
+                "resourceType": "microsoft.documentdb/databaseaccounts",
+                "metricScope": 0,
+                "resourceIds": [
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-data-rg/providers/Microsoft.DocumentDB/databaseAccounts/${prefix}-${env_short}-${location_short}-${domain}-cosmos-account"
+                ],
+                "timeContextFromParameter": "evaluation_window",
+                "timeContext": {
+                  "durationMs": 8377200000,
+                  "endTime": "2026-04-08T09:37:00.000Z"
+                },
+                "metrics": [
+                  {
+                    "namespace": "microsoft.documentdb/databaseaccounts",
+                    "metric": "microsoft.documentdb/databaseaccounts-Requests-TotalRequestUnits",
+                    "aggregation": 1,
+                    "splitBy": [
+                      "CollectionName",
+                      "OperationType"
+                    ],
+                    "columnName": "RU by Collection & Operation"
+                  }
+                ],
+                "title": "Total RU Cost by Collection & Operation Type (Database: activation)",
+                "showOpenInMe": true,
+                "filters": [
+                  {
+                    "id": "1",
+                    "key": "DatabaseName",
+                    "operator": 0,
+                    "values": [
+                      "activation"
+                    ]
+                  }
+                ],
+                "gridSettings": {
+                  "rowLimit": 10000
+                }
+              },
+              "name": "RU by Collection and Operation Type"
+            },
+            {
+              "type": 10,
+              "content": {
+                "chartId": "workbookb53a712c-9e6d-424b-a727-0744595027dc",
+                "version": "MetricsItem/2.0",
+                "size": 0,
+                "chartType": 2,
+                "resourceType": "microsoft.documentdb/databaseaccounts",
+                "metricScope": 0,
+                "resourceIds": [
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-data-rg/providers/Microsoft.DocumentDB/databaseAccounts/${prefix}-${env_short}-${location_short}-${domain}-cosmos-account"
+                ],
+                "timeContextFromParameter": "evaluation_window",
+                "timeContext": {
+                  "durationMs": 8377200000,
+                  "endTime": "2026-04-08T09:37:00.000Z"
+                },
+                "metrics": [
+                  {
+                    "namespace": "microsoft.documentdb/databaseaccounts",
+                    "metric": "microsoft.documentdb/databaseaccounts-Requests-MongoRequests",
+                    "aggregation": 7,
+                    "splitBy": [
+                      "CollectionName",
+                      "CommandName"
+                    ],
+                    "columnName": "Requests by Collection & Command"
+                  },
+                  {
+                    "namespace": "microsoft.documentdb/databaseaccounts",
+                    "metric": "microsoft.documentdb/databaseaccounts-Requests-MongoRequests",
+                    "aggregation": 7,
+                    "columnName": "Requests by Collection & Status"
+                  }
+                ],
+                "title": "MongoDB Requests by Collection, Command & Error Code (Database: activation)",
+                "showOpenInMe": true,
+                "filters": [
+                  {
+                    "id": "2",
+                    "key": "DatabaseName",
+                    "operator": 0,
+                    "values": [
+                      "activation"
+                    ]
+                  }
+                ],
+                "gridSettings": {
+                  "rowLimit": 10000
+                }
+              },
+              "name": "MongoDB Requests by Collection and Command"
+            },
+            {
+              "type": 10,
+              "content": {
+                "chartId": "workbook70c7cafe-2575-4902-8651-b9ca636916bf",
+                "version": "MetricsItem/2.0",
+                "size": 0,
+                "chartType": 2,
+                "resourceType": "microsoft.documentdb/databaseaccounts",
+                "metricScope": 0,
+                "resourceIds": [
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-data-rg/providers/Microsoft.DocumentDB/databaseAccounts/${prefix}-${env_short}-${location_short}-${domain}-cosmos-account"
+                ],
+                "timeContextFromParameter": "evaluation_window",
+                "timeContext": {
+                  "durationMs": 8377200000,
+                  "endTime": "2026-04-08T09:37:00.000Z"
+                },
+                "metrics": [
+                  {
+                    "namespace": "microsoft.documentdb/databaseaccounts",
+                    "metric": "microsoft.documentdb/databaseaccounts-Requests-MongoRequests",
+                    "aggregation": 7,
+                    "splitBy": [
+                      "CollectionName",
+                      "ErrorCode"
+                    ],
+                    "columnName": "Failed Requests by Collection & Error"
+                  },
+                  {
+                    "namespace": "microsoft.documentdb/databaseaccounts",
+                    "metric": "microsoft.documentdb/databaseaccounts-Requests-MongoRequests",
+                    "aggregation": 7,
+                    "columnName": "Failed Requests by Collection & Command"
+                  }
+                ],
+                "title": "Failed Requests by Collection, Error Code & Command (Database: activation)",
+                "showOpenInMe": true,
+                "filters": [
+                  {
+                    "id": "3",
+                    "key": "DatabaseName",
+                    "operator": 0,
+                    "values": [
+                      "activation"
+                    ]
+                  },
+                  {
+                    "id": "4",
+                    "key": "ErrorCode",
+                    "operator": 1,
+                    "values": [
+                      "0"
+                    ]
+                  }
+                ],
+                "gridSettings": {
+                  "rowLimit": 10000
+                }
+              },
+              "name": "Failed Requests by Collection and Error"
+            },
+            {
+              "type": 10,
+              "content": {
+                "chartId": "workbook9108a8f3-b930-46e6-a394-50417a940b87",
+                "version": "MetricsItem/2.0",
+                "size": 0,
+                "chartType": 2,
+                "resourceType": "microsoft.documentdb/databaseaccounts",
+                "metricScope": 0,
+                "resourceIds": [
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-data-rg/providers/Microsoft.DocumentDB/databaseAccounts/${prefix}-${env_short}-${location_short}-${domain}-cosmos-account"
+                ],
+                "timeContextFromParameter": "evaluation_window",
+                "timeContext": {
+                  "durationMs": 8377200000,
+                  "endTime": "2026-04-08T09:37:00.000Z"
+                },
+                "metrics": [
+                  {
+                    "namespace": "microsoft.documentdb/databaseaccounts",
+                    "metric": "microsoft.documentdb/databaseaccounts-Requests-DataUsage",
+                    "aggregation": 4,
+                    "splitBy": [
+                      "CollectionName"
+                    ],
+                    "columnName": "Data Usage"
+                  },
+                  {
+                    "namespace": "microsoft.documentdb/databaseaccounts",
+                    "metric": "microsoft.documentdb/databaseaccounts-Requests-IndexUsage",
+                    "aggregation": 4,
+                    "columnName": "Index Usage"
+                  }
+                ],
+                "title": "Data & Index Usage by Collection (Database: activation)",
+                "showOpenInMe": true,
+                "filters": [
+                  {
+                    "id": "1",
+                    "key": "DatabaseName",
+                    "operator": 0,
+                    "values": [
+                      "activation"
+                    ]
+                  }
+                ],
+                "gridSettings": {
+                  "rowLimit": 10000
+                }
+              },
+              "name": "Data and Index Usage by Collection"
+            },
+            {
+              "type": 10,
+              "content": {
+                "chartId": "workbook7eaa1654-64ba-4205-9242-e0d2fb8f3078",
+                "version": "MetricsItem/2.0",
+                "size": 0,
+                "chartType": 2,
+                "resourceType": "microsoft.documentdb/databaseaccounts",
+                "metricScope": 0,
+                "resourceIds": [
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-data-rg/providers/Microsoft.DocumentDB/databaseAccounts/${prefix}-${env_short}-${location_short}-${domain}-cosmos-account"
+                ],
+                "timeContextFromParameter": "evaluation_window",
+                "timeContext": {
+                  "durationMs": 8377200000,
+                  "endTime": "2026-04-08T09:37:00.000Z"
+                },
+                "metrics": [
+                  {
+                    "namespace": "microsoft.documentdb/databaseaccounts",
+                    "metric": "microsoft.documentdb/databaseaccounts-Requests-ServiceAvailability",
+                    "aggregation": 4,
+                    "columnName": "Availability (Avg %)"
+                  },
+                  {
+                    "namespace": "microsoft.documentdb/databaseaccounts",
+                    "metric": "microsoft.documentdb/databaseaccounts-Requests-ServiceAvailability",
+                    "aggregation": 2,
+                    "columnName": "Availability (Min %)"
+                  }
+                ],
+                "title": "Service Availability - Min & Avg % (Account Level)",
+                "showOpenInMe": true,
+                "gridSettings": {
+                  "rowLimit": 10000
+                }
+              },
+              "name": "Service Availability"
+            },
+            {
+              "type": 10,
+              "content": {
+                "chartId": "workbookc56eee42-75de-44f2-a40d-45c819821abd",
+                "version": "MetricsItem/2.0",
+                "size": 0,
+                "chartType": 2,
+                "resourceType": "microsoft.documentdb/databaseaccounts",
+                "metricScope": 0,
+                "resourceIds": [
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-data-rg/providers/Microsoft.DocumentDB/databaseAccounts/${prefix}-${env_short}-${location_short}-${domain}-cosmos-account"
+                ],
+                "timeContextFromParameter": "evaluation_window",
+                "timeContext": {
+                  "durationMs": 8377200000,
+                  "endTime": "2026-04-08T09:37:00.000Z"
+                },
+                "metrics": [
+                  {
+                    "namespace": "microsoft.documentdb/databaseaccounts",
+                    "metric": "microsoft.documentdb/databaseaccounts-Requests-ServerSideLatencyGateway",
+                    "aggregation": 4,
+                    "columnName": "Latency Avg (ms)"
+                  },
+                  {
+                    "namespace": "microsoft.documentdb/databaseaccounts",
+                    "metric": "microsoft.documentdb/databaseaccounts-Requests-ServerSideLatencyGateway",
+                    "aggregation": 3,
+                    "columnName": "Latency Max (ms)"
+                  }
+                ],
+                "title": "Server Side Latency by Collection - Avg & Max (Database: activation)",
+                "showOpenInMe": true,
+                "filters": [
+                  {
+                    "id": "1",
+                    "key": "DatabaseName",
+                    "operator": 0,
+                    "values": [
+                      "activation"
+                    ]
+                  },
+                  {
+                    "id": "3",
+                    "key": "PublicAPIType",
+                    "operator": 0,
+                    "values": [
+                      "mongoDB"
+                    ]
+                  }
+                ],
+                "gridSettings": {
+                  "rowLimit": 10000
+                }
+              },
+              "name": "Server Side Latency by Collection"
+            },
+            {
+              "type": 10,
+              "content": {
+                "chartId": "workbookfb6f57e3-8351-40e2-925e-0883851350ff",
+                "version": "MetricsItem/2.0",
+                "size": 0,
+                "chartType": 2,
+                "resourceType": "microsoft.documentdb/databaseaccounts",
+                "metricScope": 0,
+                "resourceIds": [
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-data-rg/providers/Microsoft.DocumentDB/databaseAccounts/${prefix}-${env_short}-${location_short}-${domain}-cosmos-account"
+                ],
+                "timeContextFromParameter": "evaluation_window",
+                "timeContext": {
+                  "durationMs": 8377200000,
+                  "endTime": "2026-04-08T09:37:00.000Z"
+                },
+                "metrics": [
+                  {
+                    "namespace": "microsoft.documentdb/databaseaccounts",
+                    "metric": "microsoft.documentdb/databaseaccounts-Requests-ServerSideLatencyGateway",
+                    "aggregation": 4,
+                    "splitBy": [
+                      "CollectionName",
+                      "OperationType"
+                    ],
+                    "columnName": "Latency Avg by Collection & Op"
+                  }
+                ],
+                "title": "Server Side Latency (Avg) by Collection & Operation (Database: activation)",
+                "showOpenInMe": true,
+                "filters": [
+                  {
+                    "id": "1",
+                    "key": "DatabaseName",
+                    "operator": 0,
+                    "values": [
+                      "activation"
+                    ]
+                  },
+                  {
+                    "id": "3",
+                    "key": "PublicAPIType",
+                    "operator": 0,
+                    "values": [
+                      "mongoDB"
+                    ]
+                  }
+                ],
+                "gridSettings": {
+                  "rowLimit": 10000
+                }
+              },
+              "name": "Server Side Latency by Collection and Operation"
             }
           ]
         },
