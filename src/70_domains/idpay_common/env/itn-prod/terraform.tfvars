@@ -107,7 +107,7 @@ additional_geo_locations = [{
 ## Postgres
 idpay_pgflex_params = {
   enabled                                = false
-  idh_resource_tier                      = "pgflex2"
+  idh_resource_tier                      = "pgflex2" #PLACEHOLDER, to be defined after sizing analysis
   geo_replication_enabled                = false
   zone                                   = 1
   pgres_flex_pgbouncer_enabled           = true

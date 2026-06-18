@@ -98,11 +98,11 @@ data_factory_api_base_url = "https://api-io.uat.cstar.pagopa.it/idpay-itn/df"
 ## Postgres
 idpay_pgflex_params = {
   enabled                                = false
-  idh_resource_tier                      = "pgflex2"
+  idh_resource_tier                      = "pgflex2"  #PLACEHOLDER, to be defined after sizing analysis
   geo_replication_enabled                = false
   zone                                   = 1
   pgres_flex_pgbouncer_enabled           = true
   pgres_flex_diagnostic_settings_enabled = false
   auto_grow_enabled                      = false
-  storage_tier                           = "P4"
+  storage_tier                           = "P4"  #PLACEHOLDER, to be defined after sizing analysis
 }
