@@ -245,7 +245,7 @@
                       "showDefault": false
                     },
                     "jsonData": "[{\"value\": \"5m\", \"label\": \"5 minuti\"}, {\"value\": \"15m\", \"label\": \"15 minuti\"}, {\"value\": \"1h\", \"label\": \"1 ora\"}, {\"value\": \"1d\", \"label\": \"1 giorno\"}, {\"value\": \"7d\", \"label\": \"7 giorni\"}]",
-                    "value": "7d"
+                    "value": "1h"
                   }
                 ],
                 "style": "pills",

@@ -533,7 +533,7 @@
                 "visualization": "piechart"
               },
               "customWidth": "100",
-              "name": "Panoramica dei messaggi recevuti dal sender con status code",
+              "name": "Panoramica dei messaggi ricevuti dal sender con status code",
               "styleSettings": {
                 "showBorder": true
               }
@@ -659,21 +659,7 @@
                 "crossComponentResources": [
                   "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
                 ],
-                "statSettings": {
-                  "valueField": "totalRequestsString",
-                  "valueAggregation": "None",
-                  "colorSettings": {
-                    "type": "static",
-                    "mode": "background",
-                    "heatmapPalette": "greenRed",
-                    "thresholdsGrid": []
-                  },
-                  "iconSettings": {
-                    "thresholdsGrid": []
-                  },
-                  "tagText": "",
-                  "valueFontStyle": "auto"
-                }
+                "visualization": "table"
               },
               "name": "❌ Retry esauriti Consumer → Sender - Copy",
               "styleSettings": {
@@ -903,9 +889,7 @@
               "type": 3,
               "content": {
                 "version": "KqlItem/1.0",
-                "query": " AppTraces\n | where AppRoleName == 'rtp-sender'\n | where TimeGenerated {evaluation_window:query}\n | where SeverityLevel == 3\n | where Message startswith \"Send RTP request rejected for\"\n | extend service_provider = extract(@\"Send RTP request rejected for ([^:]+):\", 1, Message)\n | extend rtp_operation_id = extract(@\"RTP Id:\\s*(\\d+)\", 1, Message)\n | project\n     TimeGenerated,\n     service_provider,\n     rtp_operation_id,\n     correlation_id = Properties[\"correlation_id\"],\n     resource_id    = Properties[\"resource_id\"]\n | top 100 by TimeGenerated desc",
-                "size": 0,
-                "title": "✅ Invii totali con successo (APIM + CODA)",
+                "query": " let saveLog =\n     AppTraces\n     | where AppRoleName == \"rtp-sender\"\n     | where TimeGenerated {evaluation_window:query}\n     | where Message startswith \"Rtp to be sent saved with id:\"\n     | extend\n         rtp_id           = extract(@\"Rtp to be sent saved with id:\\s*([^\\s.]+)\", 1, Message),\n         service_provider = extract(@\"service_provider:\\s*(\\S+)\", 1, Message)\n     | project OperationId, rtp_id, service_provider;\n AppTraces\n | where AppRoleName == \"rtp-sender\"\n | where TimeGenerated {evaluation_window:query}\n | where SeverityLevel == 1\n | where Message startswith \"Rtp sent successfully with id:\"\n | extend rtp_operation_id = extract(@\"Rtp sent successfully with id:\\s*([^\\s.]+)\", 1, Message)\n | join kind=inner saveLog on OperationId\n | project\n     TimeGenerated,\n     service_provider,\n     rtp_operation_id,\n     correlation_id = Properties[\"correlation_id\"],\n     resource_id    = Properties[\"resource_id\"]\n | top 100 by TimeGenerated desc",
                 "showExportToExcel": true,
                 "queryType": 0,
                 "resourceType": "microsoft.operationalinsights/workspaces",
@@ -990,21 +974,7 @@
                 "crossComponentResources": [
                   "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
                 ],
-                "statSettings": {
-                  "valueField": "totalRequestsString",
-                  "valueAggregation": "None",
-                  "colorSettings": {
-                    "type": "static",
-                    "mode": "background",
-                    "heatmapPalette": "greenRed",
-                    "thresholdsGrid": []
-                  },
-                  "iconSettings": {
-                    "thresholdsGrid": []
-                  },
-                  "tagText": "",
-                  "valueFontStyle": "auto"
-                }
+                "visualization": "table"
               },
               "customWidth": "75",
               "name": "❌ Catch-all errori invio",
@@ -1025,21 +995,7 @@
                 "crossComponentResources": [
                   "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
                 ],
-                "statSettings": {
-                  "valueField": "totalRequestsString",
-                  "valueAggregation": "None",
-                  "colorSettings": {
-                    "type": "static",
-                    "mode": "background",
-                    "heatmapPalette": "greenRed",
-                    "thresholdsGrid": []
-                  },
-                  "iconSettings": {
-                    "thresholdsGrid": []
-                  },
-                  "tagText": "",
-                  "valueFontStyle": "auto"
-                }
+                "visualization": "table"
               },
               "name": "❌ REJECTION esplicita EPC",
               "styleSettings": {
@@ -1060,21 +1016,7 @@
                 "crossComponentResources": [
                   "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
                 ],
-                "statSettings": {
-                  "valueField": "totalRequestsString",
-                  "valueAggregation": "None",
-                  "colorSettings": {
-                    "type": "static",
-                    "mode": "background",
-                    "heatmapPalette": "greenRed",
-                    "thresholdsGrid": []
-                  },
-                  "iconSettings": {
-                    "thresholdsGrid": []
-                  },
-                  "tagText": "",
-                  "valueFontStyle": "auto"
-                }
+                "visualization": "table"
               },
               "name": "❌ Errore Handler post retry",
               "styleSettings": {
@@ -1095,21 +1037,7 @@
                 "crossComponentResources": [
                   "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
                 ],
-                "statSettings": {
-                  "valueField": "totalRequestsString",
-                  "valueAggregation": "None",
-                  "colorSettings": {
-                    "type": "static",
-                    "mode": "background",
-                    "heatmapPalette": "greenRed",
-                    "thresholdsGrid": []
-                  },
-                  "iconSettings": {
-                    "thresholdsGrid": []
-                  },
-                  "tagText": "",
-                  "valueFontStyle": "auto"
-                }
+                "visualization": "table"
               },
               "name": "❌ Errore nel salvataggio a DB del RTP",
               "styleSettings": {
@@ -1130,21 +1058,7 @@
                 "crossComponentResources": [
                   "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
                 ],
-                "statSettings": {
-                  "valueField": "totalRequestsString",
-                  "valueAggregation": "None",
-                  "colorSettings": {
-                    "type": "static",
-                    "mode": "background",
-                    "heatmapPalette": "greenRed",
-                    "thresholdsGrid": []
-                  },
-                  "iconSettings": {
-                    "thresholdsGrid": []
-                  },
-                  "tagText": "",
-                  "valueFontStyle": "auto"
-                }
+                "visualization": "table"
               },
               "name": "❌ RTP rifiutati dal Service Provider",
               "styleSettings": {
@@ -1186,21 +1100,7 @@
                 "crossComponentResources": [
                   "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
                 ],
-                "statSettings": {
-                  "valueField": "totalRequestsString",
-                  "valueAggregation": "None",
-                  "colorSettings": {
-                    "type": "static",
-                    "mode": "background",
-                    "heatmapPalette": "greenRed",
-                    "thresholdsGrid": []
-                  },
-                  "iconSettings": {
-                    "thresholdsGrid": []
-                  },
-                  "tagText": "",
-                  "valueFontStyle": "auto"
-                }
+                "visualization": "table"
               },
               "name": "❌ Errori inattesi nell'invio",
               "styleSettings": {
@@ -1221,21 +1121,7 @@
                 "crossComponentResources": [
                   "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
                 ],
-                "statSettings": {
-                  "valueField": "totalRequestsString",
-                  "valueAggregation": "None",
-                  "colorSettings": {
-                    "type": "static",
-                    "mode": "background",
-                    "heatmapPalette": "greenRed",
-                    "thresholdsGrid": []
-                  },
-                  "iconSettings": {
-                    "thresholdsGrid": []
-                  },
-                  "tagText": "",
-                  "valueFontStyle": "auto"
-                }
+                "visualization": "table"
               },
               "name": "❌ Errori nel recupero della lista enti dal microservizio",
               "styleSettings": {

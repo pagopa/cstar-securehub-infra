@@ -42,7 +42,7 @@
           "version": "KqlItem/1.0",
           "query": "let deps =\n    AppDependencies\n    | where TimeGenerated {evaluation_window:query}\n    | where Name startswith \"GET\" and Name contains \"/rtppayees\"\n    | extend JWT_Subject = tostring(Properties[\"Request-X-JWT-Subject\"])\n    | where isnotempty(JWT_Subject)\n    | summarize JWT_Subject = any(JWT_Subject) by OperationId;\n\nAppRequests\n| where TimeGenerated {evaluation_window:query}\n| where AppRoleName == \"rtp-payees\"\n| where Name == \"GET /\"\n| where ResultCode != \"200\"\n| project OperationId, ResultCode\n| join kind=leftouter deps on OperationId\n| extend JWT_Subject = iif(isempty(JWT_Subject), \"UNKNOWN\", JWT_Subject)\n| extend Label = strcat(JWT_Subject, \" (\", ResultCode, \")\")\n| summarize NumeroEventi = count() by Label\n| extend Label = strcat(Label, \" — \", NumeroEventi)\n| project Label, NumeroEventi",
           "size": 0,
-          "title": "✅  Accessi per Subject alla get payees",
+          "title": "✅ Accessi per Subject alla get payees",
           "queryType": 0,
           "resourceType": "microsoft.operationalinsights/workspaces",
           "crossComponentResources": [
@@ -50,7 +50,7 @@
           ]
         },
         "customWidth": "50",
-        "name": "✅  Accessi per Subject alla get payees",
+        "name": "✅ Accessi per Subject alla get payees",
         "styleSettings": {
           "showBorder": true
         }
