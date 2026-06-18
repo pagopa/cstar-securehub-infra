@@ -2,32 +2,17 @@ data "github_team" "admin" {
   slug = "emd-team-admin"
 }
 
-data "azurerm_key_vault" "mdc" {
-  name                = var.mdc_kv_name
-  resource_group_name = var.mdc_kv_rg
-}
+module "secrets" {
+  source = "./.terraform/modules/__v4__/key_vault_secrets_query"
 
-data "azurerm_key_vault_secret" "sonar_token" {
-  key_vault_id = data.azurerm_key_vault.mdc.id
-  name         = "sonar-token"
-}
+  key_vault_name = var.mdc_kv_name
+  resource_group = var.mdc_kv_rg
 
-data "azurerm_key_vault_secret" "emd-bot-github-rw-token" {
-  key_vault_id = data.azurerm_key_vault.mdc.id
-  name         = "emd-bot-github-rw-TOKEN"
-}
-
-data "azurerm_key_vault_secret" "mil-gh-bot-token" {
-  key_vault_id = data.azurerm_key_vault.mdc.id
-  name         = "mil-gh-bot-token"
-}
-
-data "azurerm_key_vault_secret" "argo_cd_username" {
-  key_vault_id = data.azurerm_key_vault.mdc.id
-  name         = "argocd-admin-username"
-}
-
-data "azurerm_key_vault_secret" "argo_cd_password" {
-  key_vault_id = data.azurerm_key_vault.mdc.id
-  name         = "argocd-admin-password"
+  secrets = compact([
+      var.env == "prod" ? "argocd-admin-username" : null,
+      var.env == "prod" ? "argocd-admin-password" : null,
+      var.env == "prod" ? "mil-gh-bot-token" : null,
+      var.env == "prod" ? "emd-bot-github-rw-TOKEN" : null,
+      var.env == "prod" ? "sonar-token" : null
+  ])
 }

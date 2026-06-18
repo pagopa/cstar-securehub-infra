@@ -23,14 +23,14 @@ locals {
       protected_branches = ["main"]
       repository_secrets = [
         {
-          EMD_BOT_RW_TOKEN = data.azurerm_key_vault_secret.emd-bot-github-rw-token.value
-          SONAR_TOKEN = data.azurerm_key_vault_secret.sonar_token.value
+          EMD_BOT_RW_TOKEN = try(module.secrets.values["emd-bot-github-rw-TOKEN"].value, null)
+          SONAR_TOKEN = try(module.secrets.values["sonar-token"].value, null)
         }
       ]
       repository_dependabot_secrets = [
         {
-          EMD_BOT_RW_TOKEN = data.azurerm_key_vault_secret.emd-bot-github-rw-token.value
-          MIL_BOT_TOKEN = data.azurerm_key_vault_secret.mil-gh-bot-token.value
+          EMD_BOT_RW_TOKEN = try(module.secrets.values["emd-bot-github-rw-TOKEN"].value, null)
+          MIL_BOT_TOKEN = try(module.secrets.values["mil-gh-bot-token"].value, null)
         }
       ]
       repository_variables = [
@@ -63,7 +63,7 @@ locals {
       protected_branches = ["main"]
       repository_secrets = [
         {
-          SONAR_TOKEN = data.azurerm_key_vault_secret.sonar_token.value
+          SONAR_TOKEN = try(module.secrets.values["sonar-token"].value, null)
         }
       ]
       repository_dependabot_secrets = []
@@ -96,14 +96,14 @@ locals {
       protected_branches = ["main"]
       repository_secrets = [
         {
-          EMD_BOT_RW_TOKEN = data.azurerm_key_vault_secret.emd-bot-github-rw-token.value
-          SONAR_TOKEN = data.azurerm_key_vault_secret.sonar_token.value
+          EMD_BOT_RW_TOKEN = try(module.secrets.values["emd-bot-github-rw-TOKEN"].value, null)
+          SONAR_TOKEN = try(module.secrets.values["sonar-token"].value, null)
         }
       ]
       repository_dependabot_secrets = [
         {
-          EMD_BOT_RW_TOKEN = data.azurerm_key_vault_secret.emd-bot-github-rw-token.value
-          MIL_BOT_TOKEN = data.azurerm_key_vault_secret.mil-gh-bot-token.value
+          EMD_BOT_RW_TOKEN = try(module.secrets.values["emd-bot-github-rw-TOKEN"].value, null)
+          MIL_BOT_TOKEN = try(module.secrets.values["mil-gh-bot-token"].value, null)
         }
       ]
       repository_variables = [
@@ -143,14 +143,14 @@ locals {
       protected_branches = ["main"]
       repository_secrets = [
         {
-          EMD_BOT_RW_TOKEN = data.azurerm_key_vault_secret.emd-bot-github-rw-token.value
-          SONAR_TOKEN = data.azurerm_key_vault_secret.sonar_token.value
+          EMD_BOT_RW_TOKEN = try(module.secrets.values["emd-bot-github-rw-TOKEN"].value, null)
+          SONAR_TOKEN = try(module.secrets.values["sonar-token"].value, null)
         }
       ]
       repository_dependabot_secrets = [
         {
-          EMD_BOT_RW_TOKEN = data.azurerm_key_vault_secret.emd-bot-github-rw-token.value
-          MIL_BOT_TOKEN = data.azurerm_key_vault_secret.mil-gh-bot-token.value
+          EMD_BOT_RW_TOKEN = try(module.secrets.values["emd-bot-github-rw-TOKEN"].value, null)
+          MIL_BOT_TOKEN = try(module.secrets.values["mil-gh-bot-token"].value, null)
         }
       ]
       repository_variables = [
@@ -185,14 +185,14 @@ locals {
       protected_branches = ["main"]
       repository_secrets = [
         {
-          EMD_BOT_RW_TOKEN = data.azurerm_key_vault_secret.emd-bot-github-rw-token.value
-          SONAR_TOKEN = data.azurerm_key_vault_secret.sonar_token.value
+          EMD_BOT_RW_TOKEN = try(module.secrets.values["emd-bot-github-rw-TOKEN"].value, null)
+          SONAR_TOKEN = try(module.secrets.values["sonar-token"].value, null)
         }
       ]
       repository_dependabot_secrets = [
         {
-          EMD_BOT_RW_TOKEN = data.azurerm_key_vault_secret.emd-bot-github-rw-token.value
-          MIL_BOT_TOKEN = data.azurerm_key_vault_secret.mil-gh-bot-token.value
+          EMD_BOT_RW_TOKEN = try(module.secrets.values["emd-bot-github-rw-TOKEN"].value, null)
+          MIL_BOT_TOKEN = try(module.secrets.values["mil-gh-bot-token"].value, null)
         }
       ]
       repository_variables = [
@@ -227,14 +227,14 @@ locals {
       protected_branches = ["main"]
       repository_secrets = [
         {
-          EMD_BOT_RW_TOKEN = data.azurerm_key_vault_secret.emd-bot-github-rw-token.value
-          SONAR_TOKEN = data.azurerm_key_vault_secret.sonar_token.value
+          EMD_BOT_RW_TOKEN = try(module.secrets.values["emd-bot-github-rw-TOKEN"].value, null)
+          SONAR_TOKEN = try(module.secrets.values["sonar-token"].value, null)
         }
       ]
       repository_dependabot_secrets = [
         {
-          EMD_BOT_RW_TOKEN = data.azurerm_key_vault_secret.emd-bot-github-rw-token.value
-          MIL_BOT_TOKEN = data.azurerm_key_vault_secret.mil-gh-bot-token.value
+          EMD_BOT_RW_TOKEN = try(module.secrets.values["emd-bot-github-rw-TOKEN"].value, null)
+          MIL_BOT_TOKEN = try(module.secrets.values["mil-gh-bot-token"].value, null)
         }
       ]
       repository_variables = [
@@ -268,14 +268,55 @@ locals {
       protected_branches = ["main"]
       repository_secrets = [
         {
-          EMD_BOT_RW_TOKEN = data.azurerm_key_vault_secret.emd-bot-github-rw-token.value
-          SONAR_TOKEN = data.azurerm_key_vault_secret.sonar_token.value
+          EMD_BOT_RW_TOKEN = try(module.secrets.values["emd-bot-github-rw-TOKEN"].value, null)
+          SONAR_TOKEN = try(module.secrets.values["sonar-token"].value, null)
         }
       ]
       repository_dependabot_secrets = [
         {
-          EMD_BOT_RW_TOKEN = data.azurerm_key_vault_secret.emd-bot-github-rw-token.value
-          MIL_BOT_TOKEN = data.azurerm_key_vault_secret.mil-gh-bot-token.value
+          EMD_BOT_RW_TOKEN = try(module.secrets.values["emd-bot-github-rw-TOKEN"].value, null)
+          MIL_BOT_TOKEN = try(module.secrets.values["mil-gh-bot-token"].value, null)
+        }
+      ]
+      repository_variables = [
+        {
+          SONARCLOUD_ORG = "pagopa"
+          SONARCLOUD_PROJECT_KEY = "pagopa_emd-tpp"
+        }
+      ]
+      env_secrets = {
+        envs = ["github-pages"]
+        secrets = {
+        }
+      }
+      env_variables = {
+        envs = ["github-pages"]
+        variables = {
+        }
+      }
+    }
+    "emd-tpp" = {
+      settings = {
+        apply                       = true
+        allow_forking               = true
+        allow_merge_commit          = false
+        description                 = "Messaggi di Cortesia - Gestione delle Terze Parti"
+        merge_commit_message        = "PR_TITLE"
+        merge_commit_title          = "MERGE_MESSAGE"
+        primary_language            = "Java"
+        visibility                  = "public"
+      }
+      protected_branches = ["main"]
+      repository_secrets = [
+        {
+          EMD_BOT_RW_TOKEN = try(module.secrets.values["emd-bot-github-rw-TOKEN"].value, null)
+          SONAR_TOKEN = try(module.secrets.values["sonar-token"].value, null)
+        }
+      ]
+      repository_dependabot_secrets = [
+        {
+          EMD_BOT_RW_TOKEN = try(module.secrets.values["emd-bot-github-rw-TOKEN"].value, null)
+          MIL_BOT_TOKEN = try(module.secrets.values["mil-gh-bot-token"].value, null)
         }
       ]
       repository_variables = [
