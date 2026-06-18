@@ -367,6 +367,37 @@ locals {
         variables = {}
       }
     }
+    "emd-docs" = {
+      settings = {
+        apply                       = true
+        allow_merge_commit          = false
+        allow_update_branch         = true
+        description                 = "Messaggi di Cortesia - Documentazione"
+        homepage_url                = "https://urban-carnival-6lm5v4m.pages.github.io/"
+        merge_commit_message        = "PR_TITLE"
+        merge_commit_title          = "MERGE_MESSAGE"
+        primary_language            = "JavaScript"
+        visibility                  = "private"
+      }
+      protected_branches = ["main"]
+      repository_secrets = [
+        {
+          SONAR_TOKEN = try(module.secrets.values["sonar-token"].value, null)
+        }
+      ]
+      repository_variables = []
+      repository_dependabot_secrets = []
+      env_secrets = {
+        envs = ["github-pages"]
+        secrets = {
+        }
+      }
+      env_variables = {
+        envs = ["github-pages"]
+        variables = {
+        }
+      }
+    }
   }
 
   # ----------------------------------------------------------------------------
