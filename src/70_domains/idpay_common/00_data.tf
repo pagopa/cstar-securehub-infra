@@ -120,11 +120,6 @@ data "azurerm_log_analytics_workspace" "core_log_analytics" {
   resource_group_name = local.core_monitor_resource_group_name
 }
 
-data "azurerm_log_analytics_workspace" "domain_log_analytics" {
-  name                = local.domain_log_analytics_workspace_name
-  resource_group_name = local.domain_monitor_resource_group_name
-}
-
 data "azurerm_resource_group" "apim_rg" {
   name = local.apim_rg_name
 }

@@ -60,7 +60,7 @@ module "idpay_pgflex" {
 
   # Monitoring and performance settings
   diagnostic_settings_enabled = var.idpay_pgflex_params.pgres_flex_diagnostic_settings_enabled
-  log_analytics_workspace_id  = data.azurerm_log_analytics_workspace.domain_log_analytics.id
+  log_analytics_workspace_id  = azurerm_log_analytics_workspace.log_analytics_workspace.id
   private_dns_registration    = false
   pg_bouncer_enabled          = var.idpay_pgflex_params.pgres_flex_pgbouncer_enabled
   zone                        = var.idpay_pgflex_params.zone
