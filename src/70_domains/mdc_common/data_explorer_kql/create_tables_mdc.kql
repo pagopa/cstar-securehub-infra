@@ -43,3 +43,13 @@
 
 .alter table MessageSnapshot policy retention
 @'{"SoftDeletePeriod": "365.00:00:00", "Recoverability": "Enabled"}'
+
+
+.create-merge table FinalizedMessageSnapshot (
+    window_start: datetime,
+    tpp_id:       string,
+    origin_id:    string
+)
+
+.alter table FinalizedMessageSnapshot policy retention
+    @'{"SoftDeletePeriod": "365.00:00:00", "Recoverability": "Enabled"}'

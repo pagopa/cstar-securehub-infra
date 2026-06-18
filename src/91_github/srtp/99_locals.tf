@@ -39,6 +39,18 @@ locals {
       ]
       repository_variables = []
     }
+    rtp-sender-v2 = {
+      env_variables        = [],
+      env_secret_variables = []
+      repository_secrets = [
+        {
+          SLACK_WEBHOOK_URL = data.azurerm_key_vault_secret.slack_webhook.value
+          GIT_PAT           = try(data.azurerm_key_vault_secret.git_pat[0].value, "")
+          SONAR_TOKEN       = try(data.azurerm_key_vault_secret.sonar_token[0].value, "")
+        }
+      ]
+      repository_variables = []
+    }
     rtp-consumer = {
       env_variables        = [],
       env_secret_variables = []
