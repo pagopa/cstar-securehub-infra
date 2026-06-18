@@ -302,4 +302,5 @@ variable "idpay_pgflex_params" {
     auto_grow_enabled                      = bool
     storage_tier                           = optional(string, null)
   })
+  description = "Parameters to provision the IDPay PostgreSQL Flexible Server (and related supporting resources)."
 }
