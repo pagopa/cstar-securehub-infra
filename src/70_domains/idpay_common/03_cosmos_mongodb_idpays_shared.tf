@@ -284,7 +284,7 @@ locals {
         { keys = ["city"], unique = false },
         { keys = ["contactEmail"], unique = true },
         { keys = ["contactName", "contactSurname"], unique = false },
-        { keys = ["type", "address", "streetNumber", "city", "website", "merchantId"], unique = true}
+        { keys = ["merchantId", "type", "city", "address", "website" ], unique = true}
       ]
     },
     {
