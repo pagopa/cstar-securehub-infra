@@ -1419,7 +1419,8 @@ locals {
       evaluation_frequency = 1440
       window_duration      = 1440
 
-      scopes = data.azurerm_kusto_cluster.kusto_cluster.id
+      scopes = data.azurerm_kusto_database.idpay.id
+
 
       query = <<-QUERY
           let TrxCountByBatch =
