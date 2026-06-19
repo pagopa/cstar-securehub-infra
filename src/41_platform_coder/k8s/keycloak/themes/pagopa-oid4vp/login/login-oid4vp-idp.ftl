@@ -37,7 +37,8 @@
                         Annulla
                     </a>
                 </#if>
-                <button type="button"
+                <button id="oid4vp-refresh-btn"
+                        type="button"
                         class="oid4vp-refresh-button">
                     Aggiorna QR Code
                 </button>
@@ -47,6 +48,7 @@
         <#if (crossDeviceStatusUrl!'')?has_content && (crossDeviceEnabled!false)>
             <div id="oid4vp-cross-device-sse-config"
                  data-status-url="${crossDeviceStatusUrl!''}"
+                 data-refresh-url="${crossDeviceRefreshUrl!''}"
                  data-request-handle="${crossDeviceRequestHandle!''}"
                  hidden></div>
             <script nonce="${cspNonce!}" src="${url.resourcesPath}/js/oid4vp-cross-device-sse.js"></script>
