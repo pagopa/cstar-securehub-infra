@@ -39,18 +39,18 @@ resource "github_repository_ruleset" "main" {
 
   rules {
     creation                = true
-    update                  = true
+    update                  = false
     deletion                = true
     non_fast_forward        = true
     required_linear_history = true
 
     pull_request {
       require_code_owner_review         = true
-      required_approving_review_count   = 2
+      required_approving_review_count   = 1
       dismiss_stale_reviews_on_push     = true
       required_review_thread_resolution = true
       require_last_push_approval        = false
-      allowed_merge_methods             = ["merge"]
+      allowed_merge_methods             = ["squash"]
     }
 
     required_status_checks {
