@@ -11,7 +11,7 @@ locals {
     severity             = 1
     evaluation_frequency = 5
     window_duration      = 5
-    scopes               = data.azurerm_log_analytics_workspace.log_analytics_workspace_law.id
+    scopes               = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
   }
 
   # =============================================================
