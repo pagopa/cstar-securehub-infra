@@ -339,7 +339,6 @@ locals {
     "emd-testing" = {
       settings = {
         apply                = true
-        allow_forking        = true
         allow_merge_commit   = false
         allow_update_branch  = true
         description          = "Repository per test automation su progetto Messaggi di cortesia"
