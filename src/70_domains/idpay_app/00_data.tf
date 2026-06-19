@@ -26,6 +26,15 @@ data "azurerm_log_analytics_workspace" "log_analytics_workspace" {
   resource_group_name = data.azurerm_resource_group.monitoring_rg.name
 }
 
+data "azurerm_resource_group" "law_rg" {
+  name = local.law
+}
+
+data "azurerm_log_analytics_workspace" "log_analytics_workspace_law" {
+  name                = "${local.project}-law"
+  resource_group_name = data.azurerm_resource_group.law_rg.name
+}
+
 data "azurerm_resource_group" "core_monitoring_rg" {
   name = local.core_monitoring_rg_name
 }

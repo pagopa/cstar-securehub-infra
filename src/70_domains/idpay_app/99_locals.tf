@@ -81,6 +81,7 @@ locals {
   #
   monitoring_rg_name                = "${local.project}-monitoring-rg"
   monitor_rg                        = local.monitoring_rg_name
+  law                               = "${local.project}-law"
   core_monitoring_rg_name           = "${local.project_core}-monitor-rg"
   core_app_insights_name            = "${local.project_core}-appinsights"
   monitor_alert_email_group_name    = "pari-alerts-email"
