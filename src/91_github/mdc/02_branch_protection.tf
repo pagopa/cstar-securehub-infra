@@ -12,8 +12,7 @@ resource "github_branch_default" "default" {
 
 
 # ------------------------------------------------------------------------------
-# Apply this ruleset only for repositories that have uat or main branch
-# protected.
+# Apply this ruleset only for repositories that have main branch protected.
 #
 # APPLIED ONLY WHEN TERRAFORM IS APPLIED IN PROD ENVIRONMENT.
 # ------------------------------------------------------------------------------
