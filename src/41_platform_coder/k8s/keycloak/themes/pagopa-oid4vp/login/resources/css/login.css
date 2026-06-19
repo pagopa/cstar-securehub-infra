@@ -209,7 +209,7 @@ body.pagopa-oid4vp-body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 70px 55px 50px;
+  padding: 48px 55px 22px;
   background: var(--pagopa-white);
   border: 1px solid var(--pagopa-oid4vp-card-border);
   border-radius: 8px;
@@ -232,7 +232,7 @@ body.pagopa-oid4vp-body {
 .oid4vp-page .oid4vp-card__description {
   width: 400px;
   max-width: 100%;
-  margin: 12px auto 0;
+  margin: 10px auto 0;
   color: var(--pagopa-oid4vp-text-muted);
   font-size: 16px;
   font-weight: 400;
@@ -245,7 +245,7 @@ body.pagopa-oid4vp-body {
 }
 
 .oid4vp-page .oid4vp-card__separator {
-  margin: 12px 0 0;
+  margin: 10px 0 0;
   color: var(--pagopa-oid4vp-text-muted);
   font-size: 16px;
   font-weight: 400;
@@ -254,7 +254,7 @@ body.pagopa-oid4vp-body {
 
 .oid4vp-page .oid4vp-card__body {
   width: 100%;
-  margin-top: 18px;
+  margin-top: 16px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -352,6 +352,21 @@ body.pagopa-oid4vp-body {
   line-height: 21px;
 }
 
+.oid4vp-page .oid4vp-cancel-link {
+  margin-top: 10px;
+  color: var(--pagopa-primary-blue);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 21px;
+  text-decoration: none;
+}
+
+.oid4vp-page .oid4vp-cancel-link:hover,
+.oid4vp-page .oid4vp-cancel-link:focus {
+  color: var(--pagopa-primary-blue-hover);
+  text-decoration: none;
+}
+
 .oid4vp-page .oid4vp-refresh-button {
   appearance: none;
   width: 169px;
@@ -359,7 +374,7 @@ body.pagopa-oid4vp-body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  margin-top: 28px;
+  margin-top: 16px;
   padding: 0 16px;
   border: 1px solid var(--pagopa-primary-blue);
   border-radius: 4px;
@@ -390,7 +405,7 @@ body.pagopa-oid4vp-body {
 }
 
 .oid4vp-page .oid4vp-open-wallet-button {
-  margin: 20px 0 0;
+  margin: 16px 0 0;
 }
 
 @media (max-width: 480px) {

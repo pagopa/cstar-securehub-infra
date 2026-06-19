@@ -21,11 +21,22 @@
                          alt="${msg("oid4vpQrCodeAlt")}"
                          data-wallet-url="${crossDeviceWalletUrl!''}"/>
                 </div>
-                <#--
-                <p class="oid4vp-qr-status">
+                <p id="oid4vp-qr-status"
+                   class="oid4vp-qr-status"
+                   hidden
+                   aria-hidden="true">
                     Il QR Code &egrave; scaduto
                 </p>
-                -->
+                <#assign oid4vpCancelUrl = "">
+                <#if client?? && (client.baseUrl!'')?has_content>
+                    <#assign oid4vpCancelUrl = client.baseUrl>
+                </#if>
+                <#if oid4vpCancelUrl?has_content>
+                    <a class="oid4vp-cancel-link"
+                       href="${oid4vpCancelUrl}">
+                        Annulla
+                    </a>
+                </#if>
                 <button type="button"
                         class="oid4vp-refresh-button">
                     Aggiorna QR Code
