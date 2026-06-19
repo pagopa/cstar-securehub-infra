@@ -1,57 +1,41 @@
-variable "prefix" {
-  type = string
-  validation {
-    condition = (
-      length(var.prefix) <= 6
-    )
-    error_message = "Max length is 6 chars."
-  }
-}
-
-variable "env_short" {
-  type = string
-  validation {
-    condition = (
-      length(var.env_short) <= 1
-    )
-    error_message = "Max length is 1 chars."
-  }
-}
-
 variable "env" {
   type        = string
   description = "Environment"
+
+  validation {
+    condition     = contains(["dev", "uat", "prod"], var.env)
+    error_message = "Environment must be dev, uat, or prod."
+  }
 }
 
-variable "location_short" {
+variable "cicd_kv_name" {
   type        = string
-  description = "Location short like eg: neu, weu.."
+  description = "Name of the Key Vault where the CI/CD secrets are stored."
 }
 
-variable "location" {
+variable "cicd_kv_rg" {
   type        = string
-  description = "Location extended like eg: northeurope, westeurope."
-  default     = "italynorth"
+  description = "Name of the resource group where the CI/CD Key Vault is located."
 }
 
-variable "domain" {
+variable "idpay_kv_name" {
   type        = string
-  description = "Domain used for tags."
-  default     = "idpay"
+  description = "Name of the Key Vault where the IDPay secrets are stored."
+}
+
+variable "idpay_kv_rg" {
+  type        = string
+  description = "Name of the resource group where the IDPay Key Vault is located."
 }
 
 variable "datavault_service_url" {
   type        = string
   description = "URL of the datavault service."
-  default     = "https://idpay.itn.internal.uat.cstar.pagopa.it/mcshareddatavault"
+  default     = null
 }
 
-variable "aca_env_name" {
+variable "argo_cd_server" {
   type        = string
-  description = "Name of the ACA environment used for self-hosted runners."
-}
-
-variable "aca_env_rg" {
-  type        = string
-  description = "Name of the resource group where the ACA environment used for self-hosted runners is deployed."
+  description = "Server of the Argo CD (without https)."
+  default     = null
 }

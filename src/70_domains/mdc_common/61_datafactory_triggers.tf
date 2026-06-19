@@ -9,7 +9,8 @@ locals {
   pipelines_daily_logs = [
     "mdc_message_volume_daily",
     "mdc_retrieval_daily",
-    "mdc_message_daily"
+    "mdc_message_daily",
+    "mdc_finalized_message_daily"
   ]
 
   pipelines_indexed = {

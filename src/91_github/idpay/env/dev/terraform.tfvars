@@ -1,9 +1,5 @@
-prefix         = "cstar"
-env_short      = "d"
-env            = "dev"
-location_short = "itn"
-
-aca_env_name = "cstar-d-itn-platform-github-cae"
-aca_env_rg   = "cstar-d-itn-platform-compute-rg"
-
-datavault_service_url = "https://idpay.itn.internal.dev.cstar.pagopa.it/mcshareddatavault"
+env           = "dev"
+cicd_kv_name  = "cstar-d-itn-cicd-kv"
+cicd_kv_rg    = "cstar-d-itn-core-sec-rg"
+idpay_kv_name = "cstar-d-itn-idpay-kv"
+idpay_kv_rg   = "cstar-d-itn-idpay-security-rg"

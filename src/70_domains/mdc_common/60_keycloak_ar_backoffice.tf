@@ -19,7 +19,6 @@ resource "keycloak_oidc_identity_provider" "selfcare_te_oidc" {
     "jwtAuthorizationGrantMaxAllowedAssertionExpiration" = "300"
     "jwtAuthorizationGrantAssertionReuseAllowed"         = "false"
     "jwtAuthorizationGrantLimitAccessTokenExp"           = "false"
-    "jwtAuthorizationGrantAssertionSignatureAlg"         = ""
     "allowClientIdAsAudience"                            = "false"
     "clientAuthMethod"                                   = "client_secret_post"
   }

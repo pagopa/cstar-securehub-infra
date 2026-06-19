@@ -1,0 +1,76 @@
+{
+  "name": "mdc_finalized_message_daily",
+  "properties": {
+    "activities": [
+      {
+        "name": "Delete previous day data",
+        "type": "AzureDataExplorerCommand",
+        "typeProperties": {
+          "command": ".delete table FinalizedMessageSnapshot records <| FinalizedMessageSnapshot | where window_start >= startofday(ago(1d)) and window_start < startofday(now())",
+          "commandTimeout": "00:10:00"
+        },
+        "linkedServiceName": {
+          "referenceName": "mdc-Kusto-mdc-ls",
+          "type": "LinkedServiceReference"
+        }
+      },
+      {
+        "name": "Copy finalized message volume",
+        "type": "Copy",
+        "dependsOn": [
+          {
+            "activity": "Delete previous day data",
+            "dependencyConditions": [ "Succeeded" ]
+          }
+        ],
+        "inputs": [
+          { "referenceName": "mdc_finalized_message_source", "type": "DatasetReference" }
+        ],
+        "outputs": [
+          { "referenceName": "mdc_finalized_message_snapshot", "type": "DatasetReference" }
+        ],
+        "typeProperties": {
+          "source": {
+            "type": "RestSource",
+            "requestMethod": "POST",
+            "requestBody": "{\"query\": \"let start = startofday(ago(1d)); let end = startofday(now()); AppTraces | where TimeGenerated >= start and TimeGenerated < end | where Message has '[EMD][PAYMENT][GET-RETRIEVAL]' | where Message has 'Got retrieval for tpp' | extend tpp_id = extract('tpp:([^ ,]+)', 1, Message), origin_id = extract('originId:([^ ,]+)', 1, Message) | summarize first_time = min(TimeGenerated) by origin_id, tpp_id | project window_start = tostring(bin(first_time, 1h)), tpp_id, origin_id | order by window_start asc\"}",
+            "additionalHeaders": {
+              "Content-Type": "application/json"
+            }
+          },
+          "sink": {
+            "type": "AzureDataExplorerSink",
+            "flushImmediately": true
+          },
+          "translator": {
+            "type": "TabularTranslator",
+            "mappings": [
+              { "source": { "path": "$[0]" }, "sink": { "name": "window_start", "type": "DateTime" } },
+              { "source": { "path": "$[1]" }, "sink": { "name": "tpp_id",    "type": "String" } },
+              { "source": { "path": "$[2]" }, "sink": { "name": "origin_id",    "type": "String" } }
+            ],
+            "collectionReference": "$.tables[0].rows"
+          }
+        }
+      },
+      {
+        "name": "Remove duplicate finalized messages",
+        "type": "AzureDataExplorerCommand",
+        "dependsOn": [
+          {
+            "activity": "Copy finalized message volume",
+            "dependencyConditions": [ "Succeeded" ]
+          }
+        ],
+        "typeProperties": {
+          "command": ".delete table FinalizedMessageSnapshot records <| FinalizedMessageSnapshot | join kind=inner (FinalizedMessageSnapshot | summarize max_window = max(window_start) by origin_id, tpp_id) on origin_id, tpp_id | where window_start < max_window",
+          "commandTimeout": "00:10:00"
+        },
+        "linkedServiceName": {
+          "referenceName": "mdc-Kusto-mdc-ls",
+          "type": "LinkedServiceReference"
+        }
+      }
+    ]
+  }
+}
