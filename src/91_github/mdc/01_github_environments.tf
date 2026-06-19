@@ -15,9 +15,9 @@ resource "github_actions_variable" "repository_variables" {
 resource "github_actions_secret" "repository_secrets" {
   for_each = var.env == "prod" ? local.repository_secrets_flattened : {}
 
-  repository      = each.value.repository
-  secret_name     = each.value.secret_name
-  value = each.value.value
+  repository  = each.value.repository
+  secret_name = each.value.secret_name
+  value       = each.value.value
 }
 
 # ------------------------------------------------------------------------------
@@ -29,9 +29,9 @@ resource "github_dependabot_secret" "repository_dependabot_secrets" {
     k => v if var.env == "prod"
   }
 
-  repository      = each.value.repository
-  secret_name     = each.value.secret_name
-  value = each.value.value
+  repository  = each.value.repository
+  secret_name = each.value.secret_name
+  value       = each.value.value
 }
 
 # ------------------------------------------------------------------------------

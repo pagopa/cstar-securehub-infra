@@ -5,60 +5,60 @@ locals {
   repository = {
     "emd-ar-backoffice-bff" = {
       settings = {
-        apply                       = true
-        allow_forking               = true
-        allow_merge_commit          = false
-        allow_update_branch         = true
-        description                 = "Backend for Frontend del Backoffice Area Riservata di Messaggi di Cortesia"
-        merge_commit_message        = "PR_TITLE"
-        merge_commit_title          = "MERGE_MESSAGE"
-        primary_language            = "Java"
-        visibility                  = "public"
+        apply                = true
+        allow_forking        = true
+        allow_merge_commit   = false
+        allow_update_branch  = true
+        description          = "Backend for Frontend del Backoffice Area Riservata di Messaggi di Cortesia"
+        merge_commit_message = "PR_TITLE"
+        merge_commit_title   = "MERGE_MESSAGE"
+        primary_language     = "Java"
+        visibility           = "public"
         template = {
           include_all_branches = false
-          owner = "pagopa"
-          repository = "template-payments-java-repository"
+          owner                = "pagopa"
+          repository           = "template-payments-java-repository"
         }
       }
       protected_branches = ["main"]
       repository_secrets = [
         {
           EMD_BOT_RW_TOKEN = try(module.secrets.values["emd-bot-github-rw-TOKEN"].value, null)
-          SONAR_TOKEN = try(module.secrets.values["sonar-token"].value, null)
+          SONAR_TOKEN      = try(module.secrets.values["sonar-token"].value, null)
         }
       ]
       repository_dependabot_secrets = [
         {
           EMD_BOT_RW_TOKEN = try(module.secrets.values["emd-bot-github-rw-TOKEN"].value, null)
-          MIL_BOT_TOKEN = try(module.secrets.values["mil-gh-bot-token"].value, null)
+          MIL_BOT_TOKEN    = try(module.secrets.values["mil-gh-bot-token"].value, null)
         }
       ]
       repository_variables = [
         {
-          SONARCLOUD_ORG = "pagopa"
+          SONARCLOUD_ORG         = "pagopa"
           SONARCLOUD_PROJECT_KEY = "pagopa_emd-ar-backoffice-bff"
         }
       ]
       env_secrets = {
-        envs = []
+        envs    = []
         secrets = {}
       }
       env_variables = {
-        envs = []
+        envs      = []
         variables = {}
       }
     }
     "emd-ar-backoffice-fe" = {
       settings = {
-        apply                       = true
-        allow_forking               = true
-        allow_merge_commit          = false
-        allow_update_branch         = true
-        description                 = "Frontend React Backoffice dell'Area Riservata di Messaggi di Cortesia"
-        merge_commit_message        = "PR_TITLE"
-        merge_commit_title          = "MERGE_MESSAGE"
-        primary_language            = "TypeScript"
-        visibility                  = "public"
+        apply                = true
+        allow_forking        = true
+        allow_merge_commit   = false
+        allow_update_branch  = true
+        description          = "Frontend React Backoffice dell'Area Riservata di Messaggi di Cortesia"
+        merge_commit_message = "PR_TITLE"
+        merge_commit_title   = "MERGE_MESSAGE"
+        primary_language     = "TypeScript"
+        visibility           = "public"
       }
       protected_branches = ["main"]
       repository_secrets = [
@@ -69,47 +69,47 @@ locals {
       repository_dependabot_secrets = []
       repository_variables = [
         {
-          SONARCLOUD_ORG = "pagopa"
+          SONARCLOUD_ORG         = "pagopa"
           SONARCLOUD_PROJECT_KEY = "pagopa_emd-ar-backoffice-fe"
         }
       ]
       env_secrets = {
-        envs = []
+        envs    = []
         secrets = {}
       }
       env_variables = {
-        envs = []
+        envs      = []
         variables = {}
       }
     }
     "emd-message-core" = {
       settings = {
-        apply                       = true
-        allow_forking               = true
-        allow_merge_commit          = false
-        description                 = "Service which acts as dispatcher for messages to end-users through 3rd-party application"
-        merge_commit_message        = "PR_TITLE"
-        merge_commit_title          = "MERGE_MESSAGE"
-        primary_language            = "Java"
-        visibility                  = "public"
+        apply                = true
+        allow_forking        = true
+        allow_merge_commit   = false
+        description          = "Service which acts as dispatcher for messages to end-users through 3rd-party application"
+        merge_commit_message = "PR_TITLE"
+        merge_commit_title   = "MERGE_MESSAGE"
+        primary_language     = "Java"
+        visibility           = "public"
       }
       protected_branches = ["main"]
       repository_secrets = [
         {
           EMD_BOT_RW_TOKEN = try(module.secrets.values["emd-bot-github-rw-TOKEN"].value, null)
-          SONAR_TOKEN = try(module.secrets.values["sonar-token"].value, null)
+          SONAR_TOKEN      = try(module.secrets.values["sonar-token"].value, null)
         }
       ]
       repository_dependabot_secrets = [
         {
           EMD_BOT_RW_TOKEN = try(module.secrets.values["emd-bot-github-rw-TOKEN"].value, null)
-          MIL_BOT_TOKEN = try(module.secrets.values["mil-gh-bot-token"].value, null)
+          MIL_BOT_TOKEN    = try(module.secrets.values["mil-gh-bot-token"].value, null)
         }
       ]
       repository_variables = [
         {
-          SONARCLOUD_ORG = "pagopa"
-          SONARCLOUD_PROJECT_KEY = "pagopa_mil-message-dispatcher"
+          SONARCLOUD_ORG          = "pagopa"
+          SONARCLOUD_PROJECT_KEY  = "pagopa_mil-message-dispatcher"
           SONARCLOUD_PROJECT_NAME = "mil-message-dispatcher"
         }
       ]
@@ -126,36 +126,36 @@ locals {
     }
     "emd-payment-core" = {
       settings = {
-        apply                       = true
-        allow_forking               = true
-        allow_merge_commit          = false
-        allow_update_branch         = true
-        merge_commit_message        = "PR_TITLE"
-        merge_commit_title          = "MERGE_MESSAGE"
-        primary_language            = "Java"
-        visibility                  = "public"
+        apply                = true
+        allow_forking        = true
+        allow_merge_commit   = false
+        allow_update_branch  = true
+        merge_commit_message = "PR_TITLE"
+        merge_commit_title   = "MERGE_MESSAGE"
+        primary_language     = "Java"
+        visibility           = "public"
         template = {
           include_all_branches = false
-          owner = "pagopa"
-          repository = "template-payments-java-repository"
+          owner                = "pagopa"
+          repository           = "template-payments-java-repository"
         }
       }
       protected_branches = ["main"]
       repository_secrets = [
         {
           EMD_BOT_RW_TOKEN = try(module.secrets.values["emd-bot-github-rw-TOKEN"].value, null)
-          SONAR_TOKEN = try(module.secrets.values["sonar-token"].value, null)
+          SONAR_TOKEN      = try(module.secrets.values["sonar-token"].value, null)
         }
       ]
       repository_dependabot_secrets = [
         {
           EMD_BOT_RW_TOKEN = try(module.secrets.values["emd-bot-github-rw-TOKEN"].value, null)
-          MIL_BOT_TOKEN = try(module.secrets.values["mil-gh-bot-token"].value, null)
+          MIL_BOT_TOKEN    = try(module.secrets.values["mil-gh-bot-token"].value, null)
         }
       ]
       repository_variables = [
         {
-          SONARCLOUD_ORG = "pagopa"
+          SONARCLOUD_ORG         = "pagopa"
           SONARCLOUD_PROJECT_KEY = "pagopa_emd-payment-core"
         }
       ]
@@ -172,74 +172,74 @@ locals {
     }
     "emd-notifier-sender" = {
       settings = {
-        apply                       = true
-        allow_forking               = true
-        allow_merge_commit          = false
-        allow_update_branch         = true
-        description                 = "Service to manage messages arrived"
-        merge_commit_message        = "PR_TITLE"
-        merge_commit_title          = "MERGE_MESSAGE"
-        primary_language            = "Java"
-        visibility                  = "public"
+        apply                = true
+        allow_forking        = true
+        allow_merge_commit   = false
+        allow_update_branch  = true
+        description          = "Service to manage messages arrived"
+        merge_commit_message = "PR_TITLE"
+        merge_commit_title   = "MERGE_MESSAGE"
+        primary_language     = "Java"
+        visibility           = "public"
       }
       protected_branches = ["main"]
       repository_secrets = [
         {
           EMD_BOT_RW_TOKEN = try(module.secrets.values["emd-bot-github-rw-TOKEN"].value, null)
-          SONAR_TOKEN = try(module.secrets.values["sonar-token"].value, null)
+          SONAR_TOKEN      = try(module.secrets.values["sonar-token"].value, null)
         }
       ]
       repository_dependabot_secrets = [
         {
           EMD_BOT_RW_TOKEN = try(module.secrets.values["emd-bot-github-rw-TOKEN"].value, null)
-          MIL_BOT_TOKEN = try(module.secrets.values["mil-gh-bot-token"].value, null)
+          MIL_BOT_TOKEN    = try(module.secrets.values["mil-gh-bot-token"].value, null)
         }
       ]
       repository_variables = [
         {
-          SONARCLOUD_ORG = "pagopa"
+          SONARCLOUD_ORG         = "pagopa"
           SONARCLOUD_PROJECT_KEY = "pagopa_emd-notifier-sender"
         }
       ]
       env_secrets = {
-        envs = ["dev","github-pages"]
+        envs = ["dev", "github-pages"]
         secrets = {
         }
       }
       env_variables = {
-        envs = ["dev","github-pages"]
+        envs = ["dev", "github-pages"]
         variables = {
         }
       }
     }
     "emd-citizen" = {
       settings = {
-        apply                       = true
-        allow_forking               = true
-        allow_merge_commit          = false
-        allow_update_branch         = true
-        description                 = "Messaggi di Cortesia - Gestione dei Cittadini"
-        merge_commit_message        = "PR_TITLE"
-        merge_commit_title          = "MERGE_MESSAGE"
-        primary_language            = "Java"
-        visibility                  = "public"
+        apply                = true
+        allow_forking        = true
+        allow_merge_commit   = false
+        allow_update_branch  = true
+        description          = "Messaggi di Cortesia - Gestione dei Cittadini"
+        merge_commit_message = "PR_TITLE"
+        merge_commit_title   = "MERGE_MESSAGE"
+        primary_language     = "Java"
+        visibility           = "public"
       }
       protected_branches = ["main"]
       repository_secrets = [
         {
           EMD_BOT_RW_TOKEN = try(module.secrets.values["emd-bot-github-rw-TOKEN"].value, null)
-          SONAR_TOKEN = try(module.secrets.values["sonar-token"].value, null)
+          SONAR_TOKEN      = try(module.secrets.values["sonar-token"].value, null)
         }
       ]
       repository_dependabot_secrets = [
         {
           EMD_BOT_RW_TOKEN = try(module.secrets.values["emd-bot-github-rw-TOKEN"].value, null)
-          MIL_BOT_TOKEN = try(module.secrets.values["mil-gh-bot-token"].value, null)
+          MIL_BOT_TOKEN    = try(module.secrets.values["mil-gh-bot-token"].value, null)
         }
       ]
       repository_variables = [
         {
-          SONARCLOUD_ORG = "pagopa"
+          SONARCLOUD_ORG         = "pagopa"
           SONARCLOUD_PROJECT_KEY = "pagopa_emd-citizen"
         }
       ]
@@ -256,31 +256,31 @@ locals {
     }
     "emd-tpp" = {
       settings = {
-        apply                       = true
-        allow_forking               = true
-        allow_merge_commit          = false
-        description                 = "Messaggi di Cortesia - Gestione delle Terze Parti"
-        merge_commit_message        = "PR_TITLE"
-        merge_commit_title          = "MERGE_MESSAGE"
-        primary_language            = "Java"
-        visibility                  = "public"
+        apply                = true
+        allow_forking        = true
+        allow_merge_commit   = false
+        description          = "Messaggi di Cortesia - Gestione delle Terze Parti"
+        merge_commit_message = "PR_TITLE"
+        merge_commit_title   = "MERGE_MESSAGE"
+        primary_language     = "Java"
+        visibility           = "public"
       }
       protected_branches = ["main"]
       repository_secrets = [
         {
           EMD_BOT_RW_TOKEN = try(module.secrets.values["emd-bot-github-rw-TOKEN"].value, null)
-          SONAR_TOKEN = try(module.secrets.values["sonar-token"].value, null)
+          SONAR_TOKEN      = try(module.secrets.values["sonar-token"].value, null)
         }
       ]
       repository_dependabot_secrets = [
         {
           EMD_BOT_RW_TOKEN = try(module.secrets.values["emd-bot-github-rw-TOKEN"].value, null)
-          MIL_BOT_TOKEN = try(module.secrets.values["mil-gh-bot-token"].value, null)
+          MIL_BOT_TOKEN    = try(module.secrets.values["mil-gh-bot-token"].value, null)
         }
       ]
       repository_variables = [
         {
-          SONARCLOUD_ORG = "pagopa"
+          SONARCLOUD_ORG         = "pagopa"
           SONARCLOUD_PROJECT_KEY = "pagopa_emd-tpp"
         }
       ]
@@ -297,31 +297,31 @@ locals {
     }
     "emd-tpp" = {
       settings = {
-        apply                       = true
-        allow_forking               = true
-        allow_merge_commit          = false
-        description                 = "Messaggi di Cortesia - Gestione delle Terze Parti"
-        merge_commit_message        = "PR_TITLE"
-        merge_commit_title          = "MERGE_MESSAGE"
-        primary_language            = "Java"
-        visibility                  = "public"
+        apply                = true
+        allow_forking        = true
+        allow_merge_commit   = false
+        description          = "Messaggi di Cortesia - Gestione delle Terze Parti"
+        merge_commit_message = "PR_TITLE"
+        merge_commit_title   = "MERGE_MESSAGE"
+        primary_language     = "Java"
+        visibility           = "public"
       }
       protected_branches = ["main"]
       repository_secrets = [
         {
           EMD_BOT_RW_TOKEN = try(module.secrets.values["emd-bot-github-rw-TOKEN"].value, null)
-          SONAR_TOKEN = try(module.secrets.values["sonar-token"].value, null)
+          SONAR_TOKEN      = try(module.secrets.values["sonar-token"].value, null)
         }
       ]
       repository_dependabot_secrets = [
         {
           EMD_BOT_RW_TOKEN = try(module.secrets.values["emd-bot-github-rw-TOKEN"].value, null)
-          MIL_BOT_TOKEN = try(module.secrets.values["mil-gh-bot-token"].value, null)
+          MIL_BOT_TOKEN    = try(module.secrets.values["mil-gh-bot-token"].value, null)
         }
       ]
       repository_variables = [
         {
-          SONARCLOUD_ORG = "pagopa"
+          SONARCLOUD_ORG         = "pagopa"
           SONARCLOUD_PROJECT_KEY = "pagopa_emd-tpp"
         }
       ]
@@ -338,46 +338,46 @@ locals {
     }
     "emd-testing" = {
       settings = {
-        apply                       = true
-        allow_forking               = true
-        allow_merge_commit          = false
-        allow_update_branch         = true
-        description                 = "Repository per test automation su progetto Messaggi di cortesia"
-        merge_commit_message        = "PR_TITLE"
-        merge_commit_title          = "MERGE_MESSAGE"
-        primary_language            = "Python"
-        visibility                  = "internal"
+        apply                = true
+        allow_forking        = true
+        allow_merge_commit   = false
+        allow_update_branch  = true
+        description          = "Repository per test automation su progetto Messaggi di cortesia"
+        merge_commit_message = "PR_TITLE"
+        merge_commit_title   = "MERGE_MESSAGE"
+        primary_language     = "Python"
+        visibility           = "internal"
       }
-      protected_branches = ["main"]
-      repository_secrets = []
-      repository_variables = []
+      protected_branches            = ["main"]
+      repository_secrets            = []
+      repository_variables          = []
       repository_dependabot_secrets = []
       env_secrets = {
         envs = ["uat"]
         secrets = {
-          TPP_KEYCLOAK_CLIENT_ID = try(module.secrets.values["emd-tpp-test-client-id"].value, null)
-          TPP_KEYCLOAK_CLIENT_SECRET = try(module.secrets.values["emd-tpp-test-client-secret"].value, null)
-          SEND_KEYCLOAK_CLIENT_ID = try(module.secrets.values["send-client-id"].value, null)
+          TPP_KEYCLOAK_CLIENT_ID      = try(module.secrets.values["emd-tpp-test-client-id"].value, null)
+          TPP_KEYCLOAK_CLIENT_SECRET  = try(module.secrets.values["emd-tpp-test-client-secret"].value, null)
+          SEND_KEYCLOAK_CLIENT_ID     = try(module.secrets.values["send-client-id"].value, null)
           SEND_KEYCLOAK_CLIENT_SECRET = try(module.secrets.values["send-client-secret"].value, null)
-          KEYCLOAK_URL = try(module.secrets.values["keycloak-url"].value, null)
+          KEYCLOAK_URL                = try(module.secrets.values["keycloak-url"].value, null)
         }
       }
       env_variables = {
-        envs = []
+        envs      = []
         variables = {}
       }
     }
     "emd-docs" = {
       settings = {
-        apply                       = true
-        allow_merge_commit          = false
-        allow_update_branch         = true
-        description                 = "Messaggi di Cortesia - Documentazione"
-        homepage_url                = "https://urban-carnival-6lm5v4m.pages.github.io/"
-        merge_commit_message        = "PR_TITLE"
-        merge_commit_title          = "MERGE_MESSAGE"
-        primary_language            = "JavaScript"
-        visibility                  = "private"
+        apply                = true
+        allow_merge_commit   = false
+        allow_update_branch  = true
+        description          = "Messaggi di Cortesia - Documentazione"
+        homepage_url         = "https://urban-carnival-6lm5v4m.pages.github.io/"
+        merge_commit_message = "PR_TITLE"
+        merge_commit_title   = "MERGE_MESSAGE"
+        primary_language     = "JavaScript"
+        visibility           = "private"
       }
       protected_branches = ["main"]
       repository_secrets = [
@@ -385,7 +385,7 @@ locals {
           SONAR_TOKEN = try(module.secrets.values["sonar-token"].value, null)
         }
       ]
-      repository_variables = []
+      repository_variables          = []
       repository_dependabot_secrets = []
       env_secrets = {
         envs = ["github-pages"]

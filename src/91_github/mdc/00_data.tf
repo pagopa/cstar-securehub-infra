@@ -9,15 +9,15 @@ module "secrets" {
   resource_group = var.mdc_kv_rg
 
   secrets = compact([
-      var.env == "prod" ? "argocd-admin-username" : null,
-      var.env == "prod" ? "argocd-admin-password" : null,
-      var.env == "prod" ? "mil-gh-bot-token" : null,
-      var.env == "prod" ? "emd-bot-github-rw-TOKEN" : null,
-      var.env == "prod" ? "sonar-token" : null,
-      var.env == "uat"  ? "emd-tpp-test-client-id" : null,
-      var.env == "uat"  ? "emd-tpp-test-client-secret" : null,
-      var.env == "uat"  ? "send-client-id" : null,
-      var.env == "uat"  ? "send-client-secret" : null,
-      var.env == "uat"  ? "keycloak-url" : null
+    var.env == "prod" ? "argocd-admin-username" : null,
+    var.env == "prod" ? "argocd-admin-password" : null,
+    var.env == "prod" ? "mil-gh-bot-token" : null,
+    var.env == "prod" ? "emd-bot-github-rw-TOKEN" : null,
+    var.env == "prod" ? "sonar-token" : null,
+    var.env == "uat" ? "emd-tpp-test-client-id" : null,
+    var.env == "uat" ? "emd-tpp-test-client-secret" : null,
+    var.env == "uat" ? "send-client-id" : null,
+    var.env == "uat" ? "send-client-secret" : null,
+    var.env == "uat" ? "keycloak-url" : null
   ])
 }
