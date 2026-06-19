@@ -53,6 +53,14 @@
         "style": "link"
       },
       {
+        "id": "51582522-aadd-4ac5-9c9e-7836ee0b7124",
+        "cellValue": "tab",
+        "linkTarget": "parameter",
+        "linkLabel": "Autenticazione",
+        "subTarget": "autenticazione",
+        "style": "link"
+      },
+      {
         "id": "93f537b3-c65d-4b19-b3c5-27b1cfda9f1b",
         "cellValue": "tab",
         "linkTarget": "parameter",
@@ -66,14 +74,6 @@
         "linkTarget": "parameter",
         "linkLabel": "Cancellazioni RTP (API)",
         "subTarget": "cancellazioneAPI",
-        "style": "link"
-      },
-      {
-        "id": "51582522-aadd-4ac5-9c9e-7836ee0b7124",
-        "cellValue": "tab",
-        "linkTarget": "parameter",
-        "linkLabel": "Autenticazione",
-        "subTarget": "autenticazione",
         "style": "link"
       },
       {
