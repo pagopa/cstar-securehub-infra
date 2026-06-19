@@ -21,10 +21,6 @@ resource "azurerm_monitor_scheduled_query_rules_alert_v2" "alerts" {
     threshold               = each.value.criteria.threshold
   }
 
-  identity {
-    type = "SystemAssigned"
-  }
-
   action {
     action_groups = lookup(each.value, "action_groups", local.alert_action_group)
   }
