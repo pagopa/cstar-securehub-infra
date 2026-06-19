@@ -346,7 +346,7 @@ locals {
         merge_commit_message = "PR_TITLE"
         merge_commit_title   = "MERGE_MESSAGE"
         primary_language     = "Python"
-        visibility           = "internal"
+        visibility           = "private"
       }
       protected_branches            = ["main"]
       repository_secrets            = []
