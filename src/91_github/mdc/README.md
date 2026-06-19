@@ -12,12 +12,14 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.76.0 |
 | <a name="provider_github"></a> [github](#provider\_github) | 6.12.1 |
 
 ## Modules
 
-No modules.
+| Name | Source | Version |
+|------|--------|---------|
+| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | ac1ff495df50f4c7a1f28ab6e09acf3322a4ebc9 |
+| <a name="module_secrets"></a> [secrets](#module\_secrets) | ./.terraform/modules/__v4__/key_vault_secrets_query | n/a |
 
 ## Resources
 
@@ -28,16 +30,10 @@ No modules.
 | [github_actions_secret.repository_secrets](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/actions_secret) | resource |
 | [github_actions_variable.repository_variables](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/actions_variable) | resource |
 | [github_branch_default.default](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/branch_default) | resource |
+| [github_dependabot_secret.repository_dependabot_secrets](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/dependabot_secret) | resource |
 | [github_repository.repository_settings](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository) | resource |
 | [github_repository_environment.env](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository_environment) | resource |
-| [github_repository_ruleset.develop](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository_ruleset) | resource |
-| [github_repository_ruleset.uat_and_main](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository_ruleset) | resource |
-| [azurerm_key_vault.cicd](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault) | data source |
-| [azurerm_key_vault.mdc](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault) | data source |
-| [azurerm_key_vault_secret.argo_cd_password](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
-| [azurerm_key_vault_secret.argo_cd_username](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
-| [azurerm_key_vault_secret.gh_token](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
-| [azurerm_key_vault_secret.sonar_token](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
+| [github_repository_ruleset.main](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository_ruleset) | resource |
 | [github_team.admin](https://registry.terraform.io/providers/integrations/github/latest/docs/data-sources/team) | data source |
 
 ## Inputs
@@ -45,9 +41,6 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_argo_cd_server"></a> [argo\_cd\_server](#input\_argo\_cd\_server) | Server of the Argo CD (without https). | `string` | `null` | no |
-| <a name="input_cicd_kv_name"></a> [cicd\_kv\_name](#input\_cicd\_kv\_name) | Name of the Key Vault where the CI/CD secrets are stored. | `string` | n/a | yes |
-| <a name="input_cicd_kv_rg"></a> [cicd\_kv\_rg](#input\_cicd\_kv\_rg) | Name of the resource group where the CI/CD Key Vault is located. | `string` | n/a | yes |
-| <a name="input_datavault_service_url"></a> [datavault\_service\_url](#input\_datavault\_service\_url) | URL of the datavault service. | `string` | `null` | no |
 | <a name="input_env"></a> [env](#input\_env) | Environment | `string` | n/a | yes |
 | <a name="input_mdc_kv_name"></a> [mdc\_kv\_name](#input\_mdc\_kv\_name) | Name of the Key Vault where the mdc secrets are stored. | `string` | n/a | yes |
 | <a name="input_mdc_kv_rg"></a> [mdc\_kv\_rg](#input\_mdc\_kv\_rg) | Name of the resource group where the mdc Key Vault is located. | `string` | n/a | yes |
