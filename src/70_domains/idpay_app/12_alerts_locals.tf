@@ -1416,8 +1416,8 @@ locals {
       name                 = "reward-batch-transaction-mismatch-alert"
       description          = "Reward batch transaction: count mismatch detected"
       severity             = 4
-      evaluation_frequency = 1440
-      window_duration      = 1440
+      evaluation_frequency = 5
+      window_duration      = 5
 
 
       query = <<-QUERY
