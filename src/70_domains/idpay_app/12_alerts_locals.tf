@@ -1424,7 +1424,7 @@ locals {
 
       query = <<-QUERY
           let TrxCountByBatch =
-            database("idpay").transaction
+            database("idpay")["transaction"]
           | where isnotempty(rewardBatchId)
           | summarize trx_count = count() by rewardBatchId;
             database("idpay").rewards_batch
