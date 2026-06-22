@@ -1419,8 +1419,6 @@ locals {
       evaluation_frequency = 1440
       window_duration      = 1440
 
-      scopes = data.azurerm_kusto_database.idpay.id
-
 
       query = <<-QUERY
           let TrxCountByBatch =
@@ -1449,9 +1447,13 @@ locals {
     local.alerts_ese,
     local.alerts_upbe,
     local.alerts_keycloak,
-    local.alerts_cronJob,
-    local.alerts_adx
+    local.alerts_cronJob
   ]
+
+  final_alerts_adx = {
+    for key, alert in local.alerts_adx :
+    key => merge(local.base_alert_config, alert)
+  }
 
   # ✅ Final alerts map ready for consumption: flattens every group, applies the base config and exposes a single map consumed by azurerm_monitor_scheduled_query_rules_alert
   final_alerts = merge([
