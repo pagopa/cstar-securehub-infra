@@ -22,6 +22,9 @@ redis_idh_tier = "standard_C1_v6"
 law_sku               = "PerGB2018"
 law_retention_in_days = 30
 law_daily_quota_gb    = 100
+# Tracing applicativo (AppTraces/AppExceptions/AppRequests/AppDependencies)
+# esteso a 180 gg: 90 gg interactive (gratis per tabelle App*) + 90 gg in Archive
+app_insights_trace_total_retention_in_days = 180
 
 aks_nodepool = {
   vm_sku_name       = "Standard_D8ads_v5_active"

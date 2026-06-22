@@ -23,6 +23,8 @@ redis_idh_tier = "basic"
 law_sku               = "PerGB2018"
 law_retention_in_days = 30
 law_daily_quota_gb    = 15
+# In uat non serve il debug storico esteso: solo i 90 gg interactive gratuiti, nessun Archive a pagamento.
+app_insights_trace_total_retention_in_days = 90
 
 aks_nodepool = {
   vm_sku_name       = "Standard_D4ads_v5_active"

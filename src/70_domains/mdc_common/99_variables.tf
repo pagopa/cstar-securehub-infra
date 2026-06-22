@@ -93,6 +93,26 @@ variable "law_daily_quota_gb" {
   default     = -1
 }
 
+variable "app_insights_trace_interactive_retention_in_days" {
+  type        = number
+  description = "Interactive retention (in days) for the high-value Application Insights tracing tables (AppTraces, AppExceptions, AppRequests, AppDependencies). Defaults to 90, which is FREE for Application Insights tables; the days beyond this are kept in the cheaper Archive tier up to app_insights_trace_total_retention_in_days."
+  default     = 90
+  validation {
+    condition     = var.app_insights_trace_interactive_retention_in_days >= 30 && var.app_insights_trace_interactive_retention_in_days <= 730
+    error_message = "Interactive retention must be between 30 and 730 days (Azure Monitor limit)."
+  }
+}
+
+variable "app_insights_trace_total_retention_in_days" {
+  type        = number
+  description = "Total retention (interactive + archive) in days applied ONLY to the high-value Application Insights tracing tables (AppTraces, AppExceptions, AppRequests, AppDependencies). The interactive tier stays at app_insights_trace_interactive_retention_in_days (90 gg, free); the remaining days are kept in the cheaper Archive tier."
+  default     = 180
+  validation {
+    condition     = var.app_insights_trace_total_retention_in_days >= 30 && var.app_insights_trace_total_retention_in_days <= 2556
+    error_message = "Total retention must be between 30 and 2556 days (Azure Monitor limit)."
+  }
+}
+
 variable "aks_nodepool" {
   type = object({
     vm_sku_name       = string

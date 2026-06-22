@@ -44,6 +44,27 @@ resource "azurerm_application_insights" "application_insights" {
 }
 
 
+### 🔍 Application Insights tracing — retention estesa (cost-optimized)
+locals {
+  app_insights_long_term_tables = [
+    "AppTraces",
+    "AppExceptions",
+    "AppRequests",
+    "AppDependencies",
+  ]
+}
+
+resource "azurerm_log_analytics_workspace_table" "app_insights_long_term" {
+  for_each = toset(local.app_insights_long_term_tables)
+
+  workspace_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  name         = each.value
+
+  retention_in_days       = var.app_insights_trace_interactive_retention_in_days
+  total_retention_in_days = var.app_insights_trace_total_retention_in_days
+}
+
+
 ### 🔍 Logger APIM
 resource "azurerm_api_management_logger" "apim_logger" {
   name                = "${local.project}-apim-logger"
