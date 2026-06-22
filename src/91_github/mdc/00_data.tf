@@ -18,6 +18,6 @@ module "secrets" {
     var.env == "uat" ? "emd-tpp-test-client-secret" : null,
     var.env == "uat" ? "send-client-id" : null,
     var.env == "uat" ? "send-client-secret" : null,
-    var.env == "uat" ? "keycloak-url" : null
+    var.env == "uat" ? "keycloak-external-mdc-url" : null
   ])
 }
