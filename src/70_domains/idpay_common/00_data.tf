@@ -80,6 +80,11 @@ data "azurerm_private_dns_zone" "service_bus" {
   resource_group_name = local.vnet_legacy_core_rg
 }
 
+data "azurerm_private_dns_zone" "postgres_flexible_privatelink" {
+  name                = "privatelink.postgres.database.azure.com"
+  resource_group_name = local.vnet_legacy_core_rg
+}
+
 #
 # KeyVault
 #
