@@ -62,6 +62,14 @@ locals {
   monitor_rg = "${local.project}-monitoring-rg"
   network_rg = "${local.project}-network-rg"
 
+  # Audit Storage Account
+  audit_storage_account_name = substr("${replace(local.project, "-", "")}auditlogs", 0, 24)
+  app_insights_long_term_tables = [
+    "AppTraces",
+    "AppExceptions",
+    "AppRequests",
+    "AppDependencies",
+  ]
 
   ad_group_rbac = flatten([
     {

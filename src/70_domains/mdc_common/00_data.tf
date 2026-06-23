@@ -121,6 +121,11 @@ data "azurerm_private_dns_zone" "privatelink_redis" {
   resource_group_name = local.vnet_legacy_resource_group_name
 }
 
+data "azurerm_private_dns_zone" "blob_storage" {
+  name                = "privatelink.blob.core.windows.net"
+  resource_group_name = local.vnet_legacy_resource_group_name
+}
+
 # 🐳 Kubernetes Cluster
 data "azurerm_kubernetes_cluster" "aks" {
   name                = local.aks_name

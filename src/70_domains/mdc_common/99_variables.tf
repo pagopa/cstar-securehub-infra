@@ -93,23 +93,30 @@ variable "law_daily_quota_gb" {
   default     = -1
 }
 
-variable "app_insights_trace_interactive_retention_in_days" {
+# 🗄️ Compliance / Audit — archiviazione log su Blob Storage
+variable "audit_export_enabled" {
+  type        = bool
+  description = "If true, exports the tracing tables to a dedicated Cool Blob Storage account for long-term audit retention. Enable in prod; can be disabled in dev/uat to avoid any cost."
+  default     = false
+}
+
+variable "audit_logs_retention_days" {
   type        = number
-  description = "Interactive retention (in days) for the high-value Application Insights tracing tables (AppTraces, AppExceptions, AppRequests, AppDependencies). Defaults to 90, which is FREE for Application Insights tables; the days beyond this are kept in the cheaper Archive tier up to app_insights_trace_total_retention_in_days."
-  default     = 90
+  description = "Number of days the exported audit logs are kept in Blob Storage before being permanently deleted by the lifecycle policy (compliance window, e.g. 180 days = 6 months)."
+  default     = 180
   validation {
-    condition     = var.app_insights_trace_interactive_retention_in_days >= 30 && var.app_insights_trace_interactive_retention_in_days <= 730
-    error_message = "Interactive retention must be between 30 and 730 days (Azure Monitor limit)."
+    condition     = var.audit_logs_retention_days >= 1 && var.audit_logs_retention_days <= 3650
+    error_message = "Audit retention must be between 1 and 3650 days."
   }
 }
 
-variable "app_insights_trace_total_retention_in_days" {
-  type        = number
-  description = "Total retention (interactive + archive) in days applied ONLY to the high-value Application Insights tracing tables (AppTraces, AppExceptions, AppRequests, AppDependencies). The interactive tier stays at app_insights_trace_interactive_retention_in_days (90 gg, free); the remaining days are kept in the cheaper Archive tier."
-  default     = 180
+variable "audit_storage_account_replication_type" {
+  type        = string
+  description = "Replication type for the audit Storage Account. Use LRS for the cheapest option (dev/uat); ZRS/GRS for production durability/compliance."
+  default     = "LRS"
   validation {
-    condition     = var.app_insights_trace_total_retention_in_days >= 30 && var.app_insights_trace_total_retention_in_days <= 2556
-    error_message = "Total retention must be between 30 and 2556 days (Azure Monitor limit)."
+    condition     = contains(["LRS", "GRS", "ZRS", "RAGRS", "GZRS"], var.audit_storage_account_replication_type)
+    error_message = "Must be one of: LRS, GRS, ZRS, RAGRS, GZRS."
   }
 }
 
@@ -120,7 +127,7 @@ variable "aks_nodepool" {
     node_count_min    = number
     node_count_max    = number
   })
-  description = "Paramters for node pool"
+  description = "Parameters for node pool"
 }
 
 variable "cosmos_mongodb_params_weu" {

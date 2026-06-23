@@ -20,8 +20,7 @@ backoffice_cdn_storage_replication_type = "LRS"
 law_sku               = "PerGB2018"
 law_retention_in_days = 30
 law_daily_quota_gb    = 5
-# In dev non serve il debug storico esteso: solo i 90 gg interactive gratuiti, nessun Archive a pagamento.
-app_insights_trace_total_retention_in_days = 90
+audit_export_enabled = false
 
 # Redis
 redis_idh_tier = "basic"
