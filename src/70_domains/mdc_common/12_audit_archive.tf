@@ -109,4 +109,3 @@ resource "azurerm_storage_management_policy" "audit" {
     }
   }
 }
-

@@ -19,9 +19,9 @@ backoffice_cdn_storage_replication_type = "ZRS"
 redis_idh_tier = "standard_C1_v6"
 
 #Monitoring
-law_sku               = "PerGB2018"
-law_retention_in_days = 30
-law_daily_quota_gb    = 100
+law_sku                                = "PerGB2018"
+law_retention_in_days                  = 30
+law_daily_quota_gb                     = 100
 audit_export_enabled                   = true
 audit_logs_retention_days              = 180
 audit_storage_account_replication_type = "ZRS"
