@@ -46,7 +46,7 @@ resource "grafana_contact_point" "idpay_app_alerts" {
   }
 
   slack {
-    url   = var.idpay_grafana_alert_slack_webhook_url
+    url   = data.azurerm_key_vault_secret.slack_webhook_email[0].value
     title = "{{ template \"default.title\" . }}"
     text  = "{{ template \"default.message\" . }}"
   }
@@ -58,22 +58,22 @@ resource "grafana_rule_group" "idpay_app_alerts" {
 
   name             = local.grafana_alert_rule_group_name
   folder_uid       = grafana_folder.idpay_app_alerts[0].uid
-  interval_seconds = 300
+  interval_seconds = 60
 
   rule {
-    name           = local.grafana_alert_rule_name
-    for            = "5m"
-    condition      = "B"
+    name           = "reward-batch-transaction-mismatch-alert"
+    for            = "2m"
+    condition      = "C"
     no_data_state  = "OK"
     exec_err_state = "Error"
     annotations = {
-      description = "Replace expression A with the real datasource query before enabling this placeholder alert."
-      summary     = "IDPay app placeholder Grafana alert"
+      description = "mismatch alert is firing"
+      summary     = "IDPay ADX Grafana alert"
     }
     labels = {
       domain   = var.domain
       service  = "idpay-app"
-      severity = "warning"
+      severity = "critical"
       source   = "terraform"
     }
 
@@ -81,67 +81,45 @@ resource "grafana_rule_group" "idpay_app_alerts" {
       contact_point = grafana_contact_point.idpay_app_alerts[0].name
     }
 
-    # Replace this expression stage with the real datasource query when the alert is finalized.
     data {
       ref_id     = "A"
-      query_type = ""
+      query_type = "KQL"
       relative_time_range {
-        from = 0
+        from = 600
         to   = 0
       }
-      datasource_uid = "-100"
+      datasource_uid = "af2bx3h1osn40b"
       model = jsonencode({
-        datasource = {
-          type = "__expr__"
-          uid  = "-100"
-        }
-        expression    = local.grafana_alert_placeholder_expression
-        hide          = false
-        intervalMs    = 1000
-        maxDataPoints = 43200
-        refId         = "A"
-        type          = "math"
+        "database"    = "idpay",
+        "datasource"  = { "type" = "grafana-azure-data-explorer-datasource", "uid" = "af2bx3h1osn40b" },
+        "query"       = "let TrxCountByBatch = transaction | where isnotempty(rewardBatchId) | summarize trx_count = count() by rewardBatchId; rewards_batch | extend batch_id = tostring(_id), expected_count = tolong(numberOfTransactions) | join kind=leftouter TrxCountByBatch on $left.batch_id == $right.rewardBatchId | extend trx_count = coalesce(trx_count, 0) | where expected_count != trx_count | count",
+        "querySource" = "raw",
+        "queryType"   = "KQL",
+        "refId"       = "A"
       })
     }
 
     data {
-      ref_id     = "B"
-      query_type = ""
-      relative_time_range {
-        from = 0
-        to   = 0
-      }
-      datasource_uid = "-100"
+      ref_id         = "B"
+      datasource_uid = "__expr__"
       model = jsonencode({
-        conditions = [
-          {
-            evaluator = {
-              params = [1]
-              type   = "gt"
-            }
-            operator = {
-              type = "and"
-            }
-            query = {
-              params = ["A"]
-            }
-            reducer = {
-              params = []
-              type   = "last"
-            }
-            type = "query"
-          }
-        ]
-        datasource = {
-          type = "__expr__"
-          uid  = "-100"
-        }
-        hide          = false
-        intervalMs    = 1000
-        maxDataPoints = 43200
-        refId         = "B"
-        type          = "classic_conditions"
+        "conditions" = [{ "evaluator" = { "params" = [], "type" = "gt" }, "operator" = { "type" = "and" }, "query" = { "params" = [] }, "reducer" = { "params" = [], "type" = "last" }, "type" = "query" }],
+        "expression" = "A",
+        "refId"      = "B",
+        "type"       = "reduce"
       })
     }
+
+    data {
+      ref_id         = "C"
+      datasource_uid = "__expr__"
+      model = jsonencode({
+        "conditions" = [{ "evaluator" = { "params" = [10], "type" = "gt" }, "operator" = { "type" = "and" }, "query" = { "params" = [] }, "reducer" = { "params" = [], "type" = "last" }, "type" = "query" }],
+        "expression" = "B",
+        "refId"      = "C",
+        "type"       = "threshold"
+      })
+    }
+
   }
 }
