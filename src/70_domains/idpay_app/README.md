@@ -3,13 +3,14 @@
 ## Requirements
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >=1.10.0 |
 | <a name="requirement_argocd"></a> [argocd](#requirement\_argocd) | ~> 7.0 |
 | <a name="requirement_azapi"></a> [azapi](#requirement\_azapi) | ~> 1.11.0 |
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | ~> 3 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 4.25 |
 | <a name="requirement_external"></a> [external](#requirement\_external) | ~> 2.3 |
+| <a name="requirement_grafana"></a> [grafana](#requirement\_grafana) | ~> 3.0 |
 | <a name="requirement_helm"></a> [helm](#requirement\_helm) | ~> 2.17.0 |
 | <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | ~> 2.36.0 |
 | <a name="requirement_null"></a> [null](#requirement\_null) | ~> 3.2 |
@@ -18,11 +19,12 @@
 ## Providers
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="provider_argocd"></a> [argocd](#provider\_argocd) | 7.10.0 |
 | <a name="provider_azapi"></a> [azapi](#provider\_azapi) | 1.11.0 |
 | <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 3.4.0 |
 | <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.25.0 |
+| <a name="provider_grafana.cloud"></a> [grafana.cloud](#provider\_grafana.cloud) | 3.25.9 |
 | <a name="provider_helm"></a> [helm](#provider\_helm) | 2.17.0 |
 | <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | 2.36.0 |
 | <a name="provider_null"></a> [null](#provider\_null) | 3.2.4 |
@@ -30,7 +32,7 @@
 ## Modules
 
 | Name | Source | Version |
-|------|--------|---------|
+| ---- | ------ | ------- |
 | <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4 | 13772c05b151a336340bc3045a13b53d87231a2f |
 | <a name="module_cert_mounter"></a> [cert\_mounter](#module\_cert\_mounter) | ./.terraform/modules/__v4__/cert_mounter | n/a |
 | <a name="module_gh_runner_job"></a> [gh\_runner\_job](#module\_gh\_runner\_job) | ./.terraform/modules/__v4__/gh_runner_container_app_job_domain_setup | n/a |
@@ -39,11 +41,17 @@
 ## Resources
 
 | Name | Type |
-|------|------|
+| ---- | ---- |
 | [argocd_application.domain_argocd_applications](https://registry.terraform.io/providers/argoproj-labs/argocd/latest/docs/resources/application) | resource |
 | [azapi_resource.idpay_workbook](https://registry.terraform.io/providers/azure/azapi/latest/docs/resources/resource) | resource |
 | [azurerm_eventhub_namespace_authorization_rule.evh_namespace_access_key_00](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/eventhub_namespace_authorization_rule) | resource |
 | [azurerm_key_vault_secret.event_hub_root_key_idpay_00](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_kusto_database_principal_assignment.alert_adx_viewer](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/kusto_database_principal_assignment) | resource |
+| [azurerm_monitor_scheduled_query_rules_alert_v2.alerts](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert_v2) | resource |
+| [azurerm_monitor_scheduled_query_rules_alert_v2.alerts_adx](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert_v2) | resource |
+| [grafana_contact_point.idpay_app_alerts](https://registry.terraform.io/providers/grafana/grafana/latest/docs/resources/contact_point) | resource |
+| [grafana_folder.idpay_app_alerts](https://registry.terraform.io/providers/grafana/grafana/latest/docs/resources/folder) | resource |
+| [grafana_rule_group.idpay_app_alerts](https://registry.terraform.io/providers/grafana/grafana/latest/docs/resources/rule_group) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.alerts](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [helm_release.reloader](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
 | [kubernetes_config_map.appinsights-config](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/config_map) | resource |
@@ -73,10 +81,13 @@
 | [azuread_group.adgroup_security](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 | [azurerm_application_insights.core_app_insights](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/application_insights) | data source |
 | [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) | data source |
+| [azurerm_dashboard_grafana.grafana_managed](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/dashboard_grafana) | data source |
 | [azurerm_eventhub_namespace.eventhub_00](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/eventhub_namespace) | data source |
+| [azurerm_key_vault.grafana_core](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault) | data source |
 | [azurerm_key_vault.key_vault_domain](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault) | data source |
 | [azurerm_key_vault_secret.argocd_admin_password](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.argocd_admin_username](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.grafana_service_account_token](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.workload_identity_client_id](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.workload_identity_service_account_name](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_kubernetes_cluster.aks](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/kubernetes_cluster) | data source |
@@ -90,7 +101,7 @@
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
+| ---- | ----------- | ---- | ------- | :------: |
 | <a name="input_aks_cluster_domain_name"></a> [aks\_cluster\_domain\_name](#input\_aks\_cluster\_domain\_name) | Name of the aks cluster domain. eg: dev01 | `string` | n/a | yes |
 | <a name="input_aks_name"></a> [aks\_name](#input\_aks\_name) | AKS cluster name | `string` | n/a | yes |
 | <a name="input_aks_resource_group_name"></a> [aks\_resource\_group\_name](#input\_aks\_resource\_group\_name) | AKS cluster resource name | `string` | n/a | yes |
@@ -105,6 +116,9 @@
 | <a name="input_external_domain"></a> [external\_domain](#input\_external\_domain) | Domain for delegation | `string` | n/a | yes |
 | <a name="input_idpay_alert_enabled"></a> [idpay\_alert\_enabled](#input\_idpay\_alert\_enabled) | n/a | `bool` | `false` | no |
 | <a name="input_idpay_bel_initiative_id"></a> [idpay\_bel\_initiative\_id](#input\_idpay\_bel\_initiative\_id) | Initiative id for Bonus Elettrodomestici | `string` | n/a | yes |
+| <a name="input_idpay_grafana_alert_email_addresses"></a> [idpay\_grafana\_alert\_email\_addresses](#input\_idpay\_grafana\_alert\_email\_addresses) | Email addresses used by the Grafana IDPay app contact point. | `list(string)` | `[]` | no |
+| <a name="input_idpay_grafana_alert_enabled"></a> [idpay\_grafana\_alert\_enabled](#input\_idpay\_grafana\_alert\_enabled) | Enable Grafana alerting resources for the IDPay app. | `bool` | `false` | no |
+| <a name="input_idpay_grafana_alert_slack_webhook_url"></a> [idpay\_grafana\_alert\_slack\_webhook\_url](#input\_idpay\_grafana\_alert\_slack\_webhook\_url) | Slack webhook URL used by the Grafana IDPay app contact point. | `string` | `""` | no |
 | <a name="input_idpay_mocked_acquirer_apim_user_id"></a> [idpay\_mocked\_acquirer\_apim\_user\_id](#input\_idpay\_mocked\_acquirer\_apim\_user\_id) | APIm user id of mocked acquirer | `string` | `null` | no |
 | <a name="input_idpay_mocked_merchant_enable"></a> [idpay\_mocked\_merchant\_enable](#input\_idpay\_mocked\_merchant\_enable) | Enable mocked merchant APIs | `bool` | `false` | no |
 | <a name="input_ingress_domain_hostname"></a> [ingress\_domain\_hostname](#input\_ingress\_domain\_hostname) | n/a | `string` | n/a | yes |

@@ -108,6 +108,11 @@ mail_server_host = "smtp.ethereal.email"
 idpay_mocked_merchant_enable       = true
 idpay_mocked_acquirer_apim_user_id = "rtd-uat-acquirer-pagopa-it"
 idpay_alert_enabled                = true
+idpay_grafana_alert_enabled        = false
+idpay_grafana_alert_email_addresses = [
+  "idpay-alerts@example.com"
+]
+idpay_grafana_alert_slack_webhook_url = "https://hooks.slack.com/services/CHANGE/ME"
 
 #
 # Rate limit
