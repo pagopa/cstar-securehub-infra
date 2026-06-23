@@ -64,6 +64,14 @@ locals {
 
   # Audit Storage Account
   audit_storage_account_name = substr("${replace(local.project, "-", "")}auditlogs", 0, 24)
+  # Configurazione storage account audit (vedi 12_audit_archive.tf)
+  audit_storage_account_kind = "StorageV2"
+  audit_storage_account_tier = "Standard"
+  audit_storage_access_tier  = "Cool" # 🧊 tariffa storage economica per dati letti di rado
+  # Naming risorse dell'archiviazione audit (vedi 12_audit_archive.tf)
+  audit_blob_private_endpoint_name   = "${local.audit_storage_account_name}-blob-prv-endpoint"
+  audit_blob_private_connection_name = "${local.audit_storage_account_name}-blob-prv-conn"
+  audit_export_rule_name             = "${local.project}-audit-export"
   app_insights_long_term_tables = [
     "AppTraces",
     "AppExceptions",

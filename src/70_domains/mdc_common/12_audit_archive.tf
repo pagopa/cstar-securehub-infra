@@ -23,10 +23,10 @@ resource "azurerm_storage_account" "audit" {
   resource_group_name = local.monitor_rg
   location            = var.location
 
-  account_kind             = "StorageV2"
-  account_tier             = "Standard"
+  account_kind             = local.audit_storage_account_kind
+  account_tier             = local.audit_storage_account_tier
   account_replication_type = var.audit_storage_account_replication_type
-  access_tier              = "Cool" # 🧊 tariffa storage economica per dati letti di rado
+  access_tier              = local.audit_storage_access_tier
 
   https_traffic_only_enabled      = true
   min_tls_version                 = "TLS1_2"
@@ -54,13 +54,13 @@ resource "azurerm_storage_account" "audit" {
 resource "azurerm_private_endpoint" "audit_blob" {
   count = var.audit_export_enabled ? 1 : 0
 
-  name                = "${local.audit_storage_account_name}-blob-prv-endpoint"
+  name                = local.audit_blob_private_endpoint_name
   location            = var.location
   resource_group_name = local.monitor_rg
   subnet_id           = module.storage_snet.subnet_id
 
   private_service_connection {
-    name                           = "${local.audit_storage_account_name}-blob-prv-conn"
+    name                           = local.audit_blob_private_connection_name
     private_connection_resource_id = azurerm_storage_account.audit[0].id
     is_manual_connection           = false
     subresource_names              = ["blob"]
@@ -78,7 +78,7 @@ resource "azurerm_private_endpoint" "audit_blob" {
 resource "azurerm_log_analytics_data_export_rule" "audit" {
   count = var.audit_export_enabled ? 1 : 0
 
-  name                    = "${local.project}-audit-export"
+  name                    = local.audit_export_rule_name
   resource_group_name     = local.monitor_rg
   workspace_resource_id   = azurerm_log_analytics_workspace.log_analytics_workspace.id
   destination_resource_id = azurerm_storage_account.audit[0].id
