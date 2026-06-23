@@ -1417,7 +1417,7 @@ locals {
       description          = "Reward batch transaction: count mismatch detected"
       severity             = 4
       evaluation_frequency = 5
-      window_duration      = 5
+      window_duration      = 1440
 
 
       query = <<-QUERY
@@ -1434,7 +1434,7 @@ locals {
 
       criteria = {
         operator  = "GreaterThanOrEqual"
-        threshold = 10
+        threshold = 1
       }
 
       email_subject = "[PARI][ADX][LOW] Reward batch mismatch detected"
