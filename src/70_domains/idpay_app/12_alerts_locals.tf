@@ -1422,10 +1422,11 @@ locals {
 
       query = <<-QUERY
           let TrxCountByBatch =
-          transaction
+          database("idpay").transaction
           | where isnotempty(rewardBatchId)
           | summarize trx_count = count() by rewardBatchId;
-          rewards_batch
+
+          database("idpay").rewards_batch
           | extend batch_id = tostring(_id), expected_count = tolong(numberOfTransactions)
           | join kind=leftouter TrxCountByBatch on $left.batch_id == $right.rewardBatchId
           | extend trx_count = coalesce(trx_count, 0)
@@ -1461,4 +1462,16 @@ locals {
       for key, alert in alerts : key => merge(local.base_alert_config, alert)
     }
   ]...)
+}
+
+resource "azurerm_kusto_database_principal_assignment" "alert_adx_viewer" {
+  name                = "reward-batch-alert-viewer"
+  resource_group_name = "cstar-u-itn-platform-data-rg"
+  cluster_name        = "cstar-u-itn-platform"
+  database_name       = "idpay"
+
+  tenant_id      = data.azurerm_client_config.current.tenant_id
+  principal_id   = azurerm_monitor_scheduled_query_rules_alert_v2.alerts_adx["reward_batch_transaction_mismatch_alert"].identity[0].principal_id
+  principal_type = "App"
+  role           = "Viewer"
 }

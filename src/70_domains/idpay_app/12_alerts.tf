@@ -33,7 +33,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert_v2" "alerts_adx" {
   resource_group_name = local.monitor_rg
   location            = var.location
 
-  scopes = [data.azurerm_kusto_database.idpay.id]
+  scopes = [data.azurerm_kusto_cluster.kusto_cluster.id]
 
   description = each.value.description
   enabled     = lookup(try(each.value.enabled_by_env, {}), var.env_short, lookup(each.value, "enabled", true))
