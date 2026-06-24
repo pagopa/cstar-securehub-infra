@@ -44,6 +44,7 @@ locals {
     "'self'",
     "https://cdn.cookielaw.org/",
     "https://${local.assetregister_static_web_host_checkout}",
+    "https://mytest.it" // this is a temporary test
   ])
 
   assetregister_csp_connect_src = join(" ", [
