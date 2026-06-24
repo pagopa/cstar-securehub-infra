@@ -23,10 +23,7 @@ redis_idh_tier = "basic"
 law_sku                                = "PerGB2018"
 law_retention_in_days                  = 30
 law_daily_quota_gb                     = 15
-audit_export_enabled                   = true
-audit_logs_retention_days              = 180
-audit_storage_account_replication_type = "ZRS"
-audit_storage_account_tier             = "basic_audit_cool"
+audit_export_enabled                   = false
 
 aks_nodepool = {
   vm_sku_name       = "Standard_D4ads_v5_active"
