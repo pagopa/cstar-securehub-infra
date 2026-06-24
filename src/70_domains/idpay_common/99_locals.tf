@@ -39,7 +39,7 @@ locals {
       "${var.env}.bonuselettrodomestici.net",
       "${var.env}.bonuselettrodomestici.eu",
       "${var.env}.bonuselettrodomestici.pagopa.it"
-      ] : [
+    ] : [
       "bonuselettrodomestici.it",
       "bonuselettrodomestici.com",
       "bonuselettrodomestici.info",
@@ -136,7 +136,7 @@ locals {
       object_id    = data.azuread_group.adgroup_domain_admin.object_id
       display_name = data.azuread_group.adgroup_domain_admin.display_name
     },
-    var.env_short != "p" ? [
+      var.env_short != "p" ? [
       {
         object_id    = data.azuread_group.adgroup_domain_developers.object_id
         display_name = data.azuread_group.adgroup_domain_developers.display_name
@@ -145,11 +145,26 @@ locals {
         object_id    = data.azuread_group.adgroup_domain_externals.object_id
         display_name = data.azuread_group.adgroup_domain_externals.display_name
       }
-      ] : [
+    ] : [
       {
         object_id    = data.azuread_group.adgroup_domain_oncall[0].object_id
         display_name = data.azuread_group.adgroup_domain_oncall[0].display_name
       }
     ]
   ])
+
+  #
+  # MongoDB indexes created through mongosh
+  #
+  # Keep these indexes here because the configuration is shared across dev, uat and prod.
+  # Each map key must be stable and unique: Terraform uses it to avoid re-applying
+  # indexes that have already been created when new indexes are added later.
+  mongo_indexes_to_apply = {
+    franchiseName_type_city_address_website_unique = {
+      database   = "idpay-pagamenti"
+      collection = "point_of_sales"
+      keys       = ["franchiseName", "type", "city", "address", "website"]
+      unique     = true
+    }
+  }
 }
