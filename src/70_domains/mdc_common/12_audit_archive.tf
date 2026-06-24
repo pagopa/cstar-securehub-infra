@@ -37,9 +37,14 @@ module "audit_storage" {
   domain           = var.domain
   replication_type = var.audit_storage_account_replication_type
 
-  # Network — private endpoint per i blob nella subnet dedicata agli storage.
-  private_dns_zone_blob_ids  = [data.azurerm_private_dns_zone.blob_storage.id]
-  private_endpoint_subnet_id = module.storage_snet.subnet_id
+  # Network — il modulo crea una subnet dedicata e il private endpoint per i blob.
+  private_dns_zone_blob_ids = [data.azurerm_private_dns_zone.blob_storage.id]
+  resource_group_nsg_name   = local.network_rg
+  embedded_subnet = {
+    enabled      = true
+    vnet_name    = local.vnet_spoke_data_name
+    vnet_rg_name = local.vnet_network_rg
+  }
 }
 
 # 🔁 Esportazione automatica delle tabelle di tracing verso il blob storage.
