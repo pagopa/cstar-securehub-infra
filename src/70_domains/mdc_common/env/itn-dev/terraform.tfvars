@@ -20,6 +20,7 @@ backoffice_cdn_storage_replication_type = "LRS"
 law_sku               = "PerGB2018"
 law_retention_in_days = 30
 law_daily_quota_gb    = 5
+audit_export_enabled  = false
 
 # Redis
 redis_idh_tier = "basic"
