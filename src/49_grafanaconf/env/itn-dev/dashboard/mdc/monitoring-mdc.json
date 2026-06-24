@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 261,
+  "id": 0,
   "links": [],
   "panels": [
     {
@@ -139,7 +139,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 10,
+        "h": 9,
         "w": 12,
         "x": 12,
         "y": 1
@@ -244,7 +244,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 7,
+        "h": 6,
         "w": 6,
         "x": 0,
         "y": 4
@@ -341,7 +341,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 7,
+        "h": 6,
         "w": 6,
         "x": 6,
         "y": 4
@@ -462,7 +462,7 @@
         "h": 10,
         "w": 24,
         "x": 0,
-        "y": 11
+        "y": 10
       },
       "id": 6,
       "options": {
@@ -534,7 +534,106 @@
         "h": 1,
         "w": 24,
         "x": 0,
+        "y": 20
+      },
+      "id": 15,
+      "panels": [],
+      "title": "Flusso messaggi accettati",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-data-explorer-datasource",
+        "uid": "${ds}"
+      },
+      "description": "Numero di messaggi inviati, letti e infine perfezionate suddivise per PSP",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": false,
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false,
+            "minWidth": 50,
+            "wrapHeaderText": true,
+            "wrapText": true
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
         "y": 21
+      },
+      "id": 19,
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "OpenAI": false,
+          "database": "mdc",
+          "datasource": {
+            "type": "grafana-azure-data-explorer-datasource",
+            "uid": "${ds}"
+          },
+          "expression": {
+            "groupBy": {
+              "expressions": [],
+              "type": "and"
+            },
+            "reduce": {
+              "expressions": [],
+              "type": "and"
+            },
+            "where": {
+              "expressions": [],
+              "type": "and"
+            }
+          },
+          "pluginVersion": "7.2.2",
+          "query": "let payment_map =\r\n    MessageSnapshot\r\n    | summarize arg_max(window_start, associated_payment) by origin_id;\r\n    // Nessun timeFilter per prende tutto lo storico per avere sempre associated_payment\r\n\r\nlet known_origins =\r\n    MessageSnapshot\r\n    | where message_state == \"SENT\"\r\n    | summarize by origin_id;\r\n    // serve per escludere messaggi letti/perfezionati ma mai apparsi in MessageSnapshot (notifiche pre-pipeline)\r\n    \r\nlet inviate =\r\n    MessageSnapshot\r\n    | where message_state == \"SENT\"\r\n    | where $__timeFilter(window_start)\r\n    | summarize arg_max(window_start, entity_id) by origin_id, entity_id\r\n    | project origin_id, entity_id, is_inviata = true;\r\n\r\nlet lette =\r\n    RetrievalIdVolumeSnapshot\r\n    | where $__timeFilter(window_start)\r\n    | where origin_id in (known_origins)\r\n    | summarize arg_max(window_start, entity_id) by origin_id, entity_id\r\n    | project origin_id, entity_id, is_letta = true;\r\n\r\nlet perfezionate =\r\n    FinalizedMessageSnapshot\r\n    | where $__timeFilter(window_start)\r\n    | where origin_id in (known_origins)\r\n    | summarize arg_max(window_start, tpp_id) by origin_id\r\n    | project origin_id, is_perfezionata = true;\r\n\r\n// Union di tutti gli origin_id che compaiono in almeno uno stato\r\nlet tutti =\r\n    inviate | project origin_id, entity_id\r\n    | union (lette | project origin_id, entity_id)\r\n    | summarize arg_max(origin_id, entity_id) by origin_id;\r\n\r\n// Raccolta tutte tpp per default a 0 se non ci sono valori\r\nlet tutte_le_tpp =\r\n    TppDataSnapshot\r\n    | summarize by entity_id, PSP = business_name;\r\n\r\n\r\ntutte_le_tpp\r\n| join kind=leftouter (\r\n    tutti\r\n    | join kind=leftouter payment_map on origin_id\r\n    | join kind=inner TppDataSnapshot on entity_id\r\n    | join kind=leftouter (inviate  | project origin_id, is_inviata)      on origin_id\r\n    | join kind=leftouter (lette    | project origin_id, is_letta)        on origin_id\r\n    | join kind=leftouter (perfezionate | project origin_id, is_perfezionata) on origin_id\r\n) on entity_id\r\n| summarize\r\n    ['Inv. Con Pagamento']    = dcountif(origin_id, associated_payment == true  and is_inviata == true),\r\n    ['Inv. Senza Pagamento']  = dcountif(origin_id, associated_payment == false and is_inviata == true),\r\n    ['Inviate Totale']        = dcountif(origin_id, is_inviata == true),\r\n    ['Lette Con Pagamento']   = dcountif(origin_id, associated_payment == true  and is_letta == true),\r\n    ['Lette Senza Pagamento'] = dcountif(origin_id, associated_payment == false and is_letta == true),\r\n    ['Lette Totale']          = dcountif(origin_id, is_letta == true),\r\n    ['Perf. Con Pagamento']   = dcountif(origin_id, associated_payment == true  and is_perfezionata == true),\r\n    ['Perf. Senza Pagamento'] = dcountif(origin_id, associated_payment == false and is_perfezionata == true),\r\n    ['Perfezionate Totale']   = dcountif(origin_id, is_perfezionata == true)\r\n  by PSP\r\n| order by ['Lette Totale'] desc",
+          "querySource": "raw",
+          "queryType": "KQL",
+          "rawMode": true,
+          "refId": "A",
+          "resultFormat": "table"
+        }
+      ],
+      "title": "Flusso messaggi accettati per PSP",
+      "type": "table"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 29
       },
       "id": 8,
       "panels": [],
@@ -568,7 +667,7 @@
         "h": 8,
         "w": 5,
         "x": 0,
-        "y": 22
+        "y": 30
       },
       "id": 2,
       "options": {
@@ -663,7 +762,7 @@
         "h": 8,
         "w": 5,
         "x": 5,
-        "y": 22
+        "y": 30
       },
       "id": 1,
       "options": {
@@ -790,7 +889,7 @@
         "h": 8,
         "w": 14,
         "x": 10,
-        "y": 22
+        "y": 30
       },
       "id": 3,
       "options": {
@@ -861,6 +960,91 @@
         }
       ],
       "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-data-explorer-datasource",
+        "uid": "${ds}"
+      },
+      "description": "Monitoraggio dei consensi dei cittadini aggregati per PSP",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": true,
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false,
+            "wrapHeaderText": false,
+            "wrapText": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 10,
+        "x": 0,
+        "y": 38
+      },
+      "id": 13,
+      "options": {
+        "cellHeight": "sm",
+        "enablePagination": false,
+        "showHeader": true
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "OpenAI": false,
+          "database": "mdc",
+          "datasource": {
+            "type": "grafana-azure-data-explorer-datasource",
+            "uid": "${ds}"
+          },
+          "expression": {
+            "groupBy": {
+              "expressions": [],
+              "type": "and"
+            },
+            "reduce": {
+              "expressions": [],
+              "type": "and"
+            },
+            "where": {
+              "expressions": [],
+              "type": "and"
+            }
+          },
+          "pluginVersion": "7.2.2",
+          "query": "CitizenMetricsSnapshot\r\n| extend consents_dynamic = todynamic(consents)\r\n| mv-expand tpp_id = bag_keys(consents_dynamic)\r\n| extend tpp_id = tostring(tpp_id)\r\n| extend tcDate_ms = tolong(consents_dynamic[tpp_id].tcDate[\"$date\"])\r\n| extend tppDate = datetime(1970-01) + totimespan(tcDate_ms * 1ms)\r\n| where $__timeFilter(tppDate)\r\n| extend is_active = tobool(consents_dynamic[tpp_id].tppState)\r\n| lookup kind=leftouter TppDataSnapshot on tpp_id \r\n| summarize \r\n    ['Cittadini attivi']   = dcountif(fiscal_code, is_active == true),\r\n    ['Cittadini inattivi'] = dcountif(fiscal_code, is_active == false)\r\n    by PSP = coalesce(business_name, tpp_id)\r\n| order by ['Cittadini attivi'] desc",
+          "querySource": "raw",
+          "queryType": "KQL",
+          "rawMode": true,
+          "refId": "A",
+          "resultFormat": "table"
+        }
+      ],
+      "title": "Stato consensi cittadini per PSP",
+      "type": "table"
     }
   ],
   "preload": false,
@@ -892,5 +1076,5 @@
   "timezone": "utc",
   "title": "Monitoraggio MDC",
   "uid": "efj6fhop10um8c",
-  "version": 27
+  "version": 64
 }

@@ -93,4 +93,33 @@ locals {
       var.env_short != "p" ? ["https://localhost:3000", "http://localhost:3000", "https://localhost:3001", "http://localhost:3001"] : []
     )
   }
+
+  # ----------------------------------------------------------------------------
+  # GITHUB RUNNERS
+  # ----------------------------------------------------------------------------
+
+  #
+  # List of GitHub repositories which need self-hosted runners.
+  #
+  github_repositories_with_self_hosted_runners = [
+    {
+      name : "mcshared-datavault-test",
+      short_name : "datavault-test"
+    },
+    {
+      name : "mcshared-datavault",
+      short_name : "datavault"
+    }
+  ]
+
+  #
+  # Data of Container Apps Environment for GitHub Runners.
+  #
+  gh_runners_cae_name = "${var.prefix}-${var.env_short}-${var.location_short}-platform-github-cae"
+  gh_runners_cae_rg   = "${var.prefix}-${var.env_short}-${var.location_short}-platform-compute-rg"
+
+  #
+  # Name of the secret that contains the GitHub token.
+  #
+  gh_token_secret = "idpay-bot-github-self-hosted-runners-TOKEN"
 }

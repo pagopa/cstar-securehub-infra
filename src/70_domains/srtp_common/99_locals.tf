@@ -46,7 +46,10 @@ locals {
   dns_zone_internal                = "internal.${local.dns_zone_name}"
   ingress_private_load_balancer_ip = "10.10.1.250"
 
-  repositories = ["rtp-sender", "rtp-activator", "rtp-consumer", "rtp-payees"]
+  repositories = concat(
+    ["rtp-sender", "rtp-activator", "rtp-consumer", "rtp-payees"],
+    var.env_short != "p" ? ["rtp-sender-v2"] : []
+  )
 
   # AKS
   aks_name                = "${local.project_no_domain}-${var.env}-aks"
@@ -195,10 +198,6 @@ locals {
       }
     ]
   ])
-
-  # Data Factory
-  data_factory_name    = "${local.project_no_domain}-platform-adf"
-  data_factory_rg_name = "${local.project_no_domain}-platform-data-rg"
 
   # Data Explorer (ADX / Kusto)
   kusto_cluster_name    = "${local.project_no_domain}-platform"

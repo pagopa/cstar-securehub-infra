@@ -428,7 +428,7 @@ resource "kubernetes_cron_job_v1" "delivery_reward_batch" {
   }
 
   spec {
-    schedule           = "0 4 * * 2,5" # 04:00 TUE, FRI
+    schedule           = "0 4 * * 5" # 04:00 FRI
     timezone           = "Europe/Rome"
     concurrency_policy = "Forbid"
 

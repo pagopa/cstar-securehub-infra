@@ -25,6 +25,11 @@ locals {
         name          = "emd-tpp"
         target_branch = "main"
         env           = ["dev", "uat", "prod"]
+      },
+      "emd-ar-backoffice-bff" = {
+        name          = "emd-ar-backoffice-bff"
+        target_branch = "main"
+        env           = ["dev", "uat", "prod"]
       }
     }
   }
