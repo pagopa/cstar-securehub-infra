@@ -5,73 +5,41 @@
 # raramente (solo ispezioni/controlli legali) e spendendo il meno possibile.
 #
 # Strategia (massimo risparmio):
-#   1) Log Analytics Data Export Rule: devia in CONTINUO le sole tabelle scelte
-#      dal workspace verso uno Storage Account dedicato (nessun costo di
-#      interactive/Archive retention su Log Analytics oltre i 90 gg gratuiti).
-#   2) Storage Account con access_tier = "Cool": tariffa di storage ridotta,
-#      pensata per dati letti di rado ma comunque immediatamente disponibili.
-#   3) Lifecycle Management Policy: cancella automaticamente i blob una volta
-#      superata la finestra di compliance, così non si accumulano costi.
+#   1) Storage Account creato tramite il modulo standard IDH/storage_account
+#      (tier "basic_audit"): gestisce in automatico private endpoint, accesso
+#      pubblico disabilitato, threat protection e niente soft-delete/versioning
+#      (dati di audit immutabili). Stesso pattern usato da idpay_common.
+#   2) Log Analytics Data Export Rule: devia in CONTINUO le sole tabelle scelte
+#      dal workspace verso lo storage (nessun costo di Archive su Log Analytics).
+#   3) Lifecycle Management Policy: sposta subito i blob su tier Cool (tariffa
+#      ridotta per dati letti di rado) e li elimina superata la finestra di
+#      compliance, così non si accumulano costi.
 #
 # Parametrizzazione: in prod l'export è attivo (180 gg); in dev/uat è
 # disattivabile (var.audit_export_enabled = false) per non spendere nulla.
 
-resource "azurerm_storage_account" "audit" {
-  count = var.audit_export_enabled ? 1 : 0
+module "audit_storage" {
+  count  = var.audit_export_enabled ? 1 : 0
+  source = "./.terraform/modules/__v4__/IDH/storage_account"
 
-  name                = local.audit_storage_account_name
-  resource_group_name = local.monitor_rg
-  location            = var.location
-
-  account_kind             = local.audit_storage_account_kind
-  account_tier             = local.audit_storage_account_tier
-  account_replication_type = var.audit_storage_account_replication_type
-  access_tier              = local.audit_storage_access_tier
-
-  https_traffic_only_enabled      = true
-  min_tls_version                 = "TLS1_2"
-  allow_nested_items_to_be_public = false
-
-  # 🔒 Accesso solo da rete privata: il firewall nega tutto il traffico pubblico,
-  # tranne i servizi trusted di Azure (necessari al Log Analytics Data Export per
-  # scrivere i blob). La lettura per Audit avviene tramite il private endpoint.
-  public_network_access_enabled = true
-  network_rules {
-    default_action = "Deny"
-    bypass         = ["AzureServices", "Logging", "Metrics"]
-  }
-
-  # Niente versioning/soft-delete: dati immutabili append-only dell'export, il
-  # ciclo di vita è gestito dalla policy sotto. Riduce ulteriormente i costi.
-  blob_properties {
-    last_access_time_enabled = false
-  }
-
-  tags = module.tag_config.tags
-}
-
-# 🔌 Private endpoint per i blob, nella subnet dedicata agli storage privati.
-resource "azurerm_private_endpoint" "audit_blob" {
-  count = var.audit_export_enabled ? 1 : 0
-
-  name                = local.audit_blob_private_endpoint_name
+  # General
+  product_name        = var.prefix
+  env                 = var.env
   location            = var.location
   resource_group_name = local.monitor_rg
-  subnet_id           = module.storage_snet.subnet_id
+  tags                = module.tag_config.tags
 
-  private_service_connection {
-    name                           = local.audit_blob_private_connection_name
-    private_connection_resource_id = azurerm_storage_account.audit[0].id
-    is_manual_connection           = false
-    subresource_names              = ["blob"]
-  }
+  #
+  idh_resource_tier = var.audit_storage_account_tier
 
-  private_dns_zone_group {
-    name                 = "default"
-    private_dns_zone_ids = [data.azurerm_private_dns_zone.blob_storage.id]
-  }
+  # Storage Account Settings
+  name             = local.audit_storage_account_name
+  domain           = var.domain
+  replication_type = var.audit_storage_account_replication_type
 
-  tags = module.tag_config.tags
+  # Network — private endpoint per i blob nella subnet dedicata agli storage.
+  private_dns_zone_blob_ids  = [data.azurerm_private_dns_zone.blob_storage.id]
+  private_endpoint_subnet_id = module.storage_snet.subnet_id
 }
 
 # 🔁 Esportazione automatica delle tabelle di tracing verso il blob storage.
@@ -81,19 +49,19 @@ resource "azurerm_log_analytics_data_export_rule" "audit" {
   name                    = local.audit_export_rule_name
   resource_group_name     = local.monitor_rg
   workspace_resource_id   = azurerm_log_analytics_workspace.log_analytics_workspace.id
-  destination_resource_id = azurerm_storage_account.audit[0].id
+  destination_resource_id = module.audit_storage[0].id
   table_names             = local.app_insights_long_term_tables
   enabled                 = true
 }
 
-# ⏳ Ciclo di vita: elimina i blob oltre la finestra di compliance.
+# ⏳ Ciclo di vita: cancellazione oltre la compliance window.
 resource "azurerm_storage_management_policy" "audit" {
   count = var.audit_export_enabled ? 1 : 0
 
-  storage_account_id = azurerm_storage_account.audit[0].id
+  storage_account_id = module.audit_storage[0].id
 
   rule {
-    name    = "delete-after-compliance-window"
+    name    = "audit-lifecycle"
     enabled = true
 
     filters {

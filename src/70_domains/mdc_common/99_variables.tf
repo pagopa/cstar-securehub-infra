@@ -120,6 +120,14 @@ variable "audit_storage_account_replication_type" {
   }
 }
 
+# https://github.com/pagopa/terraform-azurerm-v4/blob/main/IDH/00_product_configs/cstar/uat/storage_account.yml
+variable "audit_storage_account_tier" {
+  type        = string
+  description = "Tier of the audit Storage Account."
+  default     = "basic_audit_cool"
+}
+
+
 variable "aks_nodepool" {
   type = object({
     vm_sku_name       = string
