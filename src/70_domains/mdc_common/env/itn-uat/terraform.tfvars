@@ -20,10 +20,10 @@ backoffice_cdn_storage_replication_type = "LRS"
 redis_idh_tier = "basic"
 
 #Monitoring
-law_sku                                = "PerGB2018"
-law_retention_in_days                  = 30
-law_daily_quota_gb                     = 15
-audit_export_enabled                   = false
+law_sku               = "PerGB2018"
+law_retention_in_days = 30
+law_daily_quota_gb    = 15
+audit_export_enabled  = false
 
 aks_nodepool = {
   vm_sku_name       = "Standard_D4ads_v5_active"
