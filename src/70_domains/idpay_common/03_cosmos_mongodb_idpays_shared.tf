@@ -277,6 +277,7 @@ locals {
       default_ttl_seconds = null
       indexes = [
         { keys = ["_id"], unique = true },
+        { keys = ["merchantId"], unique = false },
         { keys = ["franchiseName"], unique = false },
         { keys = ["type"], unique = false },
         { keys = ["address"], unique = false },
