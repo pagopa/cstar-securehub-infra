@@ -358,7 +358,7 @@ locals {
           TPP_KEYCLOAK_CLIENT_SECRET  = try(module.secrets.values["emd-tpp-test-client-secret"].value, null)
           SEND_KEYCLOAK_CLIENT_ID     = try(module.secrets.values["send-client-id"].value, null)
           SEND_KEYCLOAK_CLIENT_SECRET = try(module.secrets.values["send-client-secret"].value, null)
-          KEYCLOAK_URL                = try(module.secrets.values["keycloak-url"].value, null)
+          KEYCLOAK_URL                = try(module.secrets.values["keycloak-external-mdc-url"].value, null)
         }
       }
       env_variables = {
