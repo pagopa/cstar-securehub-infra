@@ -277,13 +277,32 @@ locals {
       default_ttl_seconds = null
       indexes = [
         { keys = ["_id"], unique = true },
+        { keys = ["merchantId"], unique = false },
         { keys = ["franchiseName"], unique = false },
         { keys = ["type"], unique = false },
         { keys = ["address"], unique = false },
         { keys = ["website"], unique = false },
         { keys = ["city"], unique = false },
         { keys = ["contactEmail"], unique = true },
-        { keys = ["contactName", "contactSurname"], unique = false }
+        { keys = ["contactName", "contactSurname"], unique = false },
+        # Temporarily comment out this index before running Terraform apply in PROD.
+        { keys = ["franchiseName", "type", "city", "address", "website"], unique = true }
+      ]
+    },
+    {
+      name                = "point_of_sales_initiative"
+      shard_key           = null
+      default_ttl_seconds = null
+      indexes = [
+        { keys = ["_id"], unique = true },
+        {
+          keys   = ["pointOfSaleId", "initiativeId", "merchantId"]
+          unique = true
+        },
+        {
+          keys   = ["initiativeId", "merchantId", "enabled"]
+          unique = false
+        }
       ]
     },
     {
@@ -554,4 +573,33 @@ module "cosmos_mongodb_collections" {
   indexes             = each.value.indexes
   throughput          = null
   max_throughput      = null
+}
+
+# ------------------------------------------------------------------------------
+# MongoDB indexes created through mongosh
+# ------------------------------------------------------------------------------
+resource "terraform_data" "mongo_index" {
+  for_each = local.mongo_indexes_to_apply
+
+  triggers_replace = {
+    index_name = each.key
+  }
+
+  provisioner "local-exec" {
+    interpreter = ["/bin/bash", "-c"]
+
+    environment = {
+      DB_NAME         = each.value.database
+      COLLECTION_NAME = each.value.collection
+      INDEX_NAME      = each.key
+      INDEX_KEYS      = jsonencode(each.value.keys)
+      UNIQUE          = tostring(each.value.unique)
+    }
+
+    command = "mongosh '${module.cosmos_db_account.primary_connection_strings}' --file '${path.module}/scripts/create-mongo-index.js'"
+  }
+  depends_on = [
+    module.cosmos_mongodb_collections,
+    azurerm_cosmosdb_mongo_database.databases
+  ]
 }
