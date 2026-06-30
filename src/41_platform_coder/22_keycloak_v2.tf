@@ -183,8 +183,7 @@ resource "helm_release" "keycloak" {
   #https://github.com/bitnami/charts/tree/main/bitnami/keycloak
   repository = "oci://registry-1.docker.io/bitnamicharts"
   #https://artifacthub.io/packages/helm/bitnami/keycloak/
-  #https://hub.docker.com/r/keycloak/keycloak
-  #https://hub.docker.com/r/bitnamilegacy/keycloak/tags
+  #https://gallery.ecr.aws/bitnami/keycloak
   chart   = "keycloak"
   version = var.keycloak_configuration.chart_version
 
@@ -196,6 +195,8 @@ resource "helm_release" "keycloak" {
       image_registry_config_cli                       = var.keycloak_configuration.image_registry_config_cli
       image_repository_config_cli                     = var.keycloak_configuration.image_repository_config_cli
       image_tag_config_cli                            = var.keycloak_configuration.image_tag_config_cli
+      image_digest_config_cli                         = var.keycloak_configuration.image_digest_config_cli
+      keycloak_config_cli_command                     = endswith(var.keycloak_configuration.image_repository_config_cli, "adorsys/keycloak-config-cli") ? jsonencode(["java", "-jar", "/app/keycloak-config-cli.jar"]) : "[]"
       postgres_db_host                                = module.keycloak_pgflex.fqdn
       postgres_db_port                                = "5432"
       postgres_db_username                            = module.keycloak_pgflex.administrator_login

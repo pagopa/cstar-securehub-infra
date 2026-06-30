@@ -3,6 +3,9 @@ forceDeployVersion: ${force_deploy_version}
 production: true
 proxy: "edge"
 
+cache:
+  stack: "jdbc-ping"
+
 global:
   security:
     allowInsecureImages: true
@@ -46,6 +49,10 @@ externalDatabase:
 
 # TLS/SSL per la connessione al DB
 extraEnvVars:
+  - name: KC_HTTP_ENABLED
+    value: "true"
+  - name: KC_PROXY_HEADERS
+    value: "xforwarded"
   - name: KC_DB_URL_PROPERTIES
     value: "sslmode=require"
   - name: KC_HOSTNAME
@@ -56,6 +63,12 @@ extraEnvVars:
     value: "https://${keycloak_ingress_hostname}"
   - name: KC_METRICS_ENABLED
     value: "true"
+  - name: KC_EVENT_METRICS_USER_ENABLED
+    value: "true"
+  - name: KC_EVENT_METRICS_USER_EVENTS
+    value: login,client_login,authreqid_to_token,jwt_authorization_grant,refresh_token
+  - name: KC_EVENT_METRICS_USER_TAGS
+    value: realm,idp,clientId
   - name: KC_TRACING_ENABLED
     value: "true"
   - name: KC_LOG_LEVEL_ORG_INFINISPAN
@@ -72,7 +85,7 @@ extraEnvVars:
   - name: KC_SPI_CONNECTIONS_HTTP_CLIENT_DEFAULT_MAX_CONNECTION_IDLE_TIME_MILLIS
     value: "${keycloak_http_client_connection_max_idle_millis}"
   - name: JAVA_OPTS
-    value: "-javaagent:/opt/bitnami/keycloak/agent/applicationinsights-agent.jar -XX:+UseG1GC -XX:+UseLargePages -Xmx4096m"
+    value: "-javaagent:/opt/bitnami/keycloak/agent/applicationinsights-agent.jar -XX:+UseG1GC -Xmx4096m"
   - name: KC_DB_POOL_MAX_SIZE
     value: "75"
   - name: KC_DB_POOL_MIN_SIZE
@@ -160,7 +173,9 @@ keycloakConfigCli:
     registry: ${image_registry_config_cli}
     repository: ${image_repository_config_cli}
     tag: ${image_tag_config_cli}
-    digest: ""
+    digest: ${image_digest_config_cli}
+  # Chart 24.7.7 hardcodes the Bitnami jar path in `command`, so Adorsys must override `command`.
+  command: ${keycloak_config_cli_command}
 
 nodeSelector:
   domain: keycloak

@@ -33,6 +33,36 @@ locals {
       ]
     },
     {
+      name = "initiatives_config"
+      indexes = [
+        {
+          keys   = ["_id"]
+          unique = true
+        }
+      ]
+    },
+    {
+      name = "producers_initiative"
+      indexes = [
+        {
+          keys   = ["_id"]
+          unique = true
+        },
+        {
+          keys   = ["producerId"]
+          unique = false
+        },
+        {
+          keys   = ["initiativeId"]
+          unique = false
+        },
+        {
+          keys   = ["initiativeName"]
+          unique = false
+        }
+      ]
+    },
+    {
       name = "product"
       indexes = [
         {
@@ -61,6 +91,14 @@ locals {
         },
         {
           keys   = ["productName"]
+          unique = false
+        },
+        {
+          keys   = ["productCode"]
+          unique = false
+        },
+        {
+          keys   = ["gtinCode"]
           unique = false
         },
         {

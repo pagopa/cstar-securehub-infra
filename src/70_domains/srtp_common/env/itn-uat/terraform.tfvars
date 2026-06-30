@@ -19,6 +19,9 @@ cosmos_activation_db_autoscale_max_throughput = 4000
 # RTP database - shared throughput at database level (1000 RU)
 cosmos_rtp_db_autoscale_max_throughput = 1000
 
+# Payee database - shared throughput at database level
+cosmos_payee_db_autoscale_max_throughput = 1000
+
 cosmos_otp_ttl = 3600
 
 # AKS
@@ -37,3 +40,7 @@ aks_nodepool_green = {
 
 ### Redis Cache
 redis_idh_resource_tier = "basic"
+
+### ADX
+adx_db_soft_delete_period_days = 15
+adx_db_hot_cache_period_days   = 5

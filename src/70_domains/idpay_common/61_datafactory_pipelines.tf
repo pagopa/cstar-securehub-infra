@@ -17,6 +17,13 @@ locals {
     data_factory_api_base_url = var.data_factory_api_base_url,
     kv_url                    = data.azurerm_key_vault.domain_kv.vault_uri
   }))
+
+  # path to the producers import pipeline
+  pipeline_producers_import = "${path.module}/data_factory_pipelines/templated/idpay_producers_import.json"
+  pipeline_producers_import_json = jsondecode(templatefile(local.pipeline_producers_import, {
+    data_factory_api_base_url = var.data_factory_api_base_url,
+    kv_url                    = data.azurerm_key_vault.domain_kv.vault_uri
+  }))
 }
 
 resource "azurerm_data_factory_pipeline" "pipelines" {
@@ -70,4 +77,19 @@ resource "azurerm_data_factory_pipeline" "idpay_user_details_report" {
     {}
   )
   activities_json = jsonencode(local.pipeline_user_details_report_json.properties.activities)
+}
+
+resource "azapi_resource" "idpay_producers_import" {
+  type      = "Microsoft.DataFactory/factories/pipelines@2018-06-01"
+  name      = local.pipeline_producers_import_json.name
+  parent_id = data.azurerm_data_factory.data_factory.id
+
+  body = {
+    properties = {
+      activities  = local.pipeline_producers_import_json.properties.activities
+      variables   = local.pipeline_producers_import_json.properties.variables
+      parameters  = try(local.pipeline_producers_import_json.properties.parameters, {})
+      annotations = try(local.pipeline_producers_import_json.properties.annotations, [])
+    }
+  }
 }

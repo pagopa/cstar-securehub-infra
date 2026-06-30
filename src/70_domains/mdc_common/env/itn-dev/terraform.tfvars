@@ -8,11 +8,19 @@ location_short = "itn"
 # 🔎 DNS
 external_domain          = "pagopa.it"
 dns_zone_internal_prefix = "internal.dev.cstar"
+dns_zone_public_name     = "dev.cstar.pagopa.it"
+
+# 🤖 Robots
+robots_indexed_paths = []
+
+# CDN
+backoffice_cdn_storage_replication_type = "LRS"
 
 #Monitoring
 law_sku               = "PerGB2018"
 law_retention_in_days = 30
 law_daily_quota_gb    = 5
+audit_export_enabled  = false
 
 # Redis
 redis_idh_tier = "basic"

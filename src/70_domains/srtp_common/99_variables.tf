@@ -96,6 +96,12 @@ variable "cosmos_rtp_db_autoscale_max_throughput" {
   default     = null
 }
 
+variable "cosmos_payee_db_autoscale_max_throughput" {
+  type        = number
+  description = "Max throughput for payee database (shared across collections)"
+  default     = null
+}
+
 variable "cosmos_otp_ttl" {
   type        = number
   description = "TTL for otps collection."
@@ -143,4 +149,26 @@ variable "aks_nodepool_green" {
 variable "redis_idh_resource_tier" {
   type        = string
   description = "The SKU of the Redis Cache to deploy"
+}
+
+variable "adx_db_soft_delete_period_days" {
+  type        = number
+  description = "Default soft delete period for ADX database (in days)"
+}
+
+variable "adx_db_hot_cache_period_days" {
+  type        = number
+  description = "Default hot cache period for ADX database (in days)"
+}
+
+variable "adx_table_soft_delete_period_days" {
+  type        = number
+  description = "Soft delete period override for specific ADX tables (in days). If null, falls back to DB default."
+  default     = null
+}
+
+variable "adx_table_hot_cache_period_days" {
+  type        = number
+  description = "Hot cache period override for specific ADX tables (in days). If null, falls back to DB default."
+  default     = null
 }

@@ -1,0 +1,15 @@
+{
+    "name": "mdc_citizen_consents",
+    "properties": {
+        "linkedServiceName": {
+          "referenceName": "mdc-CosmosDB-mdc-ls",
+          "type": "LinkedServiceReference"
+        },
+        "annotations": [],
+        "type": "CosmosDbMongoDbApiCollection",
+        "typeProperties": {
+          "collection": "citizen_consents"
+        }
+    },
+    "type": "Microsoft.DataFactory/factories/datasets"
+}

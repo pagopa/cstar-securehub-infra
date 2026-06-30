@@ -73,9 +73,7 @@
               },
               "timeContextFromParameter": "evaluation_window",
               "defaultValue": "value::all",
-              "value": [
-                "value::all"
-              ],
+              "value": null,
               "queryType": 0,
               "resourceType": "microsoft.operationalinsights/workspaces"
             }
@@ -108,8 +106,8 @@
                 "queryType": 0,
                 "resourceType": "microsoft.operationalinsights/workspaces",
                 "crossComponentResources": [
-                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-law",
-                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law",
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-law"
                 ],
                 "visualization": "piechart",
                 "chartSettings": {
@@ -195,6 +193,7 @@
                 "title": "❌ Distribuzione Errori 400 per Subject",
                 "noDataMessageStyle": 3,
                 "timeContextFromParameter": "evaluation_window",
+                "showExportToExcel": true,
                 "queryType": 0,
                 "resourceType": "microsoft.operationalinsights/workspaces",
                 "crossComponentResources": [
@@ -216,6 +215,7 @@
                 "title": "❌ Distribuzione Altri Errori (esclusi 400) per Service Provider",
                 "noDataMessageStyle": 3,
                 "timeContextFromParameter": "evaluation_window",
+                "showExportToExcel": true,
                 "queryType": 0,
                 "resourceType": "microsoft.operationalinsights/workspaces",
                 "crossComponentResources": [
@@ -229,18 +229,44 @@
               }
             },
             {
+              "type": 9,
+              "content": {
+                "version": "KqlParameterItem/1.0",
+                "parameters": [
+                  {
+                    "id": "c3d4e5f6-aaaa-bbbb-cccc-222233334444",
+                    "version": "KqlParameterItem/1.0",
+                    "name": "activations_bin_size",
+                    "label": "Granularità temporale",
+                    "type": 2,
+                    "isRequired": true,
+                    "typeSettings": {
+                      "additionalResourceOptions": [],
+                      "showDefault": false
+                    },
+                    "jsonData": "[{\"value\": \"5m\", \"label\": \"5 minuti\"}, {\"value\": \"15m\", \"label\": \"15 minuti\"}, {\"value\": \"1h\", \"label\": \"1 ora\"}, {\"value\": \"1d\", \"label\": \"1 giorno\"}, {\"value\": \"7d\", \"label\": \"7 giorni\"}]",
+                    "value": "1h"
+                  }
+                ],
+                "style": "pills",
+                "queryType": 0,
+                "resourceType": "microsoft.operationalinsights/workspaces"
+              },
+              "name": "parameters - bin-size"
+            },
+            {
               "type": 3,
               "content": {
                 "version": "KqlItem/1.0",
-                "query": "let validOps = \n    AppDependencies\n    | where TimeGenerated {evaluation_window:query}\n    | where Name startswith \"POST\" and Name contains \"/rtpactivator/activations\"\n    | distinct OperationId;\n\nlet deps =\n    AppDependencies\n    | where Name startswith \"POST\" and Name contains \"/rtpactivator/activations\"\n    | extend JWT_Subject = tostring(Properties[\"Request-X-JWT-Subject\"])\n    | summarize JWT_Subject = any(JWT_Subject) by OperationId;\n\nAppRequests\n| where TimeGenerated {evaluation_window:query}\n| where AppRoleName == \"rtp-activator\"\n| where Name startswith \"POST\" and Name contains \"activations\"\n| join kind=inner validOps on OperationId\n| where ResultCode != \"409\"\n| project OperationId, TimeGenerated, ResultCode\n| join kind=leftouter deps on OperationId\n| extend JWT_Subject = iif(isempty(JWT_Subject), \"UNKNOWN\", JWT_Subject)\n| where JWT_Subject in ({SubjectParam})\n| extend Esito = iif(ResultCode == \"201\", \"✅ Successo\", \"❌ Fallimento\")\n| summarize Conteggio = count() by bin(TimeGenerated, 1h), Serie = strcat(JWT_Subject, \" - \", Esito)\n| render timechart with (series=Serie, title=\"Attivazioni nel tempo\")",
+                "query": "let validOps = \n    AppDependencies\n    | where TimeGenerated {evaluation_window:query}\n    | where Name startswith \"POST\" and Name contains \"/rtpactivator/activations\"\n    | distinct OperationId;\n\nlet deps =\n    AppDependencies\n    | where Name startswith \"POST\" and Name contains \"/rtpactivator/activations\"\n    | extend JWT_Subject = tostring(Properties[\"Request-X-JWT-Subject\"])\n    | summarize JWT_Subject = any(JWT_Subject) by OperationId;\n\nAppRequests\n| where TimeGenerated {evaluation_window:query}\n| where AppRoleName == \"rtp-activator\"\n| where Name startswith \"POST\" and Name contains \"activations\"\n| join kind=inner validOps on OperationId\n| where ResultCode != \"409\"\n| project OperationId, TimeGenerated, ResultCode\n| join kind=leftouter deps on OperationId\n| extend JWT_Subject = iif(isempty(JWT_Subject), \"UNKNOWN\", JWT_Subject)\n| where JWT_Subject in ({SubjectParam})\n| extend Esito = iif(ResultCode == \"201\", \"✅ Successo\", \"❌ Fallimento\")\n| summarize Conteggio = count() by bin(TimeGenerated, {activations_bin_size}), Serie = strcat(JWT_Subject, \" - \", Esito)\n| render timechart with (series=Serie, title=\"Attivazioni nel tempo\")",
                 "size": 0,
-                "title": "Attivazioni nel tempo (Successi vs Fallimenti) in bin 1 ora",
+                "title": "Attivazioni nel tempo (Successi vs Fallimenti)",
                 "noDataMessageStyle": 3,
                 "queryType": 0,
                 "resourceType": "microsoft.operationalinsights/workspaces",
                 "crossComponentResources": [
-                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law",
-                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-law"
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-law",
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
                 ],
                 "visualization": "timechart",
                 "chartSettings": {
@@ -272,8 +298,8 @@
                 "queryType": 0,
                 "resourceType": "microsoft.operationalinsights/workspaces",
                 "crossComponentResources": [
-                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-law",
-                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law",
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-law"
                 ],
                 "visualization": "unstackedbar",
                 "chartSettings": {
@@ -332,7 +358,7 @@
               "type": 3,
               "content": {
                 "version": "KqlItem/1.0",
-                "query": "AppTraces\n| where AppRoleName == \"rtp-activator\"\n| where TimeGenerated {evaluation_window:query}\n| where Message hasprefix \"Error during activation process Authenticated user doesn't have permission to perform this action\"\n| extend tokenSpId = extract(@\"tokenSpId:\\s*([^\\s]+)\", 1, Message)\n| extend props = todynamic(Properties)\n| extend serviceProvider = tostring(props[\"service_provider\"])\n| where isnotempty(tokenSpId) and isnotempty(serviceProvider)\n| summarize\n    ['Error Count'] = count(),\n    ['Service Providers'] = make_set(serviceProvider, 100)\n  by ['Token SP ID'] = tostring(tokenSpId)\n| order by ['Error Count'] desc\n",
+                "query": "AppTraces\n| where AppRoleName == \"rtp-activator\"\n| where TimeGenerated {evaluation_window:query}\n| where Message has \"Error during activation process for SP\"\n| where Message has \"Authenticated user doesn't have permission to perform this action\"\n| extend props = todynamic(Properties)\n| extend tokenSpId = tostring(props[\"sub_token\"])\n| extend bodySpId = extract(@\"Error during activation process for SP\\s+([^:]+):\", 1, Message)\n| where isnotempty(tokenSpId) and isnotempty(bodySpId)\n| where tokenSpId != bodySpId\n| summarize ['Error Count'] = count()\n  by ['Token SP ID'] = tokenSpId, ['Body SP ID'] = bodySpId\n| order by ['Error Count'] desc",
                 "size": 1,
                 "title": "❌ Mismatch del Service Provider tra Token e Body",
                 "noDataMessageStyle": 3,
@@ -347,6 +373,22 @@
               "styleSettings": {
                 "showBorder": true
               }
+            },
+            {
+              "type": 3,
+              "content": {
+                "version": "KqlItem/1.0",
+                "query": "AppExceptions\n| where AppRoleName == 'rtp-activator'\n| where TimeGenerated {evaluation_window:query}\n| summarize\n    [\"Occorrenze\"] = count(),\n    [\"Ultimo messaggio\"] = arg_max(TimeGenerated, OuterMessage, OperationId)\n    by [\"Tipo eccezione\"] = ExceptionType\n| project\n    [\"Tipo eccezione\"],\n    [\"Occorrenze\"],\n    [\"Ultimo messaggio\"] = OuterMessage,\n    [\"Ultimo OperationId\"] = OperationId\n| sort by [\"Occorrenze\"] desc",
+                "size": 0,
+                "title": "Eccezioni Java rtp-activator (AppExceptions)",
+                "showExportToExcel": true,
+                "queryType": 0,
+                "resourceType": "microsoft.operationalinsights/workspaces",
+                "crossComponentResources": [
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
+                ]
+              },
+              "name": "Eccezioni Java rtp-activator (AppExceptions)"
             },
             {
               "type": 3,
@@ -540,6 +582,7 @@
                 "title": "❌ Subentri falliti per Activation ID",
                 "noDataMessageStyle": 3,
                 "timeContextFromParameter": "evaluation_window",
+                "showExportToExcel": true,
                 "queryType": 0,
                 "resourceType": "microsoft.operationalinsights/workspaces",
                 "crossComponentResources": [
@@ -561,6 +604,7 @@
                 "title": "❌ Distribuzione Altri Errori (esclusi 400) per Service Provider",
                 "noDataMessageStyle": 3,
                 "timeContextFromParameter": "evaluation_window",
+                "showExportToExcel": true,
                 "queryType": 0,
                 "resourceType": "microsoft.operationalinsights/workspaces",
                 "crossComponentResources": [
@@ -574,12 +618,38 @@
               }
             },
             {
+              "type": 9,
+              "content": {
+                "version": "KqlParameterItem/1.0",
+                "parameters": [
+                  {
+                    "id": "c3d4e5f6-aaaa-bbbb-cccc-222233334444",
+                    "version": "KqlParameterItem/1.0",
+                    "name": "activations_bin_size",
+                    "label": "Granularità temporale",
+                    "type": 2,
+                    "isRequired": true,
+                    "typeSettings": {
+                      "additionalResourceOptions": [],
+                      "showDefault": false
+                    },
+                    "jsonData": "[{\"value\": \"5m\", \"label\": \"5 minuti\"}, {\"value\": \"15m\", \"label\": \"15 minuti\"}, {\"value\": \"1h\", \"label\": \"1 ora\"}, {\"value\": \"1d\", \"label\": \"1 giorno\"}, {\"value\": \"7d\", \"label\": \"7 giorni\"}]",
+                    "value": "1h"
+                  }
+                ],
+                "style": "pills",
+                "queryType": 0,
+                "resourceType": "microsoft.operationalinsights/workspaces"
+              },
+              "name": "parameters - bin-size"
+            },
+            {
               "type": 3,
               "content": {
                 "version": "KqlItem/1.0",
-                "query": "let validOps = \n    AppDependencies\n    | where TimeGenerated {evaluation_window:query}\n    | where Name has \"POST /rtpactivator/activations\" and Name has \"takeover\"\n    | distinct OperationId;\n\nAppRequests\n| where TimeGenerated {evaluation_window:query}\n| where AppRoleName == \"rtp-activator\"\n| where Name startswith \"POST\" and Name contains \"takeover\"\n| join kind=inner validOps on OperationId\n| project OperationId, TimeGenerated, ResultCode\n| join kind=leftouter (\n    AppDependencies\n    | where Name has \"takeover\"\n    | extend JWT_Subject = tostring(Properties[\"Request-X-JWT-Subject\"])\n    | project OperationId, JWT_Subject\n) on OperationId\n| extend JWT_Subject = iif(isempty(JWT_Subject), \"UNKNOWN\", JWT_Subject)\n| where JWT_Subject in ({SubjectParam})\n| extend Esito = iif(ResultCode == \"201\", \"✅ Successo\", \"❌ Fallimento\")\n| summarize Conteggio = count() by bin(TimeGenerated, 1h), Serie = strcat(JWT_Subject, \" - \", Esito)\n| render timechart with (series=Serie)",
+                "query": "let validOps = \n    AppDependencies\n    | where TimeGenerated {evaluation_window:query}\n    | where Name has \"POST /rtpactivator/activations\" and Name has \"takeover\"\n    | distinct OperationId;\n\nAppRequests\n| where TimeGenerated {evaluation_window:query}\n| where AppRoleName == \"rtp-activator\"\n| where Name startswith \"POST\" and Name contains \"takeover\"\n| join kind=inner validOps on OperationId\n| project OperationId, TimeGenerated, ResultCode\n| join kind=leftouter (\n    AppDependencies\n    | where Name has \"takeover\"\n    | extend JWT_Subject = tostring(Properties[\"Request-X-JWT-Subject\"])\n    | project OperationId, JWT_Subject\n) on OperationId\n| extend JWT_Subject = iif(isempty(JWT_Subject), \"UNKNOWN\", JWT_Subject)\n| where JWT_Subject in ({SubjectParam})\n| extend Esito = iif(ResultCode == \"201\", \"✅ Successo\", \"❌ Fallimento\")\n| summarize Conteggio = count() by bin(TimeGenerated, {activations_bin_size}), Serie = strcat(JWT_Subject, \" - \", Esito)\n| render timechart with (series=Serie)",
                 "size": 0,
-                "title": "Subentri nel tempo (Successi vs Fallimenti) in bin 1 ora",
+                "title": "Subentri nel tempo (Successi vs Fallimenti)",
                 "noDataMessageStyle": 3,
                 "queryType": 0,
                 "resourceType": "microsoft.operationalinsights/workspaces",
@@ -613,11 +683,12 @@
                 "size": 0,
                 "title": "❌ Accessi falliti al Service Registry per recupero SP",
                 "noDataMessageStyle": 3,
+                "showExportToExcel": true,
                 "queryType": 0,
                 "resourceType": "microsoft.operationalinsights/workspaces",
                 "crossComponentResources": [
-                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law",
-                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-law"
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-law",
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
                 ],
                 "visualization": "table"
               },
@@ -635,11 +706,12 @@
                 "size": 0,
                 "title": "✅ Accessi con successo al Service Registry per recupero SP",
                 "noDataMessageStyle": 3,
+                "showExportToExcel": true,
                 "queryType": 0,
                 "resourceType": "microsoft.operationalinsights/workspaces",
                 "crossComponentResources": [
-                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law",
-                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-law"
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-law",
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
                 ],
                 "visualization": "table"
               },
@@ -657,11 +729,12 @@
                 "size": 0,
                 "title": "📤 Tentativi di invio notifica per Service Provider",
                 "noDataMessageStyle": 3,
+                "showExportToExcel": true,
                 "queryType": 0,
                 "resourceType": "microsoft.operationalinsights/workspaces",
                 "crossComponentResources": [
-                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law",
-                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-law"
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-law",
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
                 ],
                 "visualization": "table"
               },
@@ -679,11 +752,12 @@
                 "size": 0,
                 "title": "✅ Invio notifica con successo per Service Provider",
                 "noDataMessageStyle": 3,
+                "showExportToExcel": true,
                 "queryType": 0,
                 "resourceType": "microsoft.operationalinsights/workspaces",
                 "crossComponentResources": [
-                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law",
-                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-law"
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-law",
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
                 ],
                 "visualization": "table"
               },
@@ -701,11 +775,12 @@
                 "size": 0,
                 "title": "❌ Invio notifica fallito per Service Provider",
                 "noDataMessageStyle": 3,
+                "showExportToExcel": true,
                 "queryType": 0,
                 "resourceType": "microsoft.operationalinsights/workspaces",
                 "crossComponentResources": [
-                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-law",
-                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law",
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-law"
                 ],
                 "visualization": "table"
               },
@@ -826,11 +901,12 @@
                 "size": 0,
                 "title": "❌ Disattivazioni fallite per Activation ID",
                 "noDataMessageStyle": 3,
+                "showExportToExcel": true,
                 "queryType": 0,
                 "resourceType": "microsoft.operationalinsights/workspaces",
                 "crossComponentResources": [
-                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law",
-                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-law"
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-law",
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
                 ],
                 "visualization": "table",
                 "gridSettings": {
@@ -862,6 +938,7 @@
                 "title": "❌ Distribuzione Altri Errori (esclusi 400) per Service Provider",
                 "noDataMessageStyle": 3,
                 "timeContextFromParameter": "evaluation_window",
+                "showExportToExcel": true,
                 "queryType": 0,
                 "resourceType": "microsoft.operationalinsights/workspaces",
                 "crossComponentResources": [
@@ -875,12 +952,38 @@
               }
             },
             {
+              "type": 9,
+              "content": {
+                "version": "KqlParameterItem/1.0",
+                "parameters": [
+                  {
+                    "id": "c3d4e5f6-aaaa-bbbb-cccc-222233334444",
+                    "version": "KqlParameterItem/1.0",
+                    "name": "activations_bin_size",
+                    "label": "Granularità temporale",
+                    "type": 2,
+                    "isRequired": true,
+                    "typeSettings": {
+                      "additionalResourceOptions": [],
+                      "showDefault": false
+                    },
+                    "jsonData": "[{\"value\": \"5m\", \"label\": \"5 minuti\"}, {\"value\": \"15m\", \"label\": \"15 minuti\"}, {\"value\": \"1h\", \"label\": \"1 ora\"}, {\"value\": \"1d\", \"label\": \"1 giorno\"}, {\"value\": \"7d\", \"label\": \"7 giorni\"}]",
+                    "value": "1h"
+                  }
+                ],
+                "style": "pills",
+                "queryType": 0,
+                "resourceType": "microsoft.operationalinsights/workspaces"
+              },
+              "name": "parameters - bin-size"
+            },
+            {
               "type": 3,
               "content": {
                 "version": "KqlItem/1.0",
-                "query": "let validOps = \n    AppDependencies\n    | where TimeGenerated {evaluation_window:query}\n    | where Name has \"DELETE /rtpactivator/activations/\"\n    | distinct OperationId;\n\nAppRequests\n| where TimeGenerated {evaluation_window:query}\n| where AppRoleName == \"rtp-activator\"\n| where Name has \"DELETE\" and Name contains \"activations\"\n| join kind=inner validOps on OperationId\n| project OperationId, TimeGenerated, ResultCode\n| join kind=leftouter (\n    AppDependencies\n    | where Name has \"DELETE /rtpactivator/activations/\"\n    | extend JWT_Subject = tostring(Properties[\"Request-X-JWT-Subject\"])\n    | project OperationId, JWT_Subject\n) on OperationId\n| extend JWT_Subject = iif(isempty(JWT_Subject), \"UNKNOWN\", JWT_Subject)\n| where JWT_Subject in ({SubjectParam})\n| extend Esito = iif(ResultCode == \"204\", \"✅ Successo\", \"❌ Fallimento\")\n| summarize Conteggio = count() by bin(TimeGenerated, 1h), Serie = strcat(JWT_Subject, \" - \", Esito)\n| render timechart with (series=Serie)",
+                "query": "let validOps = \n    AppDependencies\n    | where TimeGenerated {evaluation_window:query}\n    | where Name has \"DELETE /rtpactivator/activations/\"\n    | distinct OperationId;\n\nAppRequests\n| where TimeGenerated {evaluation_window:query}\n| where AppRoleName == \"rtp-activator\"\n| where Name has \"DELETE\" and Name contains \"activations\"\n| join kind=inner validOps on OperationId\n| project OperationId, TimeGenerated, ResultCode\n| join kind=leftouter (\n    AppDependencies\n    | where Name has \"DELETE /rtpactivator/activations/\"\n    | extend JWT_Subject = tostring(Properties[\"Request-X-JWT-Subject\"])\n    | project OperationId, JWT_Subject\n) on OperationId\n| extend JWT_Subject = iif(isempty(JWT_Subject), \"UNKNOWN\", JWT_Subject)\n| where JWT_Subject in ({SubjectParam})\n| extend Esito = iif(ResultCode == \"204\", \"✅ Successo\", \"❌ Fallimento\")\n| summarize Conteggio = count() by bin(TimeGenerated, {activations_bin_size}), Serie = strcat(JWT_Subject, \" - \", Esito)\n| render timechart with (series=Serie)",
                 "size": 0,
-                "title": "Disattivazioni nel tempo (Successi vs Fallimenti) in bin di 1 ora",
+                "title": "Disattivazioni nel tempo (Successi vs Fallimenti)",
                 "noDataMessageStyle": 3,
                 "queryType": 0,
                 "resourceType": "microsoft.operationalinsights/workspaces",
@@ -1066,10 +1169,36 @@
               "name": "Esito accessi a MongoDB"
             },
             {
+              "type": 9,
+              "content": {
+                "version": "KqlParameterItem/1.0",
+                "parameters": [
+                  {
+                    "id": "c3d4e5f6-aaaa-bbbb-cccc-222233334444",
+                    "version": "KqlParameterItem/1.0",
+                    "name": "activations_bin_size",
+                    "label": "Granularità temporale",
+                    "type": 2,
+                    "isRequired": true,
+                    "typeSettings": {
+                      "additionalResourceOptions": [],
+                      "showDefault": false
+                    },
+                    "jsonData": "[{\"value\": \"5m\", \"label\": \"5 minuti\"}, {\"value\": \"15m\", \"label\": \"15 minuti\"}, {\"value\": \"1h\", \"label\": \"1 ora\"}, {\"value\": \"1d\", \"label\": \"1 giorno\"}, {\"value\": \"7d\", \"label\": \"7 giorni\"}]",
+                    "value": "1h"
+                  }
+                ],
+                "style": "pills",
+                "queryType": 0,
+                "resourceType": "microsoft.operationalinsights/workspaces"
+              },
+              "name": "parameters - bin-size"
+            },
+            {
               "type": 3,
               "content": {
                 "version": "KqlItem/1.0",
-                "query": "AppDependencies\n| where TimeGenerated {evaluation_window:query}\n| where AppRoleName == 'rtp-activator'\n| where Target == 'mongodb | activation'\n| extend Esito = case(tostring(Success) == 'True', '✅ Successo', '⚠️ Duplicato')\n| summarize Conteggio = count() by bin(TimeGenerated, 1h), Esito\n| order by TimeGenerated asc",
+                "query": "AppDependencies\n| where TimeGenerated {evaluation_window:query}\n| where AppRoleName == 'rtp-activator'\n| where Target == 'mongodb | activation'\n| extend Esito = case(tostring(Success) == 'True', '✅ Successo', '⚠️ Duplicato')\n| summarize Conteggio = count() by bin(TimeGenerated, {activations_bin_size}), Esito\n| order by TimeGenerated asc",
                 "size": 0,
                 "title": "Salvataggi su MongoDB nel Tempo - Successi vs Duplicati (rtp-activator → activation)",
                 "queryType": 0,

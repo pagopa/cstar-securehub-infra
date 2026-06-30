@@ -1,7 +1,8 @@
 locals {
-  project      = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
-  project_core = "${var.prefix}-${var.env_short}-${var.location_short}-core"
-  product      = "${var.prefix}-${var.env_short}"
+  project           = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
+  project_core      = "${var.prefix}-${var.env_short}-${var.location_short}-core"
+  product           = "${var.prefix}-${var.env_short}"
+  product_no_domain = "${var.prefix}-${var.env_short}-${var.location_short}"
 
   monitor_appinsights_name        = "${local.product}-appinsights"
   monitor_action_group_slack_name = "SlackPagoPA"
@@ -37,6 +38,10 @@ locals {
   aks_name                = "${local.product}-${var.location_short}-${var.env}-aks"
   aks_resource_group_name = "${local.product}-${var.location_short}-core-aks-rg"
 
+  # Data Explorer
+  kusto_cluster_name    = "${local.product_no_domain}-platform"
+  kusto_cluster_rg_name = "${local.product_no_domain}-platform-data-rg"
+
   # DOMAINS
   domain_namespace = var.domain
   data_rg_name     = "${local.project}-data-rg"
@@ -44,7 +49,19 @@ locals {
   #
   # IDPAY
   #
-  idpay_ingress_url = "${var.domain}.${var.location_short}.${var.dns_zone_internal_prefix}.${var.external_domain}"
+  idpay_ingress_url              = "${var.domain}.${var.location_short}.${var.dns_zone_internal_prefix}.${var.external_domain}"
+  idpay_payment_service_url      = "http://idpay-payment-microservice-chart.${local.domain_namespace}.svc.cluster.local:8080"
+  idpay_transactions_service_url = "http://idpay-transactions-microservice-chart.${local.domain_namespace}.svc.cluster.local:8080"
+  idpay_wallet_service_url       = "http://idpay-wallet-microservice-chart.${local.domain_namespace}.svc.cluster.local:8080"
+  idpay_transactions_curl_args = [
+    "--silent",
+    "--show-error",
+    "--fail",
+    "--connect-timeout", "10",
+  ]
+  idpay_transactions_job_deadline_seconds = 3600
+  idpay_batch_curl_args                   = local.idpay_transactions_curl_args
+  idpay_batch_job_deadline_seconds        = local.idpay_transactions_job_deadline_seconds
 
   #
   # Eventhub
@@ -81,4 +98,33 @@ locals {
       var.env_short != "p" ? ["https://localhost:3000", "http://localhost:3000", "https://localhost:3001", "http://localhost:3001"] : []
     )
   }
+
+  # ----------------------------------------------------------------------------
+  # GITHUB RUNNERS
+  # ----------------------------------------------------------------------------
+
+  #
+  # List of GitHub repositories which need self-hosted runners.
+  #
+  github_repositories_with_self_hosted_runners = [
+    {
+      name : "mcshared-datavault-test",
+      short_name : "datavault-test"
+    },
+    {
+      name : "mcshared-datavault",
+      short_name : "datavault"
+    }
+  ]
+
+  #
+  # Data of Container Apps Environment for GitHub Runners.
+  #
+  gh_runners_cae_name = "${var.prefix}-${var.env_short}-${var.location_short}-platform-github-cae"
+  gh_runners_cae_rg   = "${var.prefix}-${var.env_short}-${var.location_short}-platform-compute-rg"
+
+  #
+  # Name of the secret that contains the GitHub token.
+  #
+  gh_token_secret = "idpay-bot-github-self-hosted-runners-TOKEN"
 }

@@ -1,0 +1,8 @@
+{
+  "name": "mdc_retrieval_snapshot",
+  "properties": {
+    "type": "AzureDataExplorerTable",
+    "linkedServiceName": { "referenceName": "mdc-Kusto-mdc-ls", "type": "LinkedServiceReference" },
+    "typeProperties": { "table": "RetrievalIdVolumeSnapshot" }
+  }
+}

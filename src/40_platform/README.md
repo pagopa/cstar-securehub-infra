@@ -9,6 +9,10 @@
 | <a name="requirement_azapi"></a> [azapi](#requirement\_azapi) | ~> 2.6.0 |
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | ~> 3.0 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 4.0 |
+| <a name="requirement_external"></a> [external](#requirement\_external) | ~> 2.0 |
+| <a name="requirement_grafana"></a> [grafana](#requirement\_grafana) | ~> 3.0 |
+| <a name="requirement_helm"></a> [helm](#requirement\_helm) | ~> 2.0 |
+| <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | ~> 2.0 |
 | <a name="requirement_null"></a> [null](#requirement\_null) | ~> 3.0 |
 | <a name="requirement_random"></a> [random](#requirement\_random) | ~> 3.0 |
 
@@ -16,11 +20,11 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_argocd"></a> [argocd](#provider\_argocd) | 7.12.5 |
+| <a name="provider_argocd"></a> [argocd](#provider\_argocd) | 7.15.3 |
 | <a name="provider_azapi"></a> [azapi](#provider\_azapi) | 2.6.1 |
-| <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 3.7.0 |
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.58.0 |
-| <a name="provider_external"></a> [external](#provider\_external) | 2.3.5 |
+| <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 3.8.0 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.73.0 |
+| <a name="provider_external"></a> [external](#provider\_external) | 2.4.0 |
 | <a name="provider_helm"></a> [helm](#provider\_helm) | 2.17.0 |
 | <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | 2.38.0 |
 
@@ -28,7 +32,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | 346504d04529ccc269b63aaa42c1ee537e4a03d2 |
+| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | c474c98742d71e8829292e38e2a5b9f73e23163f |
 | <a name="module_adf_snet"></a> [adf\_snet](#module\_adf\_snet) | ./.terraform/modules/__v4__/IDH/subnet | n/a |
 | <a name="module_adx_snet"></a> [adx\_snet](#module\_adx\_snet) | ./.terraform/modules/__v4__/IDH/subnet | n/a |
 | <a name="module_argocd"></a> [argocd](#module\_argocd) | ./.terraform/modules/__v4__/kubernetes_argocd_setup | n/a |
@@ -103,6 +107,8 @@
 | [azurerm_private_dns_zone.internal](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/private_dns_zone) | data source |
 | [azurerm_private_dns_zone.kusto](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/private_dns_zone) | data source |
 | [azurerm_private_dns_zone.privatelink_servicebus_windows_net](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/private_dns_zone) | data source |
+| [azurerm_private_dns_zone.storage_account_blob](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/private_dns_zone) | data source |
+| [azurerm_private_dns_zone.storage_account_queue](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/private_dns_zone) | data source |
 | [azurerm_private_dns_zone.storage_account_table](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/private_dns_zone) | data source |
 | [azurerm_subscription.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subscription) | data source |
 | [azurerm_user_assigned_identity.iac_federated_azdo](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/user_assigned_identity) | data source |
