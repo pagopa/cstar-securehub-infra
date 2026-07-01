@@ -93,6 +93,41 @@ variable "law_daily_quota_gb" {
   default     = -1
 }
 
+# 🗄️ Compliance / Audit — archiviazione log su Blob Storage
+variable "audit_export_enabled" {
+  type        = bool
+  description = "If true, exports the tracing tables to a dedicated Cool Blob Storage account for long-term audit retention. Enable in prod; can be disabled in dev/uat to avoid any cost."
+  default     = false
+}
+
+variable "audit_logs_retention_days" {
+  type        = number
+  description = "Number of days the exported audit logs are kept in Blob Storage before being permanently deleted by the lifecycle policy (compliance window, e.g. 180 days = 6 months)."
+  default     = 180
+  validation {
+    condition     = var.audit_logs_retention_days >= 1 && var.audit_logs_retention_days <= 3650
+    error_message = "Audit retention must be between 1 and 3650 days."
+  }
+}
+
+variable "audit_storage_account_replication_type" {
+  type        = string
+  description = "Replication type for the audit Storage Account. Use LRS for the cheapest option (dev/uat); ZRS/GRS for production durability/compliance."
+  default     = "LRS"
+  validation {
+    condition     = contains(["LRS", "GRS", "ZRS", "RAGRS", "GZRS"], var.audit_storage_account_replication_type)
+    error_message = "Must be one of: LRS, GRS, ZRS, RAGRS, GZRS."
+  }
+}
+
+# https://github.com/pagopa/terraform-azurerm-v4/blob/main/IDH/00_product_configs/cstar/uat/storage_account.yml
+variable "audit_storage_account_tier" {
+  type        = string
+  description = "Tier of the audit Storage Account."
+  default     = "basic_audit_cool"
+}
+
+
 variable "aks_nodepool" {
   type = object({
     vm_sku_name       = string
@@ -100,7 +135,7 @@ variable "aks_nodepool" {
     node_count_min    = number
     node_count_max    = number
   })
-  description = "Paramters for node pool"
+  description = "Parameters for node pool"
 }
 
 variable "cosmos_mongodb_params_weu" {
@@ -151,4 +186,20 @@ variable "additional_geo_locations" {
 variable "dns_zone_public_name" {
   type        = string
   description = "Public DNS zone name, e.g. 'dev.cstar.pagopa.it'"
+}
+
+variable "robots_indexed_paths" {
+  type        = list(string)
+  default     = []
+  description = "List of paths that should be indexed by robots. All others will get noindex header."
+}
+
+variable "backoffice_cdn_storage_replication_type" {
+  type        = string
+  default     = "LRS"
+  description = "Storage account replication type for the backoffice CDN. Use LRS for dev/uat, ZRS or GRS for prod."
+  validation {
+    condition     = contains(["LRS", "GRS", "ZRS", "RAGRS", "GZRS"], var.backoffice_cdn_storage_replication_type)
+    error_message = "Must be one of: LRS, GRS, ZRS, RAGRS, GZRS."
+  }
 }

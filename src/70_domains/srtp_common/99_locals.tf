@@ -46,7 +46,10 @@ locals {
   dns_zone_internal                = "internal.${local.dns_zone_name}"
   ingress_private_load_balancer_ip = "10.10.1.250"
 
-  repositories = ["rtp-sender", "rtp-activator", "rtp-consumer", "rtp-payees"]
+  repositories = concat(
+    ["rtp-sender", "rtp-activator", "rtp-consumer", "rtp-payees"],
+    var.env_short != "p" ? ["rtp-sender-v2"] : []
+  )
 
   # AKS
   aks_name                = "${local.project_no_domain}-${var.env}-aks"
@@ -84,6 +87,25 @@ locals {
             },
             {
               keys   = ["noticeNumber"]
+              unique = false
+            }
+          ]
+        }
+        rtp_failed_messages = {
+          autoscale_max_throughput          = null
+          cosmos_collections_max_throughput = null
+          default_ttl_seconds               = -1
+          indexes = [
+            {
+              keys   = ["_id"]
+              unique = true
+            },
+            {
+              keys   = ["message.nav"]
+              unique = false
+            },
+            {
+              keys   = ["createdAt"]
               unique = false
             }
           ]
@@ -177,17 +199,13 @@ locals {
     ]
   ])
 
-  # Data Factory
-  data_factory_name    = "${local.project_no_domain}-platform-adf"
-  data_factory_rg_name = "${local.project_no_domain}-platform-data-rg"
-
   # Data Explorer (ADX / Kusto)
   kusto_cluster_name    = "${local.project_no_domain}-platform"
   kusto_cluster_rg_name = "${local.project_no_domain}-platform-data-rg"
   kusto_database = {
     (var.domain) = {
-      hot_cache_period   = "P5D"
-      soft_delete_period = "P7D"
+      hot_cache_period   = "P${var.adx_db_hot_cache_period_days}D"
+      soft_delete_period = "P${var.adx_db_soft_delete_period_days}D"
     }
   }
 

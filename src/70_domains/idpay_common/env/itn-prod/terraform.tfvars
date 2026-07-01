@@ -21,9 +21,6 @@ cosmos_mongo_db_idpay_params = {
   max_throughput = 1000
 }
 
-### Redis Cache
-redis_idh_resource_tier = "standard_C1_v6"
-
 ### Service bus
 service_bus_namespace = {
   sku                          = "Premium"
@@ -106,3 +103,15 @@ additional_geo_locations = [{
   failover_priority = 1
   zone_redundant    = false
 }]
+
+## Postgres
+idpay_pgflex_params = {
+  enabled                                = false
+  idh_resource_tier                      = "PLACEHOLDER" #PLACEHOLDER, to be defined after sizing analysis
+  geo_replication_enabled                = false
+  zone                                   = 1
+  pgres_flex_pgbouncer_enabled           = true
+  pgres_flex_diagnostic_settings_enabled = false
+  auto_grow_enabled                      = false
+  storage_tier                           = "PLACEHOLDER"
+}

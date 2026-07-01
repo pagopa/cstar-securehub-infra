@@ -2,3 +2,54 @@
     fiscal_code: string,
     consents: dynamic
 )
+
+.create-merge table MessageVolumeSnapshot (
+    window_start: datetime,
+    message_total_count: long,
+    message_sent_count: long,
+    message_discarded_count: long,
+    sent_with_payment: long,
+    sent_without_payment: long,
+    discarded_with_payment: long,
+    discarded_without_payment: long
+)
+
+.alter table MessageVolumeSnapshot policy retention
+@'{"SoftDeletePeriod": "365.00:00:00", "Recoverability": "Enabled"}'
+
+.create-merge table RetrievalIdVolumeSnapshot (
+    window_start: datetime,
+    entity_id: string,
+    origin_id: string,
+    retrieval_count: long
+)
+
+.alter table RetrievalIdVolumeSnapshot policy retention
+@'{"SoftDeletePeriod": "365.00:00:00", "Recoverability": "Enabled"}'
+
+.create-merge table TppDataSnapshot (
+    tpp_id: string,
+    entity_id: string,
+    business_name: string
+)
+
+.create-merge table MessageSnapshot (
+    window_start: datetime,
+    entity_id: string,
+    origin_id: string,
+    message_state: string,
+    associated_payment: bool
+)
+
+.alter table MessageSnapshot policy retention
+@'{"SoftDeletePeriod": "365.00:00:00", "Recoverability": "Enabled"}'
+
+
+.create-merge table FinalizedMessageSnapshot (
+    window_start: datetime,
+    tpp_id:       string,
+    origin_id:    string
+)
+
+.alter table FinalizedMessageSnapshot policy retention
+    @'{"SoftDeletePeriod": "365.00:00:00", "Recoverability": "Enabled"}'

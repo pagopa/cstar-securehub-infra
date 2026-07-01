@@ -3,7 +3,7 @@
 ## Requirements
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >=1.10.0 |
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | ~> 3 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 4.32.0 |
@@ -15,7 +15,7 @@
 ## Providers
 
 | Name | Version |
-| ---- | ------- |
+|------|---------|
 | <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 3.4.0 |
 | <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.32.0 |
 | <a name="provider_helm"></a> [helm](#provider\_helm) | 2.17.0 |
@@ -26,8 +26,8 @@
 ## Modules
 
 | Name | Source | Version |
-| ---- | ------ | ------- |
-| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | 311a2259d5a0af6ffdde4a4f08f2761e3e7d7f53 |
+|------|--------|---------|
+| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | 1c2a05083cf3145d0edcea7371161e62c28654fa |
 | <a name="module_aks_user_keycloak_snet"></a> [aks\_user\_keycloak\_snet](#module\_aks\_user\_keycloak\_snet) | ./.terraform/modules/__v4__/IDH/subnet | n/a |
 | <a name="module_aks_user_node_pool_keycloak"></a> [aks\_user\_node\_pool\_keycloak](#module\_aks\_user\_node\_pool\_keycloak) | ./.terraform/modules/__v4__/IDH/aks_node_pool | n/a |
 | <a name="module_cert_mounter"></a> [cert\_mounter](#module\_cert\_mounter) | ./.terraform/modules/__v4__/cert_mounter | n/a |
@@ -40,7 +40,7 @@
 ## Resources
 
 | Name | Type |
-| ---- | ---- |
+|------|------|
 | [azurerm_key_vault_secret.keycloak_admin_password](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.keycloak_admin_username](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.keycloak_db_admin_password](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
@@ -93,7 +93,7 @@
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-| ---- | ----------- | ---- | ------- | :------: |
+|------|-------------|------|---------|:--------:|
 | <a name="input_aks_user_node_pool_keycloak"></a> [aks\_user\_node\_pool\_keycloak](#input\_aks\_user\_node\_pool\_keycloak) | n/a | <pre>object({<br/>    idh_resource_tier = string<br/>    node_count_min    = number<br/>    node_count_max    = number<br/>    os_disk_size_gb   = optional(number, null)<br/>    os_disk_type      = optional(string, null)<br/>  })</pre> | n/a | yes |
 | <a name="input_dns_zone_internal_prefix"></a> [dns\_zone\_internal\_prefix](#input\_dns\_zone\_internal\_prefix) | The dns subdomain. | `string` | `""` | no |
 | <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | n/a | yes |
@@ -101,7 +101,7 @@
 | <a name="input_env_short"></a> [env\_short](#input\_env\_short) | n/a | `string` | n/a | yes |
 | <a name="input_external_domain"></a> [external\_domain](#input\_external\_domain) | Domain for delegation | `string` | n/a | yes |
 | <a name="input_k8s_kube_config_path_prefix"></a> [k8s\_kube\_config\_path\_prefix](#input\_k8s\_kube\_config\_path\_prefix) | Kubernetes | `string` | `"~/.kube"` | no |
-| <a name="input_keycloak_configuration"></a> [keycloak\_configuration](#input\_keycloak\_configuration) | n/a | <pre>object({<br/>    image_repository                            = string<br/>    image_tag                                   = string<br/>    image_registry                              = string<br/>    chart_version                               = string<br/>    replica_count_min                           = number<br/>    replica_count_max                           = number<br/>    cpu_request                                 = string<br/>    cpu_limit                                   = string<br/>    memory_request                              = string<br/>    memory_limit                                = string<br/>    http_client_connection_ttl_millis           = number<br/>    http_client_connection_max_idle_time_millis = number<br/>    image_registry_config_cli                   = string<br/>    image_repository_config_cli                 = string<br/>    image_tag_config_cli                        = string<br/>  })</pre> | n/a | yes |
+| <a name="input_keycloak_configuration"></a> [keycloak\_configuration](#input\_keycloak\_configuration) | n/a | <pre>object({<br/>    image_repository                            = string<br/>    image_tag                                   = string<br/>    image_registry                              = string<br/>    chart_version                               = string<br/>    replica_count_min                           = number<br/>    replica_count_max                           = number<br/>    cpu_request                                 = string<br/>    cpu_limit                                   = string<br/>    memory_request                              = string<br/>    memory_limit                                = string<br/>    http_client_connection_ttl_millis           = number<br/>    http_client_connection_max_idle_time_millis = number<br/>    image_registry_config_cli                   = string<br/>    image_repository_config_cli                 = string<br/>    image_tag_config_cli                        = string<br/>    image_digest_config_cli                     = optional(string, "")<br/>  })</pre> | n/a | yes |
 | <a name="input_keycloak_pgflex_params"></a> [keycloak\_pgflex\_params](#input\_keycloak\_pgflex\_params) | Postgres Flexible | <pre>object({<br/>    enabled                                = bool<br/>    zone                                   = number<br/>    idh_resource_tier                      = string<br/>    geo_replication_enabled                = bool<br/>    pgres_flex_pgbouncer_enabled           = bool<br/>    pgres_flex_diagnostic_settings_enabled = bool<br/>    auto_grow_enabled                      = bool<br/>    storage_tier                           = optional(string, null)<br/>  })</pre> | n/a | yes |
 | <a name="input_location"></a> [location](#input\_location) | n/a | `string` | n/a | yes |
 | <a name="input_location_short"></a> [location\_short](#input\_location\_short) | Location short like eg: neu, weu.. | `string` | n/a | yes |

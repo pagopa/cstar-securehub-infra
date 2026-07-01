@@ -15,7 +15,7 @@ mcshared_dns_zone_prefix = "api-mcshared.dev"
 ## Postgres
 keycloak_pgflex_params = {
   enabled                                = true
-  idh_resource_tier                      = "pg_burst_flex2"
+  idh_resource_tier                      = "pgflex2"
   geo_replication_enabled                = false
   zone                                   = 2
   pgres_flex_pgbouncer_enabled           = false
@@ -36,9 +36,10 @@ keycloak_configuration = {
   memory_limit                                = "2Gi"
   http_client_connection_ttl_millis           = 180000
   http_client_connection_max_idle_time_millis = 180000
-  image_registry_config_cli                   = "public.ecr.aws"
-  image_repository_config_cli                 = "bitnami/keycloak-config-cli"
-  image_tag_config_cli                        = "6.4.0"
+  image_registry_config_cli                   = "docker.io"
+  image_repository_config_cli                 = "adorsys/keycloak-config-cli"
+  image_tag_config_cli                        = "6.4.0-26.1.0"
+  image_digest_config_cli                     = "sha256:6795d2cbf9ed7c96e9d19c39781d383d12df36b5cbe81f0024bca4fa4d392681"
 }
 
 aks_user_node_pool_keycloak = {

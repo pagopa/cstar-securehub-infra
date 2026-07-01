@@ -19,9 +19,6 @@ cosmos_mongo_db_idpay_params = {
   max_throughput = 1000
 }
 
-### Redis Cache
-redis_idh_resource_tier = "basic"
-
 #
 # Service bus
 #
@@ -97,3 +94,15 @@ oneidentity_base_url = "https://uat.oneid.pagopa.it"
 # DATA FACTORY API
 #
 data_factory_api_base_url = "https://api-io.uat.cstar.pagopa.it/idpay-itn/df"
+
+## Postgres
+idpay_pgflex_params = {
+  enabled                                = false
+  idh_resource_tier                      = "PLACEHOLDER" #PLACEHOLDER, to be defined after sizing analysis
+  geo_replication_enabled                = false
+  zone                                   = 1
+  pgres_flex_pgbouncer_enabled           = true
+  pgres_flex_diagnostic_settings_enabled = false
+  auto_grow_enabled                      = false
+  storage_tier                           = "PLACEHOLDER" #PLACEHOLDER, to be defined after sizing analysis
+}

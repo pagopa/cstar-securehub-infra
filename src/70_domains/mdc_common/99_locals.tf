@@ -6,7 +6,8 @@ locals {
   project_entra     = "${var.prefix}-${var.env_short}-${var.domain}"
 
   # 📊 Monitoring
-  monitoring_core_rg_name = "${local.project_core}-monitor-rg"
+  monitoring_core_rg_name      = "${local.project_core}-monitor-rg"
+  log_analytics_workspace_name = "${local.project}-law"
 
   monitor_action_group_slack = "SlackPagoPA"
   monitor_action_group_email = "PagoPA"
@@ -49,15 +50,27 @@ locals {
   mcshared_api_url = "https://api-mcshared.${local.public_dns_zone_name}"
 
   # 🔑 Keycloak
-  keycloak_external_hostname = "${local.mcshared_api_url}/auth-itn"
-  keycloak_realm_name        = var.domain
-  keycloak_realm_id          = module.keycloak_realms.realm_ids[var.domain]
+  keycloak_external_hostname     = "${local.mcshared_api_url}/auth-itn"
+  keycloak_realm_name            = var.domain
+  keycloak_realm_id              = module.keycloak_realms.realm_ids[var.domain]
+  selfcare_issuer                = var.env == "prod" ? "https://selfcare.${var.external_domain}" : "https://${var.env}.selfcare.${var.external_domain}"
+  keycloak_selfcare_idp_te       = var.env == "prod" ? "SelfCare IDP for TE" : "SelfCare ${var.env} IDP for TE"
+  keycloak_selfcare_idp_te_alias = var.env == "prod" ? "selfcare-jwt-grant" : "selfcare-${var.env}-jwt-grant"
 
   # Default Domain Resource Group
   data_rg    = "${local.project}-data-rg"
   monitor_rg = "${local.project}-monitoring-rg"
   network_rg = "${local.project}-network-rg"
 
+  # Audit Storage Account (vedi 12_audit_archive.tf)
+  audit_storage_account_name = substr("${replace(local.project, "-", "")}auditlogs", 0, 24)
+  audit_export_rule_name     = "${local.project}-audit-export"
+  app_insights_long_term_tables = [
+    "AppTraces",
+    "AppExceptions",
+    "AppRequests",
+    "AppDependencies",
+  ]
 
   ad_group_rbac = flatten([
     {

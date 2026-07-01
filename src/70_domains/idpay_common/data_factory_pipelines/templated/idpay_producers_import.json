@@ -1,0 +1,161 @@
+{
+  "name": "idpay_producers_import",
+  "properties": {
+    "activities": [
+      {
+        "name": "producersLookUp",
+        "type": "Lookup",
+        "dependsOn": [],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "userProperties": [],
+        "typeProperties": {
+          "source": {
+            "type": "DelimitedTextSource",
+            "storeSettings": {
+              "type": "AzureBlobStorageReadSettings",
+              "recursive": true,
+              "enablePartitionDiscovery": false
+            },
+            "formatSettings": {
+              "type": "DelimitedTextReadSettings"
+            }
+          },
+          "dataset": {
+            "referenceName": "df_import_producers_csv",
+            "type": "DatasetReference"
+          },
+          "firstRowOnly": false
+        }
+      },
+      {
+        "name": "Get_SubKey",
+        "type": "WebActivity",
+        "dependsOn": [
+          {
+            "activity": "producersMapping",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 3,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": true,
+          "secureInput": true
+        },
+        "userProperties": [],
+        "typeProperties": {
+          "method": "GET",
+          "headers": {
+            "Content-Type": "application/json"
+          },
+          "url": {
+            "value": "${kv_url}secrets/idpay-df-subscription-key?api-version=7.3",
+            "type": "Expression"
+          },
+          "connectVia": {
+            "referenceName": "AutoResolveIntegrationRuntime",
+            "type": "IntegrationRuntimeReference"
+          },
+          "authentication": {
+            "type": "MSI",
+            "resource": "https://vault.azure.net"
+          }
+        }
+      },
+      {
+        "name": "producersImport",
+        "type": "WebActivity",
+        "dependsOn": [
+          {
+            "activity": "Get_SubKey",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "userProperties": [],
+        "typeProperties": {
+          "method": "POST",
+          "headers": {
+            "Content-Type": "application/json",
+            "Ocp-Apim-Subscription-Key": {
+              "value": "@activity('Get_SubKey').output.value",
+              "type": "Expression"
+            }
+          },
+          "url": {
+            "value": "${data_factory_api_base_url}/producers",
+            "type": "Expression"
+          },
+          "connectVia": {
+            "referenceName": "AutoResolveIntegrationRuntime",
+            "type": "IntegrationRuntimeReference"
+          },
+          "body": {
+            "value": "@concat('{\"producers\":',string(variables('producers')),'}')",
+            "type": "Expression"
+          }
+        }
+      },
+      {
+        "name": "producersMapping",
+        "type": "ForEach",
+        "dependsOn": [
+          {
+            "activity": "producersLookUp",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "userProperties": [],
+        "typeProperties": {
+          "isSequential": true,
+          "items": {
+            "value": "@activity('producersLookUp').output.value",
+            "type": "Expression"
+          },
+          "activities": [
+            {
+              "name": "producer",
+              "type": "AppendVariable",
+              "dependsOn": [],
+              "userProperties": [],
+              "typeProperties": {
+                "variableName": "producers",
+                "value": {
+                  "value": "@json(concat('{','\"producerId\":\"',trim(string(item().producerId)),'\",','\"initiativeId\":\"',trim(string(item().initiativeId)),'\",','\"producerName\":\"',replace(replace(trim(string(item().producerName)),'\\','\\\\'),'\"','\\\"'),'\",','\"producerEmail\":\"',trim(string(item().producerEmail)),'\"','}'))",
+                  "type": "Expression"
+                }
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "variables": {
+      "producers": {
+        "type": "Array",
+        "defaultValue": []
+      }
+    },
+    "annotations": []
+  },
+  "type": "Microsoft.DataFactory/factories/pipelines"
+}

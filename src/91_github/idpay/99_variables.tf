@@ -1,24 +1,41 @@
-variable "prefix" {
-  type = string
-  validation {
-    condition = (
-      length(var.prefix) <= 6
-    )
-    error_message = "Max length is 6 chars."
-  }
-}
-
-variable "env_short" {
-  type = string
-  validation {
-    condition = (
-      length(var.env_short) <= 1
-    )
-    error_message = "Max length is 1 chars."
-  }
-}
-
-variable "location_short" {
+variable "env" {
   type        = string
-  description = "Location short like eg: neu, weu.."
+  description = "Environment"
+
+  validation {
+    condition     = contains(["dev", "uat", "prod"], var.env)
+    error_message = "Environment must be dev, uat, or prod."
+  }
+}
+
+variable "cicd_kv_name" {
+  type        = string
+  description = "Name of the Key Vault where the CI/CD secrets are stored."
+}
+
+variable "cicd_kv_rg" {
+  type        = string
+  description = "Name of the resource group where the CI/CD Key Vault is located."
+}
+
+variable "idpay_kv_name" {
+  type        = string
+  description = "Name of the Key Vault where the IDPay secrets are stored."
+}
+
+variable "idpay_kv_rg" {
+  type        = string
+  description = "Name of the resource group where the IDPay Key Vault is located."
+}
+
+variable "datavault_service_url" {
+  type        = string
+  description = "URL of the datavault service."
+  default     = null
+}
+
+variable "argo_cd_server" {
+  type        = string
+  description = "Server of the Argo CD (without https)."
+  default     = null
 }
