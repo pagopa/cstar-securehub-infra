@@ -21,6 +21,15 @@ resource "null_resource" "transaction_in_progress_connector" {
     checksum = filesha256("configs/kafka-connectors/transaction_in_progress_connector.json")
   }
   provisioner "local-exec" {
-    command = "bash update_connector.sh https://${local.idpay_ingress_url}/idpaykafkaconnect/connectors/transaction-in-progress-connector/config"
+    command = "bash update_connector.sh https://${local.idpay_ingress_url}/idpaykafkaconnect/connectors/transaction-in-progress-connector/config configs/kafka-connectors/transaction_in_progress_connector.json"
+  }
+}
+
+resource "null_resource" "transaction_connector" {
+  triggers = {
+    checksum = filesha256("configs/kafka-connectors/transaction_connector.json")
+  }
+  provisioner "local-exec" {
+    command = "bash update_connector.sh https://${local.idpay_ingress_url}/idpaykafkaconnect/connectors/transaction-outbox-connector/config configs/kafka-connectors/transaction_connector.json"
   }
 }
