@@ -33,12 +33,3 @@ resource "null_resource" "transaction_connector" {
     command = "bash update_connector.sh https://${local.idpay_ingress_url}/idpaykafkaconnect/connectors/transaction-outbox-connector/config configs/kafka-connectors/transaction_connector.json"
   }
 }
-
-resource "null_resource" "transaction_sink_connector" {
-  triggers = {
-    checksum = filesha256("configs/kafka-connectors/transaction_sink_connector.json")
-  }
-  provisioner "local-exec" {
-    command = "bash update_connector.sh https://${local.idpay_ingress_url}/idpaykafkaconnect/connectors/transaction-outbox-sink-connector/config configs/kafka-connectors/transaction_sink_connector.json"
-  }
-}
