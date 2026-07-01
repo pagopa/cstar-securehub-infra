@@ -12,7 +12,7 @@
   "slot.name": "idpay_outbox_slot",
   "table.include.list": "idpay.transaction_outbox",
   "topic.prefix": "idpay",
-  "snapshot.mode": "never",
+  "snapshot.mode": "initial",
   "transforms": "unwrap,route",
   "transforms.unwrap.type": "io.debezium.transforms.ExtractNewRecordState",
   "transforms.unwrap.drop.tombstones": "true",
