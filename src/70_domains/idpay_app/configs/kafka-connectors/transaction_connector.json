@@ -1,0 +1,36 @@
+{
+  "name": "idpay-transaction-outbox-cdc",
+  "config": {
+    "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
+
+    "database.hostname": "${env:POSTGRES_HOST}",
+    "database.port": "5432",
+    "database.user": "idpaydbadmin",
+    "database.password": "${env:POSTGRES_PASSWORD}",
+    "database.dbname": "postgres",
+
+    "plugin.name": "pgoutput",
+
+    "publication.name": "idpay_outbox_pub",
+    "slot.name": "idpay_outbox_slot",
+
+    "table.include.list": "idpay.transaction_outbox",
+
+    "topic.prefix": "idpay",
+
+    "tombstones.on.delete": "false",
+
+    "transforms": "unwrap,route",
+
+    "transforms.unwrap.type": "io.debezium.transforms.ExtractNewRecordState",
+    "transforms.unwrap.drop.tombstones": "true",
+    "transforms.unwrap.delete.handling.mode": "rewrite",
+
+    "transforms.route.type": "org.apache.kafka.connect.transforms.RegexRouter",
+    "transforms.route.regex": "idpay\\.idpay\\.transaction_outbox",
+    "transforms.route.replacement": "idpay-transaction",
+
+    "key.converter": "org.apache.kafka.connect.storage.StringConverter",
+    "value.converter": "org.apache.kafka.connect.storage.StringConverter"
+  }
+}
