@@ -1,0 +1,440 @@
+:root {
+  --pagopa-primary-blue: #0073e6;
+  --pagopa-light-grey-bg: #f5f7fa;
+  --pagopa-text-dark: #17324d;
+  --pagopa-border-color: #e3e7eb;
+  --pagopa-white: #ffffff;
+  --pagopa-box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.08);
+  --pagopa-primary-blue-hover: #005bb8;
+  --pagopa-oid4vp-page-bg: #f2f2f2;
+  --pagopa-oid4vp-text-muted: #455b71;
+  --pagopa-oid4vp-card-border: #d9dee6;
+  --pagopa-oid4vp-card-shadow: 0 4px 14px rgba(23, 50, 77, 0.18);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body.pagopa-oid4vp-body {
+  margin: 0;
+  font-family: "Titillium Web", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  background: var(--pagopa-light-grey-bg);
+  color: var(--pagopa-text-dark);
+}
+
+.page-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  background: var(--pagopa-white);
+  border-bottom: 1px solid var(--pagopa-border-color);
+  padding: 16px 48px;
+}
+
+.header-logo {
+  font-weight: 700;
+}
+
+.main-content {
+  flex: 1;
+  padding: 40px 20px;
+}
+
+.pagopa-oid4vp-shell .pf-v5-c-login__container {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.pagopa-oid4vp-shell .pf-v5-c-login__main {
+  background: var(--pagopa-white);
+  border-radius: 16px;
+  box-shadow: var(--pagopa-box-shadow);
+  border: 1px solid var(--pagopa-border-color);
+}
+
+#oid4vp-open-wallet {
+  background-color: var(--pagopa-primary-blue) !important;
+  border-color: var(--pagopa-primary-blue) !important;
+  color: var(--pagopa-white) !important;
+}
+
+#oid4vp-open-wallet:hover {
+  background-color: #005bb5 !important;
+  border-color: #005bb5 !important;
+}
+
+.oid4vp-qr-wrap {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.oid4vp-qr-label {
+  margin-bottom: 12px;
+}
+
+#oid4vp-qr-code {
+  max-width: 250px;
+  border: 1px solid #ddd;
+  padding: 10px;
+  background: white;
+}
+
+.footer {
+  background-color: var(--pagopa-white);
+  padding: 48px;
+  font-size: 14px;
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-columns {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 32px;
+  padding-bottom: 32px;
+}
+
+.footer-column {
+  min-width: 180px;
+}
+
+.footer-column h2 {
+  font-size: 14px;
+  text-transform: uppercase;
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+
+.footer-column ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-column ul li {
+  margin-bottom: 12px;
+}
+
+.footer-column a {
+  color: var(--pagopa-text-dark);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.footer-column a:hover {
+  text-decoration: underline;
+}
+
+.pagopa-logo {
+  width: 120px;
+  fill: rgb(0, 197, 202);
+}
+
+.social-icons {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.social-icons a {
+  display: inline-flex;
+  width: 30px;
+  height: 30px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--pagopa-border-color);
+  border-radius: 50%;
+}
+
+.eu-logo img {
+  max-width: 150px;
+  margin-top: 24px;
+}
+
+.sub-footer {
+  border-top: 1px solid var(--pagopa-border-color);
+  padding-top: 24px;
+  margin-top: 24px;
+  font-size: 12px;
+}
+
+.oid4vp-page {
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: 48px 1fr;
+  background: var(--pagopa-oid4vp-page-bg);
+}
+
+.oid4vp-page .oid4vp-header {
+  display: flex;
+  align-items: center;
+  min-height: 48px;
+  padding: 0 24px;
+  background: var(--pagopa-white);
+  border-bottom: 1px solid #e4e8ef;
+}
+
+.oid4vp-page .oid4vp-header__brand {
+  color: var(--pagopa-text-dark);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1;
+  text-decoration: none;
+}
+
+.oid4vp-page .oid4vp-header__brand:hover,
+.oid4vp-page .oid4vp-header__brand:focus {
+  color: rgba(23, 50, 77, 0.8);
+  text-decoration: none;
+}
+
+.oid4vp-page .oid4vp-main {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 38px 20px 40px;
+}
+
+.oid4vp-page .oid4vp-card {
+  width: min(100%, 650px);
+  height: 650px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 48px 55px 22px;
+  background: var(--pagopa-white);
+  border: 1px solid var(--pagopa-oid4vp-card-border);
+  border-radius: 8px;
+  box-shadow: var(--pagopa-oid4vp-card-shadow);
+  text-align: center;
+}
+
+.oid4vp-page .oid4vp-card__header {
+  width: 100%;
+}
+
+.oid4vp-page .oid4vp-card__title {
+  margin: 0;
+  color: #000000;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 40px;
+}
+
+.oid4vp-page .oid4vp-card__description {
+  width: 400px;
+  max-width: 100%;
+  margin: 10px auto 0;
+  color: var(--pagopa-oid4vp-text-muted);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 21px;
+}
+
+.oid4vp-page .oid4vp-card__description strong,
+.oid4vp-page .oid4vp-card__description b {
+  font-weight: 700;
+}
+
+.oid4vp-page .oid4vp-card__separator {
+  margin: 10px 0 0;
+  color: var(--pagopa-oid4vp-text-muted);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 21px;
+}
+
+.oid4vp-page .oid4vp-card__body {
+  width: 100%;
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.oid4vp-page .oid4vp-alert {
+  width: 100%;
+  margin-bottom: 16px;
+  padding: 10px 12px;
+  border-radius: 4px;
+  font-size: 13px;
+  line-height: 1.35;
+  text-align: left;
+}
+
+.oid4vp-page .oid4vp-alert--danger {
+  background: #fef1f1;
+  border: 1px solid #f5c2c2;
+  color: #8b1d1d;
+}
+
+.oid4vp-page .oid4vp-alert--success {
+  background: #edf8f1;
+  border: 1px solid #bfe4cd;
+  color: #25603b;
+}
+
+.oid4vp-page .oid4vp-alert--warning {
+  background: #fff6de;
+  border: 1px solid #f0d48d;
+  color: #7a5710;
+}
+
+.oid4vp-page #oid4vpForm {
+  display: none;
+}
+
+.oid4vp-page .oid4vp-qr-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 0;
+  text-align: center;
+}
+
+.oid4vp-page .oid4vp-qr-frame {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background: #ffffff;
+}
+
+.oid4vp-page .oid4vp-qr-frame::before {
+  width: 45px;
+  height: 45px;
+  position: absolute;
+  inset: 50% auto auto 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: #ffffff;
+  content: "";
+  pointer-events: none;
+  z-index: 1;
+}
+
+.oid4vp-page .oid4vp-qr-frame::after {
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  inset: 50% auto auto 50%;
+  transform: translate(-50%, -50%);
+  background: url("../img/wallet-icon-blue.svg") center / contain no-repeat;
+  content: "";
+  pointer-events: none;
+  z-index: 2;
+}
+
+.oid4vp-page #oid4vp-qr-code {
+  display: block;
+  width: 232px;
+  height: 232px;
+  max-width: 100%;
+  padding: 0;
+  border: 0;
+  background: #ffffff;
+  image-rendering: pixelated;
+}
+
+.oid4vp-page .oid4vp-qr-status {
+  margin: 1px 0 0;
+  color: var(--pagopa-oid4vp-text-muted);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 21px;
+}
+
+.oid4vp-page .oid4vp-cancel-link {
+  margin-top: 10px;
+  color: var(--pagopa-primary-blue);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 21px;
+  text-decoration: none;
+}
+
+.oid4vp-page .oid4vp-cancel-link:hover,
+.oid4vp-page .oid4vp-cancel-link:focus {
+  color: var(--pagopa-primary-blue-hover);
+  text-decoration: none;
+}
+
+.oid4vp-page .oid4vp-refresh-button {
+  appearance: none;
+  width: 169px;
+  height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 16px;
+  padding: 0 16px;
+  border: 1px solid var(--pagopa-primary-blue);
+  border-radius: 4px;
+  background: var(--pagopa-primary-blue);
+  color: #ffffff;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1;
+  text-decoration: none;
+}
+
+.oid4vp-page .oid4vp-refresh-button:hover {
+  border-color: var(--pagopa-primary-blue-hover);
+  background: var(--pagopa-primary-blue-hover);
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.oid4vp-page .oid4vp-refresh-button:focus {
+  outline: none;
+}
+
+.oid4vp-page .oid4vp-refresh-button:focus-visible {
+  outline: 3px solid rgba(0, 115, 230, 0.24);
+  outline-offset: 2px;
+}
+
+.oid4vp-page .oid4vp-open-wallet-button {
+  margin: 16px 0 0;
+}
+
+@media (max-width: 480px) {
+  .oid4vp-page .oid4vp-header {
+    min-height: 48px;
+    padding: 0 16px;
+  }
+
+  .oid4vp-page .oid4vp-main {
+    padding: 24px 16px 32px;
+  }
+
+  .oid4vp-page .oid4vp-card {
+    height: auto;
+    min-height: 0;
+    padding: 34px 20px 28px;
+  }
+
+  .oid4vp-page .oid4vp-card__title {
+    font-size: 28px;
+    line-height: 36px;
+  }
+
+  .oid4vp-page .oid4vp-card__description {
+    max-width: 100%;
+  }
+
+  .oid4vp-page #oid4vp-qr-code {
+    width: 220px;
+    height: 220px;
+  }
+}

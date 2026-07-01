@@ -116,3 +116,39 @@ variable "aks_user_node_pool_keycloak" {
     os_disk_type      = optional(string, null)
   })
 }
+
+variable "it_wallet_oid4vp_provider" {
+  description = "IT Wallet OID4VP identity provider import rendered into the existing `user` realm."
+  type = object({
+    enabled                                 = optional(bool, false)
+    realm_name                              = optional(string, "user")
+    alias                                   = optional(string, "it-wallet")
+    display_name                            = optional(string, "IT Wallet")
+    credential_format                       = optional(string, "dc+sd-jwt")
+    credential_type                         = optional(string, "urn:eudi:pid:it:1")
+    first_name_claim                        = optional(string, "given_name")
+    last_name_claim                         = optional(string, "family_name")
+    date_of_birth_claim                     = optional(string, "birthdate")
+    username_claim                          = optional(string, "personal_administrative_number")
+    fiscal_number_claim                     = optional(string, "personal_administrative_number")
+    user_mapping_claim                      = optional(string, "personal_administrative_number")
+    user_mapping_claim_mdoc                 = optional(string, "")
+    same_device_enabled                     = optional(bool, true)
+    cross_device_enabled                    = optional(bool, true)
+    wallet_scheme                           = optional(string, "openid4vp://")
+    response_mode                           = optional(string, "direct_post.jwt")
+    client_id_scheme                        = optional(string, "x509_hash")
+    enforce_haip                            = optional(bool, false)
+    credential_set_mode                     = optional(string, "optional")
+    credential_set_purpose                  = optional(string, "")
+    dcql_query                              = optional(string, "")
+    verifier_info                           = optional(string, "")
+    x509_certificate_pem_secret_name        = string
+    trust_list_url                          = optional(string, "")
+    trust_list_lote_type                    = optional(string, "")
+    trusted_authorities_mode                = optional(string, "none")
+    trust_list_signing_cert_pem_secret_name = optional(string, "")
+    allowed_issuers                         = optional(string, "*")
+    allowUntrustedX5cDevMode                = optional(bool, false)
+  })
+}
