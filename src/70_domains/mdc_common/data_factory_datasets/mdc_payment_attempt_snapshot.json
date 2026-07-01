@@ -1,0 +1,13 @@
+{
+  "name": "mdc_payment_attempt_snapshot",
+  "properties": {
+    "type": "AzureDataExplorerTable",
+    "linkedServiceName": {
+      "referenceName": "mdc-Kusto-mdc-ls",
+      "type": "LinkedServiceReference"
+    },
+    "typeProperties": {
+      "table": "PaymentAttemptSnapshot"
+    }
+  }
+}
