@@ -81,7 +81,7 @@ locals {
   ])
 
   welfare_csp_value_part2 = join("; ", [
-    "script-src ${local.welfare_csp_script_src}",
+    "; script-src ${local.welfare_csp_script_src}", // note the leading semicolon to separate from part1
     "style-src ${local.welfare_csp_style_src}",
     "worker-src 'none'",
     "font-src ${local.welfare_csp_font_src}",

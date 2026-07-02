@@ -44,7 +44,6 @@ locals {
     "'self'",
     "https://cdn.cookielaw.org/",
     "https://${local.assetregister_static_web_host_checkout}",
-    "https://mytest.it" // this is a temporary test
   ])
 
   assetregister_csp_connect_src = join(" ", [
@@ -85,7 +84,7 @@ locals {
   ])
 
   assetregister_csp_value_part2 = join("; ", [
-    "script-src ${local.assetregister_csp_script_src}",
+    "; script-src ${local.assetregister_csp_script_src}", // note the leading semicolon to separate from part1
     "style-src ${local.assetregister_csp_style_src}",
     "worker-src 'none'",
     "font-src ${local.assetregister_csp_font_src}",

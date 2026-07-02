@@ -97,6 +97,7 @@ locals {
     "https://api-eu.mixpanel.com",
     "https://cdn.cookielaw.org",
     "https://privacyportalde-cdn.onetrust.com",
+    "https://mytest-elettrodomestici-1.it" // this is a temporary test
   ])
 
   bonus_csp_script_src = join(" ", [
@@ -127,7 +128,7 @@ locals {
   ])
 
   bonus_csp_value_part2 = join("; ", [
-    "script-src ${local.bonus_csp_script_src}",
+    "; script-src ${local.bonus_csp_script_src}", // note the leading semicolon to separate from part1
     "style-src ${local.bonus_csp_style_src}",
     "font-src ${local.bonus_csp_font_src}",
   ])
