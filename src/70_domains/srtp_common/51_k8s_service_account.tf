@@ -21,14 +21,3 @@ resource "kubernetes_secret" "ghcr_secret" {
     })
   }
 }
-
-resource "kubernetes_service_account" "ghcr_puller" {
-  metadata {
-    name      = "ghcr-puller"
-    namespace = var.domain
-  }
-
-  image_pull_secret {
-    name = kubernetes_secret.ghcr_secret.metadata[0].name
-  }
-}
