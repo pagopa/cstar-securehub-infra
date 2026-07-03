@@ -28,6 +28,8 @@ module "workload_identity_configuration" {
   key_vault_key_permissions         = ["Get"]
   key_vault_secret_permissions      = ["Get"]
 
+  service_account_image_pull_secret_names = [kubernetes_secret.ghcr_secret.metadata[0].name]
+
   depends_on = [
     module.workload_identity,
   ]
