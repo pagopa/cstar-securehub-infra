@@ -93,6 +93,10 @@ locals {
     {
       name : "emd-testing",
       short_name : "emd-testing"
+    },
+    {
+      name : "emd-message-core",
+      short_name : "message-core"
     }
   ]
 
