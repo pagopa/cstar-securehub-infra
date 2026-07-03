@@ -13,17 +13,25 @@
   "table.include.list": "idpay.transaction_outbox",
   "topic.prefix": "idpay",
   "snapshot.mode": "initial",
-  "transforms": "unwrap,route",
+
+  "transforms": "unwrap,extractPayload,route",
   "transforms.unwrap.type": "io.debezium.transforms.ExtractNewRecordState",
   "transforms.unwrap.drop.tombstones": "true",
   "transforms.unwrap.delete.handling.mode": "rewrite",
+
+  "transforms.extractPayload.type": "org.apache.kafka.connect.transforms.ExtractField$Value",
+  "transforms.extractPayload.field": "payload",
+
   "transforms.route.type": "org.apache.kafka.connect.transforms.RegexRouter",
   "transforms.route.regex": ".*\\.transaction_outbox",
   "transforms.route.replacement": "idpay-transaction",
+
   "key.converter": "org.apache.kafka.connect.json.JsonConverter",
-  "value.converter": "org.apache.kafka.connect.json.JsonConverter",
   "key.converter.schemas.enable": "false",
+
+  "value.converter": "org.apache.kafka.connect.storage.StringConverter",
   "value.converter.schemas.enable": "false",
+
   "errors.tolerance": "all",
   "errors.log.enable": "true",
   "errors.log.include.messages": "true"
