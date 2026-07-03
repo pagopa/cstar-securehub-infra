@@ -7,11 +7,11 @@ locals {
 
   # ⚙️ Base configuration shared by all alerts
   base_alert_config = {
-    enabled        = true
-    severity       = 1
-    frequency      = 5
-    time_window    = 5
-    data_source_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
+    enabled              = true
+    severity             = 1
+    evaluation_frequency = 5
+    window_duration      = 5
+    scopes               = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
   }
 
   # =============================================================
@@ -29,7 +29,7 @@ locals {
             | where Name == "POST /idpay-itn/register/consent"
             | where ResultCode startswith "5" or ResultCode in ("401", "429")
           QUERY
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 5
       }
@@ -38,16 +38,16 @@ locals {
 
     # Portal Consent – post (400 errors over 10 minutes)
     portal_consent_save_10m_rule = {
-      name        = "portal-consent-save-400-alert"
-      description = "Alert on POST /idpay-itn/register/consent errors (400 > 50/10m)"
-      frequency   = 10
-      time_window = 10
-      query       = <<-QUERY
+      name                 = "portal-consent-save-400-alert"
+      description          = "Alert on POST /idpay-itn/register/consent errors (400 > 50/10m)"
+      evaluation_frequency = 10
+      window_duration      = 10
+      query                = <<-QUERY
             AppRequests
             | where Name == "POST /idpay-itn/register/consent"
             | where ResultCode == "400"
           QUERY
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 50
       }
@@ -63,7 +63,7 @@ locals {
             | where Name == "GET /idpay-itn/register/consent"
             | where ResultCode startswith "5" or ResultCode in ("401", "429")
           QUERY
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 5
       }
@@ -72,16 +72,16 @@ locals {
 
     # Portal Consent – get (400 errors over 10 minutes)
     pari_portal_consent_get_10m_rule_alert = {
-      name        = "pari-portal-consent-get-400-alert"
-      description = "Alert on GET /idpay-itn/register/consent errors (400 > 50/10m)"
-      frequency   = 10
-      time_window = 10
-      query       = <<-QUERY
+      name                 = "pari-portal-consent-get-400-alert"
+      description          = "Alert on GET /idpay-itn/register/consent errors (400 > 50/10m)"
+      evaluation_frequency = 10
+      window_duration      = 10
+      query                = <<-QUERY
             AppRequests
             | where Name == "GET /idpay-itn/register/consent"
             | where ResultCode == "400"
           QUERY
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 50
       }
@@ -98,7 +98,7 @@ locals {
             | where Name == "POST /idpay-itn/register/product-files"
             | where ResultCode startswith "5" or ResultCode in ("401", "429")
           QUERY
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 5
       }
@@ -107,17 +107,17 @@ locals {
 
     # Product files – upload (400 errors over 10 minutes)
     pari_product_files_upload_10m_rule_alert = {
-      name        = "pari-product-files-upload-400-alert"
-      description = "Product files upload API: 400 error threshold exceeded (> 50/10m)"
-      severity    = 2
-      frequency   = 10
-      time_window = 10
-      query       = <<-QUERY
+      name                 = "pari-product-files-upload-400-alert"
+      description          = "Product files upload API: 400 error threshold exceeded (> 50/10m)"
+      severity             = 2
+      evaluation_frequency = 10
+      window_duration      = 10
+      query                = <<-QUERY
             AppRequests
             | where Name == "POST /idpay-itn/register/product-files"
             | where ResultCode == "400"
           QUERY
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 50
       }
@@ -134,7 +134,7 @@ locals {
             | where Name == "POST /idpay-itn/register/product-files/verify"
             | where ResultCode startswith "5"
           QUERY
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 3
       }
@@ -151,7 +151,7 @@ locals {
             | where Name == "GET /idpay-itn/register/product-files"
             | where ResultCode startswith "5"
           QUERY
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 5
       }
@@ -174,7 +174,7 @@ locals {
             )
             | where ResultCode startswith "5"
           QUERY
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 3
       }
@@ -191,7 +191,7 @@ locals {
             | where Name == "GET /idpay-itn/register/products"
             | where ResultCode startswith "5"
           QUERY
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 5
       }
@@ -200,16 +200,16 @@ locals {
 
     # GET products - 400 Error Count
     pari_get_products_400_alert = {
-      name        = "pari-get-products-400-alert"
-      description = "GET /products API: 400 error count exceeded (> 50 in 10m)"
-      severity    = 0
-      time_window = 10
-      query       = <<-QUERY
+      name            = "pari-get-products-400-alert"
+      description     = "GET /products API: 400 error count exceeded (> 50 in 10m)"
+      severity        = 0
+      window_duration = 10
+      query           = <<-QUERY
             AppRequests
             | where Name == "GET /idpay-itn/register/products"
             | where ResultCode == "400"
           QUERY
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 50
       }
@@ -218,18 +218,18 @@ locals {
 
     # GET products - Availability
     pari_get_products_availability_alert = {
-      name        = "pari-get-products-availability-alert"
-      description = "GET /products API: Availability dropped below 99% in the last 10 minutes"
-      severity    = 0
-      time_window = 10
-      query       = <<-QUERY
+      name            = "pari-get-products-availability-alert"
+      description     = "GET /products API: Availability dropped below 99% in the last 10 minutes"
+      severity        = 0
+      window_duration = 10
+      query           = <<-QUERY
             AppRequests
             | where Name == "GET /idpay-itn/register/products"
             | summarize TotalRequests = count(), SuccessfulRequests = countif(Success == true)
             | extend Availability = (todouble(SuccessfulRequests) / todouble(TotalRequests)) * 100
             | where Availability < 99
           QUERY
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 1
       }
@@ -245,7 +245,7 @@ locals {
             | where Name == "GET /idpay-itn/register/permissions"
             | where ResultCode startswith "5" or ResultCode in ("401", "429")
           QUERY
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 5
       }
@@ -254,15 +254,15 @@ locals {
 
     # User Permissions - 400 errors over 10 minutes
     pari_user_permissions_10m_rule_alert = {
-      name        = "pari-user-permissions-400-alert"
-      description = "User Permissions API: 400 > 50/10m"
-      time_window = 10
-      query       = <<-QUERY
+      name            = "pari-user-permissions-400-alert"
+      description     = "User Permissions API: 400 > 50/10m"
+      window_duration = 10
+      query           = <<-QUERY
             AppRequests
             | where Name == "GET /idpay-itn/register/permissions"
             | where ResultCode == "400"
           QUERY
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 50
       }
@@ -279,7 +279,7 @@ locals {
             | where Name == "GET /idpay-itn/register/product-files/*/report"
             | where ResultCode startswith "5"
           QUERY
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 5
       }
@@ -296,7 +296,7 @@ locals {
             | where Name == "GET /idpay-itn/register/product-files/batch-list"
             | where ResultCode startswith "5"
           QUERY
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 5
       }
@@ -313,7 +313,7 @@ locals {
             | where Name == "GET /idpay-itn/register/institutions/*"
             | where ResultCode startswith "5"
           QUERY
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 5
       }
@@ -330,7 +330,7 @@ locals {
             | where Name == "GET /idpay-itn/register/institutions"
             | where ResultCode startswith "5"
           QUERY
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 5
       }
@@ -348,7 +348,7 @@ locals {
             | where Target == "idpay-notification-email-microservice-chart:8080"
             | where Success == false
           QUERY
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 10
       }
@@ -365,7 +365,7 @@ locals {
             | where Target == "eprel.ec.europa.eu"
             | where Success == false
           QUERY
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 10
       }
@@ -388,7 +388,7 @@ locals {
             | where Name matches regex @"^PUT /idpay-itn/merchant-op/transactions/bar-code/[^/]+/capture$"
             | where ResultCode startswith "5"
           QUERY
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 2
       }
@@ -404,7 +404,7 @@ locals {
             | where Name matches regex @"^PUT /idpay-itn/merchant-op/transactions/bar-code/[^/]+/capture$"
             | where ResultCode in ("401", "404", "429")
           QUERY
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 20
       }
@@ -420,7 +420,7 @@ locals {
             | where Name matches regex @"^PUT /idpay-itn/merchant-op/transactions/bar-code/[^/]+/preview$"
             | where ResultCode startswith "5"
           QUERY
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 2
       }
@@ -436,7 +436,7 @@ locals {
             | where Name matches regex @"^PUT /idpay-itn/merchant-op/transactions/bar-code/[^/]+/preview$"
             | where ResultCode in ("401", "429")
           QUERY
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 20
       }
@@ -452,7 +452,7 @@ locals {
             | where Name matches regex @"^PUT /idpay-itn/merchant-op/transactions/bar-code/[^/]+/authorize$"
             | where ResultCode startswith "5"
           QUERY
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 2
       }
@@ -468,7 +468,7 @@ locals {
             | where Name matches regex @"^PUT /idpay-itn/merchant-op/transactions/bar-code/[^/]+/authorize$"
             | where ResultCode in ("401", "403", "429")
           QUERY
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 20
       }
@@ -484,7 +484,7 @@ locals {
             | where Name matches regex @"^GET /idpay-itn/merchant-op/initiatives/[^/]+/point-of-sales/[^/]+/transactions$"
             | where ResultCode startswith "5"
           QUERY
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 50
       }
@@ -500,7 +500,7 @@ locals {
             | where Name matches regex @"^GET /idpay-itn/merchant-op/initiatives/[^/]+/point-of-sales/[^/]+/transactions$"
             | where ResultCode in ("401", "404", "429")
           QUERY
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 5
       }
@@ -516,7 +516,7 @@ locals {
             | where Name matches regex @"^GET /idpay-itn/merchant-op/initiatives/[^/]+/point-of-sales/[^/]+/transactions/processed$"
             | where ResultCode startswith "5"
           QUERY
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 2
       }
@@ -532,7 +532,7 @@ locals {
             | where Name matches regex @"^GET /idpay-itn/merchant-op/initiatives/[^/]+/point-of-sales/[^/]+/transactions/processed$"
             | where ResultCode in ("401", "404", "429")
           QUERY
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 5
       }
@@ -549,7 +549,7 @@ locals {
             | where Name matches regex @"^DELETE /idpay-itn/merchant-op/transactions/[^/]+$"
             | where ResultCode startswith "5"
           QUERY
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 2
       }
@@ -566,7 +566,7 @@ locals {
             | where Name matches regex @"^DELETE /idpay-itn/merchant-op/transactions/[^/]+$"
             | where ResultCode in ("401", "403", "404", "429")
           QUERY
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 5
       }
@@ -582,7 +582,7 @@ locals {
             | where Name matches regex @"^POST /idpay-itn/merchant-op/transactions/[^/]+/reversal$"
             | where ResultCode startswith "5"
           QUERY
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 2
       }
@@ -598,7 +598,7 @@ locals {
             | where Name matches regex @"^POST /idpay-itn/merchant-op/transactions/[^/]+/reward$"
             | where ResultCode startswith "5"
           QUERY
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 2
       }
@@ -614,7 +614,7 @@ locals {
             | where Name == "GET /idpay-itn/merchant-op/products"
             | where ResultCode startswith "5"
           QUERY
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 50
       }
@@ -630,7 +630,7 @@ locals {
             | where Name == "GET /idpay-itn/merchant-op/products"
             | where ResultCode in ("401", "404", "429")
           QUERY
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 15
       }
@@ -649,7 +649,7 @@ locals {
             | where Name matches regex @"^GET /idpay-itn/merchant/portal/[^/]+/transactions/[^/]+/download$"
             | where ResultCode startswith "5"
           QUERY
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 2
       }
@@ -666,7 +666,7 @@ locals {
             | where Name matches regex @"^GET /idpay-itn/merchant/portal/[^/]+/transactions/[^/]+/download$"
             | where ResultCode in ("400", "401", "429")
           QUERY
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 1
       }
@@ -683,7 +683,7 @@ locals {
             | where Name matches regex @"^GET /idpay-itn/merchant/portal/[^/]+/point-of-sales/[^/]+$"
             | where ResultCode startswith "5"
           QUERY
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 2
       }
@@ -700,7 +700,7 @@ locals {
             | where Name matches regex @"^GET /idpay-itn/merchant/portal/[^/]+/point-of-sales/[^/]+$"
             | where ResultCode in ("401", "404", "429")
           QUERY
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 3
       }
@@ -723,7 +723,7 @@ locals {
             | where Name matches regex @"^GET /idpay-itn/onboarding/service/[^/]+$"
             | where ResultCode startswith "5"
           QUERY
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 2
       }
@@ -732,15 +732,15 @@ locals {
 
     # Get Initiative ID (Onboarding Service) - 400 Error Count
     get_initiative_id_400_alert = {
-      name        = "get-initiative-id-400-alert"
-      description = "API Get Initiative ID: 400 error count exceeded (> 50 in 10m)"
-      time_window = 10
-      query       = <<-QUERY
+      name            = "get-initiative-id-400-alert"
+      description     = "API Get Initiative ID: 400 error count exceeded (> 50 in 10m)"
+      window_duration = 10
+      query           = <<-QUERY
             AppRequests
             | where Name matches regex @"^GET /idpay-itn/onboarding/service/[^/]+$"
             | where ResultCode == "400"
           QUERY
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 50
       }
@@ -756,7 +756,7 @@ locals {
             | where Name matches regex @"^GET /idpay-itn/onboarding/service/[^/]+$"
             | where ResultCode in ("401", "429")
           QUERY
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 150
       }
@@ -772,7 +772,7 @@ locals {
             | where Name matches regex @"^GET /idpay-itn/onboarding/[^/]+/detail$"
             | where ResultCode startswith "5"
           QUERY
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 2
       }
@@ -788,7 +788,7 @@ locals {
             | where Name matches regex @"^GET /idpay-itn/onboarding/[^/]+/detail$"
             | where ResultCode in ("401", "429")
           QUERY
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 5
       }
@@ -804,7 +804,7 @@ locals {
             | where Name == "PUT /idpay-itn/onboarding/"
             | where ResultCode startswith "5"
           QUERY
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 5
       }
@@ -813,15 +813,15 @@ locals {
 
     # Save Onboarding - 400 Error Count
     save_onboarding_400_alert = {
-      name        = "save-onboarding-400-alert"
-      description = "API Save Onboarding: 400 error count exceeded (> 50 in 10m)"
-      time_window = 10
-      query       = <<-QUERY
+      name            = "save-onboarding-400-alert"
+      description     = "API Save Onboarding: 400 error count exceeded (> 50 in 10m)"
+      window_duration = 10
+      query           = <<-QUERY
             AppRequests
             | where Name == "PUT /idpay-itn/onboarding/"
             | where ResultCode == "400"
           QUERY
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 50
       }
@@ -837,7 +837,7 @@ locals {
             | where Name == "PUT /idpay-itn/onboarding/"
             | where ResultCode in ("401", "429")
           QUERY
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 5
       }
@@ -853,7 +853,7 @@ locals {
             | where Name matches regex @"^GET /idpay-itn/onboarding/[^/]+/status$"
             | where ResultCode startswith "5"
           QUERY
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 5
       }
@@ -869,7 +869,7 @@ locals {
             | where Name matches regex @"^GET /idpay-itn/onboarding/[^/]+/status$"
             | where ResultCode in ("401", "429")
           QUERY
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 5
       }
@@ -885,7 +885,7 @@ locals {
             | where Name == "GET /idpay-itn/onboarding/user/initiative/status"
             | where ResultCode startswith "5"
           QUERY
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 50
       }
@@ -894,15 +894,15 @@ locals {
 
     # Onboarding Initiative User Status - 400 Error Count
     onboarding_initiative_user_status_400_alert = {
-      name        = "onboarding-initiative-user-status-400-alert"
-      description = "API Onboarding Initiative User Status: 400 error count exceeded (> 50 in 10m)"
-      time_window = 10
-      query       = <<-QUERY
+      name            = "onboarding-initiative-user-status-400-alert"
+      description     = "API Onboarding Initiative User Status: 400 error count exceeded (> 50 in 10m)"
+      window_duration = 10
+      query           = <<-QUERY
             AppRequests
             | where Name == "GET /idpay-itn/onboarding/user/initiative/status"
             | where ResultCode == "400"
           QUERY
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 50
       }
@@ -918,7 +918,7 @@ locals {
             | where Name == "GET /idpay-itn/onboarding/user/initiative/status"
             | where ResultCode in ("401", "429")
           QUERY
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 5
       }
@@ -935,7 +935,7 @@ locals {
             | where Name matches regex @"^GET /idpay-itn/timeline/[^/]+$"
             | where ResultCode startswith "5"
           QUERY
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 3
       }
@@ -953,7 +953,7 @@ locals {
             | where Name == "GET /idpay-itn/wallet/"
             | where ResultCode startswith "5"
           QUERY
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 3
       }
@@ -970,7 +970,7 @@ locals {
             | where Name matches regex @"^GET /idpay-itn/wallet/[^/]+/detail$"
             | where ResultCode startswith "5"
           QUERY
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 5
       }
@@ -979,16 +979,16 @@ locals {
 
     # Get Initiative Beneficiary Detail - 400 Error Count
     get_initiative_beneficiary_detail_400_alert = {
-      name        = "get-initiative-beneficiary-detail-400-alert"
-      description = "API Get Initiative Beneficiary Detail: 400 error count exceeded (> 50 in 10m)"
-      severity    = 2
-      time_window = 10
-      query       = <<-QUERY
+      name            = "get-initiative-beneficiary-detail-400-alert"
+      description     = "API Get Initiative Beneficiary Detail: 400 error count exceeded (> 50 in 10m)"
+      severity        = 2
+      window_duration = 10
+      query           = <<-QUERY
             AppRequests
             | where Name matches regex @"^GET /idpay-itn/wallet/[^/]+/detail$"
             | where ResultCode == "400"
           QUERY
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 50
       }
@@ -1005,7 +1005,7 @@ locals {
             | where Name matches regex @"^GET /idpay-itn/wallet/[^/]+/detail$"
             | where ResultCode in ("401", "429")
           QUERY
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 5
       }
@@ -1021,7 +1021,7 @@ locals {
             | where Name matches regex @"^GET /idpay-itn/wallet/[^/]+$"
             | where ResultCode startswith "5"
           QUERY
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 5
       }
@@ -1030,15 +1030,15 @@ locals {
 
     # Get Wallet Detail - 400 Error Count
     get_wallet_detail_400_alert = {
-      name        = "get-wallet-detail-400-alert"
-      description = "API Get Wallet Detail: 400 error count exceeded (> 50 in 10m)"
-      time_window = 10
-      query       = <<-QUERY
+      name            = "get-wallet-detail-400-alert"
+      description     = "API Get Wallet Detail: 400 error count exceeded (> 50 in 10m)"
+      window_duration = 10
+      query           = <<-QUERY
             AppRequests
             | where Name matches regex @"^GET /idpay-itn/wallet/[^/]+$"
             | where ResultCode == "400"
           QUERY
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 50
       }
@@ -1054,7 +1054,7 @@ locals {
             | where Name matches regex @"^GET /idpay-itn/wallet/[^/]+$"
             | where ResultCode in ("401", "429")
           QUERY
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 5
       }
@@ -1071,7 +1071,7 @@ locals {
             | where Name == "POST /idpay-itn/payment/bar-code"
             | where ResultCode startswith "5"
           QUERY
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 5
       }
@@ -1080,15 +1080,15 @@ locals {
 
     # Create Barcode Transaction - 400 Error Count
     create_barcode_transaction_400_alert = {
-      name        = "create-barcode-transaction-400-alert"
-      description = "API Create Barcode Transaction: 400 error count exceeded (> 50 in 10m)"
-      time_window = 10
-      query       = <<-QUERY
+      name            = "create-barcode-transaction-400-alert"
+      description     = "API Create Barcode Transaction: 400 error count exceeded (> 50 in 10m)"
+      window_duration = 10
+      query           = <<-QUERY
             AppRequests
             | where Name == "POST /idpay-itn/payment/bar-code"
             | where ResultCode == "400"
           QUERY
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 50
       }
@@ -1104,7 +1104,7 @@ locals {
             | where Name == "POST /idpay-itn/payment/bar-code"
             | where ResultCode in ("401", "429")
           QUERY
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 5
       }
@@ -1120,7 +1120,7 @@ locals {
             | where Name matches regex @"^GET /idpay-itn/payment/initiatives/[^/]+/bar-code$"
             | where ResultCode startswith "5"
           QUERY
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 5
       }
@@ -1129,15 +1129,15 @@ locals {
 
     # Retrieve Active Barcode Transaction - 400 Error Count
     retrieve_active_barcode_transaction_400_alert = {
-      name        = "retrieve-active-barcode-transaction-400-alert"
-      description = "API Retrieve Active Barcode Transaction: 400 error count exceeded (> 50 in 10m)"
-      time_window = 10
-      query       = <<-QUERY
+      name            = "retrieve-active-barcode-transaction-400-alert"
+      description     = "API Retrieve Active Barcode Transaction: 400 error count exceeded (> 50 in 10m)"
+      window_duration = 10
+      query           = <<-QUERY
             AppRequests
             | where Name matches regex @"^GET /idpay-itn/payment/initiatives/[^/]+/bar-code$"
             | where ResultCode == "400"
           QUERY
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 50
       }
@@ -1153,7 +1153,7 @@ locals {
             | where Name matches regex @"^GET /idpay-itn/payment/initiatives/[^/]+/bar-code$"
             | where ResultCode in ("401", "429")
           QUERY
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 5
       }
@@ -1171,7 +1171,7 @@ locals {
             | where Name matches regex @"^GET /idpay-itn/web/payment/initiatives/[^/]+/bar-code/[^/]+/pdf$"
             | where ResultCode startswith "5"
           QUERY
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 5
       }
@@ -1180,15 +1180,15 @@ locals {
 
     # Get Transaction PDF - 400 Error Count
     get_transaction_pdf_400_alert = {
-      name        = "get-transaction-pdf-400-alert"
-      description = "API Get Transaction PDF: 400 error count exceeded (> 50 in 10m)"
-      time_window = 10
-      query       = <<-QUERY
+      name            = "get-transaction-pdf-400-alert"
+      description     = "API Get Transaction PDF: 400 error count exceeded (> 50 in 10m)"
+      window_duration = 10
+      query           = <<-QUERY
             AppRequests
             | where Name matches regex @"^GET /idpay-itn/web/payment/initiatives/[^/]+/bar-code/[^/]+/pdf$"
             | where ResultCode == "400"
           QUERY
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 50
       }
@@ -1204,7 +1204,7 @@ locals {
             | where Name matches regex @"^GET /idpay-itn/web/payment/initiatives/[^/]+/bar-code/[^/]+/pdf$"
             | where ResultCode in ("401", "429")
           QUERY
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 150
       }
@@ -1224,7 +1224,7 @@ locals {
       description = "Keycloak (Catch-All 'user' realm): Total failure count exceeded (> 100 in 5m)"
       severity    = 2
 
-      data_source_id = data.azurerm_application_insights.core_app_insights.id
+      scopes = data.azurerm_application_insights.core_app_insights.id
 
       query = format(<<-QUERY
           requests
@@ -1236,7 +1236,7 @@ locals {
         , data.azurerm_application_insights.core_app_insights.id
       )
 
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 100
       }
@@ -1250,7 +1250,7 @@ locals {
       description = "Keycloak (Catch-All 'merchant-operator' realm): Total failure count exceeded (> 100 in 5m)"
       severity    = 2
 
-      data_source_id = data.azurerm_application_insights.core_app_insights.id
+      scopes = data.azurerm_application_insights.core_app_insights.id
 
       query = format(<<-QUERY
           requests
@@ -1262,7 +1262,7 @@ locals {
         , data.azurerm_application_insights.core_app_insights.id
       )
 
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 100
       }
@@ -1275,7 +1275,7 @@ locals {
       name        = "keycloak-token-user-realm-alert"
       description = "Keycloak (/token 'user' realm): Total failure count exceeded (> 5 in 5m)"
 
-      data_source_id = data.azurerm_application_insights.core_app_insights.id
+      scopes = data.azurerm_application_insights.core_app_insights.id
 
       query = format(<<-QUERY
             requests
@@ -1288,7 +1288,7 @@ locals {
         , data.azurerm_application_insights.core_app_insights.id
       )
 
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 5
       }
@@ -1301,7 +1301,7 @@ locals {
       name        = "keycloak-token-merchant-operator-realm-alert"
       description = "Keycloak (/token 'merchant-operator' realm): Total failure count exceeded (> 5 in 5m)"
 
-      data_source_id = data.azurerm_application_insights.core_app_insights.id
+      scopes = data.azurerm_application_insights.core_app_insights.id
 
       query = format(<<-QUERY
             requests
@@ -1314,7 +1314,7 @@ locals {
         , data.azurerm_application_insights.core_app_insights.id
       )
 
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 5
       }
@@ -1327,7 +1327,7 @@ locals {
       name        = "keycloak-login-user-realm-alert"
       description = "Keycloak (/login 'user' realm): Total failure count exceeded (> 5 in 5m)"
 
-      data_source_id = data.azurerm_application_insights.core_app_insights.id
+      scopes = data.azurerm_application_insights.core_app_insights.id
 
       query = format(<<-QUERY
             requests
@@ -1340,7 +1340,7 @@ locals {
         , data.azurerm_application_insights.core_app_insights.id
       )
 
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 5
       }
@@ -1353,7 +1353,7 @@ locals {
       name        = "keycloak-endpoint_user-realm-alert"
       description = "Keycloak (/endpoint 'user' realm): Total failure count exceeded (> 5 in 5m)"
 
-      data_source_id = data.azurerm_application_insights.core_app_insights.id
+      scopes = data.azurerm_application_insights.core_app_insights.id
 
       query = format(<<-QUERY
             requests
@@ -1366,7 +1366,7 @@ locals {
         , data.azurerm_application_insights.core_app_insights.id
       )
 
-      trigger = {
+      criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 5
       }
@@ -1375,12 +1375,44 @@ locals {
     }
   }
 
+  # =============================================================
+  # 🧩 Cronjob alerts
+  # =============================================================
+
+  alerts_cronJob = {
+
+    # Batch evaluate/approve
+    batch_evaluate_or_approve_alert = {
+      name                 = "batch_evaluate_or_approve_alert"
+      description          = "Batch (evaluate or approve): error threshold exceeded"
+      severity             = 3
+      evaluation_frequency = 1440
+      window_duration      = 1440
+
+      scopes = data.azurerm_application_insights.core_app_insights.id
+
+      query = <<-QUERY
+          requests
+          | where operation_Name matches regex @"^POST /idpay/merchant/portal/initiatives/[^/]+/reward-batches/(evaluate|approved)"
+          | where success == false
+        QUERY
+
+      criteria = {
+        operator  = "GreaterThanOrEqual"
+        threshold = 1
+      }
+
+      email_subject = "[PARI][BATCH] Batch evaluate or approve alert"
+    }
+  }
+
   # 🧱 Collection of alert groups
   alerts_groups = [
     local.alerts_eie,
     local.alerts_ese,
     local.alerts_upbe,
-    local.alerts_keycloak
+    local.alerts_keycloak,
+    local.alerts_cronJob
   ]
 
   # ✅ Final alerts map ready for consumption: flattens every group, applies the base config and exposes a single map consumed by azurerm_monitor_scheduled_query_rules_alert

@@ -82,6 +82,39 @@ locals {
         variables = {}
       }
     }
+    "emd-ar-backoffice-admin-fe" = {
+      settings = {
+        apply                = true
+        allow_merge_commit   = false
+        allow_update_branch  = true
+        description          = "Frontend React Backoffice di Amministrazione dell'Area Riservata di Messaggi di Cortesia"
+        merge_commit_message = "PR_TITLE"
+        merge_commit_title   = "MERGE_MESSAGE"
+        primary_language     = "TypeScript"
+        visibility           = "private"
+      }
+      protected_branches = []
+      repository_secrets = [
+        {
+          SONAR_TOKEN = try(module.secrets.values["sonar-token"].value, null)
+        }
+      ]
+      repository_dependabot_secrets = []
+      repository_variables = [
+        {
+          SONARCLOUD_ORG         = "pagopa"
+          SONARCLOUD_PROJECT_KEY = "pagopa_emd-ar-backoffice-admin-fe"
+        }
+      ]
+      env_secrets = {
+        envs    = []
+        secrets = {}
+      }
+      env_variables = {
+        envs      = []
+        variables = {}
+      }
+    }
     "emd-message-core" = {
       settings = {
         apply                = true
