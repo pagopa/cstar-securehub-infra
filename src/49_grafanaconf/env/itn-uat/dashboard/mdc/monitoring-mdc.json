@@ -636,7 +636,18 @@
           "color": {
             "mode": "thresholds"
           },
-          "mappings": [],
+          "mappings": [
+            {
+              "options": {
+                "match": "nan",
+                "result": {
+                  "index": 0,
+                  "text": "Dati non ancora disponibili"
+                }
+              },
+              "type": "special"
+            }
+          ],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -1330,6 +1341,6 @@
   "timezone": "utc",
   "title": "Monitoraggio MDC",
   "uid": "efj6fhop10um8c",
-  "version": 68,
+  "version": 69,
   "weekStart": ""
 }
