@@ -10,7 +10,8 @@ locals {
     "mdc_message_volume_daily",
     "mdc_retrieval_daily",
     "mdc_message_daily",
-    "mdc_finalized_message_daily"
+    "mdc_finalized_message_daily",
+    "mdc_payment_attempt_daily"
   ]
 
   pipelines_indexed = {
