@@ -118,7 +118,6 @@ idpay_grafana_alert_enabled = false
 idpay_grafana_alert_email_addresses = [
   "idpay-alerts@example.com"
 ]
-idpay_grafana_alert_slack_webhook_url = "https://hooks.slack.com/services/CHANGE/ME"
 
 #
 # Rate limit
