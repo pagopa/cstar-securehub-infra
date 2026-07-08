@@ -147,13 +147,17 @@ locals {
         }
       ]
       env_secrets = {
-        envs = ["github-pages"]
+        envs = ["uat", "github-pages"]
         secrets = {
+          GIT_PAT          = try(module.secrets.values["emd-bot-github-rw-TOKEN"].value, null)
+          ARGO_CD_USERNAME = try(module.secrets.values["argocd-admin-username"].value, null)
+          ARGO_CD_PASSWORD = try(module.secrets.values["argocd-admin-password"].value, null)
         }
       }
       env_variables = {
-        envs = ["github-pages"]
+        envs = ["uat", "github-pages"]
         variables = {
+          ARGO_CD_SERVER = try(var.argo_cd_server, null)
         }
       }
     }
