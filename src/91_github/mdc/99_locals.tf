@@ -147,13 +147,16 @@ locals {
         }
       ]
       env_secrets = {
-        envs = ["github-pages"]
+        envs = ["uat", "github-pages"]
         secrets = {
+          ARGO_CD_USERNAME = try(module.secrets.values["argocd-admin-username"].value, null)
+          ARGO_CD_PASSWORD = try(module.secrets.values["argocd-admin-password"].value, null)
         }
       }
       env_variables = {
-        envs = ["github-pages"]
+        envs = ["uat", "github-pages"]
         variables = {
+          ARGO_CD_SERVER = try(var.argo_cd_server, null)
         }
       }
     }
@@ -392,11 +395,18 @@ locals {
           SEND_KEYCLOAK_CLIENT_ID     = try(module.secrets.values["send-client-id"].value, null)
           SEND_KEYCLOAK_CLIENT_SECRET = try(module.secrets.values["send-client-secret"].value, null)
           KEYCLOAK_URL                = try(module.secrets.values["keycloak-external-mdc-url"].value, null)
+          KAFKA_PASSWORD              = try(module.secrets.values["kafka-password"].value, null)
         }
       }
       env_variables = {
-        envs      = []
-        variables = {}
+        envs = ["uat"]
+        variables = {
+          KAFKA_BOOTSTRAP_SERVERS = "${var.eventhub_namespace_name}.servicebus.windows.net:9093"
+          KAFKA_SEC_PROTOCOL      = "SASL_SSL"
+          KAFKA_SASL_MECHANISM    = "PLAIN"
+          KAFKA_USERNAME          = "$ConnectionString"
+          KAFKA_CONSUMER_GROUP    = "$Default"
+        }
       }
     }
     "emd-docs" = {
