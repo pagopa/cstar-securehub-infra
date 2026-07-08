@@ -76,6 +76,7 @@ locals {
       repository_variables = []
     }
     rtp-platform-qa = {
+      env                  = ["${var.location_short}-dev", "${var.location_short}-uat"],
       env_variables        = [],
       env_secret_variables = []
       repository_secrets = [
