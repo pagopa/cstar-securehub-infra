@@ -102,4 +102,7 @@ locals {
   # Azure Data Explorer — cluster condiviso nella platform
   data_explorer_name    = "${local.product_no_domain}-platform"
   data_explorer_rg_name = "${local.product_no_domain}-platform-data-rg"
+
+  # Storage account admin fe
+  admin_web_storage_name = "${local.project}-admin"
 }
