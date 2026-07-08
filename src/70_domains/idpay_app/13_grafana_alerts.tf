@@ -1,8 +1,8 @@
 locals {
-  grafana_managed_name                 = "${local.product_no_domain}-grafana"
-  grafana_managed_rg_name              = "${local.product_no_domain}-platform-monitoring-rg"
-  grafana_core_kv_name                 = "${local.product_no_domain}-core-kv"
-  grafana_core_kv_rg_name              = "${local.product_no_domain}-core-sec-rg"
+  grafana_managed_name                 = "cstar-${var.env_short}-itn-grafana"
+  grafana_managed_rg_name              = "cstar-${var.env_short}-itn-platform-monitoring-rg"
+  core_kv_name                         = "${local.project_core}-kv"
+  core_kv_rg_name                      = "${local.project_core}-sec-rg"
   grafana_alert_folder_name            = "IDPay App Alerts"
   grafana_alert_contact_point_name     = "idpay-app-notifications"
   grafana_alert_rule_group_name        = "idpay-app-basic-alerts"
@@ -15,14 +15,14 @@ data "azurerm_dashboard_grafana" "grafana_managed" {
   resource_group_name = local.grafana_managed_rg_name
 }
 
-data "azurerm_key_vault" "grafana_core" {
-  name                = local.grafana_core_kv_name
-  resource_group_name = local.grafana_core_kv_rg_name
+data "azurerm_key_vault" "core" {
+  name                = local.core_kv_name
+  resource_group_name = local.core_kv_rg_name
 }
 
 data "azurerm_key_vault_secret" "grafana_service_account_token" {
   name         = "grafana-itn-service-account-token-value"
-  key_vault_id = data.azurerm_key_vault.grafana_core.id
+  key_vault_id = data.azurerm_key_vault.core.id
 }
 
 resource "grafana_folder" "idpay_app_alerts" {
