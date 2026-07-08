@@ -46,7 +46,7 @@ resource "grafana_contact_point" "idpay_app_alerts" {
   }
 
   slack {
-    url   = data.azurerm_key_vault_secret.slack_webhook_email[0].value
+    url   = data.azurerm_key_vault_secret.slack_webhook_url[0].value
     title = "{{ template \"default.title\" . }}"
     text  = "{{ template \"default.message\" . }}"
   }
