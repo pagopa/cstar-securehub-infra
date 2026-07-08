@@ -102,6 +102,7 @@ locals {
           AZURE_TENANT_ID       = data.azurerm_client_config.current.tenant_id
         }
       ]
+      repository_secrets   = []
       repository_variables = []
     }
   }
