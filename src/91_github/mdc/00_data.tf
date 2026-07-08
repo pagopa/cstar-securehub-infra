@@ -14,6 +14,8 @@ module "secrets" {
     var.env == "prod" ? "mil-gh-bot-token" : null,
     var.env == "prod" ? "emd-bot-github-rw-TOKEN" : null,
     var.env == "prod" ? "sonar-token" : null,
+    var.env == "uat" ? "argocd-admin-username" : null,
+    var.env == "uat" ? "argocd-admin-password" : null,
     var.env == "uat" ? "emd-tpp-test-client-id" : null,
     var.env == "uat" ? "emd-tpp-test-client-secret" : null,
     var.env == "uat" ? "send-client-id" : null,

@@ -149,7 +149,6 @@ locals {
       env_secrets = {
         envs = ["uat", "github-pages"]
         secrets = {
-          GIT_PAT          = try(module.secrets.values["emd-bot-github-rw-TOKEN"].value, null)
           ARGO_CD_USERNAME = try(module.secrets.values["argocd-admin-username"].value, null)
           ARGO_CD_PASSWORD = try(module.secrets.values["argocd-admin-password"].value, null)
         }
