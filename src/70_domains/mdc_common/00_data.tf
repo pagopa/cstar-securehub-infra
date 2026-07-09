@@ -176,3 +176,9 @@ data "azurerm_kusto_cluster" "kusto_cluster" {
   name                = local.data_explorer_name
   resource_group_name = local.data_explorer_rg_name
 }
+
+# Existing VNet used for private DNS resolution
+data "azurerm_virtual_network" "vnet_spoke_data" {
+  name                = local.vnet_spoke_data_name
+  resource_group_name = local.vnet_network_rg
+}

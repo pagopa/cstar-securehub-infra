@@ -43,7 +43,9 @@ resource "azurerm_private_dns_zone" "web_storage" {
 
 # Link Private DNS Zone -> VNet
 
-# Collegamento alla vpn
+# Link della Private DNS Zone alla VNet utilizzata
+# dalla connettività privata (VPN / peering).
+# Permette ai client interni di risolvere il Private Endpoint.
 resource "azurerm_private_dns_zone_virtual_network_link" "web_storage" {
   name                  = "web-storage-private-dns-link"
   resource_group_name   = local.vnet_legacy_resource_group_name
