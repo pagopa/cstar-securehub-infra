@@ -7,13 +7,14 @@
 # Strategia (massima sicurezza):
 #   1) Storage Account creato tramite il modulo standard IDH/storage_account
 #      (tier "basic"): gestisce in automatico private endpoint, accesso
-#      pubblico DISABILITATO, HTTPS-only, TLS 1.2, e threat protection.
+#      pubblico DISABILITATO, TLS 1.2.
 #   2) Static Website hosting: i file HTML/JS/CSS vengono serviti direttamente
 #      dallo storage senza necessità di Web App o CDN, riducendo costi e
 #      complessità operativa.
 #   3) Private Endpoint sul subresource "web": collega lo storage alla VNet
-#      aziendale tramite subnet dedicata, rendendo il sito raggiungibile SOLO
-#      da utenti connessi alla VPN (nessun accesso pubblico da internet).
+#      aziendale tramite subnet dedicata, rendendo il sito raggiungibile
+#      esclusivamente dalla rete privata aziendale (VPN, VNet o reti peered),
+#      senza esposizione pubblica su Internet.
 #   4) DNS privato: la zona "privatelink.web.core.windows.net" risolve il FQDN
 #      dello storage verso l'IP privato del private endpoint, garantendo che
 #      anche le richieste DNS non escano dalla rete aziendale.
@@ -42,7 +43,7 @@ module "admin_web_storage" {
   # "-" not allowed in storage account names, so we remove them
   name   = substr(replace("${local.admin_web_storage_name}", "-", ""), 0, 24)
   domain = var.domain
-  # replication_type = var.audit_storage_account_replication_type
+  replication_type = var.web_storage_account_replication_type
 
   resource_group_nsg_name = local.network_rg
 
@@ -54,7 +55,7 @@ module "admin_web_storage" {
 
   # Private Endpoint del sito web
   private_dns_zone_web_ids = [
-    data.azurerm_private_dns_zone.blob_storage.id
+    data.azurerm_private_dns_zone.web_storage.id
   ]
 
   # Static Website
