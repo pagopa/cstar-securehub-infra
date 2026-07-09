@@ -42,6 +42,7 @@
 |------|-------------|------|---------|:--------:|
 | <a name="input_argo_cd_server"></a> [argo\_cd\_server](#input\_argo\_cd\_server) | Server of the Argo CD (without https). | `string` | `null` | no |
 | <a name="input_env"></a> [env](#input\_env) | Environment | `string` | n/a | yes |
+| <a name="input_eventhub_namespace_name"></a> [eventhub\_namespace\_name](#input\_eventhub\_namespace\_name) | Name of the Event Hub Namespace used for Kafka connection. | `string` | n/a | yes |
 | <a name="input_mdc_kv_name"></a> [mdc\_kv\_name](#input\_mdc\_kv\_name) | Name of the Key Vault where the mdc secrets are stored. | `string` | n/a | yes |
 | <a name="input_mdc_kv_rg"></a> [mdc\_kv\_rg](#input\_mdc\_kv\_rg) | Name of the resource group where the mdc Key Vault is located. | `string` | n/a | yes |
 
