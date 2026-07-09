@@ -41,8 +41,8 @@ module "admin_web_storage" {
   idh_resource_tier = "basic"
 
   # "-" not allowed in storage account names, so we remove them
-  name   = substr(replace("${local.admin_web_storage_name}", "-", ""), 0, 24)
-  domain = var.domain
+  name             = substr(replace("${local.admin_web_storage_name}", "-", ""), 0, 24)
+  domain           = var.domain
   replication_type = var.web_storage_account_replication_type
 
   resource_group_nsg_name = local.network_rg
