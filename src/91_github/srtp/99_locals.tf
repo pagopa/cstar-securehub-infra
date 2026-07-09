@@ -76,12 +76,23 @@ locals {
       repository_variables = []
     }
     rtp-platform-qa = {
+      env                  = ["${var.location_short}-dev", "${var.location_short}-uat"],
+      env_variables        = [],
+      env_secret_variables = []
+      repository_secrets = [
+        {
+          SLACK_WEBHOOK_URL = data.azurerm_key_vault_secret.slack_webhook.value
+        }
+      ]
+      repository_variables = []
+    }
+    rtp-internal = {
       env = ["${var.location_short}-dev", "${var.location_short}-uat"],
       env_variables = [
         {
           AZURE_RESOURCE_GROUP   = local.aks_resource_group_name
           AZURE_AKS_CLUSTER_NAME = local.aks_name
-          DEPLOYMENT_NAME        = "rtp-platform-qa"
+          DEPLOYMENT_NAME        = "rtp-producer"
           NAMESPACE              = var.domain
         }
       ],
@@ -92,11 +103,7 @@ locals {
           AZURE_TENANT_ID       = data.azurerm_client_config.current.tenant_id
         }
       ]
-      repository_secrets = [
-        {
-          SLACK_WEBHOOK_URL = data.azurerm_key_vault_secret.slack_webhook.value
-        }
-      ]
+      repository_secrets   = []
       repository_variables = []
     }
   }
