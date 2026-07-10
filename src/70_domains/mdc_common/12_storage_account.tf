@@ -28,32 +28,6 @@
 # Accesso: gli utenti devono essere connessi alla VPN aziendale o trovarsi nella
 # rete privata (es. VM peered alla VNet) per raggiungere https://<storage>.web.core.windows.net
 
-
-
-
-# Private DNS Zone per Static Website
-
-# Azure Static Website utilizza il subresource "web"
-# con Private DNS Zone privatelink.web.core.windows.net
-# mentre Blob Storage utilizza privatelink.blob.core.windows.net
-resource "azurerm_private_dns_zone" "web_storage" {
-  name                = "privatelink.web.core.windows.net"
-  resource_group_name = local.vnet_legacy_resource_group_name
-}
-
-# Link Private DNS Zone -> VNet
-
-# Link della Private DNS Zone alla VNet utilizzata
-resource "azurerm_private_dns_zone_virtual_network_link" "web_storage" {
-  name                  = "web-storage-private-dns-link"
-  resource_group_name   = local.vnet_legacy_resource_group_name
-  private_dns_zone_name = azurerm_private_dns_zone.web_storage.name
-
-  virtual_network_id = data.azurerm_virtual_network.vnet_spoke_data.id
-
-  registration_enabled = false
-}
-
 # Storage Account Static Website
 module "admin_web_storage" {
   source = "./.terraform/modules/__v4__/IDH/storage_account"
