@@ -51,7 +51,7 @@ resource "azurerm_private_dns_zone" "web_storage" {
 
 resource "azurerm_private_dns_zone_virtual_network_link" "web_storage" {
   name                  = "web-storage-private-dns-link"
-  resource_group_name = data.azurerm_virtual_network.vnet_weu_integration.resource_group_name
+  resource_group_name   = data.azurerm_virtual_network.vnet_weu_integration.resource_group_name
   private_dns_zone_name = azurerm_private_dns_zone.web_storage.name
 
   virtual_network_id = data.azurerm_virtual_network.vnet_spoke_data.id
