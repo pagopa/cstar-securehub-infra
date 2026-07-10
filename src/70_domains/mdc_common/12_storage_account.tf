@@ -54,7 +54,7 @@ module "admin_web_storage" {
   }
 
   # Private Endpoint del sito web
-  private_dns_zone_web_ids = [azurerm_private_dns_zone.web_storage.id]
+  private_dns_zone_web_ids = [data.azurerm_private_dns_zone.web_storage.id]
 
   # Static Website
   index_document     = "index.html"
