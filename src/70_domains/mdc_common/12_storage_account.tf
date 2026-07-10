@@ -71,9 +71,6 @@ module "admin_web_storage" {
   # "-" not allowed in storage account names, so we remove them
   name   = substr(replace("${local.admin_web_storage_name}", "-", ""), 0, 24)
   domain = var.domain
-  # The replication type 'LRS' is not allowed in 'dev' environment for idh resource 'basic'. The minimum replication type is 'LRS'. Valid values are GZRS,LSR,ZRS
-  # replication_type = var.web_storage_account_replication_type
-  # replication_type = var.env == "prod" ? "ZRS" : "LRS"
 
   resource_group_nsg_name = local.network_rg
 
