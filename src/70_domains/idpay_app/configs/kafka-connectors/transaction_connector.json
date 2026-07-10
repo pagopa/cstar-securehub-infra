@@ -14,10 +14,17 @@
   "topic.prefix": "idpay",
   "snapshot.mode": "initial",
 
-  "transforms": "unwrap,extractPayload,route",
+  "transforms": "unwrap,extractKey,unwrapKey,extractPayload,route",
+
   "transforms.unwrap.type": "io.debezium.transforms.ExtractNewRecordState",
   "transforms.unwrap.drop.tombstones": "true",
   "transforms.unwrap.delete.handling.mode": "rewrite",
+
+  "transforms.extractKey.type": "org.apache.kafka.connect.transforms.ValueToKey",
+  "transforms.extractKey.fields": "user_id",
+
+  "transforms.unwrapKey.type": "org.apache.kafka.connect.transforms.ExtractField$Key",
+  "transforms.unwrapKey.field": "user_id",
 
   "transforms.extractPayload.type": "org.apache.kafka.connect.transforms.ExtractField$Value",
   "transforms.extractPayload.field": "payload",
@@ -26,7 +33,7 @@
   "transforms.route.regex": ".*\\.transaction_outbox",
   "transforms.route.replacement": "idpay-transaction",
 
-  "key.converter": "org.apache.kafka.connect.json.JsonConverter",
+  "key.converter": "org.apache.kafka.connect.storage.StringConverter",
   "key.converter.schemas.enable": "false",
 
   "value.converter": "org.apache.kafka.connect.storage.StringConverter",
