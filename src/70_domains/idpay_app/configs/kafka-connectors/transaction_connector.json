@@ -14,11 +14,15 @@
   "topic.prefix": "idpay",
   "snapshot.mode": "initial",
 
-  "transforms": "unwrap,extractKey,unwrapKey,extractPayload,route",
+  "transforms": "unwrap,filterStatus,extractKey,unwrapKey,extractPayload,route",
 
   "transforms.unwrap.type": "io.debezium.transforms.ExtractNewRecordState",
   "transforms.unwrap.drop.tombstones": "true",
   "transforms.unwrap.delete.handling.mode": "rewrite",
+
+  "transforms.filterStatus.type": "io.debezium.transforms.Filter",
+  "transforms.filterStatus.language": "jsr223.groovy",
+  "transforms.filterStatus.condition": "value.event_type in ['TRANSACTION_AUTHORIZED', 'TRANSACTION_INVOICED', 'TRANSACTION_REJECTED', 'TRANSACTION_REWARDED', 'TRANSACTION_CAPTURED', 'TRANSACTION_EXPIRED']",
 
   "transforms.extractKey.type": "org.apache.kafka.connect.transforms.ValueToKey",
   "transforms.extractKey.fields": "user_id",
