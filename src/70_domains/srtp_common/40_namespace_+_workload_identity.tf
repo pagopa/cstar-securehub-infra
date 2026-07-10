@@ -38,10 +38,10 @@ module "workload_identity_configuration" {
 #----------------------------------------------------------------
 # 🔎 DNS
 #----------------------------------------------------------------
-resource "azurerm_private_dns_a_record" "ingress_qa" {
+resource "azurerm_private_dns_a_record" "ingress_rtp_producer" {
   count = contains(["d", "u"], var.env_short) ? 1 : 0
 
-  name                = "qa"
+  name                = "rtp-producer"
   zone_name           = local.dns_zone_internal
   resource_group_name = local.vnet_legacy_core_rg
   ttl                 = 3600
