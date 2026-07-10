@@ -120,16 +120,6 @@ variable "audit_storage_account_replication_type" {
   }
 }
 
-variable "web_storage_account_replication_type" {
-  type        = string
-  description = "Replication type for the web Storage Account. Use LRS for the cheapest option (dev/uat); ZRS/GRS for production durability/compliance."
-  default     = "LRS"
-  validation {
-    condition     = contains(["LRS", "GRS", "ZRS", "RAGRS", "GZRS"], var.web_storage_account_replication_type)
-    error_message = "Must be one of: LRS, GRS, ZRS, RAGRS, GZRS."
-  }
-}
-
 # https://github.com/pagopa/terraform-azurerm-v4/blob/main/IDH/00_product_configs/cstar/uat/storage_account.yml
 variable "audit_storage_account_tier" {
   type        = string

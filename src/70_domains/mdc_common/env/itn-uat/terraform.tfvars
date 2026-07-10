@@ -16,9 +16,6 @@ robots_indexed_paths = []
 # CDN
 backoffice_cdn_storage_replication_type = "LRS"
 
-# Storage account
-web_storage_account_replication_type = "LRS"
-
 # Redis
 redis_idh_tier = "basic"
 

@@ -16,9 +16,6 @@ robots_indexed_paths = []
 # CDN
 backoffice_cdn_storage_replication_type = "LRS"
 
-# Storage account
-web_storage_account_replication_type = "LRS"
-
 #Monitoring
 law_sku               = "PerGB2018"
 law_retention_in_days = 30
