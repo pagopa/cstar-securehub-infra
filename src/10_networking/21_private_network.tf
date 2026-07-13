@@ -45,7 +45,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "file_private_endpoint_
 #--------------------------------------------------------------------------------
 
 resource "azurerm_private_dns_zone" "web_storage" {
-  name = "privatelink.web.core.windows.net"
+  name                = "privatelink.web.core.windows.net"
   resource_group_name = azurerm_resource_group.rg_network.name
   tags                = module.tag_config.tags
 }
