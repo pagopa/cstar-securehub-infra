@@ -28,6 +28,8 @@ module "workload_identity_configuration" {
   key_vault_key_permissions         = ["Get"]
   key_vault_secret_permissions      = ["Get"]
 
+  service_account_image_pull_secret_names = [kubernetes_secret.ghcr_secret.metadata[0].name]
+
   depends_on = [
     module.workload_identity,
   ]
@@ -36,10 +38,10 @@ module "workload_identity_configuration" {
 #----------------------------------------------------------------
 # 🔎 DNS
 #----------------------------------------------------------------
-resource "azurerm_private_dns_a_record" "ingress_qa" {
+resource "azurerm_private_dns_a_record" "ingress_rtp_producer" {
   count = contains(["d", "u"], var.env_short) ? 1 : 0
 
-  name                = "qa"
+  name                = "rtp-producer"
   zone_name           = local.dns_zone_internal
   resource_group_name = local.vnet_legacy_core_rg
   ttl                 = 3600
