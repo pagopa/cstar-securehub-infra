@@ -5,7 +5,7 @@
   "database.user": "idpaydbadmin",
   "database.password": "${env:POSTGRES_PASSWORD}",
   "database.dbname": "idpay-database",
-  "database.ssl.mode": "require",
+  "database.sslmode": "require",
   "plugin.name": "pgoutput",
   "publication.autocreate.mode": "filtered",
   "publication.name": "idpay_outbox_pub",
