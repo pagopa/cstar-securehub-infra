@@ -38,8 +38,8 @@ module "keycloak_setup" {
 
       # Password policy applied on first-time password set (executeActionsEmail -> UPDATE_PASSWORD)
       # and on any subsequent password change.
-      # Rules: length 6-28, at least 1 lowercase, 1 uppercase, 1 digit, 1 special char.
-      password_policy = "length(6) and maxLength(28) and lowerCase(1) and upperCase(1) and digits(1) and specialChars(1)"
+      # Rules: length 10-64, at least 1 lowercase, 1 uppercase, 1 digit, 1 special char.
+      password_policy = "length(10) and maxLength(64) and lowerCase(1) and upperCase(1) and digits(1) and specialChars(1)"
 
       attributes = {
         frontendUrl = local.keycloak_external_hostname
