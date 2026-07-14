@@ -16,11 +16,11 @@ resource "github_branch_default" "default" {
 # APPLIED ONLY WHEN TERRAFORM IS APPLIED IN PROD ENVIRONMENT.
 # ------------------------------------------------------------------------------
 resource "github_repository_ruleset" "develop" {
-   for_each = {
-     for k, v in local.repositories_with_develop_ruleset :
-     k => v
-     if var.env == "prod"
-   }
+  for_each = {
+    for k, v in local.repositories_with_develop_ruleset :
+    k => v
+    if var.env == "prod"
+  }
 
   name        = "develop"
   repository  = each.key
@@ -85,11 +85,11 @@ resource "github_repository_ruleset" "develop" {
 # APPLIED ONLY WHEN TERRAFORM IS APPLIED IN PROD ENVIRONMENT.
 # ------------------------------------------------------------------------------
 resource "github_repository_ruleset" "uat_and_main" {
-   for_each = {
-      for k, v in local.repositories_with_uat_and_main_ruleset :
-      k => v
-      if var.env == "prod"
-    }
+  for_each = {
+    for k, v in local.repositories_with_uat_and_main_ruleset :
+    k => v
+    if var.env == "prod"
+  }
 
   name        = "uat_and_main"
   repository  = each.key
