@@ -2,6 +2,10 @@ data "github_team" "admin" {
   slug = "idpay-approver-team"
 }
 
+data "azurerm_client_config" "current" {}
+
+data "azurerm_subscription" "current" {}
+
 data "azurerm_key_vault" "cicd" {
   name                = var.cicd_kv_name
   resource_group_name = var.cicd_kv_rg
@@ -30,4 +34,9 @@ data "azurerm_key_vault" "idpay" {
 data "azurerm_key_vault_secret" "gh_token" {
   key_vault_id = data.azurerm_key_vault.idpay.id
   name         = "idpay-bot-github-self-hosted-runners-TOKEN"
+}
+
+data "azurerm_key_vault_secret" "workload_identity_client_id" {
+  key_vault_id = data.azurerm_key_vault.idpay.id
+  name         = "idpay-itn-workload-identity-client-id"
 }

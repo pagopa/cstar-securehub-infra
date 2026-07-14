@@ -39,3 +39,8 @@ variable "argo_cd_server" {
   description = "Server of the Argo CD (without https)."
   default     = null
 }
+
+variable "functional_testing_secret_name" {
+  type        = string
+  description = "Name of the secret for functional test."
+}
