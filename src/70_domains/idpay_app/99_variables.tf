@@ -48,7 +48,7 @@ variable "idpay_grafana_alert_enabled" {
 variable "idpay_grafana_alert_email_addresses" {
   type        = list(string)
   description = "Email addresses used by the Grafana IDPay app contact point."
-  default     = []
+  default     = ["gabriele.coletta@pagopa.it", "andrea.morabito@pagopa.it"]
 
   validation {
     condition = alltrue([
