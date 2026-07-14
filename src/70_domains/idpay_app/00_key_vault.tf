@@ -30,7 +30,7 @@ data "azurerm_key_vault_secret" "workload_identity_service_account_name" {
 
 data "azurerm_key_vault_secret" "slack_webhook_url" {
   count        = var.idpay_grafana_alert_enabled ? 1 : 0
-  name         = "slack-webhook-email-alert"
+  name         = "slack-webhook-alert"
   key_vault_id = data.azurerm_key_vault.key_vault_domain.id
 }
 
