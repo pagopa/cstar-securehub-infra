@@ -128,7 +128,7 @@ data "azurerm_private_dns_zone" "blob_storage" {
 
 data "azurerm_private_dns_zone" "web_storage" {
   name                = "privatelink.web.core.windows.net"
-  resource_group_name = local.project
+  resource_group_name = local.vnet_network_rg
 }
 
 # 🐳 Kubernetes Cluster
