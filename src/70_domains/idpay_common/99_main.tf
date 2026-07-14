@@ -85,5 +85,5 @@ provider "keycloak" {
 
 module "__v4__" {
   # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v10.15.1
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=<nuovo-riferimenti-a-terraform-azurerm-v4>"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=BND-1220-merchant-pwd-enable"
 }
