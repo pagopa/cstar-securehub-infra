@@ -95,7 +95,7 @@ locals {
       severity    = 2
       query       = <<-QUERY
             AppRequests
-            | where Name == "POST /idpay-itn/register/product-files"
+            | where Name matches regex @"^POST /idpay-itn/register/initiatives/[^/]+/product-files$"
             | where ResultCode startswith "5" or ResultCode in ("401", "429")
           QUERY
       criteria = {
@@ -114,7 +114,7 @@ locals {
       window_duration      = 10
       query                = <<-QUERY
             AppRequests
-            | where Name == "POST /idpay-itn/register/product-files"
+            | where Name matches regex @"^POST /idpay-itn/register/initiatives/[^/]+/product-files$"
             | where ResultCode == "400"
           QUERY
       criteria = {
@@ -131,7 +131,7 @@ locals {
       severity    = 2
       query       = <<-QUERY
             AppRequests
-            | where Name == "POST /idpay-itn/register/product-files/verify"
+            | where Name matches regex @"^POST /idpay-itn/register/initiatives/[^/]+/product-files/verify$"
             | where ResultCode startswith "5"
           QUERY
       criteria = {
@@ -148,7 +148,7 @@ locals {
       severity    = 2
       query       = <<-QUERY
             AppRequests
-            | where Name == "GET /idpay-itn/register/product-files"
+            | where Name matches regex @"^GET /idpay-itn/register/initiatives/[^/]+/product-files$"
             | where ResultCode startswith "5"
           QUERY
       criteria = {
@@ -165,13 +165,7 @@ locals {
       severity    = 3
       query       = <<-QUERY
             AppRequests
-            | where Name in (
-            "POST /idpay-itn/register/products/update-status/approved",
-            "POST /idpay-itn/register/products/update-status/wait-approved",
-            "POST /idpay-itn/register/products/update-status/supervised",
-            "POST /idpay-itn/register/products/update-status/rejected",
-            "POST /idpay-itn/register/products/update-status/restored"
-            )
+            | where Name matches regex @"^POST /idpay-itn/register/initiatives/[^/]+/products/update-status/(approved|wait-approved|supervised|rejected|restored)$"
             | where ResultCode startswith "5"
           QUERY
       criteria = {
@@ -188,7 +182,7 @@ locals {
       severity    = 0
       query       = <<-QUERY
             AppRequests
-            | where Name == "GET /idpay-itn/register/products"
+            | where Name matches regex @"^GET /idpay-itn/register/initiatives/[^/]+/products$"
             | where ResultCode startswith "5"
           QUERY
       criteria = {
@@ -206,7 +200,7 @@ locals {
       window_duration = 10
       query           = <<-QUERY
             AppRequests
-            | where Name == "GET /idpay-itn/register/products"
+            | where Name matches regex @"^GET /idpay-itn/register/initiatives/[^/]+/products$"
             | where ResultCode == "400"
           QUERY
       criteria = {
@@ -224,7 +218,7 @@ locals {
       window_duration = 10
       query           = <<-QUERY
             AppRequests
-            | where Name == "GET /idpay-itn/register/products"
+            | where Name matches regex @"^GET /idpay-itn/register/initiatives/[^/]+/products$"
             | summarize TotalRequests = count(), SuccessfulRequests = countif(Success == true)
             | extend Availability = (todouble(SuccessfulRequests) / todouble(TotalRequests)) * 100
             | where Availability < 99
@@ -276,7 +270,7 @@ locals {
       severity    = 3
       query       = <<-QUERY
             AppRequests
-            | where Name == "GET /idpay-itn/register/product-files/*/report"
+            | where Name matches regex @"^GET /idpay-itn/register/initiatives/[^/]+/product-files/[^/]+/report$"
             | where ResultCode startswith "5"
           QUERY
       criteria = {
@@ -293,7 +287,7 @@ locals {
       severity    = 3
       query       = <<-QUERY
             AppRequests
-            | where Name == "GET /idpay-itn/register/product-files/batch-list"
+            | where Name matches regex @"^GET /idpay-itn/register/initiatives/[^/]+/product-files/batch-list$"
             | where ResultCode startswith "5"
           QUERY
       criteria = {
@@ -310,7 +304,7 @@ locals {
       severity    = 3
       query       = <<-QUERY
             AppRequests
-            | where Name == "GET /idpay-itn/register/institutions/*"
+            | where Name matches regex @"^GET /idpay-itn/register/institutions/[^/]+$"
             | where ResultCode startswith "5"
           QUERY
       criteria = {
@@ -320,21 +314,38 @@ locals {
       email_subject = "[PARI] Institution by ID API alert (5xx)"
     }
 
-    # Institutions list
-    pari_institutions_list_alert = {
-      name        = "pari-institutions-list-alert"
-      description = "Institutions list API: 5xx error count exceeded (> 5 in 5m)"
+    # Producers list - GET
+    pari_producers_list_get_alert = {
+      name        = "pari-producers-list-get-alert"
+      description = "Producers list GET API: 5xx error count exceeded (> 5 in 5m)"
       severity    = 3
       query       = <<-QUERY
             AppRequests
-            | where Name == "GET /idpay-itn/register/institutions"
+            | where Name matches regex @"^GET /idpay-itn/register/initiatives/[^/]+/producers$"
             | where ResultCode startswith "5"
           QUERY
       criteria = {
         operator  = "GreaterThanOrEqual"
         threshold = 5
       }
-      email_subject = "[PARI] Institutions list API alert (5xx)"
+      email_subject = "[PARI] Producers list GET API alert (5xx)"
+    }
+
+    # Producers list - POST
+    pari_producers_list_post_alert = {
+      name        = "pari-producers-list-post-alert"
+      description = "Producers list POST API: 5xx error count exceeded (> 5 in 5m)"
+      severity    = 2
+      query       = <<-QUERY
+            AppRequests
+            | where Name matches regex @"^POST /idpay-itn/register/initiatives/[^/]+/producers$"
+            | where ResultCode startswith "5"
+          QUERY
+      criteria = {
+        operator  = "GreaterThanOrEqual"
+        threshold = 5
+      }
+      email_subject = "[PARI] Producers list POST API alert (5xx)"
     }
 
     # Internal dependency – E-mail service
@@ -355,7 +366,15 @@ locals {
       email_subject = "[PARI] Internal Email microservice dependency alert"
     }
 
-    # External dependency  – EPREL
+  }
+
+  # =============================================================
+  # Alerts Bonus Elettrodomestici
+  # =============================================================
+
+  alerts_bonus_elettrodomestici = {
+
+    # External dependency – EPREL
     pari_eprel_dependency_alert = {
       name        = "pari-eprel-dependency-alert"
       description = "EPREL dependency: error count exceeded threshold (> 10 in 5m)"
@@ -1409,6 +1428,7 @@ locals {
   # 🧱 Collection of alert groups
   alerts_groups = [
     local.alerts_eie,
+    local.alerts_bonus_elettrodomestici,
     local.alerts_ese,
     local.alerts_upbe,
     local.alerts_keycloak,
