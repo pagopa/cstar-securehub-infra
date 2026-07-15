@@ -1,0 +1,396 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "links": [],
+  "panels": [
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 5,
+      "panels": [],
+      "title": "STATUS GLOBAL & NORTH STAR",
+      "type": "row"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 24,
+        "x": 0,
+        "y": 1
+      },
+      "id": 4,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "<div>\n  <div style=\"text-align: center; font-size: 16px; color: #ccc; padding: 8px 0;\">\n    KPI North Star: Indice di Conversione e Copertura Ecosistema\n  </div>\n  <div style=\"display: flex; align-items: flex-start; justify-content: center; gap: 16px; padding: 10px; flex-wrap: nowrap;\">\n\n    <div style=\"text-align: center; flex-shrink: 0;\">\n      <div\n        style=\"border: 1px solid #5794F2; border-radius: 4px; padding: 6px 12px; font-weight: bold; font-size: 13px; height: 17px; display: flex; align-items: center; justify-content: center; box-sizing: content-box;\">\n        [1. SEND]</div>\n      <div style=\"font-size: 11px; color: #8e8e8e; margin-top: 4px; white-space: nowrap;\">(Invia MDC)</div>\n    </div>\n\n    <div style=\"flex-grow: 1; height: 31px; display: flex; align-items: center; margin: 0 8px;\">\n      <div style=\"flex-grow: 1; height: 1px; background-color: #ccc;\"></div>\n      <div\n        style=\"width: 0; height: 0; border-top: 4px solid transparent; border-bottom: 4px solid transparent; border-left: 6px solid #ccc;\">\n      </div>\n    </div>\n\n    <div style=\"text-align: center; flex-shrink: 0;\">\n      <div\n        style=\"border: 1px solid #5794F2; border-radius: 4px; padding: 6px 12px; font-weight: bold; font-size: 13px; height: 17px; display: flex; align-items: center; justify-content: center; box-sizing: content-box;\">\n        [2. EMD]</div>\n      <div style=\"font-size: 11px; color: #8e8e8e; margin-top: 4px; white-space: nowrap;\">(Accetta/Scarta)</div>\n    </div>\n\n    <div style=\"flex-grow: 1; height: 31px; display: flex; align-items: center; margin: 0 8px;\">\n      <div style=\"flex-grow: 1; height: 1px; background-color: #ccc;\"></div>\n      <div\n        style=\"width: 0; height: 0; border-top: 4px solid transparent; border-bottom: 4px solid transparent; border-left: 6px solid #ccc;\">\n      </div>\n    </div>\n\n    <div style=\"text-align: center; flex-shrink: 0;\">\n      <div\n        style=\"border: 1px solid #5794F2; border-radius: 4px; padding: 6px 12px; font-weight: bold; font-size: 13px; height: 17px; display: flex; align-items: center; justify-content: center; box-sizing: content-box;\">\n        [3. PSP]</div>\n      <div style=\"font-size: 11px; color: #8e8e8e; margin-top: 4px; white-space: nowrap;\">(Smistamento)</div>\n    </div>\n\n    <div style=\"flex-grow: 1; height: 31px; display: flex; align-items: center; margin: 0 8px;\">\n      <div style=\"flex-grow: 1; height: 1px; background-color: #ccc;\"></div>\n      <div\n        style=\"width: 0; height: 0; border-top: 4px solid transparent; border-bottom: 4px solid transparent; border-left: 6px solid #ccc;\">\n      </div>\n    </div>\n\n    <div style=\"text-align: center; flex-shrink: 0;\">\n      <div\n        style=\"border: 1px solid #5794F2; border-radius: 4px; padding: 6px 12px; font-weight: bold; font-size: 13px; height: 17px; display: flex; align-items: center; justify-content: center; box-sizing: content-box;\">\n        [4. PORTALE SEND]</div>\n      <div style=\"font-size: 11px; color: #8e8e8e; margin-top: 4px; white-space: nowrap;\">(Visualizzazione)</div>\n    </div>\n\n    <div style=\"flex-grow: 1; height: 31px; display: flex; align-items: center; margin: 0 8px;\">\n      <div style=\"flex-grow: 1; height: 1px; background-color: #ccc;\"></div>\n      <div\n        style=\"width: 0; height: 0; border-top: 4px solid transparent; border-bottom: 4px solid transparent; border-left: 6px solid #ccc;\">\n      </div>\n    </div>\n\n    <div style=\"text-align: center; flex-shrink: 0;\">\n      <div\n        style=\"border: 1px solid #5794F2; border-radius: 4px; padding: 6px 12px; font-weight: bold; font-size: 13px; height: 17px; display: flex; align-items: center; justify-content: center; box-sizing: content-box;\">\n        [5. APP BANCARIA]</div>\n      <div style=\"font-size: 11px; color: #8e8e8e; margin-top: 4px; white-space: nowrap;\">(Pagamento)</div>\n    </div>\n\n  </div>\n</div>",
+        "mode": "html"
+      },
+      "pluginVersion": "12.4.3",
+      "title": "",
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-data-explorer-datasource",
+        "uid": "${ds}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "NON OPERATIVO": {
+                  "color": "dark-red",
+                  "index": 0
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 5,
+        "x": 0,
+        "y": 5
+      },
+      "id": 2,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^Stato Servizio$/",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.4.3",
+      "targets": [
+        {
+          "OpenAI": false,
+          "database": "mdc",
+          "datasource": {
+            "type": "grafana-azure-data-explorer-datasource",
+            "uid": "${ds}"
+          },
+          "expression": {
+            "groupBy": {
+              "expressions": [],
+              "type": "and"
+            },
+            "reduce": {
+              "expressions": [],
+              "type": "and"
+            },
+            "where": {
+              "expressions": [],
+              "type": "and"
+            }
+          },
+          "pluginVersion": "7.2.6",
+          "query": "MessageVolumeSnapshot\r\n| where window_start >= startofday(ago(1d)) and window_start < startofday(now())\r\n| summarize TotaleEventi = coalesce(sum(message_sent_count), 0) + coalesce(sum(message_discarded_count), 0)\r\n| extend ['Stato Servizio'] = iff(TotaleEventi > 0, \"OPERATIVO\", \"NON OPERATIVO\")\r\n| project ['Stato Servizio']",
+          "querySource": "raw",
+          "queryType": "KQL",
+          "rawMode": true,
+          "refId": "A",
+          "resultFormat": "table"
+        }
+      ],
+      "title": "Stato Servizio:",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-data-explorer-datasource",
+        "uid": "${ds}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 0
+              },
+              {
+                "color": "#EAB839",
+                "value": 1
+              },
+              {
+                "color": "green",
+                "value": 5
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 14,
+        "x": 5,
+        "y": 5
+      },
+      "id": 1,
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^Tasso di Conversione Pagamento Totale$/",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "sizing": "auto",
+        "text": {}
+      },
+      "pluginVersion": "12.4.3",
+      "targets": [
+        {
+          "OpenAI": false,
+          "database": "mdc",
+          "datasource": {
+            "type": "grafana-azure-data-explorer-datasource",
+            "uid": "${ds}"
+          },
+          "expression": {
+            "groupBy": {
+              "expressions": [],
+              "type": "and"
+            },
+            "reduce": {
+              "expressions": [],
+              "type": "and"
+            },
+            "where": {
+              "expressions": [],
+              "type": "and"
+            }
+          },
+          "pluginVersion": "7.2.6",
+          "query": "let messaggiAccettati = toscalar(\r\n    MessageVolumeSnapshot\r\n    | where $__timeFilter(window_start)\r\n    | summarize coalesce(sum(message_sent_count), 0)\r\n);\r\nlet known_origins =\r\n    MessageSnapshot\r\n    | where message_state == \"SENT\"\r\n    | summarize by origin_id;\r\nlet pagamentiCompletati = toscalar(\r\n    FinalizedMessageSnapshot\r\n    | where $__timeFilter(window_start)\r\n    | where origin_id in (known_origins)\r\n    | summarize arg_max(window_start, tpp_id) by origin_id\r\n    | summarize dcount(origin_id)\r\n);\r\nlet pspAttivi = toscalar(\r\n    FinalizedMessageSnapshot\r\n    | where $__timeFilter(window_start)\r\n    | where origin_id in (known_origins)\r\n    | summarize by tpp_id\r\n    | count\r\n);\r\nprint ['Tasso di Conversione Pagamento Totale'] =\r\n    iff(messaggiAccettati == 0 or pspAttivi == 0, 0.0,\r\n        round((100.0 * todouble(pagamentiCompletati) / todouble(messaggiAccettati)) / todouble(pspAttivi), 2))",
+          "querySource": "raw",
+          "queryType": "KQL",
+          "rawMode": true,
+          "refId": "A",
+          "resultFormat": "table"
+        }
+      ],
+      "title": "",
+      "transparent": true,
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-data-explorer-datasource",
+        "uid": "${ds}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 5,
+        "x": 19,
+        "y": 5
+      },
+      "id": 3,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^PSP Attivi / Totali$/",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.4.3",
+      "targets": [
+        {
+          "OpenAI": false,
+          "clusterUri": "https://cstar-d-itn-platform.italynorth.kusto.windows.net",
+          "database": "mdc",
+          "datasource": {
+            "type": "grafana-azure-data-explorer-datasource",
+            "uid": "${ds}"
+          },
+          "expression": {
+            "groupBy": {
+              "expressions": [],
+              "type": "and"
+            },
+            "reduce": {
+              "expressions": [],
+              "type": "and"
+            },
+            "where": {
+              "expressions": [],
+              "type": "and"
+            }
+          },
+          "pluginVersion": "7.2.6",
+          "query": "let pspTotali = toscalar(TppDataSnapshot | count);\r\n\r\nlet pspAttivi = toscalar(TppDataSnapshot | where state == true | count);\r\n\r\nprint ['PSP Attivi / Totali'] = strcat(tostring(pspAttivi), \" / \", tostring(pspTotali))",
+          "querySource": "raw",
+          "queryType": "KQL",
+          "rawMode": true,
+          "refId": "A",
+          "resultFormat": "table"
+        }
+      ],
+      "title": "PSP Attivi / Totali:",
+      "type": "stat"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 14,
+        "x": 5,
+        "y": 11
+      },
+      "id": 6,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "<div style=\"text-align: center; font-size: 13px; color: #BEBEBE; padding: 4px 20px;\">\n  (Pagamenti Completati / Messaggi Accettati) + PSP Attivi<br/>\n  Misura l'efficacia della transazione finale pesata sulla capillarità e l'attivazione dei Prestatori di Servizi di Pagamento (PSP).\n</div>",
+        "mode": "html"
+      },
+      "pluginVersion": "12.4.3",
+      "title": "",
+      "transparent": true,
+      "type": "text"
+    }
+  ],
+  "preload": false,
+  "schemaVersion": 42,
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "allowCustomValue": false,
+        "current": {
+          "text": "grafana-azure-data-explorer-datasource",
+          "value": "df4s9lke68vlse"
+        },
+        "hide": 2,
+        "name": "ds",
+        "options": [],
+        "query": "grafana-azure-data-explorer-datasource",
+        "refresh": 1,
+        "regex": "grafana-azure-data-explorer-datasource",
+        "type": "datasource"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-1y",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "utc",
+  "title": "Monitoraggio Messaggi di Cortesia (MDC)",
+  "uid": "ma89nvz",
+  "version": 2,
+  "weekStart": ""
+}
