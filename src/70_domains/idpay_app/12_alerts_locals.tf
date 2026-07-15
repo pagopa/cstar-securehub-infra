@@ -161,11 +161,15 @@ locals {
     # Products – update status
     pari_products_update_status_alert = {
       name        = "pari-products-update-status-alert"
-      description = "Products update status API: error threshold exceeded (5xx > 3/5m per endpoint)"
+      description = "Products update status API: 5xx error count exceeded (> 3/5m across all update-status endpoints)"
       severity    = 3
       query       = <<-QUERY
             AppRequests
-            | where Name matches regex @"^POST /idpay-itn/register/initiatives/[^/]+/products/update-status/(approved|wait-approved|supervised|rejected|restored)$"
+            | where Name matches regex @"^POST /idpay-itn/register/initiatives/[^/]+/products/update-status/approved$"
+                or Name matches regex @"^POST /idpay-itn/register/initiatives/[^/]+/products/update-status/wait-approved$"
+                or Name matches regex @"^POST /idpay-itn/register/initiatives/[^/]+/products/update-status/supervised$"
+                or Name matches regex @"^POST /idpay-itn/register/initiatives/[^/]+/products/update-status/rejected$"
+                or Name matches regex @"^POST /idpay-itn/register/initiatives/[^/]+/products/update-status/restored$"
             | where ResultCode startswith "5"
           QUERY
       criteria = {
