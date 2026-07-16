@@ -105,6 +105,7 @@
 | <a name="input_external_domain"></a> [external\_domain](#input\_external\_domain) | Domain for delegation | `string` | n/a | yes |
 | <a name="input_idpay_alert_enabled"></a> [idpay\_alert\_enabled](#input\_idpay\_alert\_enabled) | n/a | `bool` | `false` | no |
 | <a name="input_idpay_bel_initiative_id"></a> [idpay\_bel\_initiative\_id](#input\_idpay\_bel\_initiative\_id) | Initiative id for Bonus Elettrodomestici | `string` | n/a | yes |
+| <a name="input_idpay_dec_initiative_id"></a> [idpay\_dec\_initiative\_id](#input\_idpay\_dec\_initiative\_id) | Initiative id for Bonus Decoder | `string` | n/a | yes |
 | <a name="input_idpay_mocked_acquirer_apim_user_id"></a> [idpay\_mocked\_acquirer\_apim\_user\_id](#input\_idpay\_mocked\_acquirer\_apim\_user\_id) | APIm user id of mocked acquirer | `string` | `null` | no |
 | <a name="input_idpay_mocked_merchant_enable"></a> [idpay\_mocked\_merchant\_enable](#input\_idpay\_mocked\_merchant\_enable) | Enable mocked merchant APIs | `bool` | `false` | no |
 | <a name="input_ingress_domain_hostname"></a> [ingress\_domain\_hostname](#input\_ingress\_domain\_hostname) | n/a | `string` | n/a | yes |
