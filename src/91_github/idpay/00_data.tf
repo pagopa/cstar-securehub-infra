@@ -38,5 +38,5 @@ data "azurerm_key_vault_secret" "gh_token" {
 
 data "azurerm_key_vault_secret" "workload_identity_client_id" {
   key_vault_id = data.azurerm_key_vault.idpay.id
-  name         = "idpay-itn-workload-identity-client-id"
+  name         = local.secret_name_idpay_workload_identity_client_id
 }

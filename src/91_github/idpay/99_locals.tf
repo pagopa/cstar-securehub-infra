@@ -434,6 +434,8 @@ locals {
     }
   }
 
+  secret_name_idpay_workload_identity_client_id = "idpay-itn-workload-identity-client-id"
+
   # ----------------------------------------------------------------------------
   # Repositories with environment configuration.
   # ----------------------------------------------------------------------------

@@ -43,4 +43,9 @@ variable "argo_cd_server" {
 variable "functional_testing_secret_name" {
   type        = string
   description = "Name of the secret for functional test."
+  default     = null
+  validation {
+    condition     = var.env == "prod" || var.functional_testing_secret_name != null
+    error_message = "functional_testing_secret_name must be set in dev and uat."
+  }
 }
