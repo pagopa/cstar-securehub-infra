@@ -1270,7 +1270,7 @@
               "type": 3,
               "content": {
                 "version": "KqlItem/1.0",
-                "query": "AppTraces\n| where TimeGenerated {evaluation_window:query}\n| where AppRoleName == 'rtp-sender'\n| where Message startswith \"Error finding activation data with resourceId:\" or Message startswith \"Error saving Rtp to be sent:\" or Message startswith \"Error sending Rtp to be sent:\"\n| extend payee_name = tostring(Properties.payee_name)\n| summarize [\"Errori\"] = count() by [\"Payee Name\"] = payee_name\n| sort by [\"Errori\"] desc\n",
+                "query": "AppTraces\n| where TimeGenerated {evaluation_window:query}\n| where AppRoleName == 'rtp-sender'\n| where (\n    Message contains \"Error saving Rtp to be sent:\"\n    or Message startswith \"Error sending Rtp to be sent:\"\n)\n    and Message !contains \"payer is not activat\"\n| extend payee_name = tostring(Properties.payee_name)\n| summarize [\"Errori\"] = count() by [\"Payee Name\"] = payee_name\n| sort by [\"Errori\"] desc\n",
                 "size": 0,
                 "title": "❌ Invii falliti per Ente Creditore",
                 "noDataMessageStyle": 3,

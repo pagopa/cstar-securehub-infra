@@ -539,7 +539,7 @@
               "type": 3,
               "content": {
                 "version": "KqlItem/1.0",
-                "query": "let data = AppTraces\n| where TimeGenerated {evaluation_window:query}\n| where AppRoleName == 'rtp-activator'\n| where Message startswith \"Payer already exists, generating takeover OTP\"\n    or Message startswith \"OTP expired due to expiration time exceeded\"\n    or Message startswith \"Request rejected due to nonexistent OTP\"\n| extend Motivo = case(\n    Message startswith \"Payer already exists, generating takeover OTP\", \"OTP Generato\",\n    Message startswith \"OTP expired due to expiration time exceeded\", \"OTP Scaduto\",\n    Message startswith \"Request rejected due to nonexistent OTP\", \"OTP Inesistente\",\n    \"Altro\"\n)\n| summarize Conteggio = count() by Motivo;\ndatatable(Motivo:string, Conteggio:long) [\n    \"OTP Generato\", 0,\n    \"OTP Scaduto\", 0,\n    \"OTP Inesistente\", 0\n]\n| union data\n| summarize Conteggio = sum(Conteggio) by Motivo\n| render piechart",
+                "query": "let data = AppTraces\n| where TimeGenerated {evaluation_window:query}\n| where AppRoleName == 'rtp-activator'\n| where Message startswith \"Payer already exists, generating takeover OTP\"\n    or Message startswith \"OTP expired due to expiration time exceeded\"\n    or Message startswith \"Request rejected due to nonexistent OTP\"\n    or Message startswith \"Payer taken over with new id:\"\n    or Message startswith \"Error taking over payer:\"\n| extend Motivo = case(\n    Message startswith \"Payer already exists, generating takeover OTP\", \"OTP Generato\",\n    Message startswith \"Payer taken over with new id:\", \"Takeover Completato\",\n    Message startswith \"Error taking over payer:\", \"Takeover Fallito\",\n    Message startswith \"OTP expired due to expiration time exceeded\", \"OTP Scaduto\",\n    Message startswith \"Request rejected due to nonexistent OTP\", \"OTP Inesistente\",\n    \"Altro\"\n)\n| summarize Conteggio = count() by Motivo;\nlet summary = datatable(Motivo:string, Conteggio:long) [\n    \"OTP Generato\", 0,\n    \"Takeover Completato\", 0,\n    \"Takeover Fallito\", 0,\n    \"OTP Scaduto\", 0,\n    \"OTP Inesistente\", 0\n]\n| union data\n| summarize Conteggio = sum(Conteggio) by Motivo;\nlet generati = toscalar(summary | where Motivo == \"OTP Generato\" | project Conteggio);\nlet completati = toscalar(summary | where Motivo == \"Takeover Completato\" | project Conteggio);\nlet falliti = toscalar(summary | where Motivo == \"Takeover Fallito\" | project Conteggio);\nsummary\n| union (print Motivo = \"OTP Generati e Mai Usati\", Conteggio = generati - completati - falliti)\n| render piechart",
                 "size": 0,
                 "title": "Monitoraggio degli OTP generati",
                 "noDataMessageStyle": 3,
@@ -567,7 +567,7 @@
                   ]
                 }
               },
-              "customWidth": "50",
+              "customWidth": "75",
               "name": "Monitoraggio OTP",
               "styleSettings": {
                 "showBorder": true
