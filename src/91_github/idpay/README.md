@@ -1,5 +1,3 @@
-<!-- markdownlint-disable -->
-<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -52,11 +50,10 @@ No modules.
 | <a name="input_cicd_kv_rg"></a> [cicd\_kv\_rg](#input\_cicd\_kv\_rg) | Name of the resource group where the CI/CD Key Vault is located. | `string` | n/a | yes |
 | <a name="input_datavault_service_url"></a> [datavault\_service\_url](#input\_datavault\_service\_url) | URL of the datavault service. | `string` | `null` | no |
 | <a name="input_env"></a> [env](#input\_env) | Environment | `string` | n/a | yes |
-| <a name="input_functional_testing_secret_name"></a> [functional\_testing\_secret\_name](#input\_functional\_testing\_secret\_name) | Name of the secret for functional test. | `string` | n/a | yes |
+| <a name="input_functional_testing_secret_name"></a> [functional\_testing\_secret\_name](#input\_functional\_testing\_secret\_name) | Name of the secret for functional test. | `string` | `null` | no |
 | <a name="input_idpay_kv_name"></a> [idpay\_kv\_name](#input\_idpay\_kv\_name) | Name of the Key Vault where the IDPay secrets are stored. | `string` | n/a | yes |
 | <a name="input_idpay_kv_rg"></a> [idpay\_kv\_rg](#input\_idpay\_kv\_rg) | Name of the resource group where the IDPay Key Vault is located. | `string` | n/a | yes |
 
 ## Outputs
 
 No outputs.
-<!-- END_TF_DOCS -->
