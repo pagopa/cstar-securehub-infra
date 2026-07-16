@@ -130,5 +130,5 @@ rate_limit_merchants_portal_product = 2500
 #
 # Bonus initiatives config (Elettrodomestici + Decoder)
 #
-idpay_bel_initiative_id = "68dd003ccce8c534d1da22bc"
-idpay_dec_initiative_id = "69e0fa95e21efa516c7b8dec"
+bonus_elettrodomestici_initiative_id = "68dd003ccce8c534d1da22bc"
+bonus_decoder_initiative_id          = "69e0fa95e21efa516c7b8dec"
