@@ -26,6 +26,8 @@ resource "null_resource" "transaction_in_progress_connector" {
 }
 
 resource "null_resource" "transaction_connector" {
+  count = var.env != "prod" ? 1 : 0
+
   triggers = {
     checksum = filesha256("configs/kafka-connectors/transaction_connector.json")
   }
