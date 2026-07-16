@@ -398,3 +398,8 @@ variable "idpay_bel_initiative_id" {
   type        = string
   description = "Initiative id for Bonus Elettrodomestici"
 }
+
+variable "idpay_dec_initiative_id" {
+  type        = string
+  description = "Initiative id for Bonus Decoder"
+}
