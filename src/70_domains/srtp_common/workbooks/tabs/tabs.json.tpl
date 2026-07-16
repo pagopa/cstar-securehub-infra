@@ -83,6 +83,14 @@
         "linkLabel": "Accessi Get Enti",
         "subTarget": "getPayees",
         "style": "link"
+      },
+      {
+        "id": "6935c2b6-ad13-4a58-9837-963b2878d180",
+        "cellValue": "tab",
+        "linkTarget": "parameter",
+        "linkLabel": "Servizi per i SP",
+        "subTarget": "SPServices",
+        "style": "link"
       }
     ]
   },
