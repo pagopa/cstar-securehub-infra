@@ -53,73 +53,62 @@ resource "grafana_contact_point" "idpay_app_alerts" {
 }
 
 resource "grafana_rule_group" "idpay_app_alerts" {
-  provider = grafana.cloud
-  count    = var.idpay_grafana_alert_enabled ? 1 : 0
-
+  provider         = grafana.cloud
+  count            = var.idpay_grafana_alert_enabled ? 1 : 0
+  org_id           = 1
   name             = local.grafana_alert_rule_group_name
   folder_uid       = grafana_folder.idpay_app_alerts[0].uid
   interval_seconds = 60
 
   rule {
-    name           = "reward-batch-transaction-mismatch-alert"
-    for            = "2m"
-    condition      = "C"
-    no_data_state  = "OK"
+    name      = "reward-batch-transaction-mismatch-alert"
+    condition = "C"
+
+    data {
+      ref_id     = "A"
+      query_type = "KQL"
+
+      relative_time_range {
+        from = 600
+        to   = 0
+      }
+
+      datasource_uid = "af2bx3h1osn40b"
+      model          = "{\"OpenAI\":false,\"database\":\"idpay\",\"datasource\":{\"type\":\"grafana-azure-data-explorer-datasource\",\"uid\":\"af2bx3h1osn40b\"},\"expression\":{\"groupBy\":{\"expressions\":[],\"type\":\"and\"},\"reduce\":{\"expressions\":[],\"type\":\"and\"},\"where\":{\"expressions\":[],\"type\":\"and\"}},\"hide\":false,\"intervalMs\":1000,\"maxDataPoints\":43200,\"pluginVersion\":\"7.2.6\",\"query\":\"let TrxCountByBatch =\\ntransaction\\n| where isnotempty(rewardBatchId)\\n| summarize trx_count = count() by rewardBatchId;\\nrewards_batch\\n| extend batch_id = tostring(_id), expected_count = tolong(numberOfTransactions)\\n| join kind=leftouter TrxCountByBatch on $left.batch_id == $right.rewardBatchId\\n| extend trx_count = coalesce(trx_count, 0)\\n| where expected_count != trx_count\\n| count\",\"querySource\":\"raw\",\"queryType\":\"KQL\",\"rawMode\":true,\"refId\":\"A\",\"resultFormat\":\"table\"}"
+    }
+    data {
+      ref_id = "B"
+
+      relative_time_range {
+        from = 0
+        to   = 0
+      }
+
+      datasource_uid = "__expr__"
+      model          = "{\"conditions\":[{\"evaluator\":{\"params\":[],\"type\":\"gt\"},\"operator\":{\"type\":\"and\"},\"query\":{\"params\":[]},\"reducer\":{\"params\":[],\"type\":\"last\"},\"type\":\"query\"}],\"datasource\":{\"type\":\"__expr__\",\"uid\":\"__expr__\"},\"expression\":\"A\",\"intervalMs\":1000,\"maxDataPoints\":43200,\"reducer\":\"last\",\"refId\":\"B\",\"type\":\"reduce\"}"
+    }
+    data {
+      ref_id = "C"
+
+      relative_time_range {
+        from = 0
+        to   = 0
+      }
+
+      datasource_uid = "__expr__"
+      model          = "{\"conditions\":[{\"evaluator\":{\"params\":[10],\"type\":\"gt\"},\"operator\":{\"type\":\"and\"},\"query\":{\"params\":[]},\"reducer\":{\"params\":[],\"type\":\"last\"},\"type\":\"query\"}],\"datasource\":{\"type\":\"__expr__\",\"uid\":\"__expr__\"},\"expression\":\"B\",\"intervalMs\":1000,\"maxDataPoints\":43200,\"refId\":\"C\",\"type\":\"threshold\"}"
+    }
+
+    no_data_state  = "NoData"
     exec_err_state = "Error"
     annotations = {
       description = "mismatch alert is firing"
       summary     = "IDPay ADX Grafana alert"
     }
-    labels = {
-      domain   = var.domain
-      service  = "idpay-app"
-      severity = "critical"
-      source   = "terraform"
-    }
+    is_paused = false
 
     notification_settings {
       contact_point = grafana_contact_point.idpay_app_alerts[0].name
     }
-
-    data {
-      ref_id     = "A"
-      query_type = "KQL"
-      relative_time_range {
-        from = 600
-        to   = 0
-      }
-      datasource_uid = "af2bx3h1osn40b"
-      model = jsonencode({
-        "database"    = "idpay",
-        "datasource"  = { "type" = "grafana-azure-data-explorer-datasource", "uid" = "af2bx3h1osn40b" },
-        "query"       = "let TrxCountByBatch = transaction | where isnotempty(rewardBatchId) | summarize trx_count = count() by rewardBatchId; rewards_batch | extend batch_id = tostring(_id), expected_count = tolong(numberOfTransactions) | join kind=leftouter TrxCountByBatch on $left.batch_id == $right.rewardBatchId | extend trx_count = coalesce(trx_count, 0) | where expected_count != trx_count | count",
-        "querySource" = "raw",
-        "queryType"   = "KQL",
-        "refId"       = "A"
-      })
-    }
-
-    data {
-      ref_id         = "B"
-      datasource_uid = "__expr__"
-      model = jsonencode({
-        "conditions" = [{ "evaluator" = { "params" = [], "type" = "gt" }, "operator" = { "type" = "and" }, "query" = { "params" = [] }, "reducer" = { "params" = [], "type" = "last" }, "type" = "query" }],
-        "expression" = "A",
-        "refId"      = "B",
-        "type"       = "reduce"
-      })
-    }
-
-    data {
-      ref_id         = "C"
-      datasource_uid = "__expr__"
-      model = jsonencode({
-        "conditions" = [{ "evaluator" = { "params" = [10], "type" = "gt" }, "operator" = { "type" = "and" }, "query" = { "params" = [] }, "reducer" = { "params" = [], "type" = "last" }, "type" = "query" }],
-        "expression" = "B",
-        "refId"      = "C",
-        "type"       = "threshold"
-      })
-    }
-
   }
 }
