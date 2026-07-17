@@ -3,7 +3,6 @@ locals {
   product_no_domain = "${var.prefix}-${var.env_short}-${var.location_short}"
   project           = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
   project_core      = "${var.prefix}-${var.env_short}-${var.location_short}-core"
-  project_weu       = "${var.prefix}-${var.env_short}-${var.location_short_weu}-${var.domain}"
   project_entra     = "${var.prefix}-${var.env_short}-${var.domain}"
 
   # Default Domain Resource Group
@@ -152,4 +151,9 @@ locals {
       }
     ]
   ])
+  bonus_initiatives = ["bonusdecoder", "bonusvalore", "bonustest"]
+  bonus_spa         = ["utente"]
+
+  bonus_initiatives_regex = join("|", local.bonus_initiatives)
+  bonus_spa_regex         = join("|", local.bonus_spa)
 }
