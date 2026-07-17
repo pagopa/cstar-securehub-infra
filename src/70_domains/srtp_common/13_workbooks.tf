@@ -12,6 +12,10 @@ locals {
       filePath = "${path.module}/workbooks/tabs/finestra-osservabilità.json.tpl"
     },
     {
+      name     = "Servizi per i SP"
+      filePath = "${path.module}/workbooks/tabs/servizi-per-sp.json.tpl"
+    },
+    {
       name     = "Activator"
       filePath = "${path.module}/workbooks/tabs/activator.json.tpl"
     },
