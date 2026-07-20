@@ -1364,7 +1364,9 @@
             "footer": {
               "reducers": []
             },
-            "inspect": false
+            "inspect": false,
+            "wrapHeaderText": true,
+            "wrapText": false
           },
           "mappings": [],
           "thresholds": {
@@ -1479,7 +1481,8 @@
             "footer": {
               "reducers": []
             },
-            "inspect": false
+            "inspect": false,
+            "wrapHeaderText": true
           },
           "mappings": [],
           "thresholds": {
@@ -2292,6 +2295,6 @@
   "timezone": "utc",
   "title": "Monitoraggio Messaggi di Cortesia (MDC)",
   "uid": "ma89nvz",
-  "version": 15,
+  "version": 17,
   "weekStart": ""
 }
