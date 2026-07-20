@@ -29,13 +29,27 @@ resource "keycloak_openid_client" "ar_backoffice_admin_client" {
   client_id     = module.secrets.values["ar-backoffice-admin-client-id"].value
   client_secret = module.secrets.values["ar-backoffice-admin-client-secret"].value
 
-  name        = "AR Backoffice Admin"
-  enabled     = true
+  name    = "AR Backoffice Admin"
+  enabled = true
+
   access_type = "CONFIDENTIAL"
 
-  service_accounts_enabled     = true
-  standard_flow_enabled        = false
+  service_accounts_enabled = true
+
+  # Enables Authorization Code Flow for secure, browser-based user login
+  standard_flow_enabled = true
+
   direct_access_grants_enabled = false
+
+  # Enforces Proof Key for Code Exchange (PKCE)
+  pkce_code_challenge_method = "S256"
+
+  # Whitelist of authorized callback URLs after successful authentication
+  valid_redirect_uris = ["https://oauth.pstmn.io/v1/callback"]
+
+  # Enables CORS by inheriting allowed origins from the redirect URIs
+  web_origins = ["+"]
+
 }
 
 resource "keycloak_openid_client_default_scopes" "ar_backoffice_admin_client_default_scopes" {
@@ -43,7 +57,7 @@ resource "keycloak_openid_client_default_scopes" "ar_backoffice_admin_client_def
   client_id = keycloak_openid_client.ar_backoffice_admin_client.id
 
   default_scopes = [
-    keycloak_openid_client_scope.mdc_base_claims.name,
+    keycloak_openid_client_scope.mdc_base_claims.name
   ]
 }
 
@@ -158,4 +172,34 @@ resource "keycloak_openid_client_default_scopes" "ar_backoffice_client_default_s
   default_scopes = [
     keycloak_openid_client_scope.mdc_base_claims.name
   ]
+}
+
+# Admin user
+resource "keycloak_user" "admin_user" {
+  realm_id   = local.keycloak_realm_id
+  username   = "admin"
+  enabled    = true
+  email      = "admin@cstar.pagopa.it"
+  first_name = "Admin"
+  last_name  = "Test"
+
+  initial_password {
+    value     = "admin"
+    temporary = false
+  }
+}
+
+# Realm-level role definition
+resource "keycloak_role" "realm_admin_role" {
+  realm_id    = local.keycloak_realm_id
+  name        = "admin"
+  description = "Role for administrator users"
+}
+
+# Association between the 'admin' user and the 'admin' realm role.
+resource "keycloak_user_roles" "admin_user_roles" {
+  realm_id = local.keycloak_realm_id
+  user_id  = keycloak_user.admin_user.id
+
+  role_ids = [keycloak_role.realm_admin_role.id, ]
 }
