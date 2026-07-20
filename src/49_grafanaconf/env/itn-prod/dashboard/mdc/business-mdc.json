@@ -1504,6 +1504,7 @@
       "id": 25,
       "options": {
         "cellHeight": "sm",
+        "enablePagination": true,
         "showHeader": true,
         "sortBy": []
       },
@@ -2292,6 +2293,6 @@
   "timezone": "utc",
   "title": "Monitoraggio Messaggi di Cortesia (MDC)",
   "uid": "ma89nvz",
-  "version": 13,
+  "version": 14,
   "weekStart": ""
 }
