@@ -105,25 +105,6 @@ locals {
       email_subject = "[PARI] Product files – upload API alert (5xx/401/429)"
     }
 
-    # Product files – upload (400 errors over 10 minutes)
-    pari_product_files_upload_10m_rule_alert = {
-      name                 = "pari-product-files-upload-400-alert"
-      description          = "Product files upload API: 400 error threshold exceeded (> 50/10m)"
-      severity             = 2
-      evaluation_frequency = 10
-      window_duration      = 10
-      query                = <<-QUERY
-            AppRequests
-            | where Name matches regex @"^POST /idpay-itn/register/initiatives/[^/]+/product-files$"
-            | where ResultCode == "400"
-          QUERY
-      criteria = {
-        operator  = "GreaterThanOrEqual"
-        threshold = 50
-      }
-      email_subject = "[PARI] Product files – upload API alert (400)"
-    }
-
     # Product files – verify
     pari_product_files_verify_alert = {
       name        = "pari-product-files-verify-alert"
