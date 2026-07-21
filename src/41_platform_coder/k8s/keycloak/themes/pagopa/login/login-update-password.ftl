@@ -28,7 +28,7 @@
         <main class="main-content">
             <div class="login-wrapper">
                 <h1>Bonus Elettrodomestici</h1>
-                <p>Il portale dedicato agli esercenti per gestire bonus e sconti </p>
+                <p>Il portale dedicato agli esercenti per gestire bonus e sconti</p>
                 <form action="${url.loginAction}" method="post">
                     <div class="login-card">
                         <#if message?has_content && message.type != "warning">
@@ -43,6 +43,19 @@
                         <div class="form-group">
                             <input type="password" id="password-confirm" name="password-confirm" placeholder="Conferma password" required>
                         </div>
+                    </div>
+
+                    <div class="password-policy-box" aria-labelledby="password-policy-title">
+                        <div class="password-policy-title">
+                            <img class="password-policy-icon" src="${url.resourcesPath}/img/info-pass.png" alt="" aria-hidden="true" />
+                            <h2 id="password-policy-title">La tua password deve contenere:</h2>
+                        </div>
+                        <ul>
+                            <li>Tra i 10 e 64 caratteri</li>
+                            <li>Almeno una maiuscola e una minuscola</li>
+                            <li>Almeno un numero</li>
+                            <li>Almeno un carattere speciale (es. ! @ # $)</li>
+                        </ul>
                     </div>
 
                     <div class="terms-notice">
