@@ -209,20 +209,6 @@ a:hover {
   font-size: 18px;
 }
 
-.terms-icon {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-color: #e3e7eb;
-  /* Colore placeholder per l'icona */
-  background-image: url('https://icons.veryicon.com/png/o/internet--web/pre-login-system/user-132.png');
-  /* Immagine placeholder */
-  background-size: 60%;
-  background-position: center;
-  background-repeat: no-repeat;
-  flex-shrink: 0;
-}
-
 .btn-primary {
   /* Non più a larghezza piena */
   display: inline-block;

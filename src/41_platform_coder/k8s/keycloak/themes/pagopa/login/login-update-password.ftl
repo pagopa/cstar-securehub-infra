@@ -45,10 +45,10 @@
                         </div>
                     </div>
 
-                    <div class="password-policy-box" aria-labelledby="password-policy-title">
+                    <div class="password-policy-box">
                         <div class="password-policy-title">
-                            <img class="password-policy-icon" src="${url.resourcesPath}/img/info-pass.png" alt="" aria-hidden="true" />
-                            <h2 id="password-policy-title">La tua password deve contenere:</h2>
+                            <img class="password-policy-icon" src="${url.resourcesPath}/img/info-pass.png" alt="la tua password deve contenere" aria-hidden="true" />
+                            <h2>La tua password deve contenere:</h2>
                         </div>
                         <ul>
                             <li>Tra i 10 e 64 caratteri</li>
