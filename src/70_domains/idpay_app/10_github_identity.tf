@@ -38,7 +38,7 @@ locals {
       "Contributor",
     ]
     resource_groups = {
-     "${local.idpay_kv_rg_name}" = [
+      "${local.idpay_kv_rg_name}" = [
         "Key Vault Reader"
       ],
       "${local.aks_resource_group_name}" = [
