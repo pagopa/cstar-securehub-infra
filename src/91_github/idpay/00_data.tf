@@ -37,6 +37,6 @@ data "azurerm_key_vault_secret" "gh_token" {
 }
 
 data "azurerm_user_assigned_identity" "github_cd_identity" {
-  name                = "cstar-${var.env_short}-idpay-job-01-github-cd-identity"
+  name                = "cstar-${var.env_short}-idpay-01-github-cd-identity"
   resource_group_name = "cstar-${var.env_short}-identity-rg"
 }
