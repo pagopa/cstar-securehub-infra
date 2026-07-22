@@ -29,13 +29,16 @@ resource "keycloak_openid_client" "ar_backoffice_admin_client" {
   client_id     = module.secrets.values["ar-backoffice-admin-client-id"].value
   client_secret = module.secrets.values["ar-backoffice-admin-client-secret"].value
 
-  name        = "AR Backoffice Admin"
-  enabled     = true
+  name    = "AR Backoffice Admin"
+  enabled = true
+
   access_type = "CONFIDENTIAL"
 
-  service_accounts_enabled     = true
-  standard_flow_enabled        = false
+  service_accounts_enabled = true
+  standard_flow_enabled    = false
+
   direct_access_grants_enabled = false
+
 }
 
 resource "keycloak_openid_client_default_scopes" "ar_backoffice_admin_client_default_scopes" {
@@ -43,7 +46,7 @@ resource "keycloak_openid_client_default_scopes" "ar_backoffice_admin_client_def
   client_id = keycloak_openid_client.ar_backoffice_admin_client.id
 
   default_scopes = [
-    keycloak_openid_client_scope.mdc_base_claims.name,
+    keycloak_openid_client_scope.mdc_base_claims.name
   ]
 }
 
@@ -156,6 +159,33 @@ resource "keycloak_openid_client_default_scopes" "ar_backoffice_client_default_s
   client_id = keycloak_openid_client.ar_backoffice_client.id
 
   default_scopes = [
-    keycloak_openid_client_scope.mdc_base_claims.name
+    keycloak_openid_client_scope.mdc_base_claims.name,
   ]
+}
+
+resource "keycloak_openid_client" "ar_backoffice_portal_client" {
+  realm_id = local.keycloak_realm_id
+
+  client_id = "ar_backoffice_portal_client"
+  name      = "AR Backoffice Portal client"
+  enabled   = true
+
+  # "Client Authentication" OFF in UI = "PUBLIC" in Terraform
+  access_type = "PUBLIC"
+
+  # Public clients do not have a client secret
+  service_accounts_enabled = false
+
+  # Enables Authorization Code Flow for secure, browser-based user login
+  standard_flow_enabled        = true
+  direct_access_grants_enabled = false
+
+  # Enforces Proof Key for Code Exchange (PKCE)
+  pkce_code_challenge_method = "S256"
+
+  # Whitelist of authorized callback URLs after successful authentication
+  valid_redirect_uris = ["https://cstarditnmdcadmin.z38.web.core.windows.net/*"]
+
+  # Enables CORS by inheriting allowed origins from the redirect URIs
+  web_origins = ["+"]
 }

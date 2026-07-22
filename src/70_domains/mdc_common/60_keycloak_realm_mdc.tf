@@ -221,3 +221,62 @@ resource "keycloak_user_groups" "service_account_group_membership_emd_tpp_test" 
     keycloak_group.emd_pagopa_mdc_emd_tpp_group.id
   ]
 }
+
+# Admin user
+resource "keycloak_user" "admin_user" {
+  realm_id   = local.keycloak_realm_id
+  username   = "admin"
+  enabled    = true
+  email      = "admin@cstar.pagopa.it"
+  first_name = "Admin"
+  last_name  = "Test"
+
+  initial_password {
+    value     = "admin"
+    temporary = false
+  }
+}
+
+# Realm-level role definition
+resource "keycloak_role" "realm_admin_role" {
+  realm_id    = local.keycloak_realm_id
+  name        = "admin"
+  description = "Role for administrator users"
+}
+
+# Association between the 'admin' user and the 'admin' realm role.
+resource "keycloak_user_roles" "admin_user_roles" {
+  realm_id = local.keycloak_realm_id
+  user_id  = keycloak_user.admin_user.id
+
+  role_ids = [keycloak_role.realm_admin_role.id, ]
+}
+
+# Create a dedicated scope for the admin role
+resource "keycloak_openid_client_scope" "admin_role_scope" {
+  realm_id = local.keycloak_realm_id
+  # Name to use in parameters when requesting the scope
+  name = "admin-access"
+}
+
+# Add the role mapper only to this scope
+resource "keycloak_openid_user_realm_role_protocol_mapper" "admin_role_mapper" {
+  realm_id        = local.keycloak_realm_id
+  client_scope_id = keycloak_openid_client_scope.admin_role_scope.id
+  name            = "role-admin-mapper"
+
+  # Claim name in the token
+  claim_name          = "role"
+  multivalued         = false # Se vuoi solo la stringa "admin"
+  add_to_id_token     = true
+  add_to_access_token = true
+}
+
+# Link the scope to client as optional
+resource "keycloak_openid_client_optional_scopes" "ar_backoffice_admin_optional_scopes" {
+  realm_id  = local.keycloak_realm_id
+  client_id = keycloak_openid_client.ar_backoffice_admin_client.id
+  optional_scopes = [
+    keycloak_openid_client_scope.admin_role_scope.name
+  ]
+}
