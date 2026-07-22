@@ -35,7 +35,7 @@ resource "keycloak_openid_client" "ar_backoffice_admin_client" {
   access_type = "CONFIDENTIAL"
 
   service_accounts_enabled = true
-  standard_flow_enabled = false
+  standard_flow_enabled    = false
 
   direct_access_grants_enabled = false
 
@@ -164,29 +164,29 @@ resource "keycloak_openid_client_default_scopes" "ar_backoffice_client_default_s
 }
 
 resource "keycloak_openid_client" "ar_backoffice_portal_client" {
-  realm_id      = local.keycloak_realm_id
-  
-  client_id     = "ar_backoffice_portal_client"
-  name          = "AR Backoffice Portal client"
-  enabled       = true
+  realm_id = local.keycloak_realm_id
+
+  client_id = "ar_backoffice_portal_client"
+  name      = "AR Backoffice Portal client"
+  enabled   = true
 
   # "Client Authentication" OFF in UI = "PUBLIC" in Terraform
-  access_type   = "PUBLIC"
-  
+  access_type = "PUBLIC"
+
   # Public clients do not have a client secret
   service_accounts_enabled = false
 
   # Enables Authorization Code Flow for secure, browser-based user login
-  standard_flow_enabled = true
+  standard_flow_enabled        = true
   direct_access_grants_enabled = false
 
   # Enforces Proof Key for Code Exchange (PKCE)
   pkce_code_challenge_method = "S256"
 
   # Whitelist of authorized callback URLs after successful authentication
-  valid_redirect_uris = ["http://privatelink.web.core.windows.net"]
+  valid_redirect_uris = ["https://cstarditnmdcadmin.z38.web.core.windows.net/*"]
 
   # Enables CORS by inheriting allowed origins from the redirect URIs
-  web_origins        = ["+"]
+  web_origins = ["+"]
 }
 
