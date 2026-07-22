@@ -36,7 +36,7 @@ data "azurerm_key_vault_secret" "gh_token" {
   name         = "idpay-bot-github-self-hosted-runners-TOKEN"
 }
 
-data "azurerm_key_vault_secret" "workload_identity_client_id" {
-  key_vault_id = data.azurerm_key_vault.idpay.id
-  name         = local.secret_name_idpay_workload_identity_client_id
+data "azurerm_user_assigned_identity" "github_cd_identity" {
+  name                = "cstar-${var.env_short}-idpay-01-github-cd-identity"
+  resource_group_name = "cstar-${var.env_short}-identity-rg"
 }

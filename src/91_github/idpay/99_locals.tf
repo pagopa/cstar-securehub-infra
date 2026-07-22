@@ -373,7 +373,7 @@ locals {
       env_secrets = {
         envs = ["dev", "uat"]
         secrets = {
-          AZURE_CLIENT_ID       = data.azurerm_key_vault_secret.workload_identity_client_id.value
+          AZURE_CLIENT_ID       = data.azurerm_user_assigned_identity.github_cd_identity.client_id
           AZURE_SUBSCRIPTION_ID = data.azurerm_subscription.current.subscription_id
           AZURE_TENANT_ID       = data.azurerm_client_config.current.tenant_id
           KEYVAULT_NAME         = var.idpay_kv_name
@@ -433,8 +433,6 @@ locals {
       }
     }
   }
-
-  secret_name_idpay_workload_identity_client_id = "idpay-itn-workload-identity-client-id"
 
   # ----------------------------------------------------------------------------
   # Repositories with environment configuration.
