@@ -116,7 +116,7 @@
 | <a name="input_event_hub_port"></a> [event\_hub\_port](#input\_event\_hub\_port) | n/a | `number` | `9093` | no |
 | <a name="input_external_domain"></a> [external\_domain](#input\_external\_domain) | Domain for delegation | `string` | n/a | yes |
 | <a name="input_idpay_alert_enabled"></a> [idpay\_alert\_enabled](#input\_idpay\_alert\_enabled) | n/a | `bool` | `false` | no |
-| <a name="input_idpay_grafana_alert_email_addresses"></a> [idpay\_grafana\_alert\_email\_addresses](#input\_idpay\_grafana\_alert\_email\_addresses) | Email addresses used by the Grafana IDPay app contact point. | `list(string)` | <pre>[<br/>  "gabriele.coletta@pagopa.it",<br/>  "andrea.morabito@pagopa.it"<br/>]</pre> | no |
+| <a name="input_idpay_grafana_alert_email_addresses"></a> [idpay\_grafana\_alert\_email\_addresses](#input\_idpay\_grafana\_alert\_email\_addresses) | Email addresses used by the Grafana IDPay app contact point. | `list(string)` | `[]` | no |
 | <a name="input_idpay_grafana_alert_enabled"></a> [idpay\_grafana\_alert\_enabled](#input\_idpay\_grafana\_alert\_enabled) | Enable Grafana alerting resources for the IDPay app. | `bool` | `false` | no |
 | <a name="input_idpay_mocked_acquirer_apim_user_id"></a> [idpay\_mocked\_acquirer\_apim\_user\_id](#input\_idpay\_mocked\_acquirer\_apim\_user\_id) | APIm user id of mocked acquirer | `string` | `null` | no |
 | <a name="input_idpay_mocked_merchant_enable"></a> [idpay\_mocked\_merchant\_enable](#input\_idpay\_mocked\_merchant\_enable) | Enable mocked merchant APIs | `bool` | `false` | no |
