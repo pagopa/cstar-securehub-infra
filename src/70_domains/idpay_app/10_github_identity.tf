@@ -5,9 +5,12 @@ data "azurerm_resource_group" "identity_rg" {
 
 # repos must be lower than 20 items
 locals {
-  repos_01 = [
-    "idpay-functional-testing"
-  ]
+  repos_01 = concat(
+    [],
+    var.env_short == "p" ? [] : [
+      "idpay-functional-testing"
+    ]
+  )
 
   federations_01 = [
     for repo in local.repos_01 : {
@@ -34,7 +37,7 @@ module "identity_cd_01" {
 
   identity_role = "cd"
 
-  github_federations = var.env != "prod" ? local.federations_01 : []
+  github_federations = local.federations_01
 
   cd_rbac_roles = {
     subscription_roles = []
