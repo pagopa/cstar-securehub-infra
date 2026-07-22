@@ -34,7 +34,7 @@ module "identity_cd_01" {
 
   identity_role = "cd"
 
-  github_federations = local.federations_01
+  github_federations = var.env != "prod" ? local.federations_01 : []
 
   cd_rbac_roles = {
     subscription_roles = []
