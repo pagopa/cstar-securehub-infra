@@ -35,20 +35,9 @@ resource "keycloak_openid_client" "ar_backoffice_admin_client" {
   access_type = "CONFIDENTIAL"
 
   service_accounts_enabled = true
-
-  # Enables Authorization Code Flow for secure, browser-based user login
-  standard_flow_enabled = true
+  standard_flow_enabled = false
 
   direct_access_grants_enabled = false
-
-  # Enforces Proof Key for Code Exchange (PKCE)
-  pkce_code_challenge_method = "S256"
-
-  # Whitelist of authorized callback URLs after successful authentication
-  valid_redirect_uris = ["https://oauth.pstmn.io/v1/callback"]
-
-  # Enables CORS by inheriting allowed origins from the redirect URIs
-  web_origins = ["+"]
 
 }
 
@@ -170,36 +159,34 @@ resource "keycloak_openid_client_default_scopes" "ar_backoffice_client_default_s
   client_id = keycloak_openid_client.ar_backoffice_client.id
 
   default_scopes = [
-    keycloak_openid_client_scope.mdc_base_claims.name
+    keycloak_openid_client_scope.mdc_base_claims.name,
   ]
 }
 
-# Admin user
-resource "keycloak_user" "admin_user" {
-  realm_id   = local.keycloak_realm_id
-  username   = "admin"
-  enabled    = true
-  email      = "admin@cstar.pagopa.it"
-  first_name = "Admin"
-  last_name  = "Test"
+resource "keycloak_openid_client" "ar_backoffice_portal_client" {
+  realm_id      = local.keycloak_realm_id
+  
+  client_id     = "ar_backoffice_portal_client"
+  name          = "AR Backoffice Portal client"
+  enabled       = true
 
-  initial_password {
-    value     = "admin"
-    temporary = false
-  }
+  # "Client Authentication" OFF in UI = "PUBLIC" in Terraform
+  access_type   = "PUBLIC"
+  
+  # Public clients do not have a client secret
+  service_accounts_enabled = false
+
+  # Enables Authorization Code Flow for secure, browser-based user login
+  standard_flow_enabled = true
+  direct_access_grants_enabled = false
+
+  # Enforces Proof Key for Code Exchange (PKCE)
+  pkce_code_challenge_method = "S256"
+
+  # Whitelist of authorized callback URLs after successful authentication
+  valid_redirect_uris = ["http://privatelink.web.core.windows.net"]
+
+  # Enables CORS by inheriting allowed origins from the redirect URIs
+  web_origins        = ["+"]
 }
 
-# Realm-level role definition
-resource "keycloak_role" "realm_admin_role" {
-  realm_id    = local.keycloak_realm_id
-  name        = "admin"
-  description = "Role for administrator users"
-}
-
-# Association between the 'admin' user and the 'admin' realm role.
-resource "keycloak_user_roles" "admin_user_roles" {
-  realm_id = local.keycloak_realm_id
-  user_id  = keycloak_user.admin_user.id
-
-  role_ids = [keycloak_role.realm_admin_role.id, ]
-}

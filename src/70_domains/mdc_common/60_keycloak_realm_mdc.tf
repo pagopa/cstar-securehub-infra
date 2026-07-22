@@ -222,6 +222,36 @@ resource "keycloak_user_groups" "service_account_group_membership_emd_tpp_test" 
   ]
 }
 
+# Admin user
+resource "keycloak_user" "admin_user" {
+  realm_id   = local.keycloak_realm_id
+  username   = "admin"
+  enabled    = true
+  email      = "admin@cstar.pagopa.it"
+  first_name = "Admin"
+  last_name  = "Test"
+
+  initial_password {
+    value     = "admin"
+    temporary = false
+  }
+}
+
+# Realm-level role definition
+resource "keycloak_role" "realm_admin_role" {
+  realm_id    = local.keycloak_realm_id
+  name        = "admin"
+  description = "Role for administrator users"
+}
+
+# Association between the 'admin' user and the 'admin' realm role.
+resource "keycloak_user_roles" "admin_user_roles" {
+  realm_id = local.keycloak_realm_id
+  user_id  = keycloak_user.admin_user.id
+
+  role_ids = [keycloak_role.realm_admin_role.id, ]
+}
+
 # Create a dedicated scope for the admin role
 resource "keycloak_openid_client_scope" "admin_role_scope" {
   realm_id = local.keycloak_realm_id
