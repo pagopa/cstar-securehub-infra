@@ -189,4 +189,3 @@ resource "keycloak_openid_client" "ar_backoffice_portal_client" {
   # Enables CORS by inheriting allowed origins from the redirect URIs
   web_origins = ["+"]
 }
-
