@@ -39,6 +39,31 @@ variable "idpay_alert_enabled" {
   default = false
 }
 
+variable "idpay_grafana_alert_enabled" {
+  type        = bool
+  description = "Enable Grafana alerting resources for the IDPay app."
+  default     = false
+}
+
+variable "idpay_grafana_alert_email_addresses" {
+  type        = list(string)
+  description = "Email addresses used by the Grafana IDPay app contact point."
+  default     = []
+
+  validation {
+    condition = alltrue([
+      for address in var.idpay_grafana_alert_email_addresses :
+      trimspace(address) != ""
+    ])
+    error_message = "Grafana alert email addresses cannot contain empty values."
+  }
+
+  validation {
+    condition     = !var.idpay_grafana_alert_enabled || length(var.idpay_grafana_alert_email_addresses) > 0
+    error_message = "Set at least one Grafana alert email address when idpay_grafana_alert_enabled is true."
+  }
+}
+
 variable "location" {
   type        = string
   description = "One of italynorth, northeurope"

@@ -106,8 +106,10 @@ reverse_proxy_rtd = "10.1.0.250"
 #
 mail_server_host = "smtp.ethereal.email"
 
-idpay_mocked_merchant_enable       = true
-idpay_mocked_acquirer_apim_user_id = "1"
+idpay_mocked_merchant_enable        = true
+idpay_mocked_acquirer_apim_user_id  = "1"
+idpay_grafana_alert_enabled         = true
+idpay_grafana_alert_email_addresses = ["gabriele.coletta@pagopa.it", "andrea.morabito@pagopa.it"]
 
 #
 # Rate limit

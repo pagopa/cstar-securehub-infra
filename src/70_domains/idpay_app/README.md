@@ -8,6 +8,7 @@
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | ~> 3 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 4.25 |
 | <a name="requirement_external"></a> [external](#requirement\_external) | ~> 2.3 |
+| <a name="requirement_grafana"></a> [grafana](#requirement\_grafana) | ~> 3.0 |
 | <a name="requirement_helm"></a> [helm](#requirement\_helm) | ~> 2.17.0 |
 | <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | ~> 2.36.0 |
 | <a name="requirement_null"></a> [null](#requirement\_null) | ~> 3.2 |
@@ -21,6 +22,7 @@
 | <a name="provider_azapi"></a> [azapi](#provider\_azapi) | 1.11.0 |
 | <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 3.4.0 |
 | <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.25.0 |
+| <a name="provider_grafana.cloud"></a> [grafana.cloud](#provider\_grafana.cloud) | 3.25.9 |
 | <a name="provider_helm"></a> [helm](#provider\_helm) | 2.17.0 |
 | <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | 2.36.0 |
 | <a name="provider_null"></a> [null](#provider\_null) | 3.2.4 |
@@ -45,6 +47,9 @@
 | [azurerm_key_vault_access_policy.gha_iac_managed_identities](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
 | [azurerm_key_vault_secret.event_hub_root_key_idpay_00](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert_v2.alerts](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert_v2) | resource |
+| [grafana_contact_point.idpay_app_alerts](https://registry.terraform.io/providers/grafana/grafana/latest/docs/resources/contact_point) | resource |
+| [grafana_folder.idpay_app_alerts](https://registry.terraform.io/providers/grafana/grafana/latest/docs/resources/folder) | resource |
+| [grafana_rule_group.idpay_app_alerts](https://registry.terraform.io/providers/grafana/grafana/latest/docs/resources/rule_group) | resource |
 | [helm_release.reloader](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
 | [kubernetes_config_map.appinsights-config](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/config_map) | resource |
 | [kubernetes_config_map.idpay-common](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/config_map) | resource |
@@ -74,10 +79,14 @@
 | [azuread_group.adgroup_security](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 | [azurerm_application_insights.core_app_insights](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/application_insights) | data source |
 | [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) | data source |
+| [azurerm_dashboard_grafana.grafana_managed](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/dashboard_grafana) | data source |
 | [azurerm_eventhub_namespace.eventhub_00](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/eventhub_namespace) | data source |
+| [azurerm_key_vault.core](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault) | data source |
 | [azurerm_key_vault.key_vault_domain](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault) | data source |
 | [azurerm_key_vault_secret.argocd_admin_password](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.argocd_admin_username](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.grafana_service_account_token](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.slack_webhook_url](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.workload_identity_client_id](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.workload_identity_service_account_name](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_kubernetes_cluster.aks](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/kubernetes_cluster) | data source |
@@ -108,6 +117,8 @@
 | <a name="input_event_hub_port"></a> [event\_hub\_port](#input\_event\_hub\_port) | n/a | `number` | `9093` | no |
 | <a name="input_external_domain"></a> [external\_domain](#input\_external\_domain) | Domain for delegation | `string` | n/a | yes |
 | <a name="input_idpay_alert_enabled"></a> [idpay\_alert\_enabled](#input\_idpay\_alert\_enabled) | n/a | `bool` | `false` | no |
+| <a name="input_idpay_grafana_alert_email_addresses"></a> [idpay\_grafana\_alert\_email\_addresses](#input\_idpay\_grafana\_alert\_email\_addresses) | Email addresses used by the Grafana IDPay app contact point. | `list(string)` | `[]` | no |
+| <a name="input_idpay_grafana_alert_enabled"></a> [idpay\_grafana\_alert\_enabled](#input\_idpay\_grafana\_alert\_enabled) | Enable Grafana alerting resources for the IDPay app. | `bool` | `false` | no |
 | <a name="input_idpay_mocked_acquirer_apim_user_id"></a> [idpay\_mocked\_acquirer\_apim\_user\_id](#input\_idpay\_mocked\_acquirer\_apim\_user\_id) | APIm user id of mocked acquirer | `string` | `null` | no |
 | <a name="input_idpay_mocked_merchant_enable"></a> [idpay\_mocked\_merchant\_enable](#input\_idpay\_mocked\_merchant\_enable) | Enable mocked merchant APIs | `bool` | `false` | no |
 | <a name="input_ingress_domain_hostname"></a> [ingress\_domain\_hostname](#input\_ingress\_domain\_hostname) | n/a | `string` | n/a | yes |
