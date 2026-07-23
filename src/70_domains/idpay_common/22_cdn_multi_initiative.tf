@@ -4,6 +4,7 @@ module "cdn_multi_initiative" {
   resource_group_name        = local.data_rg
   location                   = var.location
   log_analytics_workspace_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  tenant_id                  = data.azurerm_client_config.current.tenant_id
 
   # CDN Profile
   profile = {
@@ -19,6 +20,16 @@ module "cdn_multi_initiative" {
     origin_group             = "web-group"
   }
 
+  custom_domains = {
+    (local.public_dns_zone_pari) = {
+      dns_zone_name                = local.public_dns_zone_pari
+      dns_zone_resource_group_name = local.core_network_rg
+      certificate_type             = "CustomerCertificate"
+      keyvault_id                  = data.azurerm_key_vault.domain_kv.id
+      keyvault_certificate_name    = replace(local.public_dns_zone_pari, ".", "-")
+      enable_dns_records           = true
+    }
+  }
 
   endpoints = {
     "web" = {
@@ -55,9 +66,9 @@ module "cdn_multi_initiative" {
       forwarding     = "MatchRequest"
       https_redirect = true
       cache_behavior = "IgnoreQueryString"
-      #custom_domains = ["www.${local.dns_zone}"]
-      rulesets = ["WebGlobal"]
-      enabled  = true
+      custom_domains = [local.public_dns_zone_pari]
+      rulesets       = ["WebGlobal"]
+      enabled        = true
     }
   }
   rulesets = {
