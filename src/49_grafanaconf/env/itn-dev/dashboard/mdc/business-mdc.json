@@ -1,0 +1,2300 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "links": [],
+  "panels": [
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 5,
+      "panels": [],
+      "title": "STATUS GLOBAL & NORTH STAR",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "uid": "${ds}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 1,
+        "w": 7,
+        "x": 17,
+        "y": 1
+      },
+      "id": 7,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^Dati aggiornati dal:$/",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {
+          "titleSize": 14,
+          "valueSize": 14
+        },
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.4.3",
+      "targets": [
+        {
+          "OpenAI": false,
+          "database": "mdc",
+          "expression": {
+            "groupBy": {
+              "expressions": [],
+              "type": "and"
+            },
+            "reduce": {
+              "expressions": [],
+              "type": "and"
+            },
+            "where": {
+              "expressions": [],
+              "type": "and"
+            }
+          },
+          "pluginVersion": "7.2.6",
+          "query": "FinalizedMessageSnapshot\r\n| summarize [\"Dati aggiornati dal:\"] = format_datetime(max(window_start), 'yyyy-MM-dd HH:mm:ss')",
+          "querySource": "raw",
+          "queryType": "KQL",
+          "rawMode": true,
+          "refId": "A",
+          "resultFormat": "table"
+        }
+      ],
+      "title": "",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 24,
+        "x": 0,
+        "y": 2
+      },
+      "id": 4,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "<div>\n  <div style=\"text-align: center; font-size: 14px; color: #ccc; padding: 8px 0;\">\n    KPI North Star: Indice di Conversione e Copertura Ecosistema\n  </div>\n\n  <div style=\"display: flex; align-items: center; justify-content: center; padding: 10px; flex-wrap: nowrap;\">\n\n    <!-- COLONNA 1: SEND -->\n    <div style=\"display: flex; flex-direction: column; align-items: center; flex-shrink: 0;\">\n      <div style=\"border: 1px solid #5794F2; border-radius: 4px; padding: 4px 10px; font-weight: bold; font-size: 13px; white-space: nowrap;\">[1. SEND]</div>\n      <img width=\"34\" height=\"34\" style=\"margin-top: 10px;\" src=\"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNCIgaGVpZ2h0PSIzNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiM1Nzk0RjIiIHN0cm9rZS13aWR0aD0iMS44IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxyZWN0IHg9IjIiIHk9IjQiIHdpZHRoPSIyMCIgaGVpZ2h0PSIxNiIgcng9IjIiLz48cGF0aCBkPSJNMiA2bDEwIDcgMTAtNyIvPjwvc3ZnPg==\" />\n      <div style=\"font-size: 11px; color: #8e8e8e; margin-top: 4px; white-space: nowrap;\">(Invia MDC)</div>      \n    </div>\n\n    <!-- FRECCIA 1 -->\n    <div style=\"flex-grow: 1; display: flex; flex-direction: column; align-items: center; margin: 0 4px; align-self: flex-end; margin-bottom: 32px;\">\n      <div style=\"width: 100%; display: flex; align-items: center;\">\n        <div style=\"flex-grow: 1; height: 1px; background-color: #999;\"></div>\n        <div style=\"width: 0; height: 0; border-top: 4px solid transparent; border-bottom: 4px solid transparent; border-left: 6px solid #999;\"></div>\n      </div>\n    </div>\n\n    <!-- COLONNA 2: EMD -->\n    <div style=\"display: flex; flex-direction: column; align-items: center; flex-shrink: 0;\">\n      <div style=\"border: 1px solid #5794F2; border-radius: 4px; padding: 4px 10px; font-weight: bold; font-size: 13px; white-space: nowrap;\">[2. EMD]</div>\n      <img width=\"34\" height=\"34\" style=\"margin-top: 10px;\" src=\"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNCIgaGVpZ2h0PSIzNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiM1Nzk0RjIiIHN0cm9rZS13aWR0aD0iMS44IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik00IDZjMC0xLjY1NyAzLjU4Mi0zIDgtM3M4IDEuMzQzIDggMy0zLjU4MiAzLTggMy04LTEuMzQzLTgtM3oiLz48cGF0aCBkPSJNNCA2djEyYzAgMS42NTcgMy41ODIgMyA4IDMgLjU1IDAgMS4wOC0uMDIgMS41OC0uMDYiLz48cGF0aCBkPSJNMjAgNnYzIi8+PHBhdGggZD0iTTQgMTJjMCAxLjY1NyAzLjU4MiAzIDggMyIvPjxwYXRoIGQ9Ik0xNi41IDE3LjVsMS43IDEuNyAzLjMtMy4zIi8+PC9zdmc+\" />\n      <div style=\"font-size: 11px; color: #8e8e8e; margin-top: 4px; white-space: nowrap;\">(Accetta/Scarta)</div>\n    </div>\n\n    <!-- FRECCIA 2 -->\n    <div style=\"flex-grow: 1; display: flex; flex-direction: column; align-items: center; margin: 0 4px; align-self: flex-end; margin-bottom: 32px;\">\n      <div style=\"width: 100%; display: flex; align-items: center;\">\n        <div style=\"flex-grow: 1; height: 1px; background-color: #999;\"></div>\n        <div style=\"width: 0; height: 0; border-top: 4px solid transparent; border-bottom: 4px solid transparent; border-left: 6px solid #999;\"></div>\n      </div>\n    </div>\n\n    <!-- COLONNA 3: PSP -->\n    <div style=\"display: flex; flex-direction: column; align-items: center; flex-shrink: 0;\">\n      <div style=\"border: 1px solid #5794F2; border-radius: 4px; padding: 4px 10px; font-weight: bold; font-size: 13px; white-space: nowrap;\">[3. PSP]</div>\n      <img width=\"34\" height=\"34\" style=\"margin-top: 10px;\" src=\"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNCIgaGVpZ2h0PSIzNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiM1Nzk0RjIiIHN0cm9rZS13aWR0aD0iMS44IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxlbGxpcHNlIGN4PSIxMiIgY3k9IjUiIHJ4PSI4IiByeT0iMyIvPjxwYXRoIGQ9Ik00IDV2MTRjMCAxLjY1NyAzLjU4MiAzIDggM3M4LTEuMzQzIDgtM1Y1Ii8+PHBhdGggZD0iTTQgMTJjMCAxLjY1NyAzLjU4MiAzIDggM3M4LTEuMzQzIDgtMyIvPjwvc3ZnPg==\" />\n      <div style=\"font-size: 11px; color: #8e8e8e; margin-top: 4px; white-space: nowrap;\">(Smistamento)</div>\n    </div>\n\n    <!-- FRECCIA 3 -->\n    <div style=\"flex-grow: 1; display: flex; flex-direction: column; align-items: center; margin: 0 4px; align-self: flex-end; margin-bottom: 32px;\">\n      <div style=\"width: 100%; display: flex; align-items: center;\">\n        <div style=\"flex-grow: 1; height: 1px; background-color: #999;\"></div>\n        <div style=\"width: 0; height: 0; border-top: 4px solid transparent; border-bottom: 4px solid transparent; border-left: 6px solid #999;\"></div>\n      </div>\n    </div>\n\n    <!-- COLONNA 4: PORTALE SEND -->\n    <div style=\"display: flex; flex-direction: column; align-items: center; flex-shrink: 0;\">\n      <div style=\"border: 1px solid #5794F2; border-radius: 4px; padding: 4px 10px; font-weight: bold; font-size: 13px; white-space: nowrap;\">[4. PORTALE SEND]</div>\n      <img width=\"34\" height=\"34\" style=\"margin-top: 10px;\" src=\"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNCIgaGVpZ2h0PSIzNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiM1Nzk0RjIiIHN0cm9rZS13aWR0aD0iMS44IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik02IDJoOWw1IDV2MTNhMiAyIDAgMCAxLTIgMkg2YTIgMiAwIDAgMS0yLTJWNGEyIDIgMCAwIDEgMi0yeiIvPjxwYXRoIGQ9Ik05IDEzaDYiLz48cGF0aCBkPSJNOSAxN2g2Ii8+PC9zdmc+\" />\n      <div style=\"font-size: 11px; color: #8e8e8e; margin-top: 4px; white-space: nowrap;\">(Perfezionamento)</div> \n    </div>\n\n    <!-- FRECCIA 4 -->\n    <div style=\"flex-grow: 1; display: flex; flex-direction: column; align-items: center; margin: 0 4px; align-self: flex-end; margin-bottom: 32px;\">\n      <div style=\"width: 100%; display: flex; align-items: center;\">\n        <div style=\"flex-grow: 1; height: 1px; background-color: #999;\"></div>\n        <div style=\"width: 0; height: 0; border-top: 4px solid transparent; border-bottom: 4px solid transparent; border-left: 6px solid #999;\"></div>\n      </div>\n    </div>\n\n    <!-- COLONNA 5: APP BANCARIA -->\n    <div style=\"display: flex; flex-direction: column; align-items: center; flex-shrink: 0;\">\n      <div style=\"border: 1px solid #5794F2; border-radius: 4px; padding: 4px 10px; font-weight: bold; font-size: 13px; white-space: nowrap;\">[5. APP BANCARIA]</div>\n      <img width=\"34\" height=\"34\" style=\"margin-top: 10px;\" src=\"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNCIgaGVpZ2h0PSIzNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiM1Nzk0RjIiIHN0cm9rZS13aWR0aD0iMS44IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0zIDdhMiAyIDAgMCAxIDItMmgxMWEyIDIgMCAwIDEgMiAydjFoMWEyIDIgMCAwIDEgMiAydjdhMiAyIDAgMCAxLTIgMkg1YTIgMiAwIDAgMS0yLTJWN3oiLz48cGF0aCBkPSJNMTYgMTNoMyIvPjwvc3ZnPg==\" />\n      <div style=\"font-size: 11px; color: #8e8e8e; margin-top: 4px; white-space: nowrap;\">(Pagamento)</div>    \n    </div>\n\n  </div>\n</div>",
+        "mode": "html"
+      },
+      "pluginVersion": "12.4.3",
+      "title": "",
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-data-explorer-datasource",
+        "uid": "${ds}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "NON OPERATIVO": {
+                  "color": "dark-red",
+                  "index": 0
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 5,
+        "x": 0,
+        "y": 7
+      },
+      "id": 2,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^Stato Servizio$/",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.4.3",
+      "targets": [
+        {
+          "OpenAI": false,
+          "database": "mdc",
+          "datasource": {
+            "type": "grafana-azure-data-explorer-datasource",
+            "uid": "${ds}"
+          },
+          "expression": {
+            "groupBy": {
+              "expressions": [],
+              "type": "and"
+            },
+            "reduce": {
+              "expressions": [],
+              "type": "and"
+            },
+            "where": {
+              "expressions": [],
+              "type": "and"
+            }
+          },
+          "pluginVersion": "7.2.6",
+          "query": "MessageVolumeSnapshot\r\n| where window_start >= startofday(ago(1d)) and window_start < startofday(now())\r\n| summarize TotaleEventi = coalesce(sum(message_sent_count), 0) + coalesce(sum(message_discarded_count), 0)\r\n| extend ['Stato Servizio'] = iff(TotaleEventi > 0, \"OPERATIVO\", \"NON OPERATIVO\")\r\n| project ['Stato Servizio']",
+          "querySource": "raw",
+          "queryType": "KQL",
+          "rawMode": true,
+          "refId": "A",
+          "resultFormat": "table"
+        }
+      ],
+      "title": "Stato Servizio:",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-data-explorer-datasource",
+        "uid": "${ds}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 0
+              },
+              {
+                "color": "#EAB839",
+                "value": 1
+              },
+              {
+                "color": "green",
+                "value": 5
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 14,
+        "x": 5,
+        "y": 7
+      },
+      "id": 1,
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^Tasso di Conversione Pagamento Totale$/",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "sizing": "auto",
+        "text": {}
+      },
+      "pluginVersion": "12.4.3",
+      "targets": [
+        {
+          "OpenAI": false,
+          "database": "mdc",
+          "datasource": {
+            "type": "grafana-azure-data-explorer-datasource",
+            "uid": "${ds}"
+          },
+          "expression": {
+            "groupBy": {
+              "expressions": [],
+              "type": "and"
+            },
+            "reduce": {
+              "expressions": [],
+              "type": "and"
+            },
+            "where": {
+              "expressions": [],
+              "type": "and"
+            }
+          },
+          "pluginVersion": "7.2.6",
+          "query": "let excludedPsp = dynamic([\"TestEmdTpp\", \"MDC Test\"]);\r\n\r\nlet excludedTpp =\r\n    TppDataSnapshot\r\n    | where business_name in~ (excludedPsp)\r\n    | distinct tpp_id;\r\n\r\nlet excludedEntity =\r\n    TppDataSnapshot\r\n    | where business_name in~ (excludedPsp)\r\n    | distinct entity_id;\r\n\r\nlet sentFiltrato =\r\n    MessageSnapshot\r\n    | where $__timeFilter(window_start)\r\n    | where message_state == \"SENT\"\r\n    | join kind=leftanti excludedEntity on entity_id;\r\n\r\nlet known_origins =\r\n    sentFiltrato\r\n    | summarize by origin_id;\r\n\r\nlet messaggiAccettati = toscalar(\r\n    sentFiltrato\r\n    | count\r\n);\r\n\r\nlet finalizedFiltrato =\r\n    FinalizedMessageSnapshot\r\n    | where $__timeFilter(window_start)\r\n    | where origin_id in (known_origins)\r\n    | join kind=leftanti excludedTpp on tpp_id;\r\n\r\nlet pagamentiCompletati = toscalar(\r\n    finalizedFiltrato\r\n    | summarize arg_max(window_start, tpp_id) by origin_id\r\n    | summarize dcount(origin_id)\r\n);\r\n\r\nlet pspAttivi = toscalar(\r\n    finalizedFiltrato\r\n    | summarize by tpp_id\r\n    | count\r\n);\r\n\r\nprint ['Tasso di Conversione Pagamento Totale'] =\r\n    iff(messaggiAccettati == 0 or pspAttivi == 0, 0.0,\r\n        round((100.0 * todouble(pagamentiCompletati) / todouble(messaggiAccettati)) / todouble(pspAttivi), 2))",
+          "querySource": "raw",
+          "queryType": "KQL",
+          "rawMode": true,
+          "refId": "A",
+          "resultFormat": "table"
+        }
+      ],
+      "title": "",
+      "transparent": true,
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-data-explorer-datasource",
+        "uid": "${ds}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 5,
+        "x": 19,
+        "y": 7
+      },
+      "id": 3,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^PSP Attivi / Totali$/",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.4.3",
+      "targets": [
+        {
+          "OpenAI": false,
+          "database": "mdc",
+          "datasource": {
+            "type": "grafana-azure-data-explorer-datasource",
+            "uid": "${ds}"
+          },
+          "expression": {
+            "groupBy": {
+              "expressions": [],
+              "type": "and"
+            },
+            "reduce": {
+              "expressions": [],
+              "type": "and"
+            },
+            "where": {
+              "expressions": [],
+              "type": "and"
+            }
+          },
+          "pluginVersion": "7.2.6",
+          "query": "let excludedPsp = dynamic([\"TestEmdTpp\", \"MDC Test\"]);\r\n\r\nlet pspTotali = toscalar(\r\n    TppDataSnapshot\r\n    | where business_name !in~ (excludedPsp)\r\n    | count\r\n);\r\n\r\nlet pspAttivi = toscalar(\r\n    TppDataSnapshot\r\n    | where business_name !in~ (excludedPsp)\r\n    | where state == true\r\n    | count\r\n);\r\n\r\nprint ['PSP Attivi / Totali'] = strcat(tostring(pspAttivi), \" / \", tostring(pspTotali))",
+          "querySource": "raw",
+          "queryType": "KQL",
+          "rawMode": true,
+          "refId": "A",
+          "resultFormat": "table"
+        }
+      ],
+      "title": "PSP Attivi / Totali:",
+      "type": "stat"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 14,
+        "x": 5,
+        "y": 13
+      },
+      "id": 6,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "<div style=\"text-align: center; font-size: 13px; color: #BEBEBE; padding: 4px 20px;\">\n  (Pagamenti Completati / Messaggi Accettati) / PSP Attivi<br/>\n  Misura l'efficacia della transazione finale pesata sulla capillarità e l'attivazione dei Prestatori di Servizi di Pagamento (PSP).\n</div>",
+        "mode": "html"
+      },
+      "pluginVersion": "12.4.3",
+      "title": "",
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 16
+      },
+      "id": 8,
+      "panels": [],
+      "title": "MESSAGGI DA SEND",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-data-explorer-datasource",
+        "uid": "${ds}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 5,
+        "x": 0,
+        "y": 17
+      },
+      "id": 9,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.4.3",
+      "targets": [
+        {
+          "OpenAI": false,
+          "database": "mdc",
+          "datasource": {
+            "type": "grafana-azure-data-explorer-datasource",
+            "uid": "${ds}"
+          },
+          "expression": {
+            "groupBy": {
+              "expressions": [],
+              "type": "and"
+            },
+            "reduce": {
+              "expressions": [],
+              "type": "and"
+            },
+            "where": {
+              "expressions": [],
+              "type": "and"
+            }
+          },
+          "pluginVersion": "7.2.6",
+          "query": "MessageVolumeSnapshot\r\n| where $__timeFilter(window_start)\r\n| summarize ['Messaggi Ricevuti'] = coalesce(sum(message_discarded_count), 0)",
+          "querySource": "raw",
+          "queryType": "KQL",
+          "rawMode": true,
+          "refId": "A",
+          "resultFormat": "table"
+        }
+      ],
+      "title": "Messaggi Scartati",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-data-explorer-datasource",
+        "uid": "${ds}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "#EAB839",
+                "value": 16
+              },
+              {
+                "color": "dark-red",
+                "value": 20
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 5,
+        "x": 5,
+        "y": 17
+      },
+      "id": 10,
+      "options": {
+        "displayMode": "gradient",
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "maxVizHeight": 150,
+        "minVizHeight": 0,
+        "minVizWidth": 8,
+        "namePlacement": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showUnfilled": true,
+        "sizing": "auto",
+        "valueMode": "color"
+      },
+      "pluginVersion": "12.4.3",
+      "targets": [
+        {
+          "OpenAI": false,
+          "database": "mdc",
+          "datasource": {
+            "type": "grafana-azure-data-explorer-datasource",
+            "uid": "${ds}"
+          },
+          "expression": {
+            "groupBy": {
+              "expressions": [],
+              "type": "and"
+            },
+            "reduce": {
+              "expressions": [],
+              "type": "and"
+            },
+            "where": {
+              "expressions": [],
+              "type": "and"
+            }
+          },
+          "pluginVersion": "7.2.6",
+          "query": "MessageVolumeSnapshot\r\n| where $__timeFilter(window_start)\r\n| summarize  Discarded = coalesce(sum(message_discarded_count), 0), Total = coalesce(sum(message_total_count), 0)\r\n| extend ['Tasso di Scarto'] = round(100.0 * Discarded / Total, 2)\r\n| project ['Tasso di Scarto']",
+          "querySource": "raw",
+          "queryType": "KQL",
+          "rawMode": true,
+          "refId": "A",
+          "resultFormat": "table"
+        }
+      ],
+      "title": "Tasso di Scarto",
+      "type": "bargauge"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-data-explorer-datasource",
+        "uid": "${ds}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 5,
+        "x": 10,
+        "y": 17
+      },
+      "id": 13,
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "pieType": "donut",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "sort": "desc",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.4.3",
+      "targets": [
+        {
+          "OpenAI": false,
+          "database": "mdc",
+          "datasource": {
+            "type": "grafana-azure-data-explorer-datasource",
+            "uid": "${ds}"
+          },
+          "expression": {
+            "groupBy": {
+              "expressions": [],
+              "type": "and"
+            },
+            "reduce": {
+              "expressions": [],
+              "type": "and"
+            },
+            "where": {
+              "expressions": [],
+              "type": "and"
+            }
+          },
+          "pluginVersion": "7.2.6",
+          "query": "MessageVolumeSnapshot\r\n| where $__timeFilter(window_start)\r\n| summarize \r\n    ['Accettati con pagamento']   = coalesce(sum(sent_with_payment), 0),\r\n    ['Accettati senza pagamento'] = coalesce(sum(sent_without_payment), 0),\r\n    ['Scartati con pagamento']    = coalesce(sum(discarded_with_payment), 0),\r\n    ['Scartati senza pagamento']  = coalesce(sum(discarded_without_payment), 0)",
+          "querySource": "raw",
+          "queryType": "KQL",
+          "rawMode": true,
+          "refId": "A",
+          "resultFormat": "table"
+        }
+      ],
+      "title": "Scomposizione Messaggi",
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-data-explorer-datasource",
+        "uid": "${ds}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 9,
+        "x": 15,
+        "y": 17
+      },
+      "id": 14,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.4.3",
+      "targets": [
+        {
+          "OpenAI": false,
+          "database": "mdc",
+          "datasource": {
+            "type": "grafana-azure-data-explorer-datasource",
+            "uid": "${ds}"
+          },
+          "expression": {
+            "groupBy": {
+              "expressions": [],
+              "type": "and"
+            },
+            "reduce": {
+              "expressions": [],
+              "type": "and"
+            },
+            "where": {
+              "expressions": [],
+              "type": "and"
+            }
+          },
+          "pluginVersion": "7.2.6",
+          "query": "MessageVolumeSnapshot\r\n| where $__timeFilter(window_start)\r\n| summarize ['Messaggi accettati'] = sum(message_sent_count), \r\n            ['Messaggi scartati']  = sum(message_discarded_count) \r\n  by bin(window_start, 1d)\r\n| order by window_start asc",
+          "querySource": "raw",
+          "queryType": "KQL",
+          "rawMode": true,
+          "refId": "A",
+          "resultFormat": "table"
+        }
+      ],
+      "title": "Volume Totale Messaggi nel tempo",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-data-explorer-datasource",
+        "uid": "${ds}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 5,
+        "x": 0,
+        "y": 23
+      },
+      "id": 11,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.4.3",
+      "targets": [
+        {
+          "OpenAI": false,
+          "database": "mdc",
+          "datasource": {
+            "type": "grafana-azure-data-explorer-datasource",
+            "uid": "${ds}"
+          },
+          "expression": {
+            "groupBy": {
+              "expressions": [],
+              "type": "and"
+            },
+            "reduce": {
+              "expressions": [],
+              "type": "and"
+            },
+            "where": {
+              "expressions": [],
+              "type": "and"
+            }
+          },
+          "pluginVersion": "7.2.6",
+          "query": "MessageVolumeSnapshot\r\n| where $__timeFilter(window_start)\r\n| summarize ['Messaggi accettati'] = coalesce(sum(message_sent_count), 0)",
+          "querySource": "raw",
+          "queryType": "KQL",
+          "rawMode": true,
+          "refId": "A",
+          "resultFormat": "table"
+        }
+      ],
+      "title": "Messaggi Accettati",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-data-explorer-datasource",
+        "uid": "${ds}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "fieldMinMax": false,
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "dark-red",
+                "value": 0
+              },
+              {
+                "color": "#EAB839",
+                "value": 1
+              },
+              {
+                "color": "green",
+                "value": 5
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 5,
+        "x": 5,
+        "y": 23
+      },
+      "id": 12,
+      "options": {
+        "displayMode": "gradient",
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "maxVizHeight": 150,
+        "minVizHeight": 0,
+        "minVizWidth": 8,
+        "namePlacement": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^Tasso di Accettazione$/",
+          "values": false
+        },
+        "showUnfilled": true,
+        "sizing": "auto",
+        "valueMode": "color"
+      },
+      "pluginVersion": "12.4.3",
+      "targets": [
+        {
+          "OpenAI": false,
+          "database": "mdc",
+          "datasource": {
+            "type": "grafana-azure-data-explorer-datasource",
+            "uid": "${ds}"
+          },
+          "expression": {
+            "groupBy": {
+              "expressions": [],
+              "type": "and"
+            },
+            "reduce": {
+              "expressions": [],
+              "type": "and"
+            },
+            "where": {
+              "expressions": [],
+              "type": "and"
+            }
+          },
+          "pluginVersion": "7.2.6",
+          "query": "MessageVolumeSnapshot\r\n| where $__timeFilter(window_start)\r\n| summarize Sent = coalesce(sum(message_sent_count), 0), Total = coalesce(sum(message_total_count), 0)\r\n| extend ['Tasso di Accettazione'] = round(100.0 * Sent / Total, 2)\r\n| project ['Tasso di Accettazione']",
+          "querySource": "raw",
+          "queryType": "KQL",
+          "rawMode": true,
+          "refId": "A",
+          "resultFormat": "table"
+        }
+      ],
+      "title": "Tasso di Accettazione",
+      "type": "bargauge"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-data-explorer-datasource",
+        "uid": "${ds}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "fieldMinMax": false,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 9,
+        "x": 15,
+        "y": 23
+      },
+      "id": 15,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.4.3",
+      "targets": [
+        {
+          "OpenAI": false,
+          "database": "mdc",
+          "datasource": {
+            "type": "grafana-azure-data-explorer-datasource",
+            "uid": "${ds}"
+          },
+          "expression": {
+            "groupBy": {
+              "expressions": [],
+              "type": "and"
+            },
+            "reduce": {
+              "expressions": [],
+              "type": "and"
+            },
+            "where": {
+              "expressions": [],
+              "type": "and"
+            }
+          },
+          "pluginVersion": "7.2.6",
+          "query": "let known_origins =\r\n    MessageSnapshot\r\n    | where message_state == \"SENT\"\r\n    | summarize by origin_id;\r\nlet dayRange =\r\n    range Day from startofday($__timeFrom) to startofday($__timeTo) step 1d\r\n    | project Day;\r\nlet volume_per_day =\r\n    MessageVolumeSnapshot\r\n    | where $__timeFilter(window_start)\r\n    | summarize Sent = sum(message_sent_count), Discarded = sum(message_discarded_count)\r\n      by Day = bin(window_start, 1d);\r\nlet inviate_per_day =\r\n    MessageSnapshot\r\n    | where message_state == \"SENT\"\r\n    | where $__timeFilter(window_start)\r\n    | summarize Inviate = dcount(origin_id) by Day = bin(window_start, 1d);\r\nlet lette_per_day =\r\n    RetrievalIdVolumeSnapshot\r\n    | where $__timeFilter(window_start)\r\n    | where origin_id in (known_origins)\r\n    | summarize Lette = dcount(origin_id) by Day = bin(window_start, 1d);\r\ndayRange\r\n| join kind=leftouter volume_per_day on Day\r\n| join kind=leftouter inviate_per_day on Day\r\n| join kind=leftouter lette_per_day on Day\r\n| extend Sent = coalesce(Sent, 0), Discarded = coalesce(Discarded, 0),\r\n         Inviate = coalesce(Inviate, 0), Lette = coalesce(Lette, 0)\r\n| extend ['Tasso di Accettazione (%)'] = iff(Sent + Discarded == 0, 0.0, round(100.0 * Sent / (Sent + Discarded), 2))\r\n| extend ['Tasso di Lettura (%)'] = iff(Inviate == 0, 0.0, round(100.0 * Lette / Inviate, 2))\r\n| project window_start = Day, ['Tasso di Accettazione (%)'], ['Tasso di Lettura (%)']\r\n| order by window_start asc",
+          "querySource": "raw",
+          "queryType": "KQL",
+          "rawMode": true,
+          "refId": "A",
+          "resultFormat": "table"
+        }
+      ],
+      "title": "Tassi di Conversione nel tempo",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-data-explorer-datasource",
+        "uid": "${ds}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": false,
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false,
+            "minWidth": 100,
+            "wrapHeaderText": true,
+            "wrapText": true
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Tasso di Lettura"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "gauge",
+                  "valueDisplayMode": "color"
+                }
+              },
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "custom.minWidth",
+                "value": 100
+              },
+              {
+                "id": "custom.align",
+                "value": "left"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": 0
+                    },
+                    {
+                      "color": "red",
+                      "value": 0
+                    },
+                    {
+                      "color": "#EAB839",
+                      "value": 1
+                    },
+                    {
+                      "color": "green",
+                      "value": 5
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Tasso di Perf."
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "gauge",
+                  "valueDisplayMode": "color"
+                }
+              },
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "custom.minWidth",
+                "value": 100
+              },
+              {
+                "id": "custom.align",
+                "value": "auto"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": 0
+                    },
+                    {
+                      "color": "red",
+                      "value": 0
+                    },
+                    {
+                      "color": "#EAB839",
+                      "value": 1
+                    },
+                    {
+                      "color": "green",
+                      "value": 5
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "PSP"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "auto"
+                }
+              },
+              {
+                "id": "custom.minWidth",
+                "value": 100
+              },
+              {
+                "id": "custom.wrapText"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 24,
+        "x": 0,
+        "y": 29
+      },
+      "id": 16,
+      "options": {
+        "cellHeight": "sm",
+        "enablePagination": true,
+        "showHeader": true
+      },
+      "pluginVersion": "12.4.3",
+      "targets": [
+        {
+          "OpenAI": false,
+          "database": "mdc",
+          "datasource": {
+            "type": "grafana-azure-data-explorer-datasource",
+            "uid": "${ds}"
+          },
+          "expression": {
+            "groupBy": {
+              "expressions": [],
+              "type": "and"
+            },
+            "reduce": {
+              "expressions": [],
+              "type": "and"
+            },
+            "where": {
+              "expressions": [],
+              "type": "and"
+            }
+          },
+          "pluginVersion": "7.2.6",
+          "query": "let excludedPsp = dynamic([\"TestEmdTpp\", \"MDC Test\"]);\r\nlet payment_map =\r\n    MessageSnapshot\r\n    | summarize arg_max(window_start, associated_payment) by origin_id;\r\nlet known_origins =\r\n    MessageSnapshot\r\n    | where message_state == \"SENT\"\r\n    | summarize by origin_id;\r\nlet inviate =\r\n    MessageSnapshot\r\n    | where message_state == \"SENT\"\r\n    | where $__timeFilter(window_start)\r\n    | summarize arg_max(window_start, entity_id) by origin_id, entity_id\r\n    | project origin_id, entity_id, is_inviata = true;\r\nlet lette =\r\n    RetrievalIdVolumeSnapshot\r\n    | where $__timeFilter(window_start)\r\n    | where origin_id in (known_origins)\r\n    | summarize arg_max(window_start, entity_id) by origin_id, entity_id\r\n    | project origin_id, entity_id, is_letta = true;\r\nlet perfezionate =\r\n    FinalizedMessageSnapshot\r\n    | where $__timeFilter(window_start)\r\n    | where origin_id in (known_origins)\r\n    | summarize arg_max(window_start, tpp_id) by origin_id\r\n    | project origin_id, is_perfezionata = true;\r\nlet tutti =\r\n    inviate\r\n    | project origin_id, entity_id\r\n    | union (lette | project origin_id, entity_id)\r\n    | summarize arg_max(origin_id, entity_id) by origin_id;\r\nlet tutte_le_tpp =\r\n    TppDataSnapshot\r\n    | where business_name !in~ (excludedPsp)\r\n    | summarize by entity_id, PSP = business_name;\r\ntutte_le_tpp\r\n| join kind=leftouter (\r\n    tutti\r\n    | join kind=leftouter payment_map on origin_id\r\n    | join kind=inner TppDataSnapshot on entity_id\r\n    | join kind=leftouter (inviate | project origin_id, is_inviata)      on origin_id\r\n    | join kind=leftouter (lette | project origin_id, is_letta)        on origin_id\r\n    | join kind=leftouter (perfezionate | project origin_id, is_perfezionata) on origin_id\r\n    )\r\n    on entity_id\r\n| summarize\r\n    ['Inv. Con Pagamento']    = dcountif(origin_id, associated_payment == true and is_inviata == true),\r\n    ['Inv. Senza Pagamento']  = dcountif(origin_id, associated_payment == false and is_inviata == true),\r\n    ['Inviate Totale']        = dcountif(origin_id, is_inviata == true),\r\n    ['Lette Con Pagamento']   = dcountif(origin_id, associated_payment == true and is_letta == true),\r\n    ['Lette Senza Pagamento'] = dcountif(origin_id, associated_payment == false and is_letta == true),\r\n    ['Lette Totale']          = dcountif(origin_id, is_letta == true),\r\n    ['Perf. Con Pagamento']   = dcountif(origin_id, associated_payment == true and is_perfezionata == true),\r\n    ['Perf. Senza Pagamento'] = dcountif(origin_id, associated_payment == false and is_perfezionata == true),\r\n    ['Perfezionate Totale']   = dcountif(origin_id, is_perfezionata == true)\r\n    by PSP\r\n| extend ['Tasso di Lettura']     = round(100.0 * ['Lette Totale'] / iff(['Inviate Totale'] == 0, 1, ['Inviate Totale']), 2)\r\n| extend ['Tasso di Perf.'] = round(100.0 * ['Perfezionate Totale'] / iff(['Lette Totale'] == 0, 1, ['Lette Totale']), 2)\r\n| project \r\n    PSP,\r\n    ['Inv. Con Pagamento'],\r\n    ['Inv. Senza Pagamento'],\r\n    ['Inviate Totale'],\r\n    ['Lette Con Pagamento'],\r\n    ['Lette Senza Pagamento'],\r\n    ['Lette Totale'],\r\n    ['Perf. Con Pagamento'],\r\n    ['Perf. Senza Pagamento'],\r\n    ['Tasso di Lettura'],\r\n    ['Tasso di Perf.']\r\n| order by ['Tasso di Lettura'] desc",
+          "querySource": "raw",
+          "queryType": "KQL",
+          "rawMode": true,
+          "refId": "A",
+          "resultFormat": "table"
+        }
+      ],
+      "title": "Flusso messaggi accettati per PSP",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-data-explorer-datasource",
+        "uid": "${ds}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": true,
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false,
+            "wrapHeaderText": true,
+            "wrapText": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "dark-red",
+                "value": 0
+              },
+              {
+                "color": "#EAB839",
+                "value": 1
+              },
+              {
+                "color": "green",
+                "value": 2
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Tasso di Pagamento"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "gradient",
+                  "type": "gauge",
+                  "valueDisplayMode": "color"
+                }
+              },
+              {
+                "id": "unit",
+                "value": "percent"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 10,
+        "x": 0,
+        "y": 38
+      },
+      "id": 24,
+      "options": {
+        "cellHeight": "sm",
+        "enablePagination": true,
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "12.4.3",
+      "targets": [
+        {
+          "OpenAI": false,
+          "database": "mdc",
+          "datasource": {
+            "type": "grafana-azure-data-explorer-datasource",
+            "uid": "${ds}"
+          },
+          "expression": {
+            "groupBy": {
+              "expressions": [],
+              "type": "and"
+            },
+            "reduce": {
+              "expressions": [],
+              "type": "and"
+            },
+            "where": {
+              "expressions": [],
+              "type": "and"
+            }
+          },
+          "pluginVersion": "7.2.6",
+          "query": "let excludedPsp = dynamic([\"TestEmdTpp\", \"MDC Test\"]);\r\n\r\nlet payment_map =\r\n    MessageSnapshot\r\n    | summarize arg_max(window_start, associated_payment) by origin_id;\r\n    // Nessun timeFilter per prendere tutto lo storico\r\n\r\nlet known_origins =\r\n    MessageSnapshot\r\n    | where message_state == \"SENT\"\r\n    | summarize by origin_id;\r\n\r\nlet perfezionate_con_pagamento =\r\n    FinalizedMessageSnapshot\r\n    | where $__timeFilter(window_start)\r\n    | where origin_id in (known_origins)\r\n    | summarize arg_max(window_start, tpp_id) by origin_id\r\n    | join kind=inner payment_map on origin_id\r\n    | where associated_payment == true\r\n    | summarize ['Perf. Con Pagamento'] = dcount(origin_id) by tpp_id;\r\n\r\nlet pagate =\r\n    PaymentAttemptSnapshot\r\n    | where $__timeFilter(window_start)\r\n    | summarize ['Notifiche Pagate'] = dcount(origin_id) by tpp_id;\r\n\r\nlet tutte_le_tpp =\r\n    TppDataSnapshot\r\n    | where business_name !in~ (excludedPsp)\r\n    | summarize by tpp_id, PSP = business_name;\r\n\r\ntutte_le_tpp\r\n| join kind=leftouter perfezionate_con_pagamento on tpp_id\r\n| join kind=leftouter pagate on tpp_id\r\n| extend ['Perf. Con Pagamento'] = coalesce(['Perf. Con Pagamento'], 0)\r\n| extend ['Notifiche Pagate']    = coalesce(['Notifiche Pagate'], 0)\r\n| extend ['Tasso di Pagamento']  = iff(['Perf. Con Pagamento'] == 0, 0.0, \r\n                                            round(100.0 * ['Notifiche Pagate'] / ['Perf. Con Pagamento'], 2))\r\n| project\r\n    PSP,\r\n    ['Notifiche Pagate'],\r\n    ['Tasso di Pagamento']\r\n| order by ['Tasso di Pagamento'] desc",
+          "querySource": "raw",
+          "queryType": "KQL",
+          "rawMode": true,
+          "refId": "A",
+          "resultFormat": "table"
+        }
+      ],
+      "title": "Notifiche con tentato pagamento per PSP",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-data-explorer-datasource",
+        "uid": "${ds}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": true,
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false,
+            "wrapHeaderText": true
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 14,
+        "x": 10,
+        "y": 38
+      },
+      "id": 25,
+      "options": {
+        "cellHeight": "sm",
+        "enablePagination": true,
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "12.4.3",
+      "targets": [
+        {
+          "OpenAI": false,
+          "database": "mdc",
+          "datasource": {
+            "type": "grafana-azure-data-explorer-datasource",
+            "uid": "${ds}"
+          },
+          "expression": {
+            "groupBy": {
+              "expressions": [],
+              "type": "and"
+            },
+            "reduce": {
+              "expressions": [],
+              "type": "and"
+            },
+            "where": {
+              "expressions": [],
+              "type": "and"
+            }
+          },
+          "pluginVersion": "7.2.6",
+          "query": "let tutte_le_tpp =\r\n    TppDataSnapshot\r\n    | summarize by tpp_id, PSP = business_name;\r\n\r\nPaymentAttemptSnapshot\r\n| where $__timeFilter(window_start)\r\n| summarize ['Tentativi di Pagamento'] = sum(attempt_count)\r\n    by ['Origin Id'] = origin_id, ['Notice Number'] = notice_number, tpp_id\r\n| join kind=leftouter tutte_le_tpp on tpp_id\r\n| project PSP, ['Origin Id'], ['Notice Number'], ['Tentativi di Pagamento']\r\n| order by ['Tentativi di Pagamento'] desc",
+          "querySource": "raw",
+          "queryType": "KQL",
+          "rawMode": true,
+          "refId": "A",
+          "resultFormat": "table"
+        }
+      ],
+      "title": "Numero tentativi di pagamento per notifica",
+      "type": "table"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 45
+      },
+      "id": 17,
+      "panels": [],
+      "title": "ATTIVAZIONI / DISATTIVAZIONI UTENTI",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-data-explorer-datasource",
+        "uid": "${ds}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Tasso di Attivazione"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 4,
+        "x": 0,
+        "y": 46
+      },
+      "id": 19,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value",
+        "wideLayout": false
+      },
+      "pluginVersion": "12.4.3",
+      "targets": [
+        {
+          "OpenAI": false,
+          "database": "mdc",
+          "datasource": {
+            "type": "grafana-azure-data-explorer-datasource",
+            "uid": "${ds}"
+          },
+          "expression": {
+            "groupBy": {
+              "expressions": [],
+              "type": "and"
+            },
+            "reduce": {
+              "expressions": [],
+              "type": "and"
+            },
+            "where": {
+              "expressions": [],
+              "type": "and"
+            }
+          },
+          "pluginVersion": "7.2.6",
+          "query": "CitizenMetricsSnapshot\r\n| extend consents_dynamic = todynamic(consents)\r\n| extend consent_keys = bag_keys(consents_dynamic)\r\n| mv-expand key = consent_keys to typeof(string)\r\n| extend consent_obj  = consents_dynamic[key]\r\n| extend tppState     = tobool(consent_obj[\"tppState\"])\r\n| extend tcDate_ms    = tolong(consent_obj[\"tcDate\"][\"$date\"])\r\n| extend tppDate      = datetime(1970-01-01) + totimespan(tcDate_ms * 1ms)\r\n| where $__timeFilter(tppDate)\r\n| summarize has_any_true = countif(tppState == true) by fiscal_code\r\n| summarize ['Cittadini con consenso'] = countif(has_any_true >= 1)",
+          "querySource": "raw",
+          "queryType": "KQL",
+          "rawMode": true,
+          "refId": "A",
+          "resultFormat": "table"
+        }
+      ],
+      "title": "Utenti Attivi",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-data-explorer-datasource",
+        "uid": "${ds}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 4,
+        "x": 4,
+        "y": 46
+      },
+      "id": 18,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.4.3",
+      "targets": [
+        {
+          "OpenAI": false,
+          "database": "mdc",
+          "datasource": {
+            "type": "grafana-azure-data-explorer-datasource",
+            "uid": "${ds}"
+          },
+          "expression": {
+            "groupBy": {
+              "expressions": [],
+              "type": "and"
+            },
+            "reduce": {
+              "expressions": [],
+              "type": "and"
+            },
+            "where": {
+              "expressions": [],
+              "type": "and"
+            }
+          },
+          "pluginVersion": "7.2.6",
+          "query": "CitizenMetricsSnapshot\r\n| extend consents_dynamic = todynamic(consents)\r\n| extend consent_keys = bag_keys(consents_dynamic)\r\n| mv-expand key = consent_keys to typeof(string)\r\n| extend consent_obj  = consents_dynamic[key]\r\n| extend tppState     = tobool(consent_obj[\"tppState\"])\r\n| extend tcDate_ms    = tolong(consent_obj[\"tcDate\"][\"$date\"])\r\n| extend tppDate      = datetime(1970-01-01) + totimespan(tcDate_ms * 1ms)\r\n| where $__timeFilter(tppDate)\r\n| summarize has_any_true = countif(tppState == true) by fiscal_code\r\n| summarize ['Cittadini senza consenso'] = countif(has_any_true == 0)\r\n",
+          "querySource": "raw",
+          "queryType": "KQL",
+          "rawMode": true,
+          "refId": "A",
+          "resultFormat": "table"
+        }
+      ],
+      "title": "Utenti Disattivi",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-data-explorer-datasource",
+        "uid": "${ds}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 16,
+        "x": 8,
+        "y": 46
+      },
+      "id": 20,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.4.3",
+      "targets": [
+        {
+          "OpenAI": false,
+          "database": "mdc",
+          "datasource": {
+            "type": "grafana-azure-data-explorer-datasource",
+            "uid": "${ds}"
+          },
+          "expression": {
+            "groupBy": {
+              "expressions": [],
+              "type": "and"
+            },
+            "reduce": {
+              "expressions": [],
+              "type": "and"
+            },
+            "where": {
+              "expressions": [],
+              "type": "and"
+            }
+          },
+          "pluginVersion": "7.2.6",
+          "query": "CitizenMetricsSnapshot\r\n| extend consents_dynamic = todynamic(consents)\r\n| extend consent_keys = bag_keys(consents_dynamic)\r\n| mv-expand key = consent_keys to typeof(string)\r\n| extend consent_obj    = consents_dynamic[key]\r\n| extend tppState       = tobool(consent_obj[\"tppState\"])\r\n| extend tcDate         = unixtime_milliseconds_todatetime(tolong(consent_obj[\"tcDate\"][\"$date\"]))\r\n| where tcDate >= $__timeFrom and tcDate <= $__timeTo\r\n| summarize \r\n    has_any_true    = countif(tppState == true),\r\n    last_true_date  = maxif(tcDate, tppState == true),\r\n    last_false_date = maxif(tcDate, tppState == false)\r\n  by fiscal_code\r\n| extend stato         = iff(has_any_true > 0, \"Attivi\", \"Inattivi\")\r\n| extend relevant_date = iff(stato == \"Attivi\", last_true_date, last_false_date)\r\n| summarize \r\n    Attivi    = dcountif(fiscal_code, stato == \"Attivi\"),\r\n    Disattivi = dcountif(fiscal_code, stato == \"Disattivi\")\r\n  by bin(relevant_date, 1d)\r\n| order by relevant_date asc\r\n",
+          "querySource": "raw",
+          "queryType": "KQL",
+          "rawMode": true,
+          "refId": "A",
+          "resultFormat": "table"
+        }
+      ],
+      "title": "Stato utenti nel tempo",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-data-explorer-datasource",
+        "uid": "${ds}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "dark-red",
+                "value": 0
+              },
+              {
+                "color": "#EAB839",
+                "value": 8
+              },
+              {
+                "color": "green",
+                "value": 10
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Tasso di Attivazione"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 4,
+        "x": 0,
+        "y": 53
+      },
+      "id": 22,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value_and_name",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.4.3",
+      "targets": [
+        {
+          "OpenAI": false,
+          "database": "mdc",
+          "datasource": {
+            "type": "grafana-azure-data-explorer-datasource",
+            "uid": "${ds}"
+          },
+          "expression": {
+            "groupBy": {
+              "expressions": [],
+              "type": "and"
+            },
+            "reduce": {
+              "expressions": [],
+              "type": "and"
+            },
+            "where": {
+              "expressions": [],
+              "type": "and"
+            }
+          },
+          "pluginVersion": "7.2.6",
+          "query": "CitizenMetricsSnapshot\r\n| extend consents_dynamic = todynamic(consents)\r\n| extend consent_keys = bag_keys(consents_dynamic)\r\n| mv-expand key = consent_keys to typeof(string)\r\n| extend consent_obj = consents_dynamic[key]\r\n| extend tppState    = tobool(consent_obj[\"tppState\"])\r\n| extend tcDate_ms   = tolong(consent_obj[\"tcDate\"][\"$date\"])\r\n| extend tppDate     = datetime(1970-01-01) + totimespan(tcDate_ms * 1ms)\r\n| where $__timeFilter(tppDate)\r\n| summarize has_any_true = countif(tppState == true) by fiscal_code\r\n| summarize Attivi = countif(has_any_true >= 1), Inattivi = countif(has_any_true == 0)\r\n| extend Totale = Attivi + Inattivi\r\n| extend ['Tasso di Attivazione'] = iff(Totale == 0, 0.0, round(100.0 * Attivi / Totale, 2))\r\n| project ['Tasso di Attivazione']",
+          "querySource": "raw",
+          "queryType": "KQL",
+          "rawMode": true,
+          "refId": "A",
+          "resultFormat": "table"
+        }
+      ],
+      "title": "",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-data-explorer-datasource",
+        "uid": "${ds}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "#EAB839",
+                "value": 16
+              },
+              {
+                "color": "dark-red",
+                "value": 20
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Tasso di Attivazione"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 4,
+        "x": 4,
+        "y": 53
+      },
+      "id": 23,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value_and_name",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.4.3",
+      "targets": [
+        {
+          "OpenAI": false,
+          "database": "mdc",
+          "datasource": {
+            "type": "grafana-azure-data-explorer-datasource",
+            "uid": "${ds}"
+          },
+          "expression": {
+            "groupBy": {
+              "expressions": [],
+              "type": "and"
+            },
+            "reduce": {
+              "expressions": [],
+              "type": "and"
+            },
+            "where": {
+              "expressions": [],
+              "type": "and"
+            }
+          },
+          "pluginVersion": "7.2.6",
+          "query": "CitizenMetricsSnapshot\r\n| extend consents_dynamic = todynamic(consents)\r\n| extend consent_keys = bag_keys(consents_dynamic)\r\n| mv-expand key = consent_keys to typeof(string)\r\n| extend consent_obj = consents_dynamic[key]\r\n| extend tppState    = tobool(consent_obj[\"tppState\"])\r\n| extend tcDate_ms   = tolong(consent_obj[\"tcDate\"][\"$date\"])\r\n| extend tppDate     = datetime(1970-01-01) + totimespan(tcDate_ms * 1ms)\r\n| where $__timeFilter(tppDate)\r\n| summarize has_any_true = countif(tppState == true) by fiscal_code\r\n| summarize Attivi = countif(has_any_true >= 1), Inattivi = countif(has_any_true == 0)\r\n| extend Totale = Attivi + Inattivi\r\n| extend ['Tasso di Disattivazione'] = iff(Totale == 0, 0.0, round(100.0 * Inattivi / Totale, 2))\r\n| project ['Tasso di Disattivazione']",
+          "querySource": "raw",
+          "queryType": "KQL",
+          "rawMode": true,
+          "refId": "A",
+          "resultFormat": "table"
+        }
+      ],
+      "title": "",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-data-explorer-datasource",
+        "uid": "${ds}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": true,
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false,
+            "minWidth": 100,
+            "wrapHeaderText": true,
+            "wrapText": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "% Attivi"
+            },
+            "properties": [
+              {
+                "id": "min",
+                "value": 0
+              },
+              {
+                "id": "max",
+                "value": 100
+              },
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "gauge",
+                  "valueDisplayMode": "color"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": 0
+                    },
+                    {
+                      "color": "red",
+                      "value": 0
+                    },
+                    {
+                      "color": "#EAB839",
+                      "value": 1
+                    },
+                    {
+                      "color": "green",
+                      "value": 5
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "% Disattivi"
+            },
+            "properties": [
+              {
+                "id": "min",
+                "value": 0
+              },
+              {
+                "id": "max",
+                "value": 100
+              },
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "gauge",
+                  "valueDisplayMode": "color"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": 0
+                    },
+                    {
+                      "color": "green",
+                      "value": 0
+                    },
+                    {
+                      "color": "#EAB839",
+                      "value": 1
+                    },
+                    {
+                      "color": "red",
+                      "value": 5
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 55
+      },
+      "id": 21,
+      "options": {
+        "cellHeight": "sm",
+        "enablePagination": true,
+        "showHeader": true
+      },
+      "pluginVersion": "12.4.3",
+      "targets": [
+        {
+          "OpenAI": false,
+          "database": "mdc",
+          "datasource": {
+            "type": "grafana-azure-data-explorer-datasource",
+            "uid": "${ds}"
+          },
+          "expression": {
+            "groupBy": {
+              "expressions": [],
+              "type": "and"
+            },
+            "reduce": {
+              "expressions": [],
+              "type": "and"
+            },
+            "where": {
+              "expressions": [],
+              "type": "and"
+            }
+          },
+          "pluginVersion": "7.2.6",
+          "query": "let excludedPsp = dynamic([\"TestEmdTpp\", \"MDC Test\"]);\r\nCitizenMetricsSnapshot\r\n| extend consents_dynamic = todynamic(consents)\r\n| mv-expand tpp_id = bag_keys(consents_dynamic)\r\n| extend tpp_id    = tostring(tpp_id)\r\n| extend tcDate_ms = tolong(consents_dynamic[tpp_id].tcDate[\"$date\"])\r\n| extend tppDate   = datetime(1970-01) + totimespan(tcDate_ms * 1ms)\r\n| where $__timeFilter(tppDate)\r\n| extend is_active = tobool(consents_dynamic[tpp_id].tppState)\r\n| lookup kind=leftouter TppDataSnapshot on tpp_id\r\n| where isempty(business_name) or business_name !in~ (excludedPsp)\r\n| summarize \r\n    ['Utenti attivi']   = dcountif(fiscal_code, is_active == true),\r\n    ['Utenti disattivi'] = dcountif(fiscal_code, is_active == false)\r\n    by PSP = coalesce(business_name, tpp_id)\r\n| extend ['Totale'] = ['Utenti attivi'] + ['Utenti disattivi']\r\n| extend ['% Attivi']   = round(100.0 * ['Utenti attivi']   / ['Totale'], 1)\r\n| extend ['% Disattivi'] = round(100.0 * ['Utenti disattivi'] / ['Totale'], 1)\r\n| order by ['Utenti attivi'] desc",
+          "querySource": "raw",
+          "queryType": "KQL",
+          "rawMode": true,
+          "refId": "A",
+          "resultFormat": "table"
+        }
+      ],
+      "title": " Stato utenti per PSP",
+      "transformations": [
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "PSP",
+                "Utenti attivi",
+                "Utenti disattivi",
+                "% Attivi",
+                "% Disattivi"
+              ]
+            }
+          }
+        }
+      ],
+      "type": "table"
+    }
+  ],
+  "preload": false,
+  "schemaVersion": 42,
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "allowCustomValue": false,
+        "current": {
+          "text": "grafana-azure-data-explorer-datasource",
+          "value": "df4s9lke68vlse"
+        },
+        "hide": 2,
+        "name": "ds",
+        "options": [],
+        "query": "grafana-azure-data-explorer-datasource",
+        "refresh": 1,
+        "regex": "grafana-azure-data-explorer-datasource",
+        "type": "datasource"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-1y",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "utc",
+  "title": "Monitoraggio Messaggi di Cortesia (MDC)",
+  "uid": "ma89nvz",
+  "version": 17,
+  "weekStart": ""
+}
