@@ -114,7 +114,7 @@ mail_server_port     = "465"
 mail_server_protocol = "smtps"
 
 idpay_alert_enabled                 = true
-idpay_grafana_alert_enabled         = false
+idpay_grafana_alert_enabled         = true
 idpay_grafana_alert_email_addresses = []
 
 #
