@@ -56,7 +56,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "web_storage" {
 
   name                  = "${each.key}-web-storage-link"
   resource_group_name   = azurerm_resource_group.rg_network.name
-  private_dns_zone_name = azurerm_private_dns_zone.web_storage.name
+  private_dns_zone_name = azurerm_private_dns_zone.web_storage[0].name
   virtual_network_id    = each.value.id
   registration_enabled  = false
 
