@@ -127,6 +127,7 @@ data "azurerm_private_dns_zone" "blob_storage" {
 }
 
 data "azurerm_private_dns_zone" "web_storage" {
+  count               = var.env_short == "d" ? 1 : 0
   name                = "privatelink.web.core.windows.net"
   resource_group_name = local.vnet_network_rg
 }
@@ -179,6 +180,7 @@ data "azurerm_kusto_cluster" "kusto_cluster" {
 
 # Existing VNet used for private DNS resolution
 data "azurerm_virtual_network" "vnet_spoke_data" {
+  count               = var.env_short == "d" ? 1 : 0
   name                = local.vnet_spoke_data_name
   resource_group_name = local.vnet_network_rg
 }

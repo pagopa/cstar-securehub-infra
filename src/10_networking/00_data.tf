@@ -35,6 +35,7 @@ data "azurerm_dns_zone" "default" {
 
 # Vnet
 data "azurerm_virtual_network" "vnet_spoke_data" {
+  count               = var.env_short == "d" ? 1 : 0
   name                = "${var.prefix}-${var.env_short}-${var.location_short}-core-spoke-data-vnet"
   resource_group_name = "${var.prefix}-${var.env_short}-${var.location_short}-core-network-rg"
 }

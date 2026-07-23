@@ -45,12 +45,14 @@ resource "azurerm_private_dns_zone_virtual_network_link" "file_private_endpoint_
 #--------------------------------------------------------------------------------
 
 resource "azurerm_private_dns_zone" "web_storage" {
+  count               = var.env_short == "d" ? 1 : 0
   name                = "privatelink.web.core.windows.net"
   resource_group_name = azurerm_resource_group.rg_network.name
   tags                = module.tag_config.tags
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "web_storage" {
+  count    = var.env_short == "d" ? 1 : 0
   for_each = { for i in local.vnets_all : i.name => i }
 
   name                  = "${each.key}-web-storage-link"

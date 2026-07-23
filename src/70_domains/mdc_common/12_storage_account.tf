@@ -30,6 +30,7 @@
 
 # Storage Account Static Website
 module "admin_web_storage" {
+  count  = var.env_short == "d" ? 1 : 0
   source = "./.terraform/modules/__v4__/IDH/storage_account"
 
   # General
@@ -54,11 +55,16 @@ module "admin_web_storage" {
   }
 
   # Private Endpoint del sito web
-  private_dns_zone_web_ids  = [data.azurerm_private_dns_zone.web_storage.id]
+  private_dns_zone_web_ids  = [data.azurerm_private_dns_zone.web_storage[0].id]
   private_dns_zone_blob_ids = [data.azurerm_private_dns_zone.blob_storage.id]
 
   # Static Website
   index_document     = "index.html"
   error_404_document = "index.html"
 
+}
+
+moved {
+  from = module.admin_web_storage
+  to   = module.admin_web_storage[0]
 }
