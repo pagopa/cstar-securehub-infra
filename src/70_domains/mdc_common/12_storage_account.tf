@@ -63,8 +63,3 @@ module "admin_web_storage" {
   error_404_document = "index.html"
 
 }
-
-moved {
-  from = module.admin_web_storage
-  to   = module.admin_web_storage[0]
-}
