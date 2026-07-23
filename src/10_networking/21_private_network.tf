@@ -53,7 +53,7 @@ resource "azurerm_private_dns_zone" "web_storage" {
 
 resource "azurerm_private_dns_zone_virtual_network_link" "web_storage" {
   count    = var.env_short == "d" ? 1 : 0
-  for_each = { for i in local.vnets_all : i.name => i }
+  for_each = var.env_short == "d" ? { for i in local.vnets_all : i.name => i } : {}
 
   name                  = "${each.key}-web-storage-link"
   resource_group_name   = azurerm_resource_group.rg_network.name
