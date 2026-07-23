@@ -25,6 +25,11 @@ data "azurerm_key_vault_secret" "grafana_service_account_token" {
   key_vault_id = data.azurerm_key_vault.core.id
 }
 
+data "grafana_data_source" "grafana-azure-data-explorer-datasource" {
+  provider = grafana.cloud
+  name     = "grafana-azure-data-explorer-datasource"
+}
+
 resource "grafana_folder" "idpay_app_alerts" {
   provider = grafana.cloud
   count    = var.idpay_grafana_alert_enabled ? 1 : 0
@@ -72,8 +77,8 @@ resource "grafana_rule_group" "idpay_app_alerts" {
         to   = 0
       }
 
-      datasource_uid = "grafana-azure-data-explorer-datasource"
-      model          = "{\"OpenAI\":false,\"database\":\"idpay\",\"datasource\":{\"type\":\"grafana-azure-data-explorer-datasource\",\"uid\":\"grafana-azure-data-explorer-datasource\"},\"expression\":{\"groupBy\":{\"expressions\":[],\"type\":\"and\"},\"reduce\":{\"expressions\":[],\"type\":\"and\"},\"where\":{\"expressions\":[],\"type\":\"and\"}},\"hide\":false,\"intervalMs\":1000,\"maxDataPoints\":43200,\"pluginVersion\":\"7.2.6\",\"query\":\"let TrxCountByBatch =\\ntransaction\\n| where isnotempty(rewardBatchId)\\n| summarize trx_count = count() by rewardBatchId;\\nrewards_batch\\n| extend batch_id = tostring(_id), expected_count = tolong(numberOfTransactions)\\n| join kind=leftouter TrxCountByBatch on $left.batch_id == $right.rewardBatchId\\n| extend trx_count = coalesce(trx_count, 0)\\n| where expected_count != trx_count\\n| count\",\"querySource\":\"raw\",\"queryType\":\"KQL\",\"rawMode\":true,\"refId\":\"A\",\"resultFormat\":\"table\"}"
+      datasource_uid = data.grafana_data_source.grafana-azure-data-explorer-datasource.uid
+      model          = "{\"OpenAI\":false,\"database\":\"idpay\",\"datasource\":{\"type\":\"grafana-azure-data-explorer-datasource\",\"uid\":\"${data.grafana_data_source.grafana-azure-data-explorer-datasource.uid}\"},\"expression\":{\"groupBy\":{\"expressions\":[],\"type\":\"and\"},\"reduce\":{\"expressions\":[],\"type\":\"and\"},\"where\":{\"expressions\":[],\"type\":\"and\"}},\"hide\":false,\"intervalMs\":1000,\"maxDataPoints\":43200,\"pluginVersion\":\"7.2.6\",\"query\":\"let TrxCountByBatch =\\ntransaction\\n| where isnotempty(rewardBatchId)\\n| summarize trx_count = count() by rewardBatchId;\\nrewards_batch\\n| extend batch_id = tostring(_id), expected_count = tolong(numberOfTransactions)\\n| join kind=leftouter TrxCountByBatch on $left.batch_id == $right.rewardBatchId\\n| extend trx_count = coalesce(trx_count, 0)\\n| where expected_count != trx_count\\n| count\",\"querySource\":\"raw\",\"queryType\":\"KQL\",\"rawMode\":true,\"refId\":\"A\",\"resultFormat\":\"table\"}"
     }
     data {
       ref_id = "B"
