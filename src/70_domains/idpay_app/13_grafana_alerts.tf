@@ -55,7 +55,6 @@ resource "grafana_contact_point" "idpay_app_alerts" {
 resource "grafana_rule_group" "idpay_app_alerts" {
   provider         = grafana.cloud
   count            = var.idpay_grafana_alert_enabled ? 1 : 0
-  org_id           = 1
   name             = local.grafana_alert_rule_group_name
   folder_uid       = grafana_folder.idpay_app_alerts[0].uid
   interval_seconds = 60
