@@ -152,4 +152,19 @@ locals {
       }
     ]
   ])
+
+  #
+  # MongoDB indexes created through mongosh
+  #
+  # Keep these indexes here because the configuration is shared across dev, uat and prod.
+  # Each map key must be stable and unique: Terraform uses it to avoid re-applying
+  # indexes that have already been created when new indexes are added later.
+  mongo_indexes_to_apply = {
+    franchiseName_type_city_address_website_unique = {
+      database   = "idpay-pagamenti"
+      collection = "point_of_sales"
+      keys       = ["franchiseName", "type", "city", "address", "website"]
+      unique     = true
+    }
+  }
 }
