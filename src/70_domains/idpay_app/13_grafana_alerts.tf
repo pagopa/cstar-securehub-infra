@@ -45,14 +45,14 @@ resource "grafana_contact_point" "idpay_app_alerts" {
 
   email {
     addresses    = var.idpay_grafana_alert_email_addresses
-    subject      = "{{ template \"default.title\" . }}"
+    subject      = "[${var.env}] {{ template \"default.title\" . }}"
     message      = "{{ template \"default.message\" . }}"
     single_email = true
   }
 
   slack {
     url   = data.azurerm_key_vault_secret.slack_webhook_url[0].value
-    title = "{{ template \"default.title\" . }}"
+    title = "[${var.env}] {{ template \"default.title\" . }}"
     text  = "{{ template \"default.message\" . }}"
   }
 }
