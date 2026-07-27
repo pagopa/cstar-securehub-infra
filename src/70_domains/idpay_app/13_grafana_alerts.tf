@@ -6,6 +6,7 @@ locals {
   grafana_alert_folder_name            = "IDPay App Alerts"
   grafana_alert_contact_point_name     = "idpay-app-notifications"
   grafana_alert_rule_group_name        = "idpay-app-basic-alerts"
+  grafana_mute_timing_name             = "working_hours_9-18"
   grafana_alert_rule_name              = "idpay-app-placeholder-alert"
   grafana_alert_placeholder_expression = "0"
 }
@@ -114,5 +115,39 @@ resource "grafana_rule_group" "idpay_app_alerts" {
     notification_settings {
       contact_point = grafana_contact_point.idpay_app_alerts[0].name
     }
+  }
+}
+
+resource "grafana_notification_policy" "idpay_app_alerts" {
+  provider      = grafana.cloud
+  contact_point = "grafana-default-email"
+  group_by      = ["grafana_folder", "alertname"]
+
+  policy {
+    contact_point = "idpay-app-notifications"
+
+    matcher {
+      label = "grafana_folder"
+      match = "="
+      value = "IDPay App Alerts"
+    }
+
+    mute_timings = [local.grafana_mute_timing_name]
+  }
+}
+
+resource "grafana_mute_timing" "idpay_app_alerts" {
+  provider = grafana.cloud
+  name     = local.grafana_mute_timing_name
+
+  intervals {
+
+    times {
+      start = "09:00"
+      end   = "18:00"
+    }
+
+    weekdays = ["monday", "tuesday", "wednesday", "thursday", "friday"]
+    location = "Europe/Rome"
   }
 }
