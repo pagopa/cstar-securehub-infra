@@ -7,6 +7,7 @@ locals {
   grafana_alert_contact_point_name     = "idpay-app-notifications"
   grafana_alert_rule_group_name        = "idpay-app-basic-alerts"
   grafana_mute_timing_name             = "working_hours_9-18"
+  grafana_rule_group_interval_seconds  = 60 * 60
   grafana_alert_rule_name              = "idpay-app-placeholder-alert"
   grafana_alert_placeholder_expression = "0"
 }
@@ -63,11 +64,14 @@ resource "grafana_rule_group" "idpay_app_alerts" {
   count            = var.idpay_grafana_alert_enabled ? 1 : 0
   name             = local.grafana_alert_rule_group_name
   folder_uid       = grafana_folder.idpay_app_alerts[0].uid
-  interval_seconds = 60
+  interval_seconds = local.grafana_rule_group_interval_seconds
+
 
   rule {
-    name      = "reward-batch-transaction-mismatch-alert"
-    condition = "C"
+    name            = "reward-batch-transaction-mismatch-alert"
+    condition       = "C"
+    for             = "0"
+    keep_firing_for = "${local.grafana_rule_group_interval_seconds + (10 * 60)}s"
 
     data {
       ref_id     = "A"
@@ -124,7 +128,11 @@ resource "grafana_notification_policy" "idpay_app_alerts" {
   group_by      = ["grafana_folder", "alertname"]
 
   policy {
-    contact_point = "idpay-app-notifications"
+    contact_point   = "idpay-app-notifications"
+    group_by        = ["..."]
+    group_wait      = "0s"
+    group_interval  = "1s"
+    repeat_interval = "1d"
 
     matcher {
       label = "grafana_folder"
@@ -132,7 +140,8 @@ resource "grafana_notification_policy" "idpay_app_alerts" {
       value = "IDPay App Alerts"
     }
 
-    mute_timings = [local.grafana_mute_timing_name]
+    # mute_timings = [local.grafana_mute_timing_name]
+    # active_timings = [local.grafana_mute_timing_name]
   }
 }
 
