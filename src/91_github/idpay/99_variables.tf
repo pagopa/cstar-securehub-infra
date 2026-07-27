@@ -8,6 +8,16 @@ variable "env" {
   }
 }
 
+variable "env_short" {
+  type        = string
+  description = "Short environment code (d, u, p)."
+
+  validation {
+    condition     = contains(["d", "u", "p"], var.env_short)
+    error_message = "env_short must be d, u, or p."
+  }
+}
+
 variable "cicd_kv_name" {
   type        = string
   description = "Name of the Key Vault where the CI/CD secrets are stored."
