@@ -114,6 +114,10 @@ locals {
     {
       name : "mcshared-datavault",
       short_name : "datavault"
+    },
+    {
+        name: "idpay-functional-testing",
+        short_name: "functional-test"
     }
   ]
 
