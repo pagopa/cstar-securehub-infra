@@ -1,4 +1,5 @@
 env                            = "uat"
+env_short                      = "u"
 cicd_kv_name                   = "cstar-u-itn-cicd-kv"
 cicd_kv_rg                     = "cstar-u-itn-core-sec-rg"
 idpay_kv_name                  = "cstar-u-itn-idpay-kv"

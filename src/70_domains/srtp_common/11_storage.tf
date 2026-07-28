@@ -26,6 +26,14 @@ module "srtp_storage_account" {
     vnet_name    = local.vnet_spoke_data_name
     vnet_rg_name = local.network_rg
   }
+
+  # Alerts
+  action = var.env_short == "p" ? [
+    {
+      action_group_id    = data.azurerm_monitor_action_group.slack[0].id
+      webhook_properties = {}
+    }
+  ] : []
 }
 
 resource "azurerm_storage_container" "srtp_container" {
@@ -64,6 +72,14 @@ module "share_storage_account" {
     vnet_name    = local.vnet_spoke_data_name
     vnet_rg_name = local.network_rg
   }
+
+  # Alerts
+  action = var.env_short == "p" ? [
+    {
+      action_group_id    = data.azurerm_monitor_action_group.slack[0].id
+      webhook_properties = {}
+    }
+  ] : []
 }
 
 resource "azurerm_storage_share" "rtp_jks_file_share" {
