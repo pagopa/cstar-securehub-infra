@@ -128,6 +128,8 @@ resource "grafana_notification_policy" "idpay_app_alerts" {
 
     active_timings = [grafana_mute_timing.idpay_app_alerts[0].name]
   }
+
+  depends_on = [grafana_mute_timing.idpay_app_alerts]
 }
 
 resource "grafana_mute_timing" "idpay_app_alerts" {
