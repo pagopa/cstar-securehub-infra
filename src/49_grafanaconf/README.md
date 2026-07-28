@@ -23,7 +23,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | 7567a7ea9970bf74f35aa9717e4f891a2f47bb7a |
+| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | 639a4f39198027aa12d70db65aaaa585086366db |
 | <a name="module_auto_dashboard"></a> [auto\_dashboard](#module\_auto\_dashboard) | ./.terraform/modules/__v4__/grafana_dashboard | n/a |
 
 ## Resources
@@ -49,7 +49,7 @@
 | [grafana_folder.teams](https://registry.terraform.io/providers/grafana/grafana/latest/docs/resources/folder) | resource |
 | [grafana_folder_permission.admin_permission](https://registry.terraform.io/providers/grafana/grafana/latest/docs/resources/folder_permission) | resource |
 | [grafana_folder_permission.team_role_permissions](https://registry.terraform.io/providers/grafana/grafana/latest/docs/resources/folder_permission) | resource |
-| [grafana_mute_timing.idpay_app_alerts](https://registry.terraform.io/providers/grafana/grafana/latest/docs/resources/mute_timing) | resource |
+| [grafana_mute_timing.working_hours](https://registry.terraform.io/providers/grafana/grafana/latest/docs/resources/mute_timing) | resource |
 | [grafana_notification_policy.idpay_app_alerts](https://registry.terraform.io/providers/grafana/grafana/latest/docs/resources/notification_policy) | resource |
 | [grafana_rule_group.idpay_app_alerts](https://registry.terraform.io/providers/grafana/grafana/latest/docs/resources/rule_group) | resource |
 | [grafana_team.team_roles](https://registry.terraform.io/providers/grafana/grafana/latest/docs/resources/team) | resource |
