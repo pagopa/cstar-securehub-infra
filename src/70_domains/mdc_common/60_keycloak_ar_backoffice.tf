@@ -34,9 +34,8 @@ resource "keycloak_openid_client" "ar_backoffice_admin_client" {
 
   access_type = "CONFIDENTIAL"
 
-  service_accounts_enabled = true
-  standard_flow_enabled    = false
-
+  service_accounts_enabled     = true
+  standard_flow_enabled        = false
   direct_access_grants_enabled = false
 
 }
@@ -166,7 +165,7 @@ resource "keycloak_openid_client_default_scopes" "ar_backoffice_client_default_s
 resource "keycloak_openid_client" "ar_backoffice_portal_client" {
   realm_id = local.keycloak_realm_id
 
-  client_id = "ar_backoffice_portal_client"
+  client_id = "ar-backoffice-portal-client"
   name      = "AR Backoffice Portal client"
   enabled   = true
 
@@ -184,7 +183,7 @@ resource "keycloak_openid_client" "ar_backoffice_portal_client" {
   pkce_code_challenge_method = "S256"
 
   # Whitelist of authorized callback URLs after successful authentication
-  valid_redirect_uris = ["https://cstarditnmdcadmin.z38.web.core.windows.net/*"]
+  valid_redirect_uris = ["https://${module.admin_web_storage[0].primary_web_host}/*"]
 
   # Enables CORS by inheriting allowed origins from the redirect URIs
   web_origins = ["+"]
