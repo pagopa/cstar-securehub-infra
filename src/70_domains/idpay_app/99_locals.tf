@@ -116,8 +116,8 @@ locals {
       short_name : "datavault"
     },
     {
-        name: "idpay-functional-testing",
-        short_name: "functional-test"
+      name : "idpay-functional-testing",
+      short_name : "functional-test"
     }
   ]
 
