@@ -110,11 +110,11 @@ resource "grafana_notification_policy" "idpay_app_alerts" {
   provider = grafana.cloud
   count    = var.idpay_grafana_alert_enabled ? 1 : 0
 
-  contact_point = "idpay-app-notifications"
+  contact_point = grafana_contact_point.idpay_app_alerts[0].name
   group_by      = ["grafana_folder", "alertname"]
 
   policy {
-    contact_point   = "idpay-app-notifications"
+    contact_point   = grafana_contact_point.idpay_app_alerts[0].name
     group_by        = ["..."]
     group_wait      = "0s"
     group_interval  = "1s"
@@ -123,10 +123,10 @@ resource "grafana_notification_policy" "idpay_app_alerts" {
     matcher {
       label = "grafana_folder"
       match = "="
-      value = "IDPay App Alerts"
+      value = grafana_folder.idpay_app_alerts[0].title
     }
 
-    active_timings = [local.grafana_mute_timing_name]
+    active_timings = [grafana_mute_timing.idpay_app_alerts[0].name]
   }
 }
 
