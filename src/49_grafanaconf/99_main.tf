@@ -12,7 +12,7 @@ terraform {
     }
     grafana = {
       source  = "grafana/grafana"
-      version = "~> 3.0"
+      version = "~> 4.0"
     }
     null = {
       source  = "hashicorp/null"
@@ -43,6 +43,6 @@ data "azurerm_subscription" "current" {}
 data "azurerm_client_config" "current" {}
 
 module "__v4__" {
-  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v7.52.0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=fa7a4a628ebd1281bf9ad469948ee004a031a21f"
+  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v7.52.0 (branch update-grafana-provider-in-grafana-dashboard)
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=7567a7ea9970bf74f35aa9717e4f891a2f47bb7a"
 }
