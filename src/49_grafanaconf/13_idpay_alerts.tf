@@ -31,17 +31,6 @@ resource "grafana_folder" "idpay_app_alerts" {
   title = local.grafana_alert_folder_name
 }
 
-data "grafana_folder" "idpay_app_alerts_existing" {
-  provider = grafana.cloud
-  count    = var.idpay_grafana_alert_enabled ? 1 : 0
-  title    = local.grafana_alert_folder_name
-}
-
-import {
-  to = grafana_folder.idpay_app_alerts[0]
-  id = data.grafana_folder.idpay_app_alerts_existing[0].uid
-}
-
 resource "grafana_contact_point" "idpay_app_alerts" {
   provider = grafana.cloud
   count    = var.idpay_grafana_alert_enabled ? 1 : 0
@@ -53,11 +42,6 @@ resource "grafana_contact_point" "idpay_app_alerts" {
     title = "[${var.env}] {{ template \"default.title\" . }}"
     text  = "{{ template \"default.message\" . }}"
   }
-}
-
-import {
-  to = grafana_contact_point.idpay_app_alerts[0]
-  id = local.grafana_alert_contact_point_name
 }
 
 resource "grafana_rule_group" "idpay_app_alerts" {
@@ -120,11 +104,6 @@ resource "grafana_rule_group" "idpay_app_alerts" {
       contact_point = grafana_contact_point.idpay_app_alerts[0].name
     }
   }
-}
-
-import {
-  to = grafana_rule_group.idpay_app_alerts[0]
-  id = "${data.grafana_folder.idpay_app_alerts_existing[0].uid}:${local.grafana_alert_rule_group_name}"
 }
 
 resource "grafana_notification_policy" "idpay_app_alerts" {

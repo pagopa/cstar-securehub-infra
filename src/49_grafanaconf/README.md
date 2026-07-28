@@ -67,7 +67,6 @@
 | [azurerm_subscription.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subscription) | data source |
 | [external_external.validate_grafana_token](https://registry.terraform.io/providers/hashicorp/external/latest/docs/data-sources/external) | data source |
 | [grafana_data_source.grafana-azure-data-explorer-datasource](https://registry.terraform.io/providers/grafana/grafana/latest/docs/data-sources/data_source) | data source |
-| [grafana_folder.idpay_app_alerts_existing](https://registry.terraform.io/providers/grafana/grafana/latest/docs/data-sources/folder) | data source |
 
 ## Inputs
 
