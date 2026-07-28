@@ -131,7 +131,7 @@ resource "grafana_notification_policy" "idpay_app_alerts" {
   provider = grafana.cloud
   count    = var.idpay_grafana_alert_enabled ? 1 : 0
 
-  contact_point = "grafana-default-email"
+  contact_point = "idpay-app-notifications"
   group_by      = ["grafana_folder", "alertname"]
 
   policy {
