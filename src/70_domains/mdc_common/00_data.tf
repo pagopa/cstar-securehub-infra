@@ -126,6 +126,12 @@ data "azurerm_private_dns_zone" "blob_storage" {
   resource_group_name = local.vnet_legacy_resource_group_name
 }
 
+data "azurerm_private_dns_zone" "web_storage" {
+  count               = var.env_short == "d" ? 1 : 0
+  name                = "privatelink.web.core.windows.net"
+  resource_group_name = local.vnet_network_rg
+}
+
 # 🐳 Kubernetes Cluster
 data "azurerm_kubernetes_cluster" "aks" {
   name                = local.aks_name
@@ -170,4 +176,11 @@ data "azurerm_data_factory" "data_factory" {
 data "azurerm_kusto_cluster" "kusto_cluster" {
   name                = local.data_explorer_name
   resource_group_name = local.data_explorer_rg_name
+}
+
+# Existing VNet used for private DNS resolution
+data "azurerm_virtual_network" "vnet_spoke_data" {
+  count               = var.env_short == "d" ? 1 : 0
+  name                = local.vnet_spoke_data_name
+  resource_group_name = local.vnet_network_rg
 }
