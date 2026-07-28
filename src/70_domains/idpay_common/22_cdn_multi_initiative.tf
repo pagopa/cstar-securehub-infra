@@ -17,7 +17,7 @@ module "cdn_multi_initiative" {
     account_replication_type = contains(["d", "u"], var.env_short) ? "LRS" : "ZRS"
     index_document           = "index.html"
     error_404_document       = "error.html"
-    origin_group             = "web-group"
+    origin_group             = "multi-initiative"
   }
 
   custom_domains = {
@@ -38,7 +38,7 @@ module "cdn_multi_initiative" {
   }
 
   origin_groups = {
-    "web-group" = {
+    "multi-initiative" = {
       description = "Static content pool for multi-initiative CDN"
       members     = [] # The storage account origin is wired automatically when the storage account is enabled and the origin group is specified.
 
@@ -60,19 +60,19 @@ module "cdn_multi_initiative" {
   routes = {
     "web" = {
       endpoint       = "web"
-      origin_group   = "web-group"
+      origin_group   = "multi-initiative"
       patterns       = ["/*"]
       protocols      = ["Http", "Https"]
       forwarding     = "MatchRequest"
       https_redirect = true
       cache_behavior = "IgnoreQueryString"
       custom_domains = [local.public_dns_zone_pari]
-      rulesets       = ["WebGlobal"]
+      rulesets       = ["MultiIniziativeGlobal"]
       enabled        = true
     }
   }
   rulesets = {
-    "WebGlobal" = {
+    "MultiIniziativeGlobal" = {
       description = "Global ruleset for multi-initiative CDN"
       rules = {
         "RewriteInitiativeSpaRouting" = {
