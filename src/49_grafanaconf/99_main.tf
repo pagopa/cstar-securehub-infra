@@ -43,6 +43,6 @@ data "azurerm_subscription" "current" {}
 data "azurerm_client_config" "current" {}
 
 module "__v4__" {
-  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v7.52.0 (branch update-grafana-provider-in-grafana-dashboard)
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=7567a7ea9970bf74f35aa9717e4f891a2f47bb7a"
+  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v10.20.1
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=639a4f39198027aa12d70db65aaaa585086366db"
 }
