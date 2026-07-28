@@ -113,9 +113,7 @@ mail_server_host     = "smtp.gmail.com"
 mail_server_port     = "465"
 mail_server_protocol = "smtps"
 
-idpay_alert_enabled                 = true
-idpay_grafana_alert_enabled         = true
-idpay_grafana_alert_email_addresses = []
+idpay_alert_enabled = true
 
 #
 # Rate limit
