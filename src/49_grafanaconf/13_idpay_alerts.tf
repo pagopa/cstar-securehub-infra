@@ -126,13 +126,13 @@ resource "grafana_notification_policy" "idpay_app_alerts" {
       value = grafana_folder.idpay_app_alerts[0].title
     }
 
-    active_timings = [grafana_mute_timing.idpay_app_alerts[0].name]
+    active_timings = [grafana_mute_timing.working_hours[0].name]
   }
 
-  depends_on = [grafana_mute_timing.idpay_app_alerts]
+  depends_on = [grafana_mute_timing.working_hours]
 }
 
-resource "grafana_mute_timing" "idpay_app_alerts" {
+resource "grafana_mute_timing" "working_hours" {
   provider = grafana.cloud
   count    = var.idpay_grafana_alert_enabled ? 1 : 0
 
