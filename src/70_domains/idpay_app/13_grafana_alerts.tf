@@ -1,15 +1,13 @@
 locals {
-  grafana_managed_name                 = "cstar-${var.env_short}-itn-grafana"
-  grafana_managed_rg_name              = "cstar-${var.env_short}-itn-platform-monitoring-rg"
-  core_kv_name                         = "${local.project_core}-kv"
-  core_kv_rg_name                      = "${local.project_core}-sec-rg"
-  grafana_alert_folder_name            = "IDPay App Alerts"
-  grafana_alert_contact_point_name     = "idpay-app-notifications"
-  grafana_alert_rule_group_name        = "idpay-app-basic-alerts"
-  grafana_mute_timing_name             = "working_hours_9-18"
-  grafana_rule_group_interval_seconds  = 60 * 60
-  grafana_alert_rule_name              = "idpay-app-placeholder-alert"
-  grafana_alert_placeholder_expression = "0"
+  grafana_managed_name                = "cstar-${var.env_short}-itn-grafana"
+  grafana_managed_rg_name             = "cstar-${var.env_short}-itn-platform-monitoring-rg"
+  core_kv_name                        = "${local.project_core}-kv"
+  core_kv_rg_name                     = "${local.project_core}-sec-rg"
+  grafana_alert_folder_name           = "IDPay App Alerts"
+  grafana_alert_contact_point_name    = "idpay-app-notifications"
+  grafana_alert_rule_group_name       = "idpay-app-basic-alerts"
+  grafana_mute_timing_name            = "working_hours_9-18"
+  grafana_rule_group_interval_seconds = 60 * 60
 }
 
 data "azurerm_dashboard_grafana" "grafana_managed" {
