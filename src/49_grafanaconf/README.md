@@ -7,23 +7,23 @@
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >=1.10.0 |
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | ~> 3 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 4 |
-| <a name="requirement_grafana"></a> [grafana](#requirement\_grafana) | ~> 3.0 |
+| <a name="requirement_grafana"></a> [grafana](#requirement\_grafana) | ~> 4.0 |
 | <a name="requirement_null"></a> [null](#requirement\_null) | ~> 3.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 3.4.0 |
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.38.1 |
-| <a name="provider_external"></a> [external](#provider\_external) | 2.3.5 |
-| <a name="provider_grafana.cloud"></a> [grafana.cloud](#provider\_grafana.cloud) | 3.25.9 |
+| <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 3.9.0 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.81.0 |
+| <a name="provider_external"></a> [external](#provider\_external) | 2.4.0 |
+| <a name="provider_grafana.cloud"></a> [grafana.cloud](#provider\_grafana.cloud) | 4.41.0 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | fa7a4a628ebd1281bf9ad469948ee004a031a21f |
+| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | 7567a7ea9970bf74f35aa9717e4f891a2f47bb7a |
 | <a name="module_auto_dashboard"></a> [auto\_dashboard](#module\_auto\_dashboard) | ./.terraform/modules/__v4__/grafana_dashboard | n/a |
 
 ## Resources
