@@ -41,4 +41,4 @@ tags = {
 }
 
 # idpay alerting
-idpay_grafana_alert_enabled = true
+idpay_grafana_alert_enabled = false
