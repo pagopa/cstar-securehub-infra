@@ -16,4 +16,25 @@ locals {
   ])
 
   input_file = "./secrets/${var.domain}/${var.location_short}-${var.env}"
+
+  domains = toset(["idpay"])
+
+  ad_group_definitions = flatten([
+    for i in local.domains : [
+      {
+        type      = "admin"
+        domain    = i
+        rbac_role = "Key Vault Secrets Officer"
+      }
+    ]
+  ])
+  ad_groups = {
+    for item in local.ad_group_definitions :
+    "${item.domain}-${item.type}" => {
+      display_name = "${var.prefix}-${var.env_short}-${item.domain}-adgroup-${item.type}"
+      type         = item.type
+      rbac_role    = item.rbac_role
+    }
+  }
+
 }
