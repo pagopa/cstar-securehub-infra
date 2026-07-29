@@ -97,7 +97,7 @@ locals {
     "https://api-eu.mixpanel.com",
     "https://cdn.cookielaw.org",
     "https://privacyportalde-cdn.onetrust.com",
-    "https://mytest-elettrodomestici-1.it" // this is a temporary test
+    "https://privacyportal-de.onetrust.com"
   ])
 
   bonus_csp_script_src = join(" ", [
