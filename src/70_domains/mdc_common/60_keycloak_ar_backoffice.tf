@@ -163,7 +163,7 @@ resource "keycloak_openid_client_default_scopes" "ar_backoffice_client_default_s
 }
 
 resource "keycloak_openid_client" "ar_backoffice_portal_client" {
-  count  = var.env_short == "d" ? 1 : 0
+  count    = var.env_short == "d" ? 1 : 0
   realm_id = local.keycloak_realm_id
 
   client_id = "ar-backoffice-portal-client"
