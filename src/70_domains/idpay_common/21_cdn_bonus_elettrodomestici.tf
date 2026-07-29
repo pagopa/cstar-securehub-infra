@@ -118,6 +118,7 @@ locals {
   bonus_csp_font_src = join(" ", [
     "'self'",
     "https://${local.selfare_subdomain}.pagopa.it/assets/font/",
+    "https://privacyportalde-cdn.onetrust.com",
   ])
 
   bonus_csp_value_part1 = join("; ", [
