@@ -192,3 +192,13 @@ resource "keycloak_openid_client" "ar_backoffice_portal_client" {
   # Override the value inherited from the realm settings (in seconds)
   access_token_lifespan = "300"
 }
+
+resource "keycloak_openid_client_default_scopes" "ar_backoffice_portal_default_scopes" {
+  count     = var.env_short == "d" ? 1 : 0
+  realm_id  = local.keycloak_realm_id
+  client_id = keycloak_openid_client.ar_backoffice_portal_client[0].id
+
+  default_scopes = [
+    keycloak_openid_client_scope.admin_role_scope.name
+  ]
+}
