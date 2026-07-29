@@ -163,6 +163,7 @@ resource "keycloak_openid_client_default_scopes" "ar_backoffice_client_default_s
 }
 
 resource "keycloak_openid_client" "ar_backoffice_portal_client" {
+  count  = var.env_short == "d" ? 1 : 0
   realm_id = local.keycloak_realm_id
 
   client_id = "ar-backoffice-portal-client"
@@ -187,4 +188,7 @@ resource "keycloak_openid_client" "ar_backoffice_portal_client" {
 
   # Enables CORS by inheriting allowed origins from the redirect URIs
   web_origins = ["+"]
+
+  # Override the value inherited from the realm settings (in seconds)
+  access_token_lifespan = "300"
 }
