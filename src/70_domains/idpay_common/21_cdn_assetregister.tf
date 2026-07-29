@@ -74,6 +74,7 @@ locals {
   assetregister_csp_font_src = join(" ", [
     "'self'",
     "https://selfcare.pagopa.it/assets/font/",
+    "https://privacyportalde-cdn.onetrust.com",
   ])
 
   assetregister_csp_value_part1 = join("; ", [
