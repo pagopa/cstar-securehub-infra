@@ -62,6 +62,15 @@ locals {
   monitor_rg = "${local.project}-monitoring-rg"
   network_rg = "${local.project}-network-rg"
 
+  # Audit Storage Account (vedi 12_audit_archive.tf)
+  audit_storage_account_name = substr("${replace(local.project, "-", "")}auditlogs", 0, 24)
+  audit_export_rule_name     = "${local.project}-audit-export"
+  app_insights_long_term_tables = [
+    "AppTraces",
+    "AppExceptions",
+    "AppRequests",
+    "AppDependencies",
+  ]
 
   ad_group_rbac = flatten([
     {
@@ -93,4 +102,7 @@ locals {
   # Azure Data Explorer — cluster condiviso nella platform
   data_explorer_name    = "${local.product_no_domain}-platform"
   data_explorer_rg_name = "${local.product_no_domain}-platform-data-rg"
+
+  # Storage account admin fe
+  admin_web_storage_name = "${local.project}-admin"
 }

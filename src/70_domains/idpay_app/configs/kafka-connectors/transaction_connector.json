@@ -1,0 +1,49 @@
+{
+  "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
+  "database.hostname": "${env:POSTGRES_HOST}",
+  "database.port": "5432",
+  "database.user": "idpaydbadmin",
+  "database.password": "${env:POSTGRES_PASSWORD}",
+  "database.dbname": "idpay-database",
+  "database.sslmode": "require",
+  "plugin.name": "pgoutput",
+  "publication.autocreate.mode": "filtered",
+  "publication.name": "idpay_outbox_pub",
+  "slot.name": "idpay_outbox_pagamenti_slot",
+  "table.include.list": "idpay-pagamenti.transaction_outbox",
+  "topic.prefix": "idpay",
+  "snapshot.mode": "initial",
+
+  "transforms": "unwrap,filterStatus,extractKey,unwrapKey,extractPayload,route",
+
+  "transforms.unwrap.type": "io.debezium.transforms.ExtractNewRecordState",
+  "transforms.unwrap.drop.tombstones": "true",
+  "transforms.unwrap.delete.handling.mode": "rewrite",
+
+  "transforms.filterStatus.type": "io.debezium.transforms.Filter",
+  "transforms.filterStatus.language": "jsr223.groovy",
+  "transforms.filterStatus.condition": "value.event_type in ['TRANSACTION_AUTHORIZED', 'TRANSACTION_INVOICED', 'TRANSACTION_REJECTED', 'TRANSACTION_REWARDED', 'TRANSACTION_CAPTURED', 'TRANSACTION_EXPIRED']",
+
+  "transforms.extractKey.type": "org.apache.kafka.connect.transforms.ValueToKey",
+  "transforms.extractKey.fields": "user_id",
+
+  "transforms.unwrapKey.type": "org.apache.kafka.connect.transforms.ExtractField$Key",
+  "transforms.unwrapKey.field": "user_id",
+
+  "transforms.extractPayload.type": "org.apache.kafka.connect.transforms.ExtractField$Value",
+  "transforms.extractPayload.field": "payload",
+
+  "transforms.route.type": "org.apache.kafka.connect.transforms.RegexRouter",
+  "transforms.route.regex": ".*\\.transaction_outbox",
+  "transforms.route.replacement": "idpay-transaction",
+
+  "key.converter": "org.apache.kafka.connect.storage.StringConverter",
+  "key.converter.schemas.enable": "false",
+
+  "value.converter": "org.apache.kafka.connect.storage.StringConverter",
+  "value.converter.schemas.enable": "false",
+
+  "errors.tolerance": "all",
+  "errors.log.enable": "true",
+  "errors.log.include.messages": "true"
+}

@@ -22,3 +22,5 @@ event_hub_port = 9093
 # MIL
 mdc_openid_url = "https://api-mcshared.uat.cstar.pagopa.it/auth/.well-known/openid-configuration"
 mdc_issuer_url = "https://api-mcshared.uat.cstar.pagopa.it/auth"
+
+enable_gh_runner_job = true

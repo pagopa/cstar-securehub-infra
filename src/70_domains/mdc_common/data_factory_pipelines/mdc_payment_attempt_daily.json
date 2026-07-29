@@ -1,0 +1,60 @@
+{
+  "name": "mdc_payment_attempt_daily",
+  "properties": {
+    "activities": [
+      {
+        "name": "Delete previous day data",
+        "type": "AzureDataExplorerCommand",
+        "typeProperties": {
+          "command": ".delete table PaymentAttemptSnapshot records <| PaymentAttemptSnapshot | where window_start >= startofday(ago(1d)) and window_start < startofday(now())",
+          "commandTimeout": "00:10:00"
+        },
+        "linkedServiceName": {
+          "referenceName": "mdc-Kusto-mdc-ls",
+          "type": "LinkedServiceReference"
+        }
+      },
+      {
+        "name": "Copy payment attempt volume",
+        "type": "Copy",
+        "dependsOn": [
+          {
+            "activity": "Delete previous day data",
+            "dependencyConditions": [ "Succeeded" ]
+          }
+        ],
+        "inputs": [
+          { "referenceName": "mdc_payment_attempt_source", "type": "DatasetReference" }
+        ],
+        "outputs": [
+          { "referenceName": "mdc_payment_attempt_snapshot", "type": "DatasetReference" }
+        ],
+        "typeProperties": {
+          "source": {
+            "type": "RestSource",
+            "requestMethod": "POST",
+            "requestBody": "{\"query\": \"let start = startofday(ago(1d)); let end = startofday(now()); AppTraces | where TimeGenerated >= start and TimeGenerated < end | where Message has '[EMD][PAYMENT][GET-REDIRECT]' | where Message has 'New payment attempt for tpp' | extend tpp_id = extract('tpp:([^ ,]+)', 1, Message), origin_id = extract('originId:([^ ,]+)', 1, Message), notice_number = extract('noticeNumber:([^ ,]+)', 1, Message) | summarize first_time = min(TimeGenerated), attempt_count = count() by tpp_id, origin_id, notice_number | project window_start = tostring(bin(first_time, 1h)), tpp_id, origin_id, notice_number, attempt_count | order by window_start asc\"}",
+            "additionalHeaders": {
+              "Content-Type": "application/json"
+            }
+          },
+          "sink": {
+            "type": "AzureDataExplorerSink",
+            "flushImmediately": true
+          },
+          "translator": {
+            "type": "TabularTranslator",
+            "mappings": [
+              { "source": { "path": "$[0]" }, "sink": { "name": "window_start",  "type": "DateTime" } },
+              { "source": { "path": "$[1]" }, "sink": { "name": "tpp_id",        "type": "String"   } },
+              { "source": { "path": "$[2]" }, "sink": { "name": "origin_id",     "type": "String"   } },
+              { "source": { "path": "$[3]" }, "sink": { "name": "notice_number", "type": "String"   } },
+              { "source": { "path": "$[4]" }, "sink": { "name": "attempt_count", "type": "Int32"    } }
+            ],
+            "collectionReference": "$.tables[0].rows"
+          }
+        }
+      }
+    ]
+  }
+}

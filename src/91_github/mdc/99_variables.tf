@@ -23,3 +23,8 @@ variable "argo_cd_server" {
   description = "Server of the Argo CD (without https)."
   default     = null
 }
+
+variable "eventhub_namespace_name" {
+  type        = string
+  description = "Name of the Event Hub Namespace used for Kafka connection."
+}

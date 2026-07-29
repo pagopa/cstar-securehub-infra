@@ -86,7 +86,7 @@ resource "kubernetes_cron_job_v1" "transaction_reaper" {
                 local.idpay_batch_curl_args,
                 [
                   "-X", "DELETE",
-                  "${local.idpay_payment_service_url}/idpay/payment/deleteLapsedTransaction/${var.idpay_bel_initiative_id}",
+                  "${local.idpay_payment_service_url}/idpay/payment/deleteLapsedTransaction/${var.bonus_elettrodomestici_initiative_id}",
                 ]
               )
             }
@@ -136,7 +136,7 @@ resource "kubernetes_cron_job_v1" "cancel_expired_vouchers" {
                 local.idpay_batch_curl_args,
                 [
                   "-X", "POST",
-                  "${local.idpay_payment_service_url}/idpay/transactions/expired/initiatives/${var.idpay_bel_initiative_id}/update-status",
+                  "${local.idpay_payment_service_url}/idpay/transactions/expired/initiatives/${var.bonus_elettrodomestici_initiative_id}/update-status",
                 ]
               )
             }
@@ -186,7 +186,7 @@ resource "kubernetes_cron_job_v1" "reminder_voucher_expiration" {
                 local.idpay_batch_curl_args,
                 [
                   "-X", "POST",
-                  "${local.idpay_wallet_service_url}/idpay/wallet/batch/run/${var.idpay_bel_initiative_id}",
+                  "${local.idpay_wallet_service_url}/idpay/wallet/batch/run/${var.bonus_elettrodomestici_initiative_id}",
                 ]
               )
             }
@@ -241,7 +241,7 @@ resource "kubernetes_cron_job_v1" "evaluate_sent_reward_batch" {
                   "-X", "POST",
                   "-H", "Content-Type: application/json",
                   "-d", "{}",
-                  "${local.idpay_transactions_service_url}/idpay/merchant/portal/initiatives/${var.idpay_bel_initiative_id}/reward-batches/evaluate",
+                  "${local.idpay_transactions_service_url}/idpay/merchant/portal/initiatives/${var.bonus_elettrodomestici_initiative_id}/reward-batches/evaluate",
                 ]
               )
             }
@@ -296,7 +296,7 @@ resource "kubernetes_cron_job_v1" "evaluate_approve_reward_batch" {
                   "-X", "POST",
                   "-H", "Content-Type: application/json",
                   "-d", "{}",
-                  "${local.idpay_transactions_service_url}/idpay/merchant/portal/initiatives/${var.idpay_bel_initiative_id}/reward-batches/approved",
+                  "${local.idpay_transactions_service_url}/idpay/merchant/portal/initiatives/${var.bonus_elettrodomestici_initiative_id}/reward-batches/approved",
                 ]
               )
             }
@@ -461,7 +461,7 @@ resource "kubernetes_cron_job_v1" "delivery_reward_batch" {
                   "-X", "POST",
                   "-H", "Content-Type: application/json",
                   "-d", "{}",
-                  "${local.idpay_transactions_service_url}/idpay/merchant/portal/initiatives/${var.idpay_bel_initiative_id}/reward-batches/delivery",
+                  "${local.idpay_transactions_service_url}/idpay/merchant/portal/initiatives/${var.bonus_elettrodomestici_initiative_id}/reward-batches/delivery",
                 ]
               )
             }
@@ -517,7 +517,7 @@ resource "kubernetes_cron_job_v1" "delivery_check_outcome_reward_batch" {
                   "-X", "POST",
                   "-H", "Content-Type: application/json",
                   "-d", "{}",
-                  "${local.idpay_transactions_service_url}/idpay/merchant/portal/initiatives/${var.idpay_bel_initiative_id}/reward-batches/check-outcomes",
+                  "${local.idpay_transactions_service_url}/idpay/merchant/portal/initiatives/${var.bonus_elettrodomestici_initiative_id}/reward-batches/check-outcomes",
                 ]
               )
             }
