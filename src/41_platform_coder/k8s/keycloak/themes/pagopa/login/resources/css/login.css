@@ -312,3 +312,14 @@ a:hover {
   flex-direction: column;
   align-items: center;
 }
+
+body::before {
+  content: "TEST VERSIONE CSS";
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 99999;
+  padding: 8px 16px;
+  color: white;
+  background: red;
+}
