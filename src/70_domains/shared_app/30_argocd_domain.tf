@@ -3,9 +3,9 @@ locals {
     "top" = {}
     "mid" = merge(
       {
-        "io-mock" = {
+        "cstar-io-mock" = {
           name          = "cstar-io-mock"
-          target_branch = "init-project"
+          target_branch = "main"
           env           = ["dev", "uat"]
         }
       }
@@ -28,7 +28,7 @@ resource "argocd_application" "domain_argocd_applications" {
 
   metadata {
     name      = each.value.name
-    namespace = var.domain
+    namespace = local.argocd_namespace
     labels = {
       name   = each.value.name
       domain = var.domain
