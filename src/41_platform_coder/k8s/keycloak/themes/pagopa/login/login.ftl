@@ -8,6 +8,9 @@
     <link href="${url.resourcesPath}/${properties.styles}" rel="stylesheet">
 </head>
 <body>
+    <div id="ftl-update-test" style="position: fixed; top: 0; right: 0; z-index: 99999; padding: 8px 16px; color: white; background: orange;">
+        TEST AGGIORNAMENTO FTL
+    </div>
     <div class="page-container">
         <header class="header">
             <div class="header-logo">
