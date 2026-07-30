@@ -18,24 +18,8 @@ module "keycloak_mdc_portal_app" {
   authorized_group_names = local.mdc_portal_groups
 
   redirect_uris = [
-    "https://${local.keycloak_hostname}/realms/mdc/broker/azure-entra/endpoint"
+    "${local.keycloak_external_hostname}/realms/mdc/broker/azure-entra/endpoint"
   ]
-  logout_url = "https://${local.keycloak_hostname}/realms/mdc/protocol/openid-connect/logout"
-}
-
-resource "azurerm_key_vault_secret" "keycloak_mdc_portal_client_id" {
-  name         = "keycloak-mdc-portal-azure-app-client-id"
-  value        = module.keycloak_mdc_portal_app.azure_client_id
-  key_vault_id = data.azurerm_key_vault.kv_core.id
-
-  tags = module.tag_config.tags
-}
-
-resource "azurerm_key_vault_secret" "keycloak_mdc_portal_client_secret" {
-  name         = "keycloak-mdc-portal-azure-app-secret-value"
-  value        = module.keycloak_mdc_portal_app.azure_client_secret
-  key_vault_id = data.azurerm_key_vault.kv_core.id
-
-  tags = module.tag_config.tags
+  logout_url = "${local.keycloak_external_hostname}/realms/mdc/protocol/openid-connect/logout"
 }
 

@@ -12,26 +12,10 @@
 # =============================================================================
 
 # -----------------------------------------------------------------------------
-# Secret dell'App Registration DEDICATA al portale mdc (creata in src/0_entra,
-# module.keycloak_mdc_portal_app) letti dalla core Key Vault.
-# -----------------------------------------------------------------------------
-data "azurerm_key_vault" "kv_core" {
-  name                = "${local.product}-itn-core-kv"
-  resource_group_name = "${local.product}-itn-core-sec-rg"
-}
-
-data "azurerm_key_vault_secret" "keycloak_azure_client_id" {
-  name         = "keycloak-mdc-portal-azure-app-client-id"
-  key_vault_id = data.azurerm_key_vault.kv_core.id
-}
-
-data "azurerm_key_vault_secret" "keycloak_azure_client_secret" {
-  name         = "keycloak-mdc-portal-azure-app-secret-value"
-  key_vault_id = data.azurerm_key_vault.kv_core.id
-}
-
-# -----------------------------------------------------------------------------
-# Identity Provider OIDC verso Microsoft Entra ID sul realm mdc
+# Identity Provider OIDC verso Microsoft Entra ID sul realm mdc.
+# Usa direttamente client_id/secret dell'App Registration dedicata creata in
+# 60_keycloak_mdc_portal_entra.tf (module.keycloak_mdc_portal_app), senza
+# passare dalla Key Vault (stesso stack).
 # -----------------------------------------------------------------------------
 resource "keycloak_oidc_identity_provider" "azure_entra" {
   realm        = local.keycloak_realm_id
@@ -42,8 +26,8 @@ resource "keycloak_oidc_identity_provider" "azure_entra" {
   authorization_url = "https://login.microsoftonline.com/${data.azurerm_client_config.current.tenant_id}/oauth2/v2.0/authorize"
   token_url         = "https://login.microsoftonline.com/${data.azurerm_client_config.current.tenant_id}/oauth2/v2.0/token"
 
-  client_id     = data.azurerm_key_vault_secret.keycloak_azure_client_id.value
-  client_secret = data.azurerm_key_vault_secret.keycloak_azure_client_secret.value
+  client_id     = module.keycloak_mdc_portal_app.azure_client_id
+  client_secret = module.keycloak_mdc_portal_app.azure_client_secret
 
   default_scopes = "openid profile email"
 

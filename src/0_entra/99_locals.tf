@@ -43,17 +43,6 @@ locals {
     ] : []
   )
 
-  # Gruppi Entra abilitati al login sul portale AR Backoffice (realm mdc).
-  # App Registration dedicata, separata da quella dell'admin console/ArgoCD.
-  mdc_portal_groups = concat(
-    [
-      "${local.product}-mdc-adgroup-admin",
-      "${local.product}-mdc-adgroup-developers",
-      "${local.product}-mdc-adgroup-project-managers",
-      "${local.product}-mdc-adgroup-externals",
-    ],
-    var.env_short == "p" ? ["${local.product}-mdc-adgroup-oncall"] : []
-  )
 
 
 
