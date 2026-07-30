@@ -6,6 +6,7 @@ resource "keycloak_oidc_identity_provider" "selfcare_te_oidc" {
 
   authorization_url = "https://dummy.com/auth"
   token_url         = "https://dummy.com/token"
+  hide_on_login_page = true
   client_id         = "dummy"
   client_secret     = "dummy" # In TF è obbligatorio se si usa auth method client_secret_post
 
