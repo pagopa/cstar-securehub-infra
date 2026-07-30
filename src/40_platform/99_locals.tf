@@ -139,6 +139,20 @@ locals {
       }
       additional_resource_groups = []
     }
+    # Shared
+    "shared" = {
+      tags = {
+        "CostCenter"   = "TS310 - PAGAMENTI & SERVIZI"
+        "BusinessUnit" = "CStar"
+        "Owner"        = "CStar"
+        "Environment"  = var.env
+        "CreatedBy"    = "Terraform"
+        "Source"       = "https://github.com/pagopa/cstar-securehub-infra/tree/main/src/${local.relative_folder}"
+        "Folder"       = local.relative_folder
+        "domain"       = "shared"
+      }
+      additional_resource_groups = []
+    }
   }
 
 

@@ -106,16 +106,22 @@ locals {
   #
   # List of GitHub repositories which need self-hosted runners.
   #
-  github_repositories_with_self_hosted_runners = [
+  github_repositories_with_self_hosted_runners = flatten([
     {
-      name : "mcshared-datavault-test",
-      short_name : "datavault-test"
+      name       = "mcshared-datavault-test"
+      short_name = "datavault-test"
     },
     {
-      name : "mcshared-datavault",
-      short_name : "datavault"
-    }
-  ]
+      name       = "mcshared-datavault"
+      short_name = "datavault"
+    },
+    contains(["d", "u"], var.env_short) ? [
+      {
+        name       = "idpay-functional-testing"
+        short_name = "functional-test"
+      }
+    ] : []
+  ])
 
   #
   # Data of Container Apps Environment for GitHub Runners.

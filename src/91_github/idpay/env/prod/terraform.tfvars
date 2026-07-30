@@ -1,4 +1,5 @@
 env            = "prod"
+env_short      = "p"
 cicd_kv_name   = "cstar-p-itn-cicd-kv"
 cicd_kv_rg     = "cstar-p-itn-core-sec-rg"
 idpay_kv_name  = "cstar-p-itn-idpay-kv"
