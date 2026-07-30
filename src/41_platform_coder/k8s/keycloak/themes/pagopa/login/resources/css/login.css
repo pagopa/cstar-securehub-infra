@@ -17,7 +17,7 @@
   background: var(--pagopa-light-grey-bg);
 }
 body {
-  font-family: "Titillium Web", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: 'Titillium Web', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   background-color: var(--pagopa-light-grey-bg);
   color: var(--pagopa-text-dark);
   display: flex;
@@ -102,6 +102,52 @@ a:hover {
   box-shadow: var(--pagopa-box-shadow);
 }
 
+.password-policy-box {
+  margin-top: 16px;
+  padding: 16px;
+  background-color: #e1f5fe;
+  border: 1px solid #89d9fc;
+  border-radius: 8px;
+  box-shadow: none;
+  text-align: left;
+}
+
+.password-policy-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.password-policy-icon {
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.password-policy-box h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #215c76;
+  line-height: 26px;
+}
+
+.password-policy-box ul {
+  margin: 0;
+  padding-left: 48px;
+  color: #215c76;
+  line-height: 26px;
+}
+
+.password-policy-box li {
+  line-height: 22px;
+  font-size: 16px;
+  font-weight: 400;
+  margin-left: 10px;
+}
+
 #kc-error-message {
   margin-bottom: 20px;
   padding: 15px;
@@ -149,32 +195,18 @@ a:hover {
   gap: 12px;
   font-size: 14px;
   color: var(--pagopa-text-light);
-  margin-top: 24px;
+  margin-top: 64px;
   text-align: center;
-
-  a {
-    text-decoration: underline;
-    font-weight: 600;
-  }
-
-  span {
-    padding: 10px;
-    font-size: 18px;
-  }
 }
 
-.terms-icon {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-color: #e3e7eb;
-  /* Colore placeholder per l'icona */
-  background-image: url("https://icons.veryicon.com/png/o/internet--web/pre-login-system/user-132.png");
-  /* Immagine placeholder */
-  background-size: 60%;
-  background-position: center;
-  background-repeat: no-repeat;
-  flex-shrink: 0;
+.terms-notice a {
+  text-decoration: underline;
+  font-weight: 600;
+}
+
+.terms-notice span {
+  padding: 10px;
+  font-size: 18px;
 }
 
 .btn-primary {
