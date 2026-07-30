@@ -45,7 +45,6 @@ locals {
 
 
 
-
   ### Kubernetes
   kubernetes_cluster_name                = "${local.project}-aks"
   kubernetes_cluster_resource_group_name = "${local.product}-itn-core-aks-rg"

@@ -59,7 +59,6 @@ locals {
 
   # 🔑 App Registration dedicata al portale mdc (vedi 60_keycloak_mdc_portal_entra.tf)
   application_owners = [
-    "diego.lagosmorales@pagopa.it",
     "matteo.alongi@pagopa.it",
     "marco.mari@pagopa.it",
     "umberto.coppolabottazzi@pagopa.it",
