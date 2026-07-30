@@ -100,9 +100,6 @@ resource "grafana_rule_group" "idpay_app_alerts" {
     }
     is_paused = false
 
-    notification_settings {
-      contact_point = grafana_contact_point.idpay_app_alerts[0].name
-    }
   }
 }
 
