@@ -323,3 +323,34 @@ body::before {
   color: white;
   background: red;
 }
+
+.execute-actions-redirect-page {
+  background: #fff;
+  margin: 0;
+  min-height: 100vh;
+  position: relative;
+}
+
+.execute-actions-redirect-page main {
+  display: grid;
+  left: 50%;
+  place-items: center;
+  position: absolute;
+  top: 25%;
+  transform: translate(-50%, -50%);
+}
+
+.execute-actions-loader {
+  animation: execute-actions-spin 0.8s linear infinite;
+  border: 3px solid #d9d9d9;
+  border-radius: 50%;
+  border-top-color: #06c;
+  height: 32px;
+  width: 32px;
+}
+
+@keyframes execute-actions-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
