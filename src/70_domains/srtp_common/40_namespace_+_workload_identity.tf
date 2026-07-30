@@ -24,7 +24,7 @@ module "workload_identity_configuration" {
   namespace                             = var.domain
 
   key_vault_id                      = data.azurerm_key_vault.domain_kv.id
-  key_vault_certificate_permissions = ["Get"]
+  key_vault_certificate_permissions = ["Get", "Sign"]
   key_vault_key_permissions         = ["Get"]
   key_vault_secret_permissions      = ["Get"]
 
