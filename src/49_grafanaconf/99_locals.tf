@@ -45,7 +45,8 @@ locals {
       },
     }
     keycloak = {
-      groups = lookup(var.team_groups, "keycloak", {})
+      groups        = lookup(var.team_groups, "keycloak", {})
+      alert_folders = []
       aks = {
         location_short       = "itn",
         monitor_workspace_id = data.azurerm_log_analytics_workspace.law_core_itn.id,
@@ -53,7 +54,8 @@ locals {
       },
     }
     mil = {
-      groups = lookup(var.team_groups, "mil", {})
+      groups        = lookup(var.team_groups, "mil", {})
+      alert_folders = []
       aks = {
         location_short       = "weu",
         monitor_workspace_id = data.azurerm_log_analytics_workspace.law_core.id,
@@ -61,7 +63,8 @@ locals {
       }
     },
     mdc = {
-      groups = lookup(var.team_groups, "mdc", {})
+      groups        = lookup(var.team_groups, "mdc", {})
+      alert_folders = []
       aks = {
         location_short       = "itn",
         monitor_workspace_id = data.azurerm_log_analytics_workspace.law_core_itn.id,
@@ -69,7 +72,8 @@ locals {
       }
     },
     rtd = {
-      groups = lookup(var.team_groups, "rtd", {})
+      groups        = lookup(var.team_groups, "rtd", {})
+      alert_folders = []
       aks = {
         location_short       = "weu",
         monitor_workspace_id = data.azurerm_log_analytics_workspace.law_core.id,
@@ -77,7 +81,8 @@ locals {
       }
     },
     srtp = {
-      groups = lookup(var.team_groups, "srtp", {})
+      groups        = lookup(var.team_groups, "srtp", {})
+      alert_folders = []
       aks = {
         location_short       = "itn",
         monitor_workspace_id = data.azurerm_log_analytics_workspace.law_core_itn.id,
@@ -85,7 +90,8 @@ locals {
       }
     },
     mcshared = {
-      groups = lookup(var.team_groups, "mcshared", {})
+      groups        = lookup(var.team_groups, "mcshared", {})
+      alert_folders = []
       aca = {
         location_short       = "itn",
         monitor_workspace_id = data.azurerm_log_analytics_workspace.law_mcshared.id,
