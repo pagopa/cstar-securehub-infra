@@ -4,11 +4,11 @@ resource "keycloak_oidc_identity_provider" "selfcare_te_oidc" {
   alias   = local.keycloak_selfcare_idp_te_alias
   enabled = true
 
-  authorization_url = "https://dummy.com/auth"
-  token_url         = "https://dummy.com/token"
+  authorization_url  = "https://dummy.com/auth"
+  token_url          = "https://dummy.com/token"
   hide_on_login_page = true
-  client_id         = "dummy"
-  client_secret     = "dummy" # In TF è obbligatorio se si usa auth method client_secret_post
+  client_id          = "dummy"
+  client_secret      = "dummy" # In TF è obbligatorio se si usa auth method client_secret_post
 
   issuer             = local.selfcare_issuer
   jwks_url           = "${local.selfcare_issuer}/.well-known/jwks.json"

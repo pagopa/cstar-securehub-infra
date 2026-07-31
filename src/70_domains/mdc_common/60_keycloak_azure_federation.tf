@@ -124,4 +124,3 @@ resource "keycloak_custom_identity_provider_mapper" "azure_default_operator_read
     role     = keycloak_role.operator_read.name
   }
 }
-

@@ -22,4 +22,3 @@ module "keycloak_mdc_portal_app" {
   ]
   logout_url = "${local.keycloak_external_hostname}/realms/mdc/protocol/openid-connect/logout"
 }
-
