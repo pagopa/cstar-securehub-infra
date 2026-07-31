@@ -7,6 +7,10 @@ module "keycloak_realms" {
       enabled      = true
       display_name = "Messaggi di cortesia"
 
+      # Tema di login dedicato al portale interno mdc (con pulsante Microsoft Entra).
+      # Il tema e' deployato in 41_platform_coder (configmap keycloak-mdc-portal-theme).
+      login_theme = "mdc-internal-portal"
+
       access_token_lifespan       = "30m"
       default_signature_algorithm = "RS256"
 
@@ -222,37 +226,7 @@ resource "keycloak_user_groups" "service_account_group_membership_emd_tpp_test" 
   ]
 }
 
-# Admin user
-resource "keycloak_user" "admin_user" {
-  realm_id   = local.keycloak_realm_id
-  username   = "admin"
-  enabled    = true
-  email      = "admin@cstar.pagopa.it"
-  first_name = "Admin"
-  last_name  = "Test"
-
-  initial_password {
-    value     = "admin"
-    temporary = false
-  }
-}
-
-# Realm-level role definition
-resource "keycloak_role" "realm_admin_role" {
-  realm_id    = local.keycloak_realm_id
-  name        = "admin"
-  description = "Role for administrator users"
-}
-
-# Association between the 'admin' user and the 'admin' realm role.
-resource "keycloak_user_roles" "admin_user_roles" {
-  realm_id = local.keycloak_realm_id
-  user_id  = keycloak_user.admin_user.id
-
-  role_ids = [keycloak_role.realm_admin_role.id, ]
-}
-
-# Create a dedicated scope for the admin role
+# Create a dedicated scope for the portal roles (usato dai client del portale)
 resource "keycloak_openid_client_scope" "admin_role_scope" {
   realm_id = local.keycloak_realm_id
   # Name to use in parameters when requesting the scope
@@ -265,9 +239,12 @@ resource "keycloak_openid_user_realm_role_protocol_mapper" "admin_role_mapper" {
   client_scope_id = keycloak_openid_client_scope.admin_role_scope.id
   name            = "role-admin-mapper"
 
-  # Claim name in the token
+  # Claim "role": ARRAY dei ruoli di realm dell'utente. Con 3 ruoli assegnabili
+  # (operator-read/operator-write/operator-admin) serve multivalued=true; il
+  # frontend filtra i ruoli del portale ignorando quelli tecnici
+  # (default-roles-mdc, offline_access, uma_authorization, ...).
   claim_name          = "role"
-  multivalued         = false # Se vuoi solo la stringa "admin"
+  multivalued         = true
   add_to_id_token     = true
   add_to_access_token = true
 }

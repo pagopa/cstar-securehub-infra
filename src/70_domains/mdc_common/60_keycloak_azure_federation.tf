@@ -113,9 +113,10 @@ resource "keycloak_hardcoded_attribute_identity_provider_mapper" "azure_email_ve
 }
 
 # -----------------------------------------------------------------------------
-# Ruoli di realm del portale (assegnabili a qualsiasi utente)
-# NB: il ruolo "admin" esiste gia' in 60_keycloak_realm_mdc.tf
-#     (keycloak_role.realm_admin_role, name = "admin").
+# Ruoli di realm del portale (assegnabili a qualsiasi utente), naming uniforme:
+# operator-read / operator-write / operator-admin.
+# operator-admin era prima il ruolo "admin" (keycloak_role.realm_admin_role):
+# rinominato tramite il moved block sotto, cosi' Keycloak NON lo ricrea.
 # -----------------------------------------------------------------------------
 resource "keycloak_role" "operator_read" {
   realm_id    = local.keycloak_realm_id
@@ -127,6 +128,18 @@ resource "keycloak_role" "operator_write" {
   realm_id    = local.keycloak_realm_id
   name        = "operator-write"
   description = "Operatore in scrittura"
+}
+
+resource "keycloak_role" "operator_admin" {
+  realm_id    = local.keycloak_realm_id
+  name        = "operator-admin"
+  description = "Amministratore del portale"
+}
+
+# Rinomina il vecchio ruolo "admin" -> "operator-admin" senza ricrearlo.
+moved {
+  from = keycloak_role.realm_admin_role
+  to   = keycloak_role.operator_admin
 }
 
 # -----------------------------------------------------------------------------
