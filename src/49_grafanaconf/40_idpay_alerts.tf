@@ -8,11 +8,6 @@ locals {
   grafana_rule_group_interval_seconds = 60 * 60
 }
 
-data "grafana_data_source" "grafana-azure-data-explorer-datasource" {
-  provider = grafana.cloud
-  name     = "grafana-azure-data-explorer-datasource"
-}
-
 data "azurerm_key_vault" "key_vault_domain" {
   name                = local.idpay_kv_name
   resource_group_name = local.idpay_kv_rg_name
@@ -127,21 +122,4 @@ resource "grafana_notification_policy" "idpay_app_alerts" {
   }
 
   depends_on = [grafana_mute_timing.working_hours]
-}
-
-resource "grafana_mute_timing" "working_hours" {
-  provider = grafana.cloud
-  count    = var.idpay_grafana_alert_enabled ? 1 : 0
-
-  name = local.grafana_mute_timing_name
-  intervals {
-
-    times {
-      start = "09:00"
-      end   = "18:00"
-    }
-
-    weekdays = ["monday", "tuesday", "wednesday", "thursday", "friday"]
-    location = "Europe/Rome"
-  }
 }
