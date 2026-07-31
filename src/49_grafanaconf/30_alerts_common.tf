@@ -12,7 +12,7 @@ locals {
   ]...)
 }
 
-resource "grafana_folder" "alert" {
+resource "grafana_folder" "alert_folders" {
   provider = grafana.cloud
   for_each = local.alert_folders
 
@@ -21,7 +21,7 @@ resource "grafana_folder" "alert" {
 
 moved {
   from = grafana_folder.idpay_app_alerts[0]
-  to   = grafana_folder.alert["idpay-IDPay App Alerts"]
+  to   = grafana_folder.alert_folders["idpay-IDPay App Alerts"]
 }
 
 resource "grafana_mute_timing" "working_hours" {
