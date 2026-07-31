@@ -155,7 +155,7 @@ locals {
       }
     ]
   ])
-  bonus_initiatives = ["bonusdecoder", "bonusvalore", "bonustest"]
+  bonus_initiatives = ["bonusdecoder", "bonusvalore", "bonuselettrodomestici"]
   bonus_spa         = ["utente"]
 
   bonus_initiatives_regex = join("|", local.bonus_initiatives)
