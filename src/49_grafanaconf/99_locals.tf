@@ -33,9 +33,11 @@ locals {
   # - location_short: Geographic location code
   # - monitor_workspace_id: Log Analytics workspace ID for monitoring
   # - aks_name: Name of the AKS cluster
+  # - alert_folders: Grafana alert folder titles
   team_product = {
     idpay = {
       groups = lookup(var.team_groups, "idpay", {})
+      alert_folders = ([ "IDPay App Alerts" ])
       aks = {
         location_short       = "itn",
         monitor_workspace_id = data.azurerm_log_analytics_workspace.law_core_itn.id,

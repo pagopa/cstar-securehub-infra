@@ -1,7 +1,6 @@
 locals {
   idpay_kv_name                       = "${local.product_nodomain}-idpay-kv"
   idpay_kv_rg_name                    = "${local.product_nodomain}-idpay-security-rg"
-  grafana_alert_folder_name           = "IDPay App Alerts"
   grafana_alert_contact_point_name    = "idpay-app-notifications"
   grafana_alert_rule_group_name       = "idpay-app-basic-alerts"
   grafana_mute_timing_name            = "working-hours"
@@ -17,13 +16,6 @@ data "azurerm_key_vault_secret" "slack_webhook_url" {
   count        = var.idpay_grafana_alert_enabled ? 1 : 0
   name         = "slack-webhook-alert"
   key_vault_id = data.azurerm_key_vault.key_vault_domain.id
-}
-
-resource "grafana_folder" "idpay_app_alerts" {
-  provider = grafana.cloud
-  count    = var.idpay_grafana_alert_enabled ? 1 : 0
-
-  title = local.grafana_alert_folder_name
 }
 
 resource "grafana_contact_point" "idpay_app_alerts" {
@@ -43,7 +35,7 @@ resource "grafana_rule_group" "idpay_app_alerts" {
   provider         = grafana.cloud
   count            = var.idpay_grafana_alert_enabled ? 1 : 0
   name             = local.grafana_alert_rule_group_name
-  folder_uid       = grafana_folder.idpay_app_alerts[0].uid
+  folder_uid       = grafana_folder.alert["idpay-IDPay App Alerts"].uid
   interval_seconds = local.grafana_rule_group_interval_seconds
 
   rule {
@@ -115,7 +107,7 @@ resource "grafana_notification_policy" "idpay_app_alerts" {
     matcher {
       label = "grafana_folder"
       match = "="
-      value = grafana_folder.idpay_app_alerts[0].title
+      value = grafana_folder.alert["idpay-IDPay App Alerts"].title
     }
 
     active_timings = [grafana_mute_timing.working_hours[0].name]
