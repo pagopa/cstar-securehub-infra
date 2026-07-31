@@ -85,9 +85,30 @@ resource "keycloak_custom_identity_provider_mapper" "azure_email" {
   identity_provider_mapper = "oidc-user-attribute-idp-mapper"
 
   extra_config = {
-    syncMode         = "INHERIT"
-    claim            = "email"
+    syncMode = "INHERIT"
+    # Entra non emette sempre il claim "email" (dipende dall'attributo mail in
+    # directory). "preferred_username" contiene lo UPN (email aziendale) ed e'
+    # sempre presente, quindi lo usiamo come sorgente dell'email.
+    claim            = "preferred_username"
     "user.attribute" = "email"
+  }
+}
+
+# Forza emailVerified = true. L'email e' popolata via mapper di attributo (non
+# dal claim "email" nativo), quindi trust_email non basta a marcarla verificata:
+# senza questo, Keycloak chiede la conferma dell'email. Gli utenti sono aziendali
+# federati da Entra, quindi l'email e' considerata attendibile.
+resource "keycloak_hardcoded_attribute_identity_provider_mapper" "azure_email_verified" {
+  realm                   = local.keycloak_realm_id
+  identity_provider_alias = keycloak_oidc_identity_provider.azure_entra.alias
+  name                    = "email-verified"
+
+  attribute_name  = "emailVerified"
+  attribute_value = "true"
+  user_session    = false
+
+  extra_config = {
+    syncMode = "INHERIT"
   }
 }
 
