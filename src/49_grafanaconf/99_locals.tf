@@ -37,7 +37,7 @@ locals {
   team_product = {
     idpay = {
       groups = lookup(var.team_groups, "idpay", {})
-      alert_folders = ([ "IDPay App Alerts" ])
+      alert_folders = ([ "App Alerts" ])
       aks = {
         location_short       = "itn",
         monitor_workspace_id = data.azurerm_log_analytics_workspace.law_core_itn.id,

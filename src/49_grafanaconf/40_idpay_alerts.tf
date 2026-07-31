@@ -35,7 +35,7 @@ resource "grafana_rule_group" "idpay_app_alerts" {
   provider         = grafana.cloud
   count            = var.idpay_grafana_alert_enabled ? 1 : 0
   name             = local.grafana_alert_rule_group_name
-  folder_uid       = grafana_folder.alert_folders["idpay-IDPay App Alerts"].uid
+  folder_uid       = grafana_folder.alert_folders["idpay - App Alerts"].uid
   interval_seconds = local.grafana_rule_group_interval_seconds
 
   rule {
@@ -107,7 +107,7 @@ resource "grafana_notification_policy" "idpay_app_alerts" {
     matcher {
       label = "grafana_folder"
       match = "="
-      value = grafana_folder.alert_folders["idpay-IDPay App Alerts"].title
+      value = grafana_folder.alert_folders["idpay - App Alerts"].title
     }
 
     active_timings = [grafana_mute_timing.working_hours[0].name]
