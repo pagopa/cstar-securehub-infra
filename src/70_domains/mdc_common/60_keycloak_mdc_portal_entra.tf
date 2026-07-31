@@ -13,7 +13,7 @@ module "keycloak_mdc_portal_app" {
 
   prefix                 = var.prefix
   env                    = var.env
-  domain                 = "mdc" # display name: <prefix>-<env>-mdc-keycloak
+  domain                 = "mdc-internal-portal" # display name: <prefix>-<env>-mdc-internal-portal-keycloak
   ad_user_owners         = local.application_owners
   authorized_group_names = local.mdc_portal_groups
 
