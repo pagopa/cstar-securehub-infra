@@ -25,7 +25,7 @@ module "workload_identity_configuration" {
 
   key_vault_id                      = data.azurerm_key_vault.domain_kv.id
   key_vault_certificate_permissions = ["Get"]
-  key_vault_key_permissions         = ["Get"]
+  key_vault_key_permissions         = ["Get", "Sign"]
   key_vault_secret_permissions      = ["Get"]
 
   service_account_image_pull_secret_names = [kubernetes_secret.ghcr_secret.metadata[0].name]
