@@ -107,7 +107,7 @@ resource "grafana_notification_policy" "idpay_app_alerts" {
     matcher {
       label = "grafana_folder"
       match = "="
-      value = grafana_folder.alert_folders["idpay - App Alerts"].title
+      value = grafana_folder.alert_folders["IDPay - App Alerts"].title
     }
 
     active_timings = [grafana_mute_timing.working_hours[0].name]
