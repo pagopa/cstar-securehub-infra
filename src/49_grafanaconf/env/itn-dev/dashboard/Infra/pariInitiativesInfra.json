@@ -285,110 +285,6 @@
     },
     {
       "datasource": {
-        "type": "grafana-azure-data-explorer-datasource",
-        "uid": "ef2bw8859i6tcd"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "continuous-RdYlGr"
-          },
-          "mappings": [],
-          "max": 48100000,
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 24,
-        "x": 0,
-        "y": 10
-      },
-      "id": 23,
-      "options": {
-        "displayMode": "lcd",
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": false
-        },
-        "maxVizHeight": 300,
-        "minVizHeight": 16,
-        "minVizWidth": 8,
-        "namePlacement": "auto",
-        "orientation": "horizontal",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showUnfilled": true,
-        "sizing": "auto",
-        "valueMode": "color"
-      },
-      "pluginVersion": "12.4.3",
-      "targets": [
-        {
-          "OpenAI": false,
-          "database": "idpay",
-          "datasource": {
-            "type": "grafana-azure-data-explorer-datasource",
-            "uid": "ef2bw8859i6tcd"
-          },
-          "expression": {
-            "columns": {
-              "columns": [
-                "residualInitiativeBudgetCents"
-              ],
-              "type": "property"
-            },
-            "from": {
-              "property": {
-                "name": "initiative_counters",
-                "type": "string"
-              },
-              "type": "property"
-            },
-            "groupBy": {
-              "expressions": [],
-              "type": "and"
-            },
-            "reduce": {
-              "expressions": [],
-              "type": "and"
-            },
-            "where": {
-              "expressions": [],
-              "type": "and"
-            }
-          },
-          "pluginVersion": "6.2.0",
-          "query": "initiative_counters\n| project residualInitiativeBudgetCents / 100",
-          "querySource": "raw",
-          "queryType": "KQL",
-          "rawMode": true,
-          "refId": "A",
-          "resultFormat": "table"
-        }
-      ],
-      "title": "Residual Budget",
-      "type": "bargauge"
-    },
-    {
-      "datasource": {
         "type": "grafana-azure-monitor-datasource",
         "uid": "azure-monitor-oob"
       },
@@ -418,7 +314,7 @@
         "h": 5,
         "w": 4,
         "x": 0,
-        "y": 16
+        "y": 10
       },
       "id": 1,
       "options": {
@@ -490,7 +386,6 @@
           "color": {
             "mode": "thresholds"
           },
-          "links": [],
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -513,7 +408,7 @@
         "h": 5,
         "w": 4,
         "x": 4,
-        "y": 16
+        "y": 10
       },
       "id": 2,
       "options": {
@@ -666,7 +561,7 @@
         "h": 5,
         "w": 4,
         "x": 8,
-        "y": 16
+        "y": 10
       },
       "id": 4,
       "options": {
@@ -824,7 +719,7 @@
         "h": 5,
         "w": 4,
         "x": 12,
-        "y": 16
+        "y": 10
       },
       "id": 5,
       "options": {
@@ -959,7 +854,6 @@
           "color": {
             "mode": "thresholds"
           },
-          "links": [],
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -982,7 +876,7 @@
         "h": 5,
         "w": 8,
         "x": 16,
-        "y": 16
+        "y": 10
       },
       "id": 3,
       "options": {
@@ -1643,7 +1537,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 21
+        "y": 15
       },
       "id": 10,
       "options": {
@@ -1725,9 +1619,7 @@
           "color": {
             "mode": "thresholds"
           },
-          "fieldMinMax": false,
           "mappings": [],
-          "max": 80000,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -1737,7 +1629,7 @@
               },
               {
                 "color": "red",
-                "value": 50000
+                "value": 80
               }
             ]
           }
@@ -1748,7 +1640,7 @@
         "h": 7,
         "w": 4,
         "x": 0,
-        "y": 28
+        "y": 22
       },
       "id": 6,
       "options": {
@@ -1835,7 +1727,7 @@
         "h": 7,
         "w": 4,
         "x": 4,
-        "y": 28
+        "y": 22
       },
       "id": 8,
       "options": {
@@ -2009,7 +1901,7 @@
         "h": 13,
         "w": 16,
         "x": 8,
-        "y": 28
+        "y": 22
       },
       "id": 7,
       "options": {
@@ -2027,7 +1919,7 @@
         {
           "azureLogAnalytics": {
             "dashboardTime": false,
-            "query": "\nlet dataset = requests\n| where $__timeFilter(timestamp)\n;\ndataset\n| summarize  Avg = avg(duration)/1000, 95Prc = percentile( duration,95)/1000, 99Prc = percentile( duration,99)/1000, Count = count()\n| project operation_Name=\"All\", Avg, 95Prc, 99Prc, Count\n| union(dataset\n| summarize  Avg = avg(duration)/1000, 95Prc = percentile( duration,95)/1000, 99Prc = percentile( duration,99)/1000, Count = count() by operation_Name\n| top 20 by Avg desc\n| order by Count\n)\n\n",
+            "query": "\nlet dataset = requests\n| where $__timeFilter(timestamp)\n| where url has \"$initiativeId\"\n;\ndataset\n| summarize  Avg = avg(duration)/1000, 95Prc = percentile( duration,95)/1000, 99Prc = percentile( duration,99)/1000, Count = count()\n| project operation_Name=\"All\", Avg, 95Prc, 99Prc, Count\n| union(dataset\n| summarize  Avg = avg(duration)/1000, 95Prc = percentile( duration,95)/1000, 99Prc = percentile( duration,99)/1000, Count = count() by operation_Name\n| top 20 by Avg desc\n| order by Count\n)\n\n",
             "resources": [
               "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/cstar-d-itn-idpay-monitoring-rg/providers/Microsoft.Insights/components/cstar-d-itn-idpay-appinsights"
             ],
@@ -2071,7 +1963,7 @@
         "h": 6,
         "w": 8,
         "x": 0,
-        "y": 35
+        "y": 29
       },
       "id": 9,
       "options": {
@@ -2167,7 +2059,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 41
+        "y": 35
       },
       "id": 11,
       "options": {
@@ -2257,7 +2149,7 @@
         "h": 5,
         "w": 5,
         "x": 0,
-        "y": 49
+        "y": 43
       },
       "id": 16,
       "options": {
@@ -2294,11 +2186,11 @@
             ],
             "dimensionFilters": [],
             "metricName": "connectedclients",
-            "metricNamespace": "microsoft.cache/redis",
+            "metricNamespace": "microsoft.cache/redisenterprise",
             "region": "italynorth",
             "resources": [
               {
-                "metricNamespace": "Microsoft.Cache/Redis",
+                "metricNamespace": "Microsoft.Cache/redisEnterprise",
                 "region": "italynorth",
                 "resourceGroup": "cstar-d-itn-idpay-data-rg",
                 "resourceName": "cstar-d-itn-idpay-redis",
@@ -2346,7 +2238,7 @@
         "h": 5,
         "w": 5,
         "x": 5,
-        "y": 49
+        "y": 43
       },
       "id": 17,
       "options": {
@@ -2381,11 +2273,11 @@
             ],
             "dimensionFilters": [],
             "metricName": "usedmemorypercentage",
-            "metricNamespace": "microsoft.cache/redis",
+            "metricNamespace": "microsoft.cache/redisenterprise",
             "region": "italynorth",
             "resources": [
               {
-                "metricNamespace": "Microsoft.Cache/Redis",
+                "metricNamespace": "Microsoft.Cache/redisEnterprise",
                 "region": "italynorth",
                 "resourceGroup": "cstar-d-itn-idpay-data-rg",
                 "resourceName": "cstar-d-itn-idpay-redis",
@@ -2433,7 +2325,7 @@
         "h": 5,
         "w": 5,
         "x": 10,
-        "y": 49
+        "y": 43
       },
       "id": 18,
       "options": {
@@ -2467,12 +2359,12 @@
               86400000
             ],
             "dimensionFilters": [],
-            "metricName": "allpercentprocessortime",
-            "metricNamespace": "microsoft.cache/redis",
+            "metricName": "percentProcessorTime",
+            "metricNamespace": "microsoft.cache/redisenterprise",
             "region": "italynorth",
             "resources": [
               {
-                "metricNamespace": "Microsoft.Cache/Redis",
+                "metricNamespace": "Microsoft.Cache/redisEnterprise",
                 "region": "italynorth",
                 "resourceGroup": "cstar-d-itn-idpay-data-rg",
                 "resourceName": "cstar-d-itn-idpay-redis",
@@ -2521,7 +2413,7 @@
         "h": 5,
         "w": 5,
         "x": 15,
-        "y": 49
+        "y": 43
       },
       "id": 19,
       "options": {
@@ -2556,11 +2448,11 @@
             ],
             "dimensionFilters": [],
             "metricName": "totalkeys",
-            "metricNamespace": "microsoft.cache/redis",
+            "metricNamespace": "microsoft.cache/redisenterprise",
             "region": "italynorth",
             "resources": [
               {
-                "metricNamespace": "Microsoft.Cache/Redis",
+                "metricNamespace": "Microsoft.Cache/redisEnterprise",
                 "region": "italynorth",
                 "resourceGroup": "cstar-d-itn-idpay-data-rg",
                 "resourceName": "cstar-d-itn-idpay-redis",
@@ -2608,7 +2500,7 @@
         "h": 5,
         "w": 4,
         "x": 20,
-        "y": 49
+        "y": 43
       },
       "id": 20,
       "options": {
@@ -2642,12 +2534,12 @@
               86400000
             ],
             "dimensionFilters": [],
-            "metricName": "cachemissrate",
-            "metricNamespace": "microsoft.cache/redis",
+            "metricName": "cachemisses",
+            "metricNamespace": "microsoft.cache/redisenterprise",
             "region": "italynorth",
             "resources": [
               {
-                "metricNamespace": "Microsoft.Cache/Redis",
+                "metricNamespace": "Microsoft.Cache/redisEnterprise",
                 "region": "italynorth",
                 "resourceGroup": "cstar-d-itn-idpay-data-rg",
                 "resourceName": "cstar-d-itn-idpay-redis",
@@ -2695,7 +2587,7 @@
         "h": 5,
         "w": 12,
         "x": 0,
-        "y": 54
+        "y": 48
       },
       "id": 12,
       "options": {
@@ -2797,7 +2689,7 @@
         "h": 5,
         "w": 6,
         "x": 12,
-        "y": 54
+        "y": 48
       },
       "id": 13,
       "options": {
@@ -2836,7 +2728,7 @@
               {
                 "dimension": "nodepool",
                 "filters": [
-                  "cspblueidpay"
+                  "csdgrenidpay"
                 ],
                 "operator": "eq"
               }
@@ -2894,7 +2786,7 @@
         "h": 5,
         "w": 6,
         "x": 18,
-        "y": 54
+        "y": 48
       },
       "id": 21,
       "options": {
@@ -2933,7 +2825,7 @@
               {
                 "dimension": "nodepool",
                 "filters": [
-                  "cspblueidpay"
+                  "csdgrenidpay"
                 ],
                 "operator": "eq"
               }
@@ -2991,7 +2883,7 @@
         "h": 5,
         "w": 12,
         "x": 0,
-        "y": 59
+        "y": 53
       },
       "id": 14,
       "options": {
@@ -3093,7 +2985,7 @@
         "h": 5,
         "w": 6,
         "x": 12,
-        "y": 59
+        "y": 53
       },
       "id": 15,
       "options": {
@@ -3190,7 +3082,7 @@
         "h": 5,
         "w": 6,
         "x": 18,
-        "y": 59
+        "y": 53
       },
       "id": 22,
       "options": {
@@ -3341,7 +3233,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 64
+        "y": 58
       },
       "id": 25,
       "options": {
@@ -3487,7 +3379,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 64
+        "y": 58
       },
       "id": 26,
       "options": {
@@ -3547,22 +3439,554 @@
       ],
       "title": "Keycloack POD Cpu Info (Current)",
       "type": "table"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 66
+      },
+      "id": 100,
+      "panels": [],
+      "title": "RDB Topic",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 67
+      },
+      "id": 30,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.4.3",
+      "targets": [
+        {
+          "azureMonitor": {
+            "aggregation": "Total",
+            "allowedTimeGrainsMs": [
+              60000,
+              300000,
+              900000,
+              1800000,
+              3600000,
+              21600000,
+              43200000,
+              86400000
+            ],
+            "dimensionFilters": [
+              {
+                "dimension": "EntityName",
+                "filters": [
+                  "idpay-asset-register",
+                  "idpay-asset-register_topic"
+                ],
+                "operator": "eq"
+              }
+            ],
+            "metricName": "IncomingMessages",
+            "metricNamespace": "microsoft.eventhub/namespaces",
+            "region": "italynorth",
+            "resources": [
+              {
+                "metricNamespace": "Microsoft.EventHub/namespaces",
+                "region": "italynorth",
+                "resourceGroup": "cstar-d-itn-idpay-data-rg",
+                "resourceName": "cstar-d-itn-idpay-evh-rdb-ns",
+                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+              }
+            ],
+            "timeGrain": "auto"
+          },
+          "queryType": "Azure Monitor",
+          "refId": "A",
+          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+        }
+      ],
+      "title": "RDB Topic Incoming Messages",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 8,
+        "y": 67
+      },
+      "id": 31,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.4.3",
+      "targets": [
+        {
+          "azureMonitor": {
+            "aggregation": "Total",
+            "allowedTimeGrainsMs": [
+              60000,
+              300000,
+              900000,
+              1800000,
+              3600000,
+              21600000,
+              43200000,
+              86400000
+            ],
+            "dimensionFilters": [
+              {
+                "dimension": "EntityName",
+                "filters": [
+                  "idpay-asset-register",
+                  "idpay-asset-register_topic"
+                ],
+                "operator": "eq"
+              }
+            ],
+            "metricName": "OutgoingMessages",
+            "metricNamespace": "microsoft.eventhub/namespaces",
+            "region": "italynorth",
+            "resources": [
+              {
+                "metricNamespace": "Microsoft.EventHub/namespaces",
+                "region": "italynorth",
+                "resourceGroup": "cstar-d-itn-idpay-data-rg",
+                "resourceName": "cstar-d-itn-idpay-evh-rdb-ns",
+                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+              }
+            ],
+            "timeGrain": "auto"
+          },
+          "queryType": "Azure Monitor",
+          "refId": "A",
+          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+        }
+      ],
+      "title": "RDB Topic Outgoing Messages",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 16,
+        "y": 67
+      },
+      "id": 29,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.4.3",
+      "targets": [
+        {
+          "azureMonitor": {
+            "aggregation": "Total",
+            "allowedTimeGrainsMs": [
+              60000,
+              300000,
+              900000,
+              1800000,
+              3600000,
+              21600000,
+              43200000,
+              86400000
+            ],
+            "dimensionFilters": [
+              {
+                "dimension": "EntityName",
+                "filters": [
+                  "idpay-asset-register",
+                  "idpay-asset-register_topic"
+                ],
+                "operator": "eq"
+              }
+            ],
+            "metricName": "ThrottledRequests",
+            "metricNamespace": "microsoft.eventhub/namespaces",
+            "region": "italynorth",
+            "resources": [
+              {
+                "metricNamespace": "Microsoft.EventHub/namespaces",
+                "region": "italynorth",
+                "resourceGroup": "cstar-d-itn-idpay-data-rg",
+                "resourceName": "cstar-d-itn-idpay-evh-rdb-ns",
+                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+              }
+            ],
+            "timeGrain": "auto"
+          },
+          "queryType": "Azure Monitor",
+          "refId": "A",
+          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+        },
+        {
+          "azureMonitor": {
+            "aggregation": "Total",
+            "allowedTimeGrainsMs": [
+              60000,
+              300000,
+              900000,
+              1800000,
+              3600000,
+              21600000,
+              43200000,
+              86400000
+            ],
+            "dimensionFilters": [
+              {
+                "dimension": "EntityName",
+                "filters": [
+                  "idpay-asset-register",
+                  "idpay-asset-register_topic"
+                ],
+                "operator": "eq"
+              }
+            ],
+            "metricName": "UserErrors",
+            "metricNamespace": "microsoft.eventhub/namespaces",
+            "region": "italynorth",
+            "resources": [
+              {
+                "metricNamespace": "Microsoft.EventHub/namespaces",
+                "region": "italynorth",
+                "resourceGroup": "cstar-d-itn-idpay-data-rg",
+                "resourceName": "cstar-d-itn-idpay-evh-rdb-ns",
+                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+              }
+            ],
+            "timeGrain": "auto"
+          },
+          "queryType": "Azure Monitor",
+          "refId": "B",
+          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+        },
+        {
+          "azureMonitor": {
+            "aggregation": "Total",
+            "allowedTimeGrainsMs": [
+              60000,
+              300000,
+              900000,
+              1800000,
+              3600000,
+              21600000,
+              43200000,
+              86400000
+            ],
+            "dimensionFilters": [
+              {
+                "dimension": "EntityName",
+                "filters": [
+                  "idpay-asset-register",
+                  "idpay-asset-register_topic"
+                ],
+                "operator": "eq"
+              }
+            ],
+            "metricName": "ServerErrors",
+            "metricNamespace": "microsoft.eventhub/namespaces",
+            "region": "italynorth",
+            "resources": [
+              {
+                "metricNamespace": "Microsoft.EventHub/namespaces",
+                "region": "italynorth",
+                "resourceGroup": "cstar-d-itn-idpay-data-rg",
+                "resourceName": "cstar-d-itn-idpay-evh-rdb-ns",
+                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+              }
+            ],
+            "timeGrain": "auto"
+          },
+          "queryType": "Azure Monitor",
+          "refId": "C",
+          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+        }
+      ],
+      "title": "RDB Topic Errors and Throttling",
+      "type": "timeseries"
     }
   ],
   "preload": false,
   "schemaVersion": 42,
   "tags": [],
   "templating": {
-    "list": []
+    "list": [
+      {
+        "allowCustomValue": false,
+        "current": {
+          "text": "grafana-azure-data-explorer-datasource",
+          "value": "df4s9lke68vlse"
+        },
+        "hide": 2,
+        "name": "ds",
+        "options": [],
+        "query": "grafana-azure-data-explorer-datasource",
+        "refresh": 1,
+        "regex": "grafana-azure-data-explorer-datasource",
+        "type": "datasource"
+      },
+      {
+        "allowCustomValue": false,
+        "current": {
+          "text": "68dd003ccce8c534d1da22bc",
+          "value": "68dd003ccce8c534d1da22bc"
+        },
+        "datasource": {
+          "type": "grafana-azure-data-explorer-datasource",
+          "uid": "${ds}"
+        },
+        "definition": "initiative_counters\n| where isnotempty(initiativeId)\n| extend initiativeValue = tostring(initiativeId)\n| distinct __text = initiativeValue, __value = initiativeValue\n| order by __text asc",
+        "includeAll": false,
+        "label": "Initiative ID",
+        "name": "initiativeId",
+        "options": [],
+        "query": {
+          "OpenAI": false,
+          "azureLogAnalytics": {
+            "query": "",
+            "resources": []
+          },
+          "clusterUri": "",
+          "database": "idpay",
+          "query": "initiative_counters\n| where isnotempty(initiativeId)\n| extend initiativeValue = tostring(initiativeId)\n| distinct __text = initiativeValue, __value = initiativeValue\n| order by __text asc",
+          "queryType": "KQL",
+          "rawMode": true,
+          "refId": "A",
+          "resultFormat": "table",
+          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+        },
+        "refresh": 1,
+        "regex": "",
+        "regexApplyTo": "value",
+        "type": "query"
+      }
+    ]
   },
   "time": {
-    "from": "now-6h",
+    "from": "now-30d",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "browser",
   "title": "PariInitiativesInfra",
   "uid": "ff3s9iv832pdsf",
-  "version": 29,
+  "version": 45,
   "weekStart": ""
 }
