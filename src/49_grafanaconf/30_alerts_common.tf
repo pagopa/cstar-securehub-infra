@@ -5,7 +5,7 @@ data "grafana_data_source" "grafana-azure-data-explorer-datasource" {
 
 resource "grafana_folder" "alert_folders" {
   provider = grafana.cloud
-  for_each = toset(local.alert_folders)
+  for_each = local.alert_folders
 
   title = each.value
 }
