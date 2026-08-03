@@ -113,8 +113,3 @@ module "cdn_multi_initiative" {
     }
   }
 }
-
-moved {
-  from = module.cdn_multi_initiative
-  to   = module.cdn_multi_initiative[0]
-}
