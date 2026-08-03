@@ -28,16 +28,16 @@ locals {
   kv_core_name                = "${local.product_nodomain}-core-kv"
   kv_core_resource_group_name = "${local.product_nodomain}-core-sec-rg"
 
+  alert_folders = [ "IDPay App Alerts" ]
+
   # Configuration for different team products and their AKS clusters
   # Contains settings for each team's environment including:
   # - location_short: Geographic location code
   # - monitor_workspace_id: Log Analytics workspace ID for monitoring
   # - aks_name: Name of the AKS cluster
-  # - alert_folders: Grafana alert folder titles
   team_product = {
     idpay = {
       groups = lookup(var.team_groups, "idpay", {})
-      alert_folders = ([ "App Alerts" ])
       aks = {
         location_short       = "itn",
         monitor_workspace_id = data.azurerm_log_analytics_workspace.law_core_itn.id,
@@ -46,7 +46,6 @@ locals {
     }
     keycloak = {
       groups        = lookup(var.team_groups, "keycloak", {})
-      alert_folders = []
       aks = {
         location_short       = "itn",
         monitor_workspace_id = data.azurerm_log_analytics_workspace.law_core_itn.id,
@@ -55,7 +54,6 @@ locals {
     }
     mil = {
       groups        = lookup(var.team_groups, "mil", {})
-      alert_folders = []
       aks = {
         location_short       = "weu",
         monitor_workspace_id = data.azurerm_log_analytics_workspace.law_core.id,
@@ -64,7 +62,6 @@ locals {
     },
     mdc = {
       groups        = lookup(var.team_groups, "mdc", {})
-      alert_folders = []
       aks = {
         location_short       = "itn",
         monitor_workspace_id = data.azurerm_log_analytics_workspace.law_core_itn.id,
@@ -73,7 +70,6 @@ locals {
     },
     rtd = {
       groups        = lookup(var.team_groups, "rtd", {})
-      alert_folders = []
       aks = {
         location_short       = "weu",
         monitor_workspace_id = data.azurerm_log_analytics_workspace.law_core.id,
@@ -82,7 +78,6 @@ locals {
     },
     srtp = {
       groups        = lookup(var.team_groups, "srtp", {})
-      alert_folders = []
       aks = {
         location_short       = "itn",
         monitor_workspace_id = data.azurerm_log_analytics_workspace.law_core_itn.id,
@@ -91,7 +86,6 @@ locals {
     },
     mcshared = {
       groups        = lookup(var.team_groups, "mcshared", {})
-      alert_folders = []
       aca = {
         location_short       = "itn",
         monitor_workspace_id = data.azurerm_log_analytics_workspace.law_mcshared.id,

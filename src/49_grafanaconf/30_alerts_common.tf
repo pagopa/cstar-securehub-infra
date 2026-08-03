@@ -5,19 +5,9 @@ data "grafana_data_source" "grafana-azure-data-explorer-datasource" {
 
 resource "grafana_folder" "alert_folders" {
   provider = grafana.cloud
-  for_each = merge([
-    for product, configuration in local.team_product : {
-      for folder in configuration.alert_folders :
-      "${product} - ${folder}" => folder
-    }
-  ]...)
+  for_each = toset(local.alert_folders)
 
   title = each.value
-}
-
-moved {
-  from = grafana_folder.idpay_app_alerts[0]
-  to   = grafana_folder.alert_folders["idpay - App Alerts"]
 }
 
 resource "grafana_mute_timing" "working_hours" {
