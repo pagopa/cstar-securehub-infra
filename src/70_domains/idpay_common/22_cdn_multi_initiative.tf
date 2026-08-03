@@ -1,5 +1,6 @@
 module "cdn_multi_initiative" {
   source = "./.terraform/modules/__v4__/cdn_frontdoor_multiple"
+  count  = var.enabled_cdn_multi_initiative ? 1 : 0
 
   resource_group_name        = local.data_rg
   location                   = var.location
@@ -83,13 +84,13 @@ module "cdn_multi_initiative" {
             {
               type             = "url_path"
               operator         = "RegEx"
-              match_values     = ["^/(${local.bonus_initiatives_regex}])/(${local.bonus_spa_regex})/assets/"]
+              match_values     = ["^/(${local.multi_initiatives_regex})/(${local.multi_fe_regex})/assets/"]
               negate_condition = true
             },
             {
               type             = "url_path"
               operator         = "RegEx"
-              match_values     = ["^/(${local.bonus_initiatives_regex})/(${local.bonus_spa_regex})/"]
+              match_values     = ["^/(${local.multi_initiatives_regex})/(${local.multi_fe_regex})/"]
               negate_condition = false
             },
             {
@@ -111,4 +112,9 @@ module "cdn_multi_initiative" {
       }
     }
   }
+}
+
+moved {
+  from = module.cdn_multi_initiative
+  to   = module.cdn_multi_initiative[0]
 }

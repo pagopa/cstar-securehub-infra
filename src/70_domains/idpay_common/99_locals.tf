@@ -155,9 +155,9 @@ locals {
       }
     ]
   ])
-  bonus_initiatives = ["bonusdecoder", "bonusvalore", "bonuselettrodomestici"]
-  bonus_spa         = ["utente"]
+  multi_initiatives = var.env_short == "p" ? ["bonusdecoder"] : ["bonusdecoder", "bonuselettrodomestici"]
+  multi_fe_spa      = ["utente", "registro-beni", "lista-punti-vendita"]
 
-  bonus_initiatives_regex = join("|", local.bonus_initiatives)
-  bonus_spa_regex         = join("|", local.bonus_spa)
+  multi_initiatives_regex = join("|", local.multi_initiatives)
+  multi_fe_regex          = join("|", local.multi_fe_spa)
 }
