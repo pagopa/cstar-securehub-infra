@@ -45,7 +45,7 @@ locals {
       },
     }
     keycloak = {
-      groups        = lookup(var.team_groups, "keycloak", {})
+      groups = lookup(var.team_groups, "keycloak", {})
       aks = {
         location_short       = "itn",
         monitor_workspace_id = data.azurerm_log_analytics_workspace.law_core_itn.id,
@@ -53,7 +53,7 @@ locals {
       },
     }
     mil = {
-      groups        = lookup(var.team_groups, "mil", {})
+      groups = lookup(var.team_groups, "mil", {})
       aks = {
         location_short       = "weu",
         monitor_workspace_id = data.azurerm_log_analytics_workspace.law_core.id,
@@ -61,7 +61,7 @@ locals {
       }
     },
     mdc = {
-      groups        = lookup(var.team_groups, "mdc", {})
+      groups = lookup(var.team_groups, "mdc", {})
       aks = {
         location_short       = "itn",
         monitor_workspace_id = data.azurerm_log_analytics_workspace.law_core_itn.id,
@@ -69,7 +69,7 @@ locals {
       }
     },
     rtd = {
-      groups        = lookup(var.team_groups, "rtd", {})
+      groups = lookup(var.team_groups, "rtd", {})
       aks = {
         location_short       = "weu",
         monitor_workspace_id = data.azurerm_log_analytics_workspace.law_core.id,
@@ -77,7 +77,7 @@ locals {
       }
     },
     srtp = {
-      groups        = lookup(var.team_groups, "srtp", {})
+      groups = lookup(var.team_groups, "srtp", {})
       aks = {
         location_short       = "itn",
         monitor_workspace_id = data.azurerm_log_analytics_workspace.law_core_itn.id,
@@ -85,7 +85,7 @@ locals {
       }
     },
     mcshared = {
-      groups        = lookup(var.team_groups, "mcshared", {})
+      groups = lookup(var.team_groups, "mcshared", {})
       aca = {
         location_short       = "itn",
         monitor_workspace_id = data.azurerm_log_analytics_workspace.law_mcshared.id,
