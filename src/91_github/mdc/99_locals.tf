@@ -390,12 +390,20 @@ locals {
       env_secrets = {
         envs = ["uat"]
         secrets = {
-          TPP_KEYCLOAK_CLIENT_ID      = try(module.secrets.values["emd-tpp-test-client-id"].value, null)
-          TPP_KEYCLOAK_CLIENT_SECRET  = try(module.secrets.values["emd-tpp-test-client-secret"].value, null)
-          SEND_KEYCLOAK_CLIENT_ID     = try(module.secrets.values["send-client-id"].value, null)
-          SEND_KEYCLOAK_CLIENT_SECRET = try(module.secrets.values["send-client-secret"].value, null)
-          KEYCLOAK_URL                = try(module.secrets.values["keycloak-external-mdc-url"].value, null)
-          KAFKA_PASSWORD              = try(module.secrets.values["kafka-password"].value, null)
+          TPP_KEYCLOAK_CLIENT_ID         = try(module.secrets.values["emd-tpp-test-client-id"].value, null)
+          TPP_KEYCLOAK_CLIENT_SECRET     = try(module.secrets.values["emd-tpp-test-client-secret"].value, null)
+          HYPE_KEYCLOAK_CLIENT_ID        = try(module.secrets.values["hype-client-id"].value, null)
+          HYPE_KEYCLOAK_CLIENT_SECRET    = try(module.secrets.values["hype-client-secret"].value, null)
+          HYPE_TPP_ID                    = try(module.secrets.values["hype-tpp-id"].value, null)
+          FUCINO_KEYCLOAK_CLIENT_ID      = try(module.secrets.values["fucino-client-id"].value, null)
+          FUCINO_KEYCLOAK_CLIENT_SECRET  = try(module.secrets.values["fucino-client-secret"].value, null)
+          FUCINO_TPP_ID                  = try(module.secrets.values["fucino-tpp-id"].value, null)
+          PAGO_PA_KEYCLOAK_CLIENT_ID     = try(module.secrets.values["emd-pagopa-client-id"].value, null)
+          PAGO_PA_KEYCLOAK_CLIENT_SECRET = try(module.secrets.values["emd-pagopa-client-secret"].value, null)
+          SEND_KEYCLOAK_CLIENT_ID        = try(module.secrets.values["send-client-id"].value, null)
+          SEND_KEYCLOAK_CLIENT_SECRET    = try(module.secrets.values["send-client-secret"].value, null)
+          KEYCLOAK_URL                   = try(module.secrets.values["keycloak-external-mdc-url"].value, null)
+          KAFKA_PASSWORD                 = try(module.secrets.values["kafka-password"].value, null)
         }
       }
       env_variables = {
