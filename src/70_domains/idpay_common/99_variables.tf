@@ -308,5 +308,4 @@ variable "idpay_pgflex_params" {
 variable "enabled_cdn_multi_initiative" {
   type        = bool
   description = "Enable CDN multi-initiative"
-  default     = false
 }

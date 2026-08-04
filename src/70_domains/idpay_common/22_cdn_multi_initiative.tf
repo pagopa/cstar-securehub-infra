@@ -82,30 +82,62 @@ module "cdn_multi_initiative" {
 
           conditions = [
             {
-              type             = "url_path"
-              operator         = "RegEx"
-              match_values     = ["^/(${local.multi_initiatives_regex})/(${local.multi_fe_regex})/assets/"]
-              negate_condition = true
+              type         = "url_path"
+              operator     = "RegEx"
+              match_values = ["^/(${local.multi_initiatives_regex})/(${local.multi_fe_regex})/assets(/.*)?$"]
+              negate       = true
             },
             {
-              type             = "url_path"
-              operator         = "RegEx"
-              match_values     = ["^/(${local.multi_initiatives_regex})/(${local.multi_fe_regex})/"]
-              negate_condition = false
+              type         = "url_path"
+              operator     = "RegEx"
+              match_values = ["^/(${local.multi_initiatives_regex})/(${local.multi_fe_regex})(/.*)?$"]
+              negate       = false
             },
             {
-              type             = "url_file_extension"
-              operator         = "LessThanOrEqual"
-              match_values     = ["0"]
-              negate_condition = false
-              transforms       = []
+              type         = "url_file_extension"
+              operator     = "Any"
+              match_values = []
+              negate       = true
             }
           ]
 
           actions = [{
             type                    = "rewrite"
-            source_pattern          = "/"
+            source_pattern          = "/*"
             destination             = "/{url_path:seg0}/{url_path:seg1}/index.html"
+            preserve_unmatched_path = false
+          }]
+        },
+        "RewriteEsercente" = {
+          order             = 20
+          behavior_on_match = "Stop"
+
+          conditions = [
+            {
+              type         = "url_path"
+              operator     = "BeginsWith"
+              match_values = ["^/esercente/assets/"]
+              negate       = true
+            },
+            {
+              type         = "url_path"
+              operator     = "BeginsWith"
+              match_values = ["/esercente/"]
+              negate       = false
+            },
+            {
+              type         = "url_file_extension"
+              operator     = "LessThanOrEqual"
+              match_values = ["0"]
+              negate       = false
+              transforms   = []
+            }
+          ]
+
+          actions = [{
+            type                    = "rewrite"
+            source_pattern          = "/esercente"
+            destination             = "/esercente/index.html"
             preserve_unmatched_path = false
           }]
         }
