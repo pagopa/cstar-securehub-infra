@@ -126,14 +126,14 @@
                 "region": "global",
                 "resourceGroup": "cstar-u-itn-idpay-data-rg",
                 "resourceName": "cstar-u-itn-idpay-bonus-cdn-profile",
-                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+                "subscription": "f9f0ed60-4b4b-49a6-97cb-8c8a0f9e2435"
               }
             ],
             "timeGrain": "auto"
           },
           "queryType": "Azure Monitor",
           "refId": "A",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "f9f0ed60-4b4b-49a6-97cb-8c8a0f9e2435"
         }
       ],
       "title": "CDN Latency",
@@ -245,14 +245,14 @@
                 "region": "global",
                 "resourceGroup": "cstar-u-itn-idpay-data-rg",
                 "resourceName": "cstar-u-itn-idpay-bonus-cdn-profile",
-                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+                "subscription": "f9f0ed60-4b4b-49a6-97cb-8c8a0f9e2435"
               }
             ],
             "timeGrain": "auto"
           },
           "queryType": "Azure Monitor",
           "refId": "A",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "f9f0ed60-4b4b-49a6-97cb-8c8a0f9e2435"
         }
       ],
       "title": "CDN Request Count",
@@ -359,7 +359,7 @@
                 "region": "westeurope",
                 "resourceGroup": "cstar-u-vnet-rg",
                 "resourceName": "cstar-u-app-gw-maz",
-                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+                "subscription": "f9f0ed60-4b4b-49a6-97cb-8c8a0f9e2435"
               }
             ],
             "timeGrain": "auto"
@@ -370,7 +370,7 @@
           },
           "queryType": "Azure Monitor",
           "refId": "A",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "f9f0ed60-4b4b-49a6-97cb-8c8a0f9e2435"
         }
       ],
       "title": "App Gateway Request 1min",
@@ -444,7 +444,7 @@
             "dashboardTime": false,
             "query": "//change this example to create your own time series query\n<table name>                                                              //the table to query (e.g. Usage, Heartbeat, Perf)\n| where $__timeFilter(TimeGenerated)                                      //this is a macro used to show the full chartâ€™s time range, choose the datetime column here\n| summarize count() by <group by column>, bin(TimeGenerated, $__interval) //change â€œgroup by columnâ€ to a column in your table, such as â€œComputerâ€. The $__interval macro is used to auto-select the time grain. Can also use 1h, 5m etc.\n| order by TimeGenerated asc",
             "resultFormat": "time_series",
-            "workspace": "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/cstar-u-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-u-itn-core-law"
+            "workspace": "/subscriptions/f9f0ed60-4b4b-49a6-97cb-8c8a0f9e2435/resourceGroups/cstar-u-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-u-itn-core-law"
           },
           "azureMonitor": {
             "aggOptions": [
@@ -597,7 +597,7 @@
             "dashboardTime": false,
             "query": "//change this example to create your own time series query\n<table name>                                                              //the table to query (e.g. Usage, Heartbeat, Perf)\n| where $__timeFilter(TimeGenerated)                                      //this is a macro used to show the full chartâ€™s time range, choose the datetime column here\n| summarize count() by <group by column>, bin(TimeGenerated, $__interval) //change â€œgroup by columnâ€ to a column in your table, such as â€œComputerâ€. The $__interval macro is used to auto-select the time grain. Can also use 1h, 5m etc.\n| order by TimeGenerated asc",
             "resultFormat": "time_series",
-            "workspace": "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/cstar-u-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-u-itn-core-law"
+            "workspace": "/subscriptions/f9f0ed60-4b4b-49a6-97cb-8c8a0f9e2435/resourceGroups/cstar-u-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-u-itn-core-law"
           },
           "azureMonitor": {
             "aggOptions": [
@@ -755,7 +755,7 @@
             "dashboardTime": false,
             "query": "//change this example to create your own time series query\n<table name>                                                              //the table to query (e.g. Usage, Heartbeat, Perf)\n| where $__timeFilter(TimeGenerated)                                      //this is a macro used to show the full chartâ€™s time range, choose the datetime column here\n| summarize count() by <group by column>, bin(TimeGenerated, $__interval) //change â€œgroup by columnâ€ to a column in your table, such as â€œComputerâ€. The $__interval macro is used to auto-select the time grain. Can also use 1h, 5m etc.\n| order by TimeGenerated asc",
             "resultFormat": "time_series",
-            "workspace": "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/cstar-u-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-u-itn-core-law"
+            "workspace": "/subscriptions/f9f0ed60-4b4b-49a6-97cb-8c8a0f9e2435/resourceGroups/cstar-u-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-u-itn-core-law"
           },
           "azureMonitor": {
             "aggOptions": [
@@ -919,7 +919,7 @@
             "dashboardTime": false,
             "query": "//change this example to create your own time series query\n<table name>                                                              //the table to query (e.g. Usage, Heartbeat, Perf)\n| where $__timeFilter(TimeGenerated)                                      //this is a macro used to show the full chartâ€™s time range, choose the datetime column here\n| summarize count() by <group by column>, bin(TimeGenerated, $__interval) //change â€œgroup by columnâ€ to a column in your table, such as â€œComputerâ€. The $__interval macro is used to auto-select the time grain. Can also use 1h, 5m etc.\n| order by TimeGenerated asc",
             "resultFormat": "time_series",
-            "workspace": "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/cstar-u-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-u-itn-core-law"
+            "workspace": "/subscriptions/f9f0ed60-4b4b-49a6-97cb-8c8a0f9e2435/resourceGroups/cstar-u-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-u-itn-core-law"
           },
           "azureMonitor": {
             "aggOptions": [
@@ -1029,7 +1029,7 @@
             "dashboardTime": false,
             "query": "//change this example to create your own time series query\n<table name>                                                              //the table to query (e.g. Usage, Heartbeat, Perf)\n| where $__timeFilter(TimeGenerated)                                      //this is a macro used to show the full chartâ€™s time range, choose the datetime column here\n| summarize count() by <group by column>, bin(TimeGenerated, $__interval) //change â€œgroup by columnâ€ to a column in your table, such as â€œComputerâ€. The $__interval macro is used to auto-select the time grain. Can also use 1h, 5m etc.\n| order by TimeGenerated asc",
             "resultFormat": "time_series",
-            "workspace": "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/cstar-u-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-u-itn-core-law"
+            "workspace": "/subscriptions/f9f0ed60-4b4b-49a6-97cb-8c8a0f9e2435/resourceGroups/cstar-u-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-u-itn-core-law"
           },
           "azureMonitor": {
             "aggOptions": [
@@ -1140,7 +1140,7 @@
             "dashboardTime": false,
             "query": "//change this example to create your own time series query\n<table name>                                                              //the table to query (e.g. Usage, Heartbeat, Perf)\n| where $__timeFilter(TimeGenerated)                                      //this is a macro used to show the full chartâ€™s time range, choose the datetime column here\n| summarize count() by <group by column>, bin(TimeGenerated, $__interval) //change â€œgroup by columnâ€ to a column in your table, such as â€œComputerâ€. The $__interval macro is used to auto-select the time grain. Can also use 1h, 5m etc.\n| order by TimeGenerated asc",
             "resultFormat": "time_series",
-            "workspace": "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/cstar-u-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-u-itn-core-law"
+            "workspace": "/subscriptions/f9f0ed60-4b4b-49a6-97cb-8c8a0f9e2435/resourceGroups/cstar-u-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-u-itn-core-law"
           },
           "azureMonitor": {
             "aggOptions": [
@@ -1265,7 +1265,7 @@
             "dashboardTime": false,
             "query": "//change this example to create your own time series query\n<table name>                                                              //the table to query (e.g. Usage, Heartbeat, Perf)\n| where $__timeFilter(TimeGenerated)                                      //this is a macro used to show the full chartâ€™s time range, choose the datetime column here\n| summarize count() by <group by column>, bin(TimeGenerated, $__interval) //change â€œgroup by columnâ€ to a column in your table, such as â€œComputerâ€. The $__interval macro is used to auto-select the time grain. Can also use 1h, 5m etc.\n| order by TimeGenerated asc",
             "resultFormat": "time_series",
-            "workspace": "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/cstar-u-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-u-itn-core-law"
+            "workspace": "/subscriptions/f9f0ed60-4b4b-49a6-97cb-8c8a0f9e2435/resourceGroups/cstar-u-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-u-itn-core-law"
           },
           "azureMonitor": {
             "aggOptions": [
@@ -1390,7 +1390,7 @@
             "dashboardTime": false,
             "query": "//change this example to create your own time series query\n<table name>                                                              //the table to query (e.g. Usage, Heartbeat, Perf)\n| where $__timeFilter(TimeGenerated)                                      //this is a macro used to show the full chartâ€™s time range, choose the datetime column here\n| summarize count() by <group by column>, bin(TimeGenerated, $__interval) //change â€œgroup by columnâ€ to a column in your table, such as â€œComputerâ€. The $__interval macro is used to auto-select the time grain. Can also use 1h, 5m etc.\n| order by TimeGenerated asc",
             "resultFormat": "time_series",
-            "workspace": "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/cstar-u-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-u-itn-core-law"
+            "workspace": "/subscriptions/f9f0ed60-4b4b-49a6-97cb-8c8a0f9e2435/resourceGroups/cstar-u-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-u-itn-core-law"
           },
           "azureMonitor": {
             "aggOptions": [
@@ -1596,14 +1596,14 @@
                 "region": "westeurope",
                 "resourceGroup": "cstar-u-vnet-rg",
                 "resourceName": "cstar-u-app-gw-maz",
-                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+                "subscription": "f9f0ed60-4b4b-49a6-97cb-8c8a0f9e2435"
               }
             ],
             "timeGrain": "auto"
           },
           "queryType": "Azure Monitor",
           "refId": "A",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "f9f0ed60-4b4b-49a6-97cb-8c8a0f9e2435"
         }
       ],
       "title": "App Gateway Response code",
@@ -1683,14 +1683,14 @@
                 "region": "westeurope",
                 "resourceGroup": "cstar-u-api-rg",
                 "resourceName": "cstar-u-apim",
-                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+                "subscription": "f9f0ed60-4b4b-49a6-97cb-8c8a0f9e2435"
               }
             ],
             "timeGrain": "auto"
           },
           "queryType": "Azure Monitor",
           "refId": "A",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "f9f0ed60-4b4b-49a6-97cb-8c8a0f9e2435"
         }
       ],
       "title": "APIM Request",
@@ -1770,14 +1770,14 @@
                 "region": "westeurope",
                 "resourceGroup": "cstar-u-api-rg",
                 "resourceName": "cstar-u-apim",
-                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+                "subscription": "f9f0ed60-4b4b-49a6-97cb-8c8a0f9e2435"
               }
             ],
             "timeGrain": "auto"
           },
           "queryType": "Azure Monitor",
           "refId": "A",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "f9f0ed60-4b4b-49a6-97cb-8c8a0f9e2435"
         }
       ],
       "title": "APIM Capacity",
@@ -1793,16 +1793,6 @@
           "color": {
             "mode": "thresholds"
           },
-          "custom": {
-            "align": "auto",
-            "cellOptions": {
-              "type": "color-text"
-            },
-            "footer": {
-              "reducers": []
-            },
-            "inspect": false
-          },
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -1812,94 +1802,17 @@
                 "value": 0
               },
               {
-                "color": "semi-dark-green",
-                "value": 0.5
-              },
-              {
                 "color": "red",
-                "value": 1
+                "value": 80
               }
             ]
           }
         },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "operation_Name"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 575
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Avg"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 151
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Max"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 186
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Count"
-            },
-            "properties": [
-              {
-                "id": "custom.cellOptions",
-                "value": {
-                  "mode": "lcd",
-                  "type": "gauge",
-                  "valueDisplayMode": "text"
-                }
-              },
-              {
-                "id": "thresholds",
-                "value": {
-                  "mode": "absolute",
-                  "steps": [
-                    {
-                      "color": "green",
-                      "value": 0
-                    },
-                    {
-                      "color": "#EAB839",
-                      "value": 800000
-                    },
-                    {
-                      "color": "red",
-                      "value": 1000000
-                    }
-                  ]
-                }
-              }
-            ]
-          }
-        ]
+        "overrides": []
       },
       "gridPos": {
-        "h": 13,
-        "w": 16,
+        "h": 7,
+        "w": 4,
         "x": 8,
         "y": 22
       },
@@ -1921,7 +1834,7 @@
             "dashboardTime": false,
             "query": "\nlet dataset = requests\n| where $__timeFilter(timestamp)\n| where url has \"$initiativeId\"\n;\ndataset\n| summarize  Avg = avg(duration)/1000, 95Prc = percentile( duration,95)/1000, 99Prc = percentile( duration,99)/1000, Count = count()\n| project operation_Name=\"All\", Avg, 95Prc, 99Prc, Count\n| union(dataset\n| summarize  Avg = avg(duration)/1000, 95Prc = percentile( duration,95)/1000, 99Prc = percentile( duration,99)/1000, Count = count() by operation_Name\n| top 20 by Avg desc\n| order by Count\n)\n\n",
             "resources": [
-              "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/cstar-u-itn-idpay-monitoring-rg/providers/Microsoft.Insights/components/cstar-u-itn-idpay-appinsights"
+              "/subscriptions/f9f0ed60-4b4b-49a6-97cb-8c8a0f9e2435/resourceGroups/cstar-u-itn-idpay-monitoring-rg/providers/Microsoft.Insights/components/cstar-u-itn-idpay-appinsights"
             ],
             "resultFormat": "logs"
           },
@@ -2008,14 +1921,14 @@
                 "region": "westeurope",
                 "resourceGroup": "cstar-u-api-rg",
                 "resourceName": "cstar-u-apim",
-                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+                "subscription": "f9f0ed60-4b4b-49a6-97cb-8c8a0f9e2435"
               }
             ],
             "timeGrain": "auto"
           },
           "queryType": "Azure Monitor",
           "refId": "A",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "f9f0ed60-4b4b-49a6-97cb-8c8a0f9e2435"
         }
       ],
       "title": "APIM Backend Time",
@@ -2105,14 +2018,14 @@
                 "region": "italynorth",
                 "resourceGroup": "cstar-u-itn-idpay-data-rg",
                 "resourceName": "cstar-u-itn-idpay-mongodb-account",
-                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+                "subscription": "f9f0ed60-4b4b-49a6-97cb-8c8a0f9e2435"
               }
             ],
             "timeGrain": "auto"
           },
           "queryType": "Azure Monitor",
           "refId": "A",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "f9f0ed60-4b4b-49a6-97cb-8c8a0f9e2435"
         }
       ],
       "title": "MongoDB RU",
@@ -2194,14 +2107,14 @@
                 "region": "italynorth",
                 "resourceGroup": "cstar-u-itn-idpay-data-rg",
                 "resourceName": "cstar-u-itn-idpay-redis",
-                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+                "subscription": "f9f0ed60-4b4b-49a6-97cb-8c8a0f9e2435"
               }
             ],
             "timeGrain": "auto"
           },
           "queryType": "Azure Monitor",
           "refId": "A",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "f9f0ed60-4b4b-49a6-97cb-8c8a0f9e2435"
         }
       ],
       "title": "Redis Connected client",
@@ -2281,14 +2194,14 @@
                 "region": "italynorth",
                 "resourceGroup": "cstar-u-itn-idpay-data-rg",
                 "resourceName": "cstar-u-itn-idpay-redis",
-                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+                "subscription": "f9f0ed60-4b4b-49a6-97cb-8c8a0f9e2435"
               }
             ],
             "timeGrain": "auto"
           },
           "queryType": "Azure Monitor",
           "refId": "A",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "f9f0ed60-4b4b-49a6-97cb-8c8a0f9e2435"
         }
       ],
       "title": "Redis Used Memory",
@@ -2368,14 +2281,14 @@
                 "region": "italynorth",
                 "resourceGroup": "cstar-u-itn-idpay-data-rg",
                 "resourceName": "cstar-u-itn-idpay-redis",
-                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+                "subscription": "f9f0ed60-4b4b-49a6-97cb-8c8a0f9e2435"
               }
             ],
             "timeGrain": "auto"
           },
           "queryType": "Azure Monitor",
           "refId": "A",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "f9f0ed60-4b4b-49a6-97cb-8c8a0f9e2435"
         }
       ],
       "title": "Redis CPU",
@@ -2456,14 +2369,14 @@
                 "region": "italynorth",
                 "resourceGroup": "cstar-u-itn-idpay-data-rg",
                 "resourceName": "cstar-u-itn-idpay-redis",
-                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+                "subscription": "f9f0ed60-4b4b-49a6-97cb-8c8a0f9e2435"
               }
             ],
             "timeGrain": "auto"
           },
           "queryType": "Azure Monitor",
           "refId": "A",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "f9f0ed60-4b4b-49a6-97cb-8c8a0f9e2435"
         }
       ],
       "title": "Redis Key number",
@@ -2543,14 +2456,14 @@
                 "region": "italynorth",
                 "resourceGroup": "cstar-u-itn-idpay-data-rg",
                 "resourceName": "cstar-u-itn-idpay-redis",
-                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+                "subscription": "f9f0ed60-4b4b-49a6-97cb-8c8a0f9e2435"
               }
             ],
             "timeGrain": "auto"
           },
           "queryType": "Azure Monitor",
           "refId": "A",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "f9f0ed60-4b4b-49a6-97cb-8c8a0f9e2435"
         }
       ],
       "title": "Redis Miss rate",
@@ -2645,14 +2558,14 @@
                 "region": "italynorth",
                 "resourceGroup": "cstar-u-itn-core-aks-rg",
                 "resourceName": "cstar-u-itn-dev-aks",
-                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+                "subscription": "f9f0ed60-4b4b-49a6-97cb-8c8a0f9e2435"
               }
             ],
             "timeGrain": "auto"
           },
           "queryType": "Azure Monitor",
           "refId": "A",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "f9f0ed60-4b4b-49a6-97cb-8c8a0f9e2435"
         }
       ],
       "title": "Idpay Pod by Phase",
@@ -2742,14 +2655,14 @@
                 "region": "italynorth",
                 "resourceGroup": "cstar-u-itn-core-aks-rg",
                 "resourceName": "cstar-u-itn-dev-aks",
-                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+                "subscription": "f9f0ed60-4b4b-49a6-97cb-8c8a0f9e2435"
               }
             ],
             "timeGrain": "auto"
           },
           "queryType": "Azure Monitor",
           "refId": "A",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "f9f0ed60-4b4b-49a6-97cb-8c8a0f9e2435"
         }
       ],
       "title": "Idpay Nodepool CPU",
@@ -2839,14 +2752,14 @@
                 "region": "italynorth",
                 "resourceGroup": "cstar-u-itn-core-aks-rg",
                 "resourceName": "cstar-u-itn-dev-aks",
-                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+                "subscription": "f9f0ed60-4b4b-49a6-97cb-8c8a0f9e2435"
               }
             ],
             "timeGrain": "auto"
           },
           "queryType": "Azure Monitor",
           "refId": "A",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "f9f0ed60-4b4b-49a6-97cb-8c8a0f9e2435"
         }
       ],
       "title": "Idpay Nodepool MEM",
@@ -2941,14 +2854,14 @@
                 "region": "italynorth",
                 "resourceGroup": "cstar-u-itn-core-aks-rg",
                 "resourceName": "cstar-u-itn-dev-aks",
-                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+                "subscription": "f9f0ed60-4b4b-49a6-97cb-8c8a0f9e2435"
               }
             ],
             "timeGrain": "auto"
           },
           "queryType": "Azure Monitor",
           "refId": "A",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "f9f0ed60-4b4b-49a6-97cb-8c8a0f9e2435"
         }
       ],
       "title": "Keycloak Pod by Phase",
@@ -3038,14 +2951,14 @@
                 "region": "italynorth",
                 "resourceGroup": "cstar-u-itn-core-aks-rg",
                 "resourceName": "cstar-u-itn-dev-aks",
-                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+                "subscription": "f9f0ed60-4b4b-49a6-97cb-8c8a0f9e2435"
               }
             ],
             "timeGrain": "auto"
           },
           "queryType": "Azure Monitor",
           "refId": "A",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "f9f0ed60-4b4b-49a6-97cb-8c8a0f9e2435"
         }
       ],
       "title": "Keycloak Nodepool CPU",
@@ -3135,14 +3048,14 @@
                 "region": "italynorth",
                 "resourceGroup": "cstar-u-itn-core-aks-rg",
                 "resourceName": "cstar-u-itn-dev-aks",
-                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+                "subscription": "f9f0ed60-4b4b-49a6-97cb-8c8a0f9e2435"
               }
             ],
             "timeGrain": "auto"
           },
           "queryType": "Azure Monitor",
           "refId": "A",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "f9f0ed60-4b4b-49a6-97cb-8c8a0f9e2435"
         }
       ],
       "title": "Keycloak Nodepool MEM",
@@ -3262,7 +3175,7 @@
             "dashboardTime": false,
             "query": "KubePodInventory\n| where TimeGenerated > ago(2m)\n| where ClusterName == \"cstar-u-itn-dev-aks\"\n| where Namespace == \"idpay\"\n| summarize arg_max(TimeGenerated, *) by ContainerName\n| project Name, ContainerName\n| join kind = inner (\n    Perf\n    | where TimeGenerated > ago(2m)\n    | where ObjectName == 'K8SContainer'\n    | where CounterName == 'cpuLimitNanoCores'\n    | where InstanceName contains 'cstar-u-itn-dev-aks'\n    | extend ContainerNameParts = split(InstanceName, '/')\n    | extend ContainerNamePartCount = array_length(ContainerNameParts)            \n    | extend PodUIDIndex = ContainerNamePartCount - 2, ContainerNameIndex = ContainerNamePartCount - 1 \n    | extend ContainerName = strcat(ContainerNameParts[PodUIDIndex], '/', ContainerNameParts[ContainerNameIndex])\n    | summarize arg_max(TimeGenerated, *) by ContainerName\n    | project ContainerName, CpuLimit=CounterValue\n    | join kind = inner (\n        Perf\n        | where TimeGenerated > ago(2m)\n        | where ObjectName == 'K8SContainer'\n        | where CounterName == 'cpuUsageNanoCores'\n        | where InstanceName contains 'cstar-u-itn-dev-aks'\n        | extend ContainerNameParts = split(InstanceName, '/')\n        | extend ContainerNamePartCount = array_length(ContainerNameParts)            \n        | extend PodUIDIndex = ContainerNamePartCount - 2, ContainerNameIndex = ContainerNamePartCount - 1 \n        | extend ContainerName = strcat(ContainerNameParts[PodUIDIndex], '/', ContainerNameParts[ContainerNameIndex])\n        | summarize arg_max(TimeGenerated, *) by ContainerName\n        | project TimeGenerated, ContainerName, CpuUsage=CounterValue\n    ) on ContainerName\n) on ContainerName\n| order by Name asc\n| project Name, CpuLimit=(CpuLimit / 1000000), CpuUsage=(CpuUsage / 1000000)",
             "resources": [
-              "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/cstar-u-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-u-itn-core-law"
+              "/subscriptions/f9f0ed60-4b4b-49a6-97cb-8c8a0f9e2435/resourceGroups/cstar-u-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-u-itn-core-law"
             ],
             "resultFormat": "table"
           },
@@ -3408,7 +3321,7 @@
             "dashboardTime": false,
             "query": "KubePodInventory\n| where TimeGenerated > ago(2m)\n| where ClusterName == \"cstar-u-itn-dev-aks\"\n| where Namespace == \"keycloak\"\n| summarize arg_max(TimeGenerated, *) by ContainerName\n| project Name, ContainerName\n| join kind = inner (\n    Perf\n    | where TimeGenerated > ago(2m)\n    | where ObjectName == 'K8SContainer'\n    | where CounterName == 'cpuLimitNanoCores'\n    | where InstanceName contains 'cstar-u-itn-dev-aks'\n    | extend ContainerNameParts = split(InstanceName, '/')\n    | extend ContainerNamePartCount = array_length(ContainerNameParts)            \n    | extend PodUIDIndex = ContainerNamePartCount - 2, ContainerNameIndex = ContainerNamePartCount - 1 \n    | extend ContainerName = strcat(ContainerNameParts[PodUIDIndex], '/', ContainerNameParts[ContainerNameIndex])\n    | summarize arg_max(TimeGenerated, *) by ContainerName\n    | project ContainerName, CpuLimit=CounterValue\n    | join kind = inner (\n        Perf\n        | where TimeGenerated > ago(2m)\n        | where ObjectName == 'K8SContainer'\n        | where CounterName == 'cpuUsageNanoCores'\n        | where InstanceName contains 'cstar-u-itn-dev-aks'\n        | extend ContainerNameParts = split(InstanceName, '/')\n        | extend ContainerNamePartCount = array_length(ContainerNameParts)            \n        | extend PodUIDIndex = ContainerNamePartCount - 2, ContainerNameIndex = ContainerNamePartCount - 1 \n        | extend ContainerName = strcat(ContainerNameParts[PodUIDIndex], '/', ContainerNameParts[ContainerNameIndex])\n        | summarize arg_max(TimeGenerated, *) by ContainerName\n        | project TimeGenerated, ContainerName, CpuUsage=CounterValue\n    ) on ContainerName\n) on ContainerName\n| order by Name asc\n| project Name, CpuLimit=(CpuLimit / 1000000), CpuUsage=(CpuUsage / 1000000)",
             "resources": [
-              "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/cstar-u-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-u-itn-core-law"
+              "/subscriptions/f9f0ed60-4b4b-49a6-97cb-8c8a0f9e2435/resourceGroups/cstar-u-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-u-itn-core-law"
             ],
             "resultFormat": "table"
           },
@@ -3569,14 +3482,14 @@
                 "region": "italynorth",
                 "resourceGroup": "cstar-u-itn-idpay-data-rg",
                 "resourceName": "cstar-u-itn-idpay-evh-rdb-ns",
-                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+                "subscription": "f9f0ed60-4b4b-49a6-97cb-8c8a0f9e2435"
               }
             ],
             "timeGrain": "auto"
           },
           "queryType": "Azure Monitor",
           "refId": "A",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "f9f0ed60-4b4b-49a6-97cb-8c8a0f9e2435"
         }
       ],
       "title": "RDB Topic Incoming Messages",
@@ -3698,14 +3611,14 @@
                 "region": "italynorth",
                 "resourceGroup": "cstar-u-itn-idpay-data-rg",
                 "resourceName": "cstar-u-itn-idpay-evh-rdb-ns",
-                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+                "subscription": "f9f0ed60-4b4b-49a6-97cb-8c8a0f9e2435"
               }
             ],
             "timeGrain": "auto"
           },
           "queryType": "Azure Monitor",
           "refId": "A",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "f9f0ed60-4b4b-49a6-97cb-8c8a0f9e2435"
         }
       ],
       "title": "RDB Topic Outgoing Messages",
@@ -3827,14 +3740,14 @@
                 "region": "italynorth",
                 "resourceGroup": "cstar-u-itn-idpay-data-rg",
                 "resourceName": "cstar-u-itn-idpay-evh-rdb-ns",
-                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+                "subscription": "f9f0ed60-4b4b-49a6-97cb-8c8a0f9e2435"
               }
             ],
             "timeGrain": "auto"
           },
           "queryType": "Azure Monitor",
           "refId": "A",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "f9f0ed60-4b4b-49a6-97cb-8c8a0f9e2435"
         },
         {
           "azureMonitor": {
@@ -3868,14 +3781,14 @@
                 "region": "italynorth",
                 "resourceGroup": "cstar-u-itn-idpay-data-rg",
                 "resourceName": "cstar-u-itn-idpay-evh-rdb-ns",
-                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+                "subscription": "f9f0ed60-4b4b-49a6-97cb-8c8a0f9e2435"
               }
             ],
             "timeGrain": "auto"
           },
           "queryType": "Azure Monitor",
           "refId": "B",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "f9f0ed60-4b4b-49a6-97cb-8c8a0f9e2435"
         },
         {
           "azureMonitor": {
@@ -3909,14 +3822,14 @@
                 "region": "italynorth",
                 "resourceGroup": "cstar-u-itn-idpay-data-rg",
                 "resourceName": "cstar-u-itn-idpay-evh-rdb-ns",
-                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+                "subscription": "f9f0ed60-4b4b-49a6-97cb-8c8a0f9e2435"
               }
             ],
             "timeGrain": "auto"
           },
           "queryType": "Azure Monitor",
           "refId": "C",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "f9f0ed60-4b4b-49a6-97cb-8c8a0f9e2435"
         }
       ],
       "title": "RDB Topic Errors and Throttling",
@@ -3970,7 +3883,7 @@
           "rawMode": true,
           "refId": "A",
           "resultFormat": "table",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "f9f0ed60-4b4b-49a6-97cb-8c8a0f9e2435"
         },
         "refresh": 1,
         "regex": "",
