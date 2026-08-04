@@ -25,7 +25,7 @@
                     "source": {
                         "type": "CosmosDbMongoDbApiSource",
                         "batchSize": 100,
-                        "filter": "{\n  \"$or\": [\n    { \"initiativeId\": { \"$in\": [\"68dd003ccce8c534d1da22bc\", \"69e0fa95e21efa516c7b8dec\"] } },\n    { \"_id\": { \"$in\": [{ \"$oid\": \"68dd003ccce8c534d1da22bc\" }, { \"$oid\": \"69e0fa95e21efa516c7b8dec\" }] } }\n  ]\n}"
+                        "filter": "{\n  \"initiativeId\": {\n    \"$in\": [\"68dd003ccce8c534d1da22bc\", \"69e0fa95e21efa516c7b8dec\"]\n  }\n}"
                     },
                     "sink": {
                         "type": "AzureDataExplorerSink"
