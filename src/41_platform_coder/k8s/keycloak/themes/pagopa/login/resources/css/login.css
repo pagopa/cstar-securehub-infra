@@ -17,7 +17,7 @@
   background: var(--pagopa-light-grey-bg);
 }
 body {
-  font-family: 'Titillium Web', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: "Titillium Web", "Helvetica Neue", Helvetica, Arial, sans-serif;
   background-color: var(--pagopa-light-grey-bg);
   color: var(--pagopa-text-dark);
   display: flex;
@@ -148,6 +148,13 @@ a:hover {
   margin-left: 10px;
 }
 
+.forgot-password {
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+  font-weight: 600;
+}
+
 #kc-error-message {
   margin-bottom: 20px;
   padding: 15px;
@@ -162,6 +169,28 @@ a:hover {
   margin: 0;
   font-size: 14px;
   color: #721c24;
+}
+
+#kc-success-message {
+  margin-bottom: 20px;
+  padding: 15px;
+  background-color: #E1F4E1;
+  border: 1px solid #89D188;
+  color: #224021;
+  border-radius: 8px;
+  text-align: left;
+}
+
+#kc-success-message p {
+  margin: 0;
+  font-size: 14px;
+  color: #224021;
+}
+
+#kc-form-buttons {
+  display: flex;
+  width: 100%;
+  justify-content: center;
 }
 
 .form-group {
@@ -222,7 +251,7 @@ a:hover {
   font-weight: 700;
   cursor: pointer;
   transition: background-color 0.3s;
-  width: 87px;
+  width: 87px !important;
   height: 48px;
 }
 
