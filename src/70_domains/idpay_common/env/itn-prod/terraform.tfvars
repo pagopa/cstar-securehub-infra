@@ -115,3 +115,5 @@ idpay_pgflex_params = {
   auto_grow_enabled                      = false
   storage_tier                           = "PLACEHOLDER"
 }
+
+enabled_cdn_multi_initiative = false
