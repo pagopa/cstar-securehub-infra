@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Accedi - Portale Esercenti</title>
-    <link href="${url.resourcesPath}/css/login.css" rel="stylesheet">
+    <link href="${url.resourcesPath}/${properties.styles}" rel="stylesheet">
 </head>
 <body>
     <div class="page-container">
