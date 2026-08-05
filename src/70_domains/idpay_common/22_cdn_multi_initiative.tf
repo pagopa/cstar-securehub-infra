@@ -84,26 +84,26 @@ module "cdn_multi_initiative" {
             {
               type         = "url_path"
               operator     = "RegEx"
-              match_values = ["^/(${local.multi_initiatives_regex})/(${local.multi_fe_regex})/assets(/.*)?$"]
+              match_values = ["^/?(${local.multi_initiatives_regex})/(${local.multi_fe_regex})/assets(/.*)?$"]
               negate       = true
             },
             {
               type         = "url_path"
               operator     = "RegEx"
-              match_values = ["^/(${local.multi_initiatives_regex})/(${local.multi_fe_regex})(/.*)?$"]
+              match_values = ["^/?(${local.multi_initiatives_regex})/(${local.multi_fe_regex})(/.*)?$"]
               negate       = false
             },
             {
               type         = "url_file_extension"
-              operator     = "Any"
-              match_values = []
-              negate       = true
+              operator     = "LessThanOrEqual"
+              match_values = ["0"]
+              negate       = false
             }
           ]
 
           actions = [{
             type                    = "rewrite"
-            source_pattern          = "/*"
+            source_pattern          = "/"
             destination             = "/{url_path:seg0}/{url_path:seg1}/index.html"
             preserve_unmatched_path = false
           }]
