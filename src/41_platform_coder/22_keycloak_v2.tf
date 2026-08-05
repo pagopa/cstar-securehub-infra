@@ -7,7 +7,7 @@ locals {
 
   text_files = {
     for f in local.files :
-    local.flattened_key[f] => file("${local.theme_dir}/${f}")
+    local.flattened_key[f] => replace(file("${local.theme_dir}/${f}"), "themeVersion", substr(filesha256("${local.theme_dir}/login/resources/css/login.css"), 0, 12))
     if !endswith(f, "/") && !contains(local.binary_exts, lower(substr(f, length(f) - 4, 5)))
   }
 
