@@ -32,10 +32,6 @@ locals {
       name = data.azurerm_virtual_network.vnet_weu_integration.name
       id   = data.azurerm_virtual_network.vnet_weu_integration.id
     }
-    vnet_weu_aks = {
-      name = data.azurerm_virtual_network.vnet_weu_aks.name
-      id   = data.azurerm_virtual_network.vnet_weu_aks.id
-    }
   }
 
   #
