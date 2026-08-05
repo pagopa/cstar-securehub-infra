@@ -35,6 +35,7 @@ module "keycloak_setup" {
       enabled      = true
       login_theme  = "pagopa"
       email_theme  = "pagopa"
+      reset_password_allowed = true
 
       # Password policy applied on first-time password set (executeActionsEmail -> UPDATE_PASSWORD)
       # and on any subsequent password change.
