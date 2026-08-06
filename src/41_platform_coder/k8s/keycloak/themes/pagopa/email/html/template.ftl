@@ -27,7 +27,7 @@
       .content {
         margin-right: 5.625rem;
       }
-            
+
       .btn-primary {
         display: inline-block;
         width: fit-content;
@@ -43,7 +43,7 @@
         height: 48px;
         line-height: 1;
       }
-      
+
       .btn-primary:hover {
         background-color: #005bb5;
       }

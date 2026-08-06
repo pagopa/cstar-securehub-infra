@@ -45,7 +45,7 @@
                         <div class="form-group">
                             <input type="password" id="password" name="password" placeholder="Password" required>
                         </div>
-            
+
                     <div class="${properties.kcFormGroupClass!} ${properties.kcFormSettingClass!}">
                             <div class="${properties.kcFormOptionsWrapperClass!} forgot-password">
                                 <#if realm.resetPasswordAllowed>
