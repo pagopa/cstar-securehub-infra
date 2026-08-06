@@ -5,7 +5,7 @@ resource "azurerm_data_factory_linked_custom_service" "adf_cosmosdb_linked_servi
   data_factory_id = data.azurerm_data_factory.data_factory.id
   type            = "CosmosDbMongoDbApi"
   type_properties_json = jsonencode({
-    connectionString       = module.cosmos_db_account.primary_connection_stringsExpand commentComment on line R8
+    connectionString       = module.cosmos_db_account.primary_connection_strings
     database               = each.key
     isServerVersionAbove32 = true
   })
