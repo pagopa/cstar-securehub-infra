@@ -27,4 +27,5 @@ variable "argo_cd_server" {
 variable "eventhub_namespace_name" {
   type        = string
   description = "Name of the Event Hub Namespace used for Kafka connection."
+  default = ""
 }
