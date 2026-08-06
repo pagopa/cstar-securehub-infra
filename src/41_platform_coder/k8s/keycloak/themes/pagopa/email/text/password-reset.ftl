@@ -1,2 +1,23 @@
 <#ftl output_format="plainText">
-${msg("passwordResetBody", link)}
+${msg("emailGreetings")}
+${msg("passwordResetInput")}
+
+${msg("passwordResetLinkInstructions")}
+${msg("passwordResetLink")}
+${link}
+
+${msg("passwordResetLinkInfo")}
+
+${msg("passwordResetSecurityInfo")}
+${msg("passwordResetSecurityList1")}
+${msg("passwordResetSecurityList2")}
+${msg("passwordResetSecurityList3")}
+${msg("passwordResetSecurityList4")}
+
+${msg("emailHelp")} ${msg("emailMailTo")} ${msg("passwordResetEmail")}
+
+${msg("emailRegards")}
+${msg("emailRegardsFrom")}
+
+${msg("passwordResetCTA")}
+${link}

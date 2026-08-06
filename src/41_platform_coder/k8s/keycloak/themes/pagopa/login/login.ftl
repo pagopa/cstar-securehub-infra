@@ -37,10 +37,6 @@
                             <div id="kc-error-message">
                                 <p>${message.summary}</p>
                             </div>
-                        <#elseif message?has_content & message.type = "success">
-                            <div id="kc-success-message">
-                                <p>${message.summary}</p>
-                            </div>
                           </#if>
 
                         <div class="form-group">
@@ -68,6 +64,12 @@
 
                 </form>
             </div>
+                <#if message?has_content & message.type = "success">
+                    <div id="kc-success-message">
+                        <img class="check-circle-icon" src="${url.resourcesPath}/img/check-circle.png" alt="success" aria-hidden="true" />
+                        <p>${message.summary}</p>
+                    </div>
+                </#if>
         </main>
 
         <footer class="footer">
