@@ -46,7 +46,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 5,
+        "h": 4,
         "w": 6,
         "x": 0,
         "y": 0
@@ -75,9 +75,9 @@
           "azureLogAnalytics": {
             "dashboardTime": true,
             "mode": "raw",
-            "query": "AppMetrics\n| where Name startswith \"keycloak_user\"\n| extend Event = tostring(Properties[\"event\"])\n| summarize TotalEvents = count()\n| project ['Total events'] = TotalEvents",
+            "query": "AppMetrics\n| where Name startswith \"keycloak_user\"\n| extend Event = tostring(Properties[\"event\"])\n| summarize TotalEvents = sum(Sum)\n| project ['Total events'] = TotalEvents",
             "resources": [
-              "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/cstar-d-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-d-itn-core-law"
+              "/subscriptions/$subscription/resourceGroups/$CoreMonitorRg/providers/Microsoft.OperationalInsights/workspaces/$CoreLaw"
             ],
             "resultFormat": "logs",
             "timeColumn": "TimeGenerated"
@@ -92,9 +92,9 @@
               {
                 "metricNamespace": "Microsoft.OperationalInsights/workspaces",
                 "region": "italynorth",
-                "resourceGroup": "cstar-d-itn-idpay-monitoring-rg",
-                "resourceName": "cstar-d-itn-idpay-law",
-                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+                "resourceGroup": "$IdpayMonitoringRg",
+                "resourceName": "$IdpayLaw",
+                "subscription": "$subscription"
               }
             ],
             "timeGrain": "auto"
@@ -105,7 +105,7 @@
           },
           "queryType": "Azure Log Analytics",
           "refId": "A",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "$subscription"
         }
       ],
       "title": "Events count",
@@ -133,11 +133,11 @@
               },
               {
                 "color": "#EAB839",
-                "value": 20
+                "value": 5
               },
               {
                 "color": "red",
-                "value": 50
+                "value": 20
               }
             ]
           },
@@ -146,7 +146,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 5,
+        "h": 4,
         "w": 4,
         "x": 6,
         "y": 0
@@ -176,9 +176,9 @@
           "azureLogAnalytics": {
             "dashboardTime": true,
             "mode": "raw",
-            "query": "AppMetrics\n| where Name startswith \"keycloak_user\"\n| extend \n    Event = tostring(Properties[\"event\"]),\n    Error = tostring(Properties[\"error\"])\n| summarize \n    TotalEvents = count(),\n    TotalErrors = countif(isnotempty(Error))\n| extend ErrorRatePercentage = round((todouble(TotalErrors) / TotalEvents) * 100, 2)\n| project \n    ['Error rate'] = ErrorRatePercentage",
+            "query": "AppMetrics\n| where Name startswith \"keycloak_user\"\n| extend \n    Event = tostring(Properties[\"event\"]),\n    Error = tostring(Properties[\"error\"])\n| summarize \n    TotalEvents = sum(Sum),\n    TotalErrors = sumif(Sum, isnotempty(Error))\n| extend ErrorRatePercentage = round((todouble(TotalErrors) / TotalEvents) * 100, 2)\n| project \n    ['Error rate'] = ErrorRatePercentage",
             "resources": [
-              "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/cstar-d-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-d-itn-core-law"
+              "/subscriptions/$subscription/resourceGroups/$CoreMonitorRg/providers/Microsoft.OperationalInsights/workspaces/$CoreLaw"
             ],
             "resultFormat": "logs",
             "timeColumn": "TimeGenerated"
@@ -193,9 +193,9 @@
               {
                 "metricNamespace": "Microsoft.OperationalInsights/workspaces",
                 "region": "italynorth",
-                "resourceGroup": "cstar-d-itn-idpay-monitoring-rg",
-                "resourceName": "cstar-d-itn-idpay-law",
-                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+                "resourceGroup": "$IdpayMonitoringRg",
+                "resourceName": "$IdpayLaw",
+                "subscription": "$subscription"
               }
             ],
             "timeGrain": "auto"
@@ -206,11 +206,316 @@
           },
           "queryType": "Azure Log Analytics",
           "refId": "A",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "$subscription"
         }
       ],
       "title": "Error rate",
       "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 11,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Total Errors"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Total Events"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 13,
+        "w": 14,
+        "x": 10,
+        "y": 0
+      },
+      "id": 13,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.4.6",
+      "targets": [
+        {
+          "azureLogAnalytics": {
+            "dashboardTime": true,
+            "mode": "raw",
+            "query": "AppMetrics\n| where Name startswith \"keycloak_user\"\n| extend \n    Event = tostring(Properties[\"event\"]),\n    Error = tostring(Properties[\"error\"])\n| summarize \n    TotalEvents = sum(Sum),\n    TotalErrors = sumif(Sum, isnotempty(Error))\n    by bin(TimeGenerated, max_of($__interval, $granularita))\n| project \n    TimeGenerated,\n    ['Total Events'] = TotalEvents,\n    ['Total Errors'] = TotalErrors\n| order by TimeGenerated asc",
+            "resources": [
+              "/subscriptions/$subscription/resourceGroups/$CoreMonitorRg/providers/Microsoft.OperationalInsights/workspaces/$CoreLaw"
+            ],
+            "resultFormat": "logs",
+            "timeColumn": "TimeGenerated"
+          },
+          "azureMonitor": {
+            "allowedTimeGrainsMs": [],
+            "customNamespace": "Microsoft.OperationalInsights/workspaces",
+            "dimensionFilters": [],
+            "metricNamespace": "microsoft.operationalinsights/workspaces",
+            "region": "italynorth",
+            "resources": [
+              {
+                "metricNamespace": "Microsoft.OperationalInsights/workspaces",
+                "region": "italynorth",
+                "resourceGroup": "$IdpayMonitoringRg",
+                "resourceName": "$IdpayLaw",
+                "subscription": "$subscription"
+              }
+            ],
+            "timeGrain": "auto"
+          },
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "refId": "A",
+          "subscription": "$subscription"
+        }
+      ],
+      "title": "Load trend",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "keycloak-1 events"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "light-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 10,
+        "x": 0,
+        "y": 4
+      },
+      "id": 16,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.4.6",
+      "targets": [
+        {
+          "azureLogAnalytics": {
+            "dashboardTime": true,
+            "mode": "raw",
+            "query": "AppMetrics\n| where Name startswith \"keycloak_user\"\n| extend \n    Event = tostring(Properties[\"event\"])\n| summarize \n    TotalEvents = sum(Sum)\n    by AppRoleInstance, bin(TimeGenerated, max_of($__interval, $granularita))\n| project \n    TimeGenerated, AppRoleInstance, ['events'] = TotalEvents",
+            "resources": [
+              "/subscriptions/$subscription/resourceGroups/$CoreMonitorRg/providers/Microsoft.OperationalInsights/workspaces/$CoreLaw"
+            ],
+            "resultFormat": "logs",
+            "timeColumn": "TimeGenerated"
+          },
+          "azureMonitor": {
+            "allowedTimeGrainsMs": [],
+            "customNamespace": "Microsoft.OperationalInsights/workspaces",
+            "dimensionFilters": [],
+            "metricNamespace": "microsoft.operationalinsights/workspaces",
+            "region": "italynorth",
+            "resources": [
+              {
+                "metricNamespace": "Microsoft.OperationalInsights/workspaces",
+                "region": "italynorth",
+                "resourceGroup": "$IdpayMonitoringRg",
+                "resourceName": "$IdpayLaw",
+                "subscription": "$subscription"
+              }
+            ],
+            "timeGrain": "auto"
+          },
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "refId": "A",
+          "subscription": "$subscription"
+        }
+      ],
+      "title": "Load trend by instance",
+      "transformations": [
+        {
+          "id": "partitionByValues",
+          "options": {
+            "fields": [
+              "AppRoleInstance"
+            ],
+            "keepFields": false,
+            "naming": {
+              "asLabels": false
+            }
+          }
+        }
+      ],
+      "type": "timeseries"
     },
     {
       "datasource": {
@@ -334,24 +639,24 @@
         ]
       },
       "gridPos": {
-        "h": 25,
-        "w": 14,
-        "x": 10,
-        "y": 0
+        "h": 11,
+        "w": 10,
+        "x": 0,
+        "y": 13
       },
-      "id": 6,
+      "id": 7,
       "options": {
         "barRadius": 0,
-        "barWidth": 0.8,
+        "barWidth": 0.95,
         "fullHighlight": false,
-        "groupWidth": 0.74,
+        "groupWidth": 0.6,
         "legend": {
           "calcs": [],
           "displayMode": "list",
           "placement": "bottom",
           "showLegend": true
         },
-        "orientation": "horizontal",
+        "orientation": "vertical",
         "showValue": "always",
         "stacking": "none",
         "text": {
@@ -371,9 +676,9 @@
           "azureLogAnalytics": {
             "dashboardTime": true,
             "mode": "raw",
-            "query": "AppMetrics\n| where Name startswith \"keycloak_user\"\n| extend \n    ClientId = tostring(Properties[\"client_id\"]),\n    Error = tostring(Properties[\"error\"])\n| summarize \n    TotalEvents = count(),\n    TotalErrors = countif(isnotempty(Error))\n    by ClientId\n| extend ErrorRatePercentage = round((todouble(TotalErrors) / TotalEvents) * 100, 2)\n| project \n    ['Client'] = ClientId,\n    ['Total events'] = TotalEvents,\n    ['Total errors'] = TotalErrors,\n    ['Error rate'] = strcat(ErrorRatePercentage, \"%\")\n| sort by ['Total events'] desc",
+            "query": "AppMetrics\n| where Name startswith \"keycloak_user\"\n| extend \n    Realm = tostring(Properties[\"realm\"]),\n    Error = tostring(Properties[\"error\"])\n| summarize \n    TotalEvents = sum(Sum),\n    TotalErrors = sumif(Sum, isnotempty(Error))\n    by Realm\n| extend ErrorRatePercentage = round((todouble(TotalErrors) / TotalEvents) * 100, 2)\n| project \n    ['Realm'] = Realm,\n    ['Total events'] = TotalEvents,\n    ['Total errors'] = TotalErrors,\n    ['Error rate'] = strcat(ErrorRatePercentage, \"%\")\n| sort by ['Total events'] desc",
             "resources": [
-              "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/cstar-d-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-d-itn-core-law"
+              "/subscriptions/$subscription/resourceGroups/$CoreMonitorRg/providers/Microsoft.OperationalInsights/workspaces/$CoreLaw"
             ],
             "resultFormat": "logs",
             "timeColumn": "TimeGenerated"
@@ -388,9 +693,9 @@
               {
                 "metricNamespace": "Microsoft.OperationalInsights/workspaces",
                 "region": "italynorth",
-                "resourceGroup": "cstar-d-itn-idpay-monitoring-rg",
-                "resourceName": "cstar-d-itn-idpay-law",
-                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+                "resourceGroup": "$IdpayMonitoringRg",
+                "resourceName": "$IdpayLaw",
+                "subscription": "$subscription"
               }
             ],
             "timeGrain": "auto"
@@ -401,10 +706,10 @@
           },
           "queryType": "Azure Log Analytics",
           "refId": "A",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "$subscription"
         }
       ],
-      "title": "Events and errors by client",
+      "title": "Events and errors by realm",
       "type": "barchart"
     },
     {
@@ -434,13 +739,16 @@
               "viz": false
             },
             "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
+            "lineInterpolation": "smooth",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 2,
             "pointSize": 5,
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "auto",
+            "showPoints": "never",
             "showValues": false,
             "spanNulls": false,
             "stacking": {
@@ -462,46 +770,15 @@
             ]
           }
         },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Total Errors"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "red",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Total Events"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "blue",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          }
-        ]
+        "overrides": []
       },
       "gridPos": {
-        "h": 10,
-        "w": 10,
-        "x": 0,
-        "y": 5
+        "h": 11,
+        "w": 14,
+        "x": 10,
+        "y": 13
       },
-      "id": 13,
+      "id": 14,
       "options": {
         "legend": {
           "calcs": [],
@@ -521,9 +798,9 @@
           "azureLogAnalytics": {
             "dashboardTime": true,
             "mode": "raw",
-            "query": "AppMetrics\n| where $__timeFilter(TimeGenerated)\n| where Name startswith \"keycloak_user\"\n| extend \n    Event = tostring(Properties[\"event\"]),\n    Error = tostring(Properties[\"error\"])\n| summarize \n    TotalEvents = count(),\n    TotalErrors = countif(isnotempty(Error))\n    by bin(TimeGenerated, $__interval)\n| project \n    TimeGenerated,\n    ['Total Events'] = TotalEvents,\n    ['Total Errors'] = TotalErrors\n| order by TimeGenerated asc",
+            "query": "AppMetrics\n| where Name startswith \"keycloak_user\"\n| extend Realm = tostring(Properties[\"realm\"])\n| summarize TotalEvents = sum(Sum) \n    by Realm, bin(TimeGenerated, max_of($__interval, $granularita))\n| project\n    TimeGenerated,\n    Realm, \n    [\"events\"] = TotalEvents",
             "resources": [
-              "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/cstar-d-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-d-itn-core-law"
+              "/subscriptions/$subscription/resourceGroups/$CoreMonitorRg/providers/Microsoft.OperationalInsights/workspaces/$CoreLaw"
             ],
             "resultFormat": "logs",
             "timeColumn": "TimeGenerated"
@@ -538,9 +815,9 @@
               {
                 "metricNamespace": "Microsoft.OperationalInsights/workspaces",
                 "region": "italynorth",
-                "resourceGroup": "cstar-d-itn-idpay-monitoring-rg",
-                "resourceName": "cstar-d-itn-idpay-law",
-                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+                "resourceGroup": "$IdpayMonitoringRg",
+                "resourceName": "$IdpayLaw",
+                "subscription": "$subscription"
               }
             ],
             "timeGrain": "auto"
@@ -551,10 +828,24 @@
           },
           "queryType": "Azure Log Analytics",
           "refId": "A",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "$subscription"
         }
       ],
-      "title": "Events and errors",
+      "title": "Events trend by realm",
+      "transformations": [
+        {
+          "id": "partitionByValues",
+          "options": {
+            "fields": [
+              "Realm"
+            ],
+            "keepFields": true,
+            "naming": {
+              "asLabels": false
+            }
+          }
+        }
+      ],
       "type": "timeseries"
     },
     {
@@ -682,7 +973,7 @@
         "h": 10,
         "w": 10,
         "x": 0,
-        "y": 15
+        "y": 24
       },
       "id": 9,
       "options": {
@@ -716,9 +1007,9 @@
           "azureLogAnalytics": {
             "dashboardTime": true,
             "mode": "raw",
-            "query": "AppMetrics\n| where Name startswith \"keycloak_user\"\n| extend \n    Realm = tostring(Properties[\"realm\"]),\n    Event = tostring(Properties[\"event\"]),\n    Error = tostring(Properties[\"error\"])\n| summarize \n    TotalEvents = count(),\n    TotalErrors = countif(isnotempty(Error))\n    by Event\n| extend ErrorRatePercentage = round((todouble(TotalErrors) / TotalEvents) * 100, 2)\n| project \n    ['Event'] = Event,\n    ['Total events'] = TotalEvents,\n    ['Total errors'] = TotalErrors,\n    ['Error rate'] = strcat(ErrorRatePercentage, \"%\")\n| sort by ['Total events'] desc",
+            "query": "AppMetrics\n| where Name startswith \"keycloak_user\"\n| extend \n    Realm = tostring(Properties[\"realm\"]),\n    Event = tostring(Properties[\"event\"]),\n    Error = tostring(Properties[\"error\"])\n| summarize \n    TotalEvents = sum(Sum),\n    TotalErrors = sumif(Sum, isnotempty(Error))\n    by Event\n| extend ErrorRatePercentage = round((todouble(TotalErrors) / TotalEvents) * 100, 2)\n| project \n    ['Event'] = Event,\n    ['Total events'] = TotalEvents,\n    ['Total errors'] = TotalErrors,\n    ['Error rate'] = strcat(ErrorRatePercentage, \"%\")\n| sort by ['Total events'] desc",
             "resources": [
-              "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/cstar-d-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-d-itn-core-law"
+              "/subscriptions/$subscription/resourceGroups/$CoreMonitorRg/providers/Microsoft.OperationalInsights/workspaces/$CoreLaw"
             ],
             "resultFormat": "logs",
             "timeColumn": "TimeGenerated"
@@ -733,9 +1024,9 @@
               {
                 "metricNamespace": "Microsoft.OperationalInsights/workspaces",
                 "region": "italynorth",
-                "resourceGroup": "cstar-d-itn-idpay-monitoring-rg",
-                "resourceName": "cstar-d-itn-idpay-law",
-                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+                "resourceGroup": "$IdpayMonitoringRg",
+                "resourceName": "$IdpayLaw",
+                "subscription": "$subscription"
               }
             ],
             "timeGrain": "auto"
@@ -746,7 +1037,7 @@
           },
           "queryType": "Azure Log Analytics",
           "refId": "A",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "$subscription"
         }
       ],
       "title": "Events and errors by event",
@@ -874,24 +1165,24 @@
         ]
       },
       "gridPos": {
-        "h": 11,
-        "w": 10,
-        "x": 0,
-        "y": 25
+        "h": 24,
+        "w": 14,
+        "x": 10,
+        "y": 24
       },
-      "id": 7,
+      "id": 6,
       "options": {
         "barRadius": 0,
-        "barWidth": 0.95,
+        "barWidth": 0.8,
         "fullHighlight": false,
-        "groupWidth": 0.6,
+        "groupWidth": 0.74,
         "legend": {
           "calcs": [],
           "displayMode": "list",
           "placement": "bottom",
           "showLegend": true
         },
-        "orientation": "vertical",
+        "orientation": "horizontal",
         "showValue": "always",
         "stacking": "none",
         "text": {
@@ -911,9 +1202,9 @@
           "azureLogAnalytics": {
             "dashboardTime": true,
             "mode": "raw",
-            "query": "AppMetrics\n| where Name startswith \"keycloak_user\"\n| extend \n    Realm = tostring(Properties[\"realm\"]),\n    Error = tostring(Properties[\"error\"])\n| summarize \n    TotalEvents = count(),\n    TotalErrors = countif(isnotempty(Error))\n    by Realm\n| extend ErrorRatePercentage = round((todouble(TotalErrors) / TotalEvents) * 100, 2)\n| project \n    ['Realm'] = Realm,\n    ['Total events'] = TotalEvents,\n    ['Total errors'] = TotalErrors,\n    ['Error rate'] = strcat(ErrorRatePercentage, \"%\")\n| sort by ['Total events'] desc",
+            "query": "AppMetrics\n| where Name startswith \"keycloak_user\"\n| extend \n    Realm = tostring(Properties[\"realm\"]),\n    ClientId = tostring(Properties[\"client_id\"]),\n    Error = tostring(Properties[\"error\"])\n| summarize \n    TotalEvents = sum(Sum),\n    TotalErrors = sumif(Sum, isnotempty(Error))\n    by Realm, ClientId\n| where TotalEvents > 0\n| extend ErrorRatePercentage = round((todouble(TotalErrors) / TotalEvents) * 100, 2)\n| project \n    ['Realm and client'] = strcat(Realm, \"/\", ClientId),\n    ['Total events'] = TotalEvents,\n    ['Total errors'] = TotalErrors,\n    ['Error rate'] = strcat(ErrorRatePercentage, \"%\")\n| sort by ['Total events'] desc",
             "resources": [
-              "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/cstar-d-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-d-itn-core-law"
+              "/subscriptions/$subscription/resourceGroups/$CoreMonitorRg/providers/Microsoft.OperationalInsights/workspaces/$CoreLaw"
             ],
             "resultFormat": "logs",
             "timeColumn": "TimeGenerated"
@@ -928,9 +1219,9 @@
               {
                 "metricNamespace": "Microsoft.OperationalInsights/workspaces",
                 "region": "italynorth",
-                "resourceGroup": "cstar-d-itn-idpay-monitoring-rg",
-                "resourceName": "cstar-d-itn-idpay-law",
-                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+                "resourceGroup": "$IdpayMonitoringRg",
+                "resourceName": "$IdpayLaw",
+                "subscription": "$subscription"
               }
             ],
             "timeGrain": "auto"
@@ -941,10 +1232,10 @@
           },
           "queryType": "Azure Log Analytics",
           "refId": "A",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "$subscription"
         }
       ],
-      "title": "Events and errors by realm",
+      "title": "Events and errors by client",
       "type": "barchart"
     },
     {
@@ -952,6 +1243,7 @@
         "type": "grafana-azure-monitor-datasource",
         "uid": "azure-monitor-oob"
       },
+      "description": "Errors count aggregated by error type",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -963,29 +1255,16 @@
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 0,
+            "fillOpacity": 80,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
               "viz": false
             },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
             "lineWidth": 1,
-            "pointSize": 5,
             "scaleDistribution": {
               "type": "linear"
-            },
-            "showPoints": "auto",
-            "showValues": false,
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
             },
             "thresholdsStyle": {
               "mode": "off"
@@ -1002,27 +1281,52 @@
             ]
           }
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Errors"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "text",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
-        "h": 11,
-        "w": 14,
-        "x": 10,
-        "y": 25
+        "h": 14,
+        "w": 10,
+        "x": 0,
+        "y": 34
       },
-      "id": 14,
+      "id": 15,
       "options": {
+        "barRadius": 0,
+        "barWidth": 0.81,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
         "legend": {
           "calcs": [],
           "displayMode": "list",
           "placement": "bottom",
           "showLegend": true
         },
+        "orientation": "horizontal",
+        "showValue": "auto",
+        "stacking": "none",
         "tooltip": {
           "hideZeros": false,
           "mode": "single",
           "sort": "none"
-        }
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
       },
       "pluginVersion": "12.4.6",
       "targets": [
@@ -1030,9 +1334,9 @@
           "azureLogAnalytics": {
             "dashboardTime": true,
             "mode": "raw",
-            "query": "AppMetrics\n| where $__timeFilter(TimeGenerated)\n| where Name startswith \"keycloak_user\"\n| extend Realm = tostring(Properties[\"realm\"])\n| where isnotempty(Realm)\n| summarize TotalEvents = count() by bin(TimeGenerated, $__interval), Realm\n| project TimeGenerated, Realm, TotalEvents\n| order by TimeGenerated asc",
+            "query": "AppMetrics\n| where Name startswith \"keycloak_user\"\n| extend \n    Error = tostring(Properties[\"error\"])\n| where Error != \"\"\n| summarize Count = sum(Sum) by Error\n| where Count > 0\n| project Error, [\"Errors\"] = Count\n| order by [\"Errors\"]",
             "resources": [
-              "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/cstar-d-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-d-itn-core-law"
+              "/subscriptions/$subscription/resourceGroups/$CoreMonitorRg/providers/Microsoft.OperationalInsights/workspaces/$CoreLaw"
             ],
             "resultFormat": "logs",
             "timeColumn": "TimeGenerated"
@@ -1047,9 +1351,9 @@
               {
                 "metricNamespace": "Microsoft.OperationalInsights/workspaces",
                 "region": "italynorth",
-                "resourceGroup": "cstar-d-itn-idpay-monitoring-rg",
-                "resourceName": "cstar-d-itn-idpay-law",
-                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+                "resourceGroup": "$IdpayMonitoringRg",
+                "resourceName": "$IdpayLaw",
+                "subscription": "$subscription"
               }
             ],
             "timeGrain": "auto"
@@ -1060,25 +1364,11 @@
           },
           "queryType": "Azure Log Analytics",
           "refId": "A",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "$subscription"
         }
       ],
-      "title": "Events by realm",
-      "transformations": [
-        {
-          "id": "partitionByValues",
-          "options": {
-            "fields": [
-              "Realm"
-            ],
-            "keepFields": true,
-            "naming": {
-              "asLabels": false
-            }
-          }
-        }
-      ],
-      "type": "timeseries"
+      "title": "Errors count",
+      "type": "barchart"
     },
     {
       "datasource": {
@@ -1128,7 +1418,7 @@
         "h": 21,
         "w": 24,
         "x": 0,
-        "y": 36
+        "y": 48
       },
       "id": 1,
       "options": {
@@ -1159,9 +1449,9 @@
           "azureLogAnalytics": {
             "dashboardTime": true,
             "mode": "raw",
-            "query": "AppMetrics\n| where Name startswith \"keycloak_user\"\n| extend\n    realm     = tostring(Properties[\"realm\"]),\n    client_id = tostring(Properties[\"client_id\"]),\n    event     = tostring(Properties[\"event\"]),\n    error     = tostring(Properties[\"error\"])\n| summarize\n    ['Token emessi']     = sum(ItemCount)\n    by realm, client_id, event\n| order by ['Token emessi'] desc\n| project\n    ['Label']        = strcat(realm, \"/\", client_id, \" - \", event),\n    ['Realm']        = realm,\n    ['Client ID']    = client_id,\n    ['Evento']       = event,\n    ['Token emessi']",
+            "query": "AppMetrics\n| where Name startswith \"keycloak_user\"\n| extend\n    realm     = tostring(Properties[\"realm\"]),\n    client_id = tostring(Properties[\"client_id\"]),\n    event     = tostring(Properties[\"event\"]),\n    error     = tostring(Properties[\"error\"])\n| summarize\n    ['Count']     = sum(Sum)\n    by realm, client_id, event\n| order by ['Count'] desc\n| project\n    ['Label']        = strcat(realm, \"/\", client_id, \" - \", event),\n    ['Realm']        = realm,\n    ['Client ID']    = client_id,\n    ['Evento']       = event,\n    ['Count']",
             "resources": [
-              "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/cstar-d-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-d-itn-core-law"
+              "/subscriptions/$subscription/resourceGroups/$CoreMonitorRg/providers/Microsoft.OperationalInsights/workspaces/$CoreLaw"
             ],
             "resultFormat": "logs",
             "timeColumn": "TimeGenerated"
@@ -1176,9 +1466,9 @@
               {
                 "metricNamespace": "Microsoft.OperationalInsights/workspaces",
                 "region": "italynorth",
-                "resourceGroup": "cstar-d-itn-idpay-monitoring-rg",
-                "resourceName": "cstar-d-itn-idpay-law",
-                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+                "resourceGroup": "$IdpayMonitoringRg",
+                "resourceName": "$IdpayLaw",
+                "subscription": "$subscription"
               }
             ],
             "timeGrain": "auto"
@@ -1189,7 +1479,7 @@
           },
           "queryType": "Azure Log Analytics",
           "refId": "A",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "$subscription"
         }
       ],
       "title": "Events count by realm/client/event",
@@ -1200,16 +1490,222 @@
   "schemaVersion": 42,
   "tags": [],
   "templating": {
-    "list": []
+    "list": [
+      {
+        "current": {
+          "text": "cstar-d-itn-core-monitor-rg",
+          "value": "cstar-d-itn-core-monitor-rg"
+        },
+        "datasource": {
+          "type": "grafana-azure-monitor-datasource",
+          "uid": "azure-monitor-oob"
+        },
+        "definition": "",
+        "description": "",
+        "hide": 2,
+        "name": "CoreMonitorRg",
+        "options": [],
+        "query": {
+          "azureLogAnalytics": {
+            "query": "",
+            "resources": []
+          },
+          "queryType": "Azure Resource Groups",
+          "refId": "A",
+          "subscription": "$subscription"
+        },
+        "refresh": 1,
+        "regex": "/cstar-.+-core-monitor-rg/",
+        "regexApplyTo": "value",
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "DEV-CSTAR",
+          "value": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+        },
+        "datasource": {
+          "type": "grafana-azure-monitor-datasource",
+          "uid": "azure-monitor-oob"
+        },
+        "definition": "",
+        "hide": 2,
+        "name": "subscription",
+        "options": [],
+        "query": {
+          "azureLogAnalytics": {
+            "query": "",
+            "resources": []
+          },
+          "queryType": "Azure Subscriptions",
+          "refId": "A"
+        },
+        "refresh": 1,
+        "regex": "",
+        "regexApplyTo": "value",
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "cstar-d-itn-core-law",
+          "value": "cstar-d-itn-core-law"
+        },
+        "datasource": {
+          "type": "grafana-azure-monitor-datasource",
+          "uid": "azure-monitor-oob"
+        },
+        "definition": "",
+        "hide": 2,
+        "name": "CoreLaw",
+        "options": [],
+        "query": {
+          "azureLogAnalytics": {
+            "query": "",
+            "resources": []
+          },
+          "namespace": "microsoft.operationalinsights/workspaces",
+          "queryType": "Azure Resource Names",
+          "refId": "A",
+          "resourceGroup": "$CoreMonitorRg",
+          "subscription": "$subscription"
+        },
+        "refresh": 1,
+        "regex": "/cstar-.+-core-law/",
+        "regexApplyTo": "value",
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "cstar-d-itn-idpay-monitoring-rg",
+          "value": "cstar-d-itn-idpay-monitoring-rg"
+        },
+        "datasource": {
+          "type": "grafana-azure-monitor-datasource",
+          "uid": "azure-monitor-oob"
+        },
+        "definition": "",
+        "hide": 2,
+        "name": "IdpayMonitoringRg",
+        "options": [],
+        "query": {
+          "azureLogAnalytics": {
+            "query": "",
+            "resources": []
+          },
+          "queryType": "Azure Resource Groups",
+          "refId": "A",
+          "subscription": "$subscription"
+        },
+        "refresh": 1,
+        "regex": "cstar-.+-idpay-monitoring-rg",
+        "regexApplyTo": "value",
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "cstar-d-itn-idpay-law",
+          "value": "cstar-d-itn-idpay-law"
+        },
+        "datasource": {
+          "type": "grafana-azure-monitor-datasource",
+          "uid": "azure-monitor-oob"
+        },
+        "definition": "",
+        "hide": 2,
+        "name": "IdpayLaw",
+        "options": [],
+        "query": {
+          "azureLogAnalytics": {
+            "query": "",
+            "resources": []
+          },
+          "namespace": "microsoft.operationalinsights/workspaces",
+          "queryType": "Azure Resource Names",
+          "refId": "A",
+          "resourceGroup": "$IdpayMonitoringRg",
+          "subscription": "$subscription"
+        },
+        "refresh": 1,
+        "regex": "/cstar-.+-idpay-law/",
+        "regexApplyTo": "value",
+        "type": "query"
+      },
+      {
+        "auto": true,
+        "auto_count": 50,
+        "auto_min": "1m",
+        "current": {
+          "text": "$__auto",
+          "value": "$__auto"
+        },
+        "label": "granularità",
+        "name": "granularita",
+        "options": [
+          {
+            "selected": false,
+            "text": "1m",
+            "value": "1m"
+          },
+          {
+            "selected": false,
+            "text": "10m",
+            "value": "10m"
+          },
+          {
+            "selected": false,
+            "text": "30m",
+            "value": "30m"
+          },
+          {
+            "selected": false,
+            "text": "1h",
+            "value": "1h"
+          },
+          {
+            "selected": false,
+            "text": "6h",
+            "value": "6h"
+          },
+          {
+            "selected": false,
+            "text": "12h",
+            "value": "12h"
+          },
+          {
+            "selected": false,
+            "text": "1d",
+            "value": "1d"
+          },
+          {
+            "selected": false,
+            "text": "7d",
+            "value": "7d"
+          },
+          {
+            "selected": false,
+            "text": "14d",
+            "value": "14d"
+          },
+          {
+            "selected": false,
+            "text": "30d",
+            "value": "30d"
+          }
+        ],
+        "query": "1m,10m,30m,1h,6h,12h,1d,7d,14d,30d",
+        "refresh": 2,
+        "type": "interval"
+      }
+    ]
   },
   "time": {
-    "from": "now-24h",
+    "from": "now-12h",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "browser",
-  "title": "Test monitoraggio accessi KeyCloak",
+  "title": "KeyCloak access monitoring",
   "uid": "gad8kwv",
-  "version": 13,
+  "version": 68,
   "weekStart": ""
 }
