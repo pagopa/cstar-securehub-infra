@@ -238,12 +238,12 @@ locals {
         }
       ]
       env_secrets = {
-        envs = ["dev", "github-pages"]
+        envs = ["github-pages"]
         secrets = {
         }
       }
       env_variables = {
-        envs = ["dev", "github-pages"]
+        envs = ["github-pages"]
         variables = {
         }
       }
