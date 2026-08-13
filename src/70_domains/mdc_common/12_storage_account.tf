@@ -7,7 +7,7 @@
 
 # Storage Account Static Website
 module "admin_web_storage" {
-  count  = var.env_short == "d" ? 1 : 0
+  count  = 1
   source = "./.terraform/modules/__v4__/IDH/storage_account"
 
   # General
