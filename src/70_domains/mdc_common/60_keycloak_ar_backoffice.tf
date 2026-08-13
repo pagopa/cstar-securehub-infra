@@ -179,7 +179,7 @@ resource "keycloak_openid_client" "ar_backoffice_portal_client" {
 
   # Enables Authorization Code Flow for secure, browser-based user login
   standard_flow_enabled        = true
-  direct_access_grants_enabled = false
+  direct_access_grants_enabled = true
 
   # Enforces Proof Key for Code Exchange (PKCE)
   pkce_code_challenge_method = "S256"
