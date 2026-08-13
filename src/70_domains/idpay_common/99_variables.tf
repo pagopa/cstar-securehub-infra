@@ -304,3 +304,8 @@ variable "idpay_pgflex_params" {
   })
   description = "Parameters to provision the IDPay PostgreSQL Flexible Server (and related supporting resources)."
 }
+
+variable "enabled_cdn_multi_initiative" {
+  type        = bool
+  description = "Enable CDN multi-initiative"
+}

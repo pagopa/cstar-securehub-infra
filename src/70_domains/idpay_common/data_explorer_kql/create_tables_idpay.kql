@@ -14,7 +14,9 @@
     capacity:string,
     productName:string,
     fullProductName:string,
-    organizationName:string
+    organizationName:string,
+    gtinCode:string,
+    initiativeId:string
 )
 
 .create table merchant (

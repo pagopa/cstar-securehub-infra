@@ -1,0 +1,3992 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 28,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.4.3",
+      "targets": [
+        {
+          "azureMonitor": {
+            "aggregation": "Average",
+            "allowedTimeGrainsMs": [
+              60000,
+              300000,
+              900000,
+              1800000,
+              3600000,
+              21600000,
+              43200000,
+              86400000
+            ],
+            "dimensionFilters": [],
+            "metricName": "TotalLatency",
+            "metricNamespace": "microsoft.cdn/profiles",
+            "region": "global",
+            "resources": [
+              {
+                "metricNamespace": "Microsoft.Cdn/profiles",
+                "region": "global",
+                "resourceGroup": "cstar-p-itn-idpay-data-rg",
+                "resourceName": "cstar-p-itn-idpay-bonus-cdn-profile",
+                "subscription": "88c709b0-11cf-4450-856e-f9bf54051c1d"
+              }
+            ],
+            "timeGrain": "auto"
+          },
+          "queryType": "Azure Monitor",
+          "refId": "A",
+          "subscription": "88c709b0-11cf-4450-856e-f9bf54051c1d"
+        }
+      ],
+      "title": "CDN Latency",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 11,
+        "x": 12,
+        "y": 0
+      },
+      "id": 27,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.4.3",
+      "targets": [
+        {
+          "azureMonitor": {
+            "aggregation": "Total",
+            "allowedTimeGrainsMs": [
+              60000,
+              300000,
+              900000,
+              1800000,
+              3600000,
+              21600000,
+              43200000,
+              86400000
+            ],
+            "dimensionFilters": [],
+            "metricName": "RequestCount",
+            "metricNamespace": "microsoft.cdn/profiles",
+            "region": "global",
+            "resources": [
+              {
+                "metricNamespace": "Microsoft.Cdn/profiles",
+                "region": "global",
+                "resourceGroup": "cstar-p-itn-idpay-data-rg",
+                "resourceName": "cstar-p-itn-idpay-bonus-cdn-profile",
+                "subscription": "88c709b0-11cf-4450-856e-f9bf54051c1d"
+              }
+            ],
+            "timeGrain": "auto"
+          },
+          "queryType": "Azure Monitor",
+          "refId": "A",
+          "subscription": "88c709b0-11cf-4450-856e-f9bf54051c1d"
+        }
+      ],
+      "title": "CDN Request Count",
+      "type": "timeseries"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 24,
+        "x": 0,
+        "y": 8
+      },
+      "id": 24,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "# PARI Initiatives\n",
+        "mode": "markdown"
+      },
+      "pluginVersion": "12.4.3",
+      "title": "",
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80000
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 0,
+        "y": 10
+      },
+      "id": 1,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.4.3",
+      "targets": [
+        {
+          "azureMonitor": {
+            "aggregation": "Total",
+            "allowedTimeGrainsMs": [
+              60000,
+              300000,
+              900000,
+              1800000,
+              3600000,
+              21600000,
+              43200000,
+              86400000
+            ],
+            "dimensionFilters": [],
+            "metricName": "TotalRequests",
+            "metricNamespace": "microsoft.network/applicationgateways",
+            "region": "westeurope",
+            "resources": [
+              {
+                "metricNamespace": "Microsoft.Network/applicationGateways",
+                "region": "westeurope",
+                "resourceGroup": "cstar-p-vnet-rg",
+                "resourceName": "cstar-p-app-gw-maz",
+                "subscription": "88c709b0-11cf-4450-856e-f9bf54051c1d"
+              }
+            ],
+            "timeGrain": "auto"
+          },
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Monitor",
+          "refId": "A",
+          "subscription": "88c709b0-11cf-4450-856e-f9bf54051c1d"
+        }
+      ],
+      "title": "App Gateway Request 1min",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 1300
+              }
+            ]
+          },
+          "unit": "cps"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 4,
+        "y": 10
+      },
+      "id": 2,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.4.3",
+      "targets": [
+        {
+          "appInsights": {
+            "dimension": "none",
+            "metricName": "select",
+            "rawQuery": false,
+            "rawQueryString": "",
+            "timeColumn": "timestamp",
+            "timeGrain": "auto",
+            "valueColumn": ""
+          },
+          "azureLogAnalytics": {
+            "dashboardTime": false,
+            "query": "//change this example to create your own time series query\n<table name>                                                              //the table to query (e.g. Usage, Heartbeat, Perf)\n| where $__timeFilter(TimeGenerated)                                      //this is a macro used to show the full chartÃ¢â‚¬â„¢s time range, choose the datetime column here\n| summarize count() by <group by column>, bin(TimeGenerated, $__interval) //change Ã¢â‚¬Å“group by columnÃ¢â‚¬Â to a column in your table, such as Ã¢â‚¬Å“ComputerÃ¢â‚¬Â. The $__interval macro is used to auto-select the time grain. Can also use 1h, 5m etc.\n| order by TimeGenerated asc",
+            "resultFormat": "time_series",
+            "workspace": "/subscriptions/88c709b0-11cf-4450-856e-f9bf54051c1d/resourceGroups/cstar-p-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-p-itn-core-law"
+          },
+          "azureMonitor": {
+            "aggOptions": [
+              "Average"
+            ],
+            "aggregation": "Average",
+            "allowedTimeGrainsMs": [
+              60000,
+              300000,
+              900000,
+              1800000,
+              3600000,
+              21600000,
+              43200000,
+              86400000
+            ],
+            "dimensions": [],
+            "metricDefinition": "Microsoft.Network/applicationGateways",
+            "metricName": "NewConnectionsPerSecond",
+            "metricNamespace": "Microsoft.Network/applicationGateways",
+            "resources": [
+              {
+                "resourceGroup": "cstar-p-vnet-rg",
+                "resourceName": "cstar-p-app-gw-maz"
+              }
+            ],
+            "timeGrain": "auto",
+            "timeGrains": [
+              {
+                "$$hashKey": "object:2640",
+                "text": "auto",
+                "value": "auto"
+              },
+              {
+                "$$hashKey": "object:2641",
+                "text": "1 minute",
+                "value": "PT1M"
+              },
+              {
+                "$$hashKey": "object:2642",
+                "text": "5 minutes",
+                "value": "PT5M"
+              },
+              {
+                "$$hashKey": "object:2643",
+                "text": "15 minutes",
+                "value": "PT15M"
+              },
+              {
+                "$$hashKey": "object:2644",
+                "text": "30 minutes",
+                "value": "PT30M"
+              },
+              {
+                "$$hashKey": "object:2645",
+                "text": "1 hour",
+                "value": "PT1H"
+              },
+              {
+                "$$hashKey": "object:2646",
+                "text": "6 hours",
+                "value": "PT6H"
+              },
+              {
+                "$$hashKey": "object:2647",
+                "text": "12 hours",
+                "value": "PT12H"
+              },
+              {
+                "$$hashKey": "object:2648",
+                "text": "1 day",
+                "value": "P1D"
+              }
+            ],
+            "top": "10"
+          },
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Monitor",
+          "refId": "A",
+          "subscription": ""
+        }
+      ],
+      "title": "App Gateway New Connections per second",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 120
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 8,
+        "y": 10
+      },
+      "id": 4,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.4.3",
+      "targets": [
+        {
+          "appInsights": {
+            "dimension": "none",
+            "metricName": "select",
+            "rawQuery": false,
+            "rawQueryString": "",
+            "timeColumn": "timestamp",
+            "timeGrain": "auto",
+            "valueColumn": ""
+          },
+          "azureLogAnalytics": {
+            "dashboardTime": false,
+            "query": "//change this example to create your own time series query\n<table name>                                                              //the table to query (e.g. Usage, Heartbeat, Perf)\n| where $__timeFilter(TimeGenerated)                                      //this is a macro used to show the full chartÃ¢â‚¬â„¢s time range, choose the datetime column here\n| summarize count() by <group by column>, bin(TimeGenerated, $__interval) //change Ã¢â‚¬Å“group by columnÃ¢â‚¬Â to a column in your table, such as Ã¢â‚¬Å“ComputerÃ¢â‚¬Â. The $__interval macro is used to auto-select the time grain. Can also use 1h, 5m etc.\n| order by TimeGenerated asc",
+            "resultFormat": "time_series",
+            "workspace": "/subscriptions/88c709b0-11cf-4450-856e-f9bf54051c1d/resourceGroups/cstar-p-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-p-itn-core-law"
+          },
+          "azureMonitor": {
+            "aggOptions": [
+              "Average"
+            ],
+            "aggregation": "Average",
+            "allowedTimeGrainsMs": [
+              60000,
+              300000,
+              900000,
+              1800000,
+              3600000,
+              21600000,
+              43200000,
+              86400000
+            ],
+            "dimensions": [],
+            "metricDefinition": "Microsoft.Network/applicationGateways",
+            "metricName": "CapacityUnits",
+            "metricNamespace": "Microsoft.Network/applicationGateways",
+            "resources": [
+              {
+                "resourceGroup": "cstar-p-vnet-rg",
+                "resourceName": "cstar-p-app-gw-maz"
+              }
+            ],
+            "timeGrain": "auto",
+            "timeGrains": [
+              {
+                "$$hashKey": "object:2864",
+                "text": "auto",
+                "value": "auto"
+              },
+              {
+                "$$hashKey": "object:2865",
+                "text": "1 minute",
+                "value": "PT1M"
+              },
+              {
+                "$$hashKey": "object:2866",
+                "text": "5 minutes",
+                "value": "PT5M"
+              },
+              {
+                "$$hashKey": "object:2867",
+                "text": "15 minutes",
+                "value": "PT15M"
+              },
+              {
+                "$$hashKey": "object:2868",
+                "text": "30 minutes",
+                "value": "PT30M"
+              },
+              {
+                "$$hashKey": "object:2869",
+                "text": "1 hour",
+                "value": "PT1H"
+              },
+              {
+                "$$hashKey": "object:2870",
+                "text": "6 hours",
+                "value": "PT6H"
+              },
+              {
+                "$$hashKey": "object:2871",
+                "text": "12 hours",
+                "value": "PT12H"
+              },
+              {
+                "$$hashKey": "object:2872",
+                "text": "1 day",
+                "value": "P1D"
+              }
+            ],
+            "top": "10"
+          },
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Monitor",
+          "refId": "A",
+          "subscription": ""
+        }
+      ],
+      "title": "App Gateway Current Capacity Units",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "links": [],
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 50000
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 12,
+        "y": 10
+      },
+      "id": 5,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.4.3",
+      "targets": [
+        {
+          "appInsights": {
+            "dimension": "none",
+            "metricName": "select",
+            "rawQuery": false,
+            "rawQueryString": "",
+            "timeColumn": "timestamp",
+            "timeGrain": "auto",
+            "valueColumn": ""
+          },
+          "azureLogAnalytics": {
+            "dashboardTime": false,
+            "query": "//change this example to create your own time series query\n<table name>                                                              //the table to query (e.g. Usage, Heartbeat, Perf)\n| where $__timeFilter(TimeGenerated)                                      //this is a macro used to show the full chartÃ¢â‚¬â„¢s time range, choose the datetime column here\n| summarize count() by <group by column>, bin(TimeGenerated, $__interval) //change Ã¢â‚¬Å“group by columnÃ¢â‚¬Â to a column in your table, such as Ã¢â‚¬Å“ComputerÃ¢â‚¬Â. The $__interval macro is used to auto-select the time grain. Can also use 1h, 5m etc.\n| order by TimeGenerated asc",
+            "resultFormat": "time_series",
+            "workspace": "/subscriptions/88c709b0-11cf-4450-856e-f9bf54051c1d/resourceGroups/cstar-p-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-p-itn-core-law"
+          },
+          "azureMonitor": {
+            "aggOptions": [
+              "Total"
+            ],
+            "aggregation": "Total",
+            "allowedTimeGrainsMs": [
+              60000,
+              300000,
+              900000,
+              1800000,
+              3600000,
+              21600000,
+              43200000,
+              86400000
+            ],
+            "dimensions": [],
+            "metricDefinition": "Microsoft.Network/applicationGateways",
+            "metricName": "CurrentConnections",
+            "metricNamespace": "Microsoft.Network/applicationGateways",
+            "resources": [
+              {
+                "resourceGroup": "cstar-p-vnet-rg",
+                "resourceName": "cstar-p-app-gw-maz"
+              }
+            ],
+            "timeGrain": "auto",
+            "timeGrains": [
+              {
+                "$$hashKey": "object:2449",
+                "text": "auto",
+                "value": "auto"
+              },
+              {
+                "$$hashKey": "object:2450",
+                "text": "1 minute",
+                "value": "PT1M"
+              },
+              {
+                "$$hashKey": "object:2451",
+                "text": "5 minutes",
+                "value": "PT5M"
+              },
+              {
+                "$$hashKey": "object:2452",
+                "text": "15 minutes",
+                "value": "PT15M"
+              },
+              {
+                "$$hashKey": "object:2453",
+                "text": "30 minutes",
+                "value": "PT30M"
+              },
+              {
+                "$$hashKey": "object:2454",
+                "text": "1 hour",
+                "value": "PT1H"
+              },
+              {
+                "$$hashKey": "object:2455",
+                "text": "6 hours",
+                "value": "PT6H"
+              },
+              {
+                "$$hashKey": "object:2456",
+                "text": "12 hours",
+                "value": "PT12H"
+              },
+              {
+                "$$hashKey": "object:2457",
+                "text": "1 day",
+                "value": "P1D"
+              }
+            ],
+            "top": "10"
+          },
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Monitor",
+          "refId": "A",
+          "subscription": ""
+        }
+      ],
+      "title": "App Gateway Current Connections",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "MilliSeconds"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 8,
+        "x": 16,
+        "y": 10
+      },
+      "id": 3,
+      "options": {
+        "displayMode": "gradient",
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "maxVizHeight": 300,
+        "minVizHeight": 16,
+        "minVizWidth": 8,
+        "namePlacement": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showUnfilled": true,
+        "sizing": "auto",
+        "valueMode": "color"
+      },
+      "pluginVersion": "12.4.3",
+      "targets": [
+        {
+          "appInsights": {
+            "dimension": "none",
+            "metricName": "select",
+            "rawQuery": false,
+            "rawQueryString": "",
+            "timeColumn": "timestamp",
+            "timeGrain": "auto",
+            "valueColumn": ""
+          },
+          "azureLogAnalytics": {
+            "dashboardTime": false,
+            "query": "//change this example to create your own time series query\n<table name>                                                              //the table to query (e.g. Usage, Heartbeat, Perf)\n| where $__timeFilter(TimeGenerated)                                      //this is a macro used to show the full chartÃ¢â‚¬â„¢s time range, choose the datetime column here\n| summarize count() by <group by column>, bin(TimeGenerated, $__interval) //change Ã¢â‚¬Å“group by columnÃ¢â‚¬Â to a column in your table, such as Ã¢â‚¬Å“ComputerÃ¢â‚¬Â. The $__interval macro is used to auto-select the time grain. Can also use 1h, 5m etc.\n| order by TimeGenerated asc",
+            "resultFormat": "time_series",
+            "workspace": "/subscriptions/88c709b0-11cf-4450-856e-f9bf54051c1d/resourceGroups/cstar-p-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-p-itn-core-law"
+          },
+          "azureMonitor": {
+            "aggOptions": [
+              "Average"
+            ],
+            "aggregation": "Average",
+            "allowedTimeGrainsMs": [
+              60000,
+              300000,
+              900000,
+              1800000,
+              3600000,
+              21600000,
+              43200000,
+              86400000
+            ],
+            "dimensions": [
+              {
+                "$$hashKey": "object:2984",
+                "text": "None",
+                "value": "None"
+              },
+              {
+                "$$hashKey": "object:2985",
+                "text": "Listener",
+                "value": "Listener"
+              }
+            ],
+            "metricDefinition": "Microsoft.Network/applicationGateways",
+            "metricName": "ClientRtt",
+            "metricNamespace": "Microsoft.Network/applicationGateways",
+            "resources": [
+              {
+                "resourceGroup": "cstar-p-vnet-rg",
+                "resourceName": "cstar-p-app-gw-maz"
+              }
+            ],
+            "timeGrain": "auto",
+            "timeGrains": [
+              {
+                "$$hashKey": "object:2975",
+                "text": "auto",
+                "value": "auto"
+              },
+              {
+                "$$hashKey": "object:2976",
+                "text": "1 minute",
+                "value": "PT1M"
+              },
+              {
+                "$$hashKey": "object:2977",
+                "text": "5 minutes",
+                "value": "PT5M"
+              },
+              {
+                "$$hashKey": "object:2978",
+                "text": "15 minutes",
+                "value": "PT15M"
+              },
+              {
+                "$$hashKey": "object:2979",
+                "text": "30 minutes",
+                "value": "PT30M"
+              },
+              {
+                "$$hashKey": "object:2980",
+                "text": "1 hour",
+                "value": "PT1H"
+              },
+              {
+                "$$hashKey": "object:2981",
+                "text": "6 hours",
+                "value": "PT6H"
+              },
+              {
+                "$$hashKey": "object:2982",
+                "text": "12 hours",
+                "value": "PT12H"
+              },
+              {
+                "$$hashKey": "object:2983",
+                "text": "1 day",
+                "value": "P1D"
+              }
+            ],
+            "top": "10"
+          },
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Monitor",
+          "refId": "A",
+          "subscription": ""
+        },
+        {
+          "appInsights": {
+            "dimension": "none",
+            "metricName": "select",
+            "rawQuery": false,
+            "rawQueryString": "",
+            "timeColumn": "timestamp",
+            "timeGrain": "auto",
+            "valueColumn": ""
+          },
+          "azureLogAnalytics": {
+            "dashboardTime": false,
+            "query": "//change this example to create your own time series query\n<table name>                                                              //the table to query (e.g. Usage, Heartbeat, Perf)\n| where $__timeFilter(TimeGenerated)                                      //this is a macro used to show the full chartÃ¢â‚¬â„¢s time range, choose the datetime column here\n| summarize count() by <group by column>, bin(TimeGenerated, $__interval) //change Ã¢â‚¬ï¿½ï¿½group by columnÃ¢â‚¬Â to a column in your table, such as Ã¢â‚¬Å“ComputerÃ¢â‚¬Â. The $__interval macro is used to auto-select the time grain. Can also use 1h, 5m etc.\n| order by TimeGenerated asc",
+            "resultFormat": "time_series",
+            "workspace": "/subscriptions/88c709b0-11cf-4450-856e-f9bf54051c1d/resourceGroups/cstar-p-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-p-itn-core-law"
+          },
+          "azureMonitor": {
+            "aggOptions": [
+              "Average"
+            ],
+            "aggregation": "Average",
+            "allowedTimeGrainsMs": [
+              60000,
+              300000,
+              900000,
+              1800000,
+              3600000,
+              21600000,
+              43200000,
+              86400000
+            ],
+            "dimensions": [
+              {
+                "$$hashKey": "object:3073",
+                "text": "None",
+                "value": "None"
+              },
+              {
+                "$$hashKey": "object:3074",
+                "text": "Listener",
+                "value": "Listener"
+              }
+            ],
+            "metricDefinition": "Microsoft.Network/applicationGateways",
+            "metricName": "ApplicationGatewayTotalTime",
+            "metricNamespace": "Microsoft.Network/applicationGateways",
+            "resources": [
+              {
+                "resourceGroup": "cstar-p-vnet-rg",
+                "resourceName": "cstar-p-app-gw-maz"
+              }
+            ],
+            "timeGrain": "auto",
+            "timeGrains": [
+              {
+                "$$hashKey": "object:3064",
+                "text": "auto",
+                "value": "auto"
+              },
+              {
+                "$$hashKey": "object:3065",
+                "text": "1 minute",
+                "value": "PT1M"
+              },
+              {
+                "$$hashKey": "object:3066",
+                "text": "5 minutes",
+                "value": "PT5M"
+              },
+              {
+                "$$hashKey": "object:3067",
+                "text": "15 minutes",
+                "value": "PT15M"
+              },
+              {
+                "$$hashKey": "object:3068",
+                "text": "30 minutes",
+                "value": "PT30M"
+              },
+              {
+                "$$hashKey": "object:3069",
+                "text": "1 hour",
+                "value": "PT1H"
+              },
+              {
+                "$$hashKey": "object:3070",
+                "text": "6 hours",
+                "value": "PT6H"
+              },
+              {
+                "$$hashKey": "object:3071",
+                "text": "12 hours",
+                "value": "PT12H"
+              },
+              {
+                "$$hashKey": "object:3072",
+                "text": "1 day",
+                "value": "P1D"
+              }
+            ],
+            "top": "10"
+          },
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "hide": true,
+          "queryType": "Azure Monitor",
+          "refId": "B",
+          "subscription": ""
+        },
+        {
+          "appInsights": {
+            "dimension": "none",
+            "metricName": "select",
+            "rawQuery": false,
+            "rawQueryString": "",
+            "timeColumn": "timestamp",
+            "timeGrain": "auto",
+            "valueColumn": ""
+          },
+          "azureLogAnalytics": {
+            "dashboardTime": false,
+            "query": "//change this example to create your own time series query\n<table name>                                                              //the table to query (e.g. Usage, Heartbeat, Perf)\n| where $__timeFilter(TimeGenerated)                                      //this is a macro used to show the full chartÃ¢â‚¬â„¢s time range, choose the datetime column here\n| summarize count() by <group by column>, bin(TimeGenerated, $__interval) //change Ã¢â‚¬Å“group by columnÃ¢â‚¬Â to a column in your table, such as Ã¢â‚¬Å“ComputerÃ¢â‚¬Â. The $__interval macro is used to auto-select the time grain. Can also use 1h, 5m etc.\n| order by TimeGenerated asc",
+            "resultFormat": "time_series",
+            "workspace": "/subscriptions/88c709b0-11cf-4450-856e-f9bf54051c1d/resourceGroups/cstar-p-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-p-itn-core-law"
+          },
+          "azureMonitor": {
+            "aggOptions": [
+              "Average"
+            ],
+            "aggregation": "Average",
+            "allowedTimeGrainsMs": [
+              60000,
+              300000,
+              900000,
+              1800000,
+              3600000,
+              21600000,
+              43200000,
+              86400000
+            ],
+            "dimensions": [
+              {
+                "$$hashKey": "object:3239",
+                "text": "None",
+                "value": "None"
+              },
+              {
+                "$$hashKey": "object:3240",
+                "text": "Listener",
+                "value": "Listener"
+              },
+              {
+                "$$hashKey": "object:3241",
+                "text": "Backend Server",
+                "value": "BackendServer"
+              },
+              {
+                "$$hashKey": "object:3242",
+                "text": "Backend Pool",
+                "value": "BackendPool"
+              },
+              {
+                "$$hashKey": "object:3243",
+                "text": "Backend Http Setting",
+                "value": "BackendHttpSetting"
+              }
+            ],
+            "metricDefinition": "Microsoft.Network/applicationGateways",
+            "metricName": "BackendConnectTime",
+            "metricNamespace": "Microsoft.Network/applicationGateways",
+            "resources": [
+              {
+                "resourceGroup": "cstar-p-vnet-rg",
+                "resourceName": "cstar-p-app-gw-maz"
+              }
+            ],
+            "timeGrain": "auto",
+            "timeGrains": [
+              {
+                "$$hashKey": "object:3230",
+                "text": "auto",
+                "value": "auto"
+              },
+              {
+                "$$hashKey": "object:3231",
+                "text": "1 minute",
+                "value": "PT1M"
+              },
+              {
+                "$$hashKey": "object:3232",
+                "text": "5 minutes",
+                "value": "PT5M"
+              },
+              {
+                "$$hashKey": "object:3233",
+                "text": "15 minutes",
+                "value": "PT15M"
+              },
+              {
+                "$$hashKey": "object:3234",
+                "text": "30 minutes",
+                "value": "PT30M"
+              },
+              {
+                "$$hashKey": "object:3235",
+                "text": "1 hour",
+                "value": "PT1H"
+              },
+              {
+                "$$hashKey": "object:3236",
+                "text": "6 hours",
+                "value": "PT6H"
+              },
+              {
+                "$$hashKey": "object:3237",
+                "text": "12 hours",
+                "value": "PT12H"
+              },
+              {
+                "$$hashKey": "object:3238",
+                "text": "1 day",
+                "value": "P1D"
+              }
+            ],
+            "top": "10"
+          },
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Monitor",
+          "refId": "C",
+          "subscription": ""
+        },
+        {
+          "appInsights": {
+            "dimension": "none",
+            "metricName": "select",
+            "rawQuery": false,
+            "rawQueryString": "",
+            "timeColumn": "timestamp",
+            "timeGrain": "auto",
+            "valueColumn": ""
+          },
+          "azureLogAnalytics": {
+            "dashboardTime": false,
+            "query": "//change this example to create your own time series query\n<table name>                                                              //the table to query (e.g. Usage, Heartbeat, Perf)\n| where $__timeFilter(TimeGenerated)                                      //this is a macro used to show the full chartÃ¢â‚¬â„¢s time range, choose the datetime column here\n| summarize count() by <group by column>, bin(TimeGenerated, $__interval) //change Ã¢â‚¬Å“group by columnÃ¢â‚¬Â to a column in your table, such as Ã¢â‚¬Å“ComputerÃ¢â‚¬Â. The $__interval macro is used to auto-select the time grain. Can also use 1h, 5m etc.\n| order by TimeGenerated asc",
+            "resultFormat": "time_series",
+            "workspace": "/subscriptions/88c709b0-11cf-4450-856e-f9bf54051c1d/resourceGroups/cstar-p-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-p-itn-core-law"
+          },
+          "azureMonitor": {
+            "aggOptions": [
+              "Average"
+            ],
+            "aggregation": "Average",
+            "allowedTimeGrainsMs": [
+              60000,
+              300000,
+              900000,
+              1800000,
+              3600000,
+              21600000,
+              43200000,
+              86400000
+            ],
+            "dimensions": [
+              {
+                "$$hashKey": "object:3279",
+                "text": "None",
+                "value": "None"
+              },
+              {
+                "$$hashKey": "object:3280",
+                "text": "Listener",
+                "value": "Listener"
+              },
+              {
+                "$$hashKey": "object:3281",
+                "text": "Backend Server",
+                "value": "BackendServer"
+              },
+              {
+                "$$hashKey": "object:3282",
+                "text": "Backend Pool",
+                "value": "BackendPool"
+              },
+              {
+                "$$hashKey": "object:3283",
+                "text": "Backend Http Setting",
+                "value": "BackendHttpSetting"
+              }
+            ],
+            "metricDefinition": "Microsoft.Network/applicationGateways",
+            "metricName": "BackendFirstByteResponseTime",
+            "metricNamespace": "Microsoft.Network/applicationGateways",
+            "resources": [
+              {
+                "resourceGroup": "cstar-p-vnet-rg",
+                "resourceName": "cstar-p-app-gw-maz"
+              }
+            ],
+            "timeGrain": "auto",
+            "timeGrains": [
+              {
+                "$$hashKey": "object:3270",
+                "text": "auto",
+                "value": "auto"
+              },
+              {
+                "$$hashKey": "object:3271",
+                "text": "1 minute",
+                "value": "PT1M"
+              },
+              {
+                "$$hashKey": "object:3272",
+                "text": "5 minutes",
+                "value": "PT5M"
+              },
+              {
+                "$$hashKey": "object:3273",
+                "text": "15 minutes",
+                "value": "PT15M"
+              },
+              {
+                "$$hashKey": "object:3274",
+                "text": "30 minutes",
+                "value": "PT30M"
+              },
+              {
+                "$$hashKey": "object:3275",
+                "text": "1 hour",
+                "value": "PT1H"
+              },
+              {
+                "$$hashKey": "object:3276",
+                "text": "6 hours",
+                "value": "PT6H"
+              },
+              {
+                "$$hashKey": "object:3277",
+                "text": "12 hours",
+                "value": "PT12H"
+              },
+              {
+                "$$hashKey": "object:3278",
+                "text": "1 day",
+                "value": "P1D"
+              }
+            ],
+            "top": "10"
+          },
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Monitor",
+          "refId": "D",
+          "subscription": ""
+        },
+        {
+          "appInsights": {
+            "dimension": "none",
+            "metricName": "select",
+            "rawQuery": false,
+            "rawQueryString": "",
+            "timeColumn": "timestamp",
+            "timeGrain": "auto",
+            "valueColumn": ""
+          },
+          "azureLogAnalytics": {
+            "dashboardTime": false,
+            "query": "//change this example to create your own time series query\n<table name>                                                              //the table to query (e.g. Usage, Heartbeat, Perf)\n| where $__timeFilter(TimeGenerated)                                      //this is a macro used to show the full chartÃ¢â‚¬â„¢s time range, choose the datetime column here\n| summarize count() by <group by column>, bin(TimeGenerated, $__interval) //change Ã¢â‚¬Å“group by columnÃ¢â‚¬Â to a column in your table, such as Ã¢â‚¬Å“ComputerÃ¢â‚¬Â. The $__interval macro is used to auto-select the time grain. Can also use 1h, 5m etc.\n| order by TimeGenerated asc",
+            "resultFormat": "time_series",
+            "workspace": "/subscriptions/88c709b0-11cf-4450-856e-f9bf54051c1d/resourceGroups/cstar-p-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-p-itn-core-law"
+          },
+          "azureMonitor": {
+            "aggOptions": [
+              "Average"
+            ],
+            "aggregation": "Average",
+            "allowedTimeGrainsMs": [
+              60000,
+              300000,
+              900000,
+              1800000,
+              3600000,
+              21600000,
+              43200000,
+              86400000
+            ],
+            "dimensions": [
+              {
+                "$$hashKey": "object:3315",
+                "text": "None",
+                "value": "None"
+              },
+              {
+                "$$hashKey": "object:3316",
+                "text": "Listener",
+                "value": "Listener"
+              },
+              {
+                "$$hashKey": "object:3317",
+                "text": "Backend Server",
+                "value": "BackendServer"
+              },
+              {
+                "$$hashKey": "object:3318",
+                "text": "Backend Pool",
+                "value": "BackendPool"
+              },
+              {
+                "$$hashKey": "object:3319",
+                "text": "Backend Http Setting",
+                "value": "BackendHttpSetting"
+              }
+            ],
+            "metricDefinition": "Microsoft.Network/applicationGateways",
+            "metricName": "BackendLastByteResponseTime",
+            "metricNamespace": "Microsoft.Network/applicationGateways",
+            "resources": [
+              {
+                "resourceGroup": "cstar-p-vnet-rg",
+                "resourceName": "cstar-p-app-gw-maz"
+              }
+            ],
+            "timeGrain": "auto",
+            "timeGrains": [
+              {
+                "$$hashKey": "object:3306",
+                "text": "auto",
+                "value": "auto"
+              },
+              {
+                "$$hashKey": "object:3307",
+                "text": "1 minute",
+                "value": "PT1M"
+              },
+              {
+                "$$hashKey": "object:3308",
+                "text": "5 minutes",
+                "value": "PT5M"
+              },
+              {
+                "$$hashKey": "object:3309",
+                "text": "15 minutes",
+                "value": "PT15M"
+              },
+              {
+                "$$hashKey": "object:3310",
+                "text": "30 minutes",
+                "value": "PT30M"
+              },
+              {
+                "$$hashKey": "object:3311",
+                "text": "1 hour",
+                "value": "PT1H"
+              },
+              {
+                "$$hashKey": "object:3312",
+                "text": "6 hours",
+                "value": "PT6H"
+              },
+              {
+                "$$hashKey": "object:3313",
+                "text": "12 hours",
+                "value": "PT12H"
+              },
+              {
+                "$$hashKey": "object:3314",
+                "text": "1 day",
+                "value": "P1D"
+              }
+            ],
+            "top": "10"
+          },
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Monitor",
+          "refId": "E",
+          "subscription": ""
+        }
+      ],
+      "title": "Application gateway total time",
+      "type": "bargauge"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "light-orange",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 15
+      },
+      "id": 10,
+      "options": {
+        "displayMode": "lcd",
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "maxVizHeight": 300,
+        "minVizHeight": 16,
+        "minVizWidth": 8,
+        "namePlacement": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showUnfilled": true,
+        "sizing": "auto",
+        "valueMode": "color"
+      },
+      "pluginVersion": "12.4.3",
+      "targets": [
+        {
+          "azureMonitor": {
+            "aggregation": "Total",
+            "alias": "{{dimensionvalue}}",
+            "allowedTimeGrainsMs": [
+              60000,
+              300000,
+              900000,
+              1800000,
+              3600000,
+              21600000,
+              43200000,
+              86400000
+            ],
+            "dimensionFilters": [
+              {
+                "dimension": "HttpStatusGroup",
+                "filters": [],
+                "operator": "eq"
+              }
+            ],
+            "metricName": "ResponseStatus",
+            "metricNamespace": "microsoft.network/applicationgateways",
+            "region": "westeurope",
+            "resources": [
+              {
+                "metricNamespace": "Microsoft.Network/applicationGateways",
+                "region": "westeurope",
+                "resourceGroup": "cstar-p-vnet-rg",
+                "resourceName": "cstar-p-app-gw-maz",
+                "subscription": "88c709b0-11cf-4450-856e-f9bf54051c1d"
+              }
+            ],
+            "timeGrain": "auto"
+          },
+          "queryType": "Azure Monitor",
+          "refId": "A",
+          "subscription": "88c709b0-11cf-4450-856e-f9bf54051c1d"
+        }
+      ],
+      "title": "App Gateway Response code",
+      "type": "bargauge"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 4,
+        "x": 0,
+        "y": 22
+      },
+      "id": 6,
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "sizing": "auto"
+      },
+      "pluginVersion": "12.4.3",
+      "targets": [
+        {
+          "azureMonitor": {
+            "aggregation": "Total",
+            "allowedTimeGrainsMs": [
+              60000,
+              300000,
+              900000,
+              1800000,
+              3600000,
+              21600000,
+              43200000,
+              86400000
+            ],
+            "dimensionFilters": [],
+            "metricName": "Requests",
+            "metricNamespace": "microsoft.apimanagement/service",
+            "region": "westeurope",
+            "resources": [
+              {
+                "metricNamespace": "Microsoft.ApiManagement/service",
+                "region": "westeurope",
+                "resourceGroup": "cstar-p-api-rg",
+                "resourceName": "cstar-p-apim",
+                "subscription": "88c709b0-11cf-4450-856e-f9bf54051c1d"
+              }
+            ],
+            "timeGrain": "auto"
+          },
+          "queryType": "Azure Monitor",
+          "refId": "A",
+          "subscription": "88c709b0-11cf-4450-856e-f9bf54051c1d"
+        }
+      ],
+      "title": "APIM Request",
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 4,
+        "x": 4,
+        "y": 22
+      },
+      "id": 8,
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "sizing": "auto"
+      },
+      "pluginVersion": "12.4.3",
+      "targets": [
+        {
+          "azureMonitor": {
+            "aggregation": "Maximum",
+            "allowedTimeGrainsMs": [
+              60000,
+              300000,
+              900000,
+              1800000,
+              3600000,
+              21600000,
+              43200000,
+              86400000
+            ],
+            "dimensionFilters": [],
+            "metricName": "Capacity",
+            "metricNamespace": "microsoft.apimanagement/service",
+            "region": "westeurope",
+            "resources": [
+              {
+                "metricNamespace": "Microsoft.ApiManagement/service",
+                "region": "westeurope",
+                "resourceGroup": "cstar-p-api-rg",
+                "resourceName": "cstar-p-apim",
+                "subscription": "88c709b0-11cf-4450-856e-f9bf54051c1d"
+              }
+            ],
+            "timeGrain": "auto"
+          },
+          "queryType": "Azure Monitor",
+          "refId": "A",
+          "subscription": "88c709b0-11cf-4450-856e-f9bf54051c1d"
+        }
+      ],
+      "title": "APIM Capacity",
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "color-text"
+            },
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "semi-dark-green",
+                "value": 0.5
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "operation_Name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 575
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Avg"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 151
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Max"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 186
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Count"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "lcd",
+                  "type": "gauge",
+                  "valueDisplayMode": "text"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": 0
+                    },
+                    {
+                      "color": "#EAB839",
+                      "value": 800000
+                    },
+                    {
+                      "color": "red",
+                      "value": 1000000
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 13,
+        "w": 16,
+        "x": 8,
+        "y": 22
+      },
+      "id": 7,
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Count"
+          }
+        ]
+      },
+      "pluginVersion": "12.4.3",
+      "targets": [
+        {
+          "azureLogAnalytics": {
+            "dashboardTime": false,
+            "query": "\nlet dataset = requests\n| where $__timeFilter(timestamp)\n| where url has \"$initiativeId\"\n;\ndataset\n| summarize  Avg = avg(duration)/1000, 95Prc = percentile( duration,95)/1000, 99Prc = percentile( duration,99)/1000, Count = count()\n| project operation_Name=\"All\", Avg, 95Prc, 99Prc, Count\n| union(dataset\n| summarize  Avg = avg(duration)/1000, 95Prc = percentile( duration,95)/1000, 99Prc = percentile( duration,99)/1000, Count = count() by operation_Name\n| top 20 by Avg desc\n| order by Count\n)\n\n",
+            "resources": [
+              "/subscriptions/88c709b0-11cf-4450-856e-f9bf54051c1d/resourceGroups/cstar-p-itn-idpay-monitoring-rg/providers/Microsoft.Insights/components/cstar-p-itn-idpay-appinsights"
+            ],
+            "resultFormat": "logs"
+          },
+          "queryType": "Azure Log Analytics",
+          "refId": "A"
+        }
+      ],
+      "title": "API operation name",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 2000
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 8,
+        "x": 0,
+        "y": 29
+      },
+      "id": 9,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.4.3",
+      "targets": [
+        {
+          "azureMonitor": {
+            "aggregation": "Average",
+            "allowedTimeGrainsMs": [
+              60000,
+              300000,
+              900000,
+              1800000,
+              3600000,
+              21600000,
+              43200000,
+              86400000
+            ],
+            "dimensionFilters": [],
+            "metricName": "BackendDuration",
+            "metricNamespace": "microsoft.apimanagement/service",
+            "region": "westeurope",
+            "resources": [
+              {
+                "metricNamespace": "Microsoft.ApiManagement/service",
+                "region": "westeurope",
+                "resourceGroup": "cstar-p-api-rg",
+                "resourceName": "cstar-p-apim",
+                "subscription": "88c709b0-11cf-4450-856e-f9bf54051c1d"
+              }
+            ],
+            "timeGrain": "auto"
+          },
+          "queryType": "Azure Monitor",
+          "refId": "A",
+          "subscription": "88c709b0-11cf-4450-856e-f9bf54051c1d"
+        }
+      ],
+      "title": "APIM Backend Time",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Normalized RU Consumption"
+            },
+            "properties": []
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 35
+      },
+      "id": 11,
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "sizing": "auto"
+      },
+      "pluginVersion": "12.4.3",
+      "targets": [
+        {
+          "azureMonitor": {
+            "aggregation": "Maximum",
+            "alias": "{{dimensionvalue}}",
+            "allowedTimeGrainsMs": [
+              60000,
+              300000,
+              3600000,
+              86400000
+            ],
+            "dimensionFilters": [
+              {
+                "dimension": "DatabaseName",
+                "filters": [],
+                "operator": "eq"
+              }
+            ],
+            "metricName": "NormalizedRUConsumption",
+            "metricNamespace": "microsoft.documentdb/databaseaccounts",
+            "region": "italynorth",
+            "resources": [
+              {
+                "metricNamespace": "Microsoft.DocumentDB/databaseAccounts",
+                "region": "italynorth",
+                "resourceGroup": "cstar-p-itn-idpay-data-rg",
+                "resourceName": "cstar-p-itn-idpay-mongodb-account",
+                "subscription": "88c709b0-11cf-4450-856e-f9bf54051c1d"
+              }
+            ],
+            "timeGrain": "auto"
+          },
+          "queryType": "Azure Monitor",
+          "refId": "A",
+          "subscription": "88c709b0-11cf-4450-856e-f9bf54051c1d"
+        }
+      ],
+      "title": "MongoDB RU",
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 5,
+        "x": 0,
+        "y": 43
+      },
+      "id": 16,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.4.3",
+      "targets": [
+        {
+          "azureMonitor": {
+            "aggregation": "Maximum",
+            "allowedTimeGrainsMs": [
+              60000,
+              300000,
+              900000,
+              1800000,
+              3600000,
+              21600000,
+              43200000,
+              86400000
+            ],
+            "dimensionFilters": [],
+            "metricName": "connectedclients",
+            "metricNamespace": "microsoft.cache/redisenterprise",
+            "region": "italynorth",
+            "resources": [
+              {
+                "metricNamespace": "Microsoft.Cache/redisEnterprise",
+                "region": "italynorth",
+                "resourceGroup": "cstar-p-itn-idpay-data-rg",
+                "resourceName": "cstar-p-itn-idpay-redis",
+                "subscription": "88c709b0-11cf-4450-856e-f9bf54051c1d"
+              }
+            ],
+            "timeGrain": "auto"
+          },
+          "queryType": "Azure Monitor",
+          "refId": "A",
+          "subscription": "88c709b0-11cf-4450-856e-f9bf54051c1d"
+        }
+      ],
+      "title": "Redis Connected client",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 5,
+        "x": 5,
+        "y": 43
+      },
+      "id": 17,
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "sizing": "auto"
+      },
+      "pluginVersion": "12.4.3",
+      "targets": [
+        {
+          "azureMonitor": {
+            "aggregation": "Maximum",
+            "allowedTimeGrainsMs": [
+              60000,
+              300000,
+              900000,
+              1800000,
+              3600000,
+              21600000,
+              43200000,
+              86400000
+            ],
+            "dimensionFilters": [],
+            "metricName": "usedmemorypercentage",
+            "metricNamespace": "microsoft.cache/redisenterprise",
+            "region": "italynorth",
+            "resources": [
+              {
+                "metricNamespace": "Microsoft.Cache/redisEnterprise",
+                "region": "italynorth",
+                "resourceGroup": "cstar-p-itn-idpay-data-rg",
+                "resourceName": "cstar-p-itn-idpay-redis",
+                "subscription": "88c709b0-11cf-4450-856e-f9bf54051c1d"
+              }
+            ],
+            "timeGrain": "auto"
+          },
+          "queryType": "Azure Monitor",
+          "refId": "A",
+          "subscription": "88c709b0-11cf-4450-856e-f9bf54051c1d"
+        }
+      ],
+      "title": "Redis Used Memory",
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 5,
+        "x": 10,
+        "y": 43
+      },
+      "id": 18,
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "sizing": "auto"
+      },
+      "pluginVersion": "12.4.3",
+      "targets": [
+        {
+          "azureMonitor": {
+            "aggregation": "Maximum",
+            "allowedTimeGrainsMs": [
+              60000,
+              300000,
+              900000,
+              1800000,
+              3600000,
+              21600000,
+              43200000,
+              86400000
+            ],
+            "dimensionFilters": [],
+            "metricName": "percentProcessorTime",
+            "metricNamespace": "microsoft.cache/redisenterprise",
+            "region": "italynorth",
+            "resources": [
+              {
+                "metricNamespace": "Microsoft.Cache/redisEnterprise",
+                "region": "italynorth",
+                "resourceGroup": "cstar-p-itn-idpay-data-rg",
+                "resourceName": "cstar-p-itn-idpay-redis",
+                "subscription": "88c709b0-11cf-4450-856e-f9bf54051c1d"
+              }
+            ],
+            "timeGrain": "auto"
+          },
+          "queryType": "Azure Monitor",
+          "refId": "A",
+          "subscription": "88c709b0-11cf-4450-856e-f9bf54051c1d"
+        }
+      ],
+      "title": "Redis CPU",
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "max": 3000000,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 2000000
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 5,
+        "x": 15,
+        "y": 43
+      },
+      "id": 19,
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "sizing": "auto"
+      },
+      "pluginVersion": "12.4.3",
+      "targets": [
+        {
+          "azureMonitor": {
+            "aggregation": "Maximum",
+            "allowedTimeGrainsMs": [
+              60000,
+              300000,
+              900000,
+              1800000,
+              3600000,
+              21600000,
+              43200000,
+              86400000
+            ],
+            "dimensionFilters": [],
+            "metricName": "totalkeys",
+            "metricNamespace": "microsoft.cache/redisenterprise",
+            "region": "italynorth",
+            "resources": [
+              {
+                "metricNamespace": "Microsoft.Cache/redisEnterprise",
+                "region": "italynorth",
+                "resourceGroup": "cstar-p-itn-idpay-data-rg",
+                "resourceName": "cstar-p-itn-idpay-redis",
+                "subscription": "88c709b0-11cf-4450-856e-f9bf54051c1d"
+              }
+            ],
+            "timeGrain": "auto"
+          },
+          "queryType": "Azure Monitor",
+          "refId": "A",
+          "subscription": "88c709b0-11cf-4450-856e-f9bf54051c1d"
+        }
+      ],
+      "title": "Redis Key number",
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 20,
+        "y": 43
+      },
+      "id": 20,
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "sizing": "auto"
+      },
+      "pluginVersion": "12.4.3",
+      "targets": [
+        {
+          "azureMonitor": {
+            "aggregation": "Maximum",
+            "allowedTimeGrainsMs": [
+              60000,
+              300000,
+              900000,
+              1800000,
+              3600000,
+              21600000,
+              43200000,
+              86400000
+            ],
+            "dimensionFilters": [],
+            "metricName": "cachemisses",
+            "metricNamespace": "microsoft.cache/redisenterprise",
+            "region": "italynorth",
+            "resources": [
+              {
+                "metricNamespace": "Microsoft.Cache/redisEnterprise",
+                "region": "italynorth",
+                "resourceGroup": "cstar-p-itn-idpay-data-rg",
+                "resourceName": "cstar-p-itn-idpay-redis",
+                "subscription": "88c709b0-11cf-4450-856e-f9bf54051c1d"
+              }
+            ],
+            "timeGrain": "auto"
+          },
+          "queryType": "Azure Monitor",
+          "refId": "A",
+          "subscription": "88c709b0-11cf-4450-856e-f9bf54051c1d"
+        }
+      ],
+      "title": "Redis Miss rate",
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 200
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 12,
+        "x": 0,
+        "y": 48
+      },
+      "id": 12,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.4.3",
+      "targets": [
+        {
+          "azureMonitor": {
+            "aggregation": "Total",
+            "alias": "{{phase}}",
+            "allowedTimeGrainsMs": [
+              60000,
+              300000,
+              900000,
+              1800000,
+              3600000,
+              21600000,
+              43200000
+            ],
+            "dimensionFilters": [
+              {
+                "dimension": "namespace",
+                "filters": [
+                  "idpay"
+                ],
+                "operator": "eq"
+              },
+              {
+                "dimension": "phase",
+                "filters": [],
+                "operator": "eq"
+              }
+            ],
+            "metricName": "kube_pod_status_phase",
+            "metricNamespace": "microsoft.containerservice/managedclusters",
+            "region": "italynorth",
+            "resources": [
+              {
+                "metricNamespace": "Microsoft.ContainerService/managedClusters",
+                "region": "italynorth",
+                "resourceGroup": "cstar-p-itn-core-aks-rg",
+                "resourceName": "cstar-p-itn-prod-aks",
+                "subscription": "88c709b0-11cf-4450-856e-f9bf54051c1d"
+              }
+            ],
+            "timeGrain": "auto"
+          },
+          "queryType": "Azure Monitor",
+          "refId": "A",
+          "subscription": "88c709b0-11cf-4450-856e-f9bf54051c1d"
+        }
+      ],
+      "title": "Idpay Pod by Phase",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 6,
+        "x": 12,
+        "y": 48
+      },
+      "id": 13,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.4.3",
+      "targets": [
+        {
+          "azureMonitor": {
+            "aggregation": "Average",
+            "alias": "",
+            "allowedTimeGrainsMs": [
+              60000,
+              300000,
+              900000,
+              1800000,
+              3600000,
+              21600000,
+              43200000
+            ],
+            "dimensionFilters": [
+              {
+                "dimension": "nodepool",
+                "filters": [
+                  "cspgrenidpay"
+                ],
+                "operator": "eq"
+              }
+            ],
+            "metricName": "node_cpu_usage_percentage",
+            "metricNamespace": "microsoft.containerservice/managedclusters",
+            "region": "italynorth",
+            "resources": [
+              {
+                "metricNamespace": "Microsoft.ContainerService/managedClusters",
+                "region": "italynorth",
+                "resourceGroup": "cstar-p-itn-core-aks-rg",
+                "resourceName": "cstar-p-itn-prod-aks",
+                "subscription": "88c709b0-11cf-4450-856e-f9bf54051c1d"
+              }
+            ],
+            "timeGrain": "auto"
+          },
+          "queryType": "Azure Monitor",
+          "refId": "A",
+          "subscription": "88c709b0-11cf-4450-856e-f9bf54051c1d"
+        }
+      ],
+      "title": "Idpay Nodepool CPU",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 6,
+        "x": 18,
+        "y": 48
+      },
+      "id": 21,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.4.3",
+      "targets": [
+        {
+          "azureMonitor": {
+            "aggregation": "Average",
+            "alias": "",
+            "allowedTimeGrainsMs": [
+              60000,
+              300000,
+              900000,
+              1800000,
+              3600000,
+              21600000,
+              43200000
+            ],
+            "dimensionFilters": [
+              {
+                "dimension": "nodepool",
+                "filters": [
+                  "cspgrenidpay"
+                ],
+                "operator": "eq"
+              }
+            ],
+            "metricName": "node_memory_working_set_percentage",
+            "metricNamespace": "microsoft.containerservice/managedclusters",
+            "region": "italynorth",
+            "resources": [
+              {
+                "metricNamespace": "Microsoft.ContainerService/managedClusters",
+                "region": "italynorth",
+                "resourceGroup": "cstar-p-itn-core-aks-rg",
+                "resourceName": "cstar-p-itn-prod-aks",
+                "subscription": "88c709b0-11cf-4450-856e-f9bf54051c1d"
+              }
+            ],
+            "timeGrain": "auto"
+          },
+          "queryType": "Azure Monitor",
+          "refId": "A",
+          "subscription": "88c709b0-11cf-4450-856e-f9bf54051c1d"
+        }
+      ],
+      "title": "Idpay Nodepool MEM",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 12,
+        "x": 0,
+        "y": 53
+      },
+      "id": 14,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.4.3",
+      "targets": [
+        {
+          "azureMonitor": {
+            "aggregation": "Total",
+            "alias": "{{phase}}",
+            "allowedTimeGrainsMs": [
+              60000,
+              300000,
+              900000,
+              1800000,
+              3600000,
+              21600000,
+              43200000
+            ],
+            "dimensionFilters": [
+              {
+                "dimension": "namespace",
+                "filters": [
+                  "keycloak"
+                ],
+                "operator": "eq"
+              },
+              {
+                "dimension": "phase",
+                "filters": [],
+                "operator": "eq"
+              }
+            ],
+            "metricName": "kube_pod_status_phase",
+            "metricNamespace": "microsoft.containerservice/managedclusters",
+            "region": "italynorth",
+            "resources": [
+              {
+                "metricNamespace": "Microsoft.ContainerService/managedClusters",
+                "region": "italynorth",
+                "resourceGroup": "cstar-p-itn-core-aks-rg",
+                "resourceName": "cstar-p-itn-prod-aks",
+                "subscription": "88c709b0-11cf-4450-856e-f9bf54051c1d"
+              }
+            ],
+            "timeGrain": "auto"
+          },
+          "queryType": "Azure Monitor",
+          "refId": "A",
+          "subscription": "88c709b0-11cf-4450-856e-f9bf54051c1d"
+        }
+      ],
+      "title": "Keycloak Pod by Phase",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 6,
+        "x": 12,
+        "y": 53
+      },
+      "id": 15,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.4.3",
+      "targets": [
+        {
+          "azureMonitor": {
+            "aggregation": "Average",
+            "alias": "",
+            "allowedTimeGrainsMs": [
+              60000,
+              300000,
+              900000,
+              1800000,
+              3600000,
+              21600000,
+              43200000
+            ],
+            "dimensionFilters": [
+              {
+                "dimension": "nodepool",
+                "filters": [
+                  "usrkeycloak"
+                ],
+                "operator": "eq"
+              }
+            ],
+            "metricName": "node_cpu_usage_percentage",
+            "metricNamespace": "microsoft.containerservice/managedclusters",
+            "region": "italynorth",
+            "resources": [
+              {
+                "metricNamespace": "Microsoft.ContainerService/managedClusters",
+                "region": "italynorth",
+                "resourceGroup": "cstar-p-itn-core-aks-rg",
+                "resourceName": "cstar-p-itn-prod-aks",
+                "subscription": "88c709b0-11cf-4450-856e-f9bf54051c1d"
+              }
+            ],
+            "timeGrain": "auto"
+          },
+          "queryType": "Azure Monitor",
+          "refId": "A",
+          "subscription": "88c709b0-11cf-4450-856e-f9bf54051c1d"
+        }
+      ],
+      "title": "Keycloak Nodepool CPU",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 6,
+        "x": 18,
+        "y": 53
+      },
+      "id": 22,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.4.3",
+      "targets": [
+        {
+          "azureMonitor": {
+            "aggregation": "Average",
+            "alias": "",
+            "allowedTimeGrainsMs": [
+              60000,
+              300000,
+              900000,
+              1800000,
+              3600000,
+              21600000,
+              43200000
+            ],
+            "dimensionFilters": [
+              {
+                "dimension": "nodepool",
+                "filters": [
+                  "usrkeycloak"
+                ],
+                "operator": "eq"
+              }
+            ],
+            "metricName": "node_memory_working_set_percentage",
+            "metricNamespace": "microsoft.containerservice/managedclusters",
+            "region": "italynorth",
+            "resources": [
+              {
+                "metricNamespace": "Microsoft.ContainerService/managedClusters",
+                "region": "italynorth",
+                "resourceGroup": "cstar-p-itn-core-aks-rg",
+                "resourceName": "cstar-p-itn-prod-aks",
+                "subscription": "88c709b0-11cf-4450-856e-f9bf54051c1d"
+              }
+            ],
+            "timeGrain": "auto"
+          },
+          "queryType": "Azure Monitor",
+          "refId": "A",
+          "subscription": "88c709b0-11cf-4450-856e-f9bf54051c1d"
+        }
+      ],
+      "title": "Keycloak Nodepool MEM",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 300
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "CpuLimit"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 99
+              },
+              {
+                "id": "custom.align",
+                "value": "center"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "CpuUsage"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 136
+              },
+              {
+                "id": "custom.align",
+                "value": "center"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 58
+      },
+      "id": 25,
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "CpuUsage"
+          }
+        ]
+      },
+      "pluginVersion": "12.4.3",
+      "targets": [
+        {
+          "appInsights": {
+            "dimension": "none",
+            "metricName": "select",
+            "rawQuery": false,
+            "rawQueryString": "",
+            "timeColumn": "timestamp",
+            "timeGrain": "auto",
+            "valueColumn": ""
+          },
+          "azureLogAnalytics": {
+            "dashboardTime": false,
+            "query": "KubePodInventory\n| where TimeGenerated > ago(2m)\n| where ClusterName == \"cstar-p-itn-prod-aks\"\n| where Namespace == \"idpay\"\n| summarize arg_max(TimeGenerated, *) by ContainerName\n| project Name, ContainerName\n| join kind = inner (\n    Perf\n    | where TimeGenerated > ago(2m)\n    | where ObjectName == 'K8SContainer'\n    | where CounterName == 'cpuLimitNanoCores'\n    | where InstanceName contains 'cstar-p-itn-prod-aks'\n    | extend ContainerNameParts = split(InstanceName, '/')\n    | extend ContainerNamePartCount = array_length(ContainerNameParts)            \n    | extend PodUIDIndex = ContainerNamePartCount - 2, ContainerNameIndex = ContainerNamePartCount - 1 \n    | extend ContainerName = strcat(ContainerNameParts[PodUIDIndex], '/', ContainerNameParts[ContainerNameIndex])\n    | summarize arg_max(TimeGenerated, *) by ContainerName\n    | project ContainerName, CpuLimit=CounterValue\n    | join kind = inner (\n        Perf\n        | where TimeGenerated > ago(2m)\n        | where ObjectName == 'K8SContainer'\n        | where CounterName == 'cpuUsageNanoCores'\n        | where InstanceName contains 'cstar-p-itn-prod-aks'\n        | extend ContainerNameParts = split(InstanceName, '/')\n        | extend ContainerNamePartCount = array_length(ContainerNameParts)            \n        | extend PodUIDIndex = ContainerNamePartCount - 2, ContainerNameIndex = ContainerNamePartCount - 1 \n        | extend ContainerName = strcat(ContainerNameParts[PodUIDIndex], '/', ContainerNameParts[ContainerNameIndex])\n        | summarize arg_max(TimeGenerated, *) by ContainerName\n        | project TimeGenerated, ContainerName, CpuUsage=CounterValue\n    ) on ContainerName\n) on ContainerName\n| order by Name asc\n| project Name, CpuLimit=(CpuLimit / 1000000), CpuUsage=(CpuUsage / 1000000)",
+            "resources": [
+              "/subscriptions/88c709b0-11cf-4450-856e-f9bf54051c1d/resourceGroups/cstar-p-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-p-itn-core-law"
+            ],
+            "resultFormat": "table"
+          },
+          "azureMonitor": {
+            "aggOptions": [],
+            "dimensionFilter": "*",
+            "metricDefinition": "select",
+            "metricName": "select",
+            "metricNamespace": "select",
+            "resources": [
+              {
+                "resourceGroup": "select",
+                "resourceName": "select"
+              }
+            ],
+            "timeGrain": "auto",
+            "timeGrains": [],
+            "top": "10"
+          },
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "refId": "A",
+          "subscription": ""
+        }
+      ],
+      "title": "Idpay POD Cpu Info (Current)",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 300
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "CpuLimit"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 99
+              },
+              {
+                "id": "custom.align",
+                "value": "center"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "CpuUsage"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 136
+              },
+              {
+                "id": "custom.align",
+                "value": "center"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 58
+      },
+      "id": 26,
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "CpuUsage"
+          }
+        ]
+      },
+      "pluginVersion": "12.4.3",
+      "targets": [
+        {
+          "appInsights": {
+            "dimension": "none",
+            "metricName": "select",
+            "rawQuery": false,
+            "rawQueryString": "",
+            "timeColumn": "timestamp",
+            "timeGrain": "auto",
+            "valueColumn": ""
+          },
+          "azureLogAnalytics": {
+            "dashboardTime": false,
+            "query": "KubePodInventory\n| where TimeGenerated > ago(2m)\n| where ClusterName == \"cstar-p-itn-prod-aks\"\n| where Namespace == \"keycloak\"\n| summarize arg_max(TimeGenerated, *) by ContainerName\n| project Name, ContainerName\n| join kind = inner (\n    Perf\n    | where TimeGenerated > ago(2m)\n    | where ObjectName == 'K8SContainer'\n    | where CounterName == 'cpuLimitNanoCores'\n    | where InstanceName contains 'cstar-p-itn-prod-aks'\n    | extend ContainerNameParts = split(InstanceName, '/')\n    | extend ContainerNamePartCount = array_length(ContainerNameParts)            \n    | extend PodUIDIndex = ContainerNamePartCount - 2, ContainerNameIndex = ContainerNamePartCount - 1 \n    | extend ContainerName = strcat(ContainerNameParts[PodUIDIndex], '/', ContainerNameParts[ContainerNameIndex])\n    | summarize arg_max(TimeGenerated, *) by ContainerName\n    | project ContainerName, CpuLimit=CounterValue\n    | join kind = inner (\n        Perf\n        | where TimeGenerated > ago(2m)\n        | where ObjectName == 'K8SContainer'\n        | where CounterName == 'cpuUsageNanoCores'\n        | where InstanceName contains 'cstar-p-itn-prod-aks'\n        | extend ContainerNameParts = split(InstanceName, '/')\n        | extend ContainerNamePartCount = array_length(ContainerNameParts)            \n        | extend PodUIDIndex = ContainerNamePartCount - 2, ContainerNameIndex = ContainerNamePartCount - 1 \n        | extend ContainerName = strcat(ContainerNameParts[PodUIDIndex], '/', ContainerNameParts[ContainerNameIndex])\n        | summarize arg_max(TimeGenerated, *) by ContainerName\n        | project TimeGenerated, ContainerName, CpuUsage=CounterValue\n    ) on ContainerName\n) on ContainerName\n| order by Name asc\n| project Name, CpuLimit=(CpuLimit / 1000000), CpuUsage=(CpuUsage / 1000000)",
+            "resources": [
+              "/subscriptions/88c709b0-11cf-4450-856e-f9bf54051c1d/resourceGroups/cstar-p-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-p-itn-core-law"
+            ],
+            "resultFormat": "table"
+          },
+          "azureMonitor": {
+            "aggOptions": [],
+            "dimensionFilter": "*",
+            "metricDefinition": "select",
+            "metricName": "select",
+            "metricNamespace": "select",
+            "resources": [
+              {
+                "resourceGroup": "select",
+                "resourceName": "select"
+              }
+            ],
+            "timeGrain": "auto",
+            "timeGrains": [],
+            "top": "10"
+          },
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "refId": "A",
+          "subscription": ""
+        }
+      ],
+      "title": "Keycloack POD Cpu Info (Current)",
+      "type": "table"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 66
+      },
+      "id": 100,
+      "panels": [],
+      "title": "RDB Topic",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 67
+      },
+      "id": 30,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.4.3",
+      "targets": [
+        {
+          "azureMonitor": {
+            "aggregation": "Total",
+            "allowedTimeGrainsMs": [
+              60000,
+              300000,
+              900000,
+              1800000,
+              3600000,
+              21600000,
+              43200000,
+              86400000
+            ],
+            "dimensionFilters": [
+              {
+                "dimension": "EntityName",
+                "filters": [
+                  "idpay-asset-register",
+                  "idpay-asset-register_topic"
+                ],
+                "operator": "eq"
+              }
+            ],
+            "metricName": "IncomingMessages",
+            "metricNamespace": "microsoft.eventhub/namespaces",
+            "region": "italynorth",
+            "resources": [
+              {
+                "metricNamespace": "Microsoft.EventHub/namespaces",
+                "region": "italynorth",
+                "resourceGroup": "cstar-p-itn-idpay-data-rg",
+                "resourceName": "cstar-p-itn-idpay-evh-rdb-ns",
+                "subscription": "88c709b0-11cf-4450-856e-f9bf54051c1d"
+              }
+            ],
+            "timeGrain": "auto"
+          },
+          "queryType": "Azure Monitor",
+          "refId": "A",
+          "subscription": "88c709b0-11cf-4450-856e-f9bf54051c1d"
+        }
+      ],
+      "title": "RDB Topic Incoming Messages",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 8,
+        "y": 67
+      },
+      "id": 31,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.4.3",
+      "targets": [
+        {
+          "azureMonitor": {
+            "aggregation": "Total",
+            "allowedTimeGrainsMs": [
+              60000,
+              300000,
+              900000,
+              1800000,
+              3600000,
+              21600000,
+              43200000,
+              86400000
+            ],
+            "dimensionFilters": [
+              {
+                "dimension": "EntityName",
+                "filters": [
+                  "idpay-asset-register",
+                  "idpay-asset-register_topic"
+                ],
+                "operator": "eq"
+              }
+            ],
+            "metricName": "OutgoingMessages",
+            "metricNamespace": "microsoft.eventhub/namespaces",
+            "region": "italynorth",
+            "resources": [
+              {
+                "metricNamespace": "Microsoft.EventHub/namespaces",
+                "region": "italynorth",
+                "resourceGroup": "cstar-p-itn-idpay-data-rg",
+                "resourceName": "cstar-p-itn-idpay-evh-rdb-ns",
+                "subscription": "88c709b0-11cf-4450-856e-f9bf54051c1d"
+              }
+            ],
+            "timeGrain": "auto"
+          },
+          "queryType": "Azure Monitor",
+          "refId": "A",
+          "subscription": "88c709b0-11cf-4450-856e-f9bf54051c1d"
+        }
+      ],
+      "title": "RDB Topic Outgoing Messages",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 16,
+        "y": 67
+      },
+      "id": 29,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.4.3",
+      "targets": [
+        {
+          "azureMonitor": {
+            "aggregation": "Total",
+            "allowedTimeGrainsMs": [
+              60000,
+              300000,
+              900000,
+              1800000,
+              3600000,
+              21600000,
+              43200000,
+              86400000
+            ],
+            "dimensionFilters": [
+              {
+                "dimension": "EntityName",
+                "filters": [
+                  "idpay-asset-register",
+                  "idpay-asset-register_topic"
+                ],
+                "operator": "eq"
+              }
+            ],
+            "metricName": "ThrottledRequests",
+            "metricNamespace": "microsoft.eventhub/namespaces",
+            "region": "italynorth",
+            "resources": [
+              {
+                "metricNamespace": "Microsoft.EventHub/namespaces",
+                "region": "italynorth",
+                "resourceGroup": "cstar-p-itn-idpay-data-rg",
+                "resourceName": "cstar-p-itn-idpay-evh-rdb-ns",
+                "subscription": "88c709b0-11cf-4450-856e-f9bf54051c1d"
+              }
+            ],
+            "timeGrain": "auto"
+          },
+          "queryType": "Azure Monitor",
+          "refId": "A",
+          "subscription": "88c709b0-11cf-4450-856e-f9bf54051c1d"
+        },
+        {
+          "azureMonitor": {
+            "aggregation": "Total",
+            "allowedTimeGrainsMs": [
+              60000,
+              300000,
+              900000,
+              1800000,
+              3600000,
+              21600000,
+              43200000,
+              86400000
+            ],
+            "dimensionFilters": [
+              {
+                "dimension": "EntityName",
+                "filters": [
+                  "idpay-asset-register",
+                  "idpay-asset-register_topic"
+                ],
+                "operator": "eq"
+              }
+            ],
+            "metricName": "UserErrors",
+            "metricNamespace": "microsoft.eventhub/namespaces",
+            "region": "italynorth",
+            "resources": [
+              {
+                "metricNamespace": "Microsoft.EventHub/namespaces",
+                "region": "italynorth",
+                "resourceGroup": "cstar-p-itn-idpay-data-rg",
+                "resourceName": "cstar-p-itn-idpay-evh-rdb-ns",
+                "subscription": "88c709b0-11cf-4450-856e-f9bf54051c1d"
+              }
+            ],
+            "timeGrain": "auto"
+          },
+          "queryType": "Azure Monitor",
+          "refId": "B",
+          "subscription": "88c709b0-11cf-4450-856e-f9bf54051c1d"
+        },
+        {
+          "azureMonitor": {
+            "aggregation": "Total",
+            "allowedTimeGrainsMs": [
+              60000,
+              300000,
+              900000,
+              1800000,
+              3600000,
+              21600000,
+              43200000,
+              86400000
+            ],
+            "dimensionFilters": [
+              {
+                "dimension": "EntityName",
+                "filters": [
+                  "idpay-asset-register",
+                  "idpay-asset-register_topic"
+                ],
+                "operator": "eq"
+              }
+            ],
+            "metricName": "ServerErrors",
+            "metricNamespace": "microsoft.eventhub/namespaces",
+            "region": "italynorth",
+            "resources": [
+              {
+                "metricNamespace": "Microsoft.EventHub/namespaces",
+                "region": "italynorth",
+                "resourceGroup": "cstar-p-itn-idpay-data-rg",
+                "resourceName": "cstar-p-itn-idpay-evh-rdb-ns",
+                "subscription": "88c709b0-11cf-4450-856e-f9bf54051c1d"
+              }
+            ],
+            "timeGrain": "auto"
+          },
+          "queryType": "Azure Monitor",
+          "refId": "C",
+          "subscription": "88c709b0-11cf-4450-856e-f9bf54051c1d"
+        }
+      ],
+      "title": "RDB Topic Errors and Throttling",
+      "type": "timeseries"
+    }
+  ],
+  "preload": false,
+  "schemaVersion": 42,
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "allowCustomValue": false,
+        "current": {
+          "text": "grafana-azure-data-explorer-datasource",
+          "value": "df4s9lke68vlse"
+        },
+        "hide": 2,
+        "name": "ds",
+        "options": [],
+        "query": "grafana-azure-data-explorer-datasource",
+        "refresh": 1,
+        "regex": "grafana-azure-data-explorer-datasource",
+        "type": "datasource"
+      },
+      {
+        "allowCustomValue": false,
+        "current": {
+          "text": "68dd003ccce8c534d1da22bc",
+          "value": "68dd003ccce8c534d1da22bc"
+        },
+        "datasource": {
+          "type": "grafana-azure-data-explorer-datasource",
+          "uid": "${ds}"
+        },
+        "definition": "initiative_counters\n| where isnotempty(initiativeId)\n| extend initiativeValue = tostring(initiativeId)\n| distinct __text = initiativeValue, __value = initiativeValue\n| order by __text asc",
+        "includeAll": false,
+        "label": "Initiative ID",
+        "name": "initiativeId",
+        "options": [],
+        "query": {
+          "OpenAI": false,
+          "azureLogAnalytics": {
+            "query": "",
+            "resources": []
+          },
+          "clusterUri": "",
+          "database": "idpay",
+          "query": "initiative_counters\n| where isnotempty(initiativeId)\n| extend initiativeValue = tostring(initiativeId)\n| distinct __text = initiativeValue, __value = initiativeValue\n| order by __text asc",
+          "queryType": "KQL",
+          "rawMode": true,
+          "refId": "A",
+          "resultFormat": "table",
+          "subscription": "88c709b0-11cf-4450-856e-f9bf54051c1d"
+        },
+        "refresh": 1,
+        "regex": "",
+        "regexApplyTo": "value",
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-30d",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "PariInitiativesInfra",
+  "uid": "ff3s9iv832pdsf",
+  "version": 45,
+  "weekStart": ""
+}
