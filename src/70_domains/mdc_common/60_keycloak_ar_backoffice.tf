@@ -164,7 +164,6 @@ resource "keycloak_openid_client_default_scopes" "ar_backoffice_client_default_s
 }
 
 resource "keycloak_openid_client" "ar_backoffice_portal_client" {
-  count    = var.env_short == "d" ? 1 : 0
   realm_id = local.keycloak_realm_id
 
   client_id = "ar-backoffice-portal-client"
@@ -185,7 +184,7 @@ resource "keycloak_openid_client" "ar_backoffice_portal_client" {
   pkce_code_challenge_method = "S256"
 
   # Whitelist of authorized callback URLs after successful authentication
-  valid_redirect_uris = ["https://${module.admin_web_storage[0].primary_web_host}/*"]
+  valid_redirect_uris = ["https://${module.admin_web_storage.primary_web_host}/*"]
 
   # Enables CORS by inheriting allowed origins from the redirect URIs
   web_origins = ["+"]
@@ -195,9 +194,8 @@ resource "keycloak_openid_client" "ar_backoffice_portal_client" {
 }
 
 resource "keycloak_openid_client_default_scopes" "ar_backoffice_portal_default_scopes" {
-  count     = var.env_short == "d" ? 1 : 0
   realm_id  = local.keycloak_realm_id
-  client_id = keycloak_openid_client.ar_backoffice_portal_client[0].id
+  client_id = keycloak_openid_client.ar_backoffice_portal_client.id
 
   default_scopes = [
     keycloak_openid_client_scope.admin_role_scope.name
