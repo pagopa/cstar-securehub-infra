@@ -17,6 +17,41 @@
 # 60_keycloak_mdc_portal_entra.tf (module.keycloak_mdc_portal_app), senza
 # passare dalla Key Vault (stesso stack).
 # -----------------------------------------------------------------------------
+
+# First Broker Login dedicato a Entra:
+# - se username/email non esistono, crea normalmente l'utente;
+# - se esiste gia' un utente locale con la stessa username/email, lo collega
+#   automaticamente all'identita' Entra senza creare un duplicato.
+#
+# L'auto-link e' limitato a questo IdP e presuppone che l'identita' Entra sia
+# attendibile (tenant dedicato + trust_email = true).
+resource "keycloak_authentication_flow" "azure_entra_first_broker_login" {
+  realm_id    = local.keycloak_realm_id
+  alias       = "azure-entra-first-broker-login"
+  description = "Crea o collega automaticamente per email gli utenti Microsoft Entra ID"
+  provider_id = "basic-flow"
+}
+
+resource "keycloak_authentication_execution" "azure_entra_create_user_if_unique" {
+  realm_id          = local.keycloak_realm_id
+  parent_flow_alias = keycloak_authentication_flow.azure_entra_first_broker_login.alias
+  authenticator     = "idp-create-user-if-unique"
+  requirement       = "ALTERNATIVE"
+  priority          = 10
+}
+
+resource "keycloak_authentication_execution" "azure_entra_auto_link" {
+  realm_id          = local.keycloak_realm_id
+  parent_flow_alias = keycloak_authentication_flow.azure_entra_first_broker_login.alias
+  authenticator     = "idp-auto-link"
+  requirement       = "ALTERNATIVE"
+  priority          = 20
+
+  depends_on = [
+    keycloak_authentication_execution.azure_entra_create_user_if_unique
+  ]
+}
+
 resource "keycloak_oidc_identity_provider" "azure_entra" {
   realm        = local.keycloak_realm_id
   alias        = "azure-entra"
@@ -35,11 +70,21 @@ resource "keycloak_oidc_identity_provider" "azure_entra" {
   # Il mapper del ruolo di default sovrascrive con syncMode = IMPORT (vedi sotto).
   sync_mode   = "FORCE"
   trust_email = true
+
+  first_broker_login_flow_alias = keycloak_authentication_flow.azure_entra_first_broker_login.alias
+
+  depends_on = [
+    keycloak_authentication_execution.azure_entra_auto_link
+  ]
 }
 
 # -----------------------------------------------------------------------------
 # Mapper di profilo: popolano username, nome, cognome ed email dai claim Entra
 # -----------------------------------------------------------------------------
+# username = preferred_username (UPN = email aziendale). E' la STESSA chiave di
+# account linking usata dal mapper Selfcare (mapper-selfcare-username in
+# 60_keycloak_ar_backoffice.tf): cosi' l'utente che accede da Entra e quello che
+# accede da Selfcare convergono sullo stesso record Keycloak.
 resource "keycloak_custom_identity_provider_mapper" "azure_username" {
   realm                    = local.keycloak_realm_id
   name                     = "mapper-azure-username"
