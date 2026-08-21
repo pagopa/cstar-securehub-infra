@@ -182,10 +182,6 @@ data "azurerm_data_factory" "data_factory" {
   resource_group_name = local.data_factory_rg_name
 }
 
-data "azurerm_resource_group" "platform_data" {
-  name = local.data_factory_rg_name
-}
-
 #
 # Azure Data Explorer (Kusto)
 #
