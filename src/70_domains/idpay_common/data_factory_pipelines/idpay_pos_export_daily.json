@@ -4,9 +4,9 @@
         "description": "Export Point of Sales on daily schedule",
         "activities": [
             {
-                "name": "idpay_pos_export_daily",
-                "description": "Export Point of Sales on daily schedule",
-                "type": "ExecuteDataFlow",
+                "name": "Copy_Pos_To_Staging",
+                "description": "Copy POS source collection to staging JSON",
+                "type": "Copy",
                 "dependsOn": [],
                 "policy": {
                     "timeout": "0.12:00:00",
@@ -17,8 +17,130 @@
                 },
                 "userProperties": [],
                 "typeProperties": {
+                    "source": {
+                        "type": "CosmosDbMongoDbApiSource",
+                        "batchSize": 500
+                    },
+                    "sink": {
+                        "type": "JsonSink",
+                        "storeSettings": {
+                            "type": "AzureBlobFSWriteSettings",
+                            "copyBehavior": "FlattenHierarchy"
+                        },
+                        "formatSettings": {
+                            "type": "JsonWriteSettings",
+                            "filePattern": "arrayOfObjects"
+                        }
+                    },
+                    "enableStaging": false
+                },
+                "inputs": [
+                    {
+                        "referenceName": "cosmos_idpay_pos",
+                        "type": "DatasetReference"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "referenceName": "staging_pos_source_json",
+                        "type": "DatasetReference",
+                        "parameters": {
+                            "fileName": {
+                                "value": "@concat('pos_source_', pipeline().parameters.initiativeId, '.json')",
+                                "type": "Expression"
+                            },
+                            "folderPath": {
+                                "value": "@concat('staging/pos/', pipeline().parameters.initiativeId, '/', pipeline().RunId)",
+                                "type": "Expression"
+                            }
+                        }
+                    }
+                ]
+            },
+            {
+                "name": "Copy_Pos_Initiative_To_Staging",
+                "description": "Copy POS initiative collection to staging JSON",
+                "type": "Copy",
+                "dependsOn": [
+                    {
+                        "activity": "Copy_Pos_To_Staging",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "source": {
+                        "type": "CosmosDbMongoDbApiSource",
+                        "batchSize": 500
+                    },
+                    "sink": {
+                        "type": "JsonSink",
+                        "storeSettings": {
+                            "type": "AzureBlobFSWriteSettings",
+                            "copyBehavior": "FlattenHierarchy"
+                        },
+                        "formatSettings": {
+                            "type": "JsonWriteSettings",
+                            "filePattern": "arrayOfObjects"
+                        }
+                    },
+                    "enableStaging": false
+                },
+                "inputs": [
+                    {
+                        "referenceName": "cosmos_idpay_pos_initiative",
+                        "type": "DatasetReference"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "referenceName": "staging_pos_initiative_source_json",
+                        "type": "DatasetReference",
+                        "parameters": {
+                            "fileName": {
+                                "value": "@concat('pos_initiative_source_', pipeline().parameters.initiativeId, '.json')",
+                                "type": "Expression"
+                            },
+                            "folderPath": {
+                                "value": "@concat('staging/pos/', pipeline().parameters.initiativeId, '/', pipeline().RunId)",
+                                "type": "Expression"
+                            }
+                        }
+                    }
+                ]
+            },
+            {
+                "name": "idpay_pos_export_daily",
+                "description": "Export Point of Sales on daily schedule",
+                "type": "ExecuteDataFlow",
+                "dependsOn": [
+                    {
+                        "activity": "Copy_Pos_Initiative_To_Staging",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
                     "dataFlow": {
-                        "referenceName": "export_flow_pos_daily",
+                        "referenceName": "export_flow_pos_daily_from_staging",
                         "type": "DataFlowReference",
                         "parameters": {
                             "initiativeId": {
@@ -27,6 +149,26 @@
                             }
                         },
                         "datasetParameters": {
+                            "staging_pos_source_json": {
+                                "fileName": {
+                                    "value": "@concat('pos_source_', pipeline().parameters.initiativeId, '.json')",
+                                    "type": "Expression"
+                                },
+                                "folderPath": {
+                                    "value": "@concat('staging/pos/', pipeline().parameters.initiativeId, '/', pipeline().RunId)",
+                                    "type": "Expression"
+                                }
+                            },
+                            "staging_pos_initiative_source_json": {
+                                "fileName": {
+                                    "value": "@concat('pos_initiative_source_', pipeline().parameters.initiativeId, '.json')",
+                                    "type": "Expression"
+                                },
+                                "folderPath": {
+                                    "value": "@concat('staging/pos/', pipeline().parameters.initiativeId, '/', pipeline().RunId)",
+                                    "type": "Expression"
+                                }
+                            },
                             "blob_pos_export_daily": {
                                 "initiativeFolder": {
                                     "value": "@pipeline().parameters.initiativeFolder",

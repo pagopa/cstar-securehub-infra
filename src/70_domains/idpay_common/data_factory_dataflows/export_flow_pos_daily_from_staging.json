@@ -1,0 +1,76 @@
+{
+    "name": "export_flow_pos_daily_from_staging",
+    "properties": {
+        "type": "MappingDataFlow",
+        "typeProperties": {
+            "sources": [
+                {
+                    "dataset": {
+                        "referenceName": "staging_pos_source_json",
+                        "type": "DatasetReference"
+                    },
+                    "name": "PosSource"
+                },
+                {
+                    "dataset": {
+                        "referenceName": "staging_pos_initiative_source_json",
+                        "type": "DatasetReference"
+                    },
+                    "name": "PosInitiativeSource"
+                }
+            ],
+            "sinks": [
+                {
+                    "dataset": {
+                        "referenceName": "blob_pos_export_daily",
+                        "type": "DatasetReference"
+                    },
+                    "name": "PosExportSink"
+                }
+            ],
+            "transformations": [
+                {
+                    "name": "NormalizePos"
+                },
+                {
+                    "name": "FilterPosKeys"
+                },
+                {
+                    "name": "NormalizeInitiative"
+                },
+                {
+                    "name": "FilterInitiative"
+                },
+                {
+                    "name": "FilterInitiativeKeys"
+                },
+                {
+                    "name": "JoinPos"
+                },
+                {
+                    "name": "SelectOutput"
+                }
+            ],
+            "scriptLines": [
+                "parameters{",
+                "     initiativeId as string",
+                "}",
+                "source(allowSchemaDrift: true, validateSchema: false, ignoreNoFilesFound: false) ~> PosSource",
+                "source(allowSchemaDrift: true, validateSchema: false, ignoreNoFilesFound: false) ~> PosInitiativeSource",
+                "PosSource derive(posIdKey = trim(iif(!isNull(byName('_id')) && trim(toString(byName('_id'))) != '', toString(byName('_id')), iif(!isNull(byName('id')) && trim(toString(byName('id'))) != '', toString(byName('id')), toString(byName('posId'))))),",
+                "          merchantIdKey = trim(toString(byName('merchantId')))) ~> NormalizePos",
+                "NormalizePos filter(!isNull(posIdKey) && trim(toString(posIdKey)) != '' && !isNull(merchantIdKey) && trim(toString(merchantIdKey)) != '') ~> FilterPosKeys",
+                "PosInitiativeSource derive(initiativeIdNorm = trim(iif(!isNull(byName('initiativeId')) && trim(toString(byName('initiativeId'))) != '', toString(byName('initiativeId')), toString(byName('initiative_id')))),",
+                "          initiativeEnabledRaw = byName('enabled'),",
+                "          initiativeEnabled = iif(isNull(initiativeEnabledRaw), false(), iif(isBoolean(initiativeEnabledRaw), toBoolean(initiativeEnabledRaw), iif(isInteger(initiativeEnabledRaw) || isLong(initiativeEnabledRaw), toLong(initiativeEnabledRaw) == 1, lower(trim(toString(initiativeEnabledRaw))) == 'true' || trim(toString(initiativeEnabledRaw)) == '1'))),",
+                "          initiativePosIdKey = iif(isNull(byName('pointOfSaleId')) || trim(toString(byName('pointOfSaleId'))) == '', iif(isNull(byName('posId')) || trim(toString(byName('posId'))) == '', toString(byName('point_of_sale_id')), toString(byName('posId'))), toString(byName('pointOfSaleId'))),",
+                "          initiativeMerchantIdKey = trim(toString(byName('merchantId')))) ~> NormalizeInitiative",
+                "NormalizeInitiative filter(initiativeIdNorm == $initiativeId && initiativeEnabled == true()) ~> FilterInitiative",
+                "FilterInitiative filter(!isNull(initiativePosIdKey) && trim(toString(initiativePosIdKey)) != '' && !isNull(initiativeMerchantIdKey) && trim(toString(initiativeMerchantIdKey)) != '') ~> FilterInitiativeKeys",
+                "FilterPosKeys, FilterInitiativeKeys join(posIdKey == initiativePosIdKey && merchantIdKey == initiativeMerchantIdKey, joinType:'inner', matchType:'exact', ignoreSpaces: false, broadcast: 'auto')~> JoinPos",
+                "JoinPos select(mapColumn(type = type, franchiseName = franchiseName, address = address, city = city, region = region, province = province, streetNumber = streetNumber, zipCode = zipCode, channelPhone = channelPhone, website = website), skipDuplicateMapInputs: true, skipDuplicateMapOutputs: true) ~> SelectOutput",
+                "SelectOutput sink(allowSchemaDrift: true, validateSchema: false, skipDuplicateMapInputs: true, skipDuplicateMapOutputs: true, partitionBy('hash', 1)) ~> PosExportSink"
+            ]
+        }
+    }
+}

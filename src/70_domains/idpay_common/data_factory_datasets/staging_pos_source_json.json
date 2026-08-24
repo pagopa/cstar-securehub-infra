@@ -1,0 +1,36 @@
+{
+    "name": "staging_pos_source_json",
+    "properties": {
+        "linkedServiceName": {
+            "referenceName": "idpay-exports-blobfs-ls",
+            "type": "LinkedServiceReference"
+        },
+        "parameters": {
+            "fileName": {
+                "type": "String"
+            },
+            "folderPath": {
+                "type": "String"
+            }
+        },
+        "annotations": [],
+        "type": "Json",
+        "typeProperties": {
+            "location": {
+                "type": "AzureBlobFSLocation",
+                "fileName": {
+                    "value": "@dataset().fileName",
+                    "type": "Expression"
+                },
+                "folderPath": {
+                    "value": "@dataset().folderPath",
+                    "type": "Expression"
+                },
+                "fileSystem": "export"
+            },
+            "encodingName": "UTF-8"
+        },
+        "schema": []
+    },
+    "type": "Microsoft.DataFactory/factories/datasets"
+}
