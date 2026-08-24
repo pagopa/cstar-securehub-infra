@@ -19,11 +19,11 @@
             "type": "CosmosDbMongoDbApiSource",
             "batchSize": 100,
             "filter": {
-              "value": "@concat('{\"status\":\"APPROVED\",\"initiativeId\":\"', pipeline().parameters.initiativeId, '\"}')",
+              "value": "@concat('{\"status\":\"APPROVED\",\"$or\":[{\"initiativeId\":\"', pipeline().parameters.initiativeId, '\"},{\"_id\":{\"$regex\":\"_', pipeline().parameters.initiativeId, '$\"}}]}')",
               "type": "Expression"
             },
             "cursorMethods": {
-              "project": "{ \"_id\": 1, \"model\": 1, \"brand\": 1, \"eprelCode\": 1, \"countryOfProduction\": 1, \"energyClass\": 1, \"capacity\": 1, \"productName\": 1, \"category\": 1, \"productGroup\": 1 }"
+              "project": "{ \"gtin\": 1, \"model\": 1, \"brand\": 1, \"eprelCode\": 1, \"countryOfProduction\": 1, \"energyClass\": 1, \"capacity\": 1, \"productName\": 1, \"category\": 1, \"productGroup\": 1 }"
             }
           },
           "sink": {
@@ -44,7 +44,7 @@
             "mappings": [
               {
                 "source": {
-                  "path": "$['_id']"
+                  "path": "$['gtin']"
                 },
                 "sink": {
                   "name": "_id",

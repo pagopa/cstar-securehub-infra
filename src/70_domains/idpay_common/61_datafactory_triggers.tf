@@ -8,16 +8,16 @@ locals {
     # initiativeId: ID Cosmos della iniziativa
     # initiativeFolder: cartella di destinazione in $web blob
     # initiativeName: nome leggibile per notifiche email
-    "eie" = {
+    "bonuselettrodomestici" = {
       initiativeId     = "68dd003ccce8c534d1da22bc"
-      initiativeFolder = "elenco-informatico-elettrodomestici"
+      initiativeFolder = "bonuselettrodomestici"
       initiativeName   = "Bonus Elettrodomestici"
     }
-    # "bonusdecoder" = {
-    #   initiativeId     = "XXXXX"
-    #   initiativeFolder = "bonusdecoder"
-    #   initiativeName   = "Bonus Decoder"
-    # }
+    "bonusdecoder" = {
+      initiativeId     = "XXXXX"
+      initiativeFolder = "bonusdecoder"
+      initiativeName   = "Bonus Decoder"
+    }
   }
 
   # Aggiungere una voce per ogni iniziativa con offset orario (minuti)
@@ -34,8 +34,6 @@ locals {
     "idpay_merchant_counters_copy",
     "idpay_onboarding_citizen_copy",
     "idpay_pos_copy",
-    "idpay_pos_export_daily",
-    "idpay_product_export_daily",
     "idpay_reported_user_copy",
     "rdb_product_copy"
   ]
