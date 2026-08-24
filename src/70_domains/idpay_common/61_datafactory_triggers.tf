@@ -14,7 +14,7 @@ locals {
       initiativeName   = "Bonus Elettrodomestici"
     }
     "bonusdecoder" = {
-      initiativeId     = "XXXXX"
+      initiativeId     = "69e0fa95e21efa516c7b8dec"
       initiativeFolder = "bonusdecoder"
       initiativeName   = "Bonus Decoder"
     }
