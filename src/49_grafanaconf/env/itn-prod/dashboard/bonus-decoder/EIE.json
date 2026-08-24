@@ -906,23 +906,23 @@
               "options": {
                 "DS": {
                   "index": 0,
-                  "text": "Satellite"
+                  "text": "Satellitare"
                 },
                 "DT": {
                   "index": 1,
-                  "text": "Terrestrial"
+                  "text": "Terrestre"
                 },
                 "DTC": {
                   "index": 2,
-                  "text": "Terrestrial via cable"
+                  "text": "Terrestre via cavo"
                 },
                 "DTS": {
                   "index": 3,
-                  "text": "Terrestrial and satellite"
+                  "text": "Terrestre e satellitare"
                 },
                 "DTSC": {
                   "index": 4,
-                  "text": "Terrestrial, satellite and cable"
+                  "text": "Terrestre e satellitare via cavo"
                 }
               },
               "type": "value"
@@ -1035,23 +1035,23 @@
               "options": {
                 "DS": {
                   "index": 0,
-                  "text": "Satellite"
+                  "text": "Satellitare"
                 },
                 "DT": {
                   "index": 1,
-                  "text": "Terrestrial"
+                  "text": "Terrestre"
                 },
                 "DTC": {
                   "index": 2,
-                  "text": "Terrestrial via cable"
+                  "text": "Terrestre via cavo"
                 },
                 "DTS": {
                   "index": 3,
-                  "text": "Terrestrial and satellite"
+                  "text": "Terrestre e satellitare"
                 },
                 "DTSC": {
                   "index": 4,
-                  "text": "Terrestrial, satellite and cable"
+                  "text": "Terrestre e satellitare via cavo"
                 }
               },
               "type": "value"
@@ -1163,23 +1163,23 @@
               "options": {
                 "DS": {
                   "index": 0,
-                  "text": "Satellite"
+                  "text": "Satellitare"
                 },
                 "DT": {
                   "index": 1,
-                  "text": "Terrestrial"
+                  "text": "Terrestre"
                 },
                 "DTC": {
                   "index": 2,
-                  "text": "Terrestrial via cable"
+                  "text": "Terrestre via cavo"
                 },
                 "DTS": {
                   "index": 3,
-                  "text": "Terrestrial and satellite"
+                  "text": "Terrestre e satellitare"
                 },
                 "DTSC": {
                   "index": 4,
-                  "text": "Terrestrial, satellite and cable"
+                  "text": "Terrestre e satellitare via cavo"
                 }
               },
               "type": "value"
@@ -1291,23 +1291,23 @@
               "options": {
                 "DS": {
                   "index": 0,
-                  "text": "Satellite"
+                  "text": "Satellitare"
                 },
                 "DT": {
                   "index": 1,
-                  "text": "Terrestrial"
+                  "text": "Terrestre"
                 },
                 "DTC": {
                   "index": 2,
-                  "text": "Terrestrial via cable"
+                  "text": "Terrestre via cavo"
                 },
                 "DTS": {
                   "index": 3,
-                  "text": "Terrestrial and satellite"
+                  "text": "Terrestre e satellitare"
                 },
                 "DTSC": {
                   "index": 4,
-                  "text": "Terrestrial, satellite and cable"
+                  "text": "Terrestre e satellitare via cavo"
                 }
               },
               "type": "value"
@@ -1419,23 +1419,23 @@
               "options": {
                 "DS": {
                   "index": 0,
-                  "text": "Satellite"
+                  "text": "Satellitare"
                 },
                 "DT": {
                   "index": 1,
-                  "text": "Terrestrial"
+                  "text": "Terrestre"
                 },
                 "DTC": {
                   "index": 2,
-                  "text": "Terrestrial via cable"
+                  "text": "Terrestre via cavo"
                 },
                 "DTS": {
                   "index": 3,
-                  "text": "Terrestrial and satellite"
+                  "text": "Terrestre e satellitare"
                 },
                 "DTSC": {
                   "index": 4,
-                  "text": "Terrestrial, satellite and cable"
+                  "text": "Terrestre e satellitare via cavo"
                 }
               },
               "type": "value"
