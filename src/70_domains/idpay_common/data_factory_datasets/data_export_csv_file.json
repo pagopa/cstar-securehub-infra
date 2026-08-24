@@ -5,16 +5,27 @@
       "referenceName": "idpay-exports-blobfs-ls",
       "type": "LinkedServiceReference"
     },
+    "parameters": {
+      "fileName": {
+        "type": "String"
+      },
+      "folderPath": {
+        "type": "String"
+      }
+    },
     "annotations": [],
     "type": "Binary",
     "typeProperties": {
       "location": {
         "type": "AzureBlobFSLocation",
         "fileName": {
-          "value": "@concat('export_daily_', formatDateTime(utcNow(), 'yyyy-MM-dd'), '.csv')",
+          "value": "@dataset().fileName",
           "type": "Expression"
         },
-        "folderPath": "data",
+        "folderPath": {
+          "value": "@dataset().folderPath",
+          "type": "Expression"
+        },
         "fileSystem": "export"
       }
     }

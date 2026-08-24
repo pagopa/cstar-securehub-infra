@@ -5,6 +5,14 @@
             "referenceName": "${domain}-bonus-blob-storage-ls",
             "type": "LinkedServiceReference"
         },
+        "parameters": {
+            "fileName": {
+                "type": "String"
+            },
+            "initiativeFolder": {
+                "type": "String"
+            }
+        },
         "annotations": [
             "Point of Sales Export",
             "IdPay",
@@ -15,8 +23,14 @@
         "typeProperties": {
             "location": {
                 "type": "AzureBlobStorageLocation",
-                "fileName": "pos_export.json",
-                "folderPath": "lista-punti-vendita/data",
+                "fileName": {
+                    "value": "@dataset().fileName",
+                    "type": "Expression"
+                },
+                "folderPath": {
+                    "value": "@concat(dataset().initiativeFolder, '/data')",
+                    "type": "Expression"
+                },
                 "container": "$web"
             },
             "encodingName": "UTF-8"

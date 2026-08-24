@@ -19,7 +19,10 @@
                     "source": {
                         "type": "CosmosDbMongoDbApiSource",
                         "batchSize": 500,
-                        "filter": "{status: \"APPROVED\"}",
+                        "filter": {
+                            "value": "@concat('{\"status\":\"APPROVED\",\"initiativeId\":\"', pipeline().parameters.initiativeId, '\"}')",
+                            "type": "Expression"
+                        },
                         "cursorMethods": {
                             "project": "{ \"_id\": 1, \"model\": 1, \"brand\": 1, \"eprelCode\": 1, \"countryOfProduction\": 1, \"energyClass\": 1, \"capacity\": 1, \"productName\": 1, \"category\": 1, \"productGroup\": 1, \"productCode\":1 }"
                         }
@@ -138,11 +141,29 @@
                 "outputs": [
                     {
                         "referenceName": "blob_product_export_daily",
-                        "type": "DatasetReference"
+                        "type": "DatasetReference",
+                        "parameters": {
+                            "initiativeFolder": {
+                                "value": "@pipeline().parameters.initiativeFolder",
+                                "type": "Expression"
+                            },
+                            "fileName": {
+                                "value": "@concat('product_export_', pipeline().parameters.initiativeId, '.json')",
+                                "type": "Expression"
+                            }
+                        }
                     }
                 ]
             }
         ],
+        "parameters": {
+            "initiativeFolder": {
+                "type": "String"
+            },
+            "initiativeId": {
+                "type": "String"
+            }
+        },
         "annotations": [],
         "lastPublishTime": "2025-10-23T15:59:15Z"
     },

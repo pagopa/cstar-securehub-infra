@@ -1,6 +1,34 @@
 locals {
   parametrized_daily_pipeline = "idpay_copy_rdb_products_to_csv"
 
+  # Definizione iniziative per export automatici multi-iniziativa
+  # Aggiungere qui tutte le iniziative da esportare giornalmente
+  export_initiatives = {
+    # Chiave: identificativo univoco
+    # initiativeId: ID Cosmos della iniziativa
+    # initiativeFolder: cartella di destinazione in $web blob
+    # initiativeName: nome leggibile per notifiche email
+    "eie" = {
+      initiativeId     = "68dd003ccce8c534d1da22bc"
+      initiativeFolder = "elenco-informatico-elettrodomestici"
+      initiativeName   = "Bonus Elettrodomestici"
+    }
+    # "bonusdecoder" = {
+    #   initiativeId     = "XXXXX"
+    #   initiativeFolder = "bonusdecoder"
+    #   initiativeName   = "Bonus Decoder"
+    # }
+  }
+
+  # Aggiungere una voce per ogni iniziativa con offset orario (minuti)
+  export_initiatives_indexed = {
+    for idx, key in keys(local.export_initiatives) :
+    key => {
+      data           = local.export_initiatives[key]
+      offset_minutes = idx * 60 # 01:00, 02:00, 03:00, etc.
+    }
+  }
+
   pipelines_T = [
     "idpay_merchant_copy",
     "idpay_merchant_counters_copy",
@@ -109,14 +137,18 @@ resource "azurerm_data_factory_trigger_schedule" "weekly_triggers" {
 
 
 
-resource "azurerm_data_factory_trigger_schedule" "idpay_copy_rdb_products_to_csv_daily" {
-  name            = "trigger-idpay_copy_rdb_products_to_csv"
+# Trigger multi-iniziativa per export prodotti CSV
+# Ogni iniziativa ha un orario sfalsato per evitare parallelismo
+resource "azurerm_data_factory_trigger_schedule" "export_products_csv_per_initiative" {
+  for_each = local.export_initiatives_indexed
+
+  name            = "trigger-idpay_copy_rdb_products_to_csv-${each.key}"
   data_factory_id = data.azurerm_data_factory.data_factory.id
   activated       = var.env_short == "p"
   interval        = 1
   frequency       = "Day"
 
-  # Execution at 00:00 (Europe/Rome time)
+  # Base time: 00:00 UTC, poi offset per ogni iniziativa
   start_time = "2025-10-27T00:00:00Z"
   time_zone  = "W. Europe Standard Time"
 
@@ -126,6 +158,9 @@ resource "azurerm_data_factory_trigger_schedule" "idpay_copy_rdb_products_to_csv
       subscriptionId     = data.azurerm_subscription.current.subscription_id
       resourceGroup      = data.azurerm_resource_group.idpay_data_rg.name
       exportAccountName  = module.storage_idpay_exports.name
+      initiativeId       = each.value.data.initiativeId
+      initiativeFolder   = each.value.data.initiativeFolder
+      initiativeName     = each.value.data.initiativeName
       notifyUrl          = local.notify_url
       kvUrl              = data.azurerm_key_vault.domain_kv.vault_uri
       kvSecretName       = "apim-idpay-email-export-subkey"
@@ -134,12 +169,70 @@ resource "azurerm_data_factory_trigger_schedule" "idpay_copy_rdb_products_to_csv
   }
 
   schedule {
-    hours   = [1]
-    minutes = [0]
+    hours   = [floor((each.value.offset_minutes / 60) + 1)]
+    minutes = [each.value.offset_minutes % 60]
   }
 
   depends_on = [
     azurerm_data_factory_pipeline.pipelines,
     azurerm_role_assignment.adf_can_list_service_sas
   ]
+}
+
+# Trigger multi-iniziativa per export prodotti JSON
+resource "azurerm_data_factory_trigger_schedule" "export_products_json_per_initiative" {
+  for_each = local.export_initiatives_indexed
+
+  name            = "trigger-idpay_product_export_daily-${each.key}"
+  data_factory_id = data.azurerm_data_factory.data_factory.id
+  activated       = var.env_short == "p"
+  interval        = 1
+  frequency       = "Day"
+
+  start_time = "2025-10-27T00:00:00Z"
+  time_zone  = "W. Europe Standard Time"
+
+  pipeline {
+    name = "idpay_product_export_daily"
+    parameters = {
+      initiativeId     = each.value.data.initiativeId
+      initiativeFolder = each.value.data.initiativeFolder
+    }
+  }
+
+  schedule {
+    hours   = [floor((each.value.offset_minutes / 60) + 2)]
+    minutes = [each.value.offset_minutes % 60]
+  }
+
+  depends_on = [azurerm_data_factory_pipeline.pipelines]
+}
+
+# Trigger multi-iniziativa per export POS JSON con join
+resource "azurerm_data_factory_trigger_schedule" "export_pos_json_per_initiative" {
+  for_each = local.export_initiatives_indexed
+
+  name            = "trigger-idpay_pos_export_daily-${each.key}"
+  data_factory_id = data.azurerm_data_factory.data_factory.id
+  activated       = var.env_short == "p"
+  interval        = 1
+  frequency       = "Day"
+
+  start_time = "2025-10-27T00:00:00Z"
+  time_zone  = "W. Europe Standard Time"
+
+  pipeline {
+    name = "idpay_pos_export_daily"
+    parameters = {
+      initiativeId     = each.value.data.initiativeId
+      initiativeFolder = each.value.data.initiativeFolder
+    }
+  }
+
+  schedule {
+    hours   = [floor((each.value.offset_minutes / 60) + 3)]
+    minutes = [each.value.offset_minutes % 60]
+  }
+
+  depends_on = [azurerm_data_factory_pipeline.pipelines]
 }
