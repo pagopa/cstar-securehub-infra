@@ -1583,10 +1583,6 @@
   "templating": {
     "list": [
       {
-        "current": {
-          "text": "cstar-d-itn-core-monitor-rg",
-          "value": "cstar-d-itn-core-monitor-rg"
-        },
         "datasource": {
           "type": "grafana-azure-monitor-datasource",
           "uid": "azure-monitor-oob"
@@ -1611,10 +1607,6 @@
         "type": "query"
       },
       {
-        "current": {
-          "text": "DEV-CSTAR",
-          "value": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
-        },
         "datasource": {
           "type": "grafana-azure-monitor-datasource",
           "uid": "azure-monitor-oob"
@@ -1637,10 +1629,6 @@
         "type": "query"
       },
       {
-        "current": {
-          "text": "cstar-d-itn-core-law",
-          "value": "cstar-d-itn-core-law"
-        },
         "datasource": {
           "type": "grafana-azure-monitor-datasource",
           "uid": "azure-monitor-oob"
@@ -1666,10 +1654,6 @@
         "type": "query"
       },
       {
-        "current": {
-          "text": "cstar-d-itn-idpay-monitoring-rg",
-          "value": "cstar-d-itn-idpay-monitoring-rg"
-        },
         "datasource": {
           "type": "grafana-azure-monitor-datasource",
           "uid": "azure-monitor-oob"
@@ -1693,10 +1677,6 @@
         "type": "query"
       },
       {
-        "current": {
-          "text": "cstar-d-itn-idpay-law",
-          "value": "cstar-d-itn-idpay-law"
-        },
         "datasource": {
           "type": "grafana-azure-monitor-datasource",
           "uid": "azure-monitor-oob"
