@@ -149,7 +149,7 @@
                             }
                         },
                         "datasetParameters": {
-                            "PosSource": {
+                            "staging_pos_source_json": {
                                 "fileName": {
                                     "value": "@concat('pos_source_', pipeline().parameters.initiativeId, '.json')",
                                     "type": "Expression"
@@ -159,7 +159,7 @@
                                     "type": "Expression"
                                 }
                             },
-                            "PosInitiativeSource": {
+                            "staging_pos_initiative_source_json": {
                                 "fileName": {
                                     "value": "@concat('pos_initiative_source_', pipeline().parameters.initiativeId, '.json')",
                                     "type": "Expression"
@@ -169,7 +169,7 @@
                                     "type": "Expression"
                                 }
                             },
-                            "PosExportSink": {
+                            "blob_pos_export_daily": {
                                 "initiativeFolder": {
                                     "value": "@pipeline().parameters.initiativeFolder",
                                     "type": "Expression"
