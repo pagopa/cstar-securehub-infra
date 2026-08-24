@@ -33,16 +33,7 @@
                     "name": "NormalizePos"
                 },
                 {
-                    "name": "FilterPosKeys"
-                },
-                {
-                    "name": "NormalizeInitiative"
-                },
-                {
                     "name": "FilterInitiative"
-                },
-                {
-                    "name": "FilterInitiativeKeys"
                 },
                 {
                     "name": "JoinPos"
@@ -57,9 +48,6 @@
                 "}",
                 "source(output(",
                 "          {_id} as string,",
-                "          id as string,",
-                "          posId as string,",
-                "          merchantId as string,",
                 "          type as string,",
                 "          franchiseName as string,",
                 "          address as string,",
@@ -76,25 +64,15 @@
                 "     ignoreNoFilesFound: false) ~> PosSource",
                 "source(output(",
                 "          pointOfSaleId as string,",
-                "          posId as string,",
-                "          point_of_sale_id as string,",
                 "          initiativeId as string,",
-                "          initiative_id as string,",
-                "          merchantId as string,",
-                "          enabled as string",
+                "          enabled as boolean",
                 "     ),",
                 "     allowSchemaDrift: true,",
                 "     validateSchema: false,",
                 "     ignoreNoFilesFound: false) ~> PosInitiativeSource",
-                "PosSource derive(posIdKey = trim(iif(!isNull(byName('_id')) && trim(toString(byName('_id'))) != '', toString(byName('_id')), iif(!isNull(id) && trim(id) != '', id, posId)))) ~> NormalizePos",
-                "NormalizePos filter(!isNull(posIdKey) && trim(posIdKey) != '') ~> FilterPosKeys",
-                "PosInitiativeSource derive(initiativeIdNorm = trim(iif(!isNull(initiativeId) && trim(initiativeId) != '', initiativeId, initiative_id)),",
-                "          initiativeEnabledNorm = lower(trim(enabled)),",
-                "          initiativeEnabled = initiativeEnabledNorm == 'true' || initiativeEnabledNorm == '1',",
-                "          initiativePosIdKey = trim(iif(!isNull(pointOfSaleId) && trim(pointOfSaleId) != '', pointOfSaleId, iif(!isNull(posId) && trim(posId) != '', posId, point_of_sale_id)))) ~> NormalizeInitiative",
-                "NormalizeInitiative filter(initiativeIdNorm == $initiativeId && initiativeEnabled == true()) ~> FilterInitiative",
-                "FilterInitiative filter(!isNull(initiativePosIdKey) && trim(initiativePosIdKey) != '') ~> FilterInitiativeKeys",
-                "FilterPosKeys, FilterInitiativeKeys join(posIdKey == initiativePosIdKey,",
+                "PosSource derive(posIdKey = trim(toString(byName('_id')))) ~> NormalizePos",
+                "PosInitiativeSource filter(initiativeId == $initiativeId && enabled == true()) ~> FilterInitiative",
+                "NormalizePos, FilterInitiative join(posIdKey == pointOfSaleId,",
                 "     joinType:'inner',",
                 "     matchType:'exact',",
                 "     ignoreSpaces: false,",
