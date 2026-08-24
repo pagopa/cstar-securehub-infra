@@ -3,7 +3,7 @@
 ## Requirements
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.10.0 |
 | <a name="requirement_argocd"></a> [argocd](#requirement\_argocd) | ~> 7.0 |
 | <a name="requirement_azapi"></a> [azapi](#requirement\_azapi) | ~> 2.0 |
@@ -16,7 +16,7 @@
 ## Providers
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="provider_argocd"></a> [argocd](#provider\_argocd) | 7.15.3 |
 | <a name="provider_azapi"></a> [azapi](#provider\_azapi) | 2.9.0 |
 | <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 2.53.1 |
@@ -28,7 +28,7 @@
 ## Modules
 
 | Name | Source | Version |
-|------|--------|---------|
+| ---- | ------ | ------- |
 | <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | d284d9fd868fd314f99c51c57a5ff71f41160815 |
 | <a name="module_aks_overlay_snet"></a> [aks\_overlay\_snet](#module\_aks\_overlay\_snet) | ./.terraform/modules/__v4__/IDH/subnet | n/a |
 | <a name="module_aks_srtp_node_pool_blue"></a> [aks\_srtp\_node\_pool\_blue](#module\_aks\_srtp\_node\_pool\_blue) | ./.terraform/modules/__v4__/IDH/aks_node_pool | n/a |
@@ -50,7 +50,7 @@
 ## Resources
 
 | Name | Type |
-|------|------|
+| ---- | ---- |
 | [argocd_project.domain_project](https://registry.terraform.io/providers/argoproj-labs/argocd/latest/docs/resources/project) | resource |
 | [azapi_resource.create_tables_srtp](https://registry.terraform.io/providers/azure/azapi/latest/docs/resources/resource) | resource |
 | [azapi_resource.create_tables_srtp_nsm](https://registry.terraform.io/providers/azure/azapi/latest/docs/resources/resource) | resource |
@@ -173,33 +173,33 @@
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
+| ---- | ----------- | ---- | ------- | :------: |
+| <a name="input_additional_geo_locations"></a> [additional\_geo\_locations](#input\_additional\_geo\_locations) | Specifies a list of additional geo\_location resources, used to define where data should be replicated. | <pre>list(object({<br/>    location          = string<br/>    failover_priority = number<br/>    zone_redundant    = bool<br/>  }))</pre> | `[]` | no |
 | <a name="input_adx_db_hot_cache_period_days"></a> [adx\_db\_hot\_cache\_period\_days](#input\_adx\_db\_hot\_cache\_period\_days) | Default hot cache period for ADX database (in days) | `number` | n/a | yes |
 | <a name="input_adx_db_soft_delete_period_days"></a> [adx\_db\_soft\_delete\_period\_days](#input\_adx\_db\_soft\_delete\_period\_days) | Default soft delete period for ADX database (in days) | `number` | n/a | yes |
+| <a name="input_adx_table_hot_cache_period_days"></a> [adx\_table\_hot\_cache\_period\_days](#input\_adx\_table\_hot\_cache\_period\_days) | Hot cache period override for specific ADX tables (in days). If null, falls back to DB default. | `number` | `null` | no |
+| <a name="input_adx_table_soft_delete_period_days"></a> [adx\_table\_soft\_delete\_period\_days](#input\_adx\_table\_soft\_delete\_period\_days) | Soft delete period override for specific ADX tables (in days). If null, falls back to DB default. | `number` | `null` | no |
 | <a name="input_aks_nodepool_blue"></a> [aks\_nodepool\_blue](#input\_aks\_nodepool\_blue) | Parameters for blue node pool | <pre>object({<br/>    vm_sku_name       = string<br/>    autoscale_enabled = optional(bool, true)<br/>    node_count_min    = number<br/>    node_count_max    = number<br/>  })</pre> | n/a | yes |
 | <a name="input_aks_nodepool_green"></a> [aks\_nodepool\_green](#input\_aks\_nodepool\_green) | Parameters for green node pool | <pre>object({<br/>    vm_sku_name       = string<br/>    autoscale_enabled = optional(bool, true)<br/>    node_count_min    = number<br/>    node_count_max    = number<br/>  })</pre> | n/a | yes |
 | <a name="input_azuread_service_principal_azure_cdn_frontdoor_id"></a> [azuread\_service\_principal\_azure\_cdn\_frontdoor\_id](#input\_azuread\_service\_principal\_azure\_cdn\_frontdoor\_id) | Azure CDN Front Door Principal ID - Microsoft.AzureFrontDoor-Cdn | `string` | n/a | yes |
 | <a name="input_cdn_location"></a> [cdn\_location](#input\_cdn\_location) | One of westeurope, northeurope | `string` | n/a | yes |
-| <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | n/a | yes |
-| <a name="input_enable_cdn"></a> [enable\_cdn](#input\_enable\_cdn) | Enable CDN for the domain | `bool` | n/a | yes |
-| <a name="input_env"></a> [env](#input\_env) | Environment | `string` | n/a | yes |
-| <a name="input_env_short"></a> [env\_short](#input\_env\_short) | n/a | `string` | n/a | yes |
-| <a name="input_location"></a> [location](#input\_location) | n/a | `string` | n/a | yes |
-| <a name="input_location_short"></a> [location\_short](#input\_location\_short) | Location short like eg: neu, weu.. | `string` | n/a | yes |
-| <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | n/a | yes |
-| <a name="input_redis_idh_resource_tier"></a> [redis\_idh\_resource\_tier](#input\_redis\_idh\_resource\_tier) | The SKU of the Redis Cache to deploy | `string` | n/a | yes |
-| <a name="input_additional_geo_locations"></a> [additional\_geo\_locations](#input\_additional\_geo\_locations) | Specifies a list of additional geo\_location resources, used to define where data should be replicated. | <pre>list(object({<br/>    location          = string<br/>    failover_priority = number<br/>    zone_redundant    = bool<br/>  }))</pre> | `[]` | no |
-| <a name="input_adx_table_hot_cache_period_days"></a> [adx\_table\_hot\_cache\_period\_days](#input\_adx\_table\_hot\_cache\_period\_days) | Hot cache period override for specific ADX tables (in days). If null, falls back to DB default. | `number` | `null` | no |
-| <a name="input_adx_table_soft_delete_period_days"></a> [adx\_table\_soft\_delete\_period\_days](#input\_adx\_table\_soft\_delete\_period\_days) | Soft delete period override for specific ADX tables (in days). If null, falls back to DB default. | `number` | `null` | no |
 | <a name="input_cosmos_activation_db_autoscale_max_throughput"></a> [cosmos\_activation\_db\_autoscale\_max\_throughput](#input\_cosmos\_activation\_db\_autoscale\_max\_throughput) | Max throughput for activation database (shared across collections) | `number` | `null` | no |
 | <a name="input_cosmos_collections_max_throughput"></a> [cosmos\_collections\_max\_throughput](#input\_cosmos\_collections\_max\_throughput) | Max throughput for collections | `number` | `null` | no |
 | <a name="input_cosmos_otp_ttl"></a> [cosmos\_otp\_ttl](#input\_cosmos\_otp\_ttl) | TTL for otps collection. | `number` | `null` | no |
 | <a name="input_cosmos_payee_db_autoscale_max_throughput"></a> [cosmos\_payee\_db\_autoscale\_max\_throughput](#input\_cosmos\_payee\_db\_autoscale\_max\_throughput) | Max throughput for payee database (shared across collections) | `number` | `null` | no |
 | <a name="input_cosmos_rtp_db_autoscale_max_throughput"></a> [cosmos\_rtp\_db\_autoscale\_max\_throughput](#input\_cosmos\_rtp\_db\_autoscale\_max\_throughput) | Max throughput for rtp database (shared across collections) | `number` | `null` | no |
+| <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | n/a | yes |
+| <a name="input_enable_cdn"></a> [enable\_cdn](#input\_enable\_cdn) | Enable CDN for the domain | `bool` | n/a | yes |
+| <a name="input_env"></a> [env](#input\_env) | Environment | `string` | n/a | yes |
+| <a name="input_env_short"></a> [env\_short](#input\_env\_short) | n/a | `string` | n/a | yes |
 | <a name="input_k8s_kube_config_path_prefix"></a> [k8s\_kube\_config\_path\_prefix](#input\_k8s\_kube\_config\_path\_prefix) | n/a | `string` | `"~/.kube"` | no |
 | <a name="input_law_daily_quota_gb"></a> [law\_daily\_quota\_gb](#input\_law\_daily\_quota\_gb) | The workspace daily quota for ingestion in GB. | `number` | `-1` | no |
 | <a name="input_law_retention_in_days"></a> [law\_retention\_in\_days](#input\_law\_retention\_in\_days) | The workspace data retention in days | `number` | `30` | no |
 | <a name="input_law_sku"></a> [law\_sku](#input\_law\_sku) | Sku of the Log Analytics Workspace | `string` | `"PerGB2018"` | no |
+| <a name="input_location"></a> [location](#input\_location) | n/a | `string` | n/a | yes |
+| <a name="input_location_short"></a> [location\_short](#input\_location\_short) | Location short like eg: neu, weu.. | `string` | n/a | yes |
+| <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | n/a | yes |
+| <a name="input_redis_idh_resource_tier"></a> [redis\_idh\_resource\_tier](#input\_redis\_idh\_resource\_tier) | The SKU of the Redis Cache to deploy | `string` | n/a | yes |
 
 ## Outputs
 

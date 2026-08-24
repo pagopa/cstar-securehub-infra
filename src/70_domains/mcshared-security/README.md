@@ -5,7 +5,7 @@
 ## Requirements
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >=1.10.0 |
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | ~> 2.53 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 4 |
@@ -13,14 +13,14 @@
 ## Providers
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 2.53.1 |
 | <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.38.1 |
 
 ## Modules
 
 | Name | Source | Version |
-|------|--------|---------|
+| ---- | ------ | ------- |
 | <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | d503adc32b4fc18a6826d2748ac4cbe02807e523 |
 | <a name="module_admins_policy"></a> [admins\_policy](#module\_admins\_policy) | ./.terraform/modules/__v4__/IDH/key_vault_access_policy | n/a |
 | <a name="module_developers_policy"></a> [developers\_policy](#module\_developers\_policy) | ./.terraform/modules/__v4__/IDH/key_vault_access_policy | n/a |
@@ -32,7 +32,7 @@
 ## Resources
 
 | Name | Type |
-|------|------|
+| ---- | ---- |
 | [azurerm_key_vault_secret.key_vault_auth_vault_uri](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azuread_group.adgroup_admin](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_developers](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
@@ -45,7 +45,7 @@
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
+| ---- | ----------- | ---- | ------- | :------: |
 | <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | n/a | yes |
 | <a name="input_env"></a> [env](#input\_env) | Environment | `string` | n/a | yes |
 | <a name="input_env_short"></a> [env\_short](#input\_env\_short) | n/a | `string` | n/a | yes |

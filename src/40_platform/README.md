@@ -3,7 +3,7 @@
 ## Requirements
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >=1.10.0 |
 | <a name="requirement_argocd"></a> [argocd](#requirement\_argocd) | ~> 7.0 |
 | <a name="requirement_azapi"></a> [azapi](#requirement\_azapi) | ~> 2.6.0 |
@@ -19,7 +19,7 @@
 ## Providers
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="provider_argocd"></a> [argocd](#provider\_argocd) | 7.15.3 |
 | <a name="provider_azapi"></a> [azapi](#provider\_azapi) | 2.6.1 |
 | <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 3.8.0 |
@@ -31,7 +31,7 @@
 ## Modules
 
 | Name | Source | Version |
-|------|--------|---------|
+| ---- | ------ | ------- |
 | <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | c474c98742d71e8829292e38e2a5b9f73e23163f |
 | <a name="module_adf_snet"></a> [adf\_snet](#module\_adf\_snet) | ./.terraform/modules/__v4__/IDH/subnet | n/a |
 | <a name="module_adx_snet"></a> [adx\_snet](#module\_adx\_snet) | ./.terraform/modules/__v4__/IDH/subnet | n/a |
@@ -53,7 +53,7 @@
 ## Resources
 
 | Name | Type |
-|------|------|
+| ---- | ---- |
 | [argocd_project.platform_project](https://registry.terraform.io/providers/argoproj-labs/argocd/latest/docs/resources/project) | resource |
 | [azapi_resource_action.kusto_approve_pe](https://registry.terraform.io/providers/Azure/azapi/latest/docs/resources/resource_action) | resource |
 | [azurerm_application_insights.monitoring_application_insights](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/application_insights) | resource |
@@ -120,7 +120,7 @@
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
+| ---- | ----------- | ---- | ------- | :------: |
 | <a name="input_argocd_application_namespaces"></a> [argocd\_application\_namespaces](#input\_argocd\_application\_namespaces) | In which namespaces argocd can create applications | `list(string)` | n/a | yes |
 | <a name="input_argocd_force_reinstall_version"></a> [argocd\_force\_reinstall\_version](#input\_argocd\_force\_reinstall\_version) | version to force reinstall ArgoCD | `string` | n/a | yes |
 | <a name="input_argocd_helm_release_version"></a> [argocd\_helm\_release\_version](#input\_argocd\_helm\_release\_version) | ArgoCD helm chart release version | `string` | n/a | yes |
