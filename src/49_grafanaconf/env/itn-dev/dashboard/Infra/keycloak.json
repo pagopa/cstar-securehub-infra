@@ -176,7 +176,7 @@
           "azureLogAnalytics": {
             "dashboardTime": true,
             "mode": "raw",
-            "query": "AppMetrics\n| where Name startswith \"keycloak_user\"\n| extend \n    Event = tostring(Properties[\"event\"]),\n    Error = tostring(Properties[\"error\"])\n| summarize \n    TotalEvents = sum(Sum),\n    TotalErrors = sumif(Sum, isnotempty(Error))\n| extend ErrorRatePercentage = round((todouble(TotalErrors) / TotalEvents) * 100, 2)\n| project \n    ['Error rate'] = ErrorRatePercentage",
+            "query": "AppMetrics\n| where Name startswith \"keycloak_user\"\n| extend \n    Event = tostring(Properties[\"event\"]),\n    Error = tostring(Properties[\"error\"])\n| summarize \n    TotalEvents = sum(Sum),\n    TotalErrors = sumif(Sum, isnotempty(trim(\" \", Error)))\n| extend ErrorRatePercentage = round((todouble(TotalErrors) / TotalEvents) * 100, 2)\n| project \n    ['Error rate'] = ErrorRatePercentage",
             "resources": [
               "/subscriptions/$subscription/resourceGroups/$CoreMonitorRg/providers/Microsoft.OperationalInsights/workspaces/$CoreLaw"
             ],
@@ -329,7 +329,7 @@
           "azureLogAnalytics": {
             "dashboardTime": true,
             "mode": "raw",
-            "query": "AppMetrics\n| where Name startswith \"keycloak_user\"\n| extend \n    Event = tostring(Properties[\"event\"]),\n    Error = tostring(Properties[\"error\"])\n| summarize \n    TotalEvents = sum(Sum),\n    TotalErrors = sumif(Sum, isnotempty(Error))\n    by bin(TimeGenerated, max_of($__interval, $granularita))\n| project \n    TimeGenerated,\n    ['Total Events'] = TotalEvents,\n    ['Total Errors'] = TotalErrors\n| order by TimeGenerated asc",
+            "query": "AppMetrics\n| where Name startswith \"keycloak_user\"\n| extend \n    Event = tostring(Properties[\"event\"]),\n    Error = tostring(Properties[\"error\"])\n| summarize \n    TotalEvents = sum(Sum),\n    TotalErrors = sumif(Sum, isnotempty(trim(\" \", Error)))\n    by bin(TimeGenerated, max_of($__interval, $granularita))\n| project \n    TimeGenerated,\n    ['Total Events'] = TotalEvents,\n    ['Total Errors'] = TotalErrors\n| order by TimeGenerated asc",
             "resources": [
               "/subscriptions/$subscription/resourceGroups/$CoreMonitorRg/providers/Microsoft.OperationalInsights/workspaces/$CoreLaw"
             ],
@@ -676,7 +676,7 @@
           "azureLogAnalytics": {
             "dashboardTime": true,
             "mode": "raw",
-            "query": "AppMetrics\n| where Name startswith \"keycloak_user\"\n| extend \n    Realm = tostring(Properties[\"realm\"]),\n    Error = tostring(Properties[\"error\"])\n| summarize \n    TotalEvents = sum(Sum),\n    TotalErrors = sumif(Sum, isnotempty(Error))\n    by Realm\n| extend ErrorRatePercentage = round((todouble(TotalErrors) / TotalEvents) * 100, 2)\n| project \n    ['Realm'] = Realm,\n    ['Total events'] = TotalEvents,\n    ['Total errors'] = TotalErrors,\n    ['Error rate'] = strcat(ErrorRatePercentage, \"%\")\n| sort by ['Total events'] desc",
+            "query": "AppMetrics\n| where Name startswith \"keycloak_user\"\n| extend \n    Realm = tostring(Properties[\"realm\"]),\n    Error = tostring(Properties[\"error\"])\n| summarize \n    TotalEvents = sum(Sum),\n    TotalErrors = sumif(Sum, isnotempty(trim(\" \", Error)))\n    by Realm\n| extend ErrorRatePercentage = round((todouble(TotalErrors) / TotalEvents) * 100, 2)\n| project \n    ['Realm'] = Realm,\n    ['Total events'] = TotalEvents,\n    ['Total errors'] = TotalErrors,\n    ['Error rate'] = strcat(ErrorRatePercentage, \"%\")\n| sort by ['Total events'] desc",
             "resources": [
               "/subscriptions/$subscription/resourceGroups/$CoreMonitorRg/providers/Microsoft.OperationalInsights/workspaces/$CoreLaw"
             ],
@@ -1007,7 +1007,7 @@
           "azureLogAnalytics": {
             "dashboardTime": true,
             "mode": "raw",
-            "query": "AppMetrics\n| where Name startswith \"keycloak_user\"\n| extend \n    Realm = tostring(Properties[\"realm\"]),\n    Event = tostring(Properties[\"event\"]),\n    Error = tostring(Properties[\"error\"])\n| summarize \n    TotalEvents = sum(Sum),\n    TotalErrors = sumif(Sum, isnotempty(Error))\n    by Event\n| extend ErrorRatePercentage = round((todouble(TotalErrors) / TotalEvents) * 100, 2)\n| project \n    ['Event'] = Event,\n    ['Total events'] = TotalEvents,\n    ['Total errors'] = TotalErrors,\n    ['Error rate'] = strcat(ErrorRatePercentage, \"%\")\n| sort by ['Total events'] desc",
+            "query": "AppMetrics\n| where Name startswith \"keycloak_user\"\n| extend \n    Realm = tostring(Properties[\"realm\"]),\n    Event = tostring(Properties[\"event\"]),\n    Error = tostring(Properties[\"error\"])\n| summarize \n    TotalEvents = sum(Sum),\n    TotalErrors = sumif(Sum, isnotempty(trim(\" \", Error)))\n    by Event\n| extend ErrorRatePercentage = round((todouble(TotalErrors) / TotalEvents) * 100, 2)\n| project \n    ['Event'] = Event,\n    ['Total events'] = TotalEvents,\n    ['Total errors'] = TotalErrors,\n    ['Error rate'] = strcat(ErrorRatePercentage, \"%\")\n| sort by ['Total events'] desc",
             "resources": [
               "/subscriptions/$subscription/resourceGroups/$CoreMonitorRg/providers/Microsoft.OperationalInsights/workspaces/$CoreLaw"
             ],
@@ -1202,7 +1202,7 @@
           "azureLogAnalytics": {
             "dashboardTime": true,
             "mode": "raw",
-            "query": "AppMetrics\n| where Name startswith \"keycloak_user\"\n| extend \n    Realm = tostring(Properties[\"realm\"]),\n    ClientId = tostring(Properties[\"client_id\"]),\n    Error = tostring(Properties[\"error\"])\n| summarize \n    TotalEvents = sum(Sum),\n    TotalErrors = sumif(Sum, isnotempty(Error))\n    by Realm, ClientId\n| where TotalEvents > 0\n| extend ErrorRatePercentage = round((todouble(TotalErrors) / TotalEvents) * 100, 2)\n| project \n    ['Realm and client'] = strcat(Realm, \"/\", ClientId),\n    ['Total events'] = TotalEvents,\n    ['Total errors'] = TotalErrors,\n    ['Error rate'] = strcat(ErrorRatePercentage, \"%\")\n| sort by ['Total events'] desc",
+            "query": "AppMetrics\n| where Name startswith \"keycloak_user\"\n| extend \n    Realm = tostring(Properties[\"realm\"]),\n    ClientId = tostring(Properties[\"client_id\"]),\n    Error = tostring(Properties[\"error\"])\n| summarize \n    TotalEvents = sum(Sum),\n    TotalErrors = sumif(Sum, isnotempty(trim(\" \", Error)))\n    by Realm, ClientId\n| where TotalEvents > 0\n| extend ErrorRatePercentage = round((todouble(TotalErrors) / TotalEvents) * 100, 2)\n| project \n    ['Realm and client'] = strcat(Realm, \"/\", ClientId),\n    ['Total events'] = TotalEvents,\n    ['Total errors'] = TotalErrors,\n    ['Error rate'] = strcat(ErrorRatePercentage, \"%\")\n| sort by ['Total events'] desc",
             "resources": [
               "/subscriptions/$subscription/resourceGroups/$CoreMonitorRg/providers/Microsoft.OperationalInsights/workspaces/$CoreLaw"
             ],
@@ -1334,7 +1334,7 @@
           "azureLogAnalytics": {
             "dashboardTime": true,
             "mode": "raw",
-            "query": "AppMetrics\n| where Name startswith \"keycloak_user\"\n| extend \n    Error = tostring(Properties[\"error\"])\n| where Error != \"\"\n| summarize Count = sum(Sum) by Error\n| where Count > 0\n| project Error, [\"Errors\"] = Count\n| order by [\"Errors\"]",
+            "query": "AppMetrics\n| where Name startswith \"keycloak_user\"\n| extend \n    Error = tostring(Properties[\"error\"])\n| where isnotempty(trim(\" \", Error))\n| summarize Count = sum(Sum) by Error\n| where Count > 0\n| project Error, [\"Errors\"] = Count\n| order by [\"Errors\"] desc",
             "resources": [
               "/subscriptions/$subscription/resourceGroups/$CoreMonitorRg/providers/Microsoft.OperationalInsights/workspaces/$CoreLaw"
             ],
@@ -1449,7 +1449,7 @@
           "azureLogAnalytics": {
             "dashboardTime": true,
             "mode": "raw",
-            "query": "AppMetrics\n| where Name startswith \"keycloak_user\"\n| extend\n    realm     = tostring(Properties[\"realm\"]),\n    client_id = tostring(Properties[\"client_id\"]),\n    event     = tostring(Properties[\"event\"]),\n    error     = tostring(Properties[\"error\"])\n| summarize\n    ['Count']     = sum(Sum)\n    by realm, client_id, event\n| order by ['Count'] desc\n| project\n    ['Label']        = strcat(realm, \"/\", client_id, \" - \", event),\n    ['Realm']        = realm,\n    ['Client ID']    = client_id,\n    ['Evento']       = event,\n    ['Count']",
+            "query": "AppMetrics\n| where Name startswith \"keycloak_user\"\n| extend\n    realm     = tostring(Properties[\"realm\"]),\n    client_id = tostring(Properties[\"client_id\"]),\n    event     = tostring(Properties[\"event\"]),\n    error     = tostring(Properties[\"error\"])\n| summarize\n    ['Count']     = sum(Sum)\n    by realm, client_id, event\n| order by ['Count'] desc\n| project\n    ['Label']        = strcat(realm, \"/\", client_id, \" - \", event),\n    ['Realm']        = realm,\n    ['Client ID']    = client_id,\n    ['Event']       = event,\n    ['Count']",
             "resources": [
               "/subscriptions/$subscription/resourceGroups/$CoreMonitorRg/providers/Microsoft.OperationalInsights/workspaces/$CoreLaw"
             ],
@@ -1699,13 +1699,13 @@
     ]
   },
   "time": {
-    "from": "now-24h",
+    "from": "now-30d",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "browser",
   "title": "KeyCloak access monitoring",
   "uid": "gad8kwv",
-  "version": 68,
+  "version": 70,
   "weekStart": ""
 }
