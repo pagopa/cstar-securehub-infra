@@ -4,10 +4,11 @@ resource "keycloak_oidc_identity_provider" "selfcare_te_oidc" {
   alias   = local.keycloak_selfcare_idp_te_alias
   enabled = true
 
-  authorization_url = "https://dummy.com/auth"
-  token_url         = "https://dummy.com/token"
-  client_id         = "dummy"
-  client_secret     = "dummy" # In TF è obbligatorio se si usa auth method client_secret_post
+  authorization_url  = "https://dummy.com/auth"
+  token_url          = "https://dummy.com/token"
+  hide_on_login_page = true
+  client_id          = "dummy"
+  client_secret      = "dummy" # In TF è obbligatorio se si usa auth method client_secret_post
 
   issuer             = local.selfcare_issuer
   jwks_url           = "${local.selfcare_issuer}/.well-known/jwks.json"
@@ -29,13 +30,15 @@ resource "keycloak_openid_client" "ar_backoffice_admin_client" {
   client_id     = module.secrets.values["ar-backoffice-admin-client-id"].value
   client_secret = module.secrets.values["ar-backoffice-admin-client-secret"].value
 
-  name        = "AR Backoffice Admin"
-  enabled     = true
+  name    = "AR Backoffice Admin"
+  enabled = true
+
   access_type = "CONFIDENTIAL"
 
   service_accounts_enabled     = true
   standard_flow_enabled        = false
   direct_access_grants_enabled = false
+
 }
 
 resource "keycloak_openid_client_default_scopes" "ar_backoffice_admin_client_default_scopes" {
@@ -43,7 +46,7 @@ resource "keycloak_openid_client_default_scopes" "ar_backoffice_admin_client_def
   client_id = keycloak_openid_client.ar_backoffice_admin_client.id
 
   default_scopes = [
-    keycloak_openid_client_scope.mdc_base_claims.name,
+    keycloak_openid_client_scope.mdc_base_claims.name
   ]
 }
 
@@ -156,6 +159,45 @@ resource "keycloak_openid_client_default_scopes" "ar_backoffice_client_default_s
   client_id = keycloak_openid_client.ar_backoffice_client.id
 
   default_scopes = [
-    keycloak_openid_client_scope.mdc_base_claims.name
+    keycloak_openid_client_scope.mdc_base_claims.name,
+  ]
+}
+
+resource "keycloak_openid_client" "ar_backoffice_portal_client" {
+  realm_id = local.keycloak_realm_id
+
+  client_id = "ar-backoffice-portal-client"
+  name      = "AR Backoffice Portal client"
+  enabled   = true
+
+  # "Client Authentication" OFF in UI = "PUBLIC" in Terraform
+  access_type = "PUBLIC"
+
+  # Public clients do not have a client secret
+  service_accounts_enabled = false
+
+  # Enables Authorization Code Flow for secure, browser-based user login
+  standard_flow_enabled        = true
+  direct_access_grants_enabled = true
+
+  # Enforces Proof Key for Code Exchange (PKCE)
+  pkce_code_challenge_method = "S256"
+
+  # Whitelist of authorized callback URLs after successful authentication
+  valid_redirect_uris = ["https://${module.admin_web_storage.primary_web_host}/*"]
+
+  # Enables CORS by inheriting allowed origins from the redirect URIs
+  web_origins = ["+"]
+
+  # Override the value inherited from the realm settings (in seconds)
+  access_token_lifespan = "300"
+}
+
+resource "keycloak_openid_client_default_scopes" "ar_backoffice_portal_default_scopes" {
+  realm_id  = local.keycloak_realm_id
+  client_id = keycloak_openid_client.ar_backoffice_portal_client.id
+
+  default_scopes = [
+    keycloak_openid_client_scope.admin_role_scope.name
   ]
 }

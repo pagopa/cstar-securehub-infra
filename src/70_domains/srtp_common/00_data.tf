@@ -175,6 +175,14 @@ data "azurerm_private_dns_zone" "managed_redis" {
 data "azurerm_client_config" "current" {}
 
 #
+# Azure Data Factory
+#
+data "azurerm_data_factory" "data_factory" {
+  name                = local.data_factory_name
+  resource_group_name = local.data_factory_rg_name
+}
+
+#
 # Azure Data Explorer (Kusto)
 #
 data "azurerm_kusto_cluster" "kusto_cluster" {
