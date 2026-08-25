@@ -117,7 +117,7 @@
         ],
         "outputs": [
           {
-            "referenceName": "staging_pos_initiative_source_json",
+            "referenceName": "staging_pos_initiative_source_json_v2",
             "type": "DatasetReference",
             "parameters": {
               "initiativeId": {
@@ -153,27 +153,15 @@
             "referenceName": "export_flow_pos_daily_stage2",
             "type": "DataFlowReference",
             "parameters": {
-              "initiativeId": {
-                "value": "@pipeline().parameters.initiativeId",
-                "type": "Expression"
-              }
+              "initiativeId": "@pipeline().parameters.initiativeId"
             },
             "datasetParameters": {
               "PosInitiativeStage": {
-                "initiativeId": {
-                  "value": "@pipeline().parameters.initiativeId",
-                  "type": "Expression"
-                }
+                "initiativeId": "@pipeline().parameters.initiativeId"
               },
               "SinkPosJSON": {
-                "initiativeFolder": {
-                  "value": "@pipeline().parameters.initiativeFolder",
-                  "type": "Expression"
-                },
-                "initiativeId": {
-                  "value": "@pipeline().parameters.initiativeId",
-                  "type": "Expression"
-                }
+                "initiativeFolder": "@pipeline().parameters.initiativeFolder",
+                "initiativeId": "@pipeline().parameters.initiativeId"
               }
             }
           },

@@ -13,7 +13,7 @@
         },
         {
           "dataset": {
-            "referenceName": "staging_pos_initiative_source_json",
+            "referenceName": "staging_pos_initiative_source_json_v2",
             "type": "DatasetReference"
           },
           "name": "PosInitiativeStage"

@@ -21,21 +21,12 @@
                         "referenceName": "export_flow_pos_daily_lookup",
                         "type": "DataFlowReference",
                         "parameters": {
-                            "initiativeId": {
-                                "value": "@pipeline().parameters.initiativeId",
-                                "type": "Expression"
-                            }
+                            "initiativeId": "@pipeline().parameters.initiativeId"
                         },
                         "datasetParameters": {
                             "SinkPosJSON": {
-                                "initiativeFolder": {
-                                    "value": "@pipeline().parameters.initiativeFolder",
-                                    "type": "Expression"
-                                },
-                                "initiativeId": {
-                                    "value": "@pipeline().parameters.initiativeId",
-                                    "type": "Expression"
-                                }
+                                "initiativeFolder": "@pipeline().parameters.initiativeFolder",
+                                "initiativeId": "@pipeline().parameters.initiativeId"
                             }
                         }
                     },
