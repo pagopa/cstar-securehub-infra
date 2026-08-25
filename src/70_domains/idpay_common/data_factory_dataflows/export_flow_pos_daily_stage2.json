@@ -34,9 +34,6 @@
         { "name": "SelectOutput" }
       ],
       "scriptLines": [
-        "parameters{",
-        "     initiativeId as string",
-        "}",
         "source(allowSchemaDrift: true,",
         "     validateSchema: false,",
         "     ignoreNoFilesFound: false,",
@@ -45,10 +42,7 @@
         "     validateSchema: false,",
         "     ignoreNoFilesFound: false,",
         "     documentForm: 'arrayOfDocuments') ~> PosInitiativeStage",
-        "PosInitiativeStage filter(",
-        "     toString(byName('initiativeId')) == $initiativeId",
-        "     && toBoolean(byName('enabled')) == true()",
-        ") ~> FilterStage",
+        "PosInitiativeStage filter(toBoolean(byName('enabled')) == true()) ~> FilterStage",
         "PosStageSource, FilterStage join(toString(PosStageSource@id) == toString(FilterStage@pointOfSaleId),",
         "     joinType:'inner',",
         "     matchType:'exact',",

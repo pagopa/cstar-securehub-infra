@@ -146,9 +146,6 @@
           "dataFlow": {
             "referenceName": "export_flow_pos_daily_stage2",
             "type": "DataFlowReference",
-            "parameters": {
-              "initiativeId": "@pipeline().parameters.initiativeId"
-            },
             "datasetParameters": {
               "SinkPosJSON": {
                 "initiativeFolder": "@pipeline().parameters.initiativeFolder",
