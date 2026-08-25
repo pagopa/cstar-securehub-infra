@@ -47,7 +47,7 @@
         "     toString(byName('initiativeId')) == $initiativeId",
         "     && toBoolean(byName('enabled')) == true()",
         ") ~> FilterInitiative",
-        "PosSource, FilterInitiative join(toString(PosSource@_id) == toString(FilterInitiative@pointOfSaleId),",
+        "PosSource, FilterInitiative join(toString(PosSource@id) == toString(FilterInitiative@pointOfSaleId),",
         "     joinType:'inner',",
         "     matchType:'exact',",
         "     ignoreSpaces: false,",
