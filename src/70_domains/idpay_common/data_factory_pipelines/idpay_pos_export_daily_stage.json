@@ -1,0 +1,134 @@
+{
+  "name": "idpay_pos_export_daily_stage",
+  "properties": {
+    "description": "POS export via stage strategy (copy initiative records to stage, then join with POS)",
+    "activities": [
+      {
+        "name": "StageInitiativeRecords",
+        "description": "Copy filtered point_of_sales_initiative records into staging storage",
+        "type": "Copy",
+        "dependsOn": [],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "userProperties": [],
+        "typeProperties": {
+          "source": {
+            "type": "CosmosDbMongoDbApiSource",
+            "batchSize": 500,
+            "filter": {
+              "value": "@concat('{ \"initiativeId\": \"', pipeline().parameters.initiativeId, '\", \"enabled\": true }')",
+              "type": "Expression"
+            },
+            "cursorMethods": {
+              "project": "{ \"_id\": 0, \"initiativeId\": 1, \"enabled\": 1, \"pointOfSaleId\": 1 }"
+            }
+          },
+          "sink": {
+            "type": "JsonSink",
+            "storeSettings": {
+              "type": "AzureBlobFSWriteSettings"
+            },
+            "formatSettings": {
+              "type": "JsonWriteSettings",
+              "filePattern": "arrayOfObjects"
+            }
+          },
+          "enableStaging": false
+        },
+        "inputs": [
+          {
+            "referenceName": "cosmos_idpay_point_of_sale_initiative",
+            "type": "DatasetReference"
+          }
+        ],
+        "outputs": [
+          {
+            "referenceName": "staging_pos_initiative_source_json",
+            "type": "DatasetReference",
+            "parameters": {
+              "initiativeId": {
+                "value": "@pipeline().parameters.initiativeId",
+                "type": "Expression"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "ExportPosDataFlowStage",
+        "description": "Join POS with staged initiative records and export",
+        "type": "ExecuteDataFlow",
+        "dependsOn": [
+          {
+            "activity": "StageInitiativeRecords",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "userProperties": [],
+        "typeProperties": {
+          "dataFlow": {
+            "referenceName": "export_flow_pos_daily_stage",
+            "type": "DataFlowReference",
+            "parameters": {
+              "initiativeId": {
+                "value": "@pipeline().parameters.initiativeId",
+                "type": "Expression"
+              }
+            },
+            "datasetParameters": {
+              "PosInitiativeStage": {
+                "initiativeId": {
+                  "value": "@pipeline().parameters.initiativeId",
+                  "type": "Expression"
+                }
+              },
+              "SinkPosJSON": {
+                "initiativeFolder": {
+                  "value": "@pipeline().parameters.initiativeFolder",
+                  "type": "Expression"
+                },
+                "initiativeId": {
+                  "value": "@pipeline().parameters.initiativeId",
+                  "type": "Expression"
+                }
+              }
+            }
+          },
+          "compute": {
+            "coreCount": 8,
+            "computeType": "General"
+          },
+          "traceLevel": "Fine"
+        }
+      }
+    ],
+    "parameters": {
+      "initiativeId": {
+        "type": "String"
+      },
+      "initiativeFolder": {
+        "type": "String"
+      }
+    },
+    "annotations": [
+      "Point of Sales Export",
+      "IdPay",
+      "Multi-Initiative",
+      "Stage Strategy"
+    ]
+  }
+}

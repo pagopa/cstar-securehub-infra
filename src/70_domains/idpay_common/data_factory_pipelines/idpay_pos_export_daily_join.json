@@ -1,0 +1,65 @@
+{
+  "name": "idpay_pos_export_daily_join",
+  "properties": {
+    "description": "POS export via join dataflow strategy",
+    "activities": [
+      {
+        "name": "ExportPosDataFlowJoin",
+        "description": "Join strategy on point_of_sales and point_of_sales_initiative",
+        "type": "ExecuteDataFlow",
+        "dependsOn": [],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "userProperties": [],
+        "typeProperties": {
+          "dataFlow": {
+            "referenceName": "export_flow_pos_daily",
+            "type": "DataFlowReference",
+            "parameters": {
+              "initiativeId": {
+                "value": "@pipeline().parameters.initiativeId",
+                "type": "Expression"
+              }
+            },
+            "datasetParameters": {
+              "SinkPosJSON": {
+                "initiativeFolder": {
+                  "value": "@pipeline().parameters.initiativeFolder",
+                  "type": "Expression"
+                },
+                "initiativeId": {
+                  "value": "@pipeline().parameters.initiativeId",
+                  "type": "Expression"
+                }
+              }
+            }
+          },
+          "compute": {
+            "coreCount": 8,
+            "computeType": "General"
+          },
+          "traceLevel": "Fine"
+        }
+      }
+    ],
+    "parameters": {
+      "initiativeId": {
+        "type": "String"
+      },
+      "initiativeFolder": {
+        "type": "String"
+      }
+    },
+    "annotations": [
+      "Point of Sales Export",
+      "IdPay",
+      "Multi-Initiative",
+      "Join Strategy"
+    ]
+  }
+}

@@ -27,8 +27,6 @@
                             }
                         },
                         "datasetParameters": {
-                            "PosSource": {},
-                            "PosInitiativeSource": {},
                             "SinkPosJSON": {
                                 "initiativeFolder": {
                                     "value": "@pipeline().parameters.initiativeFolder",
