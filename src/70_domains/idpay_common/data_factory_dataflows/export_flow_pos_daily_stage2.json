@@ -1,0 +1,78 @@
+{
+  "name": "export_flow_pos_daily_stage2",
+  "properties": {
+    "type": "MappingDataFlow",
+    "typeProperties": {
+      "sources": [
+        {
+          "dataset": {
+            "referenceName": "staging_pos_source_json_v2",
+            "type": "DatasetReference"
+          },
+          "name": "PosStageSource"
+        },
+        {
+          "dataset": {
+            "referenceName": "staging_pos_initiative_source_json",
+            "type": "DatasetReference"
+          },
+          "name": "PosInitiativeStage"
+        }
+      ],
+      "sinks": [
+        {
+          "dataset": {
+            "referenceName": "blob_pos_export_initiative",
+            "type": "DatasetReference"
+          },
+          "name": "SinkPosJSON"
+        }
+      ],
+      "transformations": [
+        { "name": "FilterStage" },
+        { "name": "JoinPosInitiative" },
+        { "name": "SelectOutput" }
+      ],
+      "scriptLines": [
+        "parameters{",
+        "     initiativeId as string",
+        "}",
+        "source(allowSchemaDrift: true,",
+        "     validateSchema: false,",
+        "     ignoreNoFilesFound: false,",
+        "     documentForm: 'arrayOfDocuments') ~> PosStageSource",
+        "source(allowSchemaDrift: true,",
+        "     validateSchema: false,",
+        "     ignoreNoFilesFound: false,",
+        "     documentForm: 'arrayOfDocuments') ~> PosInitiativeStage",
+        "PosInitiativeStage filter(",
+        "     toString(byName('initiativeId')) == $initiativeId",
+        "     && toBoolean(byName('enabled')) == true()",
+        ") ~> FilterStage",
+        "PosStageSource, FilterStage join(toString(PosStageSource@id) == toString(FilterStage@pointOfSaleId),",
+        "     joinType:'inner',",
+        "     matchType:'exact',",
+        "     ignoreSpaces: false,",
+        "     broadcast: 'auto') ~> JoinPosInitiative",
+        "JoinPosInitiative select(mapColumn(",
+        "          type = PosStageSource@type,",
+        "          franchiseName = PosStageSource@franchiseName,",
+        "          address = PosStageSource@address,",
+        "          city = PosStageSource@city,",
+        "          region = PosStageSource@region,",
+        "          province = PosStageSource@province,",
+        "          streetNumber = PosStageSource@streetNumber,",
+        "          zipCode = PosStageSource@zipCode,",
+        "          channelPhone = PosStageSource@channelPhone,",
+        "          website = PosStageSource@website",
+        "     ),",
+        "     skipDuplicateMapInputs: true,",
+        "     skipDuplicateMapOutputs: true) ~> SelectOutput",
+        "SelectOutput sink(allowSchemaDrift: true,",
+        "     validateSchema: false,",
+        "     skipDuplicateMapInputs: true,",
+        "     skipDuplicateMapOutputs: true) ~> SinkPosJSON"
+      ]
+    }
+  }
+}

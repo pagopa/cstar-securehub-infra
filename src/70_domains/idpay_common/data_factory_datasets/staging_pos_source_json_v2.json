@@ -1,0 +1,25 @@
+{
+  "name": "staging_pos_source_json_v2",
+  "properties": {
+    "linkedServiceName": {
+      "referenceName": "${domain}-exports-blobfs-ls",
+      "type": "LinkedServiceReference"
+    },
+    "annotations": [
+      "POS Stage",
+      "IdPay",
+      "Multi-Initiative"
+    ],
+    "type": "Json",
+    "typeProperties": {
+      "location": {
+        "type": "AzureBlobFSLocation",
+        "fileName": "pos_source.json",
+        "folderPath": "staging/pos/common",
+        "fileSystem": "export"
+      },
+      "encodingName": "UTF-8"
+    }
+  },
+  "type": "Microsoft.DataFactory/factories/datasets"
+}
