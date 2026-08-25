@@ -35,7 +35,7 @@ locals {
           unique = true
         },
         {
-          keys   = ["businessName"],
+          keys   = ["businessName"]
           unique = false
         }
       ]
