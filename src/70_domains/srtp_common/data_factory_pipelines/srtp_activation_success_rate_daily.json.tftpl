@@ -1,0 +1,59 @@
+{
+  "name": "srtp_activation_success_rate_daily",
+  "properties": {
+    "activities": [
+      {
+        "name": "Delete previous day data",
+        "type": "AzureDataExplorerCommand",
+        "typeProperties": {
+          "command": ".delete table activation_success_rate records <| activation_success_rate | where activation_day >= (startofday(now() + 2h, -1) - 2h) and activation_day < ((startofday(now() + 2h, -1) - 2h) + 1d)",
+          "commandTimeout": "00:10:00"
+        },
+        "linkedServiceName": {
+          "referenceName": "${domain}-Kusto-${domain}-ls",
+          "type": "LinkedServiceReference"
+        }
+      },
+      {
+        "name": "Copy activation success rate daily",
+        "type": "Copy",
+        "dependsOn": [
+          {
+            "activity": "Delete previous day data",
+            "dependencyConditions": [ "Succeeded" ]
+          }
+        ],
+        "inputs": [
+          { "referenceName": "srtp_activation_success_rate_source", "type": "DatasetReference" }
+        ],
+        "outputs": [
+          { "referenceName": "srtp_activation_success_rate_daily", "type": "DatasetReference" }
+        ],
+        "typeProperties": {
+          "source": {
+            "type": "RestSource",
+            "requestMethod": "POST",
+            "requestBody": ${jsonencode(jsonencode({ query = queries["activation_success_rate_daily"] }))},
+            "additionalHeaders": {
+              "Content-Type": "application/json"
+            }
+          },
+          "sink": {
+            "type": "AzureDataExplorerSink",
+            "flushImmediately": true
+          },
+          "translator": {
+            "type": "TabularTranslator",
+            "mappings": [
+              { "source": { "path": "$[0]" }, "sink": { "name": "activation_day", "type": "String" } },
+              { "source": { "path": "$[1]" }, "sink": { "name": "psp", "type": "String" } },
+              { "source": { "path": "$[2]" }, "sink": { "name": "successful_activations", "type": "Int64" } }
+            ],
+            "collectionReference": "$.tables[0].rows"
+          }
+        }
+      }
+    ]
+  }
+}
+

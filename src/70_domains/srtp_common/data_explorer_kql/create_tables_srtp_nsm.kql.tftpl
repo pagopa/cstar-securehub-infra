@@ -12,6 +12,12 @@
     total_successes: long
 )
 
+.create-merge table activation_success_rate (
+    activation_day: datetime,
+    psp: string,
+    successful_activations: long
+)
+
 .create-or-alter table InChannelSettlementRate ingestion json mapping 'InChannelSettlementRateMapping'
 '['
 '{"column":"window_start","path":"$.window_start","datatype":"datetime"},'
@@ -28,9 +34,18 @@
 '{"column":"total_successes","path":"$.total_successes","datatype":"long"}'
 ']'
 
+.create-or-alter table activation_success_rate ingestion json mapping 'ActivationSuccessRateMapping'
+'['
+'{"column":"activation_day","path":"$.activation_day","datatype":"datetime"},'
+'{"column":"psp","path":"$.psp","datatype":"string"},'
+'{"column":"successful_activations","path":"$.successful_activations","datatype":"long"}'
+']'
+
 .alter table InChannelSettlementRate policy streamingingestion enable
 
 .alter table ActivePayerReachability policy streamingingestion enable
+
+.alter table activation_success_rate policy streamingingestion enable
 
 .alter table InChannelSettlementRate policy retention ```
 {
@@ -46,6 +61,16 @@
 }
 ```
 
+.alter table activation_success_rate policy retention ```
+{
+  "SoftDeletePeriod": "${soft_delete_period}",
+  "Recoverability": "Enabled"
+}
+```
+
 .alter table InChannelSettlementRate policy caching hot = ${hot_cache_period}
 
 .alter table ActivePayerReachability policy caching hot = ${hot_cache_period}
+
+.alter table activation_success_rate policy caching hot = ${hot_cache_period}
+
