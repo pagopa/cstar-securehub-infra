@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 159,
+  "id": null,
   "links": [],
   "panels": [
     {
@@ -82,7 +82,7 @@
             "type": "grafana-azure-data-explorer-datasource",
             "uid": "${ds}"
           },
-          "query": "products\r\n| where initiativeId == \"68dd003ccce8c534d1da22bc\"\r\n| summarize Totale = count() by organizationName\r\n| order by organizationName asc\r\n",
+          "query": "products\r\n| where initiativeId == \"69e0fa95e21efa516c7b8dec\"\r\n| summarize Totale = count() by organizationName\r\n| order by organizationName asc\r\n",
           "rawMode": true,
           "refId": "A",
           "resultFormat": "table"
@@ -195,7 +195,7 @@
             }
           },
           "pluginVersion": "6.2.0",
-          "query": "products\r\n| where status == \"APPROVED\" and initiativeId == \"68dd003ccce8c534d1da22bc\"\r\n| summarize Totale = count() by organizationName\r\n| order by organizationName asc\r\n",
+          "query": "products\r\n| where status == \"APPROVED\" and initiativeId == \"69e0fa95e21efa516c7b8dec\"\r\n| summarize Totale = count() by organizationName\r\n| order by organizationName asc\r\n",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -294,7 +294,7 @@
             }
           },
           "pluginVersion": "6.2.0",
-          "query": "products\r\n| where status == \"SUPERVISED\" and initiativeId == \"68dd003ccce8c534d1da22bc\"\r\n| summarize Totale = count() by organizationName\r\n| order by organizationName asc\r\n",
+          "query": "products\r\n| where status == \"SUPERVISED\" and initiativeId == \"69e0fa95e21efa516c7b8dec\"\r\n| summarize Totale = count() by organizationName\r\n| order by organizationName asc\r\n",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -393,7 +393,7 @@
             }
           },
           "pluginVersion": "6.2.0",
-          "query": "products\r\n| where status == \"UPLOADED\" and initiativeId == \"68dd003ccce8c534d1da22bc\"\r\n| summarize Totale = count() by organizationName\r\n| order by organizationName asc\r\n",
+          "query": "products\r\n| where status == \"UPLOADED\" and initiativeId == \"69e0fa95e21efa516c7b8dec\"\r\n| summarize Totale = count() by organizationName\r\n| order by organizationName asc\r\n",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -492,7 +492,7 @@
             }
           },
           "pluginVersion": "6.2.0",
-          "query": "products\r\n| where status == \"REJECTED\" and initiativeId == \"68dd003ccce8c534d1da22bc\"\r\n| summarize Totale = count() by organizationName\r\n| order by organizationName asc\r\n",
+          "query": "products\r\n| where status == \"REJECTED\" and initiativeId == \"69e0fa95e21efa516c7b8dec\"\r\n| summarize Totale = count() by organizationName\r\n| order by organizationName asc\r\n",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -591,7 +591,7 @@
             }
           },
           "pluginVersion": "6.2.0",
-          "query": "products\r\n| where status == \"WAIT_APPROVED\" and initiativeId == \"68dd003ccce8c534d1da22bc\"\r\n| summarize Totale = count() by organizationName\r\n| order by organizationName asc\r\n",
+          "query": "products\r\n| where status == \"WAIT_APPROVED\" and initiativeId == \"69e0fa95e21efa516c7b8dec\"\r\n| summarize Totale = count() by organizationName\r\n| order by organizationName asc\r\n",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -729,7 +729,7 @@
             }
           },
           "pluginVersion": "6.2.0",
-          "query": "products\r\n| where initiativeId == \"68dd003ccce8c534d1da22bc\"\r\n| summarize Totale = count() by status\r\n| order by status desc",
+          "query": "products\r\n| where initiativeId == \"69e0fa95e21efa516c7b8dec\"\r\n| summarize Totale = count() by status\r\n| order by status desc",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -775,37 +775,25 @@
           "mappings": [
             {
               "options": {
-                "COOKINGHOBS": {
-                  "index": 7,
-                  "text": "Piani Cottura"
-                },
-                "DISHWASHERS": {
-                  "index": 4,
-                  "text": "Lavastoviglie"
-                },
-                "OVENS": {
-                  "index": 2,
-                  "text": "Forni"
-                },
-                "RANGEHOODS": {
-                  "index": 3,
-                  "text": "Cappa"
-                },
-                "REFRIGERATINGAPPL": {
-                  "index": 6,
-                  "text": "Frigoriferi"
-                },
-                "TUMBLEDRYERS": {
-                  "index": 5,
-                  "text": "Asciugatrici"
-                },
-                "WASHERDRIERS": {
-                  "index": 1,
-                  "text": "Lava-Asciugatrici"
-                },
-                "WASHINGMACHINES": {
+                "DS": {
                   "index": 0,
-                  "text": "Lavatrici"
+                  "text": "Satellitare"
+                },
+                "DT": {
+                  "index": 1,
+                  "text": "Terrestre"
+                },
+                "DTC": {
+                  "index": 2,
+                  "text": "Terrestre via cavo"
+                },
+                "DTS": {
+                  "index": 3,
+                  "text": "Terrestre e satellitare"
+                },
+                "DTSC": {
+                  "index": 4,
+                  "text": "Terrestre e satellitare via cavo"
                 }
               },
               "type": "value"
@@ -869,7 +857,7 @@
             }
           },
           "pluginVersion": "6.2.0",
-          "query": "products\r\n| where initiativeId == \"68dd003ccce8c534d1da22bc\"\r\n| summarize Totale = count() by category\r\n| order by category ",
+          "query": "products\r\n| where initiativeId == \"69e0fa95e21efa516c7b8dec\"\r\n| summarize Totale = count() by category\r\n| order by category ",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -916,37 +904,25 @@
           "mappings": [
             {
               "options": {
-                "COOKINGHOBS": {
-                  "index": 7,
-                  "text": "Piani Cottura"
-                },
-                "DISHWASHERS": {
-                  "index": 4,
-                  "text": "Lavastoviglie"
-                },
-                "OVENS": {
-                  "index": 2,
-                  "text": "Forni"
-                },
-                "RANGEHOODS": {
-                  "index": 3,
-                  "text": "Cappa"
-                },
-                "REFRIGERATINGAPPL": {
-                  "index": 6,
-                  "text": "Frigoriferi"
-                },
-                "TUMBLEDRYERS": {
-                  "index": 5,
-                  "text": "Asciugatrici"
-                },
-                "WASHERDRIERS": {
-                  "index": 1,
-                  "text": "Lava-Asciugatrici"
-                },
-                "WASHINGMACHINES": {
+                "DS": {
                   "index": 0,
-                  "text": "Lavatrici"
+                  "text": "Satellitare"
+                },
+                "DT": {
+                  "index": 1,
+                  "text": "Terrestre"
+                },
+                "DTC": {
+                  "index": 2,
+                  "text": "Terrestre via cavo"
+                },
+                "DTS": {
+                  "index": 3,
+                  "text": "Terrestre e satellitare"
+                },
+                "DTSC": {
+                  "index": 4,
+                  "text": "Terrestre e satellitare via cavo"
                 }
               },
               "type": "value"
@@ -1011,7 +987,7 @@
             }
           },
           "pluginVersion": "6.2.0",
-          "query": "products\r\n| where status == 'APPROVED' and initiativeId == \"68dd003ccce8c534d1da22bc\"\r\n| summarize Totale = count() by category\r\n| order by category ",
+          "query": "products\r\n| where status == 'APPROVED' and initiativeId == \"69e0fa95e21efa516c7b8dec\"\r\n| summarize Totale = count() by category\r\n| order by category ",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -1057,37 +1033,25 @@
           "mappings": [
             {
               "options": {
-                "COOKINGHOBS": {
-                  "index": 7,
-                  "text": "Piani Cottura"
-                },
-                "DISHWASHERS": {
-                  "index": 4,
-                  "text": "Lavastoviglie"
-                },
-                "OVENS": {
-                  "index": 2,
-                  "text": "Forni"
-                },
-                "RANGEHOODS": {
-                  "index": 3,
-                  "text": "Cappa"
-                },
-                "REFRIGERATINGAPPL": {
-                  "index": 6,
-                  "text": "Frigoriferi"
-                },
-                "TUMBLEDRYERS": {
-                  "index": 5,
-                  "text": "Asciugatrici"
-                },
-                "WASHERDRIERS": {
-                  "index": 1,
-                  "text": "Lava-Asciugatrici"
-                },
-                "WASHINGMACHINES": {
+                "DS": {
                   "index": 0,
-                  "text": "Lavatrici"
+                  "text": "Satellitare"
+                },
+                "DT": {
+                  "index": 1,
+                  "text": "Terrestre"
+                },
+                "DTC": {
+                  "index": 2,
+                  "text": "Terrestre via cavo"
+                },
+                "DTS": {
+                  "index": 3,
+                  "text": "Terrestre e satellitare"
+                },
+                "DTSC": {
+                  "index": 4,
+                  "text": "Terrestre e satellitare via cavo"
                 }
               },
               "type": "value"
@@ -1151,7 +1115,7 @@
             }
           },
           "pluginVersion": "6.2.0",
-          "query": "products\r\n| where status == 'REJECTED' and initiativeId == \"68dd003ccce8c534d1da22bc\"\r\n| summarize Totale = count() by category\r\n| order by category ",
+          "query": "products\r\n| where status == 'REJECTED' and initiativeId == \"69e0fa95e21efa516c7b8dec\"\r\n| summarize Totale = count() by category\r\n| order by category ",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -1197,37 +1161,25 @@
           "mappings": [
             {
               "options": {
-                "COOKINGHOBS": {
-                  "index": 7,
-                  "text": "Piani Cottura"
-                },
-                "DISHWASHERS": {
-                  "index": 4,
-                  "text": "Lavastoviglie"
-                },
-                "OVENS": {
-                  "index": 2,
-                  "text": "Forni"
-                },
-                "RANGEHOODS": {
-                  "index": 3,
-                  "text": "Cappa"
-                },
-                "REFRIGERATINGAPPL": {
-                  "index": 6,
-                  "text": "Frigoriferi"
-                },
-                "TUMBLEDRYERS": {
-                  "index": 5,
-                  "text": "Asciugatrici"
-                },
-                "WASHERDRIERS": {
-                  "index": 1,
-                  "text": "Lava-Asciugatrici"
-                },
-                "WASHINGMACHINES": {
+                "DS": {
                   "index": 0,
-                  "text": "Lavatrici"
+                  "text": "Satellitare"
+                },
+                "DT": {
+                  "index": 1,
+                  "text": "Terrestre"
+                },
+                "DTC": {
+                  "index": 2,
+                  "text": "Terrestre via cavo"
+                },
+                "DTS": {
+                  "index": 3,
+                  "text": "Terrestre e satellitare"
+                },
+                "DTSC": {
+                  "index": 4,
+                  "text": "Terrestre e satellitare via cavo"
                 }
               },
               "type": "value"
@@ -1291,7 +1243,7 @@
             }
           },
           "pluginVersion": "6.2.0",
-          "query": "products\r\n| where status  == 'SUPERVISED' and initiativeId == \"68dd003ccce8c534d1da22bc\"\r\n| summarize Totale = count() by category\r\n| order by category ",
+          "query": "products\r\n| where status  == 'SUPERVISED' and initiativeId == \"69e0fa95e21efa516c7b8dec\"\r\n| summarize Totale = count() by category\r\n| order by category ",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -1337,37 +1289,25 @@
           "mappings": [
             {
               "options": {
-                "COOKINGHOBS": {
-                  "index": 7,
-                  "text": "Piani Cottura"
-                },
-                "DISHWASHERS": {
-                  "index": 4,
-                  "text": "Lavastoviglie"
-                },
-                "OVENS": {
-                  "index": 2,
-                  "text": "Forni"
-                },
-                "RANGEHOODS": {
-                  "index": 3,
-                  "text": "Cappa"
-                },
-                "REFRIGERATINGAPPL": {
-                  "index": 6,
-                  "text": "Frigoriferi"
-                },
-                "TUMBLEDRYERS": {
-                  "index": 5,
-                  "text": "Asciugatrici"
-                },
-                "WASHERDRIERS": {
-                  "index": 1,
-                  "text": "Lava-Asciugatrici"
-                },
-                "WASHINGMACHINES": {
+                "DS": {
                   "index": 0,
-                  "text": "Lavatrici"
+                  "text": "Satellitare"
+                },
+                "DT": {
+                  "index": 1,
+                  "text": "Terrestre"
+                },
+                "DTC": {
+                  "index": 2,
+                  "text": "Terrestre via cavo"
+                },
+                "DTS": {
+                  "index": 3,
+                  "text": "Terrestre e satellitare"
+                },
+                "DTSC": {
+                  "index": 4,
+                  "text": "Terrestre e satellitare via cavo"
                 }
               },
               "type": "value"
@@ -1431,7 +1371,7 @@
             }
           },
           "pluginVersion": "6.2.0",
-          "query": "products\r\n| where status  == 'UPLOADED' and initiativeId == \"68dd003ccce8c534d1da22bc\"\r\n| summarize Totale = count() by category\r\n| order by category ",
+          "query": "products\r\n| where status  == 'UPLOADED' and initiativeId == \"69e0fa95e21efa516c7b8dec\"\r\n| summarize Totale = count() by category\r\n| order by category ",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -1477,37 +1417,25 @@
           "mappings": [
             {
               "options": {
-                "COOKINGHOBS": {
-                  "index": 7,
-                  "text": "Piani Cottura"
-                },
-                "DISHWASHERS": {
-                  "index": 4,
-                  "text": "Lavastoviglie"
-                },
-                "OVENS": {
-                  "index": 2,
-                  "text": "Forni"
-                },
-                "RANGEHOODS": {
-                  "index": 3,
-                  "text": "Cappa"
-                },
-                "REFRIGERATINGAPPL": {
-                  "index": 6,
-                  "text": "Frigoriferi"
-                },
-                "TUMBLEDRYERS": {
-                  "index": 5,
-                  "text": "Asciugatrici"
-                },
-                "WASHERDRIERS": {
-                  "index": 1,
-                  "text": "Lava-Asciugatrici"
-                },
-                "WASHINGMACHINES": {
+                "DS": {
                   "index": 0,
-                  "text": "Lavatrici"
+                  "text": "Satellitare"
+                },
+                "DT": {
+                  "index": 1,
+                  "text": "Terrestre"
+                },
+                "DTC": {
+                  "index": 2,
+                  "text": "Terrestre via cavo"
+                },
+                "DTS": {
+                  "index": 3,
+                  "text": "Terrestre e satellitare"
+                },
+                "DTSC": {
+                  "index": 4,
+                  "text": "Terrestre e satellitare via cavo"
                 }
               },
               "type": "value"
@@ -1571,7 +1499,7 @@
             }
           },
           "pluginVersion": "6.2.0",
-          "query": "products\r\n| where status  == 'WAIT_APPROVED' and initiativeId == \"68dd003ccce8c534d1da22bc\"\r\n| summarize Totale = count() by category\r\n| order by category ",
+          "query": "products\r\n| where status  == 'WAIT_APPROVED' and initiativeId == \"69e0fa95e21efa516c7b8dec\"\r\n| summarize Totale = count() by category\r\n| order by category ",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -1626,6 +1554,6 @@
   "timepicker": {},
   "timezone": "browser",
   "title": "EIE",
-  "uid": "cezndziyw8tmof",
-  "version": 82
+  "uid": "bonusdecoderxyz",
+  "version": 1
 }
