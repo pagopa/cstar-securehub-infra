@@ -46,7 +46,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 4,
+        "h": 5,
         "w": 6,
         "x": 0,
         "y": 0
@@ -121,7 +121,7 @@
           "color": {
             "mode": "thresholds"
           },
-          "decimals": 0,
+          "decimals": 2,
           "mappings": [],
           "min": 0,
           "thresholds": {
@@ -146,7 +146,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 4,
+        "h": 5,
         "w": 4,
         "x": 6,
         "y": 0
@@ -457,10 +457,10 @@
         ]
       },
       "gridPos": {
-        "h": 9,
+        "h": 8,
         "w": 10,
         "x": 0,
-        "y": 4
+        "y": 5
       },
       "id": 16,
       "options": {
@@ -1583,6 +1583,10 @@
   "templating": {
     "list": [
       {
+        "current": {
+          "text": "cstar-d-itn-core-monitor-rg",
+          "value": "cstar-d-itn-core-monitor-rg"
+        },
         "datasource": {
           "type": "grafana-azure-monitor-datasource",
           "uid": "azure-monitor-oob"
@@ -1607,6 +1611,10 @@
         "type": "query"
       },
       {
+        "current": {
+          "text": "DEV-CSTAR",
+          "value": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+        },
         "datasource": {
           "type": "grafana-azure-monitor-datasource",
           "uid": "azure-monitor-oob"
@@ -1629,6 +1637,10 @@
         "type": "query"
       },
       {
+        "current": {
+          "text": "cstar-d-itn-core-law",
+          "value": "cstar-d-itn-core-law"
+        },
         "datasource": {
           "type": "grafana-azure-monitor-datasource",
           "uid": "azure-monitor-oob"
@@ -1654,6 +1666,10 @@
         "type": "query"
       },
       {
+        "current": {
+          "text": "cstar-d-itn-idpay-monitoring-rg",
+          "value": "cstar-d-itn-idpay-monitoring-rg"
+        },
         "datasource": {
           "type": "grafana-azure-monitor-datasource",
           "uid": "azure-monitor-oob"
@@ -1677,6 +1693,10 @@
         "type": "query"
       },
       {
+        "current": {
+          "text": "cstar-d-itn-idpay-law",
+          "value": "cstar-d-itn-idpay-law"
+        },
         "datasource": {
           "type": "grafana-azure-monitor-datasource",
           "uid": "azure-monitor-oob"
@@ -1771,9 +1791,7 @@
         "allValue": "'ALL'",
         "allowCustomValue": false,
         "current": {
-          "text": [
-            "All"
-          ],
+          "text": "All",
           "value": [
             "$__all"
           ]
@@ -1814,6 +1832,6 @@
   "timezone": "browser",
   "title": "KeyCloak access monitoring",
   "uid": "gad8kwv",
-  "version": 73,
+  "version": 76,
   "weekStart": ""
 }
