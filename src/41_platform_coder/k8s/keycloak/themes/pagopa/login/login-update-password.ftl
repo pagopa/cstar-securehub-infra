@@ -27,7 +27,7 @@
 
         <main class="main-content">
             <div class="login-wrapper">
-                <h1>Bonus Elettrodomestici</h1>
+                <h1>Portale Punto Vendita</h1>
                 <p>Il portale dedicato agli esercenti per gestire bonus e sconti</p>
                 <form action="${url.loginAction}" method="post">
                     <div class="login-card">
@@ -38,10 +38,10 @@
                         </#if>
 
                         <div class="form-group">
-                            <input type="password" id="password-new" name="password-new" placeholder="Inserisci nuova password" required>
+                            <input type="password" id="password-new" name="password-new" placeholder="Inserisci nuova password *" required>
                         </div>
                         <div class="form-group">
-                            <input type="password" id="password-confirm" name="password-confirm" placeholder="Conferma password" required>
+                            <input type="password" id="password-confirm" name="password-confirm" placeholder="Conferma password *" required>
                         </div>
                     </div>
 

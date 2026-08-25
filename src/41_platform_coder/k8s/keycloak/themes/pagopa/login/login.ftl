@@ -27,8 +27,8 @@
 
         <main class="main-content">
             <div class="login-wrapper">
-                <h1>Portale Esercenti</h1>
-                <p>Il prodotto dedicato agli esercenti che utilizzano la piattaforma PARI</p>
+                <h1>Portale Punto Vendita</h1>
+                <p>Il portale dedicato ai venditori per gestire bonus e sconti </p>
 
                 <form action="${url.loginAction}" method="post">
 
@@ -40,10 +40,10 @@
                           </#if>
 
                         <div class="form-group">
-                            <input aria-label="Email" autocomplete="username" type="text" id="username" name="username" placeholder="Email" value="${(login.username!'')}" required>
+                            <input aria-label="Email" autocomplete="username" type="text" id="username" name="username" placeholder="Email *" value="${(login.username!'')}" required>
                         </div>
                         <div class="form-group">
-                            <input type="password" id="password" name="password" placeholder="Password" required>
+                            <input type="password" id="password" name="password" placeholder="Password *" required>
                         </div>
 
                     <div class="${properties.kcFormGroupClass!} ${properties.kcFormSettingClass!}">

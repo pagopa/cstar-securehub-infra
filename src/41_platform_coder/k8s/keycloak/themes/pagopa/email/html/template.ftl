@@ -62,6 +62,28 @@
 			<table class="content">
         <tbody>
           <#nested>
+          <tr>
+              <td style="padding-bottom: 3rem">
+                  <b style="font-weight: 600">${msg("emailHelp")}</b> ${msg("emailMailTo")} <br/><a style="color: #0073e6" href="mailto:${msg("passwordResetEmail")}">${msg("passwordResetEmail")}</a>.
+              </td>
+          </tr>
+          <tr>
+              <td style="padding-bottom: 0.5rem">
+                  ${msg("emailRegards")}
+              </td>
+          </tr>
+          <tr>
+              <td style="padding-bottom: 1.563rem">
+                  ${msg("emailRegardsFrom")}
+              </td>
+          </tr>
+          <tr>
+              <td style="padding-top: 1.563rem; padding-bottom: 1.563rem">
+                  <div class="btn-primary">
+                      <a style="text-decoration: none; color: #ffffff;" href="${link}">${msg("passwordResetCTA")}</a>
+                  </div>
+              </td>
+          </tr>
         </tbody>
         <tfoot style="font-size: 14px;line-height: 20px;color: #a2adb8;">
           <tr>
