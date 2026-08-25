@@ -1,12 +1,8 @@
 locals {
-  dataflow_files = compact([
-    for file in fileset("${path.module}/data_factory_dataflows", "*.json") :
-    file
-  ])
-
   dataflow_templates = {
-    for file in local.dataflow_files :
-    jsondecode(file("${path.module}/data_factory_dataflows/${file}")).name => jsondecode(file("${path.module}/data_factory_dataflows/${file}"))
+    for file in fileset("${path.module}/data_factory_dataflows", "*.json") :
+    jsondecode(file("${path.module}/data_factory_dataflows/${file}")).name
+    => jsondecode(file("${path.module}/data_factory_dataflows/${file}"))
   }
 
   dataflow_sources = {
