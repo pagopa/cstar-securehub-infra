@@ -270,6 +270,42 @@
               "type": 3,
               "content": {
                 "version": "KqlItem/1.0",
+                "query": "AppTraces\n| where AppRoleName == 'rtp-consumer'\n| where TimeGenerated {evaluation_window:query}\n| where Message startswith \"Message stored in Failed Message Store\"\n| where Message contains \"rtp/gpd/message\"\n| summarize scartatiCount = count()\n| extend totalRequestsString = tostring(scartatiCount)",
+                "size": 0,
+                "title": "❌ Messaggi nella DLQ",
+                "noDataMessageStyle": 3,
+                "queryType": 0,
+                "resourceType": "microsoft.operationalinsights/workspaces",
+                "crossComponentResources": [
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
+                ],
+                "visualization": "stat",
+                "statSettings": {
+                  "valueField": "totalRequestsString",
+                  "valueAggregation": "None",
+                  "colorSettings": {
+                    "type": "static",
+                    "mode": "background",
+                    "heatmapPalette": "greenRed",
+                    "thresholdsGrid": []
+                  },
+                  "iconSettings": {
+                    "thresholdsGrid": []
+                  },
+                  "tagText": "",
+                  "valueFontStyle": "auto"
+                }
+              },
+              "customWidth": "25",
+              "name": "❌ Messaggi nella DLQ",
+              "styleSettings": {
+                "showBorder": true
+              }
+            },
+            {
+              "type": 3,
+              "content": {
+                "version": "KqlItem/1.0",
                 "query": "AppTraces\n| where AppRoleName == 'rtp-consumer'\n| where TimeGenerated {evaluation_window:query}\n| where Message startswith \"Message processed successfully\" or Message startswith \"Error processing message.\"\n| extend messageId = tostring(Properties.message_id)\n| where isnotempty(messageId)\n| summarize\n    Successi = dcountif(messageId, Message startswith \"Message processed successfully\"),\n    Scartati = dcountif(messageId, Message startswith \"Error processing message.\" and not (Message contains \"rtp/gpd/message\"))\n  by bin(TimeGenerated, {activations_bin_size})\n| project TimeGenerated, Successi, Scartati\n",
                 "size": 0,
                 "title": "Andamento ingestione Consumer - Successi vs Scartati nel tempo",
