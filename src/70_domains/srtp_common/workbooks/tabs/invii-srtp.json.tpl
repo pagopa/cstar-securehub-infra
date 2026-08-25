@@ -241,32 +241,6 @@
               }
             },
             {
-              "type": 9,
-              "content": {
-                "version": "KqlParameterItem/1.0",
-                "parameters": [
-                  {
-                    "id": "c3d4e5f6-aaaa-bbbb-cccc-222233334444",
-                    "version": "KqlParameterItem/1.0",
-                    "name": "activations_bin_size",
-                    "label": "Granularità temporale",
-                    "type": 2,
-                    "isRequired": true,
-                    "typeSettings": {
-                      "additionalResourceOptions": [],
-                      "showDefault": false
-                    },
-                    "jsonData": "[{\"value\": \"5m\", \"label\": \"5 minuti\"}, {\"value\": \"15m\", \"label\": \"15 minuti\"}, {\"value\": \"1h\", \"label\": \"1 ora\"}, {\"value\": \"1d\", \"label\": \"1 giorno\"}, {\"value\": \"7d\", \"label\": \"7 giorni\"}]",
-                    "value": "1h"
-                  }
-                ],
-                "style": "pills",
-                "queryType": 0,
-                "resourceType": "microsoft.operationalinsights/workspaces"
-              },
-              "name": "parameters - bin-size"
-            },
-            {
               "type": 3,
               "content": {
                 "version": "KqlItem/1.0",
@@ -301,6 +275,32 @@
               "styleSettings": {
                 "showBorder": true
               }
+            },
+            {
+              "type": 9,
+              "content": {
+                "version": "KqlParameterItem/1.0",
+                "parameters": [
+                  {
+                    "id": "c3d4e5f6-aaaa-bbbb-cccc-222233334444",
+                    "version": "KqlParameterItem/1.0",
+                    "name": "activations_bin_size",
+                    "label": "Granularità temporale",
+                    "type": 2,
+                    "isRequired": true,
+                    "typeSettings": {
+                      "additionalResourceOptions": [],
+                      "showDefault": false
+                    },
+                    "jsonData": "[{\"value\": \"5m\", \"label\": \"5 minuti\"}, {\"value\": \"15m\", \"label\": \"15 minuti\"}, {\"value\": \"1h\", \"label\": \"1 ora\"}, {\"value\": \"1d\", \"label\": \"1 giorno\"}, {\"value\": \"7d\", \"label\": \"7 giorni\"}]",
+                    "value": "1h"
+                  }
+                ],
+                "style": "pills",
+                "queryType": 0,
+                "resourceType": "microsoft.operationalinsights/workspaces"
+              },
+              "name": "parameters - bin-size"
             },
             {
               "type": 3,
