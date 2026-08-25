@@ -1,12 +1,12 @@
 {
     "name": "idpay_pos_export_daily",
     "properties": {
-        "description": "Export Point of Sales on daily schedule",
+        "description": "Export Point of Sales on daily schedule using direct dataflow",
         "activities": [
             {
-                "name": "Copy_Pos_To_Staging",
-                "description": "Copy POS source collection to staging JSON",
-                "type": "Copy",
+                "name": "Export_Pos_Daily_Direct",
+                "description": "Export POS directly from Cosmos via dataflow",
+                "type": "ExecuteDataFlow",
                 "dependsOn": [],
                 "policy": {
                     "timeout": "0.12:00:00",
@@ -17,114 +17,8 @@
                 },
                 "userProperties": [],
                 "typeProperties": {
-                    "source": {
-                        "type": "CosmosDbMongoDbApiSource",
-                        "batchSize": 500
-                    },
-                    "sink": {
-                        "type": "JsonSink",
-                        "storeSettings": {
-                            "type": "AzureBlobFSWriteSettings",
-                            "copyBehavior": "FlattenHierarchy"
-                        },
-                        "formatSettings": {
-                            "type": "JsonWriteSettings",
-                            "filePattern": "arrayOfObjects"
-                        }
-                    },
-                    "enableStaging": false
-                },
-                "inputs": [
-                    {
-                        "referenceName": "cosmos_idpay_pos",
-                        "type": "DatasetReference"
-                    }
-                ],
-                "outputs": [
-                    {
-                        "referenceName": "staging_pos_source_json",
-                        "type": "DatasetReference"
-                    }
-                ]
-            },
-            {
-                "name": "Copy_Pos_Initiative_To_Staging",
-                "description": "Copy POS initiative collection to staging JSON",
-                "type": "Copy",
-                "dependsOn": [
-                    {
-                        "activity": "Copy_Pos_To_Staging",
-                        "dependencyConditions": [
-                            "Succeeded"
-                        ]
-                    }
-                ],
-                "policy": {
-                    "timeout": "0.12:00:00",
-                    "retry": 0,
-                    "retryIntervalInSeconds": 30,
-                    "secureOutput": false,
-                    "secureInput": false
-                },
-                "userProperties": [],
-                "typeProperties": {
-                    "source": {
-                        "type": "CosmosDbMongoDbApiSource",
-                        "batchSize": 500,
-                        "filter": {
-                            "value": "@concat('{\"initiativeId\":\"', pipeline().parameters.initiativeId, '\",\"enabled\":true}')",
-                            "type": "Expression"
-                        }
-                    },
-                    "sink": {
-                        "type": "JsonSink",
-                        "storeSettings": {
-                            "type": "AzureBlobFSWriteSettings",
-                            "copyBehavior": "FlattenHierarchy"
-                        },
-                        "formatSettings": {
-                            "type": "JsonWriteSettings",
-                            "filePattern": "arrayOfObjects"
-                        }
-                    },
-                    "enableStaging": false
-                },
-                "inputs": [
-                    {
-                        "referenceName": "cosmos_idpay_pos_initiative",
-                        "type": "DatasetReference"
-                    }
-                ],
-                "outputs": [
-                    {
-                        "referenceName": "staging_pos_initiative_source_json",
-                        "type": "DatasetReference"
-                    }
-                ]
-            },
-            {
-                "name": "idpay_pos_export_daily",
-                "description": "Export Point of Sales on daily schedule",
-                "type": "ExecuteDataFlow",
-                "dependsOn": [
-                    {
-                        "activity": "Copy_Pos_Initiative_To_Staging",
-                        "dependencyConditions": [
-                            "Succeeded"
-                        ]
-                    }
-                ],
-                "policy": {
-                    "timeout": "0.12:00:00",
-                    "retry": 0,
-                    "retryIntervalInSeconds": 30,
-                    "secureOutput": false,
-                    "secureInput": false
-                },
-                "userProperties": [],
-                "typeProperties": {
                     "dataFlow": {
-                        "referenceName": "export_flow_pos_daily_from_staging",
+                        "referenceName": "export_flow_pos_daily",
                         "type": "DataFlowReference",
                         "parameters": {
                             "initiativeId": {
@@ -148,7 +42,8 @@
                     "compute": {
                         "coreCount": 8,
                         "computeType": "General"
-                    }
+                    },
+                    "traceLevel": "Fine"
                 }
             }
         ],

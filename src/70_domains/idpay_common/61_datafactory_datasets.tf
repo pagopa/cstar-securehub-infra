@@ -1,7 +1,12 @@
 locals {
 
-  dataset_templates = {
+  dataset_files = compact([
     for file in fileset("${path.module}/data_factory_datasets", "*.json") :
+    file
+  ])
+
+  dataset_templates = {
+    for file in local.dataset_files :
     jsondecode(templatefile("${path.module}/data_factory_datasets/${file}", {
       domain = var.domain
       })).name => jsondecode(templatefile("${path.module}/data_factory_datasets/${file}", {
