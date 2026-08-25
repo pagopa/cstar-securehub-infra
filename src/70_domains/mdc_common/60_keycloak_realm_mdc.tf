@@ -235,9 +235,9 @@ resource "keycloak_openid_client_scope" "portal_role_scope" {
 # Espone nel claim "role" esclusivamente i client roles del portale, evitando
 # di includere ruoli tecnici o appartenenti ad altre applicazioni del realm.
 resource "keycloak_openid_user_client_role_protocol_mapper" "portal_roles_mapper" {
-  realm_id                   = local.keycloak_realm_id
-  client_scope_id            = keycloak_openid_client_scope.portal_role_scope.id
-  name                       = "portal-client-roles-mapper"
+  realm_id                    = local.keycloak_realm_id
+  client_scope_id             = keycloak_openid_client_scope.portal_role_scope.id
+  name                        = "portal-client-roles-mapper"
   client_id_for_role_mappings = keycloak_openid_client.ar_backoffice_portal_client.client_id
 
   claim_name          = "role"
