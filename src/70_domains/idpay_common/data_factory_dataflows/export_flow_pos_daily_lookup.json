@@ -1,22 +1,22 @@
 {
-  "name": "export_flow_pos_daily",
+  "name": "export_flow_pos_daily_lookup",
   "properties": {
     "type": "MappingDataFlow",
     "typeProperties": {
       "sources": [
         {
           "dataset": {
-            "referenceName": "cosmos_idpay_pos",
-            "type": "DatasetReference"
-          },
-          "name": "PosSource"
-        },
-        {
-          "dataset": {
             "referenceName": "cosmos_idpay_point_of_sale_initiative",
             "type": "DatasetReference"
           },
           "name": "PosInitiativeSource"
+        },
+        {
+          "dataset": {
+            "referenceName": "cosmos_idpay_pos",
+            "type": "DatasetReference"
+          },
+          "name": "PosSource"
         }
       ],
       "sinks": [
@@ -30,7 +30,8 @@
       ],
       "transformations": [
         { "name": "FilterInitiative" },
-        { "name": "JoinPosInitiative" },
+        { "name": "LookupPos" },
+        { "name": "FilterMatched" },
         { "name": "SelectOutput" }
       ],
       "scriptLines": [
@@ -39,20 +40,20 @@
         "}",
         "source(allowSchemaDrift: true,",
         "     validateSchema: false,",
-        "     ignoreNoFilesFound: false) ~> PosSource",
+        "     ignoreNoFilesFound: false) ~> PosInitiativeSource",
         "source(allowSchemaDrift: true,",
         "     validateSchema: false,",
-        "     ignoreNoFilesFound: false) ~> PosInitiativeSource",
+        "     ignoreNoFilesFound: false) ~> PosSource",
         "PosInitiativeSource filter(",
         "     toString(byName('initiativeId')) == $initiativeId",
         "     && toBoolean(byName('enabled')) == true()",
         ") ~> FilterInitiative",
-        "PosSource, FilterInitiative join(toString(PosSource@_id) == toString(FilterInitiative@pointOfSaleId),",
-        "     joinType:'inner',",
-        "     matchType:'exact',",
-        "     ignoreSpaces: false,",
-        "     broadcast: 'auto') ~> JoinPosInitiative",
-        "JoinPosInitiative select(mapColumn(",
+        "FilterInitiative, PosSource lookup(toString(FilterInitiative@pointOfSaleId) == toString(PosSource@_id),",
+        "     multiple: false,",
+        "     pickup: 'any',",
+        "     broadcast: 'auto') ~> LookupPos",
+        "LookupPos filter(!isNull(PosSource@_id)) ~> FilterMatched",
+        "FilterMatched select(mapColumn(",
         "          type = PosSource@type,",
         "          franchiseName = PosSource@franchiseName,",
         "          address = PosSource@address,",

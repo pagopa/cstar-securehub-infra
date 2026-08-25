@@ -1,11 +1,11 @@
 {
     "name": "idpay_pos_export_daily",
     "properties": {
-        "description": "Export Point of Sales on daily schedule, filtered by initiative via join dataflow",
+        "description": "Export Point of Sales on daily schedule, filtered by initiative via lookup dataflow",
         "activities": [
             {
                 "name": "ExportPosDataFlow",
-                "description": "Join point_of_sales with point_of_sale_initiative and export filtered by initiativeId",
+                "description": "Lookup point_of_sales by point_of_sales_initiative and export filtered by initiativeId",
                 "type": "ExecuteDataFlow",
                 "dependsOn": [],
                 "policy": {
@@ -18,17 +18,26 @@
                 "userProperties": [],
                 "typeProperties": {
                     "dataFlow": {
-                        "referenceName": "export_flow_pos_daily",
+                        "referenceName": "export_flow_pos_daily_lookup",
                         "type": "DataFlowReference",
                         "parameters": {
-                            "initiativeId": "@pipeline().parameters.initiativeId"
+                            "initiativeId": {
+                                "value": "@pipeline().parameters.initiativeId",
+                                "type": "Expression"
+                            }
                         },
                         "datasetParameters": {
                             "PosSource": {},
                             "PosInitiativeSource": {},
                             "SinkPosJSON": {
-                                "initiativeFolder": "@pipeline().parameters.initiativeFolder",
-                                "initiativeId": "@pipeline().parameters.initiativeId"
+                                "initiativeFolder": {
+                                    "value": "@pipeline().parameters.initiativeFolder",
+                                    "type": "Expression"
+                                },
+                                "initiativeId": {
+                                    "value": "@pipeline().parameters.initiativeId",
+                                    "type": "Expression"
+                                }
                             }
                         }
                     },
