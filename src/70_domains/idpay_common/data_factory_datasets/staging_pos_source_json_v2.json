@@ -15,7 +15,7 @@
       "location": {
         "type": "AzureBlobFSLocation",
         "fileName": "pos_source.json",
-        "folderPath": "staging/pos/common",
+        "folderPath": "staging/pos/common/current",
         "fileSystem": "export"
       },
       "encodingName": "UTF-8"

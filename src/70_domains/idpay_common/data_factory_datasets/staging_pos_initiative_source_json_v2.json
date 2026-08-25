@@ -5,11 +5,6 @@
       "referenceName": "${domain}-exports-blobfs-ls",
       "type": "LinkedServiceReference"
     },
-    "parameters": {
-      "initiativeId": {
-        "type": "String"
-      }
-    },
     "annotations": [
       "POS Initiative Stage v2",
       "IdPay",
@@ -20,10 +15,7 @@
       "location": {
         "type": "AzureBlobFSLocation",
         "fileName": "active_pos_initiative.json",
-        "folderPath": {
-          "value": "@concat('staging/pos/common/', dataset().initiativeId)",
-          "type": "Expression"
-        },
+        "folderPath": "staging/pos/common/current",
         "fileSystem": "export"
       },
       "encodingName": "UTF-8"

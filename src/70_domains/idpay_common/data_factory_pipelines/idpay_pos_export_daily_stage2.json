@@ -118,13 +118,7 @@
         "outputs": [
           {
             "referenceName": "staging_pos_initiative_source_json_v2",
-            "type": "DatasetReference",
-            "parameters": {
-              "initiativeId": {
-                "value": "@pipeline().parameters.initiativeId",
-                "type": "Expression"
-              }
-            }
+            "type": "DatasetReference"
           }
         ]
       },
@@ -156,9 +150,6 @@
               "initiativeId": "@pipeline().parameters.initiativeId"
             },
             "datasetParameters": {
-              "PosInitiativeStage": {
-                "initiativeId": "@pipeline().parameters.initiativeId"
-              },
               "SinkPosJSON": {
                 "initiativeFolder": "@pipeline().parameters.initiativeFolder",
                 "initiativeId": "@pipeline().parameters.initiativeId"
