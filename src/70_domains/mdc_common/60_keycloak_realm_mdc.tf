@@ -226,23 +226,20 @@ resource "keycloak_user_groups" "service_account_group_membership_emd_tpp_test" 
   ]
 }
 
-# Create a dedicated scope for the portal roles (usato dai client del portale)
-resource "keycloak_openid_client_scope" "admin_role_scope" {
+# Scope dedicato ai ruoli applicativi del portale
+resource "keycloak_openid_client_scope" "portal_role_scope" {
   realm_id = local.keycloak_realm_id
-  # Name to use in parameters when requesting the scope
-  name = "admin-access"
+  name     = "portal-roles"
 }
 
-# Add the role mapper only to this scope
-resource "keycloak_openid_user_realm_role_protocol_mapper" "admin_role_mapper" {
-  realm_id        = local.keycloak_realm_id
-  client_scope_id = keycloak_openid_client_scope.admin_role_scope.id
-  name            = "role-admin-mapper"
+# Espone nel claim "role" esclusivamente i client roles del portale, evitando
+# di includere ruoli tecnici o appartenenti ad altre applicazioni del realm.
+resource "keycloak_openid_user_client_role_protocol_mapper" "portal_roles_mapper" {
+  realm_id                    = local.keycloak_realm_id
+  client_scope_id             = keycloak_openid_client_scope.portal_role_scope.id
+  name                        = "portal-client-roles-mapper"
+  client_id_for_role_mappings = keycloak_openid_client.ar_backoffice_portal_client.client_id
 
-  # Claim "role": ARRAY dei ruoli di realm dell'utente. Con 3 ruoli assegnabili
-  # (operator-read/operator-write/operator-admin) serve multivalued=true; il
-  # frontend filtra i ruoli del portale ignorando quelli tecnici
-  # (default-roles-mdc, offline_access, uma_authorization, ...).
   claim_name          = "role"
   multivalued         = true
   add_to_id_token     = true
@@ -254,6 +251,6 @@ resource "keycloak_openid_client_optional_scopes" "ar_backoffice_admin_optional_
   realm_id  = local.keycloak_realm_id
   client_id = keycloak_openid_client.ar_backoffice_admin_client.id
   optional_scopes = [
-    keycloak_openid_client_scope.admin_role_scope.name
+    keycloak_openid_client_scope.portal_role_scope.name
   ]
 }

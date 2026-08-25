@@ -5,10 +5,10 @@
 # Scenario:
 # - Gli utenti aziendali accedono al portale interno mdc tramite Microsoft
 #   Entra ID (federazione OIDC).
-# - Al PRIMO login un utente riceve automaticamente il ruolo "operator-read"
-#   (operatore in sola lettura). Nei login successivi il ruolo NON viene
-#   sovrascritto (syncMode = IMPORT), così un amministratore puo' modificarlo
-#   dal portale (via ar_backoffice_admin_client, che ha manage-users).
+# - Ogni utente che accede tramite Entra riceve il ruolo base "operator-read",
+#   anche se era gia' presente nel realm ed e' stato auto-linkato all'IdP.
+# - I ruoli del portale sono cumulativi: operator-write/operator-admin possono
+#   coesistere con operator-read.
 # =============================================================================
 
 # -----------------------------------------------------------------------------
@@ -67,7 +67,7 @@ resource "keycloak_oidc_identity_provider" "azure_entra" {
   default_scopes = "openid profile email"
 
   # FORCE = i mapper di profilo (nome/cognome/email) si aggiornano ad ogni login.
-  # Il mapper del ruolo di default sovrascrive con syncMode = IMPORT (vedi sotto).
+  # Anche il mapper del ruolo base usa FORCE per coprire gli utenti auto-linkati.
   sync_mode   = "FORCE"
   trust_email = true
 
@@ -158,39 +158,43 @@ resource "keycloak_hardcoded_attribute_identity_provider_mapper" "azure_email_ve
 }
 
 # -----------------------------------------------------------------------------
-# Ruoli di realm del portale (assegnabili a qualsiasi utente), naming uniforme:
-# operator-read / operator-write / operator-admin.
-# operator-admin era prima il ruolo "admin" (keycloak_role.realm_admin_role):
-# rinominato tramite il moved block sotto, cosi' Keycloak NON lo ricrea.
+# Client roles del portale: sono isolati nel namespace del client e non possono
+# essere confusi con i permessi di altre applicazioni nello stesso realm.
+# I ruoli sono cumulativi: admin include write, che include read.
 # -----------------------------------------------------------------------------
-resource "keycloak_role" "operator_read" {
+resource "keycloak_role" "portal_operator_read" {
   realm_id    = local.keycloak_realm_id
+  client_id   = keycloak_openid_client.ar_backoffice_portal_client.id
   name        = "operator-read"
-  description = "Operatore in sola lettura (ruolo di default al primo login Azure)"
+  description = "Operatore del portale in sola lettura"
 }
 
-resource "keycloak_role" "operator_write" {
+resource "keycloak_role" "portal_operator_write" {
   realm_id    = local.keycloak_realm_id
+  client_id   = keycloak_openid_client.ar_backoffice_portal_client.id
   name        = "operator-write"
-  description = "Operatore in scrittura"
+  description = "Operatore del portale in scrittura"
+  composite_roles = [
+    keycloak_role.portal_operator_read.id
+  ]
 }
 
-resource "keycloak_role" "operator_admin" {
+resource "keycloak_role" "portal_operator_admin" {
   realm_id    = local.keycloak_realm_id
+  client_id   = keycloak_openid_client.ar_backoffice_portal_client.id
   name        = "operator-admin"
   description = "Amministratore del portale"
+  composite_roles = [
+    keycloak_role.portal_operator_write.id
+  ]
 }
 
-# Rinomina il vecchio ruolo "admin" -> "operator-admin" senza ricrearlo.
-moved {
-  from = keycloak_role.realm_admin_role
-  to   = keycloak_role.operator_admin
-}
 
 # -----------------------------------------------------------------------------
-# Ruolo di DEFAULT al primo login via Azure: operator-read
-# syncMode = IMPORT -> assegnato solo al primo login; i login successivi non
-# sovrascrivono i ruoli, cosi' l'amministratore puo' modificarli dal portale.
+# Client role BASE per ogni login via Azure: operator-read.
+# syncMode = FORCE e' necessario anche per gli utenti preesistenti auto-linkati:
+# IMPORT esegue l'assegnazione solo quando Keycloak crea un nuovo utente.
+# L'operazione e' idempotente e non rimuove operator-write/operator-admin.
 # -----------------------------------------------------------------------------
 resource "keycloak_custom_identity_provider_mapper" "azure_default_operator_read" {
   realm                    = local.keycloak_realm_id
@@ -199,7 +203,7 @@ resource "keycloak_custom_identity_provider_mapper" "azure_default_operator_read
   identity_provider_mapper = "oidc-hardcoded-role-idp-mapper"
 
   extra_config = {
-    syncMode = "IMPORT"
-    role     = keycloak_role.operator_read.name
+    syncMode = "FORCE"
+    role     = "${keycloak_openid_client.ar_backoffice_portal_client.client_id}.${keycloak_role.portal_operator_read.name}"
   }
 }
