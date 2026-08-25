@@ -244,7 +244,7 @@
               "type": 3,
               "content": {
                 "version": "KqlItem/1.0",
-                "query": "AppTraces\n| where AppRoleName == 'rtp-consumer'\n| where TimeGenerated {evaluation_window:query}\n| where Message startswith \"Message stored in Failed Message Store\"\n| where Message contains \"rtp/gpd/message\"\n| summarize scartatiCount = count()\n| extend totalRequestsString = tostring(scartatiCount)",
+                "query": "AppTraces\n| where AppRoleName == 'rtp-consumer'\n| where TimeGenerated {evaluation_window:query}\n| where Message startswith \"Message stored in Failed Message Store\"\n| where Message contains \"rtp/gpd/message\"\n| summarize dlqCount = count()\n| extend totalRequestsString = tostring(dlqCount)",
                 "size": 0,
                 "title": "❌ Messaggi nella DLQ",
                 "noDataMessageStyle": 3,
