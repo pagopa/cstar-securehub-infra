@@ -49,4 +49,3 @@ resource "azurerm_data_factory_pipeline" "pipelines" {
     azurerm_data_factory_linked_service_kusto.kusto_srtp,
   ]
 }
-

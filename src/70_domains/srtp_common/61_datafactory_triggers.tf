@@ -31,4 +31,3 @@ resource "azurerm_data_factory_trigger_schedule" "daily_triggers_logs" {
 
   depends_on = [azurerm_data_factory_pipeline.pipelines]
 }
-

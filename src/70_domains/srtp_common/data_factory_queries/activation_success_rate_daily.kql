@@ -13,4 +13,3 @@ AppTraces
     by activation_day = startOfYesterday, psp = iff(isempty(PSP), "UNKNOWN", PSP)
 | order by successful_activations desc
 | project activation_day = tostring(activation_day), psp, successful_activations
-

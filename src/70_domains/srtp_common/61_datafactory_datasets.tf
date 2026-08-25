@@ -40,4 +40,3 @@ resource "azurerm_data_factory_custom_dataset" "datasets" {
   ]
 
 }
-
