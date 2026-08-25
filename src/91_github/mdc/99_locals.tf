@@ -238,12 +238,12 @@ locals {
         }
       ]
       env_secrets = {
-        envs = ["dev", "github-pages"]
+        envs = ["github-pages"]
         secrets = {
         }
       }
       env_variables = {
-        envs = ["dev", "github-pages"]
+        envs = ["github-pages"]
         variables = {
         }
       }
@@ -390,12 +390,20 @@ locals {
       env_secrets = {
         envs = ["uat"]
         secrets = {
-          TPP_KEYCLOAK_CLIENT_ID      = try(module.secrets.values["emd-tpp-test-client-id"].value, null)
-          TPP_KEYCLOAK_CLIENT_SECRET  = try(module.secrets.values["emd-tpp-test-client-secret"].value, null)
-          SEND_KEYCLOAK_CLIENT_ID     = try(module.secrets.values["send-client-id"].value, null)
-          SEND_KEYCLOAK_CLIENT_SECRET = try(module.secrets.values["send-client-secret"].value, null)
-          KEYCLOAK_URL                = try(module.secrets.values["keycloak-external-mdc-url"].value, null)
-          KAFKA_PASSWORD              = try(module.secrets.values["kafka-password"].value, null)
+          TPP_KEYCLOAK_CLIENT_ID         = try(module.secrets.values["emd-tpp-test-client-id"].value, null)
+          TPP_KEYCLOAK_CLIENT_SECRET     = try(module.secrets.values["emd-tpp-test-client-secret"].value, null)
+          PSP1_KEYCLOAK_CLIENT_ID        = try(module.secrets.values["psp1-client-id"].value, null)
+          PSP1_KEYCLOAK_CLIENT_SECRET    = try(module.secrets.values["psp1-client-secret"].value, null)
+          PSP1_TPP_ID                    = try(module.secrets.values["psp1-tpp-id"].value, null)
+          PSP2_KEYCLOAK_CLIENT_ID        = try(module.secrets.values["psp2-client-id"].value, null)
+          PSP2_KEYCLOAK_CLIENT_SECRET    = try(module.secrets.values["psp2-client-secret"].value, null)
+          PSP2_TPP_ID                    = try(module.secrets.values["psp2-tpp-id"].value, null)
+          PAGO_PA_KEYCLOAK_CLIENT_ID     = try(module.secrets.values["emd-pagopa-client-id"].value, null)
+          PAGO_PA_KEYCLOAK_CLIENT_SECRET = try(module.secrets.values["emd-pagopa-client-secret"].value, null)
+          SEND_KEYCLOAK_CLIENT_ID        = try(module.secrets.values["send-client-id"].value, null)
+          SEND_KEYCLOAK_CLIENT_SECRET    = try(module.secrets.values["send-client-secret"].value, null)
+          KEYCLOAK_URL                   = try(module.secrets.values["keycloak-external-mdc-url"].value, null)
+          KAFKA_PASSWORD                 = try(module.secrets.values["kafka-password"].value, null)
         }
       }
       env_variables = {

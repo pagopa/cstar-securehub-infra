@@ -57,6 +57,17 @@ resource "azurerm_key_vault_secret" "idpay_postgres_connection_string" {
   tags = module.tag_config.tags
 }
 
+resource "azurerm_key_vault_secret" "idpay_postgres_connection_string_r2dbc" {
+  count        = var.idpay_pgflex_params.enabled ? 1 : 0
+  name         = "idpay-postgres-connection-string-r2dbc"
+  value        = "r2dbc:postgresql://${module.idpay_pgflex[0].fqdn}:5432/idpay-database"
+  key_vault_id = data.azurerm_key_vault.domain_kv.id
+
+  content_type = "text/plain"
+
+  tags = module.tag_config.tags
+}
+
 module "idpay_pgflex" {
   count  = var.idpay_pgflex_params.enabled ? 1 : 0
   source = "./.terraform/modules/__v4__/IDH/postgres_flexible_server"
