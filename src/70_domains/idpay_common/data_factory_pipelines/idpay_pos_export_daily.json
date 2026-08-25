@@ -1,12 +1,12 @@
 {
     "name": "idpay_pos_export_daily",
     "properties": {
-        "description": "Export Point of Sales on daily schedule",
+        "description": "Export Point of Sales on daily schedule, filtered by initiative via join dataflow",
         "activities": [
             {
-                "name": "idpay_pos_export_daily",
-                "description": "Export Point of Sales on daily schedule",
-                "type": "Copy",
+                "name": "ExportPosDataFlow",
+                "description": "Join point_of_sales with point_of_sale_initiative and export filtered by initiativeId",
+                "type": "ExecuteDataFlow",
                 "dependsOn": [],
                 "policy": {
                     "timeout": "0.12:00:00",
@@ -17,47 +17,42 @@
                 },
                 "userProperties": [],
                 "typeProperties": {
-                    "source": {
-                        "type": "CosmosDbMongoDbApiSource",
-                        "batchSize": 500,
-                        "cursorMethods": {
-                            "project": {
-                                "value": "{\"_id\": 0, \"type\": 1, \"franchiseName\": 1, \"address\": 1, \"city\": 1, \"region\": 1, \"province\": 1, \"streetNumber\": 1, \"zipCode\": 1, \"channelPhone\": 1, \"website\": 1}",
-                                "type": "Expression"
+                    "dataFlow": {
+                        "referenceName": "export_flow_pos_daily",
+                        "type": "DataFlowReference",
+                        "parameters": {
+                            "initiativeId": "@pipeline().parameters.initiativeId"
+                        },
+                        "datasetParameters": {
+                            "PosSource": {},
+                            "PosInitiativeSource": {},
+                            "SinkPosJSON": {
+                                "initiativeFolder": "@pipeline().parameters.initiativeFolder",
+                                "initiativeId": "@pipeline().parameters.initiativeId"
                             }
                         }
                     },
-                    "sink": {
-                        "type": "JsonSink",
-                        "storeSettings": {
-                            "type": "AzureBlobStorageWriteSettings"
-                        },
-                        "formatSettings": {
-                            "type": "JsonWriteSettings",
-                            "filePattern": "arrayOfObjects"
-                        }
+                    "compute": {
+                        "coreCount": 8,
+                        "computeType": "General"
                     },
-                    "enableStaging": false
-                },
-                "inputs": [
-                    {
-                        "referenceName": "cosmos_idpay_pos",
-                        "type": "DatasetReference"
-                    }
-                ],
-                "outputs": [
-                    {
-                        "referenceName": "blob_pos_export_daily",
-                        "type": "DatasetReference"
-                    }
-                ]
+                    "traceLevel": "Fine"
+                }
             }
         ],
+        "parameters": {
+            "initiativeId": {
+                "type": "String"
+            },
+            "initiativeFolder": {
+                "type": "String"
+            }
+        },
         "annotations": [
             "Point of Sales Export",
             "IdPay",
             "Merchant",
-            "Bonus Elettrodomestici"
+            "Multi-Initiative"
         ]
     }
 }

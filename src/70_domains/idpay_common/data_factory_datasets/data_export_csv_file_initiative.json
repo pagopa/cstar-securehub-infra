@@ -1,21 +1,27 @@
 {
-  "name": "data_export_csv_file_bonus",
+  "name": "data_export_csv_file_initiative",
   "properties": {
     "linkedServiceName": {
-      "referenceName": "idpay-bonus-blob-storage-ls",
+      "referenceName": "${domain}-exports-blobfs-ls",
       "type": "LinkedServiceReference"
+    },
+    "parameters": {
+      "initiativeId": { "type": "String" }
     },
     "annotations": [],
     "type": "Binary",
     "typeProperties": {
       "location": {
-        "type": "AzureBlobStorageLocation",
+        "type": "AzureBlobFSLocation",
         "fileName": {
           "value": "@concat('export_daily_', formatDateTime(utcNow(), 'yyyy-MM-dd'), '.csv')",
           "type": "Expression"
         },
-        "folderPath": "elenco-informatico-elettrodomestici/data",
-        "container": "$web"
+        "folderPath": {
+          "value": "@concat('data/', dataset().initiativeId)",
+          "type": "Expression"
+        },
+        "fileSystem": "export"
       }
     }
   },

@@ -6,7 +6,7 @@
             "sources": [
                 {
                     "dataset": {
-                        "referenceName": "data_export_csv",
+                        "referenceName": "data_export_csv_initiative",
                         "type": "DatasetReference"
                     },
                     "name": "ImportCSV"
@@ -15,7 +15,7 @@
             "sinks": [
                 {
                     "dataset": {
-                        "referenceName": "data_export_csv",
+                        "referenceName": "data_export_csv_initiative",
                         "type": "DatasetReference"
                     },
                     "name": "CSVTransformed"

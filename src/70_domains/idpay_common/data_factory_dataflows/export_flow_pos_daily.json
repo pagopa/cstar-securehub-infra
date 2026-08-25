@@ -1,0 +1,103 @@
+{
+  "name": "export_flow_pos_daily",
+  "properties": {
+    "type": "MappingDataFlow",
+    "typeProperties": {
+      "sources": [
+        {
+          "dataset": {
+            "referenceName": "cosmos_idpay_pos",
+            "type": "DatasetReference"
+          },
+          "name": "PosSource"
+        },
+        {
+          "dataset": {
+            "referenceName": "cosmos_idpay_point_of_sale_initiative",
+            "type": "DatasetReference"
+          },
+          "name": "PosInitiativeSource"
+        }
+      ],
+      "sinks": [
+        {
+          "dataset": {
+            "referenceName": "blob_pos_export_initiative",
+            "type": "DatasetReference"
+          },
+          "name": "SinkPosJSON"
+        }
+      ],
+      "transformations": [
+        { "name": "NormalizePos" },
+        { "name": "NormalizeInitiative" },
+        { "name": "FilterInitiative" },
+        { "name": "JoinPosInitiative" },
+        { "name": "SelectOutput" }
+      ],
+      "scriptLines": [
+        "parameters{",
+        "     initiativeId as string",
+        "}",
+        "source(output(",
+        "          {_id} as string,",
+        "          type as string,",
+        "          franchiseName as string,",
+        "          address as string,",
+        "          city as string,",
+        "          region as string,",
+        "          province as string,",
+        "          streetNumber as string,",
+        "          zipCode as string,",
+        "          channelPhone as string,",
+        "          website as string",
+        "     ),",
+        "     allowSchemaDrift: true,",
+        "     validateSchema: false,",
+        "     ignoreNoFilesFound: false) ~> PosSource",
+        "source(output(",
+        "          {_id} as string,",
+        "          initiativeId as string,",
+        "          enabled as boolean,",
+        "          pointOfSaleId as string",
+        "     ),",
+        "     allowSchemaDrift: true,",
+        "     validateSchema: false,",
+        "     ignoreNoFilesFound: false) ~> PosInitiativeSource",
+        "PosSource derive(posIdKey = toString(byName('_id'))) ~> NormalizePos",
+        "PosInitiativeSource derive(",
+        "          initiativeIdNorm = toString(byName('initiativeId')),",
+        "          initiativeEnabled = toBoolean(byName('enabled')),",
+        "          initiativePosIdKey = toString(byName('pointOfSaleId'))",
+        ") ~> NormalizeInitiative",
+        "NormalizeInitiative filter(",
+        "     initiativeIdNorm == $initiativeId",
+        "     && initiativeEnabled == true()",
+        ") ~> FilterInitiative",
+        "NormalizePos, FilterInitiative join(posIdKey == initiativePosIdKey,",
+        "     joinType:'inner',",
+        "     matchType:'exact',",
+        "     ignoreSpaces: false,",
+        "     broadcast: 'auto') ~> JoinPosInitiative",
+        "JoinPosInitiative select(mapColumn(",
+        "          type,",
+        "          franchiseName,",
+        "          address,",
+        "          city,",
+        "          region,",
+        "          province,",
+        "          streetNumber,",
+        "          zipCode,",
+        "          channelPhone,",
+        "          website",
+        "     ),",
+        "     skipDuplicateMapInputs: true,",
+        "     skipDuplicateMapOutputs: true) ~> SelectOutput",
+        "SelectOutput sink(allowSchemaDrift: true,",
+        "     validateSchema: false,",
+        "     skipDuplicateMapInputs: true,",
+        "     skipDuplicateMapOutputs: true) ~> SinkPosJSON"
+      ]
+    }
+  }
+}

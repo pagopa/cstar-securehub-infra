@@ -41,7 +41,8 @@ resource "azurerm_data_factory_pipeline" "pipelines" {
   activities_json = jsonencode(each.value.properties.activities)
 
   depends_on = [
-    azurerm_data_factory_custom_dataset.datasets
+    azurerm_data_factory_custom_dataset.datasets,
+    azurerm_data_factory_data_flow.dataflows
   ]
 }
 
