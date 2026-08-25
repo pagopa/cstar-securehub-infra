@@ -198,6 +198,6 @@ resource "keycloak_openid_client_default_scopes" "ar_backoffice_portal_default_s
   client_id = keycloak_openid_client.ar_backoffice_portal_client.id
 
   default_scopes = [
-    keycloak_openid_client_scope.admin_role_scope.name
+    keycloak_openid_client_scope.portal_role_scope.name
   ]
 }
