@@ -1,0 +1,53 @@
+let startOfYesterday = startofday(now() + 2h, -1) - 2h;
+let proxyTraces = cluster('https://ade.loganalytics.io__LAW_ID__').database('__LAW_NAME__').AppTraces;
+let failures = proxyTraces
+| where TimeGenerated >= startOfYesterday and TimeGenerated < startOfYesterday + 1d
+| where AppRoleName == 'rtp-sender'
+| where SeverityLevel == 3
+| where Message startswith "Error sending Rtp to be sent:"
+| extend _err = trim(" ", replace_string(Message, "Error sending Rtp to be sent:", ""))
+| extend category = case(
+    _err contains "payer is not activated",                 "⚠️ Payer not activated",
+    _err contains "rejected" or _err contains "Reject",     "❌ SEPA Rejection",
+    _err contains "Timeout",                                "❌ Timeout",
+    _err contains "Connection" or _err contains "refused",  "❌ Network error",
+    _err contains "MongoWrite" or _err contains "Mongo" 
+        or _err contains "TooManyRequest",                  "❌ Mongo DB error",
+    _err contains "PayeeNotFound" 
+        or _err contains "ServiceProviderNotFound",         "❌ Payee/SP not found",
+    _err contains "InvalidTransition" 
+        or _err contains "InvalidStatus",                   "❌ Invalid transition",
+    "❌ Other / Unclassified"
+)
+| summarize count_ = count() by category;
+let successes = proxyTraces
+| where TimeGenerated >= startOfYesterday and TimeGenerated < startOfYesterday + 1d
+| where AppRoleName == 'rtp-sender'
+| where SeverityLevel == 1
+| where Message startswith "Rtp sent successfully with id:"
+| summarize count_ = count() by category = "✅ Success";
+let detail = union failures, successes;
+let totalFailures = tolong(toscalar(
+    detail
+    | where category startswith "❌" or category startswith "⚠️"
+    | summarize sum(count_)
+));
+let totalSuccesses = tolong(toscalar(
+    detail
+    | where category startswith "✅"
+    | summarize sum(count_)
+));
+let actuals = materialize(
+    detail
+    | extend
+        window_start = startOfYesterday,
+        total_failures = coalesce(totalFailures, tolong(0)),
+        total_successes = coalesce(totalSuccesses, tolong(0))
+    | project window_start, category, count = count_, total_failures, total_successes
+    | extend is_dummy = 0
+);
+let default_row = print window_start = startOfYesterday, category = "None", count = tolong(0), total_failures = tolong(0), total_successes = tolong(0), is_dummy = 1;
+union actuals, default_row
+| where toscalar(actuals | count) == 0 or is_dummy == 0
+| order by count desc
+| project window_start, category, count, total_failures, total_successes
