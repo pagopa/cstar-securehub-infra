@@ -31,7 +31,7 @@
             ],
             "scriptLines": [
                 "source(output(",
-                "          {_id} as string,",
+                "          gtin as string,",
                 "          model as string,",
                 "          brand as string,",
                 "          eprelCode as string,",
@@ -105,7 +105,7 @@
                 "  toString(byName('category'))  /* default: lascia il valore originale */",
                 ")) ~> UpdateColumn",
                 "UpdateColumn select(mapColumn(",
-                "          GTIN = {_id},",
+                "          GTIN = gtin,",
                 "          Categoria = category,",
                 "          {Nome del prodotto} = productName,",
                 "          Marca = brand,",

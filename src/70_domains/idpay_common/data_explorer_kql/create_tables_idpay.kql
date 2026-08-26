@@ -67,21 +67,33 @@
     zipCode:string,
     address:string,
     streetNumber:string,
+    website:string,
     contactEmail:string,
     contactName:string,
     contactSurname:string,
     channelEmail:string,
     channelPhone:string,
     channelGeolink:string,
-    channelWebsite:string,
-    merchantId:string
+    merchantId:string,
+    creationDate:datetime,
+    creationDateString:string,
+    updateDate:datetime,
+    updateDateString:string,
+    _class:string
 )
 
 .create table point_of_sales_initiative (
     _id:string,
+    pointOfSaleId:string,
     initiativeId:string,
-    enabledFlag:string,
-    pointOfSaleId:string
+    merchantId:string,
+    enabledFlag:bool,
+    createdAt:datetime,
+    createdAtString:string,
+    updatedAt:datetime,
+    updatedAtString:string,
+    onboardingDate:datetime,
+    onboardingDateString:string
 )
 
 .create table point_of_sales_export (
