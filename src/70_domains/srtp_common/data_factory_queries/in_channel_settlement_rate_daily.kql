@@ -1,5 +1,5 @@
 let startOfYesterday = startofday(now() + 2h, -1) - 2h;
-AppTraces
+cluster('https://ade.loganalytics.io__LAW_ID__').database('__LAW_NAME__').AppTraces
 | where TimeGenerated >= startOfYesterday and TimeGenerated < startOfYesterday + 1d
 | where AppRoleName == "rtp-activator"
 | where Message startswith "Payer activated with id:"
@@ -9,8 +9,9 @@ AppTraces
     tostring(p["mdc.sub_token"]),
     extract(@"SubToken:\s*([^,\]]+)", 1, Message)
 )
+| extend PSP = replace_regex(PSP, @"[\r\n]+", "")
 | summarize successful_sends = count()
     by window_start = startOfYesterday, debtor_service_provider = iff(isempty(PSP), "UNKNOWN", PSP)
 | order by successful_sends desc
-| project window_start = tostring(window_start), debtor_service_provider, successful_sends
+| project window_start, debtor_service_provider, successful_sends
 

@@ -15,42 +15,21 @@
         }
       },
       {
-        "name": "Copy activation success rate daily",
-        "type": "Copy",
+        "name": "Ingest activation success rate daily",
+        "type": "AzureDataExplorerCommand",
         "dependsOn": [
           {
             "activity": "Delete previous day data",
             "dependencyConditions": [ "Succeeded" ]
           }
         ],
-        "inputs": [
-          { "referenceName": "srtp_activation_success_rate_source", "type": "DatasetReference" }
-        ],
-        "outputs": [
-          { "referenceName": "srtp_activation_success_rate_daily", "type": "DatasetReference" }
-        ],
         "typeProperties": {
-          "source": {
-            "type": "RestSource",
-            "requestMethod": "POST",
-            "requestBody": ${jsonencode(jsonencode({ query = queries["activation_success_rate_daily"] }))},
-            "additionalHeaders": {
-              "Content-Type": "application/json"
-            }
-          },
-          "sink": {
-            "type": "AzureDataExplorerSink",
-            "flushImmediately": true
-          },
-          "translator": {
-            "type": "TabularTranslator",
-            "mappings": [
-              { "source": { "path": "$[0]" }, "sink": { "name": "activation_day", "type": "String" } },
-              { "source": { "path": "$[1]" }, "sink": { "name": "psp", "type": "String" } },
-              { "source": { "path": "$[2]" }, "sink": { "name": "successful_activations", "type": "Int64" } }
-            ],
-            "collectionReference": "$.tables[0].rows"
-          }
+          "command": ${jsonencode(join(" ", [".set-or-append activation_success_rate <|", replace(replace(replace(queries["activation_success_rate_daily"], "\n", " "), "__LAW_ID__", law_id), "__LAW_NAME__", law_name)]))},
+          "commandTimeout": "00:10:00"
+        },
+        "linkedServiceName": {
+          "referenceName": "${domain}-Kusto-${domain}-ls",
+          "type": "LinkedServiceReference"
         }
       }
     ]
