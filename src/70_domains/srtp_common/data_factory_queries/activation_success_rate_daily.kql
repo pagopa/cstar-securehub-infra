@@ -13,7 +13,10 @@ cluster('https://ade.loganalytics.io__LAW_ID__').database('__LAW_NAME__').AppTra
 | extend PSP = replace_regex(PSP, @"[\r\n]+", "")
 | summarize successful_activations = count()
     by activation_day = startOfYesterday, psp = iff(isempty(PSP), "UNKNOWN", PSP)
+| extend is_dummy = 0
 );
-actuals
+let default_row = print activation_day = startOfYesterday, psp = "UNKNOWN", successful_activations = tolong(0), is_dummy = 1;
+union actuals, default_row
+| where toscalar(actuals | count) == 0 or is_dummy == 0
 | order by successful_activations desc
 | project activation_day, psp, successful_activations

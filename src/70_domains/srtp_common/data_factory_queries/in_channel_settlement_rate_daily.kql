@@ -1,4 +1,5 @@
 let startOfYesterday = startofday(now() + 2h, -1) - 2h;
+let actuals = materialize(
 cluster('https://ade.loganalytics.io__LAW_ID__').database('__LAW_NAME__').AppTraces
 | where TimeGenerated >= startOfYesterday and TimeGenerated < startOfYesterday + 1d
 | where AppRoleName == "rtp-activator"
@@ -12,6 +13,10 @@ cluster('https://ade.loganalytics.io__LAW_ID__').database('__LAW_NAME__').AppTra
 | extend PSP = replace_regex(PSP, @"[\r\n]+", "")
 | summarize successful_sends = count()
     by window_start = startOfYesterday, debtor_service_provider = iff(isempty(PSP), "UNKNOWN", PSP)
+| extend is_dummy = 0
+);
+let default_row = print window_start = startOfYesterday, debtor_service_provider = "UNKNOWN", successful_sends = tolong(0), is_dummy = 1;
+union actuals, default_row
+| where toscalar(actuals | count) == 0 or is_dummy == 0
 | order by successful_sends desc
 | project window_start, debtor_service_provider, successful_sends
-

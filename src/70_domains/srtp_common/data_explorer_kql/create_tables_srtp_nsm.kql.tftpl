@@ -73,3 +73,33 @@
 .alter table ActivePayerReachability policy caching hot = ${hot_cache_period}
 
 .alter table activation_success_rate policy caching hot = ${hot_cache_period}
+
+.create-merge table user_refusal_rate (
+    window_start: datetime,
+    refusal_type: string,
+    debtor_service_provider: string,
+    refusals: long,
+    total_sent: long,
+    refusal_rate_percentage: real
+)
+
+.create-or-alter table user_refusal_rate ingestion json mapping 'UserRefusalRateMapping'
+'['
+'{"column":"window_start","path":"$.window_start","datatype":"datetime"},'
+'{"column":"refusal_type","path":"$.refusal_type","datatype":"string"},'
+'{"column":"debtor_service_provider","path":"$.debtor_service_provider","datatype":"string"},'
+'{"column":"refusals","path":"$.refusals","datatype":"long"},'
+'{"column":"total_sent","path":"$.total_sent","datatype":"long"},'
+'{"column":"refusal_rate_percentage","path":"$.refusal_rate_percentage","datatype":"real"}'
+']'
+
+.alter table user_refusal_rate policy streamingingestion enable
+
+.alter table user_refusal_rate policy retention ```
+{
+  "SoftDeletePeriod": "${soft_delete_period}",
+  "Recoverability": "Enabled"
+}
+```
+
+.alter table user_refusal_rate policy caching hot = ${hot_cache_period}
