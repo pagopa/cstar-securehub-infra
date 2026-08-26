@@ -3,6 +3,48 @@
     "properties": {
         "activities": [
             {
+                "name": "Clear pos table",
+                "type": "AzureDataExplorerCommand",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "command": ".clear table point_of_sales data",
+                    "commandTimeout": "00:20:00"
+                },
+                "linkedServiceName": {
+                    "referenceName": "idpay-Kusto-idpay-ls",
+                    "type": "LinkedServiceReference"
+                }
+            },
+            {
+                "name": "Clear pos initiative table",
+                "type": "AzureDataExplorerCommand",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "command": ".clear table point_of_sales_initiative data",
+                    "commandTimeout": "00:20:00"
+                },
+                "linkedServiceName": {
+                    "referenceName": "idpay-Kusto-idpay-ls",
+                    "type": "LinkedServiceReference"
+                }
+            },
+            {
                 "name": "Copy pos collection",
                 "type": "Copy",
                 "dependsOn": [
@@ -221,9 +263,16 @@
                 ]
             },
             {
-                "name": "Clear pos table",
-                "type": "AzureDataExplorerCommand",
-                "dependsOn": [],
+                "name": "Copy pos initiative collection",
+                "type": "Copy",
+                "dependsOn": [
+                    {
+                        "activity": "Clear pos initiative table",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
                 "policy": {
                     "timeout": "0.12:00:00",
                     "retry": 0,
@@ -233,7 +282,87 @@
                 },
                 "userProperties": [],
                 "typeProperties": {
-                    "command": ".clear table point_of_sales data",
+                    "source": {
+                        "type": "CosmosDbMongoDbApiSource",
+                        "batchSize": 100
+                    },
+                    "sink": {
+                        "type": "AzureDataExplorerSink"
+                    },
+                    "enableStaging": false,
+                    "translator": {
+                        "type": "TabularTranslator",
+                        "mappings": [
+                            {
+                                "source": {
+                                    "path": "$['initiativeId']"
+                                },
+                                "sink": {
+                                    "name": "initiativeId",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['enabled']"
+                                },
+                                "sink": {
+                                    "name": "enabled",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['pointOfSaleId']"
+                                },
+                                "sink": {
+                                    "name": "pointOfSaleId",
+                                    "type": "String"
+                                }
+                            }
+                        ]
+                    }
+                },
+                "inputs": [
+                    {
+                        "referenceName": "cosmos_idpay_point_of_sale_initiative",
+                        "type": "DatasetReference"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "referenceName": "data_explorer_idpay_pos_initiative",
+                        "type": "DatasetReference"
+                    }
+                ]
+            },
+            {
+                "name": "Materialize pos export table",
+                "type": "AzureDataExplorerCommand",
+                "dependsOn": [
+                    {
+                        "activity": "Copy pos collection",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    },
+                    {
+                        "activity": "Copy pos initiative collection",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "command": ".set-or-replace table point_of_sales_export <| point_of_sales_initiative | where tobool(enabled) == true | join kind=inner (point_of_sales) on $left.pointOfSaleId == $right._id | project initiativeId, type, franchiseName, address, city, region, province, streetNumber, zipCode, channelPhone, website = tostring(column_ifexists('channelWebsite', ''))",
                     "commandTimeout": "00:20:00"
                 },
                 "linkedServiceName": {

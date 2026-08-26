@@ -1,12 +1,12 @@
 {
     "name": "idpay_pos_export_daily",
     "properties": {
-        "description": "Export Point of Sales on daily schedule, filtered by initiative via lookup dataflow",
+        "description": "Export Point of Sales from Data Explorer joined table filtered by initiative",
         "activities": [
             {
-                "name": "ExportPosDataFlow",
-                "description": "Lookup point_of_sales by point_of_sales_initiative and export filtered by initiativeId",
-                "type": "ExecuteDataFlow",
+                "name": "ExportPosFromKusto",
+                "description": "Copy POS rows from point_of_sales_export filtered by initiativeId",
+                "type": "Copy",
                 "dependsOn": [],
                 "policy": {
                     "timeout": "0.12:00:00",
@@ -17,25 +17,41 @@
                 },
                 "userProperties": [],
                 "typeProperties": {
-                    "dataFlow": {
-                        "referenceName": "export_flow_pos_daily_lookup",
-                        "type": "DataFlowReference",
-                        "parameters": {
-                            "initiativeId": "@pipeline().parameters.initiativeId"
-                        },
-                        "datasetParameters": {
-                            "SinkPosJSON": {
-                                "initiativeFolder": "@pipeline().parameters.initiativeFolder",
-                                "initiativeId": "@pipeline().parameters.initiativeId"
-                            }
+                    "source": {
+                        "type": "AzureDataExplorerSource",
+                        "query": {
+                            "value": "@concat('point_of_sales_export | where initiativeId == \"', pipeline().parameters.initiativeId, '\" | project type, franchiseName, address, city, region, province, streetNumber, zipCode, channelPhone, website')",
+                            "type": "Expression"
                         }
                     },
-                    "compute": {
-                        "coreCount": 8,
-                        "computeType": "General"
+                    "sink": {
+                        "type": "JsonSink",
+                        "storeSettings": {
+                            "type": "AzureBlobStorageWriteSettings"
+                        },
+                        "formatSettings": {
+                            "type": "JsonWriteSettings",
+                            "filePattern": "arrayOfObjects"
+                        }
                     },
-                    "traceLevel": "Fine"
-                }
+                    "enableStaging": false
+                },
+                "inputs": [
+                    {
+                        "referenceName": "data_explorer_idpay_pos_export",
+                        "type": "DatasetReference"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "referenceName": "blob_pos_export_initiative",
+                        "type": "DatasetReference",
+                        "parameters": {
+                            "initiativeFolder": "@pipeline().parameters.initiativeFolder",
+                            "initiativeId": "@pipeline().parameters.initiativeId"
+                        }
+                    }
+                ]
             }
         ],
         "parameters": {
@@ -49,8 +65,8 @@
         "annotations": [
             "Point of Sales Export",
             "IdPay",
-            "Merchant",
-            "Multi-Initiative"
+            "Multi-Initiative",
+            "Data Explorer"
         ]
     }
 }
