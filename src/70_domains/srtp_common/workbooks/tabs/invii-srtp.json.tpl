@@ -241,6 +241,42 @@
               }
             },
             {
+              "type": 3,
+              "content": {
+                "version": "KqlItem/1.0",
+                "query": "AppTraces\n| where AppRoleName == 'rtp-consumer'\n| where TimeGenerated {evaluation_window:query}\n| where Message startswith \"Message stored in Failed Message Store\"\n| where Message contains \"rtp/gpd/message\"\n| summarize dlqCount = count()\n| extend totalRequestsString = tostring(dlqCount)",
+                "size": 0,
+                "title": "❌ Messaggi nella DLQ",
+                "noDataMessageStyle": 3,
+                "queryType": 0,
+                "resourceType": "microsoft.operationalinsights/workspaces",
+                "crossComponentResources": [
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-${location_short}-${domain}-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-${location_short}-${domain}-law"
+                ],
+                "visualization": "stat",
+                "statSettings": {
+                  "valueField": "totalRequestsString",
+                  "valueAggregation": "None",
+                  "colorSettings": {
+                    "type": "static",
+                    "mode": "background",
+                    "heatmapPalette": "greenRed",
+                    "thresholdsGrid": []
+                  },
+                  "iconSettings": {
+                    "thresholdsGrid": []
+                  },
+                  "tagText": "",
+                  "valueFontStyle": "auto"
+                }
+              },
+              "customWidth": "25",
+              "name": "❌ Messaggi nella DLQ",
+              "styleSettings": {
+                "showBorder": true
+              }
+            },
+            {
               "type": 9,
               "content": {
                 "version": "KqlParameterItem/1.0",
