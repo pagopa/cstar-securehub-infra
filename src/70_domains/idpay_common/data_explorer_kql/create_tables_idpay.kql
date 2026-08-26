@@ -77,6 +77,26 @@
     merchantId:string
 )
 
+.create table point_of_sales_initiative (
+    initiativeId:string,
+    ['enabled']:string,
+    pointOfSaleId:string
+)
+
+.create table point_of_sales_export (
+    initiativeId:string,
+    type:string,
+    franchiseName:string,
+    address:string,
+    city:string,
+    region:string,
+    province:string,
+    streetNumber:string,
+    zipCode:string,
+    channelPhone:string,
+    website:string
+)
+
 
 .create table transaction (
     _id:string,

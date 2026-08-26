@@ -362,7 +362,7 @@
                 },
                 "userProperties": [],
                 "typeProperties": {
-                    "command": ".set-or-replace table point_of_sales_export <| point_of_sales_initiative | where tobool(enabled) == true | join kind=inner (point_of_sales) on $left.pointOfSaleId == $right._id | project initiativeId, type, franchiseName, address, city, region, province, streetNumber, zipCode, channelPhone, website = tostring(column_ifexists('channelWebsite', ''))",
+                    "command": ".set-or-replace table point_of_sales_export <| point_of_sales_initiative | where tobool(['enabled']) == true | join kind=inner (point_of_sales) on $left.pointOfSaleId == $right._id | project initiativeId, type, franchiseName, address, city, region, province, streetNumber, zipCode, channelPhone, website = tostring(column_ifexists('channelWebsite', ''))",
                     "commandTimeout": "00:20:00"
                 },
                 "linkedServiceName": {
