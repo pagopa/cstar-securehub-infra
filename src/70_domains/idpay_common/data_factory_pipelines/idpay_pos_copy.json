@@ -75,177 +75,23 @@
                     "translator": {
                         "type": "TabularTranslator",
                         "mappings": [
-                            {
-                                "source": {
-                                    "path": "$['_id']"
-                                },
-                                "sink": {
-                                    "name": "_id",
-                                    "type": "String"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['type']"
-                                },
-                                "sink": {
-                                    "name": "type",
-                                    "type": "String"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['franchiseName']"
-                                },
-                                "sink": {
-                                    "name": "franchiseName",
-                                    "type": "String"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['region']"
-                                },
-                                "sink": {
-                                    "name": "region",
-                                    "type": "String"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['province']"
-                                },
-                                "sink": {
-                                    "name": "province",
-                                    "type": "String"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['city']"
-                                },
-                                "sink": {
-                                    "name": "city",
-                                    "type": "String"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['zipCode']"
-                                },
-                                "sink": {
-                                    "name": "zipCode",
-                                    "type": "String"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['address']"
-                                },
-                                "sink": {
-                                    "name": "address",
-                                    "type": "String"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['streetNumber']"
-                                },
-                                "sink": {
-                                    "name": "streetNumber",
-                                    "type": "String"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['contactEmail']"
-                                },
-                                "sink": {
-                                    "name": "contactEmail",
-                                    "type": "String"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['contactName']"
-                                },
-                                "sink": {
-                                    "name": "contactName",
-                                    "type": "String"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['contactSurname']"
-                                },
-                                "sink": {
-                                    "name": "contactSurname",
-                                    "type": "String"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['channelEmail']"
-                                },
-                                "sink": {
-                                    "name": "channelEmail",
-                                    "type": "String"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['channelPhone']"
-                                },
-                                "sink": {
-                                    "name": "channelPhone",
-                                    "type": "String"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['channelGeolink']"
-                                },
-                                "sink": {
-                                    "name": "channelGeolink",
-                                    "type": "String"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['channelWebsite']"
-                                },
-                                "sink": {
-                                    "name": "channelWebsite",
-                                    "type": "String"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['merchantId']"
-                                },
-                                "sink": {
-                                    "name": "merchantId",
-                                    "type": "String"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['creationDate.$date.$numberLong']"
-                                },
-                                "sink": {
-                                    "name": "creationDate",
-                                    "type": "String"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['updateDate.$date.$numberLong']"
-                                },
-                                "sink": {
-                                    "name": "updateDate",
-                                    "type": "String"
-                                }
-                            }
+                            { "source": { "path": "$['_id']" }, "sink": { "name": "_id", "type": "String" } },
+                            { "source": { "path": "$['type']" }, "sink": { "name": "type", "type": "String" } },
+                            { "source": { "path": "$['franchiseName']" }, "sink": { "name": "franchiseName", "type": "String" } },
+                            { "source": { "path": "$['region']" }, "sink": { "name": "region", "type": "String" } },
+                            { "source": { "path": "$['province']" }, "sink": { "name": "province", "type": "String" } },
+                            { "source": { "path": "$['city']" }, "sink": { "name": "city", "type": "String" } },
+                            { "source": { "path": "$['zipCode']" }, "sink": { "name": "zipCode", "type": "String" } },
+                            { "source": { "path": "$['address']" }, "sink": { "name": "address", "type": "String" } },
+                            { "source": { "path": "$['streetNumber']" }, "sink": { "name": "streetNumber", "type": "String" } },
+                            { "source": { "path": "$['contactEmail']" }, "sink": { "name": "contactEmail", "type": "String" } },
+                            { "source": { "path": "$['contactName']" }, "sink": { "name": "contactName", "type": "String" } },
+                            { "source": { "path": "$['contactSurname']" }, "sink": { "name": "contactSurname", "type": "String" } },
+                            { "source": { "path": "$['channelEmail']" }, "sink": { "name": "channelEmail", "type": "String" } },
+                            { "source": { "path": "$['channelPhone']" }, "sink": { "name": "channelPhone", "type": "String" } },
+                            { "source": { "path": "$['channelGeolink']" }, "sink": { "name": "channelGeolink", "type": "String" } },
+                            { "source": { "path": "$['channelWebsite']" }, "sink": { "name": "channelWebsite", "type": "String" } },
+                            { "source": { "path": "$['merchantId']" }, "sink": { "name": "merchantId", "type": "String" } }
                         ]
                     }
                 },
@@ -293,6 +139,15 @@
                     "translator": {
                         "type": "TabularTranslator",
                         "mappings": [
+                            {
+                                "source": {
+                                    "path": "$['_id']"
+                                },
+                                "sink": {
+                                    "name": "_id",
+                                    "type": "String"
+                                }
+                            },
                             {
                                 "source": {
                                     "path": "$['initiativeId']"
