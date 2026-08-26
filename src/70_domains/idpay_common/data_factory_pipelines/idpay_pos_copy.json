@@ -307,7 +307,7 @@
                                     "path": "$['enabled']"
                                 },
                                 "sink": {
-                                    "name": "enabled",
+                                    "name": "enabledFlag",
                                     "type": "String"
                                 }
                             },
@@ -362,7 +362,7 @@
                 },
                 "userProperties": [],
                 "typeProperties": {
-                    "command": ".set-or-replace table point_of_sales_export <| point_of_sales_initiative | where tobool(['enabled']) == true | join kind=inner (point_of_sales) on $left.pointOfSaleId == $right._id | project initiativeId, type, franchiseName, address, city, region, province, streetNumber, zipCode, channelPhone, website = tostring(column_ifexists('channelWebsite', ''))",
+                    "command": ".set-or-replace table point_of_sales_export <| let pos_initiative = point_of_sales_initiative | where tobool(enabledFlag) == true | project psi_initiativeId = initiativeId, psi_pointOfSaleId = pointOfSaleId; let pos = point_of_sales | project pos_id = _id, pos_type = type, pos_franchiseName = franchiseName, pos_address = address, pos_city = city, pos_region = region, pos_province = province, pos_streetNumber = streetNumber, pos_zipCode = zipCode, pos_channelPhone = channelPhone, pos_website = tostring(column_ifexists('channelWebsite', '')); pos_initiative | join kind=inner pos on $left.psi_pointOfSaleId == $right.pos_id | project initiativeId = psi_initiativeId, type = pos_type, franchiseName = pos_franchiseName, address = pos_address, city = pos_city, region = pos_region, province = pos_province, streetNumber = pos_streetNumber, zipCode = pos_zipCode, channelPhone = pos_channelPhone, website = pos_website",
                     "commandTimeout": "00:20:00"
                 },
                 "linkedServiceName": {

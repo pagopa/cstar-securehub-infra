@@ -79,7 +79,7 @@
 
 .create table point_of_sales_initiative (
     initiativeId:string,
-    ['enabled']:string,
+    enabledFlag:string,
     pointOfSaleId:string
 )
 
