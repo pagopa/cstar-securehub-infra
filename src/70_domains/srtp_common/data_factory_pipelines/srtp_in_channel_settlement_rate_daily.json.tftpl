@@ -1,0 +1,59 @@
+{
+  "name": "srtp_in_channel_settlement_rate_daily",
+  "properties": {
+    "activities": [
+      {
+        "name": "Delete previous day data",
+        "type": "AzureDataExplorerCommand",
+        "typeProperties": {
+          "command": ".delete table InChannelSettlementRate records <| InChannelSettlementRate | where window_start >= (startofday(now() + 2h, -1) - 2h) and window_start < ((startofday(now() + 2h, -1) - 2h) + 1d)",
+          "commandTimeout": "00:10:00"
+        },
+        "linkedServiceName": {
+          "referenceName": "${domain}-Kusto-${domain}-ls",
+          "type": "LinkedServiceReference"
+        }
+      },
+      {
+        "name": "Copy in-channel settlement rate daily",
+        "type": "Copy",
+        "dependsOn": [
+          {
+            "activity": "Delete previous day data",
+            "dependencyConditions": [ "Succeeded" ]
+          }
+        ],
+        "inputs": [
+          { "referenceName": "srtp_in_channel_settlement_rate_source", "type": "DatasetReference" }
+        ],
+        "outputs": [
+          { "referenceName": "srtp_in_channel_settlement_rate_daily", "type": "DatasetReference" }
+        ],
+        "typeProperties": {
+          "source": {
+            "type": "RestSource",
+            "requestMethod": "POST",
+            "requestBody": ${jsonencode(jsonencode({ query = queries["in_channel_settlement_rate_daily"] }))},
+            "additionalHeaders": {
+              "Content-Type": "application/json"
+            }
+          },
+          "sink": {
+            "type": "AzureDataExplorerSink",
+            "flushImmediately": true
+          },
+          "translator": {
+            "type": "TabularTranslator",
+            "mappings": [
+              { "source": { "path": "$[0]" }, "sink": { "name": "window_start", "type": "String" } },
+              { "source": { "path": "$[1]" }, "sink": { "name": "debtor_service_provider", "type": "String" } },
+              { "source": { "path": "$[2]" }, "sink": { "name": "successful_sends", "type": "Int64" } }
+            ],
+            "collectionReference": "$.tables[0].rows"
+          }
+        }
+      }
+    ]
+  }
+}
+

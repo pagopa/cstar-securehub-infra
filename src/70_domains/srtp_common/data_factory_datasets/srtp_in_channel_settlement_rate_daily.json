@@ -1,0 +1,14 @@
+{
+  "name": "srtp_in_channel_settlement_rate_daily",
+  "properties": {
+    "type": "AzureDataExplorerTable",
+    "linkedServiceName": {
+      "referenceName": "${domain}-Kusto-${domain}-ls",
+      "type": "LinkedServiceReference"
+    },
+    "typeProperties": {
+      "table": "InChannelSettlementRate"
+    }
+  }
+}
+

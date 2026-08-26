@@ -1,0 +1,16 @@
+let startOfYesterday = startofday(now() + 2h, -1) - 2h;
+AppTraces
+| where TimeGenerated >= startOfYesterday and TimeGenerated < startOfYesterday + 1d
+| where AppRoleName == "rtp-activator"
+| where Message startswith "Payer activated with id:"
+| extend p = todynamic(Properties)
+| extend PSP = coalesce(
+    tostring(p["sub_token"]),
+    tostring(p["mdc.sub_token"]),
+    extract(@"SubToken:\s*([^,\]]+)", 1, Message)
+)
+| summarize successful_sends = count()
+    by window_start = startOfYesterday, debtor_service_provider = iff(isempty(PSP), "UNKNOWN", PSP)
+| order by successful_sends desc
+| project window_start = tostring(window_start), debtor_service_provider, successful_sends
+
