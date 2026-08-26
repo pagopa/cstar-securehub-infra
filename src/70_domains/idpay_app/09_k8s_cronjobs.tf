@@ -322,6 +322,9 @@ resource "kubernetes_cron_job_v1" "delete_invoiced_transactions" {
     timezone           = "Europe/Rome"
     concurrency_policy = "Forbid"
 
+    #Active only in PROD
+    suspend = var.env_short != "p"
+
     job_template {
       metadata {
         name = "delete-invoiced-transactions-job"
