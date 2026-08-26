@@ -23,7 +23,7 @@
               "type": "Expression"
             },
             "cursorMethods": {
-              "project": "{ \"_id\": 0, \"gtin\": 1, \"model\": 1, \"brand\": 1, \"eprelCode\": 1, \"countryOfProduction\": 1, \"energyClass\": 1, \"capacity\": 1, \"productName\": 1, \"category\": 1, \"productGroup\": 1 }"
+              "project": "{ \"_id\": 0, \"gtinCode\": 1, \"model\": 1, \"brand\": 1, \"eprelCode\": 1, \"countryOfProduction\": 1, \"energyClass\": 1, \"capacity\": 1, \"productName\": 1, \"category\": 1, \"productGroup\": 1 }"
             }
           },
           "sink": {
@@ -44,10 +44,10 @@
             "mappings": [
               {
                 "source": {
-                  "path": "$['gtin']"
+                  "path": "$['gtinCode']"
                 },
                 "sink": {
-                  "name": "gtin",
+                  "name": "gtinCode",
                   "type": "String"
                 }
               },
