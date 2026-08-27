@@ -1,8 +1,8 @@
 let pipelineRunId = '@{pipeline().RunId}';
-let rawDate = '@{pipeline().parameters.target_date}';
+let rawDate = @'@{replace(coalesce(pipeline().parameters.target_date, ''), '''', '''''')}';
 let isoDate = iff(strlen(rawDate) == 10 and substring(rawDate, 2, 1) == '-', strcat(substring(rawDate, 6, 4), '-', substring(rawDate, 3, 2), '-', substring(rawDate, 0, 2)), rawDate);
-let targetDateLabel = iff(isempty(rawDate), startofday(now() + 2h, -1), todatetime(isoDate));
-let startOfYesterday = targetDateLabel - 2h;
+let targetDateLabel = iff(isempty(rawDate), startofday(datetime_utc_to_local(now(), 'Europe/Rome'), -1), todatetime(isoDate));
+let startOfYesterday = datetime_local_to_utc(targetDateLabel, 'Europe/Rome');
 let proxyTraces = cluster('https://ade.loganalytics.io__LAW_ID__').database('__LAW_NAME__').AppTraces;
 let logs = proxyTraces
 | where TimeGenerated >= startOfYesterday and TimeGenerated < startOfYesterday + 1d
@@ -23,7 +23,7 @@ logs
 | extend refusal_rate_percentage = round(todouble(refusals) * 100.0 / iff(total_sent == 0, 1.0, todouble(total_sent)), 2)
 | extend is_dummy = 0, pipeline_run_id = pipelineRunId
 );
-let default_row = print window_start = targetDateLabel, refusal_type = "None", debtor_service_provider = "UNKNOWN", certificate_serial_number = "N/A", refusals = tolong(0), total_sent = tolong(0), refusal_rate_percentage = todouble(0), is_dummy = 1, pipeline_run_id = pipelineRunId;
+let default_row = print window_start = targetDateLabel, refusal_type = "None", debtor_service_provider = "UNKNOWN", certificate_serial_number = "N/A", refusals = tolong(0), total_sent = coalesce(totalSent, tolong(0)), refusal_rate_percentage = todouble(0), is_dummy = 1, pipeline_run_id = pipelineRunId;
 union actuals, default_row
 | where toscalar(actuals | count) == 0 or is_dummy == 0
 | order by refusals desc

@@ -12,11 +12,11 @@
         "name": "Delete previous day data",
         "type": "AzureDataExplorerCommand",
         "policy": {
-          "retry": 3,
+          "retry": 2,
           "retryIntervalInSeconds": 300
         },
         "typeProperties": {
-          "command": ".delete table active_payer_reachability records <| let rawDate = '@{pipeline().parameters.target_date}'; let isoDate = iff(strlen(rawDate) == 10 and substring(rawDate, 2, 1) == '-', strcat(substring(rawDate, 6, 4), '-', substring(rawDate, 3, 2), '-', substring(rawDate, 0, 2)), rawDate); let targetDateLabel = iff(isempty(rawDate), startofday(now() + 2h, -1), todatetime(isoDate)); active_payer_reachability | where window_start == targetDateLabel",
+          "command": ".delete table active_payer_reachability records <| let rawDate = @'@{replace(coalesce(pipeline().parameters.target_date, ''), '''', '''''')}'; let isoDate = iff(strlen(rawDate) == 10 and substring(rawDate, 2, 1) == '-', strcat(substring(rawDate, 6, 4), '-', substring(rawDate, 3, 2), '-', substring(rawDate, 0, 2)), rawDate); let targetDateLabel = iff(isempty(rawDate), startofday(datetime_utc_to_local(now(), 'Europe/Rome'), -1), todatetime(isoDate)); active_payer_reachability | where window_start == targetDateLabel",
           "commandTimeout": "00:10:00"
         },
         "linkedServiceName": {
@@ -28,7 +28,7 @@
         "name": "Ingest active payer reachability daily",
         "type": "AzureDataExplorerCommand",
         "policy": {
-          "retry": 3,
+          "retry": 2,
           "retryIntervalInSeconds": 300
         },
         "dependsOn": [
