@@ -4,7 +4,7 @@
     "parameters": {
       "target_date": {
         "type": "String",
-        "defaultValue": "@formatDateTime(addDays(utcNow(), -1), 'yyyy-MM-dd')"
+        "defaultValue": ""
       }
     },
     "activities": [
@@ -16,7 +16,7 @@
           "retryIntervalInSeconds": 300
         },
         "typeProperties": {
-          "command": ".delete table in_channel_settlement_rate records <| in_channel_settlement_rate | where window_start == todatetime('@{pipeline().parameters.target_date}')",
+          "command": ".delete table in_channel_settlement_rate records <| let rawDate = '@{pipeline().parameters.target_date}'; let isoDate = iff(strlen(rawDate) == 10 and substring(rawDate, 2, 1) == '-', strcat(substring(rawDate, 6, 4), '-', substring(rawDate, 3, 2), '-', substring(rawDate, 0, 2)), rawDate); let targetDateLabel = iff(isempty(rawDate), startofday(now() + 2h, -1), todatetime(isoDate)); in_channel_settlement_rate | where window_start == targetDateLabel",
           "commandTimeout": "00:10:00"
         },
         "linkedServiceName": {

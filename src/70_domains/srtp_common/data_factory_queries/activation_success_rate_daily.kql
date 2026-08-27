@@ -1,4 +1,7 @@
-let targetDateLabel = todatetime('@{pipeline().parameters.target_date}');
+let pipelineRunId = '@{pipeline().RunId}';
+let rawDate = '@{pipeline().parameters.target_date}';
+let isoDate = iff(strlen(rawDate) == 10 and substring(rawDate, 2, 1) == '-', strcat(substring(rawDate, 6, 4), '-', substring(rawDate, 3, 2), '-', substring(rawDate, 0, 2)), rawDate);
+let targetDateLabel = iff(isempty(rawDate), startofday(now() + 2h, -1), todatetime(isoDate));
 let startOfYesterday = targetDateLabel - 2h;
 let actuals = materialize(
 cluster('https://ade.loganalytics.io__LAW_ID__').database('__LAW_NAME__').AppTraces
@@ -14,10 +17,10 @@ cluster('https://ade.loganalytics.io__LAW_ID__').database('__LAW_NAME__').AppTra
 | extend PSP = replace_regex(PSP, @"[\r\n]+", "")
 | summarize successful_activations = count()
     by activation_day = targetDateLabel, psp = iff(isempty(PSP), "UNKNOWN", PSP)
-| extend is_dummy = 0
+| extend is_dummy = 0, pipeline_run_id = pipelineRunId
 );
-let default_row = print activation_day = targetDateLabel, psp = "UNKNOWN", successful_activations = tolong(0), is_dummy = 1;
+let default_row = print activation_day = targetDateLabel, psp = "UNKNOWN", successful_activations = tolong(0), is_dummy = 1, pipeline_run_id = pipelineRunId;
 union actuals, default_row
 | where toscalar(actuals | count) == 0 or is_dummy == 0
 | order by successful_activations desc
-| project activation_day, psp, successful_activations
+| project activation_day, psp, successful_activations, pipeline_run_id

@@ -1,4 +1,7 @@
-let targetDateLabel = todatetime('@{pipeline().parameters.target_date}');
+let pipelineRunId = '@{pipeline().RunId}';
+let rawDate = '@{pipeline().parameters.target_date}';
+let isoDate = iff(strlen(rawDate) == 10 and substring(rawDate, 2, 1) == '-', strcat(substring(rawDate, 6, 4), '-', substring(rawDate, 3, 2), '-', substring(rawDate, 0, 2)), rawDate);
+let targetDateLabel = iff(isempty(rawDate), startofday(now() + 2h, -1), todatetime(isoDate));
 let startOfYesterday = targetDateLabel - 2h;
 let proxyTraces = cluster('https://ade.loganalytics.io__LAW_ID__').database('__LAW_NAME__').AppTraces;
 let failures = proxyTraces
@@ -45,10 +48,10 @@ let actuals = materialize(
         total_failures = coalesce(totalFailures, tolong(0)),
         total_successes = coalesce(totalSuccesses, tolong(0))
     | project window_start, category, count = count_, total_failures, total_successes
-    | extend is_dummy = 0
+    | extend is_dummy = 0, pipeline_run_id = pipelineRunId
 );
-let default_row = print window_start = targetDateLabel, category = "None", count = tolong(0), total_failures = tolong(0), total_successes = tolong(0), is_dummy = 1;
+let default_row = print window_start = targetDateLabel, category = "None", count = tolong(0), total_failures = tolong(0), total_successes = tolong(0), is_dummy = 1, pipeline_run_id = pipelineRunId;
 union actuals, default_row
 | where toscalar(actuals | count) == 0 or is_dummy == 0
 | order by count desc
-| project window_start, category, count, total_failures, total_successes
+| project window_start, category, count, total_failures, total_successes, pipeline_run_id

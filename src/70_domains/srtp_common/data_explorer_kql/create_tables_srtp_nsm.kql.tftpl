@@ -2,7 +2,8 @@
     window_start: datetime,
     debtor_service_provider: string,
     successful_sends: long,
-    paid_in_channel: long
+    paid_in_channel: long,
+    pipeline_run_id: string
 )
 
 .create-merge table active_payer_reachability (
@@ -10,13 +11,15 @@
     category: string,
     count: long,
     total_failures: long,
-    total_successes: long
+    total_successes: long,
+    pipeline_run_id: string
 )
 
 .create-merge table activation_success_rate (
     activation_day: datetime,
     psp: string,
-    successful_activations: long
+    successful_activations: long,
+    pipeline_run_id: string
 )
 
 .create-or-alter table in_channel_settlement_rate ingestion json mapping 'in_channel_settlement_rateMapping'
@@ -24,7 +27,8 @@
 '{"column":"window_start","path":"$.window_start","datatype":"datetime"},'
 '{"column":"debtor_service_provider","path":"$.debtor_service_provider","datatype":"string"},'
 '{"column":"successful_sends","path":"$.successful_sends","datatype":"long"},'
-'{"column":"paid_in_channel","path":"$.paid_in_channel","datatype":"long"}'
+'{"column":"paid_in_channel","path":"$.paid_in_channel","datatype":"long"},'
+'{"column":"pipeline_run_id","path":"$.pipeline_run_id","datatype":"string"}'
 ']'
 
 .create-or-alter table active_payer_reachability ingestion json mapping 'active_payer_reachabilityMapping'
@@ -33,14 +37,16 @@
 '{"column":"category","path":"$.category","datatype":"string"},'
 '{"column":"count","path":"$.count","datatype":"long"},'
 '{"column":"total_failures","path":"$.total_failures","datatype":"long"},'
-'{"column":"total_successes","path":"$.total_successes","datatype":"long"}'
+'{"column":"total_successes","path":"$.total_successes","datatype":"long"},'
+'{"column":"pipeline_run_id","path":"$.pipeline_run_id","datatype":"string"}'
 ']'
 
 .create-or-alter table activation_success_rate ingestion json mapping 'ActivationSuccessRateMapping'
 '['
 '{"column":"activation_day","path":"$.activation_day","datatype":"datetime"},'
 '{"column":"psp","path":"$.psp","datatype":"string"},'
-'{"column":"successful_activations","path":"$.successful_activations","datatype":"long"}'
+'{"column":"successful_activations","path":"$.successful_activations","datatype":"long"},'
+'{"column":"pipeline_run_id","path":"$.pipeline_run_id","datatype":"string"}'
 ']'
 
 .alter table in_channel_settlement_rate policy streamingingestion enable
@@ -80,9 +86,11 @@
     window_start: datetime,
     refusal_type: string,
     debtor_service_provider: string,
+    certificate_serial_number: string,
     refusals: long,
     total_sent: long,
-    refusal_rate_percentage: real
+    refusal_rate_percentage: real,
+    pipeline_run_id: string
 )
 
 .create-or-alter table user_refusal_rate ingestion json mapping 'UserRefusalRateMapping'
@@ -90,9 +98,11 @@
 '{"column":"window_start","path":"$.window_start","datatype":"datetime"},'
 '{"column":"refusal_type","path":"$.refusal_type","datatype":"string"},'
 '{"column":"debtor_service_provider","path":"$.debtor_service_provider","datatype":"string"},'
+'{"column":"certificate_serial_number","path":"$.certificate_serial_number","datatype":"string"},'
 '{"column":"refusals","path":"$.refusals","datatype":"long"},'
 '{"column":"total_sent","path":"$.total_sent","datatype":"long"},'
-'{"column":"refusal_rate_percentage","path":"$.refusal_rate_percentage","datatype":"real"}'
+'{"column":"refusal_rate_percentage","path":"$.refusal_rate_percentage","datatype":"real"},'
+'{"column":"pipeline_run_id","path":"$.pipeline_run_id","datatype":"string"}'
 ']'
 
 .alter table user_refusal_rate policy streamingingestion enable
@@ -109,14 +119,16 @@
 .create-merge table taxonomy_eligibility_rate (
     window_start: datetime,
     operation: string,
-    total_valid_notices: long
+    total_valid_notices: long,
+    pipeline_run_id: string
 )
 
 .create-or-alter table taxonomy_eligibility_rate ingestion json mapping 'TaxonomyEligibilityRateMapping'
 '['
 '{"column":"window_start","path":"$.window_start","datatype":"datetime"},'
 '{"column":"operation","path":"$.operation","datatype":"string"},'
-'{"column":"total_valid_notices","path":"$.total_valid_notices","datatype":"long"}'
+'{"column":"total_valid_notices","path":"$.total_valid_notices","datatype":"long"},'
+'{"column":"pipeline_run_id","path":"$.pipeline_run_id","datatype":"string"}'
 ']'
 
 .alter table taxonomy_eligibility_rate policy streamingingestion enable

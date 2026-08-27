@@ -1,4 +1,7 @@
-let targetDateLabel = todatetime('@{pipeline().parameters.target_date}');
+let pipelineRunId = '@{pipeline().RunId}';
+let rawDate = '@{pipeline().parameters.target_date}';
+let isoDate = iff(strlen(rawDate) == 10 and substring(rawDate, 2, 1) == '-', strcat(substring(rawDate, 6, 4), '-', substring(rawDate, 3, 2), '-', substring(rawDate, 0, 2)), rawDate);
+let targetDateLabel = iff(isempty(rawDate), startofday(now() + 2h, -1), todatetime(isoDate));
 let startOfYesterday = targetDateLabel - 2h;
 let proxyTraces = cluster('https://ade.loganalytics.io__LAW_ID__').database('__LAW_NAME__').AppTraces;
 let saveLog = proxyTraces
@@ -25,10 +28,10 @@ let actuals = materialize(
         successful_sends = countif(metric == "successful_sends"),
         paid_in_channel = countif(metric == "paid_in_channel")
         by window_start = targetDateLabel, debtor_service_provider = iff(isempty(debtor_service_provider), "UNKNOWN", debtor_service_provider)
-    | extend is_dummy = 0
+    | extend is_dummy = 0, pipeline_run_id = pipelineRunId
 );
-let default_row = print window_start = targetDateLabel, debtor_service_provider = "UNKNOWN", successful_sends = tolong(0), paid_in_channel = tolong(0), is_dummy = 1;
+let default_row = print window_start = targetDateLabel, debtor_service_provider = "UNKNOWN", successful_sends = tolong(0), paid_in_channel = tolong(0), is_dummy = 1, pipeline_run_id = pipelineRunId;
 union actuals, default_row
 | where toscalar(actuals | count) == 0 or is_dummy == 0
 | order by successful_sends desc
-| project window_start, debtor_service_provider, successful_sends, paid_in_channel
+| project window_start, debtor_service_provider, successful_sends, paid_in_channel, pipeline_run_id
