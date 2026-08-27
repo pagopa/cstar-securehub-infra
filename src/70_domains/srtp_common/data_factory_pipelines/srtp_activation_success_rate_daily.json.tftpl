@@ -1,0 +1,37 @@
+{
+  "name": "srtp_activation_success_rate_daily",
+  "properties": {
+    "activities": [
+      {
+        "name": "Delete previous day data",
+        "type": "AzureDataExplorerCommand",
+        "typeProperties": {
+          "command": ".delete table activation_success_rate records <| activation_success_rate | where activation_day >= (startofday(now() + 2h, -1) - 2h) and activation_day < ((startofday(now() + 2h, -1) - 2h) + 1d)",
+          "commandTimeout": "00:10:00"
+        },
+        "linkedServiceName": {
+          "referenceName": "${domain}-Kusto-${domain}-ls",
+          "type": "LinkedServiceReference"
+        }
+      },
+      {
+        "name": "Ingest activation success rate daily",
+        "type": "AzureDataExplorerCommand",
+        "dependsOn": [
+          {
+            "activity": "Delete previous day data",
+            "dependencyConditions": [ "Succeeded" ]
+          }
+        ],
+        "typeProperties": {
+          "command": ${jsonencode(join(" ", [".set-or-append activation_success_rate <|", replace(replace(replace(queries["activation_success_rate_daily"], "\n", " "), "__LAW_ID__", law_id), "__LAW_NAME__", law_name)]))},
+          "commandTimeout": "00:10:00"
+        },
+        "linkedServiceName": {
+          "referenceName": "${domain}-Kusto-${domain}-ls",
+          "type": "LinkedServiceReference"
+        }
+      }
+    ]
+  }
+}

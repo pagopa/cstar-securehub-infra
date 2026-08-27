@@ -1,0 +1,23 @@
+let startOfYesterday = startofday(now() + 2h, -1) - 2h;
+let logs = cluster('https://ade.loganalytics.io__LAW_ID__').database('__LAW_NAME__').AppTraces
+    | where TimeGenerated >= startOfYesterday and TimeGenerated < startOfYesterday + 1d
+    | where AppRoleName == "rtp-sender";
+let totalSent = toscalar(logs | where Message startswith "Rtp sent successfully with id:" | summarize count());
+let results = materialize(
+    logs
+    | where Message has "Triggering REJECT transition for RTP" or Message has "Send RTP request rejected for"
+    | extend debtor_service_provider = coalesce(extract(@"service_provider:\s*(\S+)", 1, Message), extract(@"Send RTP request rejected for ([^:]+):", 1, Message))
+    | extend refusal_type = case(
+        Message has "Triggering REJECT transition for RTP", "Callback (Payer/PSP)",
+        Message has "Send RTP request rejected for", "Send/EPC (PSP)",
+        "Other Refusal")
+    | summarize refusals = count() by refusal_type, debtor_service_provider = iff(isempty(debtor_service_provider), "UNKNOWN", debtor_service_provider), window_start = startOfYesterday
+    | extend total_sent = coalesce(totalSent, tolong(0))
+    | extend refusal_rate_percentage = round(todouble(refusals) * 100.0 / iff(total_sent == 0, 1.0, todouble(total_sent)), 2)
+    | extend is_dummy = 0
+);
+let default_row = print window_start = startOfYesterday, refusal_type = "None", debtor_service_provider = "UNKNOWN", refusals = tolong(0), total_sent = coalesce(totalSent, tolong(0)), refusal_rate_percentage = todouble(0), is_dummy = 1;
+union results, default_row
+| where toscalar(results | count) == 0 or is_dummy == 0
+| order by refusals desc
+| project window_start, refusal_type, debtor_service_provider, refusals, total_sent, refusal_rate_percentage

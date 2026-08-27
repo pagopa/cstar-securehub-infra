@@ -1,0 +1,37 @@
+{
+  "name": "srtp_taxonomy_eligibility_rate_daily",
+  "properties": {
+    "activities": [
+      {
+        "name": "Delete previous day data",
+        "type": "AzureDataExplorerCommand",
+        "typeProperties": {
+          "command": ".delete table taxonomy_eligibility_rate records <| taxonomy_eligibility_rate | where window_start >= (startofday(now() + 2h, -1) - 2h) and window_start < ((startofday(now() + 2h, -1) - 2h) + 1d)",
+          "commandTimeout": "00:10:00"
+        },
+        "linkedServiceName": {
+          "referenceName": "${domain}-Kusto-${domain}-ls",
+          "type": "LinkedServiceReference"
+        }
+      },
+      {
+        "name": "Ingest taxonomy eligibility rate daily",
+        "type": "AzureDataExplorerCommand",
+        "dependsOn": [
+          {
+            "activity": "Delete previous day data",
+            "dependencyConditions": [ "Succeeded" ]
+          }
+        ],
+        "typeProperties": {
+          "command": ${jsonencode(join(" ", [".set-or-append taxonomy_eligibility_rate <|", replace(replace(replace(queries["taxonomy_eligibility_rate_daily"], "\n", " "), "__LAW_ID__", law_id), "__LAW_NAME__", law_name)]))},
+          "commandTimeout": "00:10:00"
+        },
+        "linkedServiceName": {
+          "referenceName": "${domain}-Kusto-${domain}-ls",
+          "type": "LinkedServiceReference"
+        }
+      }
+    ]
+  }
+}

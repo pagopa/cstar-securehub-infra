@@ -1,0 +1,37 @@
+{
+  "name": "srtp_active_payer_reachability_daily",
+  "properties": {
+    "activities": [
+      {
+        "name": "Delete previous day data",
+        "type": "AzureDataExplorerCommand",
+        "typeProperties": {
+          "command": ".delete table active_payer_reachability records <| active_payer_reachability | where window_start >= (startofday(now() + 2h, -1) - 2h) and window_start < ((startofday(now() + 2h, -1) - 2h) + 1d)",
+          "commandTimeout": "00:10:00"
+        },
+        "linkedServiceName": {
+          "referenceName": "${domain}-Kusto-${domain}-ls",
+          "type": "LinkedServiceReference"
+        }
+      },
+      {
+        "name": "Ingest active payer reachability daily",
+        "type": "AzureDataExplorerCommand",
+        "dependsOn": [
+          {
+            "activity": "Delete previous day data",
+            "dependencyConditions": [ "Succeeded" ]
+          }
+        ],
+        "typeProperties": {
+          "command": ${jsonencode(join(" ", [".set-or-append active_payer_reachability <|", replace(replace(replace(queries["active_payer_reachability_daily"], "\n", " "), "__LAW_ID__", law_id), "__LAW_NAME__", law_name)]))},
+          "commandTimeout": "00:10:00"
+        },
+        "linkedServiceName": {
+          "referenceName": "${domain}-Kusto-${domain}-ls",
+          "type": "LinkedServiceReference"
+        }
+      }
+    ]
+  }
+}
