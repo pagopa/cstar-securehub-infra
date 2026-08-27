@@ -11,11 +11,11 @@ let failures = proxyTraces
     _err contains "rejected" or _err contains "Reject",     "❌ SEPA Rejection",
     _err contains "Timeout",                                "❌ Timeout",
     _err contains "Connection" or _err contains "refused",  "❌ Network error",
-    _err contains "MongoWrite" or _err contains "Mongo" 
+    _err contains "MongoWrite" or _err contains "Mongo"
         or _err contains "TooManyRequest",                  "❌ Mongo DB error",
-    _err contains "PayeeNotFound" 
+    _err contains "PayeeNotFound"
         or _err contains "ServiceProviderNotFound",         "❌ Payee/SP not found",
-    _err contains "InvalidTransition" 
+    _err contains "InvalidTransition"
         or _err contains "InvalidStatus",                   "❌ Invalid transition",
     "❌ Other / Unclassified"
 )

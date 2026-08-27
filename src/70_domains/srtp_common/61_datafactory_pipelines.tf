@@ -14,15 +14,15 @@ locals {
   pipeline_tftpl_templates = {
     for file in fileset("${path.module}/data_factory_pipelines", "*.json.tftpl") :
     jsondecode(templatefile("${path.module}/data_factory_pipelines/${file}", {
-      domain            = var.domain
-      queries           = local.data_factory_queries
-      law_id            = azurerm_log_analytics_workspace.log_analytics_workspace.id
-      law_name          = azurerm_log_analytics_workspace.log_analytics_workspace.name
+      domain   = var.domain
+      queries  = local.data_factory_queries
+      law_id   = azurerm_log_analytics_workspace.log_analytics_workspace.id
+      law_name = azurerm_log_analytics_workspace.log_analytics_workspace.name
       })).name => jsondecode(templatefile("${path.module}/data_factory_pipelines/${file}", {
-      domain            = var.domain
-      queries           = local.data_factory_queries
-      law_id            = azurerm_log_analytics_workspace.log_analytics_workspace.id
-      law_name          = azurerm_log_analytics_workspace.log_analytics_workspace.name
+      domain   = var.domain
+      queries  = local.data_factory_queries
+      law_id   = azurerm_log_analytics_workspace.log_analytics_workspace.id
+      law_name = azurerm_log_analytics_workspace.log_analytics_workspace.name
     }))
   }
 

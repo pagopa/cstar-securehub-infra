@@ -20,7 +20,7 @@ let paidInChannel = proxyTraces
     | extend metric = "paid_in_channel";
 let actuals = materialize(
     union successfulSends, paidInChannel
-    | summarize 
+    | summarize
         successful_sends = countif(metric == "successful_sends"),
         paid_in_channel = countif(metric == "paid_in_channel")
         by window_start = startOfYesterday, debtor_service_provider = iff(isempty(debtor_service_provider), "UNKNOWN", debtor_service_provider)
