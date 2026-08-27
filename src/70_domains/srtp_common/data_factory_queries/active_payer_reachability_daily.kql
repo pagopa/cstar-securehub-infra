@@ -1,4 +1,5 @@
-let startOfYesterday = startofday(now() + 2h, -1) - 2h;
+let targetDateLabel = todatetime('@{pipeline().parameters.target_date}');
+let startOfYesterday = targetDateLabel - 2h;
 let proxyTraces = cluster('https://ade.loganalytics.io__LAW_ID__').database('__LAW_NAME__').AppTraces;
 let failures = proxyTraces
 | where TimeGenerated >= startOfYesterday and TimeGenerated < startOfYesterday + 1d
@@ -40,13 +41,13 @@ let totalSuccesses = tolong(toscalar(
 let actuals = materialize(
     detail
     | extend
-        window_start = startOfYesterday,
+        window_start = targetDateLabel,
         total_failures = coalesce(totalFailures, tolong(0)),
         total_successes = coalesce(totalSuccesses, tolong(0))
     | project window_start, category, count = count_, total_failures, total_successes
     | extend is_dummy = 0
 );
-let default_row = print window_start = startOfYesterday, category = "None", count = tolong(0), total_failures = tolong(0), total_successes = tolong(0), is_dummy = 1;
+let default_row = print window_start = targetDateLabel, category = "None", count = tolong(0), total_failures = tolong(0), total_successes = tolong(0), is_dummy = 1;
 union actuals, default_row
 | where toscalar(actuals | count) == 0 or is_dummy == 0
 | order by count desc

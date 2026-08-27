@@ -1,4 +1,5 @@
-let startOfYesterday = startofday(now() + 2h, -1) - 2h;
+let targetDateLabel = todatetime('@{pipeline().parameters.target_date}');
+let startOfYesterday = targetDateLabel - 2h;
 let actuals = materialize(
     cluster('https://ade.loganalytics.io__LAW_ID__').database('__LAW_NAME__').AppTraces
     | where TimeGenerated >= startOfYesterday and TimeGenerated < startOfYesterday + 1d
@@ -6,10 +7,10 @@ let actuals = materialize(
     | where Message startswith "Payload: GpdMessage"
     | extend Operation = extract(@"operation=([^,\s\]]+)", 1, Message), Status = extract(@"status=([^,\s\]]+)", 1, Message)
     | where toupper(Status) == "VALID"
-    | summarize total_valid_notices = count() by window_start = startOfYesterday, operation = iff(isempty(Operation), "UNKNOWN", Operation)
+    | summarize total_valid_notices = count() by window_start = targetDateLabel, operation = iff(isempty(Operation), "UNKNOWN", Operation)
     | extend is_dummy = 0
 );
-let default_row = print window_start = startOfYesterday, operation = "UNKNOWN", total_valid_notices = tolong(0), is_dummy = 1;
+let default_row = print window_start = targetDateLabel, operation = "UNKNOWN", total_valid_notices = tolong(0), is_dummy = 1;
 union actuals, default_row
 | where toscalar(actuals | count) == 0 or is_dummy == 0
 | order by total_valid_notices desc

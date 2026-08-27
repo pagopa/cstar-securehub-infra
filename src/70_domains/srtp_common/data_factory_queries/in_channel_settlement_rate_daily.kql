@@ -1,4 +1,5 @@
-let startOfYesterday = startofday(now() + 2h, -1) - 2h;
+let targetDateLabel = todatetime('@{pipeline().parameters.target_date}');
+let startOfYesterday = targetDateLabel - 2h;
 let proxyTraces = cluster('https://ade.loganalytics.io__LAW_ID__').database('__LAW_NAME__').AppTraces;
 let saveLog = proxyTraces
     | where TimeGenerated >= startOfYesterday and TimeGenerated < startOfYesterday + 1d
@@ -23,10 +24,10 @@ let actuals = materialize(
     | summarize
         successful_sends = countif(metric == "successful_sends"),
         paid_in_channel = countif(metric == "paid_in_channel")
-        by window_start = startOfYesterday, debtor_service_provider = iff(isempty(debtor_service_provider), "UNKNOWN", debtor_service_provider)
+        by window_start = targetDateLabel, debtor_service_provider = iff(isempty(debtor_service_provider), "UNKNOWN", debtor_service_provider)
     | extend is_dummy = 0
 );
-let default_row = print window_start = startOfYesterday, debtor_service_provider = "UNKNOWN", successful_sends = tolong(0), paid_in_channel = tolong(0), is_dummy = 1;
+let default_row = print window_start = targetDateLabel, debtor_service_provider = "UNKNOWN", successful_sends = tolong(0), paid_in_channel = tolong(0), is_dummy = 1;
 union actuals, default_row
 | where toscalar(actuals | count) == 0 or is_dummy == 0
 | order by successful_sends desc

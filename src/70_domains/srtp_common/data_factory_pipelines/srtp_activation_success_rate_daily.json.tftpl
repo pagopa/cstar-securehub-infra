@@ -1,12 +1,22 @@
 {
   "name": "srtp_activation_success_rate_daily",
   "properties": {
+    "parameters": {
+      "target_date": {
+        "type": "String",
+        "defaultValue": "@formatDateTime(addDays(utcNow(), -1), 'yyyy-MM-dd')"
+      }
+    },
     "activities": [
       {
         "name": "Delete previous day data",
         "type": "AzureDataExplorerCommand",
+        "policy": {
+          "retry": 3,
+          "retryIntervalInSeconds": 300
+        },
         "typeProperties": {
-          "command": ".delete table activation_success_rate records <| activation_success_rate | where activation_day >= (startofday(now() + 2h, -1) - 2h) and activation_day < ((startofday(now() + 2h, -1) - 2h) + 1d)",
+          "command": ".delete table activation_success_rate records <| activation_success_rate | where activation_day == todatetime('@{pipeline().parameters.target_date}')",
           "commandTimeout": "00:10:00"
         },
         "linkedServiceName": {
@@ -17,6 +27,10 @@
       {
         "name": "Ingest activation success rate daily",
         "type": "AzureDataExplorerCommand",
+        "policy": {
+          "retry": 3,
+          "retryIntervalInSeconds": 300
+        },
         "dependsOn": [
           {
             "activity": "Delete previous day data",

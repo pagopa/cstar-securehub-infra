@@ -1,12 +1,22 @@
 {
   "name": "srtp_taxonomy_eligibility_rate_daily",
   "properties": {
+    "parameters": {
+      "target_date": {
+        "type": "String",
+        "defaultValue": "@formatDateTime(addDays(utcNow(), -1), 'yyyy-MM-dd')"
+      }
+    },
     "activities": [
       {
         "name": "Delete previous day data",
         "type": "AzureDataExplorerCommand",
+        "policy": {
+          "retry": 3,
+          "retryIntervalInSeconds": 300
+        },
         "typeProperties": {
-          "command": ".delete table taxonomy_eligibility_rate records <| taxonomy_eligibility_rate | where window_start >= (startofday(now() + 2h, -1) - 2h) and window_start < ((startofday(now() + 2h, -1) - 2h) + 1d)",
+          "command": ".delete table taxonomy_eligibility_rate records <| taxonomy_eligibility_rate | where window_start == todatetime('@{pipeline().parameters.target_date}')",
           "commandTimeout": "00:10:00"
         },
         "linkedServiceName": {
@@ -17,6 +27,10 @@
       {
         "name": "Ingest taxonomy eligibility rate daily",
         "type": "AzureDataExplorerCommand",
+        "policy": {
+          "retry": 3,
+          "retryIntervalInSeconds": 300
+        },
         "dependsOn": [
           {
             "activity": "Delete previous day data",
