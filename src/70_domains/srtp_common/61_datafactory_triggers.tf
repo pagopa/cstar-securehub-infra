@@ -1,7 +1,11 @@
 locals {
   # Daily pipelines — run at 08:00 Europe/Rome local time
   pipelines_daily_logs = [
-    "srtp_activation_success_rate_daily"
+    "srtp_activation_success_rate_daily",
+    "srtp_in_channel_settlement_rate_daily",
+    "srtp_user_refusal_rate_daily",
+    "srtp_taxonomy_eligibility_rate_daily",
+    "srtp_active_payer_reachability_daily"
   ]
 
   pipelines_logs_indexed = {
