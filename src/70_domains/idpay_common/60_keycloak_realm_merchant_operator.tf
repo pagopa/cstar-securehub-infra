@@ -263,7 +263,7 @@ resource "random_password" "keycloak_merchant_operator_functional_test_client" {
 resource "azurerm_key_vault_secret" "keycloak_merchant_operator_functional_test_client_secret" {
   count        = var.env_short != "prod" ? 1 : 0
   name         = "keycloak-merchant-op-functional-test-client-secret"
-  value        = random_password.keycloak_merchant_operator_functional_test_client.result
+  value        = random_password.keycloak_merchant_operator_functional_test_client[0].result
   key_vault_id = data.azurerm_key_vault.domain_kv.id
 
   depends_on = [random_password.keycloak_merchant_operator_functional_test_client[0]]
