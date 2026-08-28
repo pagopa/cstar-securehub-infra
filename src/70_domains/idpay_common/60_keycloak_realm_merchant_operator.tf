@@ -255,7 +255,7 @@ resource "keycloak_openid_client_default_scopes" "merchant_frontend_defaults" {
 
 ### Client for functional testing on payments, only in DEV and UAT environments, not in PROD
 resource "random_password" "keycloak_merchant_operator_functional_test_client" {
-  count = var.env_short != "prod" ? 1 : 0
+  count   = var.env_short != "prod" ? 1 : 0
   length  = 30
   special = false
 }
@@ -271,7 +271,7 @@ resource "azurerm_key_vault_secret" "keycloak_merchant_operator_functional_test_
 
 
 resource "keycloak_openid_client" "merchant_operator_functional_test_client" {
-  count        = var.env_short != "prod" ? 1 : 0
+  count    = var.env_short != "prod" ? 1 : 0
   realm_id = module.keycloak_setup.realm_ids["merchant-operator"]
   name     = "Merchant Op Functional Test Client"
   enabled  = true
@@ -287,7 +287,7 @@ resource "keycloak_openid_client" "merchant_operator_functional_test_client" {
 }
 
 resource "keycloak_openid_client_default_scopes" "merchant_operator_functional_test_defaults" {
-  count        = var.env_short != "prod" ? 1 : 0
+  count     = var.env_short != "prod" ? 1 : 0
   realm_id  = module.keycloak_setup.realm_ids["merchant-operator"]
   client_id = keycloak_openid_client.merchant_operator_functional_test_client[0].id
 
