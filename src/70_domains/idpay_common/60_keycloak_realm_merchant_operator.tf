@@ -266,7 +266,7 @@ resource "azurerm_key_vault_secret" "keycloak_merchant_operator_functional_test_
   value        = random_password.keycloak_merchant_operator_functional_test_client.result
   key_vault_id = data.azurerm_key_vault.domain_kv.id
 
-  depends_on = [random_password.keycloak_merchant_operator_functional_test_client]
+  depends_on = [random_password.keycloak_merchant_operator_functional_test_client[0]]
 }
 
 
@@ -277,19 +277,19 @@ resource "keycloak_openid_client" "merchant_operator_functional_test_client" {
   enabled  = true
 
   client_id                = "merchant-operator-functional-test-client"
-  client_secret_wo         = random_password.keycloak_merchant_operator_functional_test_client.result
+  client_secret_wo         = random_password.keycloak_merchant_operator_functional_test_client[0].result
   client_secret_wo_version = 1
 
   access_type              = "CONFIDENTIAL"
   service_accounts_enabled = true
 
-  depends_on = [random_password.keycloak_merchant_operator_functional_test_client]
+  depends_on = [random_password.keycloak_merchant_operator_functional_test_client[0]]
 }
 
 resource "keycloak_openid_client_default_scopes" "merchant_operator_functional_test_defaults" {
   count        = var.env_short != "prod" ? 1 : 0
   realm_id  = module.keycloak_setup.realm_ids["merchant-operator"]
-  client_id = keycloak_openid_client.merchant_operator_functional_test_client.id
+  client_id = keycloak_openid_client.merchant_operator_functional_test_client[0].id
 
   default_scopes = [
     "web-origins",
