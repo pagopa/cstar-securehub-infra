@@ -149,6 +149,57 @@ resource "azapi_resource_action" "approve_pe" {
     }
   }
 }
+
+# POSTGRESQL INTEGRATION
+
+resource "azurerm_data_factory_linked_custom_service" "adf_postgresql_linked_service" {
+  count           = var.idpay_pgflex_params.enabled ? 1 : 0
+  name            = "${var.domain}-PostgreSQL-ls"
+  data_factory_id = data.azurerm_data_factory.data_factory.id
+  type            = "PostgreSql"
+  type_properties_json = jsonencode({
+    connectionString = "Server=${module.idpay_pgflex[0].fqdn};Database=idpay-database;Port=5432;UID=${azurerm_key_vault_secret.idpay_postgres_admin_user[0].value};PWD=${azurerm_key_vault_secret.idpay_postgres_admin_password[0].value};SSLMode=require;TrustServerCertificate=true;"
+  })
+
+  integration_runtime {
+    name = "AutoResolveIntegrationRuntime"
+  }
+}
+
+resource "azurerm_data_factory_managed_private_endpoint" "adf_postgresql_mpe" {
+  count              = var.idpay_pgflex_params.enabled ? 1 : 0
+  name               = "${local.product}-postgresql-mpe"
+  data_factory_id    = data.azurerm_data_factory.data_factory.id
+  target_resource_id = module.idpay_pgflex[0].id
+  subresource_name   = "postgresqlServer"
+  fqdns              = [module.idpay_pgflex[0].fqdn]
+}
+
+data "azapi_resource" "postgresql_pe_connection" {
+  count     = var.idpay_pgflex_params.enabled ? 1 : 0
+  type      = "Microsoft.DBforPostgreSQL/flexibleServers/privateEndpointConnections@2021-06-01"
+  parent_id = module.idpay_pgflex[0].id
+  name      = "${data.azurerm_data_factory.data_factory.name}.${azurerm_data_factory_managed_private_endpoint.adf_postgresql_mpe[0].name}"
+
+  depends_on = [azurerm_data_factory_managed_private_endpoint.adf_postgresql_mpe]
+}
+
+resource "azapi_resource_action" "approve_postgresql_pe" {
+  count       = var.idpay_pgflex_params.enabled ? 1 : 0
+  type        = "Microsoft.DBforPostgreSQL/flexibleServers/privateEndpointConnections@2021-06-01"
+  resource_id = data.azapi_resource.postgresql_pe_connection[0].id
+  method      = "PUT"
+
+  body = {
+    properties = {
+      privateLinkServiceConnectionState = {
+        description = "Approved via Terraform - ${azurerm_data_factory_managed_private_endpoint.adf_postgresql_mpe[0].name}"
+        status      = "Approved"
+      }
+    }
+  }
+}
+
 # ADF MI -> can read kv secrets
 resource "azurerm_role_assignment" "adf_can_read_kv_secrets" {
   scope                = data.azurerm_key_vault.domain_kv.id

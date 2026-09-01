@@ -1,4 +1,4 @@
-.create table products (
+.create-merge table products (
     _id:string,
     productFileId:string,
     organizationId:string,
@@ -19,7 +19,7 @@
     initiativeId:string
 )
 
-.create table merchant (
+.create-merge table merchant (
     _id:string,
     acquirerId:string,
     businessName:string,
@@ -43,7 +43,7 @@
     createdAtString:string
 )
 
-.create table merchant_initiative_counters (
+.create-merge table merchant_initiative_counters (
     _id:string,
     merchantId:string,
     initiativeId:string,
@@ -57,7 +57,7 @@
     createdAtString: string
 )
 
-.create table point_of_sales (
+.create-merge table point_of_sales (
     _id:string,
     type:string,
     franchiseName:string,
@@ -78,7 +78,7 @@
 )
 
 
-.create table transaction (
+.create-merge table transaction (
     _id:string,
     trxDateString:string,
     operationType:string,
@@ -129,18 +129,18 @@
     elaborationDateTime:datetime
 )
 
-.create table transaction_rejection_reasons (
+.create-merge table transaction_rejection_reasons (
     transactionId:string,
     rejectionReason:string
 )
 
-.create table transaction_initiative_rejection_reasons (
+.create-merge table transaction_initiative_rejection_reasons (
     transactionId:string,
     initiativeId:string,
     rejectionReason:string
 )
 
-.create table transaction_in_progress (
+.create-merge table transaction_in_progress (
     id:string,
     trxCode:string,
     idTrxAcquirer:string,
@@ -197,18 +197,18 @@
     initiativeEndDateString:string
 )
 
-.create table transaction_in_progress_rejection_reasons (
+.create-merge table transaction_in_progress_rejection_reasons (
     transactionId:string,
     rejectionReason:string
 )
 
-.create table transaction_in_progress_initiative_rejection_reasons (
+.create-merge table transaction_in_progress_initiative_rejection_reasons (
     transactionId:string,
     initiativeId:string,
     rejectionReason:string
 )
 
-.create table wallet (
+.create-merge table wallet (
     id: string,
     userId: string,
     familyId: string,
@@ -255,7 +255,7 @@
     surname: string
 )
 
-.create table wallet_refund_history (
+.create-merge table wallet_refund_history (
     walletId: string,
     key: string,
     feedbackProgressive: long
@@ -263,7 +263,7 @@
 
 
 
-.create table notification (
+.create-merge table notification (
     id: string,
     notificationId: string,
     notificationStatus: string,
@@ -295,18 +295,18 @@
     updateDateString: string
 )
 
-.create table notification_reject_reasons (
+.create-merge table notification_reject_reasons (
     notificationId: string,
     rejectionReason: string
 )
 
-.create table notification_template_values (
+.create-merge table notification_template_values (
     notificationId: string,
     key: string,
     value: string
 )
 
-.create table timeline (
+.create-merge table timeline (
     operationId: string,
     userId: string,
     initiativeId: string,
@@ -345,7 +345,7 @@
     createdAtString: string
 )
 
-.create table initiative_counters (
+.create-merge table initiative_counters (
     _id: string,
     initiativeId: string,
     userId: string,
@@ -365,7 +365,7 @@
     updateDateString: string
 )
 
-.create table onboarding_citizen (
+.create-merge table onboarding_citizen (
     _id:string,
     userId:string,
     familyId:string,
@@ -386,7 +386,7 @@
     updateDate:datetime
 )
 
-.create table rewards_batch (
+.create-merge table rewards_batch (
     _id:string,
     merchantId:string,
     businessName:string,
@@ -417,13 +417,13 @@
     filename: string
 )
 
-.create table data_vault (
+.create-merge table data_vault (
     _id:string,
     data:string,
     page:long
 )
 
-.create table reported_user (
+.create-merge table reported_user (
     _id:string,
     merchantId:string,
     initiativeId:string,
