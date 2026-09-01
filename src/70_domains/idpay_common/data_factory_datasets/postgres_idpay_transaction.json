@@ -6,9 +6,10 @@
       "type": "LinkedServiceReference"
     },
     "annotations": [],
-    "type": "PostgreSqlTable",
+    "type": "AzurePostgreSqlTable",
+    "schema": [],
     "typeProperties": {
-      "schema": "public",
+      "schema": "idpay-database",
       "table": "transaction"
     }
   },
