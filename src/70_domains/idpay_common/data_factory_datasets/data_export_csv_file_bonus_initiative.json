@@ -2,7 +2,7 @@
   "name": "data_export_csv_file_bonus_initiative",
   "properties": {
     "linkedServiceName": {
-      "referenceName": "${domain}-bonus-blob-storage-ls",
+      "referenceName": "${domain}-multi-initiative-blob-storage-ls",
       "type": "LinkedServiceReference"
     },
     "parameters": {
@@ -18,7 +18,7 @@
           "type": "Expression"
         },
         "folderPath": {
-          "value": "@concat(dataset().initiativeFolder, '/data')",
+          "value": "@concat(dataset().initiativeFolder, '/elencoprodotti/data')",
           "type": "Expression"
         },
         "container": "$web"

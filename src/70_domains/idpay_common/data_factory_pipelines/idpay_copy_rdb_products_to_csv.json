@@ -275,7 +275,7 @@
           "body": {
             "canonicalizedResource": {
               "type": "Expression",
-              "value": "@concat('/blob/', pipeline().parameters.exportAccountName, '/export/data/', pipeline().parameters.initiativeId, '/export_daily_', formatDateTime(utcNow(),'yyyy-MM-dd'), '.csv')"
+              "value": "@concat('/blob/', pipeline().parameters.exportAccountName, '/', pipeline().parameters.initiativeFolder, '/elencoprodotti/data/export_daily_', formatDateTime(utcNow(),'yyyy-MM-dd'), '.csv')"
             },
             "signedExpiry": {
               "type": "Expression",
@@ -429,7 +429,7 @@
             "templateValues": {
               "downloadLink": {
                 "type": "Expression",
-                "value": "@concat('https://', pipeline().parameters.exportAccountName, '.blob.core.windows.net/export/data/', pipeline().parameters.initiativeId, '/export_daily_', formatDateTime(utcNow(),'yyyy-MM-dd'), '.csv?', activity('Generate_SAS').output.serviceSasToken)"
+                "value": "@concat('https://', pipeline().parameters.exportAccountName, '.blob.core.windows.net/$web/', pipeline().parameters.initiativeFolder, '/elencoprodotti/data/export_daily_', formatDateTime(utcNow(),'yyyy-MM-dd'), '.csv?', activity('Generate_SAS').output.serviceSasToken)"
               },
               "exportDate": {
                 "type": "Expression",

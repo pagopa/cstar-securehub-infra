@@ -25,16 +25,30 @@ resource "azurerm_data_factory_linked_custom_service" "bonus_blob_storage_linked
   type            = "AzureBlobStorage"
   description     = "Bonus Blob Storage Account linked service for IdPay"
   type_properties_json = jsonencode({
-    # Storage account dove finiscono gli export (CSV, JSON prodotti, JSON POS)
-    # Per tutte le iniziative (bonusdecoder, bonuselettrodomestici, ecc.)
-    # Il nome del modulo (cdn_idpay_bonuselettrodomestici) è solo un dettaglio
-    # dell'infra: ciò che conta è che puntiamo al $web storage per gli export.
     connectionString = module.cdn_idpay_bonuselettrodomestici.storage_primary_connection_string
   })
 
   integration_runtime {
     name = "AutoResolveIntegrationRuntime"
   }
+}
+
+resource "azurerm_data_factory_linked_custom_service" "multi_initiative_blob_storage_linked_service" {
+
+  name            = "${var.domain}-multi-initiative-blob-storage-ls"
+  data_factory_id = data.azurerm_data_factory.data_factory.id
+  type            = "AzureBlobStorage"
+  description     = "Multi-Initiative CDN Blob Storage linked service for IdPay exports"
+  type_properties_json = jsonencode({
+    //Da modificare
+    connectionString = module.storage_idpay_refund.primary_connection_string
+  })
+
+  integration_runtime {
+    name = "AutoResolveIntegrationRuntime"
+  }
+
+  depends_on = [module.cdn_multi_initiative]
 }
 
 
