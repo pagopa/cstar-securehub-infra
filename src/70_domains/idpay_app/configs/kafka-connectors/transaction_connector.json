@@ -22,7 +22,7 @@
 
   "transforms.filterStatus.type": "io.debezium.transforms.Filter",
   "transforms.filterStatus.language": "jsr223.groovy",
-  "transforms.filterStatus.condition": "value.event_type in ['test','TRANSACTION_AUTHORIZED', 'TRANSACTION_INVOICED', 'TRANSACTION_REJECTED', 'TRANSACTION_REWARDED', 'TRANSACTION_CAPTURED', 'TRANSACTION_EXPIRED', 'TRANSACTION_REFUNDED', 'TRANSACTION_INVOICE_REPLACED']",
+  "transforms.filterStatus.condition": "value.event_type in ['TRANSACTION_AUTHORIZED', 'TRANSACTION_INVOICED', 'TRANSACTION_REJECTED', 'TRANSACTION_REWARDED', 'TRANSACTION_CAPTURED', 'TRANSACTION_EXPIRED', 'TRANSACTION_REFUNDED', 'TRANSACTION_INVOICE_REPLACED']",
 
   "transforms.extractKey.type": "org.apache.kafka.connect.transforms.ValueToKey",
   "transforms.extractKey.fields": "user_id",
