@@ -208,10 +208,10 @@
               "type": 3,
               "content": {
                 "version": "KqlItem/1.0",
-                "query": "AppTraces\n| where AppRoleName == 'rtp-consumer'\n| where TimeGenerated {evaluation_window:query}\n| where Message startswith \"Error processing message.\"\n| where Message contains \"rtp/gpd/message\"\n| summarize scartatiCount = count()\n| extend totalRequestsString = tostring(scartatiCount)",
+                "query": "AppTraces\n| where AppRoleName == 'rtp-consumer'\n| where TimeGenerated {evaluation_window:query}\n| where Message startswith \"Message stored in Failed Message Store\"\n| where Message contains \"rtp/gpd/message\"\n| summarize dlqCount = count()\n| extend totalRequestsString = tostring(dlqCount)",
                 "size": 0,
-                "title": "⚠️ Messaggi scartati per PayerId non attivo",
-                "noDataMessageStyle": 5,
+                "title": "❌ Messaggi nella DLQ",
+                "noDataMessageStyle": 3,
                 "queryType": 0,
                 "resourceType": "microsoft.operationalinsights/workspaces",
                 "crossComponentResources": [
@@ -235,7 +235,7 @@
                 }
               },
               "customWidth": "25",
-              "name": "⚠️ Messaggi scartati per PayerId non attivo",
+              "name": "❌ Messaggi nella DLQ",
               "styleSettings": {
                 "showBorder": true
               }
@@ -1270,7 +1270,7 @@
               "type": 3,
               "content": {
                 "version": "KqlItem/1.0",
-                "query": "AppTraces\n| where TimeGenerated {evaluation_window:query}\n| where AppRoleName == 'rtp-sender'\n| where Message startswith \"Error finding activation data with resourceId:\" or Message startswith \"Error saving Rtp to be sent:\" or Message startswith \"Error sending Rtp to be sent:\"\n| extend payee_name = tostring(Properties.payee_name)\n| summarize [\"Errori\"] = count() by [\"Payee Name\"] = payee_name\n| sort by [\"Errori\"] desc\n",
+                "query": "AppTraces\n| where TimeGenerated {evaluation_window:query}\n| where AppRoleName == 'rtp-sender'\n| where (\n    Message contains \"Error saving Rtp to be sent:\"\n    or Message startswith \"Error sending Rtp to be sent:\"\n)\n    and Message !contains \"payer is not activated\"\n| extend payee_name = tostring(Properties.payee_name)\n| summarize [\"Errori\"] = count() by [\"Payee Name\"] = payee_name\n| sort by [\"Errori\"] desc\n",
                 "size": 0,
                 "title": "❌ Invii falliti per Ente Creditore",
                 "noDataMessageStyle": 3,

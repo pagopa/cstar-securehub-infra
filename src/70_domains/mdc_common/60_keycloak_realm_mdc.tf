@@ -7,6 +7,10 @@ module "keycloak_realms" {
       enabled      = true
       display_name = "Messaggi di cortesia"
 
+      # Tema di login dedicato al portale interno mdc (con pulsante Microsoft Entra).
+      # Il tema e' deployato in 41_platform_coder (configmap keycloak-mdc-portal-theme).
+      login_theme = "mdc-internal-portal"
+
       access_token_lifespan       = "30m"
       default_signature_algorithm = "RS256"
 
@@ -219,5 +223,34 @@ resource "keycloak_user_groups" "service_account_group_membership_emd_tpp_test" 
   user_id  = keycloak_openid_client.emd_pagopa_mdc_emd_tpp_test_client.service_account_user_id
   group_ids = [
     keycloak_group.emd_pagopa_mdc_emd_tpp_group.id
+  ]
+}
+
+# Scope dedicato ai ruoli applicativi del portale
+resource "keycloak_openid_client_scope" "portal_role_scope" {
+  realm_id = local.keycloak_realm_id
+  name     = "portal-roles"
+}
+
+# Espone nel claim "role" esclusivamente i client roles del portale, evitando
+# di includere ruoli tecnici o appartenenti ad altre applicazioni del realm.
+resource "keycloak_openid_user_client_role_protocol_mapper" "portal_roles_mapper" {
+  realm_id                    = local.keycloak_realm_id
+  client_scope_id             = keycloak_openid_client_scope.portal_role_scope.id
+  name                        = "portal-client-roles-mapper"
+  client_id_for_role_mappings = keycloak_openid_client.ar_backoffice_portal_client.client_id
+
+  claim_name          = "role"
+  multivalued         = true
+  add_to_id_token     = true
+  add_to_access_token = true
+}
+
+# Link the scope to client as optional
+resource "keycloak_openid_client_optional_scopes" "ar_backoffice_admin_optional_scopes" {
+  realm_id  = local.keycloak_realm_id
+  client_id = keycloak_openid_client.ar_backoffice_admin_client.id
+  optional_scopes = [
+    keycloak_openid_client_scope.portal_role_scope.name
   ]
 }

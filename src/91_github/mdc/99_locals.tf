@@ -82,6 +82,39 @@ locals {
         variables = {}
       }
     }
+    "emd-ar-backoffice-admin-fe" = {
+      settings = {
+        apply                = true
+        allow_merge_commit   = false
+        allow_update_branch  = true
+        description          = "Frontend React Backoffice di Amministrazione dell'Area Riservata di Messaggi di Cortesia"
+        merge_commit_message = "PR_TITLE"
+        merge_commit_title   = "MERGE_MESSAGE"
+        primary_language     = "TypeScript"
+        visibility           = "private"
+      }
+      protected_branches = []
+      repository_secrets = [
+        {
+          SONAR_TOKEN = try(module.secrets.values["sonar-token"].value, null)
+        }
+      ]
+      repository_dependabot_secrets = []
+      repository_variables = [
+        {
+          SONARCLOUD_ORG         = "pagopa"
+          SONARCLOUD_PROJECT_KEY = "pagopa_emd-ar-backoffice-admin-fe"
+        }
+      ]
+      env_secrets = {
+        envs    = []
+        secrets = {}
+      }
+      env_variables = {
+        envs      = []
+        variables = {}
+      }
+    }
     "emd-message-core" = {
       settings = {
         apply                = true
@@ -114,13 +147,16 @@ locals {
         }
       ]
       env_secrets = {
-        envs = ["github-pages"]
+        envs = ["uat", "github-pages"]
         secrets = {
+          ARGO_CD_USERNAME = try(module.secrets.values["argocd-admin-username"].value, null)
+          ARGO_CD_PASSWORD = try(module.secrets.values["argocd-admin-password"].value, null)
         }
       }
       env_variables = {
-        envs = ["github-pages"]
+        envs = ["uat", "github-pages"]
         variables = {
+          ARGO_CD_SERVER = try(var.argo_cd_server, null)
         }
       }
     }
@@ -202,12 +238,12 @@ locals {
         }
       ]
       env_secrets = {
-        envs = ["dev", "github-pages"]
+        envs = ["github-pages"]
         secrets = {
         }
       }
       env_variables = {
-        envs = ["dev", "github-pages"]
+        envs = ["github-pages"]
         variables = {
         }
       }
@@ -354,16 +390,31 @@ locals {
       env_secrets = {
         envs = ["uat"]
         secrets = {
-          TPP_KEYCLOAK_CLIENT_ID      = try(module.secrets.values["emd-tpp-test-client-id"].value, null)
-          TPP_KEYCLOAK_CLIENT_SECRET  = try(module.secrets.values["emd-tpp-test-client-secret"].value, null)
-          SEND_KEYCLOAK_CLIENT_ID     = try(module.secrets.values["send-client-id"].value, null)
-          SEND_KEYCLOAK_CLIENT_SECRET = try(module.secrets.values["send-client-secret"].value, null)
-          KEYCLOAK_URL                = try(module.secrets.values["keycloak-external-mdc-url"].value, null)
+          TPP_KEYCLOAK_CLIENT_ID         = try(module.secrets.values["emd-tpp-test-client-id"].value, null)
+          TPP_KEYCLOAK_CLIENT_SECRET     = try(module.secrets.values["emd-tpp-test-client-secret"].value, null)
+          PSP1_KEYCLOAK_CLIENT_ID        = try(module.secrets.values["psp1-client-id"].value, null)
+          PSP1_KEYCLOAK_CLIENT_SECRET    = try(module.secrets.values["psp1-client-secret"].value, null)
+          PSP1_TPP_ID                    = try(module.secrets.values["psp1-tpp-id"].value, null)
+          PSP2_KEYCLOAK_CLIENT_ID        = try(module.secrets.values["psp2-client-id"].value, null)
+          PSP2_KEYCLOAK_CLIENT_SECRET    = try(module.secrets.values["psp2-client-secret"].value, null)
+          PSP2_TPP_ID                    = try(module.secrets.values["psp2-tpp-id"].value, null)
+          PAGO_PA_KEYCLOAK_CLIENT_ID     = try(module.secrets.values["emd-pagopa-client-id"].value, null)
+          PAGO_PA_KEYCLOAK_CLIENT_SECRET = try(module.secrets.values["emd-pagopa-client-secret"].value, null)
+          SEND_KEYCLOAK_CLIENT_ID        = try(module.secrets.values["send-client-id"].value, null)
+          SEND_KEYCLOAK_CLIENT_SECRET    = try(module.secrets.values["send-client-secret"].value, null)
+          KEYCLOAK_URL                   = try(module.secrets.values["keycloak-external-mdc-url"].value, null)
+          KAFKA_PASSWORD                 = try(module.secrets.values["kafka-password"].value, null)
         }
       }
       env_variables = {
-        envs      = []
-        variables = {}
+        envs = ["uat"]
+        variables = {
+          KAFKA_BOOTSTRAP_SERVERS = "${var.eventhub_namespace_name}.servicebus.windows.net:9093"
+          KAFKA_SEC_PROTOCOL      = "SASL_SSL"
+          KAFKA_SASL_MECHANISM    = "PLAIN"
+          KAFKA_USERNAME          = "$ConnectionString"
+          KAFKA_CONSUMER_GROUP    = "$Default"
+        }
       }
     }
     "emd-docs" = {

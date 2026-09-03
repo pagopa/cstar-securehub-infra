@@ -53,6 +53,21 @@ data "azurerm_key_vault_secret" "mil_auth_client_secret_consumer" {
   key_vault_id = data.azurerm_key_vault.domain_kv.id
 }
 
+data "azurerm_key_vault_secret" "github_docker_pull_email" {
+  name         = "github-docker-pull-email"
+  key_vault_id = data.azurerm_key_vault.domain_kv.id
+}
+
+data "azurerm_key_vault_secret" "github_docker_pull_user" {
+  name         = "github-docker-pull-user"
+  key_vault_id = data.azurerm_key_vault.domain_kv.id
+}
+
+data "azurerm_key_vault_secret" "github_docker_pull_token" {
+  name         = "github-docker-pull-token"
+  key_vault_id = data.azurerm_key_vault.domain_kv.id
+}
+
 data "azurerm_key_vault_secret" "terraform_client_secret_for_keycloak" {
   name         = "terraform-client-secret-for-keycloak"
   key_vault_id = data.azurerm_key_vault.core_kv.id
@@ -158,6 +173,14 @@ data "azurerm_private_dns_zone" "managed_redis" {
 }
 
 data "azurerm_client_config" "current" {}
+
+#
+# Azure Data Factory
+#
+data "azurerm_data_factory" "data_factory" {
+  name                = local.data_factory_name
+  resource_group_name = local.data_factory_rg_name
+}
 
 #
 # Azure Data Explorer (Kusto)

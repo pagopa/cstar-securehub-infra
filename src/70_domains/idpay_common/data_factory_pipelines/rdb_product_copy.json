@@ -188,6 +188,24 @@
                                     "name": "organizationName",
                                     "type": "String"
                                 }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['gtinCode']"
+                                },
+                                "sink": {
+                                    "name": "gtinCode",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['initiativeId']"
+                                },
+                                "sink": {
+                                    "name": "initiativeId",
+                                    "type": "String"
+                                }
                             }
                         ],
                         "mapComplexValuesToString": true

@@ -81,4 +81,33 @@ locals {
     ) :
     key => merge(local.base_alert_config, alert)
   }
+
+  # ----------------------------------------------------------------------------
+  # GITHUB RUNNERS
+  # ----------------------------------------------------------------------------
+
+  #
+  # List of GitHub repositories which need self-hosted runners.
+  #
+  github_repositories_with_self_hosted_runners = [
+    {
+      name : "emd-testing",
+      short_name : "emd-testing"
+    },
+    {
+      name : "emd-message-core",
+      short_name : "message-core"
+    }
+  ]
+
+  #
+  # Data of Container Apps Environment for GitHub Runners.
+  #
+  gh_runners_cae_name = "${var.prefix}-${var.env_short}-${var.location_short}-platform-github-cae"
+  gh_runners_cae_rg   = "${var.prefix}-${var.env_short}-${var.location_short}-platform-compute-rg"
+
+  #
+  # Name of the secret that contains the GitHub token.
+  #
+  gh_token_secret = "emd-bot-github-rw-TOKEN"
 }
