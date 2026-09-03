@@ -64,7 +64,7 @@
           <#nested>
           <tr>
               <td style="padding-bottom: 3rem">
-                  <b style="font-weight: 600">${msg("emailHelp")}</b> ${msg("emailMailTo")} <br/><a style="color: #0073e6" href="mailto:${msg("passwordResetEmail")}">${msg("passwordResetEmail")}</a>.
+                  <b style="font-weight: 600">${msg("emailHelp")}</b> ${msg("emailMailTo")} <br/><a style="color: #0073e6" href="mailto:${msg("emailContact")}">${msg("emailContact")}</a>.
               </td>
           </tr>
           <tr>
@@ -80,7 +80,7 @@
           <tr>
               <td style="padding-top: 1.563rem; padding-bottom: 1.563rem">
                   <div class="btn-primary">
-                      <a style="text-decoration: none; color: #ffffff;" href="${link}">${msg("passwordResetCTA")}</a>
+                      <a style="text-decoration: none; color: #ffffff;" href="${properties.baseURL}">${msg("emailCTA")}</a>
                   </div>
               </td>
           </tr>
