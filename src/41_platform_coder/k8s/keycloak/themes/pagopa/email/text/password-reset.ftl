@@ -14,10 +14,10 @@ ${msg("passwordResetSecurityList2")}
 ${msg("passwordResetSecurityList3")}
 ${msg("passwordResetSecurityList4")}
 
-${msg("emailHelp")} ${msg("emailMailTo")} ${msg("passwordResetEmail")}
+${msg("emailHelp")} ${msg("emailMailTo")} ${msg("emailContact")}
 
 ${msg("emailRegards")}
 ${msg("emailRegardsFrom")}
 
-${msg("passwordResetCTA")}
-${link}
+${msg("emailCTA")}
+${properties.baseURL}

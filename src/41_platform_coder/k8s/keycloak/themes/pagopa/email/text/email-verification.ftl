@@ -9,7 +9,10 @@ ${link}
 
 ${msg("emailVerificationLinkInfo", linkExpirationFormatter(linkExpiration))}
 
-${msg("emailHelp")} ${msg("emailMailTo")} ${msg("emailVerificationEmail")}
+${msg("emailHelp")} ${msg("emailMailTo")} ${msg("emailContact")}
 
 ${msg("emailRegards")}
 ${msg("emailRegardsFrom")}
+
+${msg("emailCTA")}
+${properties.baseURL}
