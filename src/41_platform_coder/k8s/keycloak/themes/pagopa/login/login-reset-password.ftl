@@ -1,4 +1,6 @@
 
+<#import "components.ftl" as components>
+
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -9,21 +11,7 @@
 </head>
 <body>
     <div class="page-container">
-        <header class="header">
-            <div class="header-logo">
-                <p class="text-dark">PagoPA S.p.A.</p>
-            </div>
-            <nav class="header-nav">
-                <a href="https://developer.pagopa.it/pari/guides/manuale-tecnico-venditore" class="text-dark-light">
-                    <img src="${url.resourcesPath}/img/book.png"/>
-                    Manuale operativo
-                </a>
-                <a href="https://developer.pagopa.it/pari/guides/manuale-tecnico-venditore/contatti" class="text-dark-light">
-                    <img src="${url.resourcesPath}/img/info.png"/>
-                    Assistenza
-                </a>
-            </nav>
-        </header>
+        <@components.header />
 
         <main class="main-content">
             <div class="login-wrapper">
@@ -57,7 +45,7 @@
             </div>
         </main>
 
-        <#include "footer.ftl">
+        <@components.footer />
     </div>
     </body>
 </html>

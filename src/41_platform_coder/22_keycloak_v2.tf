@@ -6,9 +6,13 @@ locals {
   flattened_key = { for f in local.files : f => replace(f, "/", "__") }
 
   text_files = {
-for f in local.files :
+    for f in local.files :
     local.flattened_key[f] => replace(
-      replace(file("${local.theme_dir}/${f}"), "themeVersion", substr(filesha256("${local.theme_dir}/login/resources/css/login.css"), 0, 12)),
+      replace(
+        f == "login/theme.properties" ? templatefile("${local.theme_dir}/${f}", local.pagopa_theme_properties) : file("${local.theme_dir}/${f}"),
+        "themeVersion",
+        substr(filesha256("${local.theme_dir}/login/resources/css/login.css"), 0, 12)
+      ),
       "__BASE_URL__",
       local.pari_base_url
     )
