@@ -45,6 +45,15 @@ resource "azapi_resource" "create_tables_srtp" {
   }
 }
 
+resource "azurerm_data_factory_linked_service_kusto" "kusto_srtp" {
+  name                     = "${var.domain}-Kusto-${var.domain}-ls"
+  data_factory_id          = data.azurerm_data_factory.data_factory.id
+  kusto_endpoint           = data.azurerm_kusto_cluster.kusto_cluster.uri
+  kusto_database_name      = azurerm_kusto_database.db[var.domain].name
+  use_managed_identity     = true
+  integration_runtime_name = "AutoResolveIntegrationRuntime"
+}
+
 
 resource "azurerm_kusto_database_principal_assignment" "rtp_sender_adx_viewer" {
   name                = "rtp-role-viewer"

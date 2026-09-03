@@ -1232,7 +1232,7 @@ locals {
 
       query = format(<<-QUERY
           requests
-          | where appName == "%s"
+          | where appName =~ "%s"
           | where tostring(customDimensions.["kc.realmName"]) in ("user")
           | where not(operation_Name has "admin")
           | where success == false
@@ -1258,7 +1258,7 @@ locals {
 
       query = format(<<-QUERY
           requests
-          | where appName == "%s"
+          | where appName =~ "%s"
           | where tostring(customDimensions.["kc.realmName"]) in ("merchant-operator")
           | where not(operation_Name has "admin")
           | where success == false
@@ -1283,7 +1283,7 @@ locals {
 
       query = format(<<-QUERY
             requests
-            | where appName == "%s"
+            | where appName =~ "%s"
             | where tostring(customDimensions.["kc.realmName"]) in ("user")
             | where not(operation_Name has "admin")
             | where name == "POST /realms/{realm}/protocol/{protocol}/token"
@@ -1309,7 +1309,7 @@ locals {
 
       query = format(<<-QUERY
             requests
-            | where appName == "%s"
+            | where appName =~ "%s"
             | where tostring(customDimensions.["kc.realmName"]) in ("merchant-operator")
             | where not(operation_Name has "admin")
             | where name == "POST /realms/{realm}/protocol/{protocol}/token"
@@ -1335,7 +1335,7 @@ locals {
 
       query = format(<<-QUERY
             requests
-            | where appName == "%s"
+            | where appName =~ "%s"
             | where tostring(customDimensions.["kc.realmName"]) in ("user")
             | where not(operation_Name has "admin")
             | where name == "GET /realms/{realm}/broker/{provider_alias}/login"
@@ -1361,7 +1361,7 @@ locals {
 
       query = format(<<-QUERY
             requests
-            | where appName == "%s"
+            | where appName =~ "%s"
             | where tostring(customDimensions.["kc.realmName"]) in ("user")
             | where not(operation_Name has "admin")
             | where name == "GET /realms/{realm}/broker/{provider_alias}/endpoint"

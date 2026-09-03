@@ -1,0 +1,51 @@
+{
+  "name": "srtp_user_refusal_rate_daily",
+  "properties": {
+    "parameters": {
+      "target_date": {
+        "type": "String",
+        "defaultValue": ""
+      }
+    },
+    "activities": [
+      {
+        "name": "Delete previous day data",
+        "type": "AzureDataExplorerCommand",
+        "policy": {
+          "retry": 2,
+          "retryIntervalInSeconds": 300
+        },
+        "typeProperties": {
+          "command": ".delete table user_refusal_rate records <| let rawDate = @'@{replace(coalesce(pipeline().parameters.target_date, ''), '''', '''''')}'; let isoDate = iff(strlen(rawDate) == 10 and substring(rawDate, 2, 1) == '-', strcat(substring(rawDate, 6, 4), '-', substring(rawDate, 3, 2), '-', substring(rawDate, 0, 2)), rawDate); let targetDateLabel = iff(isempty(rawDate), startofday(datetime_utc_to_local(now(), 'Europe/Rome'), -1), todatetime(isoDate)); user_refusal_rate | where window_start == targetDateLabel",
+          "commandTimeout": "00:10:00"
+        },
+        "linkedServiceName": {
+          "referenceName": "${domain}-Kusto-${domain}-ls",
+          "type": "LinkedServiceReference"
+        }
+      },
+      {
+        "name": "Ingest user refusal rate daily",
+        "type": "AzureDataExplorerCommand",
+        "policy": {
+          "retry": 2,
+          "retryIntervalInSeconds": 300
+        },
+        "dependsOn": [
+          {
+            "activity": "Delete previous day data",
+            "dependencyConditions": [ "Succeeded" ]
+          }
+        ],
+        "typeProperties": {
+          "command": ${jsonencode(join(" ", [".set-or-append user_refusal_rate <|", replace(replace(replace(queries["user_refusal_rate_daily"], "\n", " "), "__LAW_ID__", law_id), "__LAW_NAME__", law_name)]))},
+          "commandTimeout": "00:10:00"
+        },
+        "linkedServiceName": {
+          "referenceName": "${domain}-Kusto-${domain}-ls",
+          "type": "LinkedServiceReference"
+        }
+      }
+    ]
+  }
+}
