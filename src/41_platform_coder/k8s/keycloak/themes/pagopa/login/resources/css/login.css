@@ -6,6 +6,9 @@
   --pagopa-border-color: #e3e7eb;
   --pagopa-white: #ffffff;
   --pagopa-box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.08);
+  --pagopa-password-policy-background: #e1f5fe;
+  --pagopa-password-policy-border: #89d9fc;
+  --pagopa-password-policy-text: #215c76;
 }
 
 * {
@@ -106,8 +109,8 @@ a:hover {
 .password-policy-box {
   margin-top: 16px;
   padding: 16px;
-  background-color: #e1f5fe;
-  border: 1px solid #89d9fc;
+  background-color: var(--pagopa-password-policy-background);
+  border: 1px solid var(--pagopa-password-policy-border);
   border-radius: 8px;
   box-shadow: none;
   text-align: left;
@@ -131,14 +134,14 @@ a:hover {
   margin: 0;
   font-size: 18px;
   font-weight: 600;
-  color: #215c76;
+  color: var(--pagopa-password-policy-text);
   line-height: 26px;
 }
 
 .password-policy-box ul {
   margin: 0;
   padding-left: 48px;
-  color: #215c76;
+  color: var(--pagopa-password-policy-text);
   line-height: 26px;
 }
 
