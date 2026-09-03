@@ -47,7 +47,7 @@
                     </div>
 
                     <div class="terms-notice">
-                        <span>Accedendo accetti i <a href="https://pari.pagopa.it/esercente/terms-of-service">Termini e condizioni d'uso</a> del servizio e confermi di avere letto l'<a href="https://pari.pagopa.it/esercente/privacy-policy">Informativa Privacy</a></span>
+                        <span>Accedendo accetti i <a href="${properties.footerTermsUrl}">Termini e condizioni d'uso</a> del servizio e confermi di avere letto l'<a href="${properties.footerPrivacyUrl}">Informativa Privacy</a></span>
                     </div>
 
                     <input class="btn-primary" type="submit" value="Accedi" >
