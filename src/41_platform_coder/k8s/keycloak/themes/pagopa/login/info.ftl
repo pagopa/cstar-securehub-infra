@@ -29,6 +29,34 @@
     <script type="module" src="${url.resourcesPath}/js/execute-actions-auto-redirect.js?v=themeVersion"></script>
 </body>
 </html>
+<#elseif pageRedirectUri?has_content && message?has_content && message.type == "success" && messageHeader?? && messageHeader == "accountUpdatedTitle">
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${msg("accountUpdatedTitle")}</title>
+    <link href="${url.resourcesPath}/${properties.styles}" rel="stylesheet">
+</head>
+<body class="account-updated-redirect-page">
+    <div class="page-container">
+        <@components.header />
+
+        <main class="main-content execute-actions-content">
+            <div class="execute-actions-status account-updated-redirect-status" data-execute-actions-auto-redirect data-redirect-delay="0">
+                <h1>Password aggiornata correttamente.</h1>
+                <p>
+                    Se non vieni reindirizzato automaticamente,
+                    <a href="${pageRedirectUri}" data-execute-actions-target>clicca qui</a>.
+                </p>
+            </div>
+        </main>
+
+        <@components.footer />
+    </div>
+    <script type="module" src="${url.resourcesPath}/js/execute-actions-auto-redirect.js?v=themeVersion"></script>
+</body>
+</html>
 <#else>
     <#import "template.ftl" as layout>
     <@layout.registrationLayout displayMessage=false; section>
