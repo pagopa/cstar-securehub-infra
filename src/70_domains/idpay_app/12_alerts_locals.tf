@@ -1378,7 +1378,7 @@ locals {
       email_subject = "[PARI][KEYCLOAK][HIGH] Keycloak /endpoint 'user' Realm Alert (Failures)"
     }
 
-    # Keycloak /reset-credential per realm 'merchant-operator'
+    # Keycloak /reset-credentials per realm 'merchant-operator'
     keycloak_reset_credential_merchant_operator_realm_alert = {
       name        = "keycloak-reset-credentials_merchant-operator-realm-alert"
       description = "Keycloak (/reset-credentials 'merchant-operator' realm): Total failure count exceeded (> 5 in 5m)"
