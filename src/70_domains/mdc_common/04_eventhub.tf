@@ -6,7 +6,7 @@ module "eventhub_namespace" {
   source = "./.terraform/modules/__v4__/IDH/event_hub"
 
   env                 = var.env
-  idh_resource_tier   = "standard_private"
+  idh_resource_tier   = "standard_c1_private"
   location            = var.location
   name                = "${local.project}-evh"
   product_name        = var.prefix
