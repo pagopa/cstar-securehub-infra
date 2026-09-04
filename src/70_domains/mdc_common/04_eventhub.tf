@@ -31,6 +31,8 @@ module "eventhub_configuration" {
   event_hub_namespace_resource_group_name = local.data_rg
 
   eventhubs = [
+    # --- Topic LEGACY a 1 partizione: mantenuti per drenare i messaggi residui. ---
+    # Rimuovere dopo il cutover, quando la coda vecchia è vuota e nessuno li usa più.
     {
       name              = "emd-courtesy-message"
       partitions        = 1
@@ -69,6 +71,52 @@ module "eventhub_configuration" {
         },
         {
           name   = "emd-notify-error-consumer"
+          listen = true
+          send   = false
+          manage = false
+        }
+      ]
+    },
+
+    # --- Topic V2 a 4 partizioni: i nuovi target del cutover (Opzione A). ---
+    {
+      name              = "emd-courtesy-message-v2"
+      partitions        = 4
+      message_retention = 1
+      consumers = [
+        "emd-courtesy-message-consumer-group"
+      ]
+      keys = [
+        {
+          name   = "emd-courtesy-message-v2-producer"
+          listen = false
+          send   = true
+          manage = false
+        },
+        {
+          name   = "emd-courtesy-message-v2-consumer"
+          listen = true
+          send   = false
+          manage = false
+        }
+      ]
+    },
+    {
+      name              = "emd-notify-error-v2"
+      partitions        = 4
+      message_retention = 1
+      consumers = [
+        "emd-notify-error-consumer-group"
+      ]
+      keys = [
+        {
+          name   = "emd-notify-error-v2-producer"
+          listen = false
+          send   = true
+          manage = false
+        },
+        {
+          name   = "emd-notify-error-v2-consumer"
           listen = true
           send   = false
           manage = false
