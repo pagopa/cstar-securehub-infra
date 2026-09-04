@@ -1,9 +1,12 @@
 {
-  "name": "data_export_csv_file_bonus",
+  "name": "data_export_csv_file_bonus_initiative",
   "properties": {
     "linkedServiceName": {
-      "referenceName": "idpay-bonus-blob-storage-ls",
+      "referenceName": "${domain}-multi-initiative-blob-storage-ls",
       "type": "LinkedServiceReference"
+    },
+    "parameters": {
+      "initiativeFolder": { "type": "String" }
     },
     "annotations": [],
     "type": "Binary",
@@ -14,7 +17,10 @@
           "value": "@concat('export_daily_', formatDateTime(utcNow(), 'yyyy-MM-dd'), '.csv')",
           "type": "Expression"
         },
-        "folderPath": "elenco-informatico-elettrodomestici/data",
+        "folderPath": {
+          "value": "@concat(dataset().initiativeFolder, '/elencoprodotti/data')",
+          "type": "Expression"
+        },
         "container": "$web"
       }
     }

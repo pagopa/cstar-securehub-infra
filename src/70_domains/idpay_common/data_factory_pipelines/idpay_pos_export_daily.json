@@ -1,11 +1,11 @@
 {
     "name": "idpay_pos_export_daily",
     "properties": {
-        "description": "Export Point of Sales on daily schedule",
+        "description": "Export Point of Sales from Data Explorer joined table filtered by initiative",
         "activities": [
             {
-                "name": "idpay_pos_export_daily",
-                "description": "Export Point of Sales on daily schedule",
+                "name": "ExportPosFromKusto",
+                "description": "Copy POS rows from point_of_sales_export filtered by initiativeId",
                 "type": "Copy",
                 "dependsOn": [],
                 "policy": {
@@ -18,13 +18,10 @@
                 "userProperties": [],
                 "typeProperties": {
                     "source": {
-                        "type": "CosmosDbMongoDbApiSource",
-                        "batchSize": 500,
-                        "cursorMethods": {
-                            "project": {
-                                "value": "{\"_id\": 0, \"type\": 1, \"franchiseName\": 1, \"address\": 1, \"city\": 1, \"region\": 1, \"province\": 1, \"streetNumber\": 1, \"zipCode\": 1, \"channelPhone\": 1, \"website\": 1}",
-                                "type": "Expression"
-                            }
+                        "type": "AzureDataExplorerSource",
+                        "query": {
+                            "value": "@concat('point_of_sales_export | where initiativeId == \"', pipeline().parameters.initiativeId, '\" | project type, franchiseName, address, city, region, province, streetNumber, zipCode, channelPhone, website')",
+                            "type": "Expression"
                         }
                     },
                     "sink": {
@@ -41,23 +38,35 @@
                 },
                 "inputs": [
                     {
-                        "referenceName": "cosmos_idpay_pos",
+                        "referenceName": "data_explorer_idpay_pos_export",
                         "type": "DatasetReference"
                     }
                 ],
                 "outputs": [
                     {
-                        "referenceName": "blob_pos_export_daily",
-                        "type": "DatasetReference"
+                        "referenceName": "blob_pos_export_initiative",
+                        "type": "DatasetReference",
+                        "parameters": {
+                            "initiativeFolder": "@pipeline().parameters.initiativeFolder",
+                            "initiativeId": "@pipeline().parameters.initiativeId"
+                        }
                     }
                 ]
             }
         ],
+        "parameters": {
+            "initiativeId": {
+                "type": "String"
+            },
+            "initiativeFolder": {
+                "type": "String"
+            }
+        },
         "annotations": [
             "Point of Sales Export",
             "IdPay",
-            "Merchant",
-            "Bonus Elettrodomestici"
+            "Multi-Initiative",
+            "Data Explorer"
         ]
     }
 }

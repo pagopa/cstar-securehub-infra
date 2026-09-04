@@ -3,6 +3,48 @@
     "properties": {
         "activities": [
             {
+                "name": "Clear pos table",
+                "type": "AzureDataExplorerCommand",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "command": ".clear table point_of_sales data",
+                    "commandTimeout": "00:20:00"
+                },
+                "linkedServiceName": {
+                    "referenceName": "idpay-Kusto-idpay-ls",
+                    "type": "LinkedServiceReference"
+                }
+            },
+            {
+                "name": "Clear pos initiative table",
+                "type": "AzureDataExplorerCommand",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "command": ".clear table point_of_sales_initiative data",
+                    "commandTimeout": "00:20:00"
+                },
+                "linkedServiceName": {
+                    "referenceName": "idpay-Kusto-idpay-ls",
+                    "type": "LinkedServiceReference"
+                }
+            },
+            {
                 "name": "Copy pos collection",
                 "type": "Copy",
                 "dependsOn": [
@@ -116,6 +158,15 @@
                             },
                             {
                                 "source": {
+                                    "path": "$['website']"
+                                },
+                                "sink": {
+                                    "name": "website",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
                                     "path": "$['contactEmail']"
                                 },
                                 "sink": {
@@ -170,15 +221,6 @@
                             },
                             {
                                 "source": {
-                                    "path": "$['channelWebsite']"
-                                },
-                                "sink": {
-                                    "name": "channelWebsite",
-                                    "type": "String"
-                                }
-                            },
-                            {
-                                "source": {
                                     "path": "$['merchantId']"
                                 },
                                 "sink": {
@@ -188,19 +230,28 @@
                             },
                             {
                                 "source": {
-                                    "path": "$['creationDate.$date.$numberLong']"
+                                    "path": "creationDate.$date"
                                 },
                                 "sink": {
-                                    "name": "creationDate",
+                                    "name": "creationDateString",
                                     "type": "String"
                                 }
                             },
                             {
                                 "source": {
-                                    "path": "$['updateDate.$date.$numberLong']"
+                                    "path": "updateDate.$date"
                                 },
                                 "sink": {
-                                    "name": "updateDate",
+                                    "name": "updateDateString",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['_class']"
+                                },
+                                "sink": {
+                                    "name": "_class",
                                     "type": "String"
                                 }
                             }
@@ -221,9 +272,16 @@
                 ]
             },
             {
-                "name": "Clear pos table",
+                "name": "Convert Date pos",
                 "type": "AzureDataExplorerCommand",
-                "dependsOn": [],
+                "dependsOn": [
+                    {
+                        "activity": "Copy pos collection",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
                 "policy": {
                     "timeout": "0.12:00:00",
                     "retry": 0,
@@ -233,7 +291,188 @@
                 },
                 "userProperties": [],
                 "typeProperties": {
-                    "command": ".clear table point_of_sales data",
+                    "command": ".set-or-replace point_of_sales<|\npoint_of_sales\n| extend \n    creationDate = unixtime_milliseconds_todatetime(tolong(creationDateString)),\n    updateDate = unixtime_milliseconds_todatetime(tolong(updateDateString))",
+                    "commandTimeout": "00:20:00"
+                },
+                "linkedServiceName": {
+                    "referenceName": "idpay-Kusto-idpay-ls",
+                    "type": "LinkedServiceReference"
+                }
+            },
+            {
+                "name": "Copy pos initiative collection",
+                "type": "Copy",
+                "dependsOn": [
+                    {
+                        "activity": "Clear pos initiative table",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "source": {
+                        "type": "CosmosDbMongoDbApiSource",
+                        "batchSize": 100
+                    },
+                    "sink": {
+                        "type": "AzureDataExplorerSink"
+                    },
+                    "enableStaging": false,
+                    "translator": {
+                        "type": "TabularTranslator",
+                        "mappings": [
+                            {
+                                "source": {
+                                    "path": "$['_id']"
+                                },
+                                "sink": {
+                                    "name": "_id",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['pointOfSaleId']"
+                                },
+                                "sink": {
+                                    "name": "pointOfSaleId",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['initiativeId']"
+                                },
+                                "sink": {
+                                    "name": "initiativeId",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['merchantId']"
+                                },
+                                "sink": {
+                                    "name": "merchantId",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "$['enabled']"
+                                },
+                                "sink": {
+                                    "name": "enabledFlag",
+                                    "type": "Boolean"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "createdAt.$date"
+                                },
+                                "sink": {
+                                    "name": "createdAtString",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "updatedAt.$date"
+                                },
+                                "sink": {
+                                    "name": "updatedAtString",
+                                    "type": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "path": "onboardingDate.$date"
+                                },
+                                "sink": {
+                                    "name": "onboardingDateString",
+                                    "type": "String"
+                                }
+                            }
+                        ]
+                    }
+                },
+                "inputs": [
+                    {
+                        "referenceName": "cosmos_idpay_point_of_sale_initiative",
+                        "type": "DatasetReference"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "referenceName": "data_explorer_idpay_pos_initiative",
+                        "type": "DatasetReference"
+                    }
+                ]
+            },
+            {
+                "name": "Convert Date pos initiative",
+                "type": "AzureDataExplorerCommand",
+                "dependsOn": [
+                    {
+                        "activity": "Copy pos initiative collection",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "command": ".set-or-replace point_of_sales_initiative<|\npoint_of_sales_initiative\n| extend \n    createdAt = unixtime_milliseconds_todatetime(tolong(createdAtString)),\n    updatedAt = unixtime_milliseconds_todatetime(tolong(updatedAtString)),\n    onboardingDate = unixtime_milliseconds_todatetime(tolong(onboardingDateString))",
+                    "commandTimeout": "00:20:00"
+                },
+                "linkedServiceName": {
+                    "referenceName": "idpay-Kusto-idpay-ls",
+                    "type": "LinkedServiceReference"
+                }
+            },
+            {
+                "name": "Materialize pos export table",
+                "type": "AzureDataExplorerCommand",
+                "dependsOn": [
+                    {
+                        "activity": "Convert Date pos",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    },
+                    {
+                        "activity": "Convert Date pos initiative",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "command": ".set-or-replace point_of_sales_export<|\nlet pos_initiative = point_of_sales_initiative\n| where tobool(enabledFlag) == true\n| project psi_initiativeId = tostring(initiativeId), psi_pointOfSaleId = tostring(pointOfSaleId);\nlet pos = point_of_sales\n| project pos_id = tostring(_id), pos_type = type, pos_franchiseName = franchiseName, pos_address = address, pos_city = city, pos_region = region, pos_province = province, pos_streetNumber = streetNumber, pos_zipCode = zipCode, pos_channelPhone = channelPhone, pos_website = tostring(website);\npos_initiative\n| join kind=inner pos on $left.psi_pointOfSaleId == $right.pos_id\n| project initiativeId = psi_initiativeId, type = pos_type, franchiseName = pos_franchiseName, address = pos_address, city = pos_city, region = pos_region, province = pos_province, streetNumber = pos_streetNumber, zipCode = pos_zipCode, channelPhone = pos_channelPhone, website = pos_website",
                     "commandTimeout": "00:20:00"
                 },
                 "linkedServiceName": {

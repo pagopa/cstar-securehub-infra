@@ -1,9 +1,12 @@
 {
-  "name": "data_export_csv_file",
+  "name": "data_export_csv_file_initiative",
   "properties": {
     "linkedServiceName": {
-      "referenceName": "idpay-exports-blobfs-ls",
+      "referenceName": "${domain}-exports-blobfs-ls",
       "type": "LinkedServiceReference"
+    },
+    "parameters": {
+      "initiativeId": { "type": "String" }
     },
     "annotations": [],
     "type": "Binary",
@@ -14,7 +17,10 @@
           "value": "@concat('export_daily_', formatDateTime(utcNow(), 'yyyy-MM-dd'), '.csv')",
           "type": "Expression"
         },
-        "folderPath": "data",
+        "folderPath": {
+          "value": "@concat('data/', dataset().initiativeId)",
+          "type": "Expression"
+        },
         "fileSystem": "export"
       }
     }

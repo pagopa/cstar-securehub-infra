@@ -19,9 +19,12 @@
                     "source": {
                         "type": "CosmosDbMongoDbApiSource",
                         "batchSize": 500,
-                        "filter": "{status: \"APPROVED\"}",
+                        "filter": {
+                            "value": "@concat('{status: \"APPROVED\", \"initiativeId\": \"', pipeline().parameters.initiativeId, '\"}')",
+                            "type": "Expression"
+                        },
                         "cursorMethods": {
-                            "project": "{ \"_id\": 1, \"model\": 1, \"brand\": 1, \"eprelCode\": 1, \"countryOfProduction\": 1, \"energyClass\": 1, \"capacity\": 1, \"productName\": 1, \"category\": 1, \"productGroup\": 1, \"productCode\":1 }"
+                            "project": "{ \"_id\": 0, \"gtinCode\": 1, \"model\": 1, \"brand\": 1, \"eprelCode\": 1, \"countryOfProduction\": 1, \"energyClass\": 1, \"capacity\": 1, \"productName\": 1, \"category\": 1, \"productGroup\": 1, \"productCode\":1 }"
                         }
                     },
                     "sink": {
@@ -40,10 +43,10 @@
                         "mappings": [
                             {
                                 "source": {
-                                    "path": "$['_id']"
+                                    "path": "$['gtinCode']"
                                 },
                                 "sink": {
-                                    "path": "gtin"
+                                    "path": "gtinCode"
                                 }
                             },
                             {
@@ -137,13 +140,25 @@
                 ],
                 "outputs": [
                     {
-                        "referenceName": "blob_product_export_daily",
-                        "type": "DatasetReference"
+                        "referenceName": "blob_product_export_initiative",
+                        "type": "DatasetReference",
+                        "parameters": {
+                            "initiativeFolder": "@pipeline().parameters.initiativeFolder",
+                            "initiativeId": "@pipeline().parameters.initiativeId"
+                        }
                     }
                 ]
             }
         ],
         "annotations": [],
+        "parameters": {
+            "initiativeId": {
+                "type": "String"
+            },
+            "initiativeFolder": {
+                "type": "String"
+            }
+        },
         "lastPublishTime": "2025-10-23T15:59:15Z"
     },
     "type": "Microsoft.DataFactory/factories/pipelines"

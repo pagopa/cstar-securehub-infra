@@ -18,9 +18,12 @@
           "source": {
             "type": "CosmosDbMongoDbApiSource",
             "batchSize": 100,
-            "filter": "{ \"status\": \"APPROVED\" }",
+            "filter": {
+              "value": "@concat('{ \"status\": \"APPROVED\", \"initiativeId\": \"', pipeline().parameters.initiativeId, '\" }')",
+              "type": "Expression"
+            },
             "cursorMethods": {
-              "project": "{ \"_id\": 1, \"model\": 1, \"brand\": 1, \"eprelCode\": 1, \"countryOfProduction\": 1, \"energyClass\": 1, \"capacity\": 1, \"productName\": 1, \"category\": 1, \"productGroup\": 1 }"
+              "project": "{ \"_id\": 0, \"gtinCode\": 1, \"model\": 1, \"brand\": 1, \"eprelCode\": 1, \"countryOfProduction\": 1, \"energyClass\": 1, \"capacity\": 1, \"productName\": 1, \"category\": 1, \"productGroup\": 1 }"
             }
           },
           "sink": {
@@ -41,10 +44,10 @@
             "mappings": [
               {
                 "source": {
-                  "path": "$['_id']"
+                  "path": "$['gtinCode']"
                 },
                 "sink": {
-                  "name": "_id",
+                  "name": "gtinCode",
                   "type": "String"
                 }
               },
@@ -141,8 +144,11 @@
         ],
         "outputs": [
           {
-            "referenceName": "data_export_csv",
-            "type": "DatasetReference"
+            "referenceName": "data_export_csv_initiative",
+            "type": "DatasetReference",
+            "parameters": {
+              "initiativeId": "@pipeline().parameters.initiativeId"
+            }
           }
         ]
       },
@@ -168,7 +174,15 @@
         "typeProperties": {
           "dataFlow": {
             "referenceName": "export_flow_csv",
-            "type": "DataFlowReference"
+            "type": "DataFlowReference",
+            "datasetParameters": {
+              "ImportCSV": {
+                "initiativeId": "@pipeline().parameters.initiativeId"
+              },
+              "CSVTransformed": {
+                "initiativeId": "@pipeline().parameters.initiativeId"
+              }
+            }
           },
           "compute": {
             "coreCount": 8,
@@ -207,14 +221,20 @@
         },
         "inputs": [
           {
-            "referenceName": "data_export_csv_file",
-            "type": "DatasetReference"
+            "referenceName": "data_export_csv_file_initiative",
+            "type": "DatasetReference",
+            "parameters": {
+              "initiativeId": "@pipeline().parameters.initiativeId"
+            }
           }
         ],
         "outputs": [
           {
-            "referenceName": "data_export_csv_file_bonus",
-            "type": "DatasetReference"
+            "referenceName": "data_export_csv_file_bonus_initiative",
+            "type": "DatasetReference",
+            "parameters": {
+              "initiativeFolder": "@pipeline().parameters.initiativeFolder"
+            }
           }
         ]
       },
@@ -255,7 +275,7 @@
           "body": {
             "canonicalizedResource": {
               "type": "Expression",
-              "value": "@concat('/blob/', pipeline().parameters.exportAccountName, '/export/data/export_daily_', formatDateTime(utcNow(),'yyyy-MM-dd'), '.csv')"
+              "value": "@concat('/blob/', pipeline().parameters.exportAccountName, '/', pipeline().parameters.initiativeFolder, '/elencoprodotti/data/export_daily_', formatDateTime(utcNow(),'yyyy-MM-dd'), '.csv')"
             },
             "signedExpiry": {
               "type": "Expression",
@@ -409,13 +429,16 @@
             "templateValues": {
               "downloadLink": {
                 "type": "Expression",
-                "value": "@concat('https://', pipeline().parameters.exportAccountName, '.blob.core.windows.net/export/data/export_daily_', formatDateTime(utcNow(),'yyyy-MM-dd'), '.csv?', activity('Generate_SAS').output.serviceSasToken)"
+                "value": "@concat('https://', pipeline().parameters.exportAccountName, '.blob.core.windows.net/$web/', pipeline().parameters.initiativeFolder, '/elencoprodotti/data/export_daily_', formatDateTime(utcNow(),'yyyy-MM-dd'), '.csv?', activity('Generate_SAS').output.serviceSasToken)"
               },
               "exportDate": {
                 "type": "Expression",
                 "value": "@formatDateTime(utcNow(),'yyyy-MM-dd')"
               },
-              "initiativeName": "IDPAY",
+              "initiativeName": {
+                "type": "Expression",
+                "value": "@pipeline().parameters.initiativeName"
+              },
               "orgName": "PagoPA S.p.A.",
               "productFileName": {
                 "type": "Expression",
@@ -428,6 +451,15 @@
     ],
     "parameters": {
       "exportAccountName": {
+        "type": "String"
+      },
+      "initiativeFolder": {
+        "type": "String"
+      },
+      "initiativeId": {
+        "type": "String"
+      },
+      "initiativeName": {
         "type": "String"
       },
       "kvSecretName": {
