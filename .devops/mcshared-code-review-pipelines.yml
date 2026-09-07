@@ -42,7 +42,7 @@ resources:
     - repository: terraform
       type: github
       name: pagopa/azure-pipeline-templates
-      ref: refs/tags/v6.17.4
+      ref: refs/tags/v6.18.1
       endpoint: "azure-devops-github-ro"
 
 stages:
@@ -56,6 +56,7 @@ stages:
           SC_PLAN_NAME: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_DEV)'
           POOL_NAME: '$(TF_POOL_NAME_DEV)'
           USE_SOPS: true
+          AZDO_GITHUB_TOKEN: '$(AZDO_GITHUB_TOKEN)'
   #UAT
   - ${{ if eq(parameters['UAT'], true) }}:
       - template: './base-code-review-pipelines.yml'
@@ -66,6 +67,7 @@ stages:
           SC_PLAN_NAME: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_UAT)'
           POOL_NAME: '$(TF_POOL_NAME_UAT)'
           USE_SOPS: true
+          AZDO_GITHUB_TOKEN: '$(AZDO_GITHUB_TOKEN)'
   #PROD
   - ${{ if eq(parameters['PROD'], true) }}:
       - template: './base-code-review-pipelines.yml'
@@ -76,3 +78,4 @@ stages:
           SC_PLAN_NAME: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_PROD)'
           POOL_NAME: '$(TF_POOL_NAME_PROD)'
           USE_SOPS: true
+          AZDO_GITHUB_TOKEN: '$(AZDO_GITHUB_TOKEN)'
