@@ -122,7 +122,7 @@ resource "azurerm_data_factory_trigger_schedule" "export_csv_daily" {
 
   name            = "trigger-idpay_copy_rdb_products_to_csv-${each.key}"
   data_factory_id = data.azurerm_data_factory.data_factory.id
-  activated       = var.env_short == "p"
+  activated       = true
   interval        = 1
   frequency       = "Day"
 
@@ -161,7 +161,7 @@ resource "azurerm_data_factory_trigger_schedule" "export_products_daily" {
 
   name            = "trigger-idpay_product_export_daily-${each.key}"
   data_factory_id = data.azurerm_data_factory.data_factory.id
-  activated       = var.env_short == "p"
+  activated       = true
   interval        = 1
   frequency       = "Day"
 
@@ -189,7 +189,7 @@ resource "azurerm_data_factory_trigger_schedule" "export_pos_daily" {
 
   name            = "trigger-idpay_pos_export_daily-${each.key}"
   data_factory_id = data.azurerm_data_factory.data_factory.id
-  activated       = var.env_short == "p"
+  activated       = true
   interval        = 1
   frequency       = "Day"
 
