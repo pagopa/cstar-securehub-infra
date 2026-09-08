@@ -29,7 +29,9 @@ resource "kubernetes_config_map" "emd_eventhub" {
     emd_notify_error_topic              = "emd-notify-error"
 
     # --- Topic V2 a 4 partizioni: nuovi target del cutover (Opzione A) ---
+    emd-courtesy-message-v2-consumer-group = "emd-courtesy-message-v2-consumer-group"
     emd_courtesy_message_v2_topic = "emd-courtesy-message-v2"
+    emd-notify-error-v2-consumer-group     = "emd-notify-error-v2-consumer-group"
     emd_notify_error_v2_topic     = "emd-notify-error-v2"
   }
 

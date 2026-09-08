@@ -144,3 +144,16 @@ resource "azurerm_key_vault_secret" "eventhub_primary_connection_strings" {
 
   tags = module.tag_config.tags
 }
+
+# Secret pulito contenente la sola Connection String per KEDA
+resource "azurerm_key_vault_secret" "eventhub_primary_connection_strings_keda" {
+  for_each = module.eventhub_configuration.key_ids
+
+  name         = format("evh-%s-keda-conn-string", replace(each.key, ".", "-"))
+  value        = module.eventhub_configuration.keys[each.key].primary_connection_string
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.kv_domain.id
+
+  tags = module.tag_config.tags
+}
