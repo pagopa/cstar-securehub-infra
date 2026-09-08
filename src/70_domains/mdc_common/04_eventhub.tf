@@ -84,7 +84,7 @@ module "eventhub_configuration" {
       partitions        = 4
       message_retention = 1
       consumers = [
-        "emd-courtesy-message-consumer-group"
+        "emd-courtesy-message-v2-consumer-group"
       ]
       keys = [
         {
@@ -106,7 +106,7 @@ module "eventhub_configuration" {
       partitions        = 4
       message_retention = 1
       consumers = [
-        "emd-notify-error-consumer-group"
+        "emd-notify-error-v2-consumer-group"
       ]
       keys = [
         {
