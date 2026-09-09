@@ -1377,6 +1377,32 @@ locals {
 
       email_subject = "[PARI][KEYCLOAK][HIGH] Keycloak /endpoint 'user' Realm Alert (Failures)"
     }
+
+    # Keycloak /reset-credentials per realm 'merchant-operator'
+    keycloak_reset_credentials_merchant_operator_realm_alert = {
+      name        = "keycloak-reset-credentials_merchant-operator-realm-alert"
+      description = "Keycloak (/reset-credentials 'merchant-operator' realm): Total failure count exceeded (> 5 in 5m)"
+
+      scopes = data.azurerm_application_insights.core_app_insights.id
+
+      query = format(<<-QUERY
+            requests
+            | where appName =~ "%s"
+            | where tostring(customDimensions.["kc.realmName"]) in ("merchant-operator")
+            | where not(operation_Name has "admin")
+            | where name == "POST /realms/{realm}/login-actions/reset-credentials"
+            | where success == false
+          QUERY
+        , data.azurerm_application_insights.core_app_insights.id
+      )
+
+      criteria = {
+        operator  = "GreaterThanOrEqual"
+        threshold = 5
+      }
+
+      email_subject = "[PARI][KEYCLOAK][HIGH] Keycloak /reset-credentials 'merchant-operator' Realm Alert (Failures)"
+    }
   }
 
   # =============================================================
