@@ -100,7 +100,8 @@
     creationDateString:string,
     updateDate:datetime,
     updateDateString:string,
-    _class:string
+    _class:string,
+    channelWebsite:string
 )
 
 .create table point_of_sales_staging (
@@ -125,7 +126,8 @@
     creationDateString:string,
     updateDate:datetime,
     updateDateString:string,
-    _class:string
+    _class:string,
+    channelWebsite:string
 )
 
 .create table point_of_sales_initiative (

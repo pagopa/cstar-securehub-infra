@@ -320,6 +320,34 @@
                 "referenceName": "idpay-Kusto-idpay-ls",
                 "type": "LinkedServiceReference"
               }
+            },
+            {
+              "name": "Clear products staging table at end",
+              "type": "AzureDataExplorerCommand",
+              "dependsOn": [
+                {
+                  "activity": "Write products refresh status",
+                  "dependencyConditions": [
+                    "Succeeded"
+                  ]
+                }
+              ],
+              "policy": {
+                "timeout": "0.12:00:00",
+                "retry": 0,
+                "retryIntervalInSeconds": 30,
+                "secureOutput": false,
+                "secureInput": false
+              },
+              "userProperties": [],
+              "typeProperties": {
+                "command": ".clear table products_staging data",
+                "commandTimeout": "00:20:00"
+              },
+              "linkedServiceName": {
+                "referenceName": "idpay-Kusto-idpay-ls",
+                "type": "LinkedServiceReference"
+              }
             }
           ],
           "ifFalseActivities": [
@@ -345,11 +373,39 @@
               }
             },
             {
+              "name": "Clear products staging table after failure",
+              "type": "AzureDataExplorerCommand",
+              "dependsOn": [
+                {
+                  "activity": "Write products refresh failed",
+                  "dependencyConditions": [
+                    "Succeeded"
+                  ]
+                }
+              ],
+              "policy": {
+                "timeout": "0.12:00:00",
+                "retry": 0,
+                "retryIntervalInSeconds": 30,
+                "secureOutput": false,
+                "secureInput": false
+              },
+              "userProperties": [],
+              "typeProperties": {
+                "command": ".clear table products_staging data",
+                "commandTimeout": "00:20:00"
+              },
+              "linkedServiceName": {
+                "referenceName": "idpay-Kusto-idpay-ls",
+                "type": "LinkedServiceReference"
+              }
+            },
+            {
               "name": "Fail products refresh",
               "type": "Fail",
               "dependsOn": [
                 {
-                  "activity": "Write products refresh failed",
+                  "activity": "Clear products staging table after failure",
                   "dependencyConditions": [
                     "Succeeded"
                   ]

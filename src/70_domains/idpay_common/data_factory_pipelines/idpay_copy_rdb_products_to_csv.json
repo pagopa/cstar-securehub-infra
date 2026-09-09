@@ -79,7 +79,7 @@
           "source": {
             "type": "AzureDataExplorerSource",
             "query": {
-              "value": "@concat('initiative_export_configuration | where initiativeId == \"', pipeline().parameters.initiativeId, '\" | project fieldsCsv = replace_regex(tostring(exportConfiguration.fields), ''[\\[\\]\" ]'', '''')')",
+              "value": "@concat('initiative_export_configuration | where initiativeId == \"', pipeline().parameters.initiativeId, '\" | project fieldsCsv = strcat_array(exportConfiguration.fields, \",\")')",
               "type": "Expression"
             }
           },

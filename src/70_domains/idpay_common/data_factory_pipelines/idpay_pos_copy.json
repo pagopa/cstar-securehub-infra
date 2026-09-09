@@ -659,6 +659,90 @@
                 "referenceName": "idpay-Kusto-idpay-ls",
                 "type": "LinkedServiceReference"
               }
+            },
+            {
+              "name": "Clear pos export staging table at end",
+              "type": "AzureDataExplorerCommand",
+              "dependsOn": [
+                {
+                  "activity": "Write pos refresh status",
+                  "dependencyConditions": [
+                    "Succeeded"
+                  ]
+                }
+              ],
+              "policy": {
+                "timeout": "0.12:00:00",
+                "retry": 0,
+                "retryIntervalInSeconds": 30,
+                "secureOutput": false,
+                "secureInput": false
+              },
+              "userProperties": [],
+              "typeProperties": {
+                "command": ".clear table point_of_sales_export_staging data",
+                "commandTimeout": "00:20:00"
+              },
+              "linkedServiceName": {
+                "referenceName": "idpay-Kusto-idpay-ls",
+                "type": "LinkedServiceReference"
+              }
+            },
+            {
+              "name": "Clear pos initiative staging table at end",
+              "type": "AzureDataExplorerCommand",
+              "dependsOn": [
+                {
+                  "activity": "Clear pos export staging table at end",
+                  "dependencyConditions": [
+                    "Succeeded"
+                  ]
+                }
+              ],
+              "policy": {
+                "timeout": "0.12:00:00",
+                "retry": 0,
+                "retryIntervalInSeconds": 30,
+                "secureOutput": false,
+                "secureInput": false
+              },
+              "userProperties": [],
+              "typeProperties": {
+                "command": ".clear table point_of_sales_initiative_staging data",
+                "commandTimeout": "00:20:00"
+              },
+              "linkedServiceName": {
+                "referenceName": "idpay-Kusto-idpay-ls",
+                "type": "LinkedServiceReference"
+              }
+            },
+            {
+              "name": "Clear pos staging table at end",
+              "type": "AzureDataExplorerCommand",
+              "dependsOn": [
+                {
+                  "activity": "Clear pos initiative staging table at end",
+                  "dependencyConditions": [
+                    "Succeeded"
+                  ]
+                }
+              ],
+              "policy": {
+                "timeout": "0.12:00:00",
+                "retry": 0,
+                "retryIntervalInSeconds": 30,
+                "secureOutput": false,
+                "secureInput": false
+              },
+              "userProperties": [],
+              "typeProperties": {
+                "command": ".clear table point_of_sales_staging data",
+                "commandTimeout": "00:20:00"
+              },
+              "linkedServiceName": {
+                "referenceName": "idpay-Kusto-idpay-ls",
+                "type": "LinkedServiceReference"
+              }
             }
           ],
           "ifFalseActivities": [
@@ -684,11 +768,95 @@
               }
             },
             {
+              "name": "Clear pos export staging table after failure",
+              "type": "AzureDataExplorerCommand",
+              "dependsOn": [
+                {
+                  "activity": "Write pos refresh failed",
+                  "dependencyConditions": [
+                    "Succeeded"
+                  ]
+                }
+              ],
+              "policy": {
+                "timeout": "0.12:00:00",
+                "retry": 0,
+                "retryIntervalInSeconds": 30,
+                "secureOutput": false,
+                "secureInput": false
+              },
+              "userProperties": [],
+              "typeProperties": {
+                "command": ".clear table point_of_sales_export_staging data",
+                "commandTimeout": "00:20:00"
+              },
+              "linkedServiceName": {
+                "referenceName": "idpay-Kusto-idpay-ls",
+                "type": "LinkedServiceReference"
+              }
+            },
+            {
+              "name": "Clear pos initiative staging table after failure",
+              "type": "AzureDataExplorerCommand",
+              "dependsOn": [
+                {
+                  "activity": "Clear pos export staging table after failure",
+                  "dependencyConditions": [
+                    "Succeeded"
+                  ]
+                }
+              ],
+              "policy": {
+                "timeout": "0.12:00:00",
+                "retry": 0,
+                "retryIntervalInSeconds": 30,
+                "secureOutput": false,
+                "secureInput": false
+              },
+              "userProperties": [],
+              "typeProperties": {
+                "command": ".clear table point_of_sales_initiative_staging data",
+                "commandTimeout": "00:20:00"
+              },
+              "linkedServiceName": {
+                "referenceName": "idpay-Kusto-idpay-ls",
+                "type": "LinkedServiceReference"
+              }
+            },
+            {
+              "name": "Clear pos staging table after failure",
+              "type": "AzureDataExplorerCommand",
+              "dependsOn": [
+                {
+                  "activity": "Clear pos initiative staging table after failure",
+                  "dependencyConditions": [
+                    "Succeeded"
+                  ]
+                }
+              ],
+              "policy": {
+                "timeout": "0.12:00:00",
+                "retry": 0,
+                "retryIntervalInSeconds": 30,
+                "secureOutput": false,
+                "secureInput": false
+              },
+              "userProperties": [],
+              "typeProperties": {
+                "command": ".clear table point_of_sales_staging data",
+                "commandTimeout": "00:20:00"
+              },
+              "linkedServiceName": {
+                "referenceName": "idpay-Kusto-idpay-ls",
+                "type": "LinkedServiceReference"
+              }
+            },
+            {
               "name": "Fail pos refresh",
               "type": "Fail",
               "dependsOn": [
                 {
-                  "activity": "Write pos refresh failed",
+                  "activity": "Clear pos staging table after failure",
                   "dependencyConditions": [
                     "Succeeded"
                   ]
