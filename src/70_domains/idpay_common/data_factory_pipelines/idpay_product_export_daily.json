@@ -17,7 +17,7 @@
         "typeProperties": {
           "source": {
             "type": "AzureDataExplorerSource",
-            "query": "export_refresh_status | where datasetName == \"products\" | where status == \"SUCCESS\" | where refreshTimestamp > ago(24h) | top 1 by refreshTimestamp desc"
+            "query": "export_refresh_status | where datasetName == \"products\" | top 1 by refreshTimestamp desc | where status == \"SUCCESS\" and refreshTimestamp > ago(24h)"
           },
           "dataset": {
             "referenceName": "data_explorer_export_refresh_status",
@@ -79,7 +79,7 @@
           "source": {
             "type": "AzureDataExplorerSource",
             "query": {
-              "value": "@concat('initiative_export_configuration | where initiativeId == \"', pipeline().parameters.initiativeId, '\"')",
+              "value": "@concat('initiative_export_configuration | where initiativeId == \"', pipeline().parameters.initiativeId, '\" | project fieldsCsv = replace_regex(tostring(exportConfiguration.fields), ''[\\[\\]\" ]'', '''')')",
               "type": "Expression"
             }
           },
@@ -91,7 +91,7 @@
         }
       },
       {
-        "name": "Route_Product_Json_Export",
+        "name": "Validate_Initiative_Export_Configuration",
         "type": "IfCondition",
         "dependsOn": [
           {
@@ -108,180 +108,64 @@
           },
           "ifTrueActivities": [
             {
-              "name": "If_BonusDecoder",
-              "type": "IfCondition",
+              "name": "Copy_ADX_to_Product_JSON",
+              "description": "Export product JSON using dynamic projection from initiative configuration",
+              "type": "Copy",
               "dependsOn": [],
+              "policy": {
+                "timeout": "0.12:00:00",
+                "retry": 0,
+                "retryIntervalInSeconds": 30,
+                "secureOutput": false,
+                "secureInput": false
+              },
+              "userProperties": [],
               "typeProperties": {
-                "expression": {
-                  "value": "@equals(pipeline().parameters.initiativeId, 'bonusdecoder')",
-                  "type": "Expression"
+                "source": {
+                  "type": "AzureDataExplorerSource",
+                  "query": {
+                    "value": "@concat('products | where status == \"APPROVED\" and initiativeId == \"', pipeline().parameters.initiativeId, '\" | project ', activity('Lookup_Initiative_Export_Configuration').output.value[0].fieldsCsv)",
+                    "type": "Expression"
+                  }
                 },
-                "ifTrueActivities": [
-                  {
-                    "name": "Export_Product_JSON_BonusDecoder",
-                    "description": "Export projection for bonusdecoder",
-                    "type": "Copy",
-                    "dependsOn": [],
-                    "policy": {
-                      "timeout": "0.12:00:00",
-                      "retry": 0,
-                      "retryIntervalInSeconds": 30,
-                      "secureOutput": false,
-                      "secureInput": false
-                    },
-                    "userProperties": [],
-                    "typeProperties": {
-                      "source": {
-                        "type": "CosmosDbMongoDbApiSource",
-                        "batchSize": 500,
-                        "filter": {
-                          "value": "@concat('{status: \"APPROVED\", \"initiativeId\": \"', pipeline().parameters.initiativeId, '\"}')",
-                          "type": "Expression"
-                        },
-                        "cursorMethods": {
-                          "project": "{ \"_id\": 0, \"gtinCode\": 1, \"model\": 1, \"brand\": 1, \"productName\": 1, \"category\": 1, \"productCode\": 1 }"
-                        }
-                      },
-                      "sink": {
-                        "type": "JsonSink",
-                        "storeSettings": {
-                          "type": "AzureBlobStorageWriteSettings"
-                        },
-                        "formatSettings": {
-                          "type": "JsonWriteSettings",
-                          "filePattern": "arrayOfObjects"
-                        }
-                      },
-                      "enableStaging": false,
-                      "translator": {
-                        "type": "TabularTranslator",
-                        "mappings": [
-                          { "source": { "path": "$['gtinCode']" }, "sink": { "path": "gtinCode" } },
-                          { "source": { "path": "$['model']" }, "sink": { "path": "model" } },
-                          { "source": { "path": "$['brand']" }, "sink": { "path": "brand" } },
-                          { "source": { "path": "$['productName']" }, "sink": { "path": "productName" } },
-                          { "source": { "path": "$['category']" }, "sink": { "path": "category" } },
-                          { "source": { "path": "$['productCode']" }, "sink": { "path": "productCode" } }
-                        ]
-                      }
-                    },
-                    "inputs": [
-                      { "referenceName": "cosmos_rdb_products", "type": "DatasetReference" }
-                    ],
-                    "outputs": [
-                      {
-                        "referenceName": "blob_product_export_initiative",
-                        "type": "DatasetReference",
-                        "parameters": {
-                          "initiativeFolder": "@pipeline().parameters.initiativeFolder",
-                          "initiativeId": "@pipeline().parameters.initiativeId"
-                        }
-                      }
-                    ]
+                "sink": {
+                  "type": "JsonSink",
+                  "storeSettings": {
+                    "type": "AzureBlobStorageWriteSettings"
+                  },
+                  "formatSettings": {
+                    "type": "JsonWriteSettings",
+                    "filePattern": "arrayOfObjects"
                   }
-                ],
-                "ifFalseActivities": [
-                  {
-                    "name": "If_Bonuselettrodomestici",
-                    "type": "IfCondition",
-                    "dependsOn": [],
-                    "typeProperties": {
-                      "expression": {
-                        "value": "@equals(pipeline().parameters.initiativeId, 'bonuselettrodomestici')",
-                        "type": "Expression"
-                      },
-                      "ifTrueActivities": [
-                        {
-                          "name": "Export_Product_JSON_Bonuselettrodomestici",
-                          "description": "Export projection for bonuselettrodomestici",
-                          "type": "Copy",
-                          "dependsOn": [],
-                          "policy": {
-                            "timeout": "0.12:00:00",
-                            "retry": 0,
-                            "retryIntervalInSeconds": 30,
-                            "secureOutput": false,
-                            "secureInput": false
-                          },
-                          "userProperties": [],
-                          "typeProperties": {
-                            "source": {
-                              "type": "CosmosDbMongoDbApiSource",
-                              "batchSize": 500,
-                              "filter": {
-                                "value": "@concat('{status: \"APPROVED\", \"initiativeId\": \"', pipeline().parameters.initiativeId, '\"}')",
-                                "type": "Expression"
-                              },
-                              "cursorMethods": {
-                                "project": "{ \"_id\": 0, \"gtinCode\": 1, \"model\": 1, \"brand\": 1, \"eprelCode\": 1, \"countryOfProduction\": 1, \"energyClass\": 1, \"capacity\": 1, \"productName\": 1, \"category\": 1, \"productGroup\": 1, \"productCode\": 1 }"
-                              }
-                            },
-                            "sink": {
-                              "type": "JsonSink",
-                              "storeSettings": {
-                                "type": "AzureBlobStorageWriteSettings"
-                              },
-                              "formatSettings": {
-                                "type": "JsonWriteSettings",
-                                "filePattern": "arrayOfObjects"
-                              }
-                            },
-                            "enableStaging": false,
-                            "translator": {
-                              "type": "TabularTranslator",
-                              "mappings": [
-                                { "source": { "path": "$['gtinCode']" }, "sink": { "path": "gtinCode" } },
-                                { "source": { "path": "$['model']" }, "sink": { "path": "model" } },
-                                { "source": { "path": "$['brand']" }, "sink": { "path": "brand" } },
-                                { "source": { "path": "$['eprelCode']" }, "sink": { "path": "eprelCode" } },
-                                { "source": { "path": "$['countryOfProduction']" }, "sink": { "path": "countryOfProduction" } },
-                                { "source": { "path": "$['energyClass']" }, "sink": { "path": "energyClass" } },
-                                { "source": { "path": "$['capacity']" }, "sink": { "path": "capacity" } },
-                                { "source": { "path": "$['productName']" }, "sink": { "path": "productName" } },
-                                { "source": { "path": "$['category']" }, "sink": { "path": "category" } },
-                                { "source": { "path": "$['productGroup']" }, "sink": { "path": "productGroup" } },
-                                { "source": { "path": "$['productCode']" }, "sink": { "path": "productCode" } }
-                              ]
-                            }
-                          },
-                          "inputs": [
-                            { "referenceName": "cosmos_rdb_products", "type": "DatasetReference" }
-                          ],
-                          "outputs": [
-                            {
-                              "referenceName": "blob_product_export_initiative",
-                              "type": "DatasetReference",
-                              "parameters": {
-                                "initiativeFolder": "@pipeline().parameters.initiativeFolder",
-                                "initiativeId": "@pipeline().parameters.initiativeId"
-                              }
-                            }
-                          ]
-                        }
-                      ],
-                      "ifFalseActivities": [
-                        {
-                          "name": "Skip_Unsupported_Initiative",
-                          "type": "Wait",
-                          "dependsOn": [],
-                          "typeProperties": {
-                            "waitTimeInSeconds": 1
-                          }
-                        }
-                      ]
-                    }
+                },
+                "enableStaging": false
+              },
+              "inputs": [
+                {
+                  "referenceName": "data_explorer_rdb_products",
+                  "type": "DatasetReference"
+                }
+              ],
+              "outputs": [
+                {
+                  "referenceName": "blob_product_export_initiative",
+                  "type": "DatasetReference",
+                  "parameters": {
+                    "initiativeFolder": "@pipeline().parameters.initiativeFolder",
+                    "initiativeId": "@pipeline().parameters.initiativeId"
                   }
-                ]
-              }
+                }
+              ]
             }
           ],
           "ifFalseActivities": [
             {
-              "name": "Skip_No_Config",
-              "type": "Wait",
+              "name": "Fail_Initiative_Export_Configuration",
+              "type": "Fail",
               "dependsOn": [],
               "typeProperties": {
-                "waitTimeInSeconds": 1
+                "message": "Initiative export configuration not found.",
+                "errorCode": "InitiativeExportConfigurationNotFound"
               }
             }
           ]

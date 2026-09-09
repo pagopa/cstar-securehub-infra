@@ -508,8 +508,8 @@
         }
       },
       {
-        "name": "Swap pos table",
-        "type": "AzureDataExplorerCommand",
+        "name": "Validate pos export staging rows",
+        "type": "Lookup",
         "dependsOn": [
           {
             "activity": "Materialize pos export staging table",
@@ -527,96 +527,179 @@
         },
         "userProperties": [],
         "typeProperties": {
-          "command": ".set-or-replace point_of_sales <| point_of_sales_staging",
-          "commandTimeout": "00:20:00"
-        },
-        "linkedServiceName": {
-          "referenceName": "idpay-Kusto-idpay-ls",
-          "type": "LinkedServiceReference"
+          "source": {
+            "type": "AzureDataExplorerSource",
+            "query": "point_of_sales_export_staging | count"
+          },
+          "dataset": {
+            "referenceName": "data_explorer_idpay_pos_export",
+            "type": "DatasetReference"
+          },
+          "firstRowOnly": true
         }
       },
       {
-        "name": "Swap pos initiative table",
-        "type": "AzureDataExplorerCommand",
+        "name": "Validate pos refresh",
+        "type": "IfCondition",
         "dependsOn": [
           {
-            "activity": "Swap pos table",
+            "activity": "Validate pos export staging rows",
             "dependencyConditions": [
               "Succeeded"
             ]
           }
         ],
-        "policy": {
-          "timeout": "0.12:00:00",
-          "retry": 0,
-          "retryIntervalInSeconds": 30,
-          "secureOutput": false,
-          "secureInput": false
-        },
-        "userProperties": [],
         "typeProperties": {
-          "command": ".set-or-replace point_of_sales_initiative <| point_of_sales_initiative_staging",
-          "commandTimeout": "00:20:00"
-        },
-        "linkedServiceName": {
-          "referenceName": "idpay-Kusto-idpay-ls",
-          "type": "LinkedServiceReference"
-        }
-      },
-      {
-        "name": "Swap pos export table",
-        "type": "AzureDataExplorerCommand",
-        "dependsOn": [
-          {
-            "activity": "Swap pos initiative table",
-            "dependencyConditions": [
-              "Succeeded"
-            ]
-          }
-        ],
-        "policy": {
-          "timeout": "0.12:00:00",
-          "retry": 0,
-          "retryIntervalInSeconds": 30,
-          "secureOutput": false,
-          "secureInput": false
-        },
-        "userProperties": [],
-        "typeProperties": {
-          "command": ".set-or-replace point_of_sales_export <| point_of_sales_export_staging",
-          "commandTimeout": "00:20:00"
-        },
-        "linkedServiceName": {
-          "referenceName": "idpay-Kusto-idpay-ls",
-          "type": "LinkedServiceReference"
-        }
-      },
-      {
-        "name": "Write pos refresh status",
-        "type": "AzureDataExplorerCommand",
-        "dependsOn": [
-          {
-            "activity": "Swap pos export table",
-            "dependencyConditions": [
-              "Succeeded"
-            ]
-          }
-        ],
-        "policy": {
-          "timeout": "0.12:00:00",
-          "retry": 0,
-          "retryIntervalInSeconds": 30,
-          "secureOutput": false,
-          "secureInput": false
-        },
-        "userProperties": [],
-        "typeProperties": {
-          "command": ".set-or-append export_refresh_status <|\nprint\ndatasetName=\"point_of_sales\",\nexecutionId=\"ADF_RUN_ID\",\nrefreshTimestamp=now(),\nstatus=\"SUCCESS\",\nrecordCount=tolong(toscalar(point_of_sales_export | count)),\ndurationSeconds=0,\nerrorMessage=\"\"",
-          "commandTimeout": "00:20:00"
-        },
-        "linkedServiceName": {
-          "referenceName": "idpay-Kusto-idpay-ls",
-          "type": "LinkedServiceReference"
+          "expression": {
+            "value": "@greater(int(activity('Validate pos export staging rows').output.firstRow.Count), 0)",
+            "type": "Expression"
+          },
+          "ifTrueActivities": [
+            {
+              "name": "Swap pos table",
+              "type": "AzureDataExplorerCommand",
+              "dependsOn": [],
+              "policy": {
+                "timeout": "0.12:00:00",
+                "retry": 0,
+                "retryIntervalInSeconds": 30,
+                "secureOutput": false,
+                "secureInput": false
+              },
+              "userProperties": [],
+              "typeProperties": {
+                "command": ".set-or-replace point_of_sales <| point_of_sales_staging",
+                "commandTimeout": "00:20:00"
+              },
+              "linkedServiceName": {
+                "referenceName": "idpay-Kusto-idpay-ls",
+                "type": "LinkedServiceReference"
+              }
+            },
+            {
+              "name": "Swap pos initiative table",
+              "type": "AzureDataExplorerCommand",
+              "dependsOn": [
+                {
+                  "activity": "Swap pos table",
+                  "dependencyConditions": [
+                    "Succeeded"
+                  ]
+                }
+              ],
+              "policy": {
+                "timeout": "0.12:00:00",
+                "retry": 0,
+                "retryIntervalInSeconds": 30,
+                "secureOutput": false,
+                "secureInput": false
+              },
+              "userProperties": [],
+              "typeProperties": {
+                "command": ".set-or-replace point_of_sales_initiative <| point_of_sales_initiative_staging",
+                "commandTimeout": "00:20:00"
+              },
+              "linkedServiceName": {
+                "referenceName": "idpay-Kusto-idpay-ls",
+                "type": "LinkedServiceReference"
+              }
+            },
+            {
+              "name": "Swap pos export table",
+              "type": "AzureDataExplorerCommand",
+              "dependsOn": [
+                {
+                  "activity": "Swap pos initiative table",
+                  "dependencyConditions": [
+                    "Succeeded"
+                  ]
+                }
+              ],
+              "policy": {
+                "timeout": "0.12:00:00",
+                "retry": 0,
+                "retryIntervalInSeconds": 30,
+                "secureOutput": false,
+                "secureInput": false
+              },
+              "userProperties": [],
+              "typeProperties": {
+                "command": ".set-or-replace point_of_sales_export <| point_of_sales_export_staging",
+                "commandTimeout": "00:20:00"
+              },
+              "linkedServiceName": {
+                "referenceName": "idpay-Kusto-idpay-ls",
+                "type": "LinkedServiceReference"
+              }
+            },
+            {
+              "name": "Write pos refresh status",
+              "type": "AzureDataExplorerCommand",
+              "dependsOn": [
+                {
+                  "activity": "Swap pos export table",
+                  "dependencyConditions": [
+                    "Succeeded"
+                  ]
+                }
+              ],
+              "policy": {
+                "timeout": "0.12:00:00",
+                "retry": 0,
+                "retryIntervalInSeconds": 30,
+                "secureOutput": false,
+                "secureInput": false
+              },
+              "userProperties": [],
+              "typeProperties": {
+                "command": ".set-or-append export_refresh_status <|\nprint\ndatasetName=\"point_of_sales\",\nexecutionId=\"ADF_RUN_ID\",\nrefreshTimestamp=now(),\nstatus=\"SUCCESS\",\nrecordCount=tolong(toscalar(point_of_sales_export | count)),\ndurationSeconds=0,\nerrorMessage=\"\"",
+                "commandTimeout": "00:20:00"
+              },
+              "linkedServiceName": {
+                "referenceName": "idpay-Kusto-idpay-ls",
+                "type": "LinkedServiceReference"
+              }
+            }
+          ],
+          "ifFalseActivities": [
+            {
+              "name": "Write pos refresh failed",
+              "type": "AzureDataExplorerCommand",
+              "dependsOn": [],
+              "policy": {
+                "timeout": "0.12:00:00",
+                "retry": 0,
+                "retryIntervalInSeconds": 30,
+                "secureOutput": false,
+                "secureInput": false
+              },
+              "userProperties": [],
+              "typeProperties": {
+                "command": ".set-or-append export_refresh_status <|\nprint\ndatasetName=\"point_of_sales\",\nexecutionId=\"ADF_RUN_ID\",\nrefreshTimestamp=now(),\nstatus=\"FAILED\",\nrecordCount=0,\ndurationSeconds=0,\nerrorMessage=\"No records materialized into point_of_sales_export_staging\"",
+                "commandTimeout": "00:20:00"
+              },
+              "linkedServiceName": {
+                "referenceName": "idpay-Kusto-idpay-ls",
+                "type": "LinkedServiceReference"
+              }
+            },
+            {
+              "name": "Fail pos refresh",
+              "type": "Fail",
+              "dependsOn": [
+                {
+                  "activity": "Write pos refresh failed",
+                  "dependencyConditions": [
+                    "Succeeded"
+                  ]
+                }
+              ],
+              "typeProperties": {
+                "message": "POS staging refresh produced zero rows.",
+                "errorCode": "PosRefreshValidationFailed"
+              }
+            }
+          ]
         }
       }
     ],
