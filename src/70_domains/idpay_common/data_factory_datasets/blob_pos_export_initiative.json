@@ -23,7 +23,7 @@
           "type": "Expression"
         },
         "folderPath": {
-          "value": "@concat(dataset().initiativeFolder, '/puntivendita/data')",
+          "value": "@concat(dataset().initiativeFolder, '/data')",
           "type": "Expression"
         },
         "container": "$web"

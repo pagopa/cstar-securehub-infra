@@ -1,72 +1,127 @@
 {
-    "name": "idpay_pos_export_daily",
-    "properties": {
-        "description": "Export Point of Sales from Data Explorer joined table filtered by initiative",
-        "activities": [
-            {
-                "name": "ExportPosFromKusto",
-                "description": "Copy POS rows from point_of_sales_export filtered by initiativeId",
-                "type": "Copy",
-                "dependsOn": [],
-                "policy": {
-                    "timeout": "0.12:00:00",
-                    "retry": 0,
-                    "retryIntervalInSeconds": 30,
-                    "secureOutput": false,
-                    "secureInput": false
-                },
-                "userProperties": [],
-                "typeProperties": {
-                    "source": {
-                        "type": "AzureDataExplorerSource",
-                        "query": {
-                            "value": "@concat('point_of_sales_export | where initiativeId == \"', pipeline().parameters.initiativeId, '\" | project type, franchiseName, address, city, region, province, streetNumber, zipCode, channelPhone, website')",
-                            "type": "Expression"
-                        }
-                    },
-                    "sink": {
-                        "type": "JsonSink",
-                        "storeSettings": {
-                            "type": "AzureBlobStorageWriteSettings"
-                        },
-                        "formatSettings": {
-                            "type": "JsonWriteSettings",
-                            "filePattern": "arrayOfObjects"
-                        }
-                    },
-                    "enableStaging": false
-                },
-                "inputs": [
-                    {
-                        "referenceName": "data_explorer_idpay_pos_export",
-                        "type": "DatasetReference"
-                    }
-                ],
-                "outputs": [
-                    {
-                        "referenceName": "blob_pos_export_initiative",
-                        "type": "DatasetReference",
-                        "parameters": {
-                            "initiativeFolder": "@pipeline().parameters.initiativeFolder",
-                            "initiativeId": "@pipeline().parameters.initiativeId"
-                        }
-                    }
-                ]
-            }
-        ],
-        "parameters": {
-            "initiativeId": {
-                "type": "String"
-            },
-            "initiativeFolder": {
-                "type": "String"
-            }
+  "name": "idpay_pos_export_daily",
+  "properties": {
+    "description": "Export Point of Sales from Data Explorer joined table filtered by initiative",
+    "activities": [
+      {
+        "name": "Lookup_Refresh_Status",
+        "type": "Lookup",
+        "dependsOn": [],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
         },
-        "annotations": [
-            "Point of Sales Export",
-            "IdPay",
-            "Multi-Initiative",
-            "Data Explorer"
-        ]
-    }
+        "userProperties": [],
+        "typeProperties": {
+          "source": {
+            "type": "AzureDataExplorerSource",
+            "query": "export_refresh_status | where datasetName == \"point_of_sales\" | where status == \"SUCCESS\" | where refreshTimestamp > ago(24h) | top 1 by refreshTimestamp desc"
+          },
+          "dataset": {
+            "referenceName": "data_explorer_export_refresh_status",
+            "type": "DatasetReference"
+          },
+          "firstRowOnly": false
+        }
+      },
+      {
+        "name": "Validate_Pos_Refresh",
+        "type": "IfCondition",
+        "dependsOn": [
+          {
+            "activity": "Lookup_Refresh_Status",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "typeProperties": {
+          "expression": {
+            "value": "@greater(activity('Lookup_Refresh_Status').output.count, 0)",
+            "type": "Expression"
+          },
+          "ifTrueActivities": [
+            {
+              "name": "ExportPosFromKusto",
+              "description": "Copy POS rows from point_of_sales_export filtered by initiativeId",
+              "type": "Copy",
+              "dependsOn": [],
+              "policy": {
+                "timeout": "0.12:00:00",
+                "retry": 0,
+                "retryIntervalInSeconds": 30,
+                "secureOutput": false,
+                "secureInput": false
+              },
+              "userProperties": [],
+              "typeProperties": {
+                "source": {
+                  "type": "AzureDataExplorerSource",
+                  "query": {
+                    "value": "@concat('point_of_sales_export | where initiativeId == \"', pipeline().parameters.initiativeId, '\" | project type, franchiseName, address, city, region, province, streetNumber, zipCode, channelPhone, website')",
+                    "type": "Expression"
+                  }
+                },
+                "sink": {
+                  "type": "JsonSink",
+                  "storeSettings": {
+                    "type": "AzureBlobStorageWriteSettings"
+                  },
+                  "formatSettings": {
+                    "type": "JsonWriteSettings",
+                    "filePattern": "arrayOfObjects"
+                  }
+                },
+                "enableStaging": false
+              },
+              "inputs": [
+                {
+                  "referenceName": "data_explorer_idpay_pos_export",
+                  "type": "DatasetReference"
+                }
+              ],
+              "outputs": [
+                {
+                  "referenceName": "blob_pos_export_initiative",
+                  "type": "DatasetReference",
+                  "parameters": {
+                    "initiativeFolder": "@pipeline().parameters.initiativeFolder",
+                    "initiativeId": "@pipeline().parameters.initiativeId"
+                  }
+                }
+              ]
+            }
+          ],
+          "ifFalseActivities": [
+            {
+              "name": "Fail_Pos_Refresh",
+              "type": "Fail",
+              "dependsOn": [],
+              "typeProperties": {
+                "message": "Required ADX dataset refresh not found.",
+                "errorCode": "PosRefreshNotFound"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "parameters": {
+      "initiativeId": {
+        "type": "String"
+      },
+      "initiativeFolder": {
+        "type": "String"
+      }
+    },
+    "annotations": [
+      "Point of Sales Export",
+      "IdPay",
+      "Multi-Initiative",
+      "Data Explorer"
+    ]
+  }
 }

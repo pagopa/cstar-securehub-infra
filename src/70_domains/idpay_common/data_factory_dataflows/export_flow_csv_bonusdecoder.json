@@ -1,0 +1,71 @@
+{
+  "name": "export_flow_csv_bonusdecoder",
+  "properties": {
+    "type": "MappingDataFlow",
+    "typeProperties": {
+      "sources": [
+        {
+          "dataset": {
+            "referenceName": "data_export_csv_initiative",
+            "type": "DatasetReference"
+          },
+          "name": "ImportCSV"
+        }
+      ],
+      "sinks": [
+        {
+          "dataset": {
+            "referenceName": "data_export_csv_initiative",
+            "type": "DatasetReference"
+          },
+          "name": "CSVTransformed"
+        }
+      ],
+      "transformations": [
+        {
+          "name": "TranslateCategory"
+        },
+        {
+          "name": "ProjectColumns"
+        }
+      ],
+      "scriptLines": [
+        "source(output(",
+        "          gtinCode as string,",
+        "          model as string,",
+        "          brand as string,",
+        "          productName as string,",
+        "          category as string,",
+        "          productCode as string",
+        "     ),",
+        "     allowSchemaDrift: true,",
+        "     validateSchema: false,",
+        "     ignoreNoFilesFound: false) ~> ImportCSV",
+        "ImportCSV derive(category = case(",
+        "  toString(byName('category')) == 'DS', 'Satellitare',",
+        "  toString(byName('category')) == 'DT', 'Terrestre',",
+        "  toString(byName('category')) == 'DTS', 'Terrestre e Satellitare',",
+        "  toString(byName('category')) == 'DTC', 'Terrestre via Cavo',",
+        "  toString(byName('category')) == 'DTSC', 'Terrestre, Satellitare e via Cavo',",
+        "  toString(byName('category'))",
+        ")) ~> TranslateCategory",
+        "TranslateCategory select(mapColumn(",
+        "          GTIN = gtinCode,",
+        "          Categoria = category,",
+        "          {Nome del prodotto} = productName,",
+        "          Marca = brand,",
+        "          Modello = model,",
+        "          {Codice prodotto} = productCode",
+        "     ),",
+        "     skipDuplicateMapInputs: true,",
+        "     skipDuplicateMapOutputs: true) ~> ProjectColumns",
+        "ProjectColumns sink(allowSchemaDrift: true,",
+        "     validateSchema: false,",
+        "     partitionFileNames:[('export_daily_bonusdecoder_' + toString(currentUTC(), 'yyyy-MM-dd') + '.csv')],",
+        "     skipDuplicateMapInputs: true,",
+        "     skipDuplicateMapOutputs: true,",
+        "     partitionBy('hash', 1)) ~> CSVTransformed"
+      ]
+    }
+  }
+}
