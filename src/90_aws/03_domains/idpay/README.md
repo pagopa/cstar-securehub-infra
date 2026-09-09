@@ -23,7 +23,7 @@
 
 | Name | Type |
 |------|------|
-| [awscc_location_api_key.this](https://registry.terraform.io/providers/hashicorp/awscc/latest/docs/resources/location_api_key) | resource |
+| [awscc_location_api_key.api_key](https://registry.terraform.io/providers/hashicorp/awscc/latest/docs/resources/location_api_key) | resource |
 
 ## Inputs
 
