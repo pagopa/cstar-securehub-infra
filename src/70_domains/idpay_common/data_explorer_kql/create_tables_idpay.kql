@@ -1,7 +1,10 @@
 .create table products (
     _id:string,
+    gtinCode:string,
     productFileId:string,
     organizationId:string,
+    initiativeId:string,
+    registrationDate:string,
     status:string,
     model:string,
     productGroup:string,
@@ -12,17 +15,21 @@
     countryOfProduction:string,
     energyClass:string,
     capacity:string,
+    statusChangeChronology:string,
+    formalMotivation:string,
     productName:string,
     fullProductName:string,
     organizationName:string,
-    gtinCode:string,
-    initiativeId:string
+    _class:string
 )
 
 .create table products_staging (
     _id:string,
+    gtinCode:string,
     productFileId:string,
     organizationId:string,
+    initiativeId:string,
+    registrationDate:string,
     status:string,
     model:string,
     productGroup:string,
@@ -33,11 +40,12 @@
     countryOfProduction:string,
     energyClass:string,
     capacity:string,
+    statusChangeChronology:string,
+    formalMotivation:string,
     productName:string,
     fullProductName:string,
     organizationName:string,
-    gtinCode:string,
-    initiativeId:string
+    _class:string
 )
 
 .create table merchant (

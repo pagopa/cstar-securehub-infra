@@ -65,6 +65,15 @@
               },
               {
                 "source": {
+                  "path": "$['gtinCode']"
+                },
+                "sink": {
+                  "name": "gtinCode",
+                  "type": "String"
+                }
+              },
+              {
+                "source": {
                   "path": "$['productFileId']"
                 },
                 "sink": {
@@ -78,6 +87,24 @@
                 },
                 "sink": {
                   "name": "organizationId",
+                  "type": "String"
+                }
+              },
+              {
+                "source": {
+                  "path": "$['initiativeId']"
+                },
+                "sink": {
+                  "name": "initiativeId",
+                  "type": "String"
+                }
+              },
+              {
+                "source": {
+                  "path": "registrationDate.$date"
+                },
+                "sink": {
+                  "name": "registrationDate",
                   "type": "String"
                 }
               },
@@ -173,6 +200,24 @@
               },
               {
                 "source": {
+                  "path": "$['statusChangeChronology']"
+                },
+                "sink": {
+                  "name": "statusChangeChronology",
+                  "type": "String"
+                }
+              },
+              {
+                "source": {
+                  "path": "$['formalMotivation']"
+                },
+                "sink": {
+                  "name": "formalMotivation",
+                  "type": "String"
+                }
+              },
+              {
+                "source": {
                   "path": "$['productName']"
                 },
                 "sink": {
@@ -200,19 +245,10 @@
               },
               {
                 "source": {
-                  "path": "$['gtinCode']"
+                  "path": "$['_class']"
                 },
                 "sink": {
-                  "name": "gtinCode",
-                  "type": "String"
-                }
-              },
-              {
-                "source": {
-                  "path": "$['initiativeId']"
-                },
-                "sink": {
-                  "name": "initiativeId",
+                  "name": "_class",
                   "type": "String"
                 }
               }
