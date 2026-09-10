@@ -309,3 +309,16 @@ variable "enabled_cdn_multi_initiative" {
   type        = bool
   description = "Enable CDN multi-initiative"
 }
+
+variable "export_initiatives" {
+  description = "List of initiatives for ADF multi-initiative export (CSV, products JSON, POS JSON)."
+  type = list(object({
+    key               = string
+    initiative_id     = string
+    initiative_folder = string
+    initiative_name   = string
+    kv_secret_subkey  = string
+    kv_secret_email   = string
+  }))
+  default = []
+}

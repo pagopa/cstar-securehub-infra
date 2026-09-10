@@ -65,6 +65,8 @@ resource "azurerm_data_factory_data_flow" "dataflows" {
   depends_on = [
     azurerm_data_factory_custom_dataset.datasets,
     azurerm_data_factory_linked_custom_service.adf_cosmosdb_linked_service,
+    azurerm_data_factory_linked_custom_service.bonus_blob_storage_linked_service,
+    azurerm_data_factory_linked_custom_service.idpay_exports_blobfs_ls,
     azurerm_data_factory_linked_service_kusto.kusto
   ]
 }
