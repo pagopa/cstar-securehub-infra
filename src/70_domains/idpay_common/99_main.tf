@@ -30,6 +30,10 @@ terraform {
       source  = "keycloak/keycloak"
       version = "~> 5.0"
     }
+    postgresql = {
+      source  = "cyrilgdn/postgresql"
+      version = "~> 1.26.0"
+    }
     azapi = {
       source  = "Azure/azapi"
       version = "~> 2.6"
@@ -55,6 +59,17 @@ provider "helm" {
   kubernetes {
     config_path = "${var.k8s_kube_config_path_prefix}/config-${local.aks_name}"
   }
+}
+
+provider "postgresql" {
+  # IDPay PostgreSQL is disabled in PROD; keep the provider unused there.
+  host      = try(module.idpay_pgflex[0].fqdn, "localhost")
+  port      = 5432
+  database  = "idpay-database"
+  username  = try(azurerm_key_vault_secret.idpay_postgres_admin_user[0].value, "disabled")
+  password  = try(azurerm_key_vault_secret.idpay_postgres_admin_password[0].value, "disabled")
+  sslmode   = "require"
+  superuser = false
 }
 
 provider "argocd" {
