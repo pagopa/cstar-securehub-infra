@@ -171,8 +171,9 @@ resource "azurerm_data_factory_trigger_schedule" "export_products_daily" {
   pipeline {
     name = "idpay_product_export_daily"
     parameters = {
-      initiativeId     = each.value.initiative_id
-      initiativeFolder = each.value.initiative_folder
+      initiativeId      = each.value.initiative_id
+      initiativeFolder  = each.value.initiative_folder
+      exportAccountName = module.storage_idpay_exports.name
     }
   }
 
@@ -199,8 +200,9 @@ resource "azurerm_data_factory_trigger_schedule" "export_pos_daily" {
   pipeline {
     name = "idpay_pos_export_daily"
     parameters = {
-      initiativeId     = each.value.initiative_id
-      initiativeFolder = each.value.initiative_folder
+      initiativeId      = each.value.initiative_id
+      initiativeFolder  = each.value.initiative_folder
+      exportAccountName = module.storage_idpay_exports.name
     }
   }
 

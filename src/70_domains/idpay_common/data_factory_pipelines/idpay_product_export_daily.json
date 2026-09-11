@@ -156,6 +156,45 @@
                   }
                 }
               ]
+            },
+            {
+              "name": "Set_Product_JSON_ContentType",
+              "description": "Set Content-Type header to application/json for Product export file",
+              "type": "WebActivity",
+              "dependsOn": [
+                {
+                  "activity": "Copy_ADX_to_Product_JSON",
+                  "dependencyConditions": [
+                    "Succeeded"
+                  ]
+                }
+              ],
+              "policy": {
+                "timeout": "0.00:05:00",
+                "retry": 1,
+                "retryIntervalInSeconds": 30,
+                "secureOutput": false,
+                "secureInput": false
+              },
+              "userProperties": [],
+              "typeProperties": {
+                "method": "PUT",
+                "headers": {
+                  "x-ms-blob-content-type": "application/json"
+                },
+                "url": {
+                  "value": "@concat('https://', pipeline().parameters.exportAccountName, '.blob.core.windows.net/$web/', pipeline().parameters.initiativeFolder, '/elencoprodotti/data/product_export_', pipeline().parameters.initiativeId, '.json?comp=properties')",
+                  "type": "Expression"
+                },
+                "connectVia": {
+                  "referenceName": "AutoResolveIntegrationRuntime",
+                  "type": "IntegrationRuntimeReference"
+                },
+                "authentication": {
+                  "type": "MSI",
+                  "resource": "https://storage.azure.com/"
+                }
+              }
             }
           ],
           "ifFalseActivities": [
@@ -178,6 +217,9 @@
         "type": "String"
       },
       "initiativeFolder": {
+        "type": "String"
+      },
+      "exportAccountName": {
         "type": "String"
       }
     }
