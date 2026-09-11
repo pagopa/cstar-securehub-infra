@@ -31,6 +31,8 @@ module "eventhub_configuration" {
   event_hub_namespace_resource_group_name = local.data_rg
 
   eventhubs = [
+    # --- Topic LEGACY a 1 partizione: mantenuti per drenare i messaggi residui. ---
+    # Rimuovere dopo il cutover, quando la coda vecchia è vuota e nessuno li usa più.
     {
       name              = "emd-courtesy-message"
       partitions        = 1
@@ -74,6 +76,52 @@ module "eventhub_configuration" {
           manage = false
         }
       ]
+    },
+
+    # --- Topic V2 a 4 partizioni: i nuovi target del cutover (Opzione A). ---
+    {
+      name              = "emd-courtesy-message-v2"
+      partitions        = 4
+      message_retention = 1
+      consumers = [
+        "emd-courtesy-message-v2-consumer-group"
+      ]
+      keys = [
+        {
+          name   = "emd-courtesy-message-v2-producer"
+          listen = false
+          send   = true
+          manage = false
+        },
+        {
+          name   = "emd-courtesy-message-v2-consumer"
+          listen = true
+          send   = false
+          manage = false
+        }
+      ]
+    },
+    {
+      name              = "emd-notify-error-v2"
+      partitions        = 4
+      message_retention = 1
+      consumers = [
+        "emd-notify-error-v2-consumer-group"
+      ]
+      keys = [
+        {
+          name   = "emd-notify-error-v2-producer"
+          listen = false
+          send   = true
+          manage = false
+        },
+        {
+          name   = "emd-notify-error-v2-consumer"
+          listen = true
+          send   = false
+          manage = false
+        }
+      ]
     }
   ]
 
@@ -90,6 +138,19 @@ resource "azurerm_key_vault_secret" "eventhub_primary_connection_strings" {
 
   name         = format("evh-%s-%s-emd", replace(each.key, ".", "-"), "jaas-config")
   value        = format(local.jaas_config_template_emd, module.eventhub_configuration.keys[each.key].primary_connection_string)
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.kv_domain.id
+
+  tags = module.tag_config.tags
+}
+
+# Secret pulito contenente la sola Connection String per KEDA
+resource "azurerm_key_vault_secret" "eventhub_primary_connection_strings_keda" {
+  for_each = module.eventhub_configuration.key_ids
+
+  name         = format("evh-%s-keda-conn-string", replace(each.key, ".", "-"))
+  value        = module.eventhub_configuration.keys[each.key].primary_connection_string
   content_type = "text/plain"
 
   key_vault_id = data.azurerm_key_vault.kv_domain.id
