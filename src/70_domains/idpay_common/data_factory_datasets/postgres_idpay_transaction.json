@@ -1,0 +1,17 @@
+{
+  "name": "postgres_idpay_transaction",
+  "properties": {
+    "linkedServiceName": {
+      "referenceName": "idpay-PostgreSQL-ls",
+      "type": "LinkedServiceReference"
+    },
+    "annotations": [],
+    "type": "AzurePostgreSqlTable",
+    "schema": [],
+    "typeProperties": {
+      "schema": "idpay-database",
+      "table": "transaction"
+    }
+  },
+  "type": "Microsoft.DataFactory/factories/datasets"
+}

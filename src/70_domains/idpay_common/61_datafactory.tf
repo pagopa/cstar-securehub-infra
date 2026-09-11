@@ -175,6 +175,45 @@ resource "azapi_resource_action" "approve_pe" {
     }
   }
 }
+
+# POSTGRESQL INTEGRATION
+
+resource "azapi_resource" "adf_postgresql_linked_service" {
+  count     = var.idpay_pgflex_params.enabled ? 1 : 0
+  type      = "Microsoft.DataFactory/factories/linkedservices@2018-06-01"
+  name      = "${var.domain}-PostgreSQL-ls"
+  parent_id = data.azurerm_data_factory.data_factory.id
+
+  schema_validation_enabled = false
+
+  body = {
+    properties = {
+      type    = "AzurePostgreSql"
+      version = "2.0"
+
+      typeProperties = {
+        server                 = module.idpay_pgflex[0].fqdn
+        port                   = 5432
+        database               = "idpay-database"
+        authenticationType     = "Basic"
+        username               = azurerm_key_vault_secret.idpay_postgres_admin_user[0].value
+        sslMode                = 3
+        trustServerCertificate = true
+
+        password = {
+          type  = "SecureString"
+          value = azurerm_key_vault_secret.idpay_postgres_admin_password[0].value
+        }
+      }
+
+      connectVia = {
+        referenceName = "AutoResolveIntegrationRuntime"
+        type          = "IntegrationRuntimeReference"
+      }
+    }
+  }
+}
+
 # ADF MI -> can read kv secrets
 resource "azurerm_role_assignment" "adf_can_read_kv_secrets" {
   scope                = data.azurerm_key_vault.domain_kv.id
