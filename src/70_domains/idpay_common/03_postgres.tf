@@ -49,7 +49,7 @@ resource "azurerm_key_vault_secret" "idpay_postgres_host" {
 resource "azurerm_key_vault_secret" "idpay_postgres_connection_string" {
   count        = var.idpay_pgflex_params.enabled ? 1 : 0
   name         = "idpay-postgres-connection-string"
-  value        = "jdbc:postgresql://${module.idpay_pgflex[0].fqdn}:5432/idpay-database"
+  value        = "jdbc:postgresql://${module.idpay_pgflex[0].fqdn}:5432/${local.idpay_postgresql_database_name}"
   key_vault_id = data.azurerm_key_vault.domain_kv.id
 
   content_type = "text/plain"
@@ -60,7 +60,7 @@ resource "azurerm_key_vault_secret" "idpay_postgres_connection_string" {
 resource "azurerm_key_vault_secret" "idpay_postgres_connection_string_r2dbc" {
   count        = var.idpay_pgflex_params.enabled ? 1 : 0
   name         = "idpay-postgres-connection-string-r2dbc"
-  value        = "r2dbc:postgresql://${module.idpay_pgflex[0].fqdn}:5432/idpay-database"
+  value        = "r2dbc:postgresql://${module.idpay_pgflex[0].fqdn}:5432/${local.idpay_postgresql_database_name}"
   key_vault_id = data.azurerm_key_vault.domain_kv.id
 
   content_type = "text/plain"
@@ -98,7 +98,10 @@ module "idpay_pgflex" {
   # Monitoring and performance settings
   diagnostic_settings_enabled = var.idpay_pgflex_params.pgres_flex_diagnostic_settings_enabled
   log_analytics_workspace_id  = azurerm_log_analytics_workspace.log_analytics_workspace.id
-  private_dns_registration    = false
+  private_dns_registration    = true
+  private_dns_zone_name       = "${var.env_short}.internal.postgresql.cstar.pagopa.it"
+  private_dns_zone_rg_name    = data.azurerm_resource_group.network_rg.name
+  private_dns_record_cname    = "idpay-db"
   pg_bouncer_enabled          = var.idpay_pgflex_params.pgres_flex_pgbouncer_enabled
   zone                        = var.idpay_pgflex_params.zone
 
@@ -114,3 +117,4 @@ module "idpay_pgflex" {
 
   tags = module.tag_config.tags_grafana_yes
 }
+

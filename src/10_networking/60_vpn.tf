@@ -77,7 +77,6 @@ module "dns_forwarder_lb_vmss" {
   location          = var.location
   subscription_id   = data.azurerm_subscription.current.subscription_id
   key_vault_id      = data.azurerm_key_vault.kv_core.id
-  tenant_id         = data.azurerm_client_config.current.id
   source_image_name = "cstar-${var.env_short}-itn-packer-dns-forwarder-ubuntu2204-image-${var.dns_forwarder_vmss_image_version}"
 
   tags = module.tag_config.tags

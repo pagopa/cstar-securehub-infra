@@ -24,3 +24,14 @@ resource "azurerm_data_factory_integration_runtime_azure" "autoresolve" {
   location                = "AutoResolve"
   virtual_network_enabled = true
 }
+
+
+module "adf_egress_vmss_connection" {
+  source = "./.terraform/modules/__v4__/adf_egress_connection"
+
+  data_factory_id = module.data_factory.id
+  egress_proxy_pls_id = data.azurerm_private_link_service.vmss_pls.id
+
+  adf_database_mapping = data.azurerm_key_vault_secret.adf_database_map.value
+
+}
