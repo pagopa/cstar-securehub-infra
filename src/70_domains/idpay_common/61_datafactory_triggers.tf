@@ -152,7 +152,8 @@ resource "azurerm_data_factory_trigger_schedule" "export_csv_daily" {
 
   depends_on = [
     azurerm_data_factory_pipeline.pipelines,
-    azurerm_role_assignment.adf_can_list_service_sas
+    azurerm_role_assignment.adf_can_access_multi_initiative_storage,
+    azurerm_role_assignment.adf_can_list_service_sas_multi_initiative
   ]
 }
 
@@ -182,7 +183,10 @@ resource "azurerm_data_factory_trigger_schedule" "export_products_daily" {
     minutes = [0]
   }
 
-  depends_on = [azurerm_data_factory_pipeline.pipelines]
+  depends_on = [
+    azurerm_data_factory_pipeline.pipelines,
+    azurerm_role_assignment.adf_can_access_multi_initiative_storage
+  ]
 }
 
 resource "azurerm_data_factory_trigger_schedule" "export_pos_daily" {
@@ -211,5 +215,8 @@ resource "azurerm_data_factory_trigger_schedule" "export_pos_daily" {
     minutes = [0]
   }
 
-  depends_on = [azurerm_data_factory_pipeline.pipelines]
+  depends_on = [
+    azurerm_data_factory_pipeline.pipelines,
+    azurerm_role_assignment.adf_can_access_multi_initiative_storage
+  ]
 }
