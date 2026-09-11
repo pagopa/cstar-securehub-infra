@@ -180,10 +180,11 @@
               "typeProperties": {
                 "method": "PUT",
                 "headers": {
-                  "x-ms-blob-content-type": "application/json"
+                  "x-ms-blob-content-type": "application/json",
+                  "x-ms-version": "2021-12-02"
                 },
                 "url": {
-                  "value": "@concat('https://', pipeline().parameters.exportAccountName, '.blob.core.windows.net/$web/', pipeline().parameters.initiativeFolder, '/elencoprodotti/data/product_export_', pipeline().parameters.initiativeId, '.json?comp=properties')",
+                  "value": "@concat('https://', pipeline().parameters.exportAccountName, '.blob.core.windows.net/$web/', pipeline().parameters.initiativeFolder, '/elenco-prodotti/data/product_export_', pipeline().parameters.initiativeId, '.json?comp=properties')",
                   "type": "Expression"
                 },
                 "connectVia": {

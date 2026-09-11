@@ -242,10 +242,11 @@
         "typeProperties": {
           "method": "PUT",
           "headers": {
-            "x-ms-blob-content-type": "text/csv"
+            "x-ms-blob-content-type": "text/csv",
+            "x-ms-version": "2021-12-02"
           },
           "url": {
-            "value": "@concat('https://', pipeline().parameters.exportAccountName, '.blob.core.windows.net/$web/', pipeline().parameters.initiativeFolder, '/elencoprodotti/data/export_daily_', pipeline().parameters.initiativeId, '_', formatDateTime(utcNow(),'yyyy-MM-dd'), '.csv?comp=properties')",
+            "value": "@concat('https://', pipeline().parameters.exportAccountName, '.blob.core.windows.net/$web/', pipeline().parameters.initiativeFolder, '/elenco-prodotti/data/export_daily_', pipeline().parameters.initiativeId, '_', formatDateTime(utcNow(),'yyyy-MM-dd'), '.csv?comp=properties')",
             "type": "Expression"
           },
           "connectVia": {
@@ -295,7 +296,7 @@
           "body": {
             "canonicalizedResource": {
               "type": "Expression",
-              "value": "@concat('/blob/', pipeline().parameters.exportAccountName, '/', pipeline().parameters.initiativeFolder, '/elencoprodotti/data/export_daily_', pipeline().parameters.initiativeId, '_', formatDateTime(utcNow(),'yyyy-MM-dd'), '.csv')"
+              "value": "@concat('/blob/', pipeline().parameters.exportAccountName, '/', pipeline().parameters.initiativeFolder, '/elenco-prodotti/data/export_daily_', pipeline().parameters.initiativeId, '_', formatDateTime(utcNow(),'yyyy-MM-dd'), '.csv')"
             },
             "signedExpiry": {
               "type": "Expression",
@@ -449,7 +450,7 @@
             "templateValues": {
               "downloadLink": {
                 "type": "Expression",
-                "value": "@concat('https://', pipeline().parameters.exportAccountName, '.blob.core.windows.net/$web/', pipeline().parameters.initiativeFolder, '/elencoprodotti/data/export_daily_', pipeline().parameters.initiativeId, '_', formatDateTime(utcNow(),'yyyy-MM-dd'), '.csv?', activity('Generate_SAS').output.serviceSasToken)"
+                "value": "@concat('https://', pipeline().parameters.exportAccountName, '.blob.core.windows.net/$web/', pipeline().parameters.initiativeFolder, '/elenco-prodotti/data/export_daily_', pipeline().parameters.initiativeId, '_', formatDateTime(utcNow(),'yyyy-MM-dd'), '.csv?', activity('Generate_SAS').output.serviceSasToken)"
               },
               "exportDate": {
                 "type": "Expression",

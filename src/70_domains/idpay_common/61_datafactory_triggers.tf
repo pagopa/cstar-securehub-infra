@@ -137,7 +137,7 @@ resource "azurerm_data_factory_trigger_schedule" "export_csv_daily" {
       initiativeName     = each.value.initiative_name
       subscriptionId     = data.azurerm_subscription.current.subscription_id
       resourceGroup      = data.azurerm_resource_group.idpay_data_rg.name
-      exportAccountName  = module.storage_idpay_exports.name
+      exportAccountName  = module.cdn_multi_initiative[0].storage_account_name
       notifyUrl          = local.notify_url
       kvUrl              = data.azurerm_key_vault.domain_kv.vault_uri
       kvSecretName       = each.value.kv_secret_subkey
@@ -173,7 +173,7 @@ resource "azurerm_data_factory_trigger_schedule" "export_products_daily" {
     parameters = {
       initiativeId      = each.value.initiative_id
       initiativeFolder  = each.value.initiative_folder
-      exportAccountName = module.storage_idpay_exports.name
+      exportAccountName = module.cdn_multi_initiative[0].storage_account_name
     }
   }
 
@@ -202,7 +202,7 @@ resource "azurerm_data_factory_trigger_schedule" "export_pos_daily" {
     parameters = {
       initiativeId      = each.value.initiative_id
       initiativeFolder  = each.value.initiative_folder
-      exportAccountName = module.storage_idpay_exports.name
+      exportAccountName = module.cdn_multi_initiative[0].storage_account_name
     }
   }
 
