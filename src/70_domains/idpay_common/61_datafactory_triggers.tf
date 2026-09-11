@@ -137,7 +137,7 @@ resource "azurerm_data_factory_trigger_schedule" "export_csv_daily" {
       initiativeName     = each.value.initiative_name
       subscriptionId     = data.azurerm_subscription.current.subscription_id
       resourceGroup      = data.azurerm_resource_group.idpay_data_rg.name
-      exportAccountName  = module.storage_idpay_exports.name
+      exportAccountName  = module.cdn_multi_initiative[0].storage_account_name
       notifyUrl          = local.notify_url
       kvUrl              = data.azurerm_key_vault.domain_kv.vault_uri
       kvSecretName       = each.value.kv_secret_subkey
@@ -152,7 +152,8 @@ resource "azurerm_data_factory_trigger_schedule" "export_csv_daily" {
 
   depends_on = [
     azurerm_data_factory_pipeline.pipelines,
-    azurerm_role_assignment.adf_can_list_service_sas
+    azurerm_role_assignment.adf_can_access_multi_initiative_storage,
+    azurerm_role_assignment.adf_can_list_service_sas_multi_initiative
   ]
 }
 
@@ -171,8 +172,9 @@ resource "azurerm_data_factory_trigger_schedule" "export_products_daily" {
   pipeline {
     name = "idpay_product_export_daily"
     parameters = {
-      initiativeId     = each.value.initiative_id
-      initiativeFolder = each.value.initiative_folder
+      initiativeId      = each.value.initiative_id
+      initiativeFolder  = each.value.initiative_folder
+      exportAccountName = module.cdn_multi_initiative[0].storage_account_name
     }
   }
 
@@ -181,7 +183,10 @@ resource "azurerm_data_factory_trigger_schedule" "export_products_daily" {
     minutes = [0]
   }
 
-  depends_on = [azurerm_data_factory_pipeline.pipelines]
+  depends_on = [
+    azurerm_data_factory_pipeline.pipelines,
+    azurerm_role_assignment.adf_can_access_multi_initiative_storage
+  ]
 }
 
 resource "azurerm_data_factory_trigger_schedule" "export_pos_daily" {
@@ -199,8 +204,9 @@ resource "azurerm_data_factory_trigger_schedule" "export_pos_daily" {
   pipeline {
     name = "idpay_pos_export_daily"
     parameters = {
-      initiativeId     = each.value.initiative_id
-      initiativeFolder = each.value.initiative_folder
+      initiativeId      = each.value.initiative_id
+      initiativeFolder  = each.value.initiative_folder
+      exportAccountName = module.cdn_multi_initiative[0].storage_account_name
     }
   }
 
@@ -209,5 +215,8 @@ resource "azurerm_data_factory_trigger_schedule" "export_pos_daily" {
     minutes = [0]
   }
 
-  depends_on = [azurerm_data_factory_pipeline.pipelines]
+  depends_on = [
+    azurerm_data_factory_pipeline.pipelines,
+    azurerm_role_assignment.adf_can_access_multi_initiative_storage
+  ]
 }
