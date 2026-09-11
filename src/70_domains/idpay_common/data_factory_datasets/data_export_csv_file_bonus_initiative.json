@@ -19,7 +19,7 @@
           "type": "Expression"
         },
         "folderPath": {
-          "value": "@concat(dataset().initiativeFolder, '/elencoprodotti/data')",
+          "value": "@concat(dataset().initiativeFolder, '/elenco-prodotti/data')",
           "type": "Expression"
         },
         "container": "$web"
