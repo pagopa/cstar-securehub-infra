@@ -1,0 +1,35 @@
+{
+  "name": "blob_product_export_initiative",
+  "properties": {
+    "linkedServiceName": {
+      "referenceName": "${domain}-multi-initiative-blob-storage-ls",
+      "type": "LinkedServiceReference"
+    },
+    "parameters": {
+      "initiativeFolder": { "type": "String" },
+      "initiativeId": { "type": "String" }
+    },
+    "annotations": [
+      "Products Export",
+      "IdPay",
+      "Multi-Initiative"
+    ],
+    "type": "Json",
+    "typeProperties": {
+      "location": {
+        "type": "AzureBlobStorageLocation",
+        "fileName": {
+          "value": "@concat('product_export_', dataset().initiativeId, '.json')",
+          "type": "Expression"
+        },
+        "folderPath": {
+          "value": "@concat(dataset().initiativeFolder, '/elencoprodotti/data')",
+          "type": "Expression"
+        },
+        "container": "$web"
+      },
+      "encodingName": "UTF-8"
+    }
+  },
+  "type": "Microsoft.DataFactory/factories/datasets"
+}

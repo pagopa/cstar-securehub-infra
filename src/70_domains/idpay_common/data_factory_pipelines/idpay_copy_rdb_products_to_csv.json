@@ -3,8 +3,8 @@
   "properties": {
     "activities": [
       {
-        "name": "Copy_Cosmos_to_CSV",
-        "type": "Copy",
+        "name": "Lookup_Refresh_Status",
+        "type": "Lookup",
         "dependsOn": [],
         "policy": {
           "timeout": "0.12:00:00",
@@ -16,142 +16,52 @@
         "userProperties": [],
         "typeProperties": {
           "source": {
-            "type": "CosmosDbMongoDbApiSource",
-            "batchSize": 100,
-            "filter": "{ \"status\": \"APPROVED\" }",
-            "cursorMethods": {
-              "project": "{ \"_id\": 1, \"model\": 1, \"brand\": 1, \"eprelCode\": 1, \"countryOfProduction\": 1, \"energyClass\": 1, \"capacity\": 1, \"productName\": 1, \"category\": 1, \"productGroup\": 1 }"
-            }
+            "type": "AzureDataExplorerSource",
+            "query": "export_refresh_status | where datasetName == \"products\" | top 1 by refreshTimestamp desc | where status == \"SUCCESS\" and refreshTimestamp > ago(24h)"
           },
-          "sink": {
-            "type": "DelimitedTextSink",
-            "storeSettings": {
-              "type": "AzureBlobFSWriteSettings",
-              "copyBehavior": "FlattenHierarchy"
-            },
-            "formatSettings": {
-              "type": "DelimitedTextWriteSettings",
-              "quoteAllText": true,
-              "fileExtension": ".txt"
-            }
+          "dataset": {
+            "referenceName": "data_explorer_export_refresh_status",
+            "type": "DatasetReference"
           },
-          "enableStaging": false,
-          "translator": {
-            "type": "TabularTranslator",
-            "mappings": [
-              {
-                "source": {
-                  "path": "$['_id']"
-                },
-                "sink": {
-                  "name": "_id",
-                  "type": "String"
-                }
-              },
-              {
-                "source": {
-                  "path": "$['model']"
-                },
-                "sink": {
-                  "name": "model",
-                  "type": "String"
-                }
-              },
-              {
-                "source": {
-                  "path": "$['brand']"
-                },
-                "sink": {
-                  "name": "brand",
-                  "type": "String"
-                }
-              },
-              {
-                "source": {
-                  "path": "$['eprelCode']"
-                },
-                "sink": {
-                  "name": "eprelCode",
-                  "type": "String"
-                }
-              },
-              {
-                "source": {
-                  "path": "$['countryOfProduction']"
-                },
-                "sink": {
-                  "name": "countryOfProduction",
-                  "type": "String"
-                }
-              },
-              {
-                "source": {
-                  "path": "$['energyClass']"
-                },
-                "sink": {
-                  "name": "energyClass",
-                  "type": "String"
-                }
-              },
-              {
-                "source": {
-                  "path": "$['capacity']"
-                },
-                "sink": {
-                  "name": "capacity",
-                  "type": "String"
-                }
-              },
-              {
-                "source": {
-                  "path": "$['productName']"
-                },
-                "sink": {
-                  "name": "productName",
-                  "type": "String"
-                }
-              },
-              {
-                "source": {
-                  "path": "$['category']"
-                },
-                "sink": {
-                  "name": "category",
-                  "type": "String"
-                }
-              },
-              {
-                "source": {
-                  "path": "$['productGroup']"
-                },
-                "sink": {
-                  "name": "productGroup",
-                  "type": "String"
-                }
-              }
-            ],
-            "mapComplexValuesToString": false
-          }
-        },
-        "inputs": [
-          {
-            "referenceName": "cosmos_rdb_products",
-            "type": "DatasetReference"
-          }
-        ],
-        "outputs": [
-          {
-            "referenceName": "data_export_csv",
-            "type": "DatasetReference"
-          }
-        ]
+          "firstRowOnly": false
+        }
       },
       {
-        "name": "FlussoExportCSV",
-        "type": "ExecuteDataFlow",
+        "name": "Validate_Products_Refresh",
+        "type": "IfCondition",
         "dependsOn": [
           {
-            "activity": "Copy_Cosmos_to_CSV",
+            "activity": "Lookup_Refresh_Status",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "typeProperties": {
+          "expression": {
+            "value": "@greater(activity('Lookup_Refresh_Status').output.count, 0)",
+            "type": "Expression"
+          },
+          "ifTrueActivities": [],
+          "ifFalseActivities": [
+            {
+              "name": "Fail_Products_Refresh",
+              "type": "Fail",
+              "dependsOn": [],
+              "typeProperties": {
+                "message": "Required ADX dataset refresh not found.",
+                "errorCode": "ProductsRefreshNotFound"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "Lookup_Initiative_Export_Configuration",
+        "type": "Lookup",
+        "dependsOn": [
+          {
+            "activity": "Validate_Products_Refresh",
             "dependencyConditions": [
               "Succeeded"
             ]
@@ -166,57 +76,148 @@
         },
         "userProperties": [],
         "typeProperties": {
-          "dataFlow": {
-            "referenceName": "export_flow_csv",
-            "type": "DataFlowReference"
+          "source": {
+            "type": "AzureDataExplorerSource",
+            "query": {
+              "value": "@concat('initiative_export_configuration | where initiativeId == \"', pipeline().parameters.initiativeId, '\" | project fieldsCsv = strcat_array(exportConfiguration.fields, \",\")')",
+              "type": "Expression"
+            }
           },
-          "compute": {
-            "coreCount": 8,
-            "computeType": "General"
+          "dataset": {
+            "referenceName": "data_explorer_initiative_export_configuration",
+            "type": "DatasetReference"
           },
-          "traceLevel": "Fine"
+          "firstRowOnly": false
         }
       },
       {
-        "name": "Copy_To_Bonus",
-        "type": "Copy",
+        "name": "Validate_Initiative_Export_Configuration",
+        "type": "IfCondition",
         "dependsOn": [
           {
-            "activity": "FlussoExportCSV",
+            "activity": "Lookup_Initiative_Export_Configuration",
             "dependencyConditions": [
               "Succeeded"
             ]
           }
         ],
-        "policy": {
-          "timeout": "0.01:00:00",
-          "retry": 2,
-          "retryIntervalInSeconds": 30,
-          "secureOutput": false,
-          "secureInput": false
-        },
-        "userProperties": [],
         "typeProperties": {
-          "source": {
-            "type": "BinarySource"
+          "expression": {
+            "value": "@greater(activity('Lookup_Initiative_Export_Configuration').output.count, 0)",
+            "type": "Expression"
           },
-          "sink": {
-            "type": "BinarySink"
-          },
-          "enableStaging": false
-        },
-        "inputs": [
-          {
-            "referenceName": "data_export_csv_file",
-            "type": "DatasetReference"
-          }
-        ],
-        "outputs": [
-          {
-            "referenceName": "data_export_csv_file_bonus",
-            "type": "DatasetReference"
-          }
-        ]
+          "ifTrueActivities": [
+            {
+              "name": "Copy_ADX_to_CSV",
+              "type": "Copy",
+              "dependsOn": [],
+              "policy": {
+                "timeout": "0.12:00:00",
+                "retry": 0,
+                "retryIntervalInSeconds": 30,
+                "secureOutput": false,
+                "secureInput": false
+              },
+              "userProperties": [],
+              "typeProperties": {
+                "source": {
+                  "type": "AzureDataExplorerSource",
+                  "query": {
+                    "value": "@concat('let translated = category_translation | where initiativeId == \"', pipeline().parameters.initiativeId, '\" and language == \"it\" | project categoryCode = tostring(categoryCode), categoryDescription = tostring(description); products | where status == \"APPROVED\" and initiativeId == \"', pipeline().parameters.initiativeId, '\" | extend category = tostring(category) | join kind=leftouter translated on $left.category == $right.categoryCode | extend category = iff(isempty(categoryDescription), category, categoryDescription) | project ', activity('Lookup_Initiative_Export_Configuration').output.value[0].fieldsCsv)",
+                    "type": "Expression"
+                  }
+                },
+                "sink": {
+                  "type": "DelimitedTextSink",
+                  "storeSettings": {
+                    "type": "AzureBlobFSWriteSettings",
+                    "copyBehavior": "FlattenHierarchy"
+                  },
+                  "formatSettings": {
+                    "type": "DelimitedTextWriteSettings",
+                    "quoteAllText": true,
+                    "fileExtension": ".csv"
+                  }
+                },
+                "enableStaging": false
+              },
+              "inputs": [
+                {
+                  "referenceName": "data_explorer_rdb_products",
+                  "type": "DatasetReference"
+                }
+              ],
+              "outputs": [
+                {
+                  "referenceName": "data_export_csv_initiative",
+                  "type": "DatasetReference",
+                  "parameters": {
+                    "initiativeId": "@pipeline().parameters.initiativeId"
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Copy_To_Bonus",
+              "type": "Copy",
+              "dependsOn": [
+                {
+                  "activity": "Copy_ADX_to_CSV",
+                  "dependencyConditions": [
+                    "Succeeded"
+                  ]
+                }
+              ],
+              "policy": {
+                "timeout": "0.01:00:00",
+                "retry": 2,
+                "retryIntervalInSeconds": 30,
+                "secureOutput": false,
+                "secureInput": false
+              },
+              "userProperties": [],
+              "typeProperties": {
+                "source": {
+                  "type": "BinarySource"
+                },
+                "sink": {
+                  "type": "BinarySink"
+                },
+                "enableStaging": false
+              },
+              "inputs": [
+                {
+                  "referenceName": "data_export_csv_file_initiative",
+                  "type": "DatasetReference",
+                  "parameters": {
+                    "initiativeId": "@pipeline().parameters.initiativeId"
+                  }
+                }
+              ],
+              "outputs": [
+                {
+                  "referenceName": "data_export_csv_file_bonus_initiative",
+                  "type": "DatasetReference",
+                  "parameters": {
+                    "initiativeFolder": "@pipeline().parameters.initiativeFolder",
+                    "initiativeId": "@pipeline().parameters.initiativeId"
+                  }
+                }
+              ]
+            }
+          ],
+          "ifFalseActivities": [
+            {
+              "name": "Fail_Initiative_Export_Configuration",
+              "type": "Fail",
+              "dependsOn": [],
+              "typeProperties": {
+                "message": "Initiative export configuration not found.",
+                "errorCode": "InitiativeExportConfigurationNotFound"
+              }
+            }
+          ]
+        }
       },
       {
         "name": "Generate_SAS",
@@ -225,7 +226,7 @@
         "onInactiveMarkAs": "Succeeded",
         "dependsOn": [
           {
-            "activity": "Copy_To_Bonus",
+            "activity": "Validate_Initiative_Export_Configuration",
             "dependencyConditions": [
               "Succeeded"
             ]
@@ -255,7 +256,7 @@
           "body": {
             "canonicalizedResource": {
               "type": "Expression",
-              "value": "@concat('/blob/', pipeline().parameters.exportAccountName, '/export/data/export_daily_', formatDateTime(utcNow(),'yyyy-MM-dd'), '.csv')"
+              "value": "@concat('/blob/', pipeline().parameters.exportAccountName, '/', pipeline().parameters.initiativeFolder, '/elencoprodotti/data/export_daily_', pipeline().parameters.initiativeId, '_', formatDateTime(utcNow(),'yyyy-MM-dd'), '.csv')"
             },
             "signedExpiry": {
               "type": "Expression",
@@ -409,17 +410,20 @@
             "templateValues": {
               "downloadLink": {
                 "type": "Expression",
-                "value": "@concat('https://', pipeline().parameters.exportAccountName, '.blob.core.windows.net/export/data/export_daily_', formatDateTime(utcNow(),'yyyy-MM-dd'), '.csv?', activity('Generate_SAS').output.serviceSasToken)"
+                "value": "@concat('https://', pipeline().parameters.exportAccountName, '.blob.core.windows.net/$web/', pipeline().parameters.initiativeFolder, '/elencoprodotti/data/export_daily_', pipeline().parameters.initiativeId, '_', formatDateTime(utcNow(),'yyyy-MM-dd'), '.csv?', activity('Generate_SAS').output.serviceSasToken)"
               },
               "exportDate": {
                 "type": "Expression",
                 "value": "@formatDateTime(utcNow(),'yyyy-MM-dd')"
               },
-              "initiativeName": "IDPAY",
+              "initiativeName": {
+                "type": "Expression",
+                "value": "@pipeline().parameters.initiativeName"
+              },
               "orgName": "PagoPA S.p.A.",
               "productFileName": {
                 "type": "Expression",
-                "value": "@concat('export_daily_', formatDateTime(utcNow(),'yyyy-MM-dd'), '.csv')"
+                "value": "@concat('export_daily_', pipeline().parameters.initiativeId, '_', formatDateTime(utcNow(),'yyyy-MM-dd'), '.csv')"
               }
             }
           }
@@ -428,6 +432,15 @@
     ],
     "parameters": {
       "exportAccountName": {
+        "type": "String"
+      },
+      "initiativeFolder": {
+        "type": "String"
+      },
+      "initiativeId": {
+        "type": "String"
+      },
+      "initiativeName": {
         "type": "String"
       },
       "kvSecretName": {
@@ -449,8 +462,7 @@
         "type": "String"
       }
     },
-    "annotations": [],
-    "lastPublishTime": "2026-05-29T08:04:17Z"
+    "annotations": []
   },
   "type": "Microsoft.DataFactory/factories/pipelines"
 }

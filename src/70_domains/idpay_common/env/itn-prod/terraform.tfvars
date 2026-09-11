@@ -31,12 +31,12 @@ service_bus_namespace = {
 ## Eventhub
 ehns_sku_name = "Standard"
 ehns_capacity = {
-  ns_00 = 5
+  ns_00 = 1
   ns_01 = 1
   ns_02 = 1
   rdb   = 1
 }
-ehns_maximum_throughput_units = 25
+ehns_maximum_throughput_units = 10
 ehns_auto_inflate_enabled     = true
 ehns_alerts_enabled           = true
 
@@ -117,3 +117,22 @@ idpay_pgflex_params = {
 }
 
 enabled_cdn_multi_initiative = false
+
+export_initiatives = [
+  {
+    key               = "bonusdecoder"
+    initiative_id     = "69e0fa95e21efa516c7b8dec"
+    initiative_folder = "bonusdecoder"
+    initiative_name   = "Bonus Decoder"
+    kv_secret_subkey  = "apim-idpay-email-export-subkey"
+    kv_secret_email   = "idpay-export-email-mimit"
+  },
+  {
+    key               = "bonuselettrodomestici"
+    initiative_id     = "68dd003ccce8c534d1da22bc"
+    initiative_folder = "bonuselettrodomestici"
+    initiative_name   = "Bonus Elettrodomestici"
+    kv_secret_subkey  = "apim-idpay-email-export-subkey"
+    kv_secret_email   = "idpay-export-email-mimit"
+  }
+]

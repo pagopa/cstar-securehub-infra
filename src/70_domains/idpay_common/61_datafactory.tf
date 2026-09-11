@@ -33,6 +33,32 @@ resource "azurerm_data_factory_linked_custom_service" "bonus_blob_storage_linked
   }
 }
 
+data "azurerm_storage_account" "cdn_multi_initiative_storage_account" {
+  count = var.enabled_cdn_multi_initiative ? 1 : 0
+
+  name                = module.cdn_multi_initiative[0].storage_account_name
+  resource_group_name = local.data_rg
+}
+
+resource "azurerm_data_factory_linked_custom_service" "multi_initiative_blob_storage_linked_service" {
+  count = var.enabled_cdn_multi_initiative ? 1 : 0
+
+  name            = "${var.domain}-multi-initiative-blob-storage-ls"
+  data_factory_id = data.azurerm_data_factory.data_factory.id
+  type            = "AzureBlobStorage"
+  description     = "Multi-Initiative CDN Blob Storage linked service for IdPay exports"
+  type_properties_json = jsonencode({
+    connectionString = data.azurerm_storage_account.cdn_multi_initiative_storage_account[0].primary_connection_string
+  })
+
+  integration_runtime {
+    name = "AutoResolveIntegrationRuntime"
+  }
+
+  depends_on = [module.cdn_multi_initiative]
+}
+
+
 resource "azurerm_data_factory_linked_custom_service" "idpay_blob_storage_trx_report_linked_service" {
 
   name            = "${var.domain}-report-trx-blob-storage-ls"
