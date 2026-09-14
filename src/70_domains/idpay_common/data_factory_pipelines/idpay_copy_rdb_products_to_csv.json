@@ -246,7 +246,7 @@
             "x-ms-version": "2021-12-02"
           },
           "url": {
-            "value": "@concat('https://', pipeline().parameters.exportAccountName, '.blob.core.windows.net/$web/', pipeline().parameters.initiativeFolder, '/elenco-prodotti/data/export_daily_', pipeline().parameters.initiativeId, '_', formatDateTime(utcNow(),'yyyy-MM-dd'), '.csv?comp=properties')",
+            "value": "@concat('https://', pipeline().parameters.exportAccountName, '.blob.core.windows.net/$web/', pipeline().parameters.initiativeFolder, '/elenco-prodotti/data/export_daily_', pipeline().parameters.initiativeId, '_', formatDateTime(convertTimeZone(utcNow(), 'UTC', 'W. Europe Standard Time'),'yyyy-MM-dd'), '.csv?comp=properties')",
             "type": "Expression"
           },
           "connectVia": {
@@ -296,7 +296,7 @@
           "body": {
             "canonicalizedResource": {
               "type": "Expression",
-              "value": "@concat('/blob/', pipeline().parameters.exportAccountName, '/', pipeline().parameters.initiativeFolder, '/elenco-prodotti/data/export_daily_', pipeline().parameters.initiativeId, '_', formatDateTime(utcNow(),'yyyy-MM-dd'), '.csv')"
+              "value": "@concat('/blob/', pipeline().parameters.exportAccountName, '/', pipeline().parameters.initiativeFolder, '/elenco-prodotti/data/export_daily_', pipeline().parameters.initiativeId, '_', formatDateTime(convertTimeZone(utcNow(), 'UTC', 'W. Europe Standard Time'),'yyyy-MM-dd'), '.csv')"
             },
             "signedExpiry": {
               "type": "Expression",
@@ -444,17 +444,17 @@
             },
             "subject": {
               "type": "Expression",
-              "value": "@concat('Export giornaliero dei prodotti ', formatDateTime(utcNow(),'yyyy-MM-dd'))"
+                "value": "@concat('Export giornaliero dei prodotti ', formatDateTime(convertTimeZone(utcNow(), 'UTC', 'W. Europe Standard Time'),'yyyy-MM-dd'))"
             },
             "templateName": "Email_ExportDaily_Products",
             "templateValues": {
               "downloadLink": {
                 "type": "Expression",
-                "value": "@concat('https://', pipeline().parameters.exportAccountName, '.blob.core.windows.net/$web/', pipeline().parameters.initiativeFolder, '/elenco-prodotti/data/export_daily_', pipeline().parameters.initiativeId, '_', formatDateTime(utcNow(),'yyyy-MM-dd'), '.csv?', activity('Generate_SAS').output.serviceSasToken)"
+                "value": "@concat('https://', pipeline().parameters.exportAccountName, '.blob.core.windows.net/$web/', pipeline().parameters.initiativeFolder, '/elenco-prodotti/data/export_daily_', pipeline().parameters.initiativeId, '_', formatDateTime(convertTimeZone(utcNow(), 'UTC', 'W. Europe Standard Time'),'yyyy-MM-dd'), '.csv?', activity('Generate_SAS').output.serviceSasToken)"
               },
               "exportDate": {
                 "type": "Expression",
-                "value": "@formatDateTime(utcNow(),'yyyy-MM-dd')"
+                "value": "@formatDateTime(convertTimeZone(utcNow(), 'UTC', 'W. Europe Standard Time'),'yyyy-MM-dd')"
               },
               "initiativeName": {
                 "type": "Expression",
@@ -463,7 +463,7 @@
               "orgName": "PagoPA S.p.A.",
               "productFileName": {
                 "type": "Expression",
-                "value": "@concat('export_daily_', pipeline().parameters.initiativeId, '_', formatDateTime(utcNow(),'yyyy-MM-dd'), '.csv')"
+                "value": "@concat('export_daily_', pipeline().parameters.initiativeId, '_', formatDateTime(convertTimeZone(utcNow(), 'UTC', 'W. Europe Standard Time'),'yyyy-MM-dd'), '.csv')"
               }
             }
           }
