@@ -18,6 +18,13 @@ locals {
     kv_url                    = data.azurerm_key_vault.domain_kv.vault_uri
   }))
 
+  # path to the approved reward batch csv pipeline
+  pipeline_reward_batch_csv_file = "${path.module}/data_factory_pipelines/templated/idpay_reward_batch_csv.json"
+  pipeline_reward_batch_csv_json = jsondecode(templatefile(local.pipeline_reward_batch_csv_file, {
+    data_factory_api_base_url = var.data_factory_api_base_url,
+    kv_url                    = data.azurerm_key_vault.domain_kv.vault_uri
+  }))
+
   # path to the producers import pipeline
   pipeline_producers_import = "${path.module}/data_factory_pipelines/templated/idpay_producers_import.json"
   pipeline_producers_import_json = jsondecode(templatefile(local.pipeline_producers_import, {
@@ -78,6 +85,23 @@ resource "azurerm_data_factory_pipeline" "idpay_user_details_report" {
     {}
   )
   activities_json = jsonencode(local.pipeline_user_details_report_json.properties.activities)
+}
+
+resource "azurerm_data_factory_pipeline" "idpay_reward_batch_csv" {
+  name            = local.pipeline_reward_batch_csv_json.name
+  data_factory_id = data.azurerm_data_factory.data_factory.id
+
+  description = try(local.pipeline_reward_batch_csv_json.properties.description, null)
+  concurrency = try(local.pipeline_reward_batch_csv_json.properties.concurrency, null)
+  annotations = try(local.pipeline_reward_batch_csv_json.properties.annotations, [])
+  parameters = try(
+    {
+      for k, v in local.pipeline_reward_batch_csv_json.properties.parameters :
+      k => try(v.defaultValue, "")
+    },
+    {}
+  )
+  activities_json = jsonencode(local.pipeline_reward_batch_csv_json.properties.activities)
 }
 
 resource "azapi_resource" "idpay_producers_import" {
