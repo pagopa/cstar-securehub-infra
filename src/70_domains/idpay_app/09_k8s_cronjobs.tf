@@ -84,7 +84,7 @@ resource "kubernetes_cron_job_v1" "transaction_reaper" {
               image   = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
               command = ["/bin/sh", "-c"]
               args = concat(
-["curl \"$@\"", "curl"],
+                ["curl \"$@\"", "curl"],
                 local.idpay_batch_curl_args,
                 [
                   "-X", "DELETE",
@@ -100,7 +100,7 @@ resource "kubernetes_cron_job_v1" "transaction_reaper" {
                 image   = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
                 command = ["/bin/sh", "-c"]
                 args = concat(
-                  ["curl \"$@\" || true", "curl"],
+                  ["curl \"$@\"", "curl"],
                   local.idpay_batch_curl_args,
                   [
                     "-X", "DELETE",
@@ -153,7 +153,7 @@ resource "kubernetes_cron_job_v1" "cancel_expired_vouchers" {
               image   = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
               command = ["/bin/sh", "-c"]
               args = concat(
-                ["curl \"$@\" || true", "curl"],
+                ["curl \"$@\"", "curl"],
                 local.idpay_batch_curl_args,
                 [
                   "-X", "POST",
@@ -169,7 +169,7 @@ resource "kubernetes_cron_job_v1" "cancel_expired_vouchers" {
                 image   = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
                 command = ["/bin/sh", "-c"]
                 args = concat(
-                  ["curl \"$@\" || true", "curl"],
+                  ["curl \"$@\"", "curl"],
                   local.idpay_batch_curl_args,
                   [
                     "-X", "POST",
@@ -222,7 +222,7 @@ resource "kubernetes_cron_job_v1" "reminder_voucher_expiration" {
               image   = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
               command = ["/bin/sh", "-c"]
               args = concat(
-                ["curl \"$@\" || true", "curl"],
+                ["curl \"$@\"", "curl"],
                 local.idpay_batch_curl_args,
                 [
                   "-X", "POST",
@@ -238,7 +238,7 @@ resource "kubernetes_cron_job_v1" "reminder_voucher_expiration" {
                 image   = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
                 command = ["/bin/sh", "-c"]
                 args = concat(
-                  ["curl \"$@\" || true", "curl"],
+                  ["curl \"$@\"", "curl"],
                   local.idpay_batch_curl_args,
                   [
                     "-X", "POST",
@@ -294,7 +294,7 @@ resource "kubernetes_cron_job_v1" "evaluate_sent_reward_batch" {
               image   = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
               command = ["/bin/sh", "-c"]
               args = concat(
-                ["curl \"$@\" || true", "curl"],
+                ["curl \"$@\"", "curl"],
                 local.idpay_transactions_curl_args,
                 [
                   "-X", "POST",
@@ -312,7 +312,7 @@ resource "kubernetes_cron_job_v1" "evaluate_sent_reward_batch" {
                 image   = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
                 command = ["/bin/sh", "-c"]
                 args = concat(
-                  ["curl \"$@\" || true", "curl"],
+                  ["curl \"$@\"", "curl"],
                   local.idpay_transactions_curl_args,
                   [
                     "-X", "POST",
@@ -370,7 +370,7 @@ resource "kubernetes_cron_job_v1" "evaluate_approve_reward_batch" {
               image   = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
               command = ["/bin/sh", "-c"]
               args = concat(
-                ["curl \"$@\" || true", "curl"],
+                ["curl \"$@\"", "curl"],
                 local.idpay_transactions_curl_args,
                 [
                   "-X", "POST",
@@ -388,7 +388,7 @@ resource "kubernetes_cron_job_v1" "evaluate_approve_reward_batch" {
                 image   = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
                 command = ["/bin/sh", "-c"]
                 args = concat(
-                  ["curl \"$@\" || true", "curl"],
+                  ["curl \"$@\"", "curl"],
                   local.idpay_transactions_curl_args,
                   [
                     "-X", "POST",
@@ -559,7 +559,7 @@ resource "kubernetes_cron_job_v1" "delivery_reward_batch" {
               image   = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
               command = ["/bin/sh", "-c"]
               args = concat(
-                ["curl \"$@\" || true", "curl"],
+                ["curl \"$@\"", "curl"],
                 local.idpay_transactions_curl_args,
                 [
                   "-X", "POST",
@@ -577,7 +577,7 @@ resource "kubernetes_cron_job_v1" "delivery_reward_batch" {
                 image   = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
                 command = ["/bin/sh", "-c"]
                 args = concat(
-                  ["curl \"$@\" || true", "curl"],
+                  ["curl \"$@\"", "curl"],
                   local.idpay_transactions_curl_args,
                   [
                     "-X", "POST",
@@ -636,7 +636,7 @@ resource "kubernetes_cron_job_v1" "delivery_check_outcome_reward_batch" {
               image   = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
               command = ["/bin/sh", "-c"]
               args = concat(
-                ["curl \"$@\" || true", "curl"],
+                ["curl \"$@\"", "curl"],
                 local.idpay_transactions_curl_args,
                 [
                   "-X", "POST",
@@ -654,7 +654,7 @@ resource "kubernetes_cron_job_v1" "delivery_check_outcome_reward_batch" {
                 image   = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
                 command = ["/bin/sh", "-c"]
                 args = concat(
-                  ["curl \"$@\" || true", "curl"],
+                  ["curl \"$@\"", "curl"],
                   local.idpay_transactions_curl_args,
                   [
                     "-X", "POST",
