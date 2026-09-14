@@ -1,0 +1,15 @@
+{
+  "name": "data_explorer_idpay_pos_initiative",
+  "properties": {
+    "linkedServiceName": {
+      "referenceName": "idpay-Kusto-idpay-ls",
+      "type": "LinkedServiceReference"
+    },
+    "annotations": [],
+    "type": "AzureDataExplorerTable",
+    "typeProperties": {
+      "table": "point_of_sales_initiative"
+    }
+  },
+  "type": "Microsoft.DataFactory/factories/datasets"
+}
