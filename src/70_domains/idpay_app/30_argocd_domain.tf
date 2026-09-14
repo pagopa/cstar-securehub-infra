@@ -82,7 +82,7 @@ locals {
       "idpay-ranking" = {
         name          = "idpay-ranking"
         target_branch = "main"
-        env           = ["dev", "uat", "prod"]
+        env           = ["dev", "uat"]
       },
       "idpay-recovery-error-topic" = {
         name          = "idpay-recovery-error-topic"
