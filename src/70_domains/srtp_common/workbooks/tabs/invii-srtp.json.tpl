@@ -1896,9 +1896,9 @@
               "type": 3,
               "content": {
                 "version": "KqlItem/1.0",
-                "query": "AzureDiagnostics\n| where TimeGenerated {evaluation_window:query}\n| where requestUri_s == '/rtp/cb/send'\n| summarize count() by tostring(toint(httpStatus_d))\n",
+                "query": "AzureDiagnostics\n| where TimeGenerated {evaluation_window:query}\n| where requestUri_s == '/rtp/cb/v1/send'\n| summarize count() by tostring(toint(httpStatus_d))\n",
                 "size": 0,
-                "title": "Callback totali ricevute e relativi status code",
+                "title": "Callback Send e relativi status code",
                 "queryType": 0,
                 "resourceType": "microsoft.operationalinsights/workspaces",
                 "crossComponentResources": [
@@ -1918,7 +1918,7 @@
                 }
               },
               "customWidth": "50",
-              "name": "Callback totali ricevute e relativi status code",
+              "name": "Callback Send e relativi status code",
               "styleSettings": {
                 "showBorder": true
               }
@@ -1927,9 +1927,40 @@
               "type": 3,
               "content": {
                 "version": "KqlItem/1.0",
-                "query": "AzureDiagnostics\n| where TimeGenerated {evaluation_window:query}\n| where requestUri_s == \"/rtp/cb/send\"\n| where toint(httpStatus_d) != 200\n| summarize count() by tostring(toint(httpStatus_d))",
+                "query": "AzureDiagnostics\n| where TimeGenerated {evaluation_window:query}\n| where requestUri_s == '/rtp/cb/v1/cancel'\n| summarize count() by tostring(toint(httpStatus_d))\n",
                 "size": 0,
-                "title": "Errori HTTP callback",
+                "title": "Callback Cancel e relativi status code",
+                "queryType": 0,
+                "resourceType": "microsoft.operationalinsights/workspaces",
+                "crossComponentResources": [
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-law"
+                ],
+                "visualization": "piechart",
+                "chartSettings": {
+                  "ySettings": {
+                    "numberFormatSettings": {
+                      "unit": 0,
+                      "options": {
+                        "style": "decimal",
+                        "useGrouping": true
+                      }
+                    }
+                  }
+                }
+              },
+              "customWidth": "50",
+              "name": "Callback Cancel e relativi status code",
+              "styleSettings": {
+                "showBorder": true
+              }
+            },
+            {
+              "type": 3,
+              "content": {
+                "version": "KqlItem/1.0",
+                "query": "AzureDiagnostics\n| where TimeGenerated {evaluation_window:query}\n| where requestUri_s == '/rtp/cb/v1/send'\n| where toint(httpStatus_d) != 200\n| summarize count() by tostring(toint(httpStatus_d))",
+                "size": 0,
+                "title": "Errori HTTP callback status Send",
                 "noDataMessageStyle": 3,
                 "queryType": 0,
                 "resourceType": "microsoft.operationalinsights/workspaces",
@@ -1950,7 +1981,39 @@
                 }
               },
               "customWidth": "50",
-              "name": "Errori HTTP callback",
+              "name": "Errori HTTP callback status Send",
+              "styleSettings": {
+                "showBorder": true
+              }
+            },
+            {
+              "type": 3,
+              "content": {
+                "version": "KqlItem/1.0",
+                "query": "AzureDiagnostics\n| where TimeGenerated {evaluation_window:query}\n| where requestUri_s == '/rtp/cb/v1/cancel'\n| where toint(httpStatus_d) != 200\n| summarize count() by tostring(toint(httpStatus_d))",
+                "size": 0,
+                "title": "Errori HTTP callback status Cancel",
+                "noDataMessageStyle": 3,
+                "queryType": 0,
+                "resourceType": "microsoft.operationalinsights/workspaces",
+                "crossComponentResources": [
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-law"
+                ],
+                "visualization": "piechart",
+                "chartSettings": {
+                  "ySettings": {
+                    "numberFormatSettings": {
+                      "unit": 0,
+                      "options": {
+                        "style": "decimal",
+                        "useGrouping": true
+                      }
+                    }
+                  }
+                }
+              },
+              "customWidth": "50",
+              "name": "Errori HTTP callback status Cancel",
               "styleSettings": {
                 "showBorder": true
               }
