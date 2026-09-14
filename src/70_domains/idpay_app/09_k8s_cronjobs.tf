@@ -84,7 +84,7 @@ resource "kubernetes_cron_job_v1" "transaction_reaper" {
               image   = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
               command = ["/bin/sh", "-c"]
               args = concat(
-                ["curl \"$@\" || true", "curl"],
+["curl \"$@\"", "curl"],
                 local.idpay_batch_curl_args,
                 [
                   "-X", "DELETE",
