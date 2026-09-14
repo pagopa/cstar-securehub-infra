@@ -23,7 +23,12 @@ resource "kubernetes_config_map" "idpay-payment-initiatives-property-validation"
           "additional-properties-validation" = {
             initiatives = {
               (var.bonus_elettrodomestici_initiative_id) = "PRODUCT_GTIN",
-              (var.bonus_decoder_initiative_id)          = "PRODUCT_GTIN"
+              (var.bonus_decoder_initiative_id)          = "PRODUCT_GTIN",
+              (var.bonus_decoder_open_initiative_id)     = "PRODUCT_GTIN",
+              (var.bonus_decoder_close_initiative_id)    = "PRODUCT_GTIN",
+              (var.bonus_elettrodomestici_open_initiative_id)  = "PRODUCT_GTIN",
+              (var.bonus_elettrodomestici_close_initiative_id) = "PRODUCT_GTIN"
+
             }
           }
         }
