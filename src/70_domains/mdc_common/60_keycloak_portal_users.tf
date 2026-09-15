@@ -3,24 +3,24 @@
 locals {
   mdc_portal_uat_users = var.env_short == "u" ? {
     admin = {
-      username = module.secrets.values["mdc-bo-int-admin-username"].value
-      password = module.secrets.values["mdc-bo-int-admin-password"].value
+      username   = module.secrets.values["mdc-bo-int-admin-username"].value
+      password   = module.secrets.values["mdc-bo-int-admin-password"].value
       email      = "mdc-portal-uat-admin@example.invalid"
       first_name = "MDC"
       last_name  = "Portal Admin"
       role_id    = keycloak_role.portal_operator_admin.id
     }
     write = {
-      username = module.secrets.values["mdc-bo-int-write-username"].value
-      password = module.secrets.values["mdc-bo-int-write-password"].value
+      username   = module.secrets.values["mdc-bo-int-write-username"].value
+      password   = module.secrets.values["mdc-bo-int-write-password"].value
       email      = "mdc-portal-uat-write@example.invalid"
       first_name = "MDC"
       last_name  = "Portal Write"
       role_id    = keycloak_role.portal_operator_write.id
     }
     read = {
-      username = module.secrets.values["mdc-bo-int-read-username"].value
-      password = module.secrets.values["mdc-bo-int-read-password"].value
+      username   = module.secrets.values["mdc-bo-int-read-username"].value
+      password   = module.secrets.values["mdc-bo-int-read-password"].value
       email      = "mdc-portal-uat-read@example.invalid"
       first_name = "MDC"
       last_name  = "Portal Read"
