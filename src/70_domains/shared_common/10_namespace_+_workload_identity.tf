@@ -5,6 +5,20 @@ resource "kubernetes_namespace" "namespace" {
   }
 }
 
+
+module "namespace_role_bindings" {
+  source = "./.terraform/modules/__v4__/kubernetes_namespace_role_binding"
+
+  name             = var.domain
+  create_namespace = false
+  ad_group_ids = [
+    for key, group in local.ad_groups_rbac : data.azuread_group.ad_groups_rbac[key].object_id
+    if !(var.env == "prod" && group.role == "externals")
+  ]
+}
+
+
+
 module "workload_identity" {
   source = "./.terraform/modules/__v4__/kubernetes_workload_identity_init"
 

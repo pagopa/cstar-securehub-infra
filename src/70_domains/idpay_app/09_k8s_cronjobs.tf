@@ -80,15 +80,34 @@ resource "kubernetes_cron_job_v1" "transaction_reaper" {
           }
           spec {
             container {
-              name  = "delete-lapsed-transaction"
-              image = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
+              name    = "delete-lapsed-transaction-elettrodomestici"
+              image   = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
+              command = ["/bin/sh", "-c"]
               args = concat(
+                ["curl \"$@\"", "curl"],
                 local.idpay_batch_curl_args,
                 [
                   "-X", "DELETE",
                   "${local.idpay_payment_service_url}/idpay/payment/deleteLapsedTransaction/${var.bonus_elettrodomestici_initiative_id}",
                 ]
               )
+            }
+            dynamic "container" {
+              for_each = contains(["d", "u"], var.env_short) ? [1] : []
+
+              content {
+                name    = "delete-lapsed-transaction-decoder"
+                image   = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
+                command = ["/bin/sh", "-c"]
+                args = concat(
+                  ["curl \"$@\"", "curl"],
+                  local.idpay_batch_curl_args,
+                  [
+                    "-X", "DELETE",
+                    "${local.idpay_payment_service_url}/idpay/payment/deleteLapsedTransaction/${var.bonus_decoder_initiative_id}",
+                  ]
+                )
+              }
             }
             restart_policy = "OnFailure"
           }
@@ -130,15 +149,34 @@ resource "kubernetes_cron_job_v1" "cancel_expired_vouchers" {
           }
           spec {
             container {
-              name  = "cancel-expired-vouchers"
-              image = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
+              name    = "cancel-expired-vouchers-elettrodomestici"
+              image   = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
+              command = ["/bin/sh", "-c"]
               args = concat(
+                ["curl \"$@\"", "curl"],
                 local.idpay_batch_curl_args,
                 [
                   "-X", "POST",
                   "${local.idpay_payment_service_url}/idpay/transactions/expired/initiatives/${var.bonus_elettrodomestici_initiative_id}/update-status",
                 ]
               )
+            }
+            dynamic "container" {
+              for_each = contains(["d", "u"], var.env_short) ? [1] : []
+
+              content {
+                name    = "cancel-expired-vouchers-decoder"
+                image   = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
+                command = ["/bin/sh", "-c"]
+                args = concat(
+                  ["curl \"$@\"", "curl"],
+                  local.idpay_batch_curl_args,
+                  [
+                    "-X", "POST",
+                    "${local.idpay_payment_service_url}/idpay/transactions/expired/initiatives/${var.bonus_decoder_initiative_id}/update-status",
+                  ]
+                )
+              }
             }
             restart_policy = "OnFailure"
           }
@@ -180,15 +218,34 @@ resource "kubernetes_cron_job_v1" "reminder_voucher_expiration" {
           }
           spec {
             container {
-              name  = "reminder-voucher-expiration"
-              image = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
+              name    = "reminder-voucher-expiration-elettrodomestici"
+              image   = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
+              command = ["/bin/sh", "-c"]
               args = concat(
+                ["curl \"$@\"", "curl"],
                 local.idpay_batch_curl_args,
                 [
                   "-X", "POST",
                   "${local.idpay_wallet_service_url}/idpay/wallet/batch/run/${var.bonus_elettrodomestici_initiative_id}",
                 ]
               )
+            }
+            dynamic "container" {
+              for_each = contains(["d", "u"], var.env_short) ? [1] : []
+
+              content {
+                name    = "reminder-voucher-expiration-decoder"
+                image   = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
+                command = ["/bin/sh", "-c"]
+                args = concat(
+                  ["curl \"$@\"", "curl"],
+                  local.idpay_batch_curl_args,
+                  [
+                    "-X", "POST",
+                    "${local.idpay_wallet_service_url}/idpay/wallet/batch/run/${var.bonus_decoder_initiative_id}",
+                  ]
+                )
+              }
             }
             restart_policy = "OnFailure"
           }
@@ -233,9 +290,11 @@ resource "kubernetes_cron_job_v1" "evaluate_sent_reward_batch" {
           }
           spec {
             container {
-              name  = "evaluate-sent-reward-batch"
-              image = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
+              name    = "evaluate-sent-reward-batch-elettrodomestici"
+              image   = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
+              command = ["/bin/sh", "-c"]
               args = concat(
+                ["curl \"$@\"", "curl"],
                 local.idpay_transactions_curl_args,
                 [
                   "-X", "POST",
@@ -244,6 +303,25 @@ resource "kubernetes_cron_job_v1" "evaluate_sent_reward_batch" {
                   "${local.idpay_transactions_service_url}/idpay/merchant/portal/initiatives/${var.bonus_elettrodomestici_initiative_id}/reward-batches/evaluate",
                 ]
               )
+            }
+            dynamic "container" {
+              for_each = contains(["d", "u"], var.env_short) ? [1] : []
+
+              content {
+                name    = "evaluate-sent-reward-batch-decoder"
+                image   = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
+                command = ["/bin/sh", "-c"]
+                args = concat(
+                  ["curl \"$@\"", "curl"],
+                  local.idpay_transactions_curl_args,
+                  [
+                    "-X", "POST",
+                    "-H", "Content-Type: application/json",
+                    "-d", "{}",
+                    "${local.idpay_transactions_service_url}/idpay/merchant/portal/initiatives/${var.bonus_decoder_initiative_id}/reward-batches/evaluate",
+                  ]
+                )
+              }
             }
             restart_policy = "OnFailure"
           }
@@ -288,9 +366,11 @@ resource "kubernetes_cron_job_v1" "evaluate_approve_reward_batch" {
           }
           spec {
             container {
-              name  = "evaluate-approve-reward-batch"
-              image = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
+              name    = "evaluate-approve-reward-batch-elettrodomestici"
+              image   = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
+              command = ["/bin/sh", "-c"]
               args = concat(
+                ["curl \"$@\"", "curl"],
                 local.idpay_transactions_curl_args,
                 [
                   "-X", "POST",
@@ -299,6 +379,25 @@ resource "kubernetes_cron_job_v1" "evaluate_approve_reward_batch" {
                   "${local.idpay_transactions_service_url}/idpay/merchant/portal/initiatives/${var.bonus_elettrodomestici_initiative_id}/reward-batches/approved",
                 ]
               )
+            }
+            dynamic "container" {
+              for_each = contains(["d", "u"], var.env_short) ? [1] : []
+
+              content {
+                name    = "evaluate-approve-reward-batch-decoder"
+                image   = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
+                command = ["/bin/sh", "-c"]
+                args = concat(
+                  ["curl \"$@\"", "curl"],
+                  local.idpay_transactions_curl_args,
+                  [
+                    "-X", "POST",
+                    "-H", "Content-Type: application/json",
+                    "-d", "{}",
+                    "${local.idpay_transactions_service_url}/idpay/merchant/portal/initiatives/${var.bonus_decoder_initiative_id}/reward-batches/approved",
+                  ]
+                )
+              }
             }
             restart_policy = "OnFailure"
           }
@@ -456,9 +555,11 @@ resource "kubernetes_cron_job_v1" "delivery_reward_batch" {
           }
           spec {
             container {
-              name  = "delivery-reward-batch"
-              image = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
+              name    = "delivery-reward-batch-elettrodomestici"
+              image   = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
+              command = ["/bin/sh", "-c"]
               args = concat(
+                ["curl \"$@\"", "curl"],
                 local.idpay_transactions_curl_args,
                 [
                   "-X", "POST",
@@ -467,6 +568,25 @@ resource "kubernetes_cron_job_v1" "delivery_reward_batch" {
                   "${local.idpay_transactions_service_url}/idpay/merchant/portal/initiatives/${var.bonus_elettrodomestici_initiative_id}/reward-batches/delivery",
                 ]
               )
+            }
+            dynamic "container" {
+              for_each = contains(["d", "u"], var.env_short) ? [1] : []
+
+              content {
+                name    = "delivery-reward-batch-decoder"
+                image   = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
+                command = ["/bin/sh", "-c"]
+                args = concat(
+                  ["curl \"$@\"", "curl"],
+                  local.idpay_transactions_curl_args,
+                  [
+                    "-X", "POST",
+                    "-H", "Content-Type: application/json",
+                    "-d", "{}",
+                    "${local.idpay_transactions_service_url}/idpay/merchant/portal/initiatives/${var.bonus_decoder_initiative_id}/reward-batches/delivery",
+                  ]
+                )
+              }
             }
             restart_policy = "OnFailure"
           }
@@ -512,9 +632,11 @@ resource "kubernetes_cron_job_v1" "delivery_check_outcome_reward_batch" {
           }
           spec {
             container {
-              name  = "delivery-check-outcome-reward-batch"
-              image = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
+              name    = "delivery-check-outcome-reward-batch-elettrodomestici"
+              image   = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
+              command = ["/bin/sh", "-c"]
               args = concat(
+                ["curl \"$@\"", "curl"],
                 local.idpay_transactions_curl_args,
                 [
                   "-X", "POST",
@@ -523,6 +645,25 @@ resource "kubernetes_cron_job_v1" "delivery_check_outcome_reward_batch" {
                   "${local.idpay_transactions_service_url}/idpay/merchant/portal/initiatives/${var.bonus_elettrodomestici_initiative_id}/reward-batches/check-outcomes",
                 ]
               )
+            }
+            dynamic "container" {
+              for_each = contains(["d", "u"], var.env_short) ? [1] : []
+
+              content {
+                name    = "delivery-check-outcome-reward-batch-decoder"
+                image   = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
+                command = ["/bin/sh", "-c"]
+                args = concat(
+                  ["curl \"$@\"", "curl"],
+                  local.idpay_transactions_curl_args,
+                  [
+                    "-X", "POST",
+                    "-H", "Content-Type: application/json",
+                    "-d", "{}",
+                    "${local.idpay_transactions_service_url}/idpay/merchant/portal/initiatives/${var.bonus_decoder_initiative_id}/reward-batches/check-outcomes",
+                  ]
+                )
+              }
             }
             restart_policy = "OnFailure"
           }
