@@ -32,7 +32,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | d8b1b24cbe7fc53404f29199cc76b9b7363d146e |
+| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | 9ada88229191adc1b1efd681d8f92f3143da7774 |
 | <a name="module_adf_egress_vmss_connection"></a> [adf\_egress\_vmss\_connection](#module\_adf\_egress\_vmss\_connection) | ./.terraform/modules/__v4__/adf_egress_connection | n/a |
 | <a name="module_adf_snet"></a> [adf\_snet](#module\_adf\_snet) | ./.terraform/modules/__v4__/IDH/subnet | n/a |
 | <a name="module_adx_snet"></a> [adx\_snet](#module\_adx\_snet) | ./.terraform/modules/__v4__/IDH/subnet | n/a |
