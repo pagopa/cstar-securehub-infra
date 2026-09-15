@@ -205,7 +205,6 @@ module "adf_linked_service" {
 
   data_factory_id           = data.azurerm_data_factory.data_factory.id
   data_factory_principal_id = data.azurerm_data_factory.data_factory.identity[0].principal_id
-  egress_proxy_pls_id       = data.azurerm_private_link_service.adf_egress_proxy_pls.id
   env_short                 = var.env_short
   adf_linked_service_postgresql = {
     "idpay-db" = {
