@@ -118,3 +118,22 @@ resource "azurerm_private_dns_zone_virtual_network_link" "managed_redis_private_
   private_dns_zone_name = azurerm_private_dns_zone.managed_redis.name
   virtual_network_id    = each.value.id
 }
+
+# ------------------------------------------------------------------------------
+# Private DB DNS Zone
+# ------------------------------------------------------------------------------
+resource "azurerm_private_dns_zone" "private_pgflex_dns_zone" {
+  name                = "${var.env_short}.internal.postgresql.cstar.pagopa.it"
+  resource_group_name = azurerm_resource_group.rg_network.name
+
+  tags = module.tag_config.tags
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "private_pgflex_to_secure_hub_vnets" {
+  for_each = { for i in local.vnets_all : i.name => i }
+
+  name                  = "${each.key}-private-dns-zone-link"
+  resource_group_name   = azurerm_resource_group.rg_network.name
+  private_dns_zone_name = azurerm_private_dns_zone.private_pgflex_dns_zone.name
+  virtual_network_id    = each.value.id
+}
