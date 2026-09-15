@@ -17,6 +17,14 @@ data "azurerm_resource_group" "idpay_monitoring_rg" {
   name = "${local.project}-monitoring-rg"
 }
 
+data "azurerm_resource_group" "network_rg" {
+  name = "${local.project_core}-network-rg"
+}
+
+data "azurerm_resource_group" "adf_proxy_rg" {
+  name = "${local.project_core}-network-adfproxy-rg"
+}
+
 #----------------------------------------------------------------
 # 🌐 Network
 #----------------------------------------------------------------
@@ -39,6 +47,11 @@ data "azurerm_dns_zone" "bonus_elettrodomestici_apex" {
   for_each            = toset(local.public_dns_zone_bonus_elettrodomestici.zones)
   name                = each.value
   resource_group_name = "${local.project_core}-network-rg"
+}
+
+data "azurerm_private_link_service" "adf_egress_proxy_pls" {
+  name                = "${var.prefix}-${var.env_short}-adf-proxy-privatelink"
+  resource_group_name = data.azurerm_resource_group.adf_proxy_rg.name
 }
 
 #
