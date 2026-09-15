@@ -403,3 +403,23 @@ variable "bonus_decoder_initiative_id" {
   type        = string
   description = "Initiative id for Bonus Decoder"
 }
+
+variable "bonus_test_decoder_open_initiative_id" {
+  type        = string
+  description = "Initiative id for test Bonus Decoder open"
+}
+
+variable "bonus_test_decoder_close_initiative_id" {
+  type        = string
+  description = "Initiative id for test Bonus Decoder close"
+}
+
+variable "bonus_test_elettrodomestici_open_initiative_id" {
+  type        = string
+  description = "Initiative id for test Bonus Elettrodomestici open"
+}
+
+variable "bonus_test_elettrodomestici_close_initiative_id" {
+  type        = string
+  description = "Initiative id for test Bonus Elettrodomestici close"
+}
