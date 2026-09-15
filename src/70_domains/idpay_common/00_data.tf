@@ -21,6 +21,10 @@ data "azurerm_resource_group" "network_rg" {
   name = "${local.project_core}-network-rg"
 }
 
+data "azurerm_resource_group" "adf_proxy_rg" {
+  name = "${local.project_core}-network-adfproxy-rg"
+}
+
 #----------------------------------------------------------------
 # 🌐 Network
 #----------------------------------------------------------------
@@ -47,7 +51,7 @@ data "azurerm_dns_zone" "bonus_elettrodomestici_apex" {
 
 data "azurerm_private_link_service" "adf_egress_proxy_pls" {
   name                = "${var.prefix}-${var.env_short}-adf-proxy-privatelink"
-  resource_group_name = data.azurerm_resource_group.network_rg.name
+  resource_group_name = data.azurerm_resource_group.adf_proxy_rg.name
 }
 
 #

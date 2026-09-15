@@ -203,18 +203,18 @@ resource "azurerm_role_assignment" "role_datafactory_contributor" {
 module "adf_linked_service" {
   source = "./.terraform/modules/__v4__/adf_linked_service"
 
-  data_factory_id = data.azurerm_data_factory.data_factory.id
+  data_factory_id           = data.azurerm_data_factory.data_factory.id
   data_factory_principal_id = data.azurerm_data_factory.data_factory.identity[0].principal_id
-  egress_proxy_pls_id = data.azurerm_private_link_service.adf_egress_proxy_pls.id
-  env_short = var.env_short
+  egress_proxy_pls_id       = data.azurerm_private_link_service.adf_egress_proxy_pls.id
+  env_short                 = var.env_short
   adf_linked_service_postgresql = {
     "idpay-db" = {
-      key_vault_id              = data.azurerm_key_vault.domain_kv.id
-      host          = trimsuffix(module.idpay_pgflex[0].private_fqdn, ".") # to remove trailing dot
-      port          = "5432"
-      database_name      = local.idpay_postgresql_database_name
-      username      = azurerm_key_vault_secret.idpay_postgres_admin_user[0].value
-      password_secret_name      = azurerm_key_vault_secret.idpay_postgres_admin_password[0].name
+      key_vault_id         = data.azurerm_key_vault.domain_kv.id
+      host                 = trimsuffix(module.idpay_pgflex[0].private_fqdn, ".") # to remove trailing dot
+      port                 = "5432"
+      database_name        = local.idpay_postgresql_database_name
+      username             = azurerm_key_vault_secret.idpay_postgres_admin_user[0].value
+      password_secret_name = azurerm_key_vault_secret.idpay_postgres_admin_password[0].name
     }
   }
 

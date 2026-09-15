@@ -1,9 +1,16 @@
+resource "azurerm_resource_group" "rg_adf_proxy" {
+  name     = "${local.project}-network-adfproxy-rg"
+  location = var.location
+
+  tags = module.tag_config.tags
+}
+
 module "adf_proxy" {
   source = "./.terraform/modules/__v4__/IDH/adf_egress_proxy"
 
-  env = var.env
+  env               = var.env
   idh_resource_tier = "small"
-  product_name = var.prefix
+  product_name      = var.prefix
 
   name = "${var.prefix}-${var.env_short}-adf-proxy"
 
@@ -16,13 +23,13 @@ module "adf_proxy" {
   ]
 
   vmss_credentials = {
-    admin_login = data.azurerm_key_vault_secret.network_vmss_login.value
+    admin_login    = data.azurerm_key_vault_secret.network_vmss_login.value
     admin_password = data.azurerm_key_vault_secret.network_vmss_password.value
   }
-  vmss_resource_group_name = azurerm_resource_group.rg_network.name # azurerm_resource_group.adx_proxy.name
+  resource_group_name = azurerm_resource_group.rg_adf_proxy.name
 
   vnet = {
-    name = module.vnet_core_hub.name
+    name                = module.vnet_core_hub.name
     resource_group_name = module.vnet_core_hub.resource_group_name
   }
   output_kv = {

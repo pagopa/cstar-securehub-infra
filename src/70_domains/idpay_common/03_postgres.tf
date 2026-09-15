@@ -117,4 +117,3 @@ module "idpay_pgflex" {
 
   tags = module.tag_config.tags_grafana_yes
 }
-

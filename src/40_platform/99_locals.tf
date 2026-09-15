@@ -8,6 +8,7 @@ locals {
   # Network
   #
   vnet_rg_name           = "${local.product_nodomain}-core-network-rg"
+  adf_proxy_rg_name      = "${local.product_nodomain}-core-network-adfproxy-rg"
   vnet_core_hub_name     = "${local.product_nodomain}-core-hub-vnet"
   vnet_core_compute_name = "${local.product_nodomain}-core-spoke-compute-vnet"
   vnet_core_data_name    = "${local.product_nodomain}-core-spoke-data-vnet"

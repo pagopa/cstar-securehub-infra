@@ -185,5 +185,5 @@ data "azuread_group" "adgroup_domain_oncall" {
 
 data "azurerm_private_link_service" "vmss_pls" {
   name                = "${var.prefix}-${var.env_short}-adf-proxy-privatelink"
-  resource_group_name = local.vnet_rg_name
+  resource_group_name = local.adf_proxy_rg_name
 }
