@@ -1,10 +1,29 @@
 #
 # 🔒 KV
 #
+locals {
+  idpay_postgres_database = "idpay-database"
+  idpay_postgres_flyway_schemas = var.idpay_pgflex_params.enabled ? toset([
+    "idpay-pagamenti",
+    "idpay-rimborsi",
+  ]) : toset([])
+}
+
 resource "azurerm_key_vault_secret" "idpay_postgres_admin_user" {
   count        = var.idpay_pgflex_params.enabled ? 1 : 0
   name         = "idpay-postgres-admin-user"
   value        = "idpaydbadmin"
+  key_vault_id = data.azurerm_key_vault.domain_kv.id
+
+  content_type = "text/plain"
+
+  tags = module.tag_config.tags
+}
+
+resource "azurerm_key_vault_secret" "idpay_postgres_app_user" {
+  count        = var.idpay_pgflex_params.enabled ? 1 : 0
+  name         = "idpay-postgres-app-user"
+  value        = "idpaydbapp"
   key_vault_id = data.azurerm_key_vault.domain_kv.id
 
   content_type = "text/plain"
@@ -35,6 +54,29 @@ resource "azurerm_key_vault_secret" "idpay_postgres_admin_password" {
   tags = module.tag_config.tags
 }
 
+resource "random_password" "idpay_postgres_app_password" {
+  count       = var.idpay_pgflex_params.enabled ? 1 : 0
+  length      = 32
+  special     = true
+  min_special = 1
+  # Limitiamo i caratteri speciali al solo "-"
+  override_special = "-"
+  min_lower        = 1
+  min_upper        = 1
+  min_numeric      = 1
+}
+
+resource "azurerm_key_vault_secret" "idpay_postgres_app_password" {
+  count        = var.idpay_pgflex_params.enabled ? 1 : 0
+  name         = "idpay-postgres-app-password"
+  value        = random_password.idpay_postgres_app_password[0].result
+  key_vault_id = data.azurerm_key_vault.domain_kv.id
+
+  content_type = "text/plain"
+
+  tags = module.tag_config.tags
+}
+
 resource "azurerm_key_vault_secret" "idpay_postgres_host" {
   count        = var.idpay_pgflex_params.enabled ? 1 : 0
   name         = "idpay-postgres-host"
@@ -49,7 +91,7 @@ resource "azurerm_key_vault_secret" "idpay_postgres_host" {
 resource "azurerm_key_vault_secret" "idpay_postgres_connection_string" {
   count        = var.idpay_pgflex_params.enabled ? 1 : 0
   name         = "idpay-postgres-connection-string"
-  value        = "jdbc:postgresql://${module.idpay_pgflex[0].fqdn}:5432/idpay-database"
+  value        = "jdbc:postgresql://${module.idpay_pgflex[0].fqdn}:5432/${local.idpay_postgres_database}"
   key_vault_id = data.azurerm_key_vault.domain_kv.id
 
   content_type = "text/plain"
@@ -60,7 +102,7 @@ resource "azurerm_key_vault_secret" "idpay_postgres_connection_string" {
 resource "azurerm_key_vault_secret" "idpay_postgres_connection_string_r2dbc" {
   count        = var.idpay_pgflex_params.enabled ? 1 : 0
   name         = "idpay-postgres-connection-string-r2dbc"
-  value        = "r2dbc:postgresql://${module.idpay_pgflex[0].fqdn}:5432/idpay-database"
+  value        = "r2dbc:postgresql://${module.idpay_pgflex[0].fqdn}:5432/${local.idpay_postgres_database}"
   key_vault_id = data.azurerm_key_vault.domain_kv.id
 
   content_type = "text/plain"
@@ -81,6 +123,7 @@ module "idpay_pgflex" {
   idh_resource_tier = var.idpay_pgflex_params.idh_resource_tier
   product_name      = var.prefix
   env               = var.env
+  databases         = [local.idpay_postgres_database]
 
   # Network configuration
   embedded_subnet = {
@@ -113,4 +156,73 @@ module "idpay_pgflex" {
   storage_tier = var.idpay_pgflex_params.storage_tier != null ? var.idpay_pgflex_params.storage_tier : null
 
   tags = module.tag_config.tags_grafana_yes
+}
+
+resource "postgresql_role" "idpay_app" {
+  count = var.idpay_pgflex_params.enabled ? 1 : 0
+
+  name     = azurerm_key_vault_secret.idpay_postgres_app_user[0].value
+  login    = true
+  password = azurerm_key_vault_secret.idpay_postgres_app_password[0].value
+
+  depends_on = [module.idpay_pgflex]
+}
+
+resource "postgresql_grant" "idpay_app_database" {
+  count = var.idpay_pgflex_params.enabled ? 1 : 0
+
+  database    = local.idpay_postgres_database
+  role        = postgresql_role.idpay_app[0].name
+  object_type = "database"
+  privileges  = ["CONNECT", "CREATE"]
+
+  depends_on = [module.idpay_pgflex]
+}
+
+resource "postgresql_grant" "idpay_app_schema" {
+  for_each = local.idpay_postgres_flyway_schemas
+
+  database    = local.idpay_postgres_database
+  role        = postgresql_role.idpay_app[0].name
+  schema      = each.value
+  object_type = "schema"
+  privileges  = ["ALL"]
+
+  depends_on = [postgresql_grant.idpay_app_database]
+}
+
+resource "postgresql_grant" "idpay_app_tables" {
+  for_each = local.idpay_postgres_flyway_schemas
+
+  database    = local.idpay_postgres_database
+  role        = postgresql_role.idpay_app[0].name
+  schema      = each.value
+  object_type = "table"
+  privileges  = ["ALL"]
+
+  depends_on = [postgresql_grant.idpay_app_schema]
+}
+
+resource "postgresql_grant" "idpay_app_sequences" {
+  for_each = local.idpay_postgres_flyway_schemas
+
+  database    = local.idpay_postgres_database
+  role        = postgresql_role.idpay_app[0].name
+  schema      = each.value
+  object_type = "sequence"
+  privileges  = ["ALL"]
+
+  depends_on = [postgresql_grant.idpay_app_schema]
+}
+
+resource "postgresql_grant" "idpay_app_routines" {
+  for_each = local.idpay_postgres_flyway_schemas
+
+  database    = local.idpay_postgres_database
+  role        = postgresql_role.idpay_app[0].name
+  schema      = each.value
+  object_type = "routine"
+  privileges  = ["ALL"]
+
+  depends_on = [postgresql_grant.idpay_app_schema]
 }
