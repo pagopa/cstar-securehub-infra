@@ -2,6 +2,7 @@ locals {
   product = "${var.prefix}-${var.env_short}"
 
   public_dns_zone_name = var.env != "prod" ? "${var.env}.bonuselettrodomestici.pagopa.it" : "bonuselettrodomestici.pagopa.it"
+  domain_prefix        = var.env != "prod" ? "${var.env}." : ""
 
   vnet_legacy_rg = "${local.product}-${var.location_short}-core-network-rg"
 
@@ -16,5 +17,12 @@ locals {
 
   tags = {
     for key, value in module.tag_config.tags : key => replace(value, "&", "e")
+  }
+
+  ses_domains = {
+    "${local.domain_prefix}pari.pagopa.it" = {
+      domain   = "pari"
+      iam_user = "${var.prefix}-${var.env}-ses-pari-user"
+    }
   }
 }
