@@ -14,8 +14,6 @@ locals {
   law_name_core        = "${local.product}-law"
   law_name_core_rg     = "${local.product}-monitor-rg"
 
-  law_name_mcshared    = "${local.product_nodomain}-mcshared-law"
-  law_name_mcshared_rg = "${local.product_nodomain}-mcshared-monitoring-rg"
 
   grafana_name = "cstar-${var.env_short}-itn-grafana"
 
@@ -82,13 +80,6 @@ locals {
         location_short       = "itn",
         monitor_workspace_id = data.azurerm_log_analytics_workspace.law_core_itn.id,
         aks_name             = "${var.prefix}-${var.env_short}-${var.location_short}-${var.env}-aks"
-      }
-    },
-    mcshared = {
-      groups = lookup(var.team_groups, "mcshared", {})
-      aca = {
-        location_short       = "itn",
-        monitor_workspace_id = data.azurerm_log_analytics_workspace.law_mcshared.id,
       }
     }
   }
