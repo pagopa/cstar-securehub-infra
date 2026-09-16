@@ -476,7 +476,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 6,
+        "h": 5,
         "w": 5,
         "x": 0,
         "y": 17
@@ -542,149 +542,6 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 75,
-            "gradientMode": "opacity",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "smooth",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "showValues": false,
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              }
-            ]
-          }
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Messaggi accettati"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "green",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Messaggi scartati"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "yellow",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 19,
-        "x": 5,
-        "y": 17
-      },
-      "id": 14,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "12.4.8",
-      "targets": [
-        {
-          "OpenAI": false,
-          "database": "mdc",
-          "datasource": {
-            "type": "grafana-azure-data-explorer-datasource",
-            "uid": "${ds}"
-          },
-          "expression": {
-            "groupBy": {
-              "expressions": [],
-              "type": "and"
-            },
-            "reduce": {
-              "expressions": [],
-              "type": "and"
-            },
-            "where": {
-              "expressions": [],
-              "type": "and"
-            }
-          },
-          "pluginVersion": "7.2.6",
-          "query": "let cutoff = datetime(2026-06-10);\r\nlet rangeStart = $__timeFrom();\r\nlet rangeEnd = $__timeTo();\r\nlet effectiveStart = max_of(rangeStart, cutoff);\r\n\r\nlet excludedPsp = dynamic([\"PagoPA\",\"Ente di Test\", \"MDC Test\"]);\r\n\r\nlet allowed_tpp =\r\n    TppDataSnapshot\r\n    | where business_name !in~ (excludedPsp)\r\n    | summarize by entity_id;\r\n\r\n// Dedup globale della coppia (origin_id, entity_id), tenendo il primo window_start\r\nlet accettati_ts =\r\n    MessageSnapshot\r\n    | where window_start >= effectiveStart and window_start <= rangeEnd\r\n    | summarize window_start = min(window_start) by origin_id, entity_id\r\n    | where entity_id in (allowed_tpp)\r\n    | summarize ['Messaggi accettati'] = count() by window_start = bin(window_start, 1d);\r\n\r\nlet scartati_ts =\r\n    MessageVolumeSnapshot\r\n    | where window_start >= effectiveStart and window_start <= rangeEnd\r\n    | summarize ['Messaggi scartati'] = sum(message_discarded_count) by window_start = bin(window_start, 1d);\r\n\r\naccettati_ts\r\n| join kind=fullouter scartati_ts on window_start\r\n| project \r\n    window_start   = coalesce(window_start, window_start1),\r\n    ['Messaggi accettati'] = coalesce(['Messaggi accettati'], 0),\r\n    ['Messaggi scartati']  = coalesce(['Messaggi scartati'], 0)\r\n| order by window_start asc",
-          "querySource": "raw",
-          "queryType": "KQL",
-          "rawMode": true,
-          "refId": "A",
-          "resultFormat": "table"
-        }
-      ],
-      "title": "Volume Totale Messaggi nel tempo",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "grafana-azure-data-explorer-datasource",
-        "uid": "${ds}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
             "mode": "thresholds"
           },
           "mappings": [],
@@ -702,9 +559,9 @@
       },
       "gridPos": {
         "h": 5,
-        "w": 6,
-        "x": 0,
-        "y": 23
+        "w": 5,
+        "x": 5,
+        "y": 17
       },
       "id": 9,
       "options": {
@@ -769,6 +626,88 @@
           "color": {
             "mode": "thresholds"
           },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 10,
+        "y": 17
+      },
+      "id": 11,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.4.8",
+      "targets": [
+        {
+          "OpenAI": false,
+          "database": "mdc",
+          "datasource": {
+            "type": "grafana-azure-data-explorer-datasource",
+            "uid": "${ds}"
+          },
+          "expression": {
+            "groupBy": {
+              "expressions": [],
+              "type": "and"
+            },
+            "reduce": {
+              "expressions": [],
+              "type": "and"
+            },
+            "where": {
+              "expressions": [],
+              "type": "and"
+            }
+          },
+          "pluginVersion": "7.2.6",
+          "query": "let cutoff = datetime(2026-06-10);\r\nlet rangeStart = $__timeFrom();\r\nlet rangeEnd = $__timeTo();\r\nlet effectiveStart = max_of(rangeStart, cutoff);\r\n\r\nlet excludedPsp = dynamic([\"PagoPA\",\"Ente di Test\", \"MDC Test\"]);\r\n\r\nlet allowed_tpp =\r\n    TppDataSnapshot\r\n    | where business_name !in~ (excludedPsp)\r\n    | summarize by entity_id;\r\n\r\nMessageSnapshot\r\n| where window_start >= effectiveStart and window_start <= rangeEnd\r\n| summarize by origin_id, entity_id\r\n| where entity_id in (allowed_tpp)\r\n| count;",
+          "querySource": "raw",
+          "queryType": "KQL",
+          "rawMode": true,
+          "refId": "A",
+          "resultFormat": "table"
+        }
+      ],
+      "title": "Messaggi Accettati",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-data-explorer-datasource",
+        "uid": "${ds}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
           "decimals": 2,
           "mappings": [],
           "max": 100,
@@ -800,9 +739,9 @@
       },
       "gridPos": {
         "h": 5,
-        "w": 6,
-        "x": 6,
-        "y": 23
+        "w": 5,
+        "x": 14,
+        "y": 17
       },
       "id": 10,
       "options": {
@@ -874,88 +813,6 @@
           "color": {
             "mode": "thresholds"
           },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 5,
-        "w": 6,
-        "x": 12,
-        "y": 23
-      },
-      "id": 11,
-      "options": {
-        "colorMode": "none",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "textMode": "auto",
-        "wideLayout": true
-      },
-      "pluginVersion": "12.4.8",
-      "targets": [
-        {
-          "OpenAI": false,
-          "database": "mdc",
-          "datasource": {
-            "type": "grafana-azure-data-explorer-datasource",
-            "uid": "${ds}"
-          },
-          "expression": {
-            "groupBy": {
-              "expressions": [],
-              "type": "and"
-            },
-            "reduce": {
-              "expressions": [],
-              "type": "and"
-            },
-            "where": {
-              "expressions": [],
-              "type": "and"
-            }
-          },
-          "pluginVersion": "7.2.6",
-          "query": "let cutoff = datetime(2026-06-10);\r\nlet rangeStart = $__timeFrom();\r\nlet rangeEnd = $__timeTo();\r\nlet effectiveStart = max_of(rangeStart, cutoff);\r\n\r\nlet excludedPsp = dynamic([\"PagoPA\",\"Ente di Test\", \"MDC Test\"]);\r\n\r\nlet allowed_tpp =\r\n    TppDataSnapshot\r\n    | where business_name !in~ (excludedPsp)\r\n    | summarize by entity_id;\r\n\r\nMessageSnapshot\r\n| where window_start >= effectiveStart and window_start <= rangeEnd\r\n| summarize by origin_id, entity_id\r\n| where entity_id in (allowed_tpp)\r\n| count;",
-          "querySource": "raw",
-          "queryType": "KQL",
-          "rawMode": true,
-          "refId": "A",
-          "resultFormat": "table"
-        }
-      ],
-      "title": "Messaggi Accettati",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "grafana-azure-data-explorer-datasource",
-        "uid": "${ds}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
           "decimals": 2,
           "fieldMinMax": false,
           "mappings": [],
@@ -988,9 +845,9 @@
       },
       "gridPos": {
         "h": 5,
-        "w": 6,
-        "x": 18,
-        "y": 23
+        "w": 5,
+        "x": 19,
+        "y": 17
       },
       "id": 12,
       "options": {
@@ -1079,7 +936,7 @@
         "h": 7,
         "w": 10,
         "x": 0,
-        "y": 28
+        "y": 22
       },
       "id": 13,
       "options": {
@@ -1267,7 +1124,7 @@
         "h": 7,
         "w": 14,
         "x": 10,
-        "y": 28
+        "y": 22
       },
       "id": 15,
       "options": {
@@ -1554,7 +1411,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 35
+        "y": 29
       },
       "id": 16,
       "options": {
@@ -1603,7 +1460,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 43
+        "y": 37
       },
       "id": 17,
       "panels": [],
@@ -1650,7 +1507,7 @@
         "h": 7,
         "w": 4,
         "x": 0,
-        "y": 44
+        "y": 38
       },
       "id": 19,
       "options": {
@@ -1732,7 +1589,7 @@
         "h": 7,
         "w": 4,
         "x": 4,
-        "y": 44
+        "y": 38
       },
       "id": 18,
       "options": {
@@ -1814,7 +1671,7 @@
         "h": 7,
         "w": 5,
         "x": 8,
-        "y": 44
+        "y": 38
       },
       "id": 24,
       "options": {
@@ -1896,7 +1753,7 @@
         "h": 7,
         "w": 5,
         "x": 13,
-        "y": 44
+        "y": 38
       },
       "id": 25,
       "options": {
@@ -1984,7 +1841,7 @@
         "h": 7,
         "w": 6,
         "x": 18,
-        "y": 44
+        "y": 38
       },
       "id": 26,
       "options": {
@@ -2092,7 +1949,7 @@
         "h": 2,
         "w": 4,
         "x": 0,
-        "y": 51
+        "y": 45
       },
       "id": 22,
       "options": {
@@ -2201,7 +2058,7 @@
         "h": 2,
         "w": 4,
         "x": 4,
-        "y": 51
+        "y": 45
       },
       "id": 23,
       "options": {
@@ -2333,7 +2190,7 @@
         "h": 7,
         "w": 16,
         "x": 8,
-        "y": 51
+        "y": 45
       },
       "id": 20,
       "options": {
