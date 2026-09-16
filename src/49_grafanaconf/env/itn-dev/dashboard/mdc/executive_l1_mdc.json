@@ -1279,6 +1279,10 @@
               {
                 "id": "decimals",
                 "value": 2
+              },
+              {
+                "id": "max",
+                "value": 100
               }
             ]
           },
@@ -1334,6 +1338,10 @@
               {
                 "id": "decimals",
                 "value": 2
+              },
+              {
+                "id": "max",
+                "value": 100
               }
             ]
           },
@@ -1406,6 +1414,10 @@
               {
                 "id": "decimals",
                 "value": 2
+              },
+              {
+                "id": "max",
+                "value": 100
               }
             ]
           }
@@ -2172,32 +2184,7 @@
             ]
           }
         },
-        "overrides": [
-          {
-            "__systemRef": "hideSeriesFrom",
-            "matcher": {
-              "id": "byNames",
-              "options": {
-                "mode": "exclude",
-                "names": [
-                  "Disattivi"
-                ],
-                "prefix": "All except:",
-                "readOnly": true
-              }
-            },
-            "properties": [
-              {
-                "id": "custom.hideFrom",
-                "value": {
-                  "legend": false,
-                  "tooltip": true,
-                  "viz": true
-                }
-              }
-            ]
-          }
-        ]
+        "overrides": []
       },
       "gridPos": {
         "h": 7,
@@ -2284,6 +2271,6 @@
   "timezone": "utc",
   "title": "MDC Executive L1",
   "uid": "ma726dg",
-  "version": 3,
+  "version": 4,
   "weekStart": ""
 }
