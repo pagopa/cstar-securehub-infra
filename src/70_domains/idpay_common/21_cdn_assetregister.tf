@@ -106,7 +106,7 @@ module "cdn_idpay_assetregister" {
 
   custom_domains = [
     {
-      domain_name             = "eie.${data.azurerm_dns_zone.public_cstar.name}"
+      domain_name             = "rdb.${data.azurerm_dns_zone.public_cstar.name}"
       dns_name                = data.azurerm_dns_zone.public_cstar.name
       dns_resource_group_name = data.azurerm_dns_zone.public_cstar.resource_group_name
       ttl                     = var.env != "p" ? 300 : 3600
