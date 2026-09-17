@@ -82,7 +82,7 @@ aks_nodepool_green = {
   vm_sku_name       = "Standard_D8ads_v5_active"
   autoscale_enabled = true
   node_count_min    = 3
-  node_count_max    = 6
+  node_count_max    = 4
 }
 
 ### Monitoring

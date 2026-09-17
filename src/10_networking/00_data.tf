@@ -27,3 +27,13 @@ data "azurerm_dns_zone" "default" {
   name                = local.dns_default_zone_name
   resource_group_name = local.dns_default_zone_rg
 }
+
+data "azurerm_key_vault_secret" "network_vmss_login" {
+  name         = "network-vmss-admin-login"
+  key_vault_id = data.azurerm_key_vault.kv_core.id
+}
+
+data "azurerm_key_vault_secret" "network_vmss_password" {
+  name         = "network-vmss-admin-password"
+  key_vault_id = data.azurerm_key_vault.kv_core.id
+}
