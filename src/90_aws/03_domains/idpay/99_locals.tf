@@ -11,8 +11,14 @@ locals {
   domain_prefix = var.env != "prod" ? "${var.env}." : ""
   ses_domains = {
     "${local.domain_prefix}pari.pagopa.it" = {
-      domain   = "pari"
-      iam_user = "${var.prefix}-${var.env}-ses-pari-user"
+      domain        = "pari"
+      secret_domain = "pari-"
+      iam_user      = "${var.prefix}-${var.env}-ses-pari-user"
+    }
+    "${local.domain_prefix}bonuselettrodomestici.pagopa.it" = {
+      domain        = "bonuselettrodomestici"
+      secret_domain = ""
+      iam_user      = "${var.prefix}-${var.env}-ses-user"
     }
   }
 

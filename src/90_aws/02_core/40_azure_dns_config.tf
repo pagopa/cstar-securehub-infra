@@ -113,33 +113,3 @@ resource "azurerm_dns_txt_record" "aws_dmarc" {
   }
   tags = module.tag_config.tags
 }
-
-moved {
-  from = azurerm_dns_cname_record.dkim[0]
-  to   = azurerm_dns_cname_record.aws_dkim["uat.bonuselettrodomestici.pagopa.it-0"]
-}
-
-moved {
-  from = azurerm_dns_cname_record.dkim[1]
-  to   = azurerm_dns_cname_record.aws_dkim["uat.bonuselettrodomestici.pagopa.it-1"]
-}
-
-moved {
-  from = azurerm_dns_cname_record.dkim[2]
-  to   = azurerm_dns_cname_record.aws_dkim["uat.bonuselettrodomestici.pagopa.it-2"]
-}
-
-moved {
-  from = azurerm_dns_txt_record.dmarc
-  to   = azurerm_dns_txt_record.aws_dmarc["uat.bonuselettrodomestici.pagopa.it"]
-}
-
-moved {
-  from = azurerm_dns_mx_record.mx
-  to   = azurerm_dns_mx_record.aws_mx["uat.bonuselettrodomestici.pagopa.it"]
-}
-
-moved {
-  from = azurerm_dns_txt_record.spf
-  to   = azurerm_dns_txt_record.aws_spf["uat.bonuselettrodomestici.pagopa.it"]
-}

@@ -61,13 +61,3 @@ resource "aws_iam_access_key" "aws_ses_user" {
 
   user = each.value.iam_user
 }
-
-moved {
-  from = aws_iam_user_policy.ses_user_policy
-  to   = aws_iam_user_policy.aws_ses_user_policy["uat.bonuselettrodomestici.pagopa.it"]
-}
-
-moved {
-  from = aws_iam_access_key.ses_user
-  to   = aws_iam_access_key.aws_ses_user["uat.bonuselettrodomestici.pagopa.it"]
-}
