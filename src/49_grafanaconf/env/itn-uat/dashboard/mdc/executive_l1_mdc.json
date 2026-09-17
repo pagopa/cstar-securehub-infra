@@ -319,7 +319,7 @@
             }
           },
           "pluginVersion": "7.2.6",
-          "query": "let excludedPsp = dynamic([\"PagoPA\", \"Ente di Test\", \"MDC Test\"]);\r\n\r\nlet excludedTpp =\r\n    TppDataSnapshot\r\n    | where business_name in~ (excludedPsp)\r\n    | distinct tpp_id;\r\n\r\nlet excludedEntity =\r\n    TppDataSnapshot\r\n    | where business_name in~ (excludedPsp)\r\n    | distinct entity_id;\r\n\r\nlet sentFiltrato =\r\n    MessageSnapshot\r\n    | where $__timeFilter(window_start)\r\n    | where message_state == \"SENT\"\r\n    | join kind=leftanti excludedEntity on entity_id;\r\n\r\nlet known_origins =\r\n    sentFiltrato\r\n    | summarize by origin_id;\r\n\r\nlet messaggiAccettati = toscalar(\r\n    sentFiltrato\r\n    | summarize arg_max(window_start, entity_id) by origin_id\r\n    | count\r\n);\r\n\r\nlet finalizedFiltrato =\r\n    FinalizedMessageSnapshot\r\n    | where $__timeFilter(window_start)\r\n    | where origin_id in (known_origins)\r\n    | join kind=leftanti excludedTpp on tpp_id;\r\n\r\nlet notifichePerfezionate = toscalar(\r\n    finalizedFiltrato\r\n    | summarize arg_max(window_start, tpp_id) by origin_id\r\n    | summarize dcount(origin_id)\r\n);\r\n\r\nlet pspAttivi = toscalar(\r\n    TppDataSnapshot\r\n    | where business_name !in~ (excludedPsp)\r\n    | where state == true\r\n    | count\r\n);\r\n\r\nprint ['Tasso di Conversione Pagamento Totale'] =\r\n    iff(messaggiAccettati == 0 or pspAttivi == 0, 0.0,\r\n        round((100.0 * todouble(notifichePerfezionate) / todouble(messaggiAccettati)) / todouble(pspAttivi), 2))",
+          "query": "let excludedPsp = dynamic([\"PagoPA\", \"Ente di Test\", \"MDC Test\"]);\r\n\r\nlet excludedTpp =\r\n    TppDataSnapshot\r\n    | where business_name in~ (excludedPsp)\r\n    | distinct tpp_id;\r\n\r\nlet excludedEntity =\r\n    TppDataSnapshot\r\n    | where business_name in~ (excludedPsp)\r\n    | distinct entity_id;\r\n\r\nlet sentFiltrato =\r\n    MessageSnapshot\r\n    | where $__timeFilter(window_start)\r\n    | where message_state == \"SENT\"\r\n    | join kind=leftanti excludedEntity on entity_id;\r\n\r\nlet known_origins =\r\n    sentFiltrato\r\n    | summarize by origin_id;\r\n\r\nlet messaggiAccettati = toscalar(\r\n    sentFiltrato\r\n    | summarize arg_max(window_start, entity_id) by origin_id\r\n    | count\r\n);\r\n\r\nlet finalizedFiltrato =\r\n    FinalizedMessageSnapshot\r\n    | where $__timeFilter(window_start)\r\n    | where origin_id in (known_origins)\r\n    | join kind=leftanti excludedTpp on tpp_id;\r\n\r\nlet notifichePerfezionate = toscalar(\r\n    finalizedFiltrato\r\n    | summarize arg_max(window_start, tpp_id) by origin_id\r\n    | summarize dcount(origin_id)\r\n);\r\n\r\nlet pspAttivi = toscalar(\r\n    TppDataSnapshot\r\n    | where business_name !in~ (excludedPsp)\r\n    | where state == true\r\n    | count\r\n);\r\n\r\nprint ['Tasso di Conversione Pagamento Totale'] =\r\n    iff(messaggiAccettati == 0 or pspAttivi == 0, 0.0,\r\n        round(((todouble(notifichePerfezionate) / todouble(messaggiAccettati))* 100.0) / todouble(pspAttivi), 2))",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -431,7 +431,7 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "<div style=\"text-align: center; font-size: 13px; color: #BEBEBE; padding: 4px 20px;\">\n  (Notifiche Perfezionate / Messaggi Accettati * 100) / PSP Attivi<br/>\n  Misura l'efficacia della transazione finale pesata sulla capillarità e l'attivazione dei Prestatori di Servizi di Pagamento (PSP).\n</div>",
+        "content": "<div style=\"text-align: center; font-size: 13px; color: #BEBEBE; padding: 4px 20px;\">\n  ((Notifiche Perfezionate / Messaggi Accettati) * 100) / PSP Attivi<br/>\n  Misura l'efficacia della transazione finale pesata sulla capillarità e l'attivazione dei Prestatori di Servizi di Pagamento (PSP).\n</div>",
         "mode": "html"
       },
       "pluginVersion": "12.4.8",
@@ -947,7 +947,7 @@
               {
                 "id": "color",
                 "value": {
-                  "fixedColor": "blue",
+                  "fixedColor": "green",
                   "mode": "fixed"
                 }
               }
@@ -992,7 +992,7 @@
               {
                 "id": "color",
                 "value": {
-                  "fixedColor": "green",
+                  "fixedColor": "yellow",
                   "mode": "fixed"
                 }
               }
