@@ -56,5 +56,5 @@
 
 | Name | Description |
 |------|-------------|
-| <a name="output_aws_ses_user_access_keys"></a> [aws\_ses\_user\_access\_keys](#output\_aws\_ses\_user\_access\_keys) | Map of SES domain -> IAM access key id/secret for the per-domain SES user |
+| <a name="output_aws_ses_user_access_keys"></a> [aws\_ses\_user\_access\_keys](#output\_aws\_ses\_user\_access\_keys) | Map of SES domain -> IAM access key id/secret for the per-domain SES user (active key only) |
 <!-- END_TF_DOCS -->

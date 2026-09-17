@@ -57,7 +57,16 @@ resource "aws_iam_user_policy" "aws_ses_user_policy" {
 }
 
 resource "aws_iam_access_key" "aws_ses_user" {
-  for_each = local.ses_domains
+  for_each = merge([
+    for domain_key, d in local.ses_domains : {
+      for version, status in d.key_versions :
+      "${domain_key}-v${version}" => {
+        iam_user = d.iam_user
+        status   = status
+      }
+    }
+  ]...)
 
-  user = each.value.iam_user
+  user   = each.value.iam_user
+  status = each.value.status
 }
