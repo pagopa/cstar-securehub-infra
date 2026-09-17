@@ -172,7 +172,7 @@ module "cdn_idpay_assetregister" {
     }]
     url_rewrite_actions = [{
       source_pattern          = "/"
-      destination             = "/elenco-informatico-elettrodomestici/index.html"
+      destination             = "/registro-dei-beni/index.html"
       preserve_unmatched_path = false
     }]
     }],
