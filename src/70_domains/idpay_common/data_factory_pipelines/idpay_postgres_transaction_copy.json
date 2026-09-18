@@ -1,0 +1,239 @@
+{
+  "name": "idpay_postgres_transaction_copy",
+  "properties": {
+    "activities": [
+      {
+        "name": "Clear transaction table",
+        "type": "AzureDataExplorerCommand",
+        "dependsOn": [],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "userProperties": [],
+        "typeProperties": {
+          "command": ".clear table transaction data",
+          "commandTimeout": "00:20:00"
+        },
+        "linkedServiceName": {
+          "referenceName": "idpay-Kusto-idpay-ls",
+          "type": "LinkedServiceReference"
+        }
+      },
+      {
+        "name": "Copy transaction table from Postgres",
+        "type": "Copy",
+        "dependsOn": [
+          {
+            "activity": "Clear transaction table",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "userProperties": [],
+        "typeProperties": {
+          "source": {
+            "type": "PostgreSqlSource",
+            "batchSize": 100
+          },
+          "sink": {
+            "type": "AzureDataExplorerSink"
+          },
+          "enableStaging": false,
+          "translator": {
+            "type": "TabularTranslator",
+            "mappings": [
+              {
+                "source": { "name": "id" },
+                "sink": { "name": "_id", "type": "String" }
+              },
+              {
+                "source": { "name": "trxCode" },
+                "sink": { "name": "trxCode", "type": "String" }
+              },
+              {
+                "source": { "name": "operationType" },
+                "sink": { "name": "operationType", "type": "String" }
+              },
+              {
+                "source": { "name": "operationTypeTranscoded" },
+                "sink": { "name": "operationTypeTranscoded", "type": "String" }
+              },
+              {
+                "source": { "name": "status" },
+                "sink": { "name": "status", "type": "String" }
+              },
+              {
+                "source": { "name": "trxDate" },
+                "sink": { "name": "trxDate", "type": "DateTime" }
+              },
+              {
+                "source": { "name": "trxChargeDate" },
+                "sink": { "name": "trxChargeDate", "type": "DateTime" }
+              },
+              {
+                "source": { "name": "elaborationDateTime" },
+                "sink": { "name": "elaborationDateTime", "type": "DateTime" }
+              },
+              {
+                "source": { "name": "userId" },
+                "sink": { "name": "userId", "type": "String" }
+              },
+              {
+                "source": { "name": "merchantId" },
+                "sink": { "name": "merchantId", "type": "String" }
+              },
+              {
+                "source": { "name": "acquirerId" },
+                "sink": { "name": "acquirerId", "type": "String" }
+              },
+              {
+                "source": { "name": "pointOfSaleId" },
+                "sink": { "name": "pointOfSaleId", "type": "String" }
+              },
+              {
+                "source": { "name": "amountCents" },
+                "sink": { "name": "amountCents", "type": "Long" }
+              },
+              {
+                "source": { "name": "effectiveAmountCents" },
+                "sink": { "name": "effectiveAmountCents", "type": "Long" }
+              },
+              {
+                "source": { "name": "voucherAmountCents" },
+                "sink": { "name": "voucherAmountCents", "type": "Long" }
+              },
+              {
+                "source": { "name": "amountCurrency" },
+                "sink": { "name": "amountCurrency", "type": "String" }
+              },
+              {
+                "source": { "name": "channel" },
+                "sink": { "name": "channel", "type": "String" }
+              },
+              {
+                "source": { "name": "initiativeId" },
+                "sink": { "name": "rewardInitiatieveId", "type": "String" }
+              },
+              {
+                "source": { "name": "correlationId" },
+                "sink": { "name": "correlationId", "type": "String" }
+              },
+              {
+                "source": { "name": "rewardBatchId" },
+                "sink": { "name": "rewardBatchId", "type": "String" }
+              },
+              {
+                "source": { "name": "rewardBatchStatusTrx" },
+                "sink": { "name": "rewardBatchTrxStatus", "type": "String" }
+              },
+              {
+                "source": { "name": "vat" },
+                "sink": { "name": "vat", "type": "String" }
+              },
+              {
+                "source": { "name": "extendedAuthorization" },
+                "sink": { "name": "extendedAuthorization", "type": "Boolean" }
+              },
+              {
+                "source": { "name": "rejectionReasons" },
+                "sink": { "name": "rejectionReasons", "type": "String" }
+              },
+              {
+                "source": { "name": "initiativeRejectionReasons" },
+                "sink": { "name": "initiativeRejectionReasons", "type": "String" }
+              },
+              {
+                "source": { "name": "additionalProperties" },
+                "sink": { "name": "additionalProductGtin", "type": "String" }
+              },
+              {
+                "source": { "name": "invoiceData" },
+                "sink": { "name": "invoiceFilename", "type": "String" }
+              }
+            ],
+            "mapComplexValuesToString": true
+          }
+        },
+        "inputs": [
+          {
+            "referenceName": "postgres_idpay_transaction",
+            "type": "DatasetReference"
+          }
+        ],
+        "outputs": [
+          {
+            "referenceName": "data_explorer_idpay_transaction",
+            "type": "DatasetReference"
+          }
+        ]
+      },
+      {
+        "name": "Extract RejectionReasons",
+        "type": "AzureDataExplorerCommand",
+        "dependsOn": [
+          {
+            "activity": "Copy transaction table from Postgres",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 5,
+          "retryIntervalInSeconds": 90
+        },
+        "userProperties": [],
+        "typeProperties": {
+          "command": ".set-or-replace transaction_rejection_reasons <|\ntransaction\n| extend rejectionArray = parse_json(rejectionReasons)\n| mv-expand rejectionArray\n| project transactionId = _id, rejectionReason = tostring(rejectionArray)",
+          "commandTimeout": "00:20:00"
+        },
+        "linkedServiceName": {
+          "referenceName": "idpay-Kusto-idpay-ls",
+          "type": "LinkedServiceReference"
+        }
+      },
+      {
+        "name": "Extract InitiativeRejectionReasons",
+        "type": "AzureDataExplorerCommand",
+        "dependsOn": [
+          {
+            "activity": "Extract RejectionReasons",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 5,
+          "retryIntervalInSeconds": 90
+        },
+        "userProperties": [],
+        "typeProperties": {
+          "command": ".set-or-replace transaction_initiative_rejection_reasons <|\ntransaction\n| extend initiativeRejectionMap = parse_json(initiativeRejectionReasons)\n| mv-expand initiativeId = bag_keys(initiativeRejectionMap)\n| extend initiativeId = tostring(initiativeId)\n| extend rejectionList = initiativeRejectionMap[initiativeId]\n| mv-expand rejectionReason = rejectionList\n| project transactionId = _id, initiativeId, rejectionReason = tostring(rejectionReason)",
+          "commandTimeout": "00:20:00"
+        },
+        "linkedServiceName": {
+          "referenceName": "idpay-Kusto-idpay-ls",
+          "type": "LinkedServiceReference"
+        }
+      }
+    ],
+    "annotations": [],
+    "lastPublishTime": "2026-03-30T00:00:00Z"
+  },
+  "type": "Microsoft.DataFactory/factories/pipelines"
+}
