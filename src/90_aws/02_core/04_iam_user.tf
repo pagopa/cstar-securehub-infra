@@ -1,8 +1,40 @@
-# Iam user created in eng-aws-auth with name: "cstar-ENV-ses-user"
+# # Iam user created in eng-aws-auth with name: "cstar-ENV-ses-user"
+#
+# resource "aws_iam_user_policy" "ses_user_policy" {
+#   name = "ses-user-policy"
+#   user = local.iam_ses_user
+#
+#   policy = jsonencode({
+#     Version = "2012-10-17"
+#     Statement = [
+#       {
+#         Effect = "Allow"
+#         Action = [
+#           "ses:SendEmail",
+#           "ses:SendRawEmail",
+#         ]
+#         Resource = module.ses.ses_domain_identity_arn
+#         Condition = {
+#           StringEquals = {
+#             "ses:FromAddress" = "${local.ses_username}@${local.ses_domain}"
+#           }
+#         }
+#       },
+#     ]
+#   })
+# }
+#
+# resource "aws_iam_access_key" "ses_user" {
+#   user = local.iam_ses_user
+# }
 
-resource "aws_iam_user_policy" "ses_user_policy" {
+#----------------------------------------------------------------------------------------------------
+
+resource "aws_iam_user_policy" "aws_ses_user_policy" {
+  for_each = local.ses_domains
+
   name = "ses-user-policy"
-  user = local.iam_ses_user
+  user = each.value.iam_user
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -13,10 +45,10 @@ resource "aws_iam_user_policy" "ses_user_policy" {
           "ses:SendEmail",
           "ses:SendRawEmail",
         ]
-        Resource = module.ses.ses_domain_identity_arn
+        Resource = module.aws_ses[each.key].ses_domain_identity_arn
         Condition = {
           StringEquals = {
-            "ses:FromAddress" = "${local.ses_username}@${local.ses_domain}"
+            "ses:FromAddress" = "${local.ses_username}@${each.key}"
           }
         }
       },
@@ -24,6 +56,17 @@ resource "aws_iam_user_policy" "ses_user_policy" {
   })
 }
 
-resource "aws_iam_access_key" "ses_user" {
-  user = local.iam_ses_user
+resource "aws_iam_access_key" "aws_ses_user" {
+  for_each = merge([
+    for domain_key, d in local.ses_domains : {
+      for version, status in d.key_versions :
+      "${domain_key}-v${version}" => {
+        iam_user = d.iam_user
+        status   = status
+      }
+    }
+  ]...)
+
+  user   = each.value.iam_user
+  status = each.value.status
 }

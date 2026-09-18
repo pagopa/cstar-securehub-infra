@@ -160,4 +160,9 @@ locals {
 
   multi_initiatives_regex = join("|", local.multi_initiatives)
   multi_fe_regex          = join("|", local.multi_fe_spa)
+
+  #
+  # PostgreSQL
+  #
+  idpay_postgresql_database_name = "idpay-database"
 }
