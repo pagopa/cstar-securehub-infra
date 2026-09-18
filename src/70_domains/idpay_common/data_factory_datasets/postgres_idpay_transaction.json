@@ -2,7 +2,7 @@
   "name": "postgres_idpay_transaction",
   "properties": {
     "linkedServiceName": {
-      "referenceName": "idpay-PostgreSQL-ls",
+      "referenceName": "idpay-db-postgres-${env_short}-ls",
       "type": "LinkedServiceReference"
     },
     "annotations": [],
