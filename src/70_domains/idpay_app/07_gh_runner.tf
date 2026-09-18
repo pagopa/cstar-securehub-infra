@@ -12,7 +12,7 @@ module "gh_runner_job" {
   job                = {}
   job_meta           = {}
 
-  replica_timeout_in_seconds  = local.gh_runner_timeout_in_seconds
+  replica_timeout_in_seconds = local.gh_runner_timeout_in_seconds
 
   key_vault = {
     name        = local.idpay_kv_name
