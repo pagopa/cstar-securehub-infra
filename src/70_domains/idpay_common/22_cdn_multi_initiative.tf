@@ -102,6 +102,30 @@ module "cdn_multi_initiative" {
           ]
         }
 
+        # Disable caching only for generated product JSON and daily CSV exports.
+        # Every other asset keeps the route cache policy.
+        "DisableCacheElencoProdottiData" = {
+          order             = 2
+          behavior_on_match = "Stop"
+
+          conditions = [
+            {
+              type         = "url_path"
+              operator     = "RegEx"
+              match_values = ["^/?(${local.multi_initiatives_regex})/elenco-prodotti/data/(product_export_[^/]+\\.json|export_daily_[^/]+\\.csv)$"]
+              negate       = false
+              transforms   = []
+            }
+          ]
+
+          actions = [
+            {
+              type     = "cache"
+              behavior = "Disabled"
+            }
+          ]
+        }
+
         "RewriteInitiativeSpaRouting" = {
           order             = 10
           behavior_on_match = "Stop"
