@@ -24,7 +24,7 @@ locals {
     "${local.domain_prefix}bonuselettrodomestici.pagopa.it" = {
       domain         = "bonuselettrodomestici"
       iam_user       = "${var.prefix}-${var.env}-ses-user"
-      key_versions   = { 1 = "Active", 2 = "Active" }
+      key_versions   = { 1 = "Inactive", 2 = "Active" }
       active_version = 2
     }
   }
