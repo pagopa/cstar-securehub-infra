@@ -144,4 +144,27 @@ module "cdn_multi_initiative" {
       }
     }
   }
+
+}
+
+# RBAC ADF -> storage multi-initiative (data plane)
+resource "azurerm_role_assignment" "adf_can_access_multi_initiative_storage" {
+  count = var.enabled_cdn_multi_initiative ? 1 : 0
+
+  scope                = data.azurerm_storage_account.cdn_multi_initiative_storage_account[0].id
+  role_definition_name = "Storage Blob Data Contributor"
+  principal_id         = data.azurerm_data_factory.data_factory.identity[0].principal_id
+
+  depends_on = [module.cdn_multi_initiative]
+}
+
+# RBAC ADF -> storage multi-initiative (management plane, utile per ListServiceSas)
+resource "azurerm_role_assignment" "adf_can_list_service_sas_multi_initiative" {
+  count = var.enabled_cdn_multi_initiative ? 1 : 0
+
+  scope                = data.azurerm_storage_account.cdn_multi_initiative_storage_account[0].id
+  role_definition_name = "Storage Account Contributor"
+  principal_id         = data.azurerm_data_factory.data_factory.identity[0].principal_id
+
+  depends_on = [module.cdn_multi_initiative]
 }
