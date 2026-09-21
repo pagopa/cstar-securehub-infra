@@ -10,7 +10,7 @@ locals {
   text_files = {
     for f in local.files :
     local.flattened_key[f] => replace(
-      replace(file("${local.themes_dir}/${f}"), "themeVersion", substr(filesha256("${local.themes_dir}/login/resources/css/login.css"), 0, 12)),
+      replace(file("${local.themes_dir}/${f}"), "themeVersion", substr(filesha256("${local.themes_dir}/pagopa/login/resources/css/login.css"), 0, 12)),
       "__BASE_URL__",
       local.pari_base_url
     )
