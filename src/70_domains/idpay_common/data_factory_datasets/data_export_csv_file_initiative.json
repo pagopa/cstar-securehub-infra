@@ -2,26 +2,27 @@
   "name": "data_export_csv_file_initiative",
   "properties": {
     "linkedServiceName": {
-      "referenceName": "${domain}-exports-blobfs-ls",
+      "referenceName": "${domain}-multi-initiative-blob-storage-ls",
       "type": "LinkedServiceReference"
     },
     "parameters": {
+      "initiativeFolder": { "type": "String" },
       "initiativeId": { "type": "String" }
     },
     "annotations": [],
     "type": "Binary",
     "typeProperties": {
       "location": {
-        "type": "AzureBlobFSLocation",
+        "type": "AzureBlobStorageLocation",
         "fileName": {
-          "value": "@concat('export_daily_', dataset().initiativeId, '_', formatDateTime(utcNow(), 'yyyy-MM-dd'), '.csv')",
+          "value": "@concat('export_daily_', dataset().initiativeId, '_', formatDateTime(convertTimeZone(utcNow(), 'UTC', 'W. Europe Standard Time'), 'yyyy-MM-dd'), '.csv')",
           "type": "Expression"
         },
         "folderPath": {
-          "value": "@concat('data/', dataset().initiativeId)",
+          "value": "@concat(dataset().initiativeFolder, '/elenco-prodotti/data')",
           "type": "Expression"
         },
-        "fileSystem": "export"
+        "container": "$web"
       }
     }
   },
