@@ -158,3 +158,10 @@ variable "dns_forwarder_vmss_image_version" {
   type        = string
   description = "vpn dns forwarder image version"
 }
+
+
+variable "adf_proxy_tier" {
+  type        = string
+  description = "The tier of the ADF proxy"
+  default     = "small"
+}
