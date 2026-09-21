@@ -57,11 +57,39 @@ locals {
   keycloak_selfcare_idp_te       = var.env == "prod" ? "SelfCare IDP for TE" : "SelfCare ${var.env} IDP for TE"
   keycloak_selfcare_idp_te_alias = var.env == "prod" ? "selfcare-jwt-grant" : "selfcare-${var.env}-jwt-grant"
 
+  # 🔑 App Registration dedicata al portale mdc (vedi 60_keycloak_mdc_portal_entra.tf)
+  application_owners = [
+    "matteo.alongi@pagopa.it",
+    "marco.mari@pagopa.it",
+    "umberto.coppolabottazzi@pagopa.it",
+    "fabio.felici@pagopa.it"
+  ]
+
+  # Gruppi Entra abilitati al login sul portale interno mdc (realm mdc).
+  mdc_portal_groups = concat(
+    [
+      "${local.product}-mdc-adgroup-admin",
+      "${local.product}-mdc-adgroup-developers",
+      "${local.product}-mdc-adgroup-project-managers",
+      "${local.product}-mdc-adgroup-externals",
+    ],
+    var.env_short == "p" ? ["${local.product}-mdc-adgroup-oncall"] : []
+  )
+
   # Default Domain Resource Group
   data_rg    = "${local.project}-data-rg"
   monitor_rg = "${local.project}-monitoring-rg"
   network_rg = "${local.project}-network-rg"
 
+  # Audit Storage Account (vedi 12_audit_archive.tf)
+  audit_storage_account_name = substr("${replace(local.project, "-", "")}auditlogs", 0, 24)
+  audit_export_rule_name     = "${local.project}-audit-export"
+  app_insights_long_term_tables = [
+    "AppTraces",
+    "AppExceptions",
+    "AppRequests",
+    "AppDependencies",
+  ]
 
   ad_group_rbac = flatten([
     {
@@ -93,4 +121,7 @@ locals {
   # Azure Data Explorer — cluster condiviso nella platform
   data_explorer_name    = "${local.product_no_domain}-platform"
   data_explorer_rg_name = "${local.product_no_domain}-platform-data-rg"
+
+  # Storage account admin fe
+  admin_web_storage_name = "${local.project}-admin"
 }

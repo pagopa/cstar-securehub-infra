@@ -1,0 +1,6 @@
+prefix         = "cstar"
+env_short      = "d"
+env            = "dev"
+domain         = "shared"
+location_short = "itn"
+location       = "italynorth"

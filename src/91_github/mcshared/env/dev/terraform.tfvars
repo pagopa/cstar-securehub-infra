@@ -1,5 +1,0 @@
-prefix         = "cstar"
-env            = "dev"
-env_short      = "d"
-location_short = "itn"
-domain         = "mcshared"

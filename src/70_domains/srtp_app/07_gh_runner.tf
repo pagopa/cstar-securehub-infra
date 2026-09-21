@@ -12,8 +12,8 @@ module "gh_runner_job" {
   gh_env             = "${var.location_short}-${var.env}"
   gh_repositories = [
     {
-      name       = "rtp-platform-qa", # Not used in prod, but needed for the job to be created
-      short_name = "platform-qa"
+      name       = "rtp-internal", # Not used in prod, but needed for the job to be created. Hosts the rtp-producer service.
+      short_name = "rtp-producer"
     }
   ]
   job = {

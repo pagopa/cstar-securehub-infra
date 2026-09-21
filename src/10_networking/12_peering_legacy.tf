@@ -10,11 +10,6 @@ locals {
       id                  = data.azurerm_virtual_network.vnet_weu_integration.id
       resource_group_name = data.azurerm_virtual_network.vnet_weu_integration.resource_group_name
     }
-    aks_weu = {
-      name                = data.azurerm_virtual_network.vnet_weu_aks.name
-      id                  = data.azurerm_virtual_network.vnet_weu_aks.id
-      resource_group_name = data.azurerm_virtual_network.vnet_weu_aks.resource_group_name
-    }
   }
 
   # Collect vnet spoke

@@ -9,7 +9,11 @@ locals {
 
   text_files = {
     for f in local.files :
-    local.flattened_key[f] => file("${local.themes_dir}/${f}")
+    local.flattened_key[f] => replace(
+      replace(file("${local.themes_dir}/${f}"), "themeVersion", substr(filesha256("${local.themes_dir}/login/resources/css/login.css"), 0, 12)),
+      "__BASE_URL__",
+      local.pari_base_url
+    )
     if !endswith(f, "/") && !contains(local.binary_exts, lower(substr(f, length(f) - 4, 5)))
   }
 
@@ -33,6 +37,35 @@ locals {
       name      = "pagopa-theme"
       mountPath = "/opt/bitnami/keycloak/themes/${f}"
       subPath   = local.flattened_key[f]
+      readOnly  = true
+    }
+    if !endswith(f, "/")
+  ]
+
+  # --- Tema dedicato "mdc-internal-portal" (login con Microsoft Entra) ---
+  # Montato tramite un configmap separato per non toccare il tema "pagopa"
+  # esistente ed evitare il limite di 1 MiB per configmap.
+  mdc_theme_dir     = "${path.module}/k8s/keycloak/themes/mdc-internal-portal"
+  mdc_files         = fileset(local.mdc_theme_dir, "**")
+  mdc_flattened_key = { for f in local.mdc_files : f => replace(f, "/", "__") }
+
+  mdc_text_files = {
+    for f in local.mdc_files :
+    local.mdc_flattened_key[f] => file("${local.mdc_theme_dir}/${f}")
+    if !endswith(f, "/") && !contains(local.binary_exts, lower(substr(f, length(f) - 4, 5)))
+  }
+
+  mdc_binary_files = {
+    for f in local.mdc_files :
+    local.mdc_flattened_key[f] => filebase64("${local.mdc_theme_dir}/${f}")
+    if !endswith(f, "/") && contains(local.binary_exts, lower(substr(f, length(f) - 4, 5)))
+  }
+
+  mdc_theme_volume_mounts = [
+    for f in local.mdc_files : {
+      name      = "mdc-portal-theme"
+      mountPath = "/opt/bitnami/keycloak/themes/mdc-internal-portal/${f}"
+      subPath   = local.mdc_flattened_key[f]
       readOnly  = true
     }
     if !endswith(f, "/")
@@ -197,6 +230,17 @@ resource "kubernetes_config_map" "keycloak_pagopa_theme" {
 
   data        = local.text_files
   binary_data = local.binary_files
+}
+
+# ConfigMap del tema dedicato "mdc-internal-portal"
+resource "kubernetes_config_map" "keycloak_mdc_portal_theme" {
+  metadata {
+    name      = "keycloak-mdc-portal-theme"
+    namespace = local.keycloak_namespace
+  }
+
+  data        = local.mdc_text_files
+  binary_data = local.mdc_binary_files
 }
 
 resource "kubernetes_config_map" "keycloak_providers" {

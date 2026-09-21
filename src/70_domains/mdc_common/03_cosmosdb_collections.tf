@@ -33,6 +33,10 @@ locals {
         {
           keys   = ["entityId"]
           unique = true
+        },
+        {
+          keys   = ["businessName"]
+          unique = false
         }
       ]
 

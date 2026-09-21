@@ -1,0 +1,147 @@
+module "cdn_multi_initiative" {
+  source = "./.terraform/modules/__v4__/cdn_frontdoor_multiple"
+  count  = var.enabled_cdn_multi_initiative ? 1 : 0
+
+  resource_group_name        = local.data_rg
+  location                   = var.location
+  log_analytics_workspace_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
+  tenant_id                  = data.azurerm_client_config.current.tenant_id
+
+  # CDN Profile
+  profile = {
+    name = "${local.project}-multi-initiative"
+  }
+
+  storage_account = {
+    enabled                  = true
+    account_name             = "${local.project}multinit"
+    account_replication_type = contains(["d", "u"], var.env_short) ? "LRS" : "ZRS"
+    index_document           = "index.html"
+    error_404_document       = "error.html"
+    origin_group             = "multi-initiative"
+  }
+
+  custom_domains = {
+    (local.public_dns_zone_pari) = {
+      dns_zone_name                = local.public_dns_zone_pari
+      dns_zone_resource_group_name = local.core_network_rg
+      certificate_type             = "CustomerCertificate"
+      keyvault_id                  = data.azurerm_key_vault.domain_kv.id
+      keyvault_certificate_name    = replace(local.public_dns_zone_pari, ".", "-")
+      enable_dns_records           = true
+    }
+  }
+
+  endpoints = {
+    "web" = {
+      name = "${local.project}-cdn-web"
+    }
+  }
+
+  origin_groups = {
+    "multi-initiative" = {
+      description = "Static content pool for multi-initiative CDN"
+      members     = [] # The storage account origin is wired automatically when the storage account is enabled and the origin group is specified.
+
+      health_probe = {
+        path                = "/"
+        protocol            = "Https"
+        request_type        = "GET"
+        interval_in_seconds = 120
+      }
+
+      load_balancing = {
+        sample_size                        = 4
+        successful_samples_required        = 2
+        additional_latency_in_milliseconds = 0
+      }
+    }
+  }
+
+  routes = {
+    "web" = {
+      endpoint       = "web"
+      origin_group   = "multi-initiative"
+      patterns       = ["/*"]
+      protocols      = ["Http", "Https"]
+      forwarding     = "MatchRequest"
+      https_redirect = true
+      cache_behavior = "IgnoreQueryString"
+      custom_domains = [local.public_dns_zone_pari]
+      rulesets       = ["MultiIniziativeGlobal"]
+      enabled        = true
+    }
+  }
+  rulesets = {
+    "MultiIniziativeGlobal" = {
+      description = "Global ruleset for multi-initiative CDN"
+      rules = {
+        "RewriteInitiativeSpaRouting" = {
+          order             = 10
+          behavior_on_match = "Stop"
+
+          conditions = [
+            {
+              type         = "url_path"
+              operator     = "RegEx"
+              match_values = ["^/?(${local.multi_initiatives_regex})/(${local.multi_fe_regex})/assets(/.*)?$"]
+              negate       = true
+            },
+            {
+              type         = "url_path"
+              operator     = "RegEx"
+              match_values = ["^/?(${local.multi_initiatives_regex})/(${local.multi_fe_regex})(/.*)?$"]
+              negate       = false
+            },
+            {
+              type         = "url_file_extension"
+              operator     = "LessThanOrEqual"
+              match_values = ["0"]
+              negate       = false
+            }
+          ]
+
+          actions = [{
+            type                    = "rewrite"
+            source_pattern          = "/"
+            destination             = "/{url_path:seg0}/{url_path:seg1}/index.html"
+            preserve_unmatched_path = false
+          }]
+        },
+        "RewriteEsercente" = {
+          order             = 20
+          behavior_on_match = "Stop"
+
+          conditions = [
+            {
+              type         = "url_path"
+              operator     = "BeginsWith"
+              match_values = ["^/esercente/assets/"]
+              negate       = true
+            },
+            {
+              type         = "url_path"
+              operator     = "BeginsWith"
+              match_values = ["/esercente/"]
+              negate       = false
+            },
+            {
+              type         = "url_file_extension"
+              operator     = "LessThanOrEqual"
+              match_values = ["0"]
+              negate       = false
+              transforms   = []
+            }
+          ]
+
+          actions = [{
+            type                    = "rewrite"
+            source_pattern          = "/esercente"
+            destination             = "/esercente/index.html"
+            preserve_unmatched_path = false
+          }]
+        }
+      }
+    }
+  }
+}

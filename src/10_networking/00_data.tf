@@ -19,11 +19,6 @@ data "azurerm_virtual_network" "vnet_weu_integration" {
   resource_group_name = "${var.prefix}-${var.env_short}-vnet-rg"
 }
 
-data "azurerm_virtual_network" "vnet_weu_aks" {
-  name                = "${var.prefix}-${var.env_short}-weu-${var.env}01-vnet"
-  resource_group_name = "${var.prefix}-${var.env_short}-weu-${var.env}01-vnet-rg"
-}
-
 #
 # Dns Zone
 #

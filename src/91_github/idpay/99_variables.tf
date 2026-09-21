@@ -8,6 +8,16 @@ variable "env" {
   }
 }
 
+variable "env_short" {
+  type        = string
+  description = "Short environment code (d, u, p)."
+
+  validation {
+    condition     = contains(["d", "u", "p"], var.env_short)
+    error_message = "env_short must be d, u, or p."
+  }
+}
+
 variable "cicd_kv_name" {
   type        = string
   description = "Name of the Key Vault where the CI/CD secrets are stored."
@@ -38,4 +48,14 @@ variable "argo_cd_server" {
   type        = string
   description = "Server of the Argo CD (without https)."
   default     = null
+}
+
+variable "functional_testing_secret_name" {
+  type        = string
+  description = "Name of the secret for functional test."
+  default     = null
+  validation {
+    condition     = var.env == "prod" || var.functional_testing_secret_name != null
+    error_message = "functional_testing_secret_name must be set in dev and uat."
+  }
 }

@@ -325,6 +325,20 @@ locals {
         }
       ]
     },
+    "idpay-merchants-catalog-portal" = {
+      repository_secrets = [
+        {
+          SONAR_TOKEN = data.azurerm_key_vault_secret.sonar_token.value
+        }
+      ]
+      repository_variables = [
+        {
+          SONARCLOUD_ORG          = "pagopa"
+          SONARCLOUD_PROJECT_KEY  = "pagopa_idpay-merchants-catalog-portal"
+          SONARCLOUD_PROJECT_NAME = "idpay-merchants-catalog-portal"
+        }
+      ]
+    },
     "idpay-portal-welfare-backend-role-permission" = {
       repository_secrets = [
         {
@@ -366,6 +380,20 @@ locals {
           SONARCLOUD_PROJECT_NAME = "pari-performance-test"
         }
       ]
+    },
+    "idpay-functional-testing" = {
+      repository_secrets   = []
+      repository_variables = []
+      env_secrets = {
+        envs = ["dev", "uat"]
+        secrets = {
+          AZURE_CLIENT_ID       = data.azurerm_user_assigned_identity.github_cd_identity.client_id
+          AZURE_SUBSCRIPTION_ID = data.azurerm_subscription.current.subscription_id
+          AZURE_TENANT_ID       = data.azurerm_client_config.current.tenant_id
+          KEYVAULT_NAME         = var.idpay_kv_name
+          SECRET_NAME           = var.functional_testing_secret_name
+        }
+      }
     },
     "mcshared-datavault" = {
       settings = {

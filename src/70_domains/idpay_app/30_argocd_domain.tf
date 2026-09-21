@@ -89,16 +89,16 @@ locals {
         target_branch = "main"
         env           = ["dev", "uat", "prod"]
       },
-      "idpay-reward-notification" = {
-        name          = "idpay-reward-notification"
-        target_branch = "main"
-        env           = ["dev", "uat", "prod"]
-      },
-      "idpay-reward-user-id-splitter" = {
-        name          = "idpay-reward-user-id-splitter"
-        target_branch = "main"
-        env           = ["dev", "uat", "prod"]
-      },
+      # "idpay-reward-notification" = {
+      #   name          = "idpay-reward-notification"
+      #   target_branch = "main"
+      #   env           = ["dev", "uat", "prod"]
+      # },
+      # "idpay-reward-user-id-splitter" = {
+      #   name          = "idpay-reward-user-id-splitter"
+      #   target_branch = "main"
+      #   env           = ["dev", "uat", "prod"]
+      # },
       "idpay-timeline" = {
         name          = "idpay-timeline"
         target_branch = "main"
@@ -106,11 +106,11 @@ locals {
       }
     }
     "ext" = {
-      "idpay-iban" = {
-        name          = "idpay-iban"
-        target_branch = "main"
-        env           = ["dev", "uat", "prod"]
-      },
+      # "idpay-iban" = {
+      #   name          = "idpay-iban"
+      #   target_branch = "main"
+      #   env           = ["dev", "uat", "prod"]
+      # },
       "idpay-notification-email" = {
         name          = "idpay-notification-email"
         target_branch = "main"

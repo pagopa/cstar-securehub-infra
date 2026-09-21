@@ -46,7 +46,7 @@ aks_system_node_pool = {
 aks_nodepool_blue = {
   vm_sku_name       = "Standard_B4ms_active"
   autoscale_enabled = true
-  node_count_min    = 1
+  node_count_min    = 2
   node_count_max    = 3
 }
 

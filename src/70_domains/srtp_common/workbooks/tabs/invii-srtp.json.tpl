@@ -964,7 +964,7 @@
               "type": 3,
               "content": {
                 "version": "KqlItem/1.0",
-                "query": " AppTraces\n | where AppRoleName == 'rtp-sender'\n | where TimeGenerated {evaluation_window:query}\n | where SeverityLevel == 3\n | where Message startswith \"Error sending Rtp to be sent:\"\n | where Message !contains \"payer is not activated\"\n | extend errorMessage = trim(\" \", replace_string(Message, \"Error sending Rtp to be sent:\", \"\"))\n | extend Categoria = case(\n     errorMessage contains \"TooMany\" or errorMessage contains \"429\",          \"Troppe richieste MongoDB\",\n     errorMessage contains \"DuplicateKey\" or errorMessage contains \"dup key\", \"Chiave duplicata MongoDB\",\n     errorMessage contains \"MongoWrite\" or errorMessage contains \"Mongo\",     \"Errore MongoDB\",\n     errorMessage contains \"imeout\",                                          \"Timeout\",\n     errorMessage contains \"Connection\" or errorMessage contains \"refused\",   \"Errore di rete\",\n     errorMessage contains \"rejected\" or errorMessage contains \"Reject\",      \"Rejection SEPA\",\n     \"Altro\"\n )\n | project\n     TimeGenerated,\n     Categoria,\n     errorMessage,\n     creditor_service_provider = Properties[\"creditor_service_provider\"],\n     correlation_id            = Properties[\"correlation_id\"],\n     resource_id               = Properties[\"resource_id\"]\n | top 250 by TimeGenerated desc",
+                "query": "let DebtorInfo = AppTraces\n| where AppRoleName == 'rtp-sender'\n| where TimeGenerated {evaluation_window:query}\n| where Message startswith \"Rtp to be sent saved with id:\"\n| extend resource_id = tostring(Properties[\"resource_id\"])\n| parse Message with \"Rtp to be sent saved with id: \" * \". service_provider: \" debtor_service_provider\n| project resource_id, debtor_service_provider;\nAppTraces\n| where AppRoleName == 'rtp-sender'\n| where TimeGenerated {evaluation_window:query}\n| where SeverityLevel == 3\n| where Message startswith \"Error sending Rtp to be sent:\"\n| where Message !contains \"payer is not activated\"\n| extend errorMessage = trim(\" \", replace_string(Message, \"Error sending Rtp to be sent:\", \"\"))\n| extend Categoria = case(\n    errorMessage contains \"TooMany\" or errorMessage contains \"429\",          \"Troppe richieste MongoDB\",\n    errorMessage contains \"DuplicateKey\" or errorMessage contains \"dup key\", \"Chiave duplicata MongoDB\",\n    errorMessage contains \"MongoWrite\" or errorMessage contains \"Mongo\",     \"Errore MongoDB\",\n    errorMessage contains \"imeout\",                                          \"Timeout\",\n    errorMessage contains \"Connection\" or errorMessage contains \"refused\",   \"Errore di rete\",\n    errorMessage contains \"rejected\" or errorMessage contains \"Reject\",      \"Rejection SEPA\",\n    \"Altro\")\n| extend resource_id = tostring(Properties[\"resource_id\"]),\n         correlation_id = tostring(Properties[\"correlation_id\"])\n| join kind=leftouter DebtorInfo on resource_id\n| project TimeGenerated, Categoria, errorMessage, debtor_service_provider, correlation_id, resource_id\n| top 250 by TimeGenerated desc",
                 "size": 0,
                 "title": "❌ Catch-all errori invio",
                 "noDataMessageStyle": 3,
@@ -1006,7 +1006,7 @@
               "type": 3,
               "content": {
                 "version": "KqlItem/1.0",
-                "query": "\n AppTraces\n | where AppRoleName == 'rtp-sender'\n | where TimeGenerated {evaluation_window:query}\n | where SeverityLevel == 3\n | where Message startswith \"Error while handling RTP send for\"\n | extend resource_id_msg = extract(@\"Error while handling RTP send for ([^\\s]+)\", 1, Message)\n | extend errorMessage    = trim(\" \", extract(@\"Error while handling RTP send for [^\\s]+\\s(.+)$\", 1, Message))\n | project\n     TimeGenerated,\n     errorMessage,\n     resource_id               = coalesce(tostring(Properties[\"resource_id\"]), resource_id_msg),\n     creditor_service_provider = Properties[\"creditor_service_provider\"],\n     correlation_id            = Properties[\"correlation_id\"]\n | top 50 by TimeGenerated desc",
+                "query": "\n AppTraces\n | where AppRoleName == 'rtp-sender'\n | where TimeGenerated {evaluation_window:query}\n | where SeverityLevel == 3\n | where Message startswith \"Error while handling RTP send for\"\n | extend resource_id_msg = extract(@\"Error while handling RTP send for ([^\\s]+)\", 1, Message)\n | extend errorMessage    = trim(\" \", extract(@\"Error while handling RTP send for [^\\s]+\\s(.+)$\", 1, Message))\n | project\n     TimeGenerated,\n     errorMessage,\n     resource_id               = coalesce(tostring(Properties[\"resource_id\"]), resource_id_msg),\n     debtor_service_provider   = Properties[\"debtor_service_provider\"],\n     correlation_id            = Properties[\"correlation_id\"]\n | top 50 by TimeGenerated desc",
                 "size": 0,
                 "title": "❌ Errore Handler post retry",
                 "noDataMessageStyle": 3,
@@ -1175,7 +1175,7 @@
               "type": 3,
               "content": {
                 "version": "KqlItem/1.0",
-                "query": "let Sent =\nAppTraces\n| where AppRoleName == \"rtp-sender\"\n| where TimeGenerated {evaluation_window:query}\n| where Message startswith \"Rtp sent successfully with id:\"\n| summarize sentCount = count()\n| extend key = 1;\n\nlet PaidThroughOtherChannel =\nAppTraces\n| where AppRoleName == \"rtp-sender\"\n| where TimeGenerated {evaluation_window:query}\n| where Message has \"Successfully updated paid RTP with different psp scenario\"\n| extend pspBic = coalesce(extract(@\"PSP BIC:\\s*([^,\\s}]+)\", 1, Message), \"unknown\")\n| summarize paidOtherCount = count(), distinctPsp = dcountif(pspBic, pspBic != \"unknown\")\n| extend key = 1;\n\nSent\n| join kind=fullouter PaidThroughOtherChannel on key\n| extend sentCount = coalesce(sentCount, 0),\n         paidOtherCount = coalesce(paidOtherCount, 0),\n         distinctPsp = coalesce(distinctPsp, 0)\n| extend paidOtherPercentage = iff(sentCount > 0, 100.0 * todouble(paidOtherCount) / todouble(sentCount), 0.0)\n| project [\"RTP inviati\"] = sentCount,\n          [\"RTP pagati attraverso altro canale\"] = paidOtherCount,\n          [\"PSP distinti\"] = distinctPsp,\n          [\"% pagati attraverso altro canale\"] = paidOtherPercentage\n",
+                "query": "let Paid =\nAppTraces\n| where AppRoleName == \"rtp-sender\"\n| where TimeGenerated {evaluation_window:query}\n| where Message startswith \"Successfully updated paid RTP with\"\n| extend isDifferentPsp = Message contains \"different psp scenario\"\n| extend resourceId = tostring(Properties.resource_id),\n         pspBic = tostring(Properties[\"debtor_service_provider\"])\n| summarize paidTotal = dcountif(resourceId, isnotempty(resourceId)),\n            paidOtherCount = dcountif(resourceId, isDifferentPsp and isnotempty(resourceId)),\n            distinctPsp = dcountif(pspBic, isDifferentPsp and isnotempty(pspBic)),\n            pspList = strcat_array(make_set_if(pspBic, isDifferentPsp and isnotempty(pspBic)), \", \")\n| extend key = 1;\n\nlet Sent =\nAppTraces\n| where AppRoleName == \"rtp-sender\"\n| where TimeGenerated {evaluation_window:query}\n| where Message startswith \"Rtp sent successfully with id:\"\n| summarize sentCount = count()\n| extend key = 1;\n\nSent\n| join kind=fullouter Paid on key\n| extend sentCount = coalesce(sentCount, 0),\n         paidTotal = coalesce(paidTotal, 0),\n         paidOtherCount = coalesce(paidOtherCount, 0),\n         distinctPsp = coalesce(distinctPsp, 0),\n         pspList = coalesce(pspList, \"\")\n| extend paidOtherPercentage = iff(paidTotal > 0, round(100.0 * todouble(paidOtherCount) / todouble(paidTotal), 2), 0.0)\n| project [\"RTP inviati\"] = sentCount,\n          [\"RTP pagati (totale)\"] = paidTotal,\n          [\"RTP pagati con PSP diverso\"] = paidOtherCount,\n          [\"PSP distinti\"] = distinctPsp,\n          [\"PSP coinvolti\"] = pspList,\n          [\"% sul totale pagati\"] = paidOtherPercentage",
                 "size": 0,
                 "title": "RTP pagati tramite altro canale",
                 "showExportToExcel": true,
@@ -1187,14 +1187,14 @@
                 "gridSettings": {
                   "sortBy": [
                     {
-                      "itemKey": "RTP pagati attraverso altro canale",
+                      "itemKey": "RTP inviati",
                       "sortOrder": 1
                     }
                   ]
                 },
                 "sortBy": [
                   {
-                    "itemKey": "RTP pagati attraverso altro canale",
+                    "itemKey": "RTP inviati",
                     "sortOrder": 1
                   }
                 ]
@@ -1270,7 +1270,7 @@
               "type": 3,
               "content": {
                 "version": "KqlItem/1.0",
-                "query": "AppTraces\n| where TimeGenerated {evaluation_window:query}\n| where AppRoleName == 'rtp-sender'\n| where Message startswith \"Error finding activation data with resourceId:\" or Message startswith \"Error saving Rtp to be sent:\" or Message startswith \"Error sending Rtp to be sent:\"\n| extend payee_name = tostring(Properties.payee_name)\n| summarize [\"Errori\"] = count() by [\"Payee Name\"] = payee_name\n| sort by [\"Errori\"] desc\n",
+                "query": "AppTraces\n| where TimeGenerated {evaluation_window:query}\n| where AppRoleName == 'rtp-sender'\n| where (\n    Message contains \"Error saving Rtp to be sent:\"\n    or Message startswith \"Error sending Rtp to be sent:\"\n)\n    and Message !contains \"payer is not activated\"\n| extend payee_name = tostring(Properties.payee_name)\n| summarize [\"Errori\"] = count() by [\"Payee Name\"] = payee_name\n| sort by [\"Errori\"] desc\n",
                 "size": 0,
                 "title": "❌ Invii falliti per Ente Creditore",
                 "noDataMessageStyle": 3,
@@ -1896,9 +1896,9 @@
               "type": 3,
               "content": {
                 "version": "KqlItem/1.0",
-                "query": "AzureDiagnostics\n| where TimeGenerated {evaluation_window:query}\n| where requestUri_s == '/rtp/cb/send'\n| summarize count() by tostring(toint(httpStatus_d))\n",
+                "query": "AzureDiagnostics\n| where TimeGenerated {evaluation_window:query}\n| where requestUri_s == '/rtp/cb/v1/send'\n| summarize count() by tostring(toint(httpStatus_d))\n",
                 "size": 0,
-                "title": "Callback totali ricevute e relativi status code",
+                "title": "Callback Send e relativi status code",
                 "queryType": 0,
                 "resourceType": "microsoft.operationalinsights/workspaces",
                 "crossComponentResources": [
@@ -1918,7 +1918,7 @@
                 }
               },
               "customWidth": "50",
-              "name": "Callback totali ricevute e relativi status code",
+              "name": "Callback Send e relativi status code",
               "styleSettings": {
                 "showBorder": true
               }
@@ -1927,9 +1927,40 @@
               "type": 3,
               "content": {
                 "version": "KqlItem/1.0",
-                "query": "AzureDiagnostics\n| where TimeGenerated {evaluation_window:query}\n| where requestUri_s == \"/rtp/cb/send\"\n| where toint(httpStatus_d) != 200\n| summarize count() by tostring(toint(httpStatus_d))",
+                "query": "AzureDiagnostics\n| where TimeGenerated {evaluation_window:query}\n| where requestUri_s == '/rtp/cb/v1/cancel'\n| summarize count() by tostring(toint(httpStatus_d))\n",
                 "size": 0,
-                "title": "Errori HTTP callback",
+                "title": "Callback Cancel e relativi status code",
+                "queryType": 0,
+                "resourceType": "microsoft.operationalinsights/workspaces",
+                "crossComponentResources": [
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-law"
+                ],
+                "visualization": "piechart",
+                "chartSettings": {
+                  "ySettings": {
+                    "numberFormatSettings": {
+                      "unit": 0,
+                      "options": {
+                        "style": "decimal",
+                        "useGrouping": true
+                      }
+                    }
+                  }
+                }
+              },
+              "customWidth": "50",
+              "name": "Callback Cancel e relativi status code",
+              "styleSettings": {
+                "showBorder": true
+              }
+            },
+            {
+              "type": 3,
+              "content": {
+                "version": "KqlItem/1.0",
+                "query": "AzureDiagnostics\n| where TimeGenerated {evaluation_window:query}\n| where requestUri_s == '/rtp/cb/v1/send'\n| where toint(httpStatus_d) != 200\n| summarize count() by tostring(toint(httpStatus_d))",
+                "size": 0,
+                "title": "Errori HTTP callback status Send",
                 "noDataMessageStyle": 3,
                 "queryType": 0,
                 "resourceType": "microsoft.operationalinsights/workspaces",
@@ -1950,7 +1981,39 @@
                 }
               },
               "customWidth": "50",
-              "name": "Errori HTTP callback",
+              "name": "Errori HTTP callback status Send",
+              "styleSettings": {
+                "showBorder": true
+              }
+            },
+            {
+              "type": 3,
+              "content": {
+                "version": "KqlItem/1.0",
+                "query": "AzureDiagnostics\n| where TimeGenerated {evaluation_window:query}\n| where requestUri_s == '/rtp/cb/v1/cancel'\n| where toint(httpStatus_d) != 200\n| summarize count() by tostring(toint(httpStatus_d))",
+                "size": 0,
+                "title": "Errori HTTP callback status Cancel",
+                "noDataMessageStyle": 3,
+                "queryType": 0,
+                "resourceType": "microsoft.operationalinsights/workspaces",
+                "crossComponentResources": [
+                  "/subscriptions/${subscription_id}/resourceGroups/${prefix}-${env_short}-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/${prefix}-${env_short}-law"
+                ],
+                "visualization": "piechart",
+                "chartSettings": {
+                  "ySettings": {
+                    "numberFormatSettings": {
+                      "unit": 0,
+                      "options": {
+                        "style": "decimal",
+                        "useGrouping": true
+                      }
+                    }
+                  }
+                }
+              },
+              "customWidth": "50",
+              "name": "Errori HTTP callback status Cancel",
               "styleSettings": {
                 "showBorder": true
               }
@@ -2046,41 +2109,6 @@
               "styleSettings": {
                 "showBorder": true
               }
-            },
-            {
-              "type": 9,
-              "content": {
-                "version": "KqlParameterItem/1.0",
-                "parameters": [
-                  {
-                    "id": "2fe6d2e4-8c64-4688-8585-7e269d9231ec",
-                    "version": "KqlParameterItem/1.0",
-                    "name": "SubjectParam",
-                    "label": "Seleziona Service Provider",
-                    "type": 2,
-                    "isRequired": true,
-                    "multiSelect": true,
-                    "quote": "'",
-                    "delimiter": ",",
-                    "typeSettings": {
-                      "additionalResourceOptions": [
-                        "value::all"
-                      ]
-                    },
-                    "jsonData": "[\n    { \"value\": \"UNCRITMM\", \"label\": \"Unicredit\" },\n    { \"value\": \"ICRAITRRXXX\", \"label\": \"ICCREA\" },\n    { \"value\": \"BNCMITRR\", \"label\": \"Bancomat\" },\n    { \"value\": \"FAKESP01\", \"label\": \"FAKESP01\" },\n    { \"value\": \"MOCKSP01\", \"label\": \"MOCKSP01\" },\n    { \"value\": \"MOCKSP04\", \"label\": \"MOCKSP04\" },\n    { \"value\": \"PPAYITR1XXX\", \"label\": \"Poste\" },\n    { \"value\": \"HYEEIT22XXX\", \"label\": \"Hype\" },\n    { \"value\": \"TAKEOV01\", \"label\": \"TAKEOV01\" }\n]",
-                    "timeContext": {
-                      "durationMs": 86400000
-                    },
-                    "value": [
-                      "value::all"
-                    ]
-                  }
-                ],
-                "style": "pills",
-                "queryType": 0,
-                "resourceType": "microsoft.operationalinsights/workspaces"
-              },
-              "name": "parameters - 5"
             }
           ]
         },

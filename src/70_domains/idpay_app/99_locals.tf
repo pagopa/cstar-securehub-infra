@@ -1,7 +1,8 @@
 locals {
-  project      = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
-  project_core = "${var.prefix}-${var.env_short}-${var.location_short}-core"
-  product      = "${var.prefix}-${var.env_short}"
+  project           = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
+  project_core      = "${var.prefix}-${var.env_short}-${var.location_short}-core"
+  product           = "${var.prefix}-${var.env_short}"
+  product_no_domain = "${var.prefix}-${var.env_short}-${var.location_short}"
 
   monitor_appinsights_name        = "${local.product}-appinsights"
   monitor_action_group_slack_name = "SlackPagoPA"
@@ -36,6 +37,10 @@ locals {
   #
   aks_name                = "${local.product}-${var.location_short}-${var.env}-aks"
   aks_resource_group_name = "${local.product}-${var.location_short}-core-aks-rg"
+
+  # Data Explorer
+  kusto_cluster_name    = "${local.product_no_domain}-platform"
+  kusto_cluster_rg_name = "${local.product_no_domain}-platform-data-rg"
 
   # DOMAINS
   domain_namespace = var.domain
@@ -101,16 +106,22 @@ locals {
   #
   # List of GitHub repositories which need self-hosted runners.
   #
-  github_repositories_with_self_hosted_runners = [
+  github_repositories_with_self_hosted_runners = flatten([
     {
-      name : "mcshared-datavault-test",
-      short_name : "datavault-test"
+      name       = "mcshared-datavault-test"
+      short_name = "datavault-test"
     },
     {
-      name : "mcshared-datavault",
-      short_name : "datavault"
-    }
-  ]
+      name       = "mcshared-datavault"
+      short_name = "datavault"
+    },
+    contains(["d", "u"], var.env_short) ? [
+      {
+        name       = "idpay-functional-testing"
+        short_name = "functional-test"
+      }
+    ] : []
+  ])
 
   #
   # Data of Container Apps Environment for GitHub Runners.

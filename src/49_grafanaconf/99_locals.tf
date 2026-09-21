@@ -28,6 +28,8 @@ locals {
   kv_core_name                = "${local.product_nodomain}-core-kv"
   kv_core_resource_group_name = "${local.product_nodomain}-core-sec-rg"
 
+  alert_folders = { idpay_alert_folder = "IDPay App Alerts" }
+
   # Configuration for different team products and their AKS clusters
   # Contains settings for each team's environment including:
   # - location_short: Geographic location code

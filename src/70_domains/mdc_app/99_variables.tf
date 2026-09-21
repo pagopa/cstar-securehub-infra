@@ -81,3 +81,9 @@ variable "enable" {
 variable "event_hub_port" {
   type = number
 }
+
+variable "enable_gh_runner_job" {
+  type        = bool
+  description = "Enable GitHub runner job"
+  default     = false
+}

@@ -50,3 +50,6 @@ tags = {
   Source      = "https://github.com/pagopa/cstar-securehub-infra"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
+
+# idpay alerting
+idpay_grafana_alert_enabled = true

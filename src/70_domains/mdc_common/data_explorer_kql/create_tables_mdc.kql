@@ -30,7 +30,8 @@
 .create-merge table TppDataSnapshot (
     tpp_id: string,
     entity_id: string,
-    business_name: string
+    business_name: string,
+    state: bool
 )
 
 .create-merge table MessageSnapshot (
@@ -52,4 +53,15 @@
 )
 
 .alter table FinalizedMessageSnapshot policy retention
+    @'{"SoftDeletePeriod": "365.00:00:00", "Recoverability": "Enabled"}'
+
+.create-merge table PaymentAttemptSnapshot (
+    window_start:  datetime,
+    tpp_id:        string,
+    origin_id:     string,
+    notice_number: string,
+    attempt_count: int
+)
+
+.alter table PaymentAttemptSnapshot policy retention
     @'{"SoftDeletePeriod": "365.00:00:00", "Recoverability": "Enabled"}'
