@@ -132,9 +132,11 @@ locals {
       location       = data.azurerm_log_analytics_workspace.log_analytics_workspace.location
       query          = <<-QUERY
             let excluded_requests = AppTraces
+              | where AppRoleName == "rtp-sender"
               | where Message has "Size.gpdMessageDtoMono.description" or Message has "Size.gpdMessageDtoMono.subject"
               | distinct OperationId;
             AppRequests
+            | where AppRoleName == "rtp-sender"
             | where Url contains "rtp/gpd/message"
             | where Name startswith "POST"
             | join kind=leftanti excluded_requests on OperationId
