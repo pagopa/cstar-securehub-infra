@@ -91,6 +91,22 @@ locals {
             }
           ]
         }
+        rtps_test = {
+          autoscale_max_throughput          = null
+          cosmos_collections_max_throughput = null
+          default_ttl_seconds               = -1
+          shard_key                         = "operationDispatcherKey"
+          indexes = [
+            {
+              keys   = ["_id"]
+              unique = true
+            },
+            {
+              keys   = ["noticeNumber"]
+              unique = false
+            }
+          ]
+        }
         rtp_failed_messages = {
           autoscale_max_throughput          = null
           cosmos_collections_max_throughput = null

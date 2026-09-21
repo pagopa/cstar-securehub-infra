@@ -17,6 +17,7 @@ resource "azurerm_data_factory_linked_custom_service" "adf_cosmosdb_linked_servi
   depends_on = [azurerm_data_factory_managed_private_endpoint.adf_cosmosdb_mpe]
 }
 
+
 resource "azurerm_data_factory_linked_custom_service" "log_analytics_ls" {
   name            = "${var.domain}-LogAnalytics-${var.domain}-ls"
   data_factory_id = data.azurerm_data_factory.data_factory.id

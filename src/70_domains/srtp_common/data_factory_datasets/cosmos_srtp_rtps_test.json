@@ -1,0 +1,16 @@
+{
+    "name": "cosmos_${domain}_rtps_test",
+    "properties": {
+        "linkedServiceName": {
+            "referenceName": "${domain}-CosmosDB-rtp-ls",
+            "type": "LinkedServiceReference"
+        },
+        "annotations": [],
+        "type": "CosmosDbMongoDbApiCollection",
+        "typeProperties": {
+            "collection": "rtps_test"
+        }
+    },
+    "type": "Microsoft.DataFactory/factories/datasets"
+}
+

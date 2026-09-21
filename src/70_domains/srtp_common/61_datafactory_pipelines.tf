@@ -23,8 +23,12 @@ locals {
       queries  = local.data_factory_queries
       law_id   = azurerm_log_analytics_workspace.log_analytics_workspace.id
       law_name = azurerm_log_analytics_workspace.log_analytics_workspace.name
-    }))
+    })) if file != "srtp_rtps_test_copy.json.tftpl"
   }
+
+  rtps_test_pipeline_template = jsondecode(templatefile("${path.module}/data_factory_pipelines/srtp_rtps_test_copy.json.tftpl", {
+    domain = var.domain
+  }))
 
   pipeline_templates = merge(local.pipeline_json_templates, local.pipeline_tftpl_templates)
 
@@ -47,9 +51,27 @@ resource "azurerm_data_factory_pipeline" "pipelines" {
   depends_on = [
     azapi_resource.create_tables_srtp,
     azapi_resource.create_tables_srtp_nsm,
-    azurerm_data_factory_custom_dataset.datasets,
-    azurerm_data_factory_linked_custom_service.adf_cosmosdb_linked_service,
     azurerm_data_factory_linked_custom_service.log_analytics_ls,
     azurerm_data_factory_linked_service_kusto.kusto_srtp,
   ]
 }
+
+resource "azurerm_data_factory_pipeline" "rtps_test_copy" {
+  name            = local.rtps_test_pipeline_template["name"]
+  data_factory_id = data.azurerm_data_factory.data_factory.id
+  annotations     = []
+
+  parameters = try(
+    { for k, v in local.rtps_test_pipeline_template["properties"]["parameters"] : k => "" },
+    {}
+  )
+
+  activities_json = jsonencode(local.rtps_test_pipeline_template["properties"]["activities"])
+
+  depends_on = [
+    azapi_resource.create_tables_srtp_rtps_witchid,
+    azurerm_data_factory_custom_dataset.datasets,
+    azurerm_data_factory_linked_service_kusto.kusto_srtp,
+  ]
+}
+

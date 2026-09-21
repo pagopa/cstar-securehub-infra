@@ -1,0 +1,16 @@
+{
+    "name": "data_explorer_${domain}_rtps",
+    "properties": {
+        "linkedServiceName": {
+            "referenceName": "${domain}-Kusto-${domain}-ls",
+            "type": "LinkedServiceReference"
+        },
+        "annotations": [],
+        "type": "AzureDataExplorerTable",
+        "typeProperties": {
+            "table": "RtpsTest"
+        }
+    },
+    "type": "Microsoft.DataFactory/factories/datasets"
+}
+

@@ -1,0 +1,34 @@
+.create-merge table RtpsTest (
+    _id: string,
+    noticeNumber: string,
+    amount: decimal,
+    description: string,
+    expiryDate: long,
+    payerName: string,
+    payerId: string,
+    payeeName: string,
+    payeeId: string,
+    subject: string,
+    savingDateTime: long,
+    serviceProviderDebtor: string,
+    iban: string,
+    payTrxRef: string,
+    flgConf: string,
+    status: string,
+    serviceProviderCreditor: string,
+    operationId: long,
+    eventDispatcher: string,
+    operationDispatcherKey: string,
+    witchId: string
+)
+
+.alter table RtpsTest policy streamingingestion enable
+
+.alter table RtpsTest policy retention ```
+{
+  "SoftDeletePeriod": "${soft_delete_period}",
+  "Recoverability": "Enabled"
+}
+```
+
+.alter table RtpsTest policy caching hot = ${hot_cache_period}
