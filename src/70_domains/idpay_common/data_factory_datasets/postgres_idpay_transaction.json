@@ -9,7 +9,7 @@
     "type": "AzurePostgreSqlTable",
     "schema": [],
     "typeProperties": {
-      "schema": "idpay-database",
+      "schema": "idpay-pagamenti",
       "table": "transaction"
     }
   },
