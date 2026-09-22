@@ -98,6 +98,11 @@ module "aks" {
     enabled = true
   }
 
+  ama_log_collection_settings = {
+    enable_log_collection_cm = true
+    enable_stdout_logs       = true
+  }
+
   tags = local.tags
 
 }
