@@ -199,28 +199,17 @@
               "type": "and"
             }
           },
-          "pluginVersion": "6.2.0",
-          "query": "transaction\r\n| where rewardInitiatieveId == \"69e0fa95e21efa516c7b8dec\"\r\n| join kind=rightouter (\r\n    point_of_sales\r\n    | project _id, type\r\n) on $left.pointOfSaleId == $right._id\r\n| summarize TotaleTransazioni = count() by type",
-          "querySource": "raw",
+           "pluginVersion": "6.2.0",
+           "query": "transaction\r\n| where rewardInitiatieveId == \"69e0fa95e21efa516c7b8dec\"\r\n| join kind=rightouter (\r\n    point_of_sales\r\n    | project _id, type\r\n) on $left.pointOfSaleId == $right._id\r\n| summarize TotaleTransazioni = countif(isnotempty(pointOfSaleId)) by type",
+           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
           "refId": "A",
           "resultFormat": "table"
         }
-      ],
-      "title": "Numero Transazioni Per Tipologia Punto Vendita",
-      "transformations": [
-        {
-          "id": "partitionByValues",
-          "options": {
-            "fields": [
-              "businessName"
-            ],
-            "keepFields": true
-          }
-        }
-      ],
-      "transparent": true,
+       ],
+       "title": "Numero Transazioni Per Tipologia Punto Vendita",
+       "transparent": true,
       "type": "piechart"
     },
     {
@@ -311,14 +300,14 @@
           "resultFormat": "table"
         }
       ],
-      "title": "Numero Transazioni Per Tipologia Voucher",
-      "transformations": [
-        {
-          "id": "partitionByValues",
-          "options": {
-            "fields": [
-              "businessName"
-            ],
+       "title": "Numero Transazioni Per Tipologia Voucher",
+       "transformations": [
+         {
+           "id": "partitionByValues",
+           "options": {
+             "fields": [
+               "Category"
+             ],
             "keepFields": true
           }
         }
