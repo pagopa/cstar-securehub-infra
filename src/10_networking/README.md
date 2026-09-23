@@ -81,6 +81,7 @@
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_adf_proxy_tier"></a> [adf\_proxy\_tier](#input\_adf\_proxy\_tier) | The tier of the ADF proxy | `string` | `"small"` | no |
 | <a name="input_cidr_core_hub_vnet"></a> [cidr\_core\_hub\_vnet](#input\_cidr\_core\_hub\_vnet) | Address prefixes vnet core | `list(string)` | n/a | yes |
 | <a name="input_cidr_spoke_compute_vnet"></a> [cidr\_spoke\_compute\_vnet](#input\_cidr\_spoke\_compute\_vnet) | Address prefixes vnet compute | `list(string)` | n/a | yes |
 | <a name="input_cidr_spoke_data_vnet"></a> [cidr\_spoke\_data\_vnet](#input\_cidr\_spoke\_data\_vnet) | Address prefixes vnet data | `list(string)` | n/a | yes |
