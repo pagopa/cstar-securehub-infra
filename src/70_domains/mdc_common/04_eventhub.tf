@@ -80,21 +80,21 @@ module "eventhub_configuration" {
 
     # --- Topic V2 a 4 partizioni: i nuovi target del cutover (Opzione A). ---
     {
-      name              = "emd-courtesy-message-v2"
-      partitions        = 4
+      name              = "emd-courtesy-message-requested"
+      partitions        = 32
       message_retention = 1
       consumers = [
-        "emd-courtesy-message-v2-consumer-group"
+        "emd-courtesy-message-requested-consumer-group"
       ]
       keys = [
         {
-          name   = "emd-courtesy-message-v2-producer"
+          name   = "emd-courtesy-message-requested-producer"
           listen = false
           send   = true
           manage = false
         },
         {
-          name   = "emd-courtesy-message-v2-consumer"
+          name   = "emd-courtesy-message-requested-consumer"
           listen = true
           send   = false
           manage = false
@@ -102,21 +102,21 @@ module "eventhub_configuration" {
       ]
     },
     {
-      name              = "emd-notify-error-v2"
-      partitions        = 4
+      name              = "emd-notification-failed"
+      partitions        = 32
       message_retention = 1
       consumers = [
-        "emd-notify-error-v2-consumer-group"
+        "emd-notification-failed-consumer-group"
       ]
       keys = [
         {
-          name   = "emd-notify-error-v2-producer"
+          name   = "emd-notification-failed-producer"
           listen = false
           send   = true
           manage = false
         },
         {
-          name   = "emd-notify-error-v2-consumer"
+          name   = "emd-notification-failed-consumer"
           listen = true
           send   = false
           manage = false
