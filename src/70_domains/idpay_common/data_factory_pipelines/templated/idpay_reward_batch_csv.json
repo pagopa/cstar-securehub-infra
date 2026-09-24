@@ -1,0 +1,92 @@
+{
+    "name": "idpay_reward_batch_csv",
+    "properties": {
+        "description": "Generate approved reward batch CSV and save it to Blob Storage",
+        "activities": [
+            {
+                "name": "GenerateCsvToBlob",
+                "description": "Run Kusto query on approved/rejected reward batch transactions and save result as CSV to Blob",
+                "type": "Copy",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "02:00:00",
+                    "retry": 2,
+                    "retryIntervalInSeconds": 60,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "source": {
+                        "type": "AzureDataExplorerSource",
+                        "query": {
+                            "value": "let tx = transaction\n| where initiativeId == '@{pipeline().parameters.initiativeId}'\n| where merchantId == '@{pipeline().parameters.merchantId}'\n| where rewardBatchId == '@{pipeline().parameters.rewardBatchId}'\n| where rewardBatchTrxStatus in ('APPROVED','REJECTED')\n| project\n    tx_id = _id,\n    tx_userId = userId,\n    tx_trxChargeDate = trxChargeDate,\n    tx_trxCode = trxCode,\n    tx_effectiveAmountCents = effectiveAmountCents,\n    tx_rewardAccruedRewardCents = rewardAccruedRewardCents,\n    tx_additionalProductName = additionalProductName,\n    tx_additionalProductGtin = additionalProductGtin,\n    tx_invoiceDocNumber = invoiceDocNumber,\n    tx_invoiceFilename = invoiceFilename,\n    tx_rewardBatchTrxStatus = rewardBatchTrxStatus,\n    tx_pointOfSaleId = pointOfSaleId;\n\nlet pos = point_of_sales\n| project pos_id = _id, pos_franchiseName = franchiseName;\n\nlet dv = data_vault\n| project dv_userId = _id, dv_fiscalCode = data;\n\ntx\n| join kind=leftouter pos on $left.tx_pointOfSaleId == $right.pos_id\n| join kind=leftouter dv on $left.tx_userId == $right.dv_userId\n| project\n    ['Data e ora'] = format_datetime(tx_trxChargeDate, 'dd/MM/yyyy HH:mm'),\n    Elettrodomestico = strcat(coalesce(tx_additionalProductName,''), iif(isempty(tostring(tx_additionalProductGtin)), '', strcat('\\n', tostring(tx_additionalProductGtin)))),\n    ['Codice Fiscale Beneficiario'] = tostring(dv_fiscalCode),\n    ['ID transazione'] = tostring(tx_id),\n    ['Codice sconto'] = tostring(tx_trxCode),\n    ['Totale della spesa'] = toreal(tx_effectiveAmountCents) / 100.0,\n    ['Sconto applicato'] = toreal(tx_rewardAccruedRewardCents) / 100.0,\n    ['Numero fattura'] = tostring(tx_invoiceDocNumber),\n    Fattura = tostring(tx_invoiceFilename),\n    Stato = case(tx_rewardBatchTrxStatus=='TO_CHECK','Da esaminare',\n                 tx_rewardBatchTrxStatus=='CONSULTABLE','Consultabile',\n                 tx_rewardBatchTrxStatus=='SUSPENDED','Da controllare',\n                 tx_rewardBatchTrxStatus=='APPROVED','Approvata',\n                 tx_rewardBatchTrxStatus=='REJECTED','Esclusa',''),\n    ['Punto vendita'] = tostring(pos_franchiseName)\n| order by ['Data e ora'] asc",
+                            "type": "Expression"
+                        },
+                        "queryTimeout": "01:00:00",
+                        "noTruncation": true
+                    },
+                    "sink": {
+                        "type": "DelimitedTextSink",
+                        "storeSettings": {
+                            "type": "AzureBlobStorageWriteSettings"
+                        },
+                        "formatSettings": {
+                            "type": "DelimitedTextWriteSettings",
+                            "quoteAllText": true,
+                            "fileExtension": ".csv"
+                        }
+                    },
+                    "enableStaging": false
+                },
+                "inputs": [
+                    {
+                        "referenceName": "data_explorer_idpay_transaction",
+                        "type": "DatasetReference"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "referenceName": "blob_report_reward_batches",
+                        "type": "DatasetReference",
+                        "parameters": {
+                            "initiativeId": {
+                                "value": "@pipeline().parameters.initiativeId",
+                                "type": "Expression"
+                            },
+                            "merchantId": {
+                                "value": "@pipeline().parameters.merchantId",
+                                "type": "Expression"
+                            },
+                            "rewardBatchId": {
+                                "value": "@pipeline().parameters.rewardBatchId",
+                                "type": "Expression"
+                            },
+                            "reportName": {
+                                "value": "@pipeline().parameters.reportName",
+                                "type": "Expression"
+                            }
+                        }
+                    }
+                ]
+            }
+        ],
+        "concurrency": 5,
+        "parameters": {
+            "initiativeId": {
+                "type": "String"
+            },
+            "merchantId": {
+                "type": "String"
+            },
+            "rewardBatchId": {
+                "type": "String"
+            },
+            "reportName": {
+                "type": "String"
+            }
+        },
+        "annotations": []
+    },
+    "type": "Microsoft.DataFactory/factories/pipelines"
+}
