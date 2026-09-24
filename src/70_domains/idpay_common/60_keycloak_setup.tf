@@ -29,7 +29,7 @@ module "keycloak_setup" {
       }
     },
     {
-      name         = "merchant-operator"
+      name                   = "merchant-operator"
       display_name           = "merchant-operator"
       description            = "Merchant Operator Realm"
       enabled                = true
