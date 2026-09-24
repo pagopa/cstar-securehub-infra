@@ -21,12 +21,6 @@ data "azurerm_log_analytics_workspace" "law_core_itn" {
 }
 
 
-data "azurerm_log_analytics_workspace" "law_mcshared" {
-  name                = local.law_name_mcshared
-  resource_group_name = local.law_name_mcshared_rg
-}
-
-
 # ---------------------------------------------------------------
 # Data per Secret su Key Vault
 # ---------------------------------------------------------------

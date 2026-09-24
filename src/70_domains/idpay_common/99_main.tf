@@ -31,7 +31,7 @@ terraform {
       version = "~> 5.0"
     }
     azapi = {
-      source  = "Azure/azapi"
+      source  = "azure/azapi"
       version = "~> 2.6"
     }
   }
@@ -84,6 +84,6 @@ provider "keycloak" {
 }
 
 module "__v4__" {
-  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v10.24.2
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=d68ef3b9c833eeaa49d41c95532bc231d15be8f6"
+  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v10.33.1
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=d4c23da7349a3cfbf2b83edc830f68d9815b9098"
 }

@@ -7,10 +7,13 @@ module "gh_runner_job" {
   environment_rg     = local.gh_runners_cae_rg
   gh_identity_suffix = "job-01"
   gh_env             = var.env
-  runner_labels      = ["self-hosted-job", "${var.env}"]
+  runner_labels      = ["self-hosted-job", var.env]
   gh_repositories    = local.github_repositories_with_self_hosted_runners
   job                = {}
   job_meta           = {}
+
+  replica_timeout_in_seconds = local.gh_runner_timeout_in_seconds
+
   key_vault = {
     name        = local.idpay_kv_name
     rg          = local.idpay_kv_rg_name

@@ -54,3 +54,6 @@ dns_forwarder_vmss_image_version = "v20250519"
 external_domain          = "pagopa.it"
 dns_zone_prefix          = "cstar"
 dns_zone_internal_prefix = "internal.cstar"
+
+
+adf_proxy_tier = "medium"
