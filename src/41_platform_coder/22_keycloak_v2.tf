@@ -1,7 +1,7 @@
 locals {
   themes_dir     = "${path.module}/k8s/keycloak/themes"
   files          = fileset(local.themes_dir, "**")
-  binary_exts    = [".png", ".jpg", ".jpeg", ".ico", ".woff", ".woff2"]
+  binary_exts    = [".png", ".jpg", ".jpeg", ".ico", ".woff", ".woff2", ".ttf"]
   provider_dir   = "${path.module}/k8s/keycloak/providers"
   provider_files = fileset(local.provider_dir, "*.jar")
 
@@ -10,7 +10,7 @@ locals {
   text_files = {
     for f in local.files :
     local.flattened_key[f] => replace(
-      replace(file("${local.themes_dir}/${f}"), "themeVersion", substr(filesha256("${local.themes_dir}/pagopa/login/resources/css/login.css"), 0, 12)),
+      replace(file("${local.themes_dir}/${f}"), "themeVersion", substr(filesha256("${local.themes_dir}/${startswith(f, "pagopa-oid4vp/") ? "pagopa-oid4vp" : "pagopa"}/login/resources/css/login.css"), 0, 12)),
       "__BASE_URL__",
       local.pari_base_url
     )

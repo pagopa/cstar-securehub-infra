@@ -1,7 +1,11 @@
 <#import "oid4vp-template.ftl" as layout>
-<@layout.registrationLayout displayInfo=false; section>
+<#assign oid4vpCancelUrl = "">
+<#if client?? && (client.baseUrl!'')?has_content>
+    <#assign oid4vpCancelUrl = client.baseUrl>
+</#if>
+<@layout.registrationLayout displayInfo=false cancelUrl=oid4vpCancelUrl; section>
     <#if section = "header">
-        Entra con IT-Wallet
+        Inquadra il codice QR
     <#elseif section = "form">
         <form id="oid4vpForm" action="${formActionUrl!''}" method="post">
             <input type="hidden" id="state" name="state" value="${state!''}"/>
@@ -21,16 +25,16 @@
                          alt="${msg("oid4vpQrCodeAlt")}"
                          data-wallet-url="${crossDeviceWalletUrl!''}"/>
                 </div>
+                <p id="oid4vp-qr-countdown" class="oid4vp-qr-status" hidden aria-hidden="true">
+                    Il codice QR &egrave; valido per <strong id="oid4vp-qr-remaining"></strong> secondi
+                </p>
                 <p id="oid4vp-qr-status"
                    class="oid4vp-qr-status"
+                   role="status"
                    hidden
                    aria-hidden="true">
                     Il QR Code &egrave; scaduto
                 </p>
-                <#assign oid4vpCancelUrl = "">
-                <#if client?? && (client.baseUrl!'')?has_content>
-                    <#assign oid4vpCancelUrl = client.baseUrl>
-                </#if>
                 <#if oid4vpCancelUrl?has_content>
                     <a class="oid4vp-cancel-link"
                        href="${oid4vpCancelUrl}">
@@ -50,6 +54,8 @@
                  data-status-url="${crossDeviceStatusUrl!''}"
                  data-refresh-url="${crossDeviceRefreshUrl!''}"
                  data-request-handle="${crossDeviceRequestHandle!''}"
+                 data-expires-at="${(qrCodeExpiresAt!0)?c}"
+                 data-server-time="${(qrCodeServerTime!0)?c}"
                  hidden></div>
             <script nonce="${cspNonce!}" src="${url.resourcesPath}/js/oid4vp-cross-device-sse.js"></script>
         </#if>
