@@ -89,7 +89,7 @@
             <td style="padding-bottom: 0.5rem">A presto,</td>
           </tr>
           <tr>
-            <td style="padding-bottom: 1.563rem">il team di Portale Punti Vendita</td>
+            <td style="padding-bottom: 1.563rem">il team di Portale Punto Vendita</td>
           </tr>
         </tbody>
         <tfoot style="
@@ -102,7 +102,7 @@
           border-top: 1px solid #e3e7eb;
           padding-top: 1.563rem;
           ">
-          Ricevi questo messaggio perché hai un’utenza attiva nel Portale Punti Vendita.</td>
+          Ricevi questo messaggio perché hai un’utenza attiva nel Portale Punto Vendita.</td>
         </tr>
       </tfoot>
       </table>
