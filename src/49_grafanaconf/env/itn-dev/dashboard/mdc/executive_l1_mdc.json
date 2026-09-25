@@ -103,7 +103,7 @@
             }
           },
           "pluginVersion": "7.2.6",
-          "query": "FinalizedMessageSnapshot\r\n| summarize [\"Dati aggiornati dal:\"] = format_datetime(min(window_start), 'yyyy-MM-dd HH:mm:ss')",
+          "query": "PaymentAttemptSnapshot\r\n| summarize [\"Dati aggiornati dal:\"] = format_datetime(min(window_start), 'yyyy-MM-dd HH:mm:ss')",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -524,7 +524,7 @@
             }
           },
           "pluginVersion": "7.2.6",
-          "query": "let cutoff = datetime(2026-06-10);\r\nlet rangeStart = $__timeFrom();\r\nlet rangeEnd = $__timeTo();\r\nlet effectiveStart = max_of(rangeStart, cutoff);\r\n\r\nlet excludedPsp = dynamic([\"PagoPA\", \"Ente di Test\", \"MDC Test\"]);\r\n\r\nlet allowed_tpp =\r\n    TppDataSnapshot\r\n    | where business_name !in~ (excludedPsp)\r\n    | summarize by entity_id;\r\n\r\nlet accettati =toscalar(\r\n    MessageSnapshot\r\n    | where window_start >= effectiveStart and window_start <= rangeEnd\r\n    | summarize by origin_id, entity_id\r\n    | where entity_id in (allowed_tpp)\r\n    | count\r\n    );\r\n\r\nlet known_origins =\r\n    MessageSnapshot\r\n    | where window_start >= effectiveStart and window_start <= rangeEnd\r\n    | summarize by origin_id, entity_id\r\n    | where entity_id in (allowed_tpp)\r\n    | project origin_id, entity_id;\r\n\r\nlet ricevuti = toscalar(\r\n    MessageVolumeSnapshot\r\n    | where window_start >= effectiveStart and window_start <= rangeEnd\r\n    | summarize coalesce(sum(message_discarded_count), 0)\r\n    ) + accettati;\r\n\r\nprint Ricevuti = ricevuti",
+          "query": "let cutoff = datetime(2026-07-10);\r\nlet rangeStart = $__timeFrom();\r\nlet rangeEnd = $__timeTo();\r\nlet effectiveStart = max_of(rangeStart, cutoff);\r\n\r\nlet excludedPsp = dynamic([\"PagoPA\", \"Ente di Test\", \"MDC Test\"]);\r\n\r\nlet allowed_tpp =\r\n    TppDataSnapshot\r\n    | where business_name !in~ (excludedPsp)\r\n    | summarize by entity_id;\r\n\r\nlet accettati =toscalar(\r\n    MessageSnapshot\r\n    | where window_start >= effectiveStart and window_start <= rangeEnd\r\n    | summarize by origin_id, entity_id\r\n    | where entity_id in (allowed_tpp)\r\n    | count\r\n    );\r\n\r\nlet known_origins =\r\n    MessageSnapshot\r\n    | where window_start >= effectiveStart and window_start <= rangeEnd\r\n    | summarize by origin_id, entity_id\r\n    | where entity_id in (allowed_tpp)\r\n    | project origin_id, entity_id;\r\n\r\nlet ricevuti = toscalar(\r\n    MessageVolumeSnapshot\r\n    | where window_start >= effectiveStart and window_start <= rangeEnd\r\n    | summarize coalesce(sum(message_discarded_count), 0)\r\n    ) + accettati;\r\n\r\nprint Ricevuti = ricevuti",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -607,7 +607,7 @@
             }
           },
           "pluginVersion": "7.2.6",
-          "query": "let cutoff = datetime(2026-06-10);\r\nlet rangeStart = $__timeFrom();\r\nlet rangeEnd = $__timeTo();\r\nlet effectiveStart = max_of(rangeStart, cutoff);\r\n\r\nMessageVolumeSnapshot\r\n| where window_start >= effectiveStart and window_start <= rangeEnd\r\n| summarize coalesce(sum(message_discarded_count), 0)\r\n",
+          "query": "let cutoff = datetime(2026-07-10);\r\nlet rangeStart = $__timeFrom();\r\nlet rangeEnd = $__timeTo();\r\nlet effectiveStart = max_of(rangeStart, cutoff);\r\n\r\nMessageVolumeSnapshot\r\n| where window_start >= effectiveStart and window_start <= rangeEnd\r\n| summarize coalesce(sum(message_discarded_count), 0)\r\n",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -690,7 +690,7 @@
             }
           },
           "pluginVersion": "7.2.6",
-          "query": "let cutoff = datetime(2026-06-10);\r\nlet rangeStart = $__timeFrom();\r\nlet rangeEnd = $__timeTo();\r\nlet effectiveStart = max_of(rangeStart, cutoff);\r\n\r\nlet excludedPsp = dynamic([\"PagoPA\",\"Ente di Test\", \"MDC Test\"]);\r\n\r\nlet allowed_tpp =\r\n    TppDataSnapshot\r\n    | where business_name !in~ (excludedPsp)\r\n    | summarize by entity_id;\r\n\r\nMessageSnapshot\r\n| where window_start >= effectiveStart and window_start <= rangeEnd\r\n| summarize by origin_id, entity_id\r\n| where entity_id in (allowed_tpp)\r\n| count;",
+          "query": "let cutoff = datetime(2026-07-10);\r\nlet rangeStart = $__timeFrom();\r\nlet rangeEnd = $__timeTo();\r\nlet effectiveStart = max_of(rangeStart, cutoff);\r\n\r\nlet excludedPsp = dynamic([\"PagoPA\",\"Ente di Test\", \"MDC Test\"]);\r\n\r\nlet allowed_tpp =\r\n    TppDataSnapshot\r\n    | where business_name !in~ (excludedPsp)\r\n    | summarize by entity_id;\r\n\r\nMessageSnapshot\r\n| where window_start >= effectiveStart and window_start <= rangeEnd\r\n| summarize by origin_id, entity_id\r\n| where entity_id in (allowed_tpp)\r\n| count;",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -795,7 +795,7 @@
             }
           },
           "pluginVersion": "7.2.6",
-          "query": "let cutoff = datetime(2026-06-10);\r\nlet rangeStart = $__timeFrom();\r\nlet rangeEnd = $__timeTo();\r\nlet effectiveStart = max_of(rangeStart, cutoff);\r\n\r\nlet excludedPsp = dynamic([\"PagoPA\",\"Ente di Test\", \"MDC Test\"]);\r\n\r\nlet allowed_tpp =\r\n    TppDataSnapshot\r\n    | where business_name !in~ (excludedPsp)\r\n    | summarize by entity_id;\r\n\r\nlet accettati =toscalar(\r\n    MessageSnapshot\r\n    | where window_start >= effectiveStart and window_start <= rangeEnd\r\n    | summarize by origin_id, entity_id\r\n    | where entity_id in (allowed_tpp)\r\n    | count\r\n    );\r\n\r\nlet ricevuti = toscalar(\r\n    MessageVolumeSnapshot\r\n    | where window_start >= effectiveStart and window_start <= rangeEnd\r\n    | summarize coalesce(sum(message_discarded_count), 0)\r\n    ) + accettati;\r\n\r\nMessageVolumeSnapshot\r\n| where window_start >= effectiveStart and window_start <= rangeEnd\r\n| summarize  Discarded = coalesce(sum(message_discarded_count), 0), Total = coalesce(ricevuti, 0)\r\n| extend ['Tasso di Scarto'] = round(100.0 * Discarded / Total, 2)\r\n| project ['Tasso di Scarto']",
+          "query": "let cutoff = datetime(2026-07-10);\r\nlet rangeStart = $__timeFrom();\r\nlet rangeEnd = $__timeTo();\r\nlet effectiveStart = max_of(rangeStart, cutoff);\r\n\r\nlet excludedPsp = dynamic([\"PagoPA\",\"Ente di Test\", \"MDC Test\"]);\r\n\r\nlet allowed_tpp =\r\n    TppDataSnapshot\r\n    | where business_name !in~ (excludedPsp)\r\n    | summarize by entity_id;\r\n\r\nlet accettati =toscalar(\r\n    MessageSnapshot\r\n    | where window_start >= effectiveStart and window_start <= rangeEnd\r\n    | summarize by origin_id, entity_id\r\n    | where entity_id in (allowed_tpp)\r\n    | count\r\n    );\r\n\r\nlet ricevuti = toscalar(\r\n    MessageVolumeSnapshot\r\n    | where window_start >= effectiveStart and window_start <= rangeEnd\r\n    | summarize coalesce(sum(message_discarded_count), 0)\r\n    ) + accettati;\r\n\r\nMessageVolumeSnapshot\r\n| where window_start >= effectiveStart and window_start <= rangeEnd\r\n| summarize  Discarded = coalesce(sum(message_discarded_count), 0), Total = coalesce(ricevuti, 0)\r\n| extend ['Tasso di Scarto'] = round(100.0 * Discarded / Total, 2)\r\n| project ['Tasso di Scarto']",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -901,7 +901,7 @@
             }
           },
           "pluginVersion": "7.2.6",
-          "query": "let cutoff = datetime(2026-06-10);\r\nlet rangeStart = $__timeFrom();\r\nlet rangeEnd = $__timeTo();\r\nlet effectiveStart = max_of(rangeStart, cutoff);\r\n\r\nlet excludedPsp = dynamic([\"PagoPA\",\"Ente di Test\", \"MDC Test\"]);\r\n\r\nlet allowed_tpp =\r\n    TppDataSnapshot\r\n    | where business_name !in~ (excludedPsp)\r\n    | summarize by entity_id;\r\n\r\nlet accettati =toscalar(\r\n    MessageSnapshot\r\n    | where window_start >= effectiveStart and window_start <= rangeEnd\r\n    | summarize by origin_id, entity_id\r\n    | where entity_id in (allowed_tpp)\r\n    | count\r\n    );\r\n\r\nlet ricevuti = toscalar(\r\n    MessageVolumeSnapshot\r\n    | where window_start >= effectiveStart and window_start <= rangeEnd\r\n    | summarize coalesce(sum(message_discarded_count), 0)\r\n    ) + accettati;\r\n\r\nMessageVolumeSnapshot\r\n| where window_start >= effectiveStart and window_start <= rangeEnd\r\n| project Accepted = accettati, Total = ricevuti\r\n| extend ['Tasso di Accettazione'] = round(100.0 * Accepted / Total, 2)\r\n| project ['Tasso di Accettazione']",
+          "query": "let cutoff = datetime(2026-07-10);\r\nlet rangeStart = $__timeFrom();\r\nlet rangeEnd = $__timeTo();\r\nlet effectiveStart = max_of(rangeStart, cutoff);\r\n\r\nlet excludedPsp = dynamic([\"PagoPA\",\"Ente di Test\", \"MDC Test\"]);\r\n\r\nlet allowed_tpp =\r\n    TppDataSnapshot\r\n    | where business_name !in~ (excludedPsp)\r\n    | summarize by entity_id;\r\n\r\nlet accettati =toscalar(\r\n    MessageSnapshot\r\n    | where window_start >= effectiveStart and window_start <= rangeEnd\r\n    | summarize by origin_id, entity_id\r\n    | where entity_id in (allowed_tpp)\r\n    | count\r\n    );\r\n\r\nlet ricevuti = toscalar(\r\n    MessageVolumeSnapshot\r\n    | where window_start >= effectiveStart and window_start <= rangeEnd\r\n    | summarize coalesce(sum(message_discarded_count), 0)\r\n    ) + accettati;\r\n\r\nMessageVolumeSnapshot\r\n| where window_start >= effectiveStart and window_start <= rangeEnd\r\n| project Accepted = accettati, Total = ricevuti\r\n| extend ['Tasso di Accettazione'] = round(100.0 * Accepted / Total, 2)\r\n| project ['Tasso di Accettazione']",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -945,10 +945,23 @@
             },
             "properties": [
               {
-                "id": "color",
+                "id": "thresholds",
                 "value": {
-                  "fixedColor": "green",
-                  "mode": "fixed"
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": 0
+                    },
+                    {
+                      "color": "#EAB839",
+                      "value": 80
+                    },
+                    {
+                      "color": "green",
+                      "value": 95
+                    }
+                  ]
                 }
               }
             ]
@@ -960,10 +973,23 @@
             },
             "properties": [
               {
-                "id": "color",
+                "id": "thresholds",
                 "value": {
-                  "fixedColor": "orange",
-                  "mode": "fixed"
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": 0
+                    },
+                    {
+                      "color": "#EAB839",
+                      "value": 20
+                    },
+                    {
+                      "color": "green",
+                      "value": 40
+                    }
+                  ]
                 }
               }
             ]
@@ -975,10 +1001,23 @@
             },
             "properties": [
               {
-                "id": "color",
+                "id": "thresholds",
                 "value": {
-                  "fixedColor": "purple",
-                  "mode": "fixed"
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": 0
+                    },
+                    {
+                      "color": "#EAB839",
+                      "value": 25
+                    },
+                    {
+                      "color": "green",
+                      "value": 50
+                    }
+                  ]
                 }
               }
             ]
@@ -990,10 +1029,23 @@
             },
             "properties": [
               {
-                "id": "color",
+                "id": "thresholds",
                 "value": {
-                  "fixedColor": "yellow",
-                  "mode": "fixed"
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": 0
+                    },
+                    {
+                      "color": "#EAB839",
+                      "value": 10
+                    },
+                    {
+                      "color": "green",
+                      "value": 20
+                    }
+                  ]
                 }
               }
             ]
@@ -1029,7 +1081,7 @@
         },
         "showUnfilled": false,
         "sizing": "auto",
-        "valueMode": "text"
+        "valueMode": "color"
       },
       "pluginVersion": "12.4.8",
       "targets": [
@@ -1055,7 +1107,7 @@
             }
           },
           "pluginVersion": "7.2.6",
-          "query": "let cutoff = datetime(2026-06-10);\r\nlet rangeStart = $__timeFrom();\r\nlet rangeEnd = $__timeTo();\r\nlet effectiveStart = max_of(rangeStart, cutoff);\r\n\r\nlet excludedPsp = dynamic([\"PagoPA\", \"Ente di Test\", \"MDC Test\"]);\r\n\r\nlet allowed_tpp =\r\n    TppDataSnapshot\r\n    | where business_name !in~ (excludedPsp)\r\n    | summarize by entity_id;\r\n\r\nlet tpp_entity_map =\r\n    TppDataSnapshot\r\n    | summarize by tpp_id, entity_id;\r\n\r\nlet accettati_pairs =\r\n    MessageSnapshot\r\n    | where window_start >= effectiveStart and window_start <= rangeEnd\r\n    | summarize by origin_id, entity_id\r\n    | where entity_id in (allowed_tpp);\r\n\r\nlet accettati = toscalar(accettati_pairs | count);\r\n\r\nlet known_origins = accettati_pairs | project origin_id, entity_id;\r\n\r\nlet ricevuti = toscalar(\r\n    MessageVolumeSnapshot\r\n    | where window_start >= effectiveStart and window_start <= rangeEnd\r\n    | summarize coalesce(sum(message_discarded_count), 0)\r\n    ) + accettati;\r\n\r\nlet letti = toscalar(\r\n    RetrievalIdVolumeSnapshot\r\n    | where window_start >= effectiveStart and window_start <= rangeEnd\r\n    | project origin_id\r\n    | join kind=inner known_origins on origin_id\r\n    | summarize by origin_id, entity_id\r\n    | count\r\n    );\r\n\r\nlet perfezionati = toscalar(\r\n    FinalizedMessageSnapshot\r\n    | where window_start >= effectiveStart and window_start <= rangeEnd\r\n    | join kind=inner tpp_entity_map on tpp_id\r\n    | join kind=inner known_origins on origin_id, entity_id\r\n    | summarize by origin_id, entity_id\r\n    | count\r\n    );\r\n\r\nlet pagati = toscalar(\r\n    PaymentAttemptSnapshot\r\n    | where window_start >= effectiveStart and window_start <= rangeEnd\r\n    | project origin_id\r\n    | join kind=inner known_origins on origin_id\r\n    | summarize by origin_id, entity_id\r\n    | count\r\n    );\r\n\r\nprint\r\n    Ricevuti = ricevuti,\r\n    Accettati = accettati,\r\n    Letti = letti,\r\n    Perfezionati = perfezionati,\r\n    Pagati = pagati,\r\n    ['Tasso Accettazione %']    = iff(ricevuti == 0, 0.0, round(100.0 * accettati / ricevuti, 2)),\r\n    ['Tasso Lettura %']         = iff(accettati == 0, 0.0, round(100.0 * letti / accettati, 2)),\r\n    ['Tasso Perfezionamento %'] = iff(letti == 0, 0.0, round(100.0 * perfezionati / letti, 2)),\r\n    ['Tasso Pagamento %']       = iff(perfezionati == 0, 0.0, round(100.0 * pagati / perfezionati, 2))",
+          "query": "let cutoff = datetime(2026-07-10);\r\nlet rangeStart = $__timeFrom();\r\nlet rangeEnd = $__timeTo();\r\nlet effectiveStart = max_of(rangeStart, cutoff);\r\n\r\nlet excludedPsp = dynamic([\"PagoPA\", \"Ente di Test\", \"MDC Test\"]);\r\n\r\nlet allowed_tpp =\r\n    TppDataSnapshot\r\n    | where business_name !in~ (excludedPsp)\r\n    | summarize by entity_id;\r\n\r\nlet tpp_entity_map =\r\n    TppDataSnapshot\r\n    | summarize by tpp_id, entity_id;\r\n\r\nlet accettati_pairs =\r\n    MessageSnapshot\r\n    | where window_start >= effectiveStart and window_start <= rangeEnd\r\n    | summarize by origin_id, entity_id\r\n    | where entity_id in (allowed_tpp);\r\n\r\nlet accettati = toscalar(accettati_pairs | count);\r\n\r\nlet known_origins = accettati_pairs | project origin_id, entity_id;\r\n\r\nlet ricevuti = toscalar(\r\n    MessageVolumeSnapshot\r\n    | where window_start >= effectiveStart and window_start <= rangeEnd\r\n    | summarize coalesce(sum(message_discarded_count), 0)\r\n    ) + accettati;\r\n\r\nlet letti = toscalar(\r\n    RetrievalIdVolumeSnapshot\r\n    | where window_start >= effectiveStart and window_start <= rangeEnd\r\n    | project origin_id\r\n    | join kind=inner known_origins on origin_id\r\n    | summarize by origin_id, entity_id\r\n    | count\r\n    );\r\n\r\nlet perfezionati = toscalar(\r\n    FinalizedMessageSnapshot\r\n    | where window_start >= effectiveStart and window_start <= rangeEnd\r\n    | join kind=inner tpp_entity_map on tpp_id\r\n    | join kind=inner known_origins on origin_id\r\n    | summarize by origin_id, entity_id\r\n    | count\r\n    );\r\n\r\nlet pagati = toscalar(\r\n    PaymentAttemptSnapshot\r\n    | where window_start >= effectiveStart and window_start <= rangeEnd\r\n    | join kind=inner tpp_entity_map on tpp_id\r\n    | join kind=inner known_origins on origin_id\r\n    | summarize by origin_id, entity_id\r\n    | count\r\n    );\r\n\r\nprint\r\n    Ricevuti = ricevuti,\r\n    Accettati = accettati,\r\n    Letti = letti,\r\n    Perfezionati = perfezionati,\r\n    Pagati = pagati,\r\n    ['Tasso Ricevuti %']    = 100,\r\n    ['Tasso Accettazione %']    = iff(ricevuti == 0, 0.0, round(100.0 * accettati / ricevuti, 2)),\r\n    ['Tasso Lettura %']         = iff(accettati == 0, 0.0, round(100.0 * letti / accettati, 2)),\r\n    ['Tasso Perfezionamento %'] = iff(letti == 0, 0.0, round(100.0 * perfezionati / letti, 2)),\r\n    ['Tasso Pagamento %']       = iff(perfezionati == 0, 0.0, round(100.0 * pagati / perfezionati, 2))",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -1185,6 +1237,45 @@
                 }
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Pagati"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "__systemRef": "hideSeriesFrom",
+            "matcher": {
+              "id": "byNames",
+              "options": {
+                "mode": "exclude",
+                "names": [
+                  "Pagati"
+                ],
+                "prefix": "All except:",
+                "readOnly": true
+              }
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": false,
+                  "tooltip": true,
+                  "viz": true
+                }
+              }
+            ]
           }
         ]
       },
@@ -1232,7 +1323,7 @@
             }
           },
           "pluginVersion": "7.2.6",
-          "query": "let cutoff = datetime(2026-06-10);\r\nlet rangeStart = $__timeFrom();\r\nlet rangeEnd = $__timeTo();\r\nlet effectiveStart = max_of(rangeStart, cutoff);\r\n\r\nlet excludedPsp = dynamic([\"PagoPA\",\"Ente di Test\", \"MDC Test\"]);\r\n\r\nlet allowed_tpp =\r\n    TppDataSnapshot\r\n    | where business_name !in~ (excludedPsp)\r\n    | summarize by entity_id;\r\n\r\nlet tpp_entity_map =\r\n    TppDataSnapshot\r\n    | summarize by tpp_id, entity_id;\r\n\r\nlet known_origins_valid =\r\n    MessageSnapshot\r\n    | where window_start >= cutoff\r\n    | summarize by origin_id, entity_id\r\n    | where entity_id in (allowed_tpp);\r\n\r\n// Flag \"richiede pagamento\" per origin/entity, preso dal valore piu' recente (all-time, come known_origins_valid)\r\nlet origin_payment_flag =\r\n    MessageSnapshot\r\n    | where window_start >= cutoff\r\n    | summarize arg_max(window_start, associated_payment) by origin_id, entity_id\r\n    | where entity_id in (allowed_tpp)\r\n    | project origin_id, entity_id, associated_payment;\r\n\r\nlet accettati_pairs_dated =\r\n    MessageSnapshot\r\n    | where window_start >= effectiveStart and window_start <= rangeEnd\r\n    | summarize window_start = min(window_start) by origin_id, entity_id\r\n    | where entity_id in (allowed_tpp);\r\n\r\nlet accettati_per_day =\r\n    accettati_pairs_dated\r\n    | summarize Accettati = count() by Day = bin(window_start, 1d);\r\n\r\nlet scartati_per_day =\r\n    MessageVolumeSnapshot\r\n    | where window_start >= effectiveStart and window_start <= rangeEnd\r\n    | summarize Scartati = coalesce(sum(message_discarded_count), 0) by Day = bin(window_start, 1d);\r\n\r\nlet dayRange =\r\n    range Day from startofday(effectiveStart) to startofday(rangeEnd) step 1d\r\n    | project Day;\r\n\r\n// Letti: validati contro known_origins_valid (senza upper bound), datati sul proprio window_start\r\nlet letti_pairs_dated =\r\n    RetrievalIdVolumeSnapshot\r\n    | where window_start >= effectiveStart and window_start <= rangeEnd\r\n    | project origin_id, window_start\r\n    | join kind=inner known_origins_valid on origin_id\r\n    | summarize window_start = min(window_start) by origin_id, entity_id;\r\n\r\nlet letti_per_day =\r\n    letti_pairs_dated\r\n    | summarize Letti = count() by Day = bin(window_start, 1d);\r\n\r\n// Perfezionati: entity_id derivato da tpp_id, poi validato su (origin_id, entity_id) — non solo origin_id\r\nlet perfezionati_pairs_dated =\r\n    FinalizedMessageSnapshot\r\n    | where window_start >= effectiveStart and window_start <= rangeEnd\r\n    | join kind=inner tpp_entity_map on tpp_id\r\n    | join kind=inner known_origins_valid on origin_id, entity_id\r\n    | summarize window_start = min(window_start) by origin_id, tpp_id;\r\n\r\nlet perfezionati_per_day =\r\n    perfezionati_pairs_dated\r\n    | summarize Perfezionati = count() by Day = bin(window_start, 1d);\r\n\r\n\r\n\r\ndayRange\r\n| join kind=leftouter accettati_per_day on Day\r\n| join kind=leftouter scartati_per_day on Day\r\n| join kind=leftouter letti_per_day on Day\r\n| join kind=leftouter perfezionati_per_day on Day\r\n| extend Accettati    = coalesce(Accettati, 0),\r\n         Scartati     = coalesce(Scartati, 0),\r\n         Letti        = coalesce(Letti, 0),\r\n         Perfezionati = coalesce(Perfezionati, 0)\r\n| extend Ricevuti = Scartati + Accettati\r\n| project window_start = Day,\r\n          Ricevuti     = iff(Ricevuti == 0, real(null), toreal(Ricevuti)),\r\n          Accettati    = iff(Accettati == 0, real(null), toreal(Accettati)),\r\n          Letti        = iff(Letti == 0, real(null), toreal(Letti)),\r\n          Perfezionati = iff(Perfezionati == 0, real(null), toreal(Perfezionati))\r\n| order by window_start asc",
+          "query": "let cutoff = datetime(2026-07-10);\r\nlet rangeStart = $__timeFrom();\r\nlet rangeEnd = $__timeTo();\r\nlet effectiveStart = max_of(rangeStart, cutoff);\r\n\r\nlet excludedPsp = dynamic([\"PagoPA\",\"Ente di Test\", \"MDC Test\"]);\r\n\r\nlet allowed_tpp =\r\n    TppDataSnapshot\r\n    | where business_name !in~ (excludedPsp)\r\n    | summarize by entity_id;\r\n\r\nlet tpp_entity_map =\r\n    TppDataSnapshot\r\n    | summarize by tpp_id, entity_id;\r\n\r\nlet known_origins_valid =\r\n    MessageSnapshot\r\n    | where window_start >= cutoff\r\n    | summarize by origin_id, entity_id\r\n    | where entity_id in (allowed_tpp);\r\n\r\nlet accettati_pairs_dated =\r\n    MessageSnapshot\r\n    | where window_start >= effectiveStart and window_start <= rangeEnd\r\n    | summarize window_start = min(window_start) by origin_id, entity_id\r\n    | where entity_id in (allowed_tpp);\r\n\r\nlet accettati_per_day =\r\n    accettati_pairs_dated\r\n    | summarize Accettati = count() by Day = bin(window_start, 1d);\r\n\r\nlet scartati_per_day =\r\n    MessageVolumeSnapshot\r\n    | where window_start >= effectiveStart and window_start <= rangeEnd\r\n    | summarize Scartati = coalesce(sum(message_discarded_count), 0) by Day = bin(window_start, 1d);\r\n\r\nlet dayRange =\r\n    range Day from startofday(effectiveStart) to startofday(rangeEnd) step 1d\r\n    | project Day;\r\n\r\nlet letti_pairs_dated =\r\n    RetrievalIdVolumeSnapshot\r\n    | where window_start >= effectiveStart and window_start <= rangeEnd\r\n    | project origin_id, window_start\r\n    | join kind=inner known_origins_valid on origin_id\r\n    | summarize window_start = min(window_start) by origin_id, entity_id;\r\n\r\nlet letti_per_day =\r\n    letti_pairs_dated\r\n    | summarize Letti = count() by Day = bin(window_start, 1d);\r\n\r\nlet perfezionati_pairs_dated =\r\n    FinalizedMessageSnapshot\r\n    | where window_start >= effectiveStart and window_start <= rangeEnd\r\n    | join kind=inner tpp_entity_map on tpp_id\r\n    | join kind=inner known_origins_valid on origin_id, entity_id\r\n    | summarize window_start = min(window_start) by origin_id, tpp_id;\r\n\r\nlet perfezionati_per_day =\r\n    perfezionati_pairs_dated\r\n    | summarize Perfezionati = count() by Day = bin(window_start, 1d);\r\n\r\nlet pagati_pairs_dated =\r\n    PaymentAttemptSnapshot\r\n    | where window_start >= effectiveStart and window_start <= rangeEnd\r\n    | join kind=inner tpp_entity_map on tpp_id\r\n    | join kind=inner known_origins_valid on origin_id, entity_id\r\n    | summarize window_start = min(window_start) by origin_id, tpp_id;\r\n\r\nlet pagati_per_day =\r\n    pagati_pairs_dated\r\n    | summarize Pagati = count() by Day = bin(window_start, 1d);\r\n\r\ndayRange\r\n| join kind=leftouter accettati_per_day on Day\r\n| join kind=leftouter scartati_per_day on Day\r\n| join kind=leftouter letti_per_day on Day\r\n| join kind=leftouter perfezionati_per_day on Day\r\n| join kind=leftouter pagati_per_day on Day\r\n| extend Accettati    = coalesce(Accettati, 0),\r\n         Scartati     = coalesce(Scartati, 0),\r\n         Letti        = coalesce(Letti, 0),\r\n         Perfezionati = coalesce(Perfezionati, 0),\r\n         Pagati       = coalesce(Pagati, 0)\r\n| extend Ricevuti = Scartati + Accettati\r\n| project window_start = Day,\r\n          Ricevuti     = iff(Ricevuti == 0, real(null), toreal(Ricevuti)),\r\n          Accettati    = iff(Accettati == 0, real(null), toreal(Accettati)),\r\n          Letti        = iff(Letti == 0, real(null), toreal(Letti)),\r\n          Perfezionati = iff(Perfezionati == 0, real(null), toreal(Perfezionati)),\r\n          Pagati       = iff(Pagati == 0, real(null), toreal(Pagati))\r\n| order by window_start asc",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -1559,7 +1650,7 @@
             }
           },
           "pluginVersion": "7.2.6",
-          "query": "let cutoff = datetime(2026-06-10);\r\nlet rangeStart = $__timeFrom();\r\nlet rangeEnd = $__timeTo();\r\nlet effectiveStart = max_of(rangeStart, cutoff);\r\n\r\nlet excludedPsp = dynamic([\"PagoPA\",\"Ente di Test\", \"MDC Test\"]);\r\n\r\nlet allowed_tpp =\r\n    TppDataSnapshot\r\n    | where business_name !in~ (excludedPsp)\r\n    | summarize by entity_id;\r\n\r\nlet tutte_le_tpp =\r\n    TppDataSnapshot\r\n    | where business_name !in~ (excludedPsp)\r\n    | summarize by tpp_id, entity_id, PSP = business_name;\r\n\r\n// Universo: coppie (origin_id, entity_id) accettate nel periodo, con relativo flag pagamento (piu' recente nel periodo)\r\nlet accettati_pairs =\r\n    MessageSnapshot\r\n    | where window_start >= effectiveStart and window_start <= rangeEnd\r\n    | summarize arg_max(window_start, associated_payment) by origin_id, entity_id\r\n    | where entity_id in (allowed_tpp)\r\n    | project origin_id, entity_id, associated_payment;\r\n\r\nlet known_origins = accettati_pairs | project origin_id, entity_id;\r\n\r\n// Letti/Perfezionati/Pagati: derivo l'entity_id canonico via origin_id, MAI dal campo nativo delle altre tabelle\r\nlet letti_pairs =\r\n    RetrievalIdVolumeSnapshot\r\n    | where window_start >= effectiveStart and window_start <= rangeEnd\r\n    | project origin_id\r\n    | join kind=inner known_origins on origin_id\r\n    | summarize by origin_id, entity_id;\r\n\r\nlet perfezionati_pairs =\r\n    FinalizedMessageSnapshot\r\n    | where window_start >= effectiveStart and window_start <= rangeEnd\r\n    | join kind=inner tutte_le_tpp on tpp_id\r\n    | join kind=inner known_origins on origin_id\r\n    | summarize by origin_id, entity_id;\r\n\r\nlet pagati_pairs =\r\n    PaymentAttemptSnapshot\r\n    | where window_start >= effectiveStart and window_start <= rangeEnd\r\n    | join kind=inner tutte_le_tpp on tpp_id\r\n    | join kind=inner known_origins on origin_id\r\n    | summarize by origin_id, entity_id;\r\n\r\nlet funnel =\r\n    accettati_pairs\r\n    | join kind=leftouter (letti_pairs | extend is_letta = true) on origin_id, entity_id\r\n    | join kind=leftouter (perfezionati_pairs | extend is_perfezionata = true) on origin_id, entity_id\r\n    | join kind=leftouter (pagati_pairs | extend is_pagata = true) on origin_id, entity_id\r\n    | project origin_id, entity_id, associated_payment,\r\n        is_letta = coalesce(is_letta, false),\r\n        is_perfezionata = coalesce(is_perfezionata, false),\r\n        is_pagata = coalesce(is_pagata, false);\r\n\r\nlet perPsp =\r\n    tutte_le_tpp\r\n    | join kind=leftouter funnel on entity_id\r\n    | summarize\r\n        ['Accettati']            = countif(isnotempty(origin_id)),\r\n        ['Letti']                = countif(is_letta),\r\n        ['Perfezionati']         = countif(is_perfezionata),\r\n        ['Perf. Con Pagamento']  = countif(is_perfezionata and associated_payment == true),\r\n        ['Pagati']               = countif(is_pagata and associated_payment == true)\r\n        by PSP;\r\n\r\n// Totale Accettati su tutti i PSP, usato come denominatore per la quota di ciascun PSP\r\nlet totalAccettati = toscalar(perPsp | summarize sum(['Accettati']));\r\n\r\nperPsp\r\n| extend ['Tasso Accettazione %']    = round(100.0 * ['Accettati'] / iff(totalAccettati == 0, 1, totalAccettati), 2)\r\n| extend ['Tasso Lettura %']          = round(100.0 * ['Letti'] / iff(['Accettati'] == 0, 1, ['Accettati']), 2)\r\n| extend ['Tasso Perfezionamento %']  = round(100.0 * ['Perfezionati'] / iff(['Letti'] == 0, 1, ['Letti']), 2)\r\n| extend ['Tasso Assoc. Pagamento %'] = round(100.0 * ['Perf. Con Pagamento'] / iff(['Perfezionati'] == 0, 1, ['Perfezionati']), 2)\r\n| extend ['Tasso Pagamento %']        = round(100.0 * ['Pagati'] / iff(['Perf. Con Pagamento'] == 0, 1, ['Perf. Con Pagamento']), 2)\r\n| project PSP, ['Tasso Accettazione %'], ['Tasso Lettura %'], ['Tasso Perfezionamento %'], ['Tasso Pagamento %']\r\n| order by ['Tasso Accettazione %'] desc",
+          "query": "let cutoff = datetime(2026-07-10);\r\nlet rangeStart = $__timeFrom();\r\nlet rangeEnd = $__timeTo();\r\nlet effectiveStart = max_of(rangeStart, cutoff);\r\n\r\nlet excludedPsp = dynamic([\"PagoPA\",\"Ente di Test\", \"MDC Test\"]);\r\n\r\nlet allowed_tpp =\r\n    TppDataSnapshot\r\n    | where business_name !in~ (excludedPsp)\r\n    | summarize by entity_id;\r\n\r\nlet tutte_le_tpp =\r\n    TppDataSnapshot\r\n    | where business_name !in~ (excludedPsp)\r\n    | summarize by tpp_id, entity_id, PSP = business_name;\r\n\r\n// Universo: coppie (origin_id, entity_id) accettate nel periodo, con relativo flag pagamento (piu' recente nel periodo)\r\nlet accettati_pairs =\r\n    MessageSnapshot\r\n    | where window_start >= effectiveStart and window_start <= rangeEnd\r\n    | summarize arg_max(window_start, associated_payment) by origin_id, entity_id\r\n    | where entity_id in (allowed_tpp)\r\n    | project origin_id, entity_id, associated_payment;\r\n\r\nlet known_origins = accettati_pairs | project origin_id, entity_id;\r\n\r\n// Letti/Perfezionati/Pagati: derivo l'entity_id canonico via origin_id, MAI dal campo nativo delle altre tabelle\r\nlet letti_pairs =\r\n    RetrievalIdVolumeSnapshot\r\n    | where window_start >= effectiveStart and window_start <= rangeEnd\r\n    | project origin_id\r\n    | join kind=inner known_origins on origin_id\r\n    | summarize by origin_id, entity_id;\r\n\r\nlet perfezionati_pairs =\r\n    FinalizedMessageSnapshot\r\n    | where window_start >= effectiveStart and window_start <= rangeEnd\r\n    | join kind=inner tutte_le_tpp on tpp_id\r\n    | join kind=inner known_origins on origin_id\r\n    | summarize by origin_id, entity_id;\r\n\r\nlet pagati_pairs =\r\n    PaymentAttemptSnapshot\r\n    | where window_start >= effectiveStart and window_start <= rangeEnd\r\n    | join kind=inner tutte_le_tpp on tpp_id\r\n    | join kind=inner known_origins on origin_id\r\n    | summarize by origin_id, entity_id;\r\n\r\nlet funnel =\r\n    accettati_pairs\r\n    | join kind=leftouter (letti_pairs | extend is_letta = true) on origin_id, entity_id\r\n    | join kind=leftouter (perfezionati_pairs | extend is_perfezionata = true) on origin_id, entity_id\r\n    | join kind=leftouter (pagati_pairs | extend is_pagata = true) on origin_id, entity_id\r\n    | project origin_id, entity_id, associated_payment,\r\n        is_letta = coalesce(is_letta, false),\r\n        is_perfezionata = coalesce(is_perfezionata, false),\r\n        is_pagata = coalesce(is_pagata, false);\r\n\r\nlet perPsp =\r\n    tutte_le_tpp\r\n    | join kind=leftouter funnel on entity_id\r\n    | summarize\r\n        ['Accettati']            = countif(isnotempty(origin_id)),\r\n        ['Letti']                = countif(is_letta),\r\n        ['Perfezionati']         = countif(is_perfezionata),\r\n        ['Perf. Con Pagamento']  = countif(is_perfezionata and associated_payment == true),\r\n        ['Pagati']               = countif(is_pagata and associated_payment == true)\r\n        by PSP;\r\n\r\n// Totale Accettati su tutti i PSP, usato come denominatore per la quota di ciascun PSP\r\nlet totalAccettati = toscalar(perPsp | summarize sum(['Accettati']));\r\n\r\nperPsp\r\n| extend ['Tasso Accettazione %']    = round(100.0 * ['Accettati'] / iff(totalAccettati == 0, 1, totalAccettati), 2)\r\n| extend ['Tasso Lettura %']          = round(100.0 * ['Letti'] / iff(['Accettati'] == 0, 1, ['Accettati']), 2)\r\n| extend ['Tasso Perfezionamento %']  = round(100.0 * ['Perfezionati'] / iff(['Letti'] == 0, 1, ['Letti']), 2)\r\n| extend ['Tasso Assoc. Pagamento %'] = round(100.0 * ['Perf. Con Pagamento'] / iff(['Perfezionati'] == 0, 1, ['Perfezionati']), 2)\r\n| extend ['Tasso Pagamento %']        = round(100.0 * ['Pagati'] / iff(['Perf. Con Pagamento'] == 0, 1, ['Perf. Con Pagamento']), 2)\r\n| project PSP, ['Tasso Accettazione %'], ['Tasso Lettura %'], ['Tasso Perfezionamento %'], ['Tasso Pagamento %']\r\n| order by ['Tasso Accettazione %'] desc",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -2485,8 +2576,8 @@
   },
   "timepicker": {},
   "timezone": "utc",
-  "title": "MDC Executive L1",
+  "title": "MDC L1 - Executive",
   "uid": "ma726dg",
-  "version": 14,
+  "version": 20,
   "weekStart": ""
 }
