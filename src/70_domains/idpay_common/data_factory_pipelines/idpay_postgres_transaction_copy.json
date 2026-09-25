@@ -131,14 +131,6 @@
                 "sink": { "name": "correlationId", "type": "String" }
               },
               {
-                "source": { "name": "rewardBatchId" },
-                "sink": { "name": "rewardBatchId", "type": "String" }
-              },
-              {
-                "source": { "name": "rewardBatchStatusTrx" },
-                "sink": { "name": "rewardBatchTrxStatus", "type": "String" }
-              },
-              {
                 "source": { "name": "vat" },
                 "sink": { "name": "vat", "type": "String" }
               },
