@@ -19,7 +19,7 @@ module "keycloak_setup" {
 
   realms_configuration = [
     {
-      name                     = "user",
+      name                     = "user"
       display_name             = "user"
       description              = "User Realm"
       enabled                  = true
@@ -30,7 +30,7 @@ module "keycloak_setup" {
       }
     },
     {
-      name                   = "merchant-operator",
+      name                   = "merchant-operator"
       display_name           = "merchant-operator"
       description            = "Merchant Operator Realm"
       enabled                = true
@@ -47,6 +47,7 @@ module "keycloak_setup" {
       attributes = {
         frontendUrl = local.keycloak_external_hostname
       }
+
       internationalization = {
         supported_locales = [
           "it"
@@ -55,15 +56,15 @@ module "keycloak_setup" {
       }
 
       smtp_server = {
-        host              = data.azurerm_key_vault_secret.ses_smtp_host.value
+        host              = contains(["d", "u"], var.env_short) ? data.azurerm_key_vault_secret.pari_ses_smtp_host.value : data.azurerm_key_vault_secret.ses_smtp_host.value
         port              = local.ses_smtp_port
-        from              = data.azurerm_key_vault_secret.ses_from_address.value
+        from              = contains(["d", "u"], var.env_short) ? data.azurerm_key_vault_secret.pari_ses_from_address.value : data.azurerm_key_vault_secret.ses_from_address.value
         ssl               = true
-        from_display_name = "Portale Bonus Elettrodomestici"
+        from_display_name = "Portale Bonus"
 
         auth = {
-          username = data.azurerm_key_vault_secret.ses_smtp_username.value
-          password = data.azurerm_key_vault_secret.ses_smtp_password.value
+          username = contains(["d", "u"], var.env_short) ? data.azurerm_key_vault_secret.pari_ses_smtp_username.value : data.azurerm_key_vault_secret.ses_smtp_username.value
+          password = contains(["d", "u"], var.env_short) ? data.azurerm_key_vault_secret.pari_ses_smtp_password.value : data.azurerm_key_vault_secret.ses_smtp_password.value
         }
       }
     }
@@ -82,5 +83,6 @@ module "keycloak_setup" {
   viewer_entra_group_ids = [
     data.azuread_group.adgroup_domain_project_managers.object_id
   ]
+
   tags = module.tag_config.tags
 }
