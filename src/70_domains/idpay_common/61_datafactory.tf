@@ -175,6 +175,7 @@ resource "azapi_resource_action" "approve_pe" {
     }
   }
 }
+
 # ADF MI -> can read kv secrets
 resource "azurerm_role_assignment" "adf_can_read_kv_secrets" {
   scope                = data.azurerm_key_vault.domain_kv.id
