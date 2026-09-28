@@ -1252,30 +1252,6 @@
                 }
               }
             ]
-          },
-          {
-            "__systemRef": "hideSeriesFrom",
-            "matcher": {
-              "id": "byNames",
-              "options": {
-                "mode": "exclude",
-                "names": [
-                  "Pagati"
-                ],
-                "prefix": "All except:",
-                "readOnly": true
-              }
-            },
-            "properties": [
-              {
-                "id": "custom.hideFrom",
-                "value": {
-                  "legend": false,
-                  "tooltip": true,
-                  "viz": true
-                }
-              }
-            ]
           }
         ]
       },
@@ -2578,6 +2554,6 @@
   "timezone": "utc",
   "title": "MDC L1 - Executive",
   "uid": "ma726dg",
-  "version": 20,
+  "version": 21,
   "weekStart": ""
 }
