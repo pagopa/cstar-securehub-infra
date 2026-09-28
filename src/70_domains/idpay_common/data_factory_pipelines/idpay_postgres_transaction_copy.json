@@ -46,7 +46,7 @@
           "source": {
             "type": "PostgreSqlSource",
             "batchSize": 100,
-            "sqlReaderQuery": "SELECT t.*, t.accrued_reward_cents AS reward_accrued_reward_cents, (t.additional_properties ->> 'productGtin') AS additional_product_gtin, (t.additional_properties ->> 'productName') AS additional_product_name, (t.invoice_data ->> 'filename') AS invoice_filename, (t.invoice_data ->> 'docNumber') AS invoice_doc_number FROM \"idpay-pagamenti\".\"transaction\" t"
+            "query": "SELECT t.*, t.accrued_reward_cents AS reward_accrued_reward_cents, (t.additional_properties ->> 'productGtin') AS additional_product_gtin, (t.additional_properties ->> 'productName') AS additional_product_name, (t.invoice_data ->> 'filename') AS invoice_filename, (t.invoice_data ->> 'docNumber') AS invoice_doc_number FROM \"idpay-pagamenti\".\"transaction\" t"
           },
           "sink": {
             "type": "AzureDataExplorerSink"
