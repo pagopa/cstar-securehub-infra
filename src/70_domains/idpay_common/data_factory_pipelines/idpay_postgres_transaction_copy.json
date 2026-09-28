@@ -46,7 +46,7 @@
           "source": {
             "type": "PostgreSqlSource",
             "batchSize": 100,
-            "query": "SELECT t.*, t.\"accruedRewardCents\" AS reward_accrued_reward_cents, (t.\"additionalProperties\" ->> 'productGtin') AS additional_product_gtin, (t.\"additionalProperties\" ->> 'productName') AS additional_product_name, (t.\"invoiceData\" ->> 'filename') AS invoice_filename, (t.\"invoiceData\" ->> 'docNumber') AS invoice_doc_number FROM \"idpay-pagamenti\".\"transaction\" t"
+            "query": "SELECT t.*, (t.\"rewards\" -> t.\"initiativeId\" ->> 'accruedRewardCents')::bigint AS reward_accrued_reward_cents, (t.\"additionalProperties\" ->> 'productGtin') AS additional_product_gtin, (t.\"additionalProperties\" ->> 'productName') AS additional_product_name, (t.\"invoiceData\" ->> 'filename') AS invoice_filename, (t.\"invoiceData\" ->> 'docNumber') AS invoice_doc_number FROM \"idpay-pagamenti\".\"transaction\" t"
           },
           "sink": {
             "type": "AzureDataExplorerSink"
