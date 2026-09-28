@@ -231,7 +231,6 @@
     status:string,
     rejectionReasons:dynamic,
     initiativeRejectionReasons:dynamic,
-    rewardInitiatieveId:string,
     rewardOrganizationId:string,
     rewardProvidedRewardCents:long,
     rewardAccruedRewardCents:long,
@@ -263,6 +262,7 @@
     voucherAmountCents: long,
     extendedAuthorization: bool,
     rewardBatchLastMonthElaborated:string,
+    initiativeId:string,
     trxDate:datetime,
     trxChargeDate:datetime,
     elaborationDateTime:datetime
