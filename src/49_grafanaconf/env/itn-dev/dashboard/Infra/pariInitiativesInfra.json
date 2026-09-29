@@ -87,6 +87,522 @@
         "x": 0,
         "y": 0
       },
+      "id": 101,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.4.8",
+      "targets": [
+        {
+          "azureMonitor": {
+            "aggregation": "Total",
+            "allowedTimeGrainsMs": [
+              60000,
+              300000,
+              900000,
+              1800000,
+              3600000,
+              21600000,
+              43200000,
+              86400000
+            ],
+            "dimensionFilters": [
+              {
+                "dimension": "EntityName",
+                "filters": [
+                  "idpay-transaction"
+                ],
+                "operator": "eq"
+              }
+            ],
+            "metricName": "IncomingMessages",
+            "metricNamespace": "microsoft.eventhub/namespaces",
+            "region": "italynorth",
+            "resources": [
+              {
+                "metricNamespace": "Microsoft.EventHub/namespaces",
+                "region": "italynorth",
+                "resourceGroup": "cstar-d-itn-idpay-data-rg",
+                "resourceName": "cstar-d-itn-idpay-evh-00-ns",
+                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+              }
+            ],
+            "timeGrain": "auto"
+          },
+          "queryType": "Azure Monitor",
+          "refId": "A",
+          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+        }
+      ],
+      "title": " cstar-d-itn-idpay-evh-00-ns Incoming Messages",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "id": 105,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.4.8",
+      "targets": [
+        {
+          "azureMonitor": {
+            "aggregation": "Total",
+            "allowedTimeGrainsMs": [
+              60000,
+              300000,
+              900000,
+              1800000,
+              3600000,
+              21600000,
+              43200000,
+              86400000
+            ],
+            "dimensionFilters": [
+              {
+                "dimension": "EntityName",
+                "filters": [
+                  "idpay-transaction"
+                ],
+                "operator": "eq"
+              }
+            ],
+            "metricName": "OutgoingMessages",
+            "metricNamespace": "microsoft.eventhub/namespaces",
+            "region": "italynorth",
+            "resources": [
+              {
+                "metricNamespace": "Microsoft.EventHub/namespaces",
+                "region": "italynorth",
+                "resourceGroup": "cstar-d-itn-idpay-data-rg",
+                "resourceName": "cstar-d-itn-idpay-evh-00-ns",
+                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+              }
+            ],
+            "timeGrain": "auto"
+          },
+          "queryType": "Azure Monitor",
+          "refId": "A",
+          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+        }
+      ],
+      "title": " cstar-d-itn-idpay-evh-00-ns Outgoing Messages",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 8
+      },
+      "id": 106,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.4.8",
+      "targets": [
+        {
+          "azureMonitor": {
+            "aggregation": "Total",
+            "allowedTimeGrainsMs": [
+              60000,
+              300000,
+              900000,
+              1800000,
+              3600000,
+              21600000,
+              43200000,
+              86400000
+            ],
+            "dimensionFilters": [
+              {
+                "dimension": "EntityName",
+                "filters": [
+                  "idpay-errors",
+                  "idpay-commands",
+                  "idpay-reward-notification-storage-events",
+                  "idpay-timeline",
+                  "idpay-rule-update"
+                ],
+                "operator": "eq"
+              }
+            ],
+            "metricName": "IncomingMessages",
+            "metricNamespace": "microsoft.eventhub/namespaces",
+            "region": "italynorth",
+            "resources": [
+              {
+                "metricNamespace": "Microsoft.EventHub/namespaces",
+                "region": "italynorth",
+                "resourceGroup": "cstar-d-itn-idpay-data-rg",
+                "resourceName": "cstar-d-itn-idpay-evh-01-ns",
+                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+              }
+            ],
+            "timeGrain": "auto"
+          },
+          "queryType": "Azure Monitor",
+          "refId": "A",
+          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+        }
+      ],
+      "title": " cstar-d-itn-idpay-evh-01-ns Incoming Messages",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 8
+      },
+      "id": 107,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.4.8",
+      "targets": [
+        {
+          "azureMonitor": {
+            "aggregation": "Total",
+            "allowedTimeGrainsMs": [
+              60000,
+              300000,
+              900000,
+              1800000,
+              3600000,
+              21600000,
+              43200000,
+              86400000
+            ],
+            "dimensionFilters": [
+              {
+                "dimension": "EntityName",
+                "filters": [
+                  "idpay-errors",
+                  "idpay-commands",
+                  "idpay-timeline",
+                  "idpay-reward-notification-storage-events",
+                  "idpay-rule-update"
+                ],
+                "operator": "eq"
+              }
+            ],
+            "metricName": "OutgoingMessages",
+            "metricNamespace": "microsoft.eventhub/namespaces",
+            "region": "italynorth",
+            "resources": [
+              {
+                "metricNamespace": "Microsoft.EventHub/namespaces",
+                "region": "italynorth",
+                "resourceGroup": "cstar-d-itn-idpay-data-rg",
+                "resourceName": "cstar-d-itn-idpay-evh-01-ns",
+                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+              }
+            ],
+            "timeGrain": "auto"
+          },
+          "queryType": "Azure Monitor",
+          "refId": "A",
+          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+        }
+      ],
+      "title": " cstar-d-itn-idpay-evh-01-ns Outgoing Messages",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 16
+      },
       "id": 28,
       "options": {
         "legend": {
@@ -101,7 +617,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.4.3",
+      "pluginVersion": "12.4.8",
       "targets": [
         {
           "azureMonitor": {
@@ -204,7 +720,7 @@
         "h": 8,
         "w": 11,
         "x": 12,
-        "y": 0
+        "y": 16
       },
       "id": 27,
       "options": {
@@ -220,7 +736,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.4.3",
+      "pluginVersion": "12.4.8",
       "targets": [
         {
           "azureMonitor": {
@@ -267,7 +783,7 @@
         "h": 2,
         "w": 24,
         "x": 0,
-        "y": 8
+        "y": 24
       },
       "id": 24,
       "options": {
@@ -279,7 +795,7 @@
         "content": "# PARI Initiatives\n",
         "mode": "markdown"
       },
-      "pluginVersion": "12.4.3",
+      "pluginVersion": "12.4.8",
       "title": "",
       "type": "text"
     },
@@ -314,7 +830,7 @@
         "h": 5,
         "w": 4,
         "x": 0,
-        "y": 10
+        "y": 26
       },
       "id": 1,
       "options": {
@@ -334,7 +850,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.4.3",
+      "pluginVersion": "12.4.8",
       "targets": [
         {
           "azureMonitor": {
@@ -408,7 +924,7 @@
         "h": 5,
         "w": 4,
         "x": 4,
-        "y": 10
+        "y": 26
       },
       "id": 2,
       "options": {
@@ -428,7 +944,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.4.3",
+      "pluginVersion": "12.4.8",
       "targets": [
         {
           "appInsights": {
@@ -561,7 +1077,7 @@
         "h": 5,
         "w": 4,
         "x": 8,
-        "y": 10
+        "y": 26
       },
       "id": 4,
       "options": {
@@ -581,7 +1097,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.4.3",
+      "pluginVersion": "12.4.8",
       "targets": [
         {
           "appInsights": {
@@ -719,7 +1235,7 @@
         "h": 5,
         "w": 4,
         "x": 12,
-        "y": 10
+        "y": 26
       },
       "id": 5,
       "options": {
@@ -739,7 +1255,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.4.3",
+      "pluginVersion": "12.4.8",
       "targets": [
         {
           "appInsights": {
@@ -876,7 +1392,7 @@
         "h": 5,
         "w": 8,
         "x": 16,
-        "y": 10
+        "y": 26
       },
       "id": 3,
       "options": {
@@ -903,7 +1419,7 @@
         "sizing": "auto",
         "valueMode": "color"
       },
-      "pluginVersion": "12.4.3",
+      "pluginVersion": "12.4.8",
       "targets": [
         {
           "appInsights": {
@@ -1537,7 +2053,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 15
+        "y": 31
       },
       "id": 10,
       "options": {
@@ -1564,7 +2080,7 @@
         "sizing": "auto",
         "valueMode": "color"
       },
-      "pluginVersion": "12.4.3",
+      "pluginVersion": "12.4.8",
       "targets": [
         {
           "azureMonitor": {
@@ -1640,7 +2156,7 @@
         "h": 7,
         "w": 4,
         "x": 0,
-        "y": 22
+        "y": 38
       },
       "id": 6,
       "options": {
@@ -1658,7 +2174,7 @@
         "showThresholdMarkers": true,
         "sizing": "auto"
       },
-      "pluginVersion": "12.4.3",
+      "pluginVersion": "12.4.8",
       "targets": [
         {
           "azureMonitor": {
@@ -1727,7 +2243,7 @@
         "h": 7,
         "w": 4,
         "x": 4,
-        "y": 22
+        "y": 38
       },
       "id": 8,
       "options": {
@@ -1745,7 +2261,7 @@
         "showThresholdMarkers": true,
         "sizing": "auto"
       },
-      "pluginVersion": "12.4.3",
+      "pluginVersion": "12.4.8",
       "targets": [
         {
           "azureMonitor": {
@@ -1901,7 +2417,7 @@
         "h": 13,
         "w": 16,
         "x": 8,
-        "y": 22
+        "y": 38
       },
       "id": 7,
       "options": {
@@ -1914,7 +2430,7 @@
           }
         ]
       },
-      "pluginVersion": "12.4.3",
+      "pluginVersion": "12.4.8",
       "targets": [
         {
           "azureLogAnalytics": {
@@ -1963,7 +2479,7 @@
         "h": 6,
         "w": 8,
         "x": 0,
-        "y": 29
+        "y": 45
       },
       "id": 9,
       "options": {
@@ -1983,7 +2499,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.4.3",
+      "pluginVersion": "12.4.8",
       "targets": [
         {
           "azureMonitor": {
@@ -2059,7 +2575,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 35
+        "y": 51
       },
       "id": 11,
       "options": {
@@ -2077,7 +2593,7 @@
         "showThresholdMarkers": true,
         "sizing": "auto"
       },
-      "pluginVersion": "12.4.3",
+      "pluginVersion": "12.4.8",
       "targets": [
         {
           "azureMonitor": {
@@ -2149,7 +2665,7 @@
         "h": 5,
         "w": 5,
         "x": 0,
-        "y": 43
+        "y": 59
       },
       "id": 16,
       "options": {
@@ -2169,7 +2685,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.4.3",
+      "pluginVersion": "12.4.8",
       "targets": [
         {
           "azureMonitor": {
@@ -2238,7 +2754,7 @@
         "h": 5,
         "w": 5,
         "x": 5,
-        "y": 43
+        "y": 59
       },
       "id": 17,
       "options": {
@@ -2256,7 +2772,7 @@
         "showThresholdMarkers": true,
         "sizing": "auto"
       },
-      "pluginVersion": "12.4.3",
+      "pluginVersion": "12.4.8",
       "targets": [
         {
           "azureMonitor": {
@@ -2325,7 +2841,7 @@
         "h": 5,
         "w": 5,
         "x": 10,
-        "y": 43
+        "y": 59
       },
       "id": 18,
       "options": {
@@ -2343,7 +2859,7 @@
         "showThresholdMarkers": true,
         "sizing": "auto"
       },
-      "pluginVersion": "12.4.3",
+      "pluginVersion": "12.4.8",
       "targets": [
         {
           "azureMonitor": {
@@ -2413,7 +2929,7 @@
         "h": 5,
         "w": 5,
         "x": 15,
-        "y": 43
+        "y": 59
       },
       "id": 19,
       "options": {
@@ -2431,7 +2947,7 @@
         "showThresholdMarkers": true,
         "sizing": "auto"
       },
-      "pluginVersion": "12.4.3",
+      "pluginVersion": "12.4.8",
       "targets": [
         {
           "azureMonitor": {
@@ -2500,7 +3016,7 @@
         "h": 5,
         "w": 4,
         "x": 20,
-        "y": 43
+        "y": 59
       },
       "id": 20,
       "options": {
@@ -2518,7 +3034,7 @@
         "showThresholdMarkers": true,
         "sizing": "auto"
       },
-      "pluginVersion": "12.4.3",
+      "pluginVersion": "12.4.8",
       "targets": [
         {
           "azureMonitor": {
@@ -2587,7 +3103,7 @@
         "h": 5,
         "w": 12,
         "x": 0,
-        "y": 48
+        "y": 64
       },
       "id": 12,
       "options": {
@@ -2607,7 +3123,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.4.3",
+      "pluginVersion": "12.4.8",
       "targets": [
         {
           "azureMonitor": {
@@ -2689,7 +3205,7 @@
         "h": 5,
         "w": 6,
         "x": 12,
-        "y": 48
+        "y": 64
       },
       "id": 13,
       "options": {
@@ -2709,7 +3225,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.4.3",
+      "pluginVersion": "12.4.8",
       "targets": [
         {
           "azureMonitor": {
@@ -2786,7 +3302,7 @@
         "h": 5,
         "w": 6,
         "x": 18,
-        "y": 48
+        "y": 64
       },
       "id": 21,
       "options": {
@@ -2806,7 +3322,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.4.3",
+      "pluginVersion": "12.4.8",
       "targets": [
         {
           "azureMonitor": {
@@ -2883,7 +3399,7 @@
         "h": 5,
         "w": 12,
         "x": 0,
-        "y": 53
+        "y": 69
       },
       "id": 14,
       "options": {
@@ -2903,7 +3419,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.4.3",
+      "pluginVersion": "12.4.8",
       "targets": [
         {
           "azureMonitor": {
@@ -2985,7 +3501,7 @@
         "h": 5,
         "w": 6,
         "x": 12,
-        "y": 53
+        "y": 69
       },
       "id": 15,
       "options": {
@@ -3005,7 +3521,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.4.3",
+      "pluginVersion": "12.4.8",
       "targets": [
         {
           "azureMonitor": {
@@ -3082,7 +3598,7 @@
         "h": 5,
         "w": 6,
         "x": 18,
-        "y": 53
+        "y": 69
       },
       "id": 22,
       "options": {
@@ -3102,7 +3618,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.4.3",
+      "pluginVersion": "12.4.8",
       "targets": [
         {
           "azureMonitor": {
@@ -3233,7 +3749,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 58
+        "y": 74
       },
       "id": 25,
       "options": {
@@ -3246,7 +3762,7 @@
           }
         ]
       },
-      "pluginVersion": "12.4.3",
+      "pluginVersion": "12.4.8",
       "targets": [
         {
           "appInsights": {
@@ -3379,7 +3895,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 58
+        "y": 74
       },
       "id": 26,
       "options": {
@@ -3392,7 +3908,7 @@
           }
         ]
       },
-      "pluginVersion": "12.4.3",
+      "pluginVersion": "12.4.8",
       "targets": [
         {
           "appInsights": {
@@ -3446,7 +3962,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 66
+        "y": 82
       },
       "id": 100,
       "panels": [],
@@ -3519,7 +4035,7 @@
         "h": 8,
         "w": 8,
         "x": 0,
-        "y": 67
+        "y": 83
       },
       "id": 30,
       "options": {
@@ -3535,7 +4051,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.4.3",
+      "pluginVersion": "12.4.8",
       "targets": [
         {
           "azureMonitor": {
@@ -3648,7 +4164,7 @@
         "h": 8,
         "w": 8,
         "x": 8,
-        "y": 67
+        "y": 83
       },
       "id": 31,
       "options": {
@@ -3664,7 +4180,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.4.3",
+      "pluginVersion": "12.4.8",
       "targets": [
         {
           "azureMonitor": {
@@ -3777,7 +4293,7 @@
         "h": 8,
         "w": 8,
         "x": 16,
-        "y": 67
+        "y": 83
       },
       "id": 29,
       "options": {
@@ -3793,7 +4309,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.4.3",
+      "pluginVersion": "12.4.8",
       "targets": [
         {
           "azureMonitor": {
@@ -3987,6 +4503,6 @@
   "timezone": "browser",
   "title": "PariInitiativesInfra",
   "uid": "ff3s9iv832pdsf",
-  "version": 45,
+  "version": 59,
   "weekStart": ""
 }
