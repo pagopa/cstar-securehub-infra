@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 160,
+  "id": null,
   "links": [],
   "panels": [
     {
@@ -97,7 +97,7 @@
             }
           },
           "pluginVersion": "6.2.0",
-          "query": "merchant_initiative_counters\r\n| where initiativeId == \"68dd003ccce8c534d1da22bc\"\r\n| join kind=leftouter (\r\n    merchant\r\n    | project businessName, _id\r\n) on $left.merchantId == $right._id\r\n| project businessName,trxNumber\r\n| order by businessName desc",
+          "query": "merchant_initiative_counters\r\n| where initiativeId == \"69e0fa95e21efa516c7b8dec\"\r\n| join kind=leftouter (\r\n    merchant\r\n    | project businessName, _id\r\n) on $left.merchantId == $right._id\r\n| project businessName,trxNumber\r\n| order by businessName desc",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -200,7 +200,7 @@
             }
           },
            "pluginVersion": "6.2.0",
-           "query": "transaction\r\n| where rewardInitiatieveId == \"68dd003ccce8c534d1da22bc\"\r\n| join kind=rightouter (\r\n    point_of_sales\r\n    | project _id, type\r\n) on $left.pointOfSaleId == $right._id\r\n| summarize TotaleTransazioni = countif(isnotempty(pointOfSaleId)) by type",
+           "query": "transaction\r\n| where rewardInitiatieveId == \"69e0fa95e21efa516c7b8dec\"\r\n| join kind=rightouter (\r\n    point_of_sales\r\n    | project _id, type\r\n) on $left.pointOfSaleId == $right._id\r\n| summarize TotaleTransazioni = countif(isnotempty(pointOfSaleId)) by type",
            "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -292,7 +292,7 @@
             }
           },
           "pluginVersion": "6.2.0",
-          "query": "transaction\r\n| where rewardInitiatieveId == \"68dd003ccce8c534d1da22bc\"\r\n| where status in ( 'INVOICED', 'CAPTURED')\r\n| extend LungaDurata = (trxChargeDate - trxDate) > 15m\r\n| summarize TransazioniCount = count() by LungaDurata\r\n| extend Category = iff(LungaDurata, \"Voucher statico\", \"Voucher app\")\r\n| project Category, TransazioniCount\r\n",
+          "query": "transaction\r\n| where rewardInitiatieveId == \"69e0fa95e21efa516c7b8dec\"\r\n| where status in ( 'INVOICED', 'CAPTURED')\r\n| extend LungaDurata = (trxChargeDate - trxDate) > 15m\r\n| summarize TransazioniCount = count() by LungaDurata\r\n| extend Category = iff(LungaDurata, \"Voucher statico\", \"Voucher app\")\r\n| project Category, TransazioniCount\r\n",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -392,7 +392,7 @@
             }
           },
           "pluginVersion": "6.2.0",
-          "query": "merchant_initiative_counters\r\n| where initiativeId == \"68dd003ccce8c534d1da22bc\"\r\n| join kind=leftouter (\r\n    merchant\r\n    | project businessName, _id\r\n) on $left.merchantId == $right._id\r\n| project businessName, refoundNumber\r\n| order by businessName desc",
+          "query": "merchant_initiative_counters\r\n| where initiativeId == \"69e0fa95e21efa516c7b8dec\"\r\n| join kind=leftouter (\r\n    merchant\r\n    | project businessName, _id\r\n) on $left.merchantId == $right._id\r\n| project businessName, refoundNumber\r\n| order by businessName desc",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -502,7 +502,7 @@
             }
           },
           "pluginVersion": "6.2.0",
-          "query": "point_of_sales\r\n| join kind=inner (\r\n    point_of_sales_initiative\r\n    | where initiativeId == \"68dd003ccce8c534d1da22bc\"\r\n    | project pointOfSaleId\r\n) on $left._id == $right.pointOfSaleId\r\n| summarize Totale = count() by region\r\n| order by Totale desc ",
+          "query": "point_of_sales\r\n| join kind=inner (\r\n    point_of_sales_initiative\r\n    | where initiativeId == \"69e0fa95e21efa516c7b8dec\"\r\n    | project pointOfSaleId\r\n) on $left._id == $right.pointOfSaleId\r\n| summarize Totale = count() by region\r\n| order by Totale desc ",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -650,7 +650,7 @@
             }
           },
           "pluginVersion": "6.2.0",
-          "query": "merchant\r\n| join kind=rightouter  (\r\n    point_of_sales\r\n    | join kind=inner (\r\n        point_of_sales_initiative\r\n        | where initiativeId == \"68dd003ccce8c534d1da22bc\"\r\n        | project pointOfSaleId\r\n    ) on $left._id == $right.pointOfSaleId\r\n) on $left._id == $right.merchantId\r\n| summarize Totale = count() by businessName\r\n| order by Totale desc \r\n| limit 10",
+          "query": "merchant\r\n| join kind=rightouter  (\r\n    point_of_sales\r\n    | join kind=inner (\r\n        point_of_sales_initiative\r\n        | where initiativeId == \"69e0fa95e21efa516c7b8dec\"\r\n        | project pointOfSaleId\r\n    ) on $left._id == $right.pointOfSaleId\r\n) on $left._id == $right.merchantId\r\n| summarize Totale = count() by businessName\r\n| order by Totale desc \r\n| limit 10",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -705,6 +705,6 @@
   "timepicker": {},
   "timezone": "browser",
   "title": "ESE",
-  "uid": "eezu3dfeyfhfkb",
-  "version": 63
+  "uid": "bonusdecoderese",
+  "version": 1
 }
