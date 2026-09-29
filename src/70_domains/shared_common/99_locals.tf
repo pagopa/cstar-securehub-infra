@@ -34,4 +34,19 @@ locals {
 
   # VNET
   vnet_legacy_core_rg = "${local.product}-vnet-rg"
+
+
+  domains = ["idpay", "mdc", "srtp"]
+  roles   = ["admin", "externals", "developers"]
+
+  ad_groups_rbac = merge([
+    for domain in local.domains : {
+      for role in local.roles :
+      "${local.product}-${domain}-adgroup-${role}" => {
+        domain       = domain
+        role         = role
+        display_name = "${local.product}-${domain}-adgroup-${role}"
+      }
+    }
+  ]...)
 }

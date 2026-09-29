@@ -76,6 +76,56 @@ module "cdn_multi_initiative" {
     "MultiIniziativeGlobal" = {
       description = "Global ruleset for multi-initiative CDN"
       rules = {
+        # The initiative segment is variable (for example
+        # bonuselettrodomestici or bonusdecoder). This rule disables Front Door
+        # caching only for the generated pos_export_*.json files across initiatives.
+        "DisableCacheListaPuntiVenditaData" = {
+          order             = 1
+          behavior_on_match = "Stop"
+
+          conditions = [
+            {
+              type         = "url_path"
+              operator     = "RegEx"
+              match_values = ["^/?(${local.multi_initiatives_regex})/lista-punti-vendita/data/pos_export_[^/]+\\.json$"]
+              negate       = false
+              transforms   = []
+            }
+          ]
+
+          # Disable caching only for requests matching the condition above.
+          actions = [
+            {
+              type     = "cache"
+              behavior = "Disabled"
+            }
+          ]
+        }
+
+        # Disable caching only for generated product JSON and daily CSV exports.
+        # Every other asset keeps the route cache policy.
+        "DisableCacheElencoProdottiData" = {
+          order             = 2
+          behavior_on_match = "Stop"
+
+          conditions = [
+            {
+              type         = "url_path"
+              operator     = "RegEx"
+              match_values = ["^/?(${local.multi_initiatives_regex})/elenco-prodotti/data/(product_export_[^/]+\\.json|export_daily_[^/]+\\.csv)$"]
+              negate       = false
+              transforms   = []
+            }
+          ]
+
+          actions = [
+            {
+              type     = "cache"
+              behavior = "Disabled"
+            }
+          ]
+        }
+
         "RewriteInitiativeSpaRouting" = {
           order             = 10
           behavior_on_match = "Stop"
@@ -107,7 +157,8 @@ module "cdn_multi_initiative" {
             destination             = "/{url_path:seg0}/{url_path:seg1}/index.html"
             preserve_unmatched_path = false
           }]
-        },
+        }
+
         "RewriteEsercente" = {
           order             = 20
           behavior_on_match = "Stop"
@@ -144,4 +195,27 @@ module "cdn_multi_initiative" {
       }
     }
   }
+
+}
+
+# RBAC ADF -> storage multi-initiative (data plane)
+resource "azurerm_role_assignment" "adf_can_access_multi_initiative_storage" {
+  count = var.enabled_cdn_multi_initiative ? 1 : 0
+
+  scope                = data.azurerm_storage_account.cdn_multi_initiative_storage_account[0].id
+  role_definition_name = "Storage Blob Data Contributor"
+  principal_id         = data.azurerm_data_factory.data_factory.identity[0].principal_id
+
+  depends_on = [module.cdn_multi_initiative]
+}
+
+# RBAC ADF -> storage multi-initiative (management plane, utile per ListServiceSas)
+resource "azurerm_role_assignment" "adf_can_list_service_sas_multi_initiative" {
+  count = var.enabled_cdn_multi_initiative ? 1 : 0
+
+  scope                = data.azurerm_storage_account.cdn_multi_initiative_storage_account[0].id
+  role_definition_name = "Storage Account Contributor"
+  principal_id         = data.azurerm_data_factory.data_factory.identity[0].principal_id
+
+  depends_on = [module.cdn_multi_initiative]
 }
