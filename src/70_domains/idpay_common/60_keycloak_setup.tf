@@ -24,17 +24,19 @@ module "keycloak_setup" {
       description              = "User Realm"
       enabled                  = true
       duplicate_emails_allowed = true
+      login_theme              = "pagopa-oid4vp"
       attributes = {
         frontendUrl = local.keycloak_external_hostname
       }
     },
     {
-      name         = "merchant-operator"
-      display_name = "merchant-operator"
-      description  = "Merchant Operator Realm"
-      enabled      = true
-      login_theme  = "pagopa"
-      email_theme  = "pagopa"
+      name                   = "merchant-operator"
+      display_name           = "merchant-operator"
+      description            = "Merchant Operator Realm"
+      enabled                = true
+      login_theme            = "pagopa"
+      email_theme            = "pagopa"
+      reset_password_allowed = true
 
       # Password policy applied on first-time password set (executeActionsEmail -> UPDATE_PASSWORD)
       # and on any subsequent password change.
