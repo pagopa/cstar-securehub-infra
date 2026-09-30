@@ -473,8 +473,8 @@ body.pagopa-oid4vp-body {
 
 .oid4vp-page #oid4vp-qr-code {
   display: block;
-  width: 232px;
-  height: 232px;
+  width: 256px;
+  height: 256px;
   max-width: 100%;
   padding: 0;
   border: 0;
@@ -491,7 +491,7 @@ body.pagopa-oid4vp-body {
 }
 
 .oid4vp-page .oid4vp-cancel-link {
-  margin-top: 10px;
+  margin-top: 48px;
   color: #0066cc;
   font-size: 14px;
   font-weight: 600;
@@ -507,23 +507,47 @@ body.pagopa-oid4vp-body {
 
 .oid4vp-page .oid4vp-refresh-button {
   appearance: none;
-  width: 169px;
+  position: absolute;
+  inset: 50% auto auto 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  width: max-content;
   height: 48px;
-  display: inline-flex;
+  display: none;
   align-items: center;
   justify-content: center;
-  margin-top: 16px;
-  padding: 0 16px;
-  border: 1px solid var(--pagopa-primary-blue);
-  border-radius: 4px;
-  background: var(--pagopa-primary-blue);
+  gap: 8px;
+  padding: 0 24px;
+  border: 1px solid #0066cc;
+  border-radius: 8px;
+  background: #0066cc;
   color: #ffffff;
   cursor: pointer;
   font-family: inherit;
-  font-size: 14px;
-  font-weight: 700;
-  line-height: 1;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
   text-decoration: none;
+}
+
+.oid4vp-page .oid4vp-qr-wrap:has(#oid4vp-qr-status:not([hidden])) .oid4vp-refresh-button {
+  display: inline-flex;
+}
+
+.oid4vp-page .oid4vp-qr-wrap:has(#oid4vp-qr-status:not([hidden])) #oid4vp-qr-code,
+.oid4vp-page .oid4vp-qr-wrap:has(#oid4vp-qr-status:not([hidden])) .oid4vp-qr-frame::after {
+  opacity: 0.3;
+}
+
+.oid4vp-page #oid4vp-qr-status:not([hidden]) {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.oid4vp-page #oid4vp-qr-status svg,
+.oid4vp-page .oid4vp-refresh-button svg {
+  flex-shrink: 0;
 }
 
 .oid4vp-page .oid4vp-refresh-button:hover {
@@ -576,9 +600,17 @@ body.pagopa-oid4vp-body {
     padding: 16px;
   }
 
+  .oid4vp-footer__top {
+    align-items: center;
+  }
+
   .oid4vp-footer__links {
-    align-items: flex-start;
+    align-items: center;
     flex-direction: column;
+  }
+
+  .oid4vp-footer__link {
+    text-align: center;
   }
 
   .oid4vp-page .oid4vp-header {
@@ -598,11 +630,6 @@ body.pagopa-oid4vp-body {
 
   .oid4vp-page .oid4vp-card__description {
     max-width: 100%;
-  }
-
-  .oid4vp-page #oid4vp-qr-code {
-    width: 220px;
-    height: 220px;
   }
 }
 
