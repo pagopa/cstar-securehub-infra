@@ -29,6 +29,9 @@ locals {
     local.all_www_bonus_zones
   ])
 
+  # Redirect all requests in UAT and PROD; keep DEV routing unchanged.
+  bonus_redirect_all_paths = contains(["u", "p"], var.env_short)
+
   bonus_redirect = flatten([
     [
       {
@@ -36,7 +39,7 @@ locals {
         order             = 0
         behavior_on_match = "Stop"
 
-        url_path_conditions = [
+        url_path_conditions = local.bonus_redirect_all_paths ? [] : [
           {
             operator         = "Equal"
             match_values     = ["/"]
@@ -50,7 +53,7 @@ locals {
             redirect_type = "Found"
             protocol      = "Https"
             hostname      = "ioapp.it"
-            path          = "/bonus-elettrodomestici"
+            path          = local.bonus_redirect_all_paths ? "/funzionalita-dismesse" : "/bonus-elettrodomestici"
             fragment      = ""
             query_string  = ""
           }
@@ -60,7 +63,7 @@ locals {
   ])
 
   #--------------------------------------------------
-  # ⚠️ Redirect Rules - Handles root URL redirection to main domain
+  # Redirect all paths in UAT/PROD and only the root URL in DEV
   #--------------------------------------------------
 
   # Security Headers - Applied globally to all responses

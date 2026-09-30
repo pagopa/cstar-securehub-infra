@@ -92,8 +92,7 @@
           },
           "azureLogAnalytics": {
             "dashboardTime": false,
-            "query": "KubePodInventory\r\n| where ClusterName == \"$aks\"\r\n| where Namespace == \"$namespace\" and Name == \"$ContainerName\"\r\n| project ContainerID, PodName=Name, Namespace\r\n| distinct ContainerID, PodName\r\n| join\r\n(\r\n    ContainerLog\r\n    | where $__timeFilter(TimeGenerated)\r\n)\r\non ContainerID\r\n| project TimeGenerated, PodName, LogEntry, LogEntrySource, Nodo=Computer\r\n| where isnull(\"$MessageFilter\") or LogEntry contains \"$MessageFilter\"\r\n| summarize by TimeGenerated, LogEntry, PodName, LogEntrySource, Nodo\r\n| top $Limit by TimeGenerated desc",
-            "resources": [
+            "query": "ContainerLogV2\r\n| where $__timeFilter(TimeGenerated)\r\n| where PodNamespace == \"$namespace\"\r\n| where PodName == \"$ContainerName\" or \"$ContainerName\" == \"All\" or \"$ContainerName\" == \"\"\r\n| where \"$MessageFilter\" == \"\" or \"$MessageFilter\" == \"All\" or tostring(LogMessage) contains \"$MessageFilter\"\r\n| project TimeGenerated, PodName, LogEntry=tostring(LogMessage), LogEntrySource=LogSource, Nodo=Computer\r\n| summarize by TimeGenerated, LogEntry, PodName, LogEntrySource, Nodo\r\n| top $Limit by TimeGenerated desc",            "resources": [
               "${monitor_workspace_id}"
             ],
             "resultFormat": "time_series"
