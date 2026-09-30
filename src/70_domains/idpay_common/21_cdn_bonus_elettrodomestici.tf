@@ -25,12 +25,12 @@ locals {
     dns_name                = z.name
     dns_resource_group_name = z.resource_group_name
     ttl                     = var.env != "p" ? 300 : 3600
-  }],
+    }],
     local.all_www_bonus_zones
   ])
 
   # Redirect all requests in UAT and PROD; keep DEV routing unchanged.
-  bonus_redirect_all_paths = contains(["u","p"], var.env_short)
+  bonus_redirect_all_paths = contains(["u", "p"], var.env_short)
 
   bonus_redirect = flatten([
     [
@@ -174,7 +174,7 @@ locals {
           value  = "SAMEORIGIN"
         }
       ]
-    }]
+  }]
 
   # Application Delivery Rules - URL Rewrite Rules
   # These rules handle routing for different frontend applications
@@ -427,7 +427,7 @@ locals {
     ".webm"  = "video/webm"
     ".ogg"   = "audio/ogg"
     ".mp3"   = "audio/mpeg"
-    ".wav"  = "audio/wav"
+    ".wav"   = "audio/wav"
     ".woff"  = "font/woff"
     ".woff2" = "font/woff2"
     ".ttf"   = "font/ttf"
@@ -446,14 +446,14 @@ module "cdn_idpay_bonuselettrodomestici" {
   # source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//cdn_frontdoor?ref=PAYMCLOUD-477-v-4-creazione-modulo-cdn-front-door-per-sostituire-cdn-classic-deprecata"
 
   # Basic Configuration
-  cdn_prefix_name      = "${local.project}-bonus"
+  cdn_prefix_name     = "${local.project}-bonus"
   resource_group_name = data.azurerm_resource_group.idpay_data_rg.name
   location            = var.location
 
   # Storage Configuration
-  storage_account_name              = local.cdn_storage_account_name
-  storage_account_replication_type  = var.idpay_cdn_storage_account_replication_type
-  storage_account_index_document    = local.cdn_index_document
+  storage_account_name               = local.cdn_storage_account_name
+  storage_account_replication_type   = var.idpay_cdn_storage_account_replication_type
+  storage_account_index_document     = local.cdn_index_document
   storage_account_error_404_document = local.cdn_error_document
 
   # Key Vault Configuration
