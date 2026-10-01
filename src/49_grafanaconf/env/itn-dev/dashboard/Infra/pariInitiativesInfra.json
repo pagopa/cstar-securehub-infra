@@ -960,7 +960,7 @@
             "dashboardTime": false,
             "query": "//change this example to create your own time series query\n<table name>                                                              //the table to query (e.g. Usage, Heartbeat, Perf)\n| where $__timeFilter(TimeGenerated)                                      //this is a macro used to show the full chart’s time range, choose the datetime column here\n| summarize count() by <group by column>, bin(TimeGenerated, $__interval) //change “group by column” to a column in your table, such as “Computer”. The $__interval macro is used to auto-select the time grain. Can also use 1h, 5m etc.\n| order by TimeGenerated asc",
             "resultFormat": "time_series",
-            "workspace": "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/cstar-d-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-d-itn-core-law"
+            "workspace": "/subscriptions/$subscription/resourceGroups/cstar-d-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-d-itn-core-law"
           },
           "azureMonitor": {
             "aggOptions": [
@@ -1113,7 +1113,7 @@
             "dashboardTime": false,
             "query": "//change this example to create your own time series query\n<table name>                                                              //the table to query (e.g. Usage, Heartbeat, Perf)\n| where $__timeFilter(TimeGenerated)                                      //this is a macro used to show the full chart’s time range, choose the datetime column here\n| summarize count() by <group by column>, bin(TimeGenerated, $__interval) //change “group by column” to a column in your table, such as “Computer”. The $__interval macro is used to auto-select the time grain. Can also use 1h, 5m etc.\n| order by TimeGenerated asc",
             "resultFormat": "time_series",
-            "workspace": "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/cstar-d-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-d-itn-core-law"
+            "workspace": "/subscriptions/$subscription/resourceGroups/cstar-d-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-d-itn-core-law"
           },
           "azureMonitor": {
             "aggOptions": [
@@ -1271,7 +1271,7 @@
             "dashboardTime": false,
             "query": "//change this example to create your own time series query\n<table name>                                                              //the table to query (e.g. Usage, Heartbeat, Perf)\n| where $__timeFilter(TimeGenerated)                                      //this is a macro used to show the full chart’s time range, choose the datetime column here\n| summarize count() by <group by column>, bin(TimeGenerated, $__interval) //change “group by column” to a column in your table, such as “Computer”. The $__interval macro is used to auto-select the time grain. Can also use 1h, 5m etc.\n| order by TimeGenerated asc",
             "resultFormat": "time_series",
-            "workspace": "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/cstar-d-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-d-itn-core-law"
+            "workspace": "/subscriptions/$subscription/resourceGroups/cstar-d-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-d-itn-core-law"
           },
           "azureMonitor": {
             "aggOptions": [
@@ -1435,7 +1435,7 @@
             "dashboardTime": false,
             "query": "//change this example to create your own time series query\n<table name>                                                              //the table to query (e.g. Usage, Heartbeat, Perf)\n| where $__timeFilter(TimeGenerated)                                      //this is a macro used to show the full chart’s time range, choose the datetime column here\n| summarize count() by <group by column>, bin(TimeGenerated, $__interval) //change “group by column” to a column in your table, such as “Computer”. The $__interval macro is used to auto-select the time grain. Can also use 1h, 5m etc.\n| order by TimeGenerated asc",
             "resultFormat": "time_series",
-            "workspace": "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/cstar-d-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-d-itn-core-law"
+            "workspace": "/subscriptions/$subscription/resourceGroups/cstar-d-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-d-itn-core-law"
           },
           "azureMonitor": {
             "aggOptions": [
@@ -1545,7 +1545,7 @@
             "dashboardTime": false,
             "query": "//change this example to create your own time series query\n<table name>                                                              //the table to query (e.g. Usage, Heartbeat, Perf)\n| where $__timeFilter(TimeGenerated)                                      //this is a macro used to show the full chart’s time range, choose the datetime column here\n| summarize count() by <group by column>, bin(TimeGenerated, $__interval) //change “group by column” to a column in your table, such as “Computer”. The $__interval macro is used to auto-select the time grain. Can also use 1h, 5m etc.\n| order by TimeGenerated asc",
             "resultFormat": "time_series",
-            "workspace": "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/cstar-d-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-d-itn-core-law"
+            "workspace": "/subscriptions/$subscription/resourceGroups/cstar-d-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-d-itn-core-law"
           },
           "azureMonitor": {
             "aggOptions": [
@@ -1656,7 +1656,7 @@
             "dashboardTime": false,
             "query": "//change this example to create your own time series query\n<table name>                                                              //the table to query (e.g. Usage, Heartbeat, Perf)\n| where $__timeFilter(TimeGenerated)                                      //this is a macro used to show the full chart’s time range, choose the datetime column here\n| summarize count() by <group by column>, bin(TimeGenerated, $__interval) //change “group by column” to a column in your table, such as “Computer”. The $__interval macro is used to auto-select the time grain. Can also use 1h, 5m etc.\n| order by TimeGenerated asc",
             "resultFormat": "time_series",
-            "workspace": "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/cstar-d-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-d-itn-core-law"
+            "workspace": "/subscriptions/$subscription/resourceGroups/cstar-d-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-d-itn-core-law"
           },
           "azureMonitor": {
             "aggOptions": [
@@ -1781,7 +1781,7 @@
             "dashboardTime": false,
             "query": "//change this example to create your own time series query\n<table name>                                                              //the table to query (e.g. Usage, Heartbeat, Perf)\n| where $__timeFilter(TimeGenerated)                                      //this is a macro used to show the full chart’s time range, choose the datetime column here\n| summarize count() by <group by column>, bin(TimeGenerated, $__interval) //change “group by column” to a column in your table, such as “Computer”. The $__interval macro is used to auto-select the time grain. Can also use 1h, 5m etc.\n| order by TimeGenerated asc",
             "resultFormat": "time_series",
-            "workspace": "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/cstar-d-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-d-itn-core-law"
+            "workspace": "/subscriptions/$subscription/resourceGroups/cstar-d-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-d-itn-core-law"
           },
           "azureMonitor": {
             "aggOptions": [
@@ -1906,7 +1906,7 @@
             "dashboardTime": false,
             "query": "//change this example to create your own time series query\n<table name>                                                              //the table to query (e.g. Usage, Heartbeat, Perf)\n| where $__timeFilter(TimeGenerated)                                      //this is a macro used to show the full chart’s time range, choose the datetime column here\n| summarize count() by <group by column>, bin(TimeGenerated, $__interval) //change “group by column” to a column in your table, such as “Computer”. The $__interval macro is used to auto-select the time grain. Can also use 1h, 5m etc.\n| order by TimeGenerated asc",
             "resultFormat": "time_series",
-            "workspace": "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/cstar-d-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-d-itn-core-law"
+            "workspace": "/subscriptions/$subscription/resourceGroups/cstar-d-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-d-itn-core-law"
           },
           "azureMonitor": {
             "aggOptions": [
@@ -2112,14 +2112,14 @@
                 "region": "westeurope",
                 "resourceGroup": "$vnetRg",
                 "resourceName": "$appGateway",
-                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+                "subscription": "$subscription"
               }
             ],
             "timeGrain": "auto"
           },
           "queryType": "Azure Monitor",
           "refId": "A",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "$subscription"
         }
       ],
       "title": "App Gateway Response code",
