@@ -392,14 +392,14 @@
                 "region": "italynorth",
                 "resourceGroup": "$idpayDataRg",
                 "resourceName": "$eventhubNs01",
-                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+                "subscription": "$subscription"
               }
             ],
             "timeGrain": "auto"
           },
           "queryType": "Azure Monitor",
           "refId": "A",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "$subscription"
         }
       ],
       "title": "Event Hub 01 Incoming Messages",
@@ -523,14 +523,14 @@
                 "region": "italynorth",
                 "resourceGroup": "$idpayDataRg",
                 "resourceName": "$eventhubNs01",
-                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+                "subscription": "$subscription"
               }
             ],
             "timeGrain": "auto"
           },
           "queryType": "Azure Monitor",
           "refId": "A",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "$subscription"
         }
       ],
       "title": "Event Hub 01 Outgoing Messages",
