@@ -1812,7 +1812,7 @@
                 "value": 0
               },
               {
-                "color": "semi-dark-green",
+                "color": "yellow",
                 "value": 500
               },
               {
@@ -5052,6 +5052,6 @@
   "timezone": "browser",
   "title": "PariInitiativesInfra",
   "uid": "ff3s9iv832pdsf",
-  "version": 86,
+  "version": 87,
   "weekStart": ""
 }
