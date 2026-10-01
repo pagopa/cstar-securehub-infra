@@ -144,7 +144,7 @@
           "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
         }
       ],
-      "title": " cstar-d-itn-idpay-evh-00-ns Incoming Messages",
+      "title": "Event Hub 00 Incoming Messages",
       "type": "timeseries"
     },
     {
@@ -271,7 +271,7 @@
           "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
         }
       ],
-      "title": " cstar-d-itn-idpay-evh-00-ns Outgoing Messages",
+      "title": "Event Hub 00 Outgoing Messages",
       "type": "timeseries"
     },
     {
@@ -402,7 +402,7 @@
           "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
         }
       ],
-      "title": " cstar-d-itn-idpay-evh-01-ns Incoming Messages",
+      "title": "Event Hub 01 Incoming Messages",
       "type": "timeseries"
     },
     {
@@ -533,7 +533,7 @@
           "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
         }
       ],
-      "title": " cstar-d-itn-idpay-evh-01-ns Outgoing Messages",
+      "title": "Event Hub 01 Outgoing Messages",
       "type": "timeseries"
     },
     {
