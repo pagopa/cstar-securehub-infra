@@ -1813,11 +1813,11 @@
               },
               {
                 "color": "semi-dark-green",
-                "value": 0.5
+                "value": 500
               },
               {
                 "color": "red",
-                "value": 1
+                "value": 1000
               }
             ]
           },
@@ -5052,6 +5052,6 @@
   "timezone": "browser",
   "title": "PariInitiativesInfra",
   "uid": "ff3s9iv832pdsf",
-  "version": 85,
+  "version": 86,
   "weekStart": ""
 }
