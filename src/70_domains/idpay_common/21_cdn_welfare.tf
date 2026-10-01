@@ -238,6 +238,8 @@ module "cdn_idpay_welfare" {
 
   tags                       = module.tag_config.tags
   log_analytics_workspace_id = data.azurerm_log_analytics_workspace.core_log_analytics.id
+
+  enable_diagnostic_setting = contains(["d", "u"], var.env_short) ? false : true
 }
 
 #
