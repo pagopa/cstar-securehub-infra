@@ -1820,7 +1820,8 @@
                 "value": 1
               }
             ]
-          }
+          },
+          "unit": "ms"
         },
         "overrides": [
           {
@@ -1892,6 +1893,10 @@
                     }
                   ]
                 }
+              },
+              {
+                "id": "unit",
+                "value": "none"
               }
             ]
           }
@@ -1919,7 +1924,8 @@
         {
           "azureLogAnalytics": {
             "dashboardTime": false,
-            "query": "\nlet dataset = requests\n| where $__timeFilter(timestamp)\n| where url has \"$initiativeId\"\n;\ndataset\n| summarize  Avg = avg(duration)/1000, 95Prc = percentile( duration,95)/1000, 99Prc = percentile( duration,99)/1000, Count = count()\n| project operation_Name=\"All\", Avg, 95Prc, 99Prc, Count\n| union(dataset\n| summarize  Avg = avg(duration)/1000, 95Prc = percentile( duration,95)/1000, 99Prc = percentile( duration,99)/1000, Count = count() by operation_Name\n| top 20 by Avg desc\n| order by Count\n)\n\n",
+            "mode": "raw",
+            "query": "\nlet dataset = requests\n| where $__timeFilter(timestamp)\n| where url has \"$initiativeId\"\n;\ndataset\n| summarize  Avg = avg(duration), 95Prc = percentile( duration,95), 99Prc = percentile( duration,99), Count = count()\n| project operation_Name=\"All\", Avg, 95Prc, 99Prc, Count\n| union(dataset\n| summarize  Avg = avg(duration), 95Prc = percentile( duration,95), 99Prc = percentile( duration,99), Count = count() by operation_Name\n| top 20 by Avg desc\n| order by Count\n)\n\n",
             "resources": [
               "/subscriptions/$subscription/resourceGroups/$idpayMonitoringRg/providers/Microsoft.Insights/components/$applicationInsights"
             ],
@@ -5046,6 +5052,6 @@
   "timezone": "browser",
   "title": "PariInitiativesInfra",
   "uid": "ff3s9iv832pdsf",
-  "version": 84,
+  "version": 85,
   "weekStart": ""
 }
