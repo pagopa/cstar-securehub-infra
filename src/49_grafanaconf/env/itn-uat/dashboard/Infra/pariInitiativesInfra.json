@@ -641,15 +641,15 @@
                 "metricNamespace": "Microsoft.Cdn/profiles",
                 "region": "global",
                 "resourceGroup": "$idpayDataRg",
-                "resourceName": "cstar-d-itn-idpay-bonus-cdn-profile",
-                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+                "resourceName": "$bonusCdnProfile",
+                "subscription": "$subscription"
               }
             ],
             "timeGrain": "auto"
           },
           "queryType": "Azure Monitor",
           "refId": "A",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "$subscription"
         }
       ],
       "title": "CDN Latency",
@@ -760,15 +760,15 @@
                 "metricNamespace": "Microsoft.Cdn/profiles",
                 "region": "global",
                 "resourceGroup": "$idpayDataRg",
-                "resourceName": "cstar-d-itn-idpay-bonus-cdn-profile",
-                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+                "resourceName": "$bonusCdnProfile",
+                "subscription": "$subscription"
               }
             ],
             "timeGrain": "auto"
           },
           "queryType": "Azure Monitor",
           "refId": "A",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "$subscription"
         }
       ],
       "title": "CDN Request Count",
@@ -873,9 +873,9 @@
               {
                 "metricNamespace": "Microsoft.Network/applicationGateways",
                 "region": "westeurope",
-                "resourceGroup": "cstar-d-vnet-rg",
-                "resourceName": "cstar-d-app-gw-maz",
-                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+                "resourceGroup": "$vnetRg",
+                "resourceName": "$appGateway",
+                "subscription": "$subscription"
               }
             ],
             "timeGrain": "auto"
@@ -886,7 +886,7 @@
           },
           "queryType": "Azure Monitor",
           "refId": "A",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "$subscription"
         }
       ],
       "title": "App Gateway Request 1min",
@@ -983,8 +983,8 @@
             "metricNamespace": "Microsoft.Network/applicationGateways",
             "resources": [
               {
-                "resourceGroup": "cstar-d-vnet-rg",
-                "resourceName": "cstar-d-app-gw-maz"
+                "resourceGroup": "$vnetRg",
+                "resourceName": "$appGateway"
               }
             ],
             "timeGrain": "auto",
@@ -1136,8 +1136,8 @@
             "metricNamespace": "Microsoft.Network/applicationGateways",
             "resources": [
               {
-                "resourceGroup": "cstar-d-vnet-rg",
-                "resourceName": "cstar-d-app-gw-maz"
+                "resourceGroup": "$vnetRg",
+                "resourceName": "$appGateway"
               }
             ],
             "timeGrain": "auto",
@@ -1294,8 +1294,8 @@
             "metricNamespace": "Microsoft.Network/applicationGateways",
             "resources": [
               {
-                "resourceGroup": "cstar-d-vnet-rg",
-                "resourceName": "cstar-d-app-gw-maz"
+                "resourceGroup": "$vnetRg",
+                "resourceName": "$appGateway"
               }
             ],
             "timeGrain": "auto",
@@ -1469,8 +1469,8 @@
             "metricNamespace": "Microsoft.Network/applicationGateways",
             "resources": [
               {
-                "resourceGroup": "cstar-d-vnet-rg",
-                "resourceName": "cstar-d-app-gw-maz"
+                "resourceGroup": "$vnetRg",
+                "resourceName": "$appGateway"
               }
             ],
             "timeGrain": "auto",
@@ -1579,8 +1579,8 @@
             "metricNamespace": "Microsoft.Network/applicationGateways",
             "resources": [
               {
-                "resourceGroup": "cstar-d-vnet-rg",
-                "resourceName": "cstar-d-app-gw-maz"
+                "resourceGroup": "$vnetRg",
+                "resourceName": "$appGateway"
               }
             ],
             "timeGrain": "auto",
@@ -1705,8 +1705,8 @@
             "metricNamespace": "Microsoft.Network/applicationGateways",
             "resources": [
               {
-                "resourceGroup": "cstar-d-vnet-rg",
-                "resourceName": "cstar-d-app-gw-maz"
+                "resourceGroup": "$vnetRg",
+                "resourceName": "$appGateway"
               }
             ],
             "timeGrain": "auto",
@@ -1830,8 +1830,8 @@
             "metricNamespace": "Microsoft.Network/applicationGateways",
             "resources": [
               {
-                "resourceGroup": "cstar-d-vnet-rg",
-                "resourceName": "cstar-d-app-gw-maz"
+                "resourceGroup": "$vnetRg",
+                "resourceName": "$appGateway"
               }
             ],
             "timeGrain": "auto",
@@ -1955,8 +1955,8 @@
             "metricNamespace": "Microsoft.Network/applicationGateways",
             "resources": [
               {
-                "resourceGroup": "cstar-d-vnet-rg",
-                "resourceName": "cstar-d-app-gw-maz"
+                "resourceGroup": "$vnetRg",
+                "resourceName": "$appGateway"
               }
             ],
             "timeGrain": "auto",
@@ -2110,8 +2110,8 @@
               {
                 "metricNamespace": "Microsoft.Network/applicationGateways",
                 "region": "westeurope",
-                "resourceGroup": "cstar-d-vnet-rg",
-                "resourceName": "cstar-d-app-gw-maz",
+                "resourceGroup": "$vnetRg",
+                "resourceName": "$appGateway",
                 "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
               }
             ],
@@ -4602,6 +4602,84 @@
         },
         "refresh": 1,
         "regex": "/.*idpay-evh-01-ns.*/",
+        "regexApplyTo": "value",
+        "type": "query"
+      },
+      {
+        "datasource": {
+          "type": "grafana-azure-monitor-datasource",
+          "uid": "azure-monitor-oob"
+        },
+        "definition": "",
+        "hide": 2,
+        "name": "bonusCdnProfile",
+        "options": [],
+        "query": {
+          "azureLogAnalytics": {
+            "query": "",
+            "resources": [
+              "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/$idpayDataRg/providers/Microsoft.DocumentDB/databaseAccounts/cstar-d-itn-idpay-mongodb-account"
+            ]
+          },
+          "namespace": "microsoft.cdn/profiles",
+          "queryType": "Azure Resource Names",
+          "refId": "A",
+          "region": "global",
+          "resourceGroup": "$idpayDataRg",
+          "subscription": "$subscription"
+        },
+        "refresh": 1,
+        "regex": "/.*itn-idpay-bonus-cdn-profile.*/",
+        "regexApplyTo": "value",
+        "type": "query"
+      },
+      {
+        "definition": "",
+        "hide": 2,
+        "name": "vnetRg",
+        "options": [],
+        "query": {
+          "azureLogAnalytics": {
+            "query": "",
+            "resources": [
+              "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/$idpayDataRg/providers/Microsoft.DocumentDB/databaseAccounts/cstar-d-itn-idpay-mongodb-account"
+            ]
+          },
+          "queryType": "Azure Resource Groups",
+          "refId": "A",
+          "region": "westeurope",
+          "subscription": "$subscription"
+        },
+        "refresh": 1,
+        "regex": "/.*vnet-rg.*/",
+        "regexApplyTo": "value",
+        "type": "query"
+      },
+      {
+        "datasource": {
+          "type": "grafana-azure-monitor-datasource",
+          "uid": "azure-monitor-oob"
+        },
+        "definition": "",
+        "hide": 2,
+        "name": "appGateway",
+        "options": [],
+        "query": {
+          "azureLogAnalytics": {
+            "query": "",
+            "resources": [
+              "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/$idpayDataRg/providers/Microsoft.DocumentDB/databaseAccounts/cstar-d-itn-idpay-mongodb-account"
+            ]
+          },
+          "namespace": "microsoft.network/applicationgateways",
+          "queryType": "Azure Resource Names",
+          "refId": "A",
+          "region": "westeurope",
+          "resourceGroup": "$vnetRg",
+          "subscription": "$subscription"
+        },
+        "refresh": 1,
+        "regex": "/.*app-gw-maz.*/",
         "regexApplyTo": "value",
         "type": "query"
       }
