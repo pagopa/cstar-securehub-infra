@@ -202,7 +202,7 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 11,
+        "w": 12,
         "x": 12,
         "y": 0
       },
@@ -5046,6 +5046,6 @@
   "timezone": "browser",
   "title": "PariInitiativesInfra",
   "uid": "ff3s9iv832pdsf",
-  "version": 83,
+  "version": 84,
   "weekStart": ""
 }
