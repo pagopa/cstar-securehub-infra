@@ -2620,15 +2620,15 @@
                 "metricNamespace": "Microsoft.DocumentDB/databaseAccounts",
                 "region": "italynorth",
                 "resourceGroup": "$idpayDataRg",
-                "resourceName": "cstar-d-itn-idpay-mongodb-account",
-                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+                "resourceName": "$idpayMongoDbAccount",
+                "subscription": "$subscription"
               }
             ],
             "timeGrain": "auto"
           },
           "queryType": "Azure Monitor",
           "refId": "A",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "$subscription"
         }
       ],
       "title": "MongoDB RU",
@@ -2709,15 +2709,15 @@
                 "metricNamespace": "Microsoft.Cache/redisEnterprise",
                 "region": "italynorth",
                 "resourceGroup": "$idpayDataRg",
-                "resourceName": "cstar-d-itn-idpay-redis",
-                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+                "resourceName": "$idpayRedis",
+                "subscription": "$subscription"
               }
             ],
             "timeGrain": "auto"
           },
           "queryType": "Azure Monitor",
           "refId": "A",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "$subscription"
         }
       ],
       "title": "Redis Connected client",
@@ -2796,15 +2796,15 @@
                 "metricNamespace": "Microsoft.Cache/redisEnterprise",
                 "region": "italynorth",
                 "resourceGroup": "$idpayDataRg",
-                "resourceName": "cstar-d-itn-idpay-redis",
-                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+                "resourceName": "$idpayRedis",
+                "subscription": "$subscription"
               }
             ],
             "timeGrain": "auto"
           },
           "queryType": "Azure Monitor",
           "refId": "A",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "$subscription"
         }
       ],
       "title": "Redis Used Memory",
@@ -2883,15 +2883,15 @@
                 "metricNamespace": "Microsoft.Cache/redisEnterprise",
                 "region": "italynorth",
                 "resourceGroup": "$idpayDataRg",
-                "resourceName": "cstar-d-itn-idpay-redis",
-                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+                "resourceName": "$idpayRedis",
+                "subscription": "$subscription"
               }
             ],
             "timeGrain": "auto"
           },
           "queryType": "Azure Monitor",
           "refId": "A",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "$subscription"
         }
       ],
       "title": "Redis CPU",
@@ -2971,15 +2971,15 @@
                 "metricNamespace": "Microsoft.Cache/redisEnterprise",
                 "region": "italynorth",
                 "resourceGroup": "$idpayDataRg",
-                "resourceName": "cstar-d-itn-idpay-redis",
-                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+                "resourceName": "$idpayRedis",
+                "subscription": "$subscription"
               }
             ],
             "timeGrain": "auto"
           },
           "queryType": "Azure Monitor",
           "refId": "A",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "$subscription"
         }
       ],
       "title": "Redis Key number",
@@ -3058,15 +3058,15 @@
                 "metricNamespace": "Microsoft.Cache/redisEnterprise",
                 "region": "italynorth",
                 "resourceGroup": "$idpayDataRg",
-                "resourceName": "cstar-d-itn-idpay-redis",
-                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+                "resourceName": "$idpayRedis",
+                "subscription": "$subscription"
               }
             ],
             "timeGrain": "auto"
           },
           "queryType": "Azure Monitor",
           "refId": "A",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "$subscription"
         }
       ],
       "title": "Redis Miss rate",
@@ -4780,6 +4780,62 @@
         },
         "refresh": 1,
         "regex": "/.*apim.*/",
+        "regexApplyTo": "value",
+        "type": "query"
+      },
+      {
+        "datasource": {
+          "type": "grafana-azure-monitor-datasource",
+          "uid": "azure-monitor-oob"
+        },
+        "definition": "",
+        "hide": 2,
+        "name": "idpayMongoDbAccount",
+        "options": [],
+        "query": {
+          "azureLogAnalytics": {
+            "query": "",
+            "resources": [
+              "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/$idpayDataRg/providers/Microsoft.DocumentDB/databaseAccounts/cstar-d-itn-idpay-mongodb-account"
+            ]
+          },
+          "namespace": "microsoft.documentdb/databaseaccounts",
+          "queryType": "Azure Resource Names",
+          "refId": "A",
+          "region": "italynorth",
+          "resourceGroup": "$idpayDataRg",
+          "subscription": "$subscription"
+        },
+        "refresh": 1,
+        "regex": "/.*itn-idpay-mongodb-account.*/",
+        "regexApplyTo": "value",
+        "type": "query"
+      },
+      {
+        "datasource": {
+          "type": "grafana-azure-monitor-datasource",
+          "uid": "azure-monitor-oob"
+        },
+        "definition": "",
+        "hide": 2,
+        "name": "idpayRedis",
+        "options": [],
+        "query": {
+          "azureLogAnalytics": {
+            "query": "",
+            "resources": [
+              "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/$idpayDataRg/providers/Microsoft.DocumentDB/databaseAccounts/cstar-d-itn-idpay-mongodb-account"
+            ]
+          },
+          "namespace": "microsoft.cache/redisenterprise",
+          "queryType": "Azure Resource Names",
+          "refId": "A",
+          "region": "italynorth",
+          "resourceGroup": "$idpayDataRg",
+          "subscription": "$subscription"
+        },
+        "refresh": 1,
+        "regex": "/.*itn-idpay-redis.*/",
         "regexApplyTo": "value",
         "type": "query"
       }
