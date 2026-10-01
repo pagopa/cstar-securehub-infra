@@ -4542,6 +4542,10 @@
         "type": "query"
       },
       {
+        "current": {
+          "text": "cstar-d-itn-core-monitor-rg",
+          "value": "cstar-d-itn-core-monitor-rg"
+        },
         "definition": "",
         "hide": 2,
         "name": "coreMonitorRg",
@@ -4563,7 +4567,6 @@
         "regexApplyTo": "value",
         "type": "query"
       },
-
       {
         "current": {
           "text": "cstar-d-itn-idpay-evh-00-ns",
@@ -4597,6 +4600,10 @@
         "type": "query"
       },
       {
+        "current": {
+          "text": "cstar-d-itn-idpay-evh-01-ns",
+          "value": "cstar-d-itn-idpay-evh-01-ns"
+        },
         "datasource": {
           "type": "grafana-azure-monitor-datasource",
           "uid": "azure-monitor-oob"
@@ -4625,6 +4632,10 @@
         "type": "query"
       },
       {
+        "current": {
+          "text": "cstar-d-itn-idpay-evh-rdb-ns",
+          "value": "cstar-d-itn-idpay-evh-rdb-ns"
+        },
         "datasource": {
           "type": "grafana-azure-monitor-datasource",
           "uid": "azure-monitor-oob"
@@ -4653,6 +4664,10 @@
         "type": "query"
       },
       {
+        "current": {
+          "text": "cstar-d-itn-idpay-bonus-cdn-profile",
+          "value": "cstar-d-itn-idpay-bonus-cdn-profile"
+        },
         "datasource": {
           "type": "grafana-azure-monitor-datasource",
           "uid": "azure-monitor-oob"
@@ -4681,6 +4696,10 @@
         "type": "query"
       },
       {
+        "current": {
+          "text": "cstar-d-vnet-rg",
+          "value": "cstar-d-vnet-rg"
+        },
         "definition": "",
         "hide": 2,
         "name": "vnetRg",
@@ -4703,6 +4722,10 @@
         "type": "query"
       },
       {
+        "current": {
+          "text": "cstar-d-api-rg",
+          "value": "cstar-d-api-rg"
+        },
         "definition": "",
         "hide": 2,
         "name": "apiRg",
@@ -4725,6 +4748,10 @@
         "type": "query"
       },
       {
+        "current": {
+          "text": "cstar-d-itn-idpay-monitoring-rg",
+          "value": "cstar-d-itn-idpay-monitoring-rg"
+        },
         "definition": "",
         "hide": 2,
         "name": "idpayMonitoringRg",
@@ -4747,6 +4774,10 @@
         "type": "query"
       },
       {
+        "current": {
+          "text": "cstar-d-itn-core-aks-rg",
+          "value": "cstar-d-itn-core-aks-rg"
+        },
         "definition": "",
         "hide": 2,
         "name": "coreAksRg",
@@ -4769,6 +4800,10 @@
         "type": "query"
       },
       {
+        "current": {
+          "text": "cstar-d-itn-dev-aks",
+          "value": "cstar-d-itn-dev-aks"
+        },
         "datasource": {
           "type": "grafana-azure-monitor-datasource",
           "uid": "azure-monitor-oob"
@@ -4797,6 +4832,10 @@
         "type": "query"
       },
       {
+        "current": {
+          "text": "cstar-d-itn-idpay-appinsights",
+          "value": "cstar-d-itn-idpay-appinsights"
+        },
         "datasource": {
           "type": "grafana-azure-monitor-datasource",
           "uid": "azure-monitor-oob"
@@ -4825,6 +4864,10 @@
         "type": "query"
       },
       {
+        "current": {
+          "text": "cstar-d-app-gw-maz",
+          "value": "cstar-d-app-gw-maz"
+        },
         "datasource": {
           "type": "grafana-azure-monitor-datasource",
           "uid": "azure-monitor-oob"
@@ -4853,6 +4896,10 @@
         "type": "query"
       },
       {
+        "current": {
+          "text": "cstar-d-apim",
+          "value": "cstar-d-apim"
+        },
         "datasource": {
           "type": "grafana-azure-monitor-datasource",
           "uid": "azure-monitor-oob"
@@ -4881,6 +4928,10 @@
         "type": "query"
       },
       {
+        "current": {
+          "text": "cstar-d-itn-idpay-mongodb-account",
+          "value": "cstar-d-itn-idpay-mongodb-account"
+        },
         "datasource": {
           "type": "grafana-azure-monitor-datasource",
           "uid": "azure-monitor-oob"
@@ -4909,6 +4960,10 @@
         "type": "query"
       },
       {
+        "current": {
+          "text": "cstar-d-itn-idpay-redis",
+          "value": "cstar-d-itn-idpay-redis"
+        },
         "datasource": {
           "type": "grafana-azure-monitor-datasource",
           "uid": "azure-monitor-oob"
@@ -4938,8 +4993,8 @@
       },
       {
         "current": {
-          "text": "cstar-d-itn-idpay-evh-00-ns",
-          "value": "cstar-d-itn-idpay-evh-00-ns"
+          "text": "cstar-d-itn-core-law",
+          "value": "cstar-d-itn-core-law"
         },
         "datasource": {
           "type": "grafana-azure-monitor-datasource",
@@ -4978,6 +5033,6 @@
   "timezone": "browser",
   "title": "PariInitiativesInfra",
   "uid": "ff3s9iv832pdsf",
-  "version": 75,
+  "version": 82,
   "weekStart": ""
 }
