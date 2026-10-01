@@ -478,6 +478,8 @@ module "cdn_idpay_bonuselettrodomestici" {
   # Domain Configuration
   custom_domains = local.custom_domains
 
+  enable_diagnostic_setting = contains(["d", "u"], var.env_short) ? false : true
+
   tags = module.tag_config.tags
 }
 
