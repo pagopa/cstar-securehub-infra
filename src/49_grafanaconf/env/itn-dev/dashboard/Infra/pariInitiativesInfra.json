@@ -391,7 +391,7 @@
                 "metricNamespace": "Microsoft.EventHub/namespaces",
                 "region": "italynorth",
                 "resourceGroup": "$idpayDataRg",
-                "resourceName": "cstar-d-itn-idpay-evh-01-ns",
+                "resourceName": "$eventhubNs01",
                 "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
               }
             ],
@@ -522,7 +522,7 @@
                 "metricNamespace": "Microsoft.EventHub/namespaces",
                 "region": "italynorth",
                 "resourceGroup": "$idpayDataRg",
-                "resourceName": "cstar-d-itn-idpay-evh-01-ns",
+                "resourceName": "$eventhubNs01",
                 "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
               }
             ],
@@ -4537,7 +4537,7 @@
           "subscription": "$subscription"
         },
         "refresh": 1,
-        "regex": "/.*idpay-data-rg.*/",
+        "regex": "/.*itn-idpay-data-rg.*/",
         "regexApplyTo": "value",
         "type": "query"
       },
@@ -4570,6 +4570,70 @@
         },
         "refresh": 1,
         "regex": "/.*idpay-evh-00-ns.*/",
+        "regexApplyTo": "value",
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "$eventhubNs01",
+          "value": "$eventhubNs01"
+        },
+        "datasource": {
+          "type": "grafana-azure-monitor-datasource",
+          "uid": "azure-monitor-oob"
+        },
+        "definition": "",
+        "hide": 2,
+        "name": "eventhubNs01",
+        "options": [],
+        "query": {
+          "azureLogAnalytics": {
+            "query": "",
+            "resources": [
+              "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/$idpayDataRg/providers/Microsoft.DocumentDB/databaseAccounts/cstar-d-itn-idpay-mongodb-account"
+            ]
+          },
+          "namespace": "microsoft.eventhub/namespaces",
+          "queryType": "Azure Resource Names",
+          "refId": "A",
+          "region": "italynorth",
+          "resourceGroup": "$idpayDataRg",
+          "subscription": "$subscription"
+        },
+        "refresh": 1,
+        "regex": "/.*idpay-evh-01-ns.*/",
+        "regexApplyTo": "value",
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "$eventhubNs01",
+          "value": "$eventhubNs01"
+        },
+        "datasource": {
+          "type": "grafana-azure-monitor-datasource",
+          "uid": "azure-monitor-oob"
+        },
+        "definition": "",
+        "hide": 2,
+        "name": "eventhubNs01",
+        "options": [],
+        "query": {
+          "azureLogAnalytics": {
+            "query": "",
+            "resources": [
+              "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/$idpayDataRg/providers/Microsoft.DocumentDB/databaseAccounts/cstar-d-itn-idpay-mongodb-account"
+            ]
+          },
+          "namespace": "microsoft.eventhub/namespaces",
+          "queryType": "Azure Resource Names",
+          "refId": "A",
+          "region": "italynorth",
+          "resourceGroup": "$idpayDataRg",
+          "subscription": "$subscription"
+        },
+        "refresh": 1,
+        "regex": "/.*idpay-evh-01-ns.*/",
         "regexApplyTo": "value",
         "type": "query"
       }
