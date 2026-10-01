@@ -960,7 +960,7 @@
             "dashboardTime": false,
             "query": "//change this example to create your own time series query\n<table name>                                                              //the table to query (e.g. Usage, Heartbeat, Perf)\n| where $__timeFilter(TimeGenerated)                                      //this is a macro used to show the full chart’s time range, choose the datetime column here\n| summarize count() by <group by column>, bin(TimeGenerated, $__interval) //change “group by column” to a column in your table, such as “Computer”. The $__interval macro is used to auto-select the time grain. Can also use 1h, 5m etc.\n| order by TimeGenerated asc",
             "resultFormat": "time_series",
-            "workspace": "/subscriptions/$subscription/resourceGroups/cstar-d-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-d-itn-core-law"
+            "workspace": "/subscriptions/$subscription/resourceGroups/$coreMonitorRg/providers/Microsoft.OperationalInsights/workspaces/$coreLaw"
           },
           "azureMonitor": {
             "aggOptions": [
@@ -1113,7 +1113,7 @@
             "dashboardTime": false,
             "query": "//change this example to create your own time series query\n<table name>                                                              //the table to query (e.g. Usage, Heartbeat, Perf)\n| where $__timeFilter(TimeGenerated)                                      //this is a macro used to show the full chart’s time range, choose the datetime column here\n| summarize count() by <group by column>, bin(TimeGenerated, $__interval) //change “group by column” to a column in your table, such as “Computer”. The $__interval macro is used to auto-select the time grain. Can also use 1h, 5m etc.\n| order by TimeGenerated asc",
             "resultFormat": "time_series",
-            "workspace": "/subscriptions/$subscription/resourceGroups/cstar-d-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-d-itn-core-law"
+            "workspace": "/subscriptions/$subscription/resourceGroups/$coreMonitorRg/providers/Microsoft.OperationalInsights/workspaces/$coreLaw"
           },
           "azureMonitor": {
             "aggOptions": [
@@ -1271,7 +1271,7 @@
             "dashboardTime": false,
             "query": "//change this example to create your own time series query\n<table name>                                                              //the table to query (e.g. Usage, Heartbeat, Perf)\n| where $__timeFilter(TimeGenerated)                                      //this is a macro used to show the full chart’s time range, choose the datetime column here\n| summarize count() by <group by column>, bin(TimeGenerated, $__interval) //change “group by column” to a column in your table, such as “Computer”. The $__interval macro is used to auto-select the time grain. Can also use 1h, 5m etc.\n| order by TimeGenerated asc",
             "resultFormat": "time_series",
-            "workspace": "/subscriptions/$subscription/resourceGroups/cstar-d-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-d-itn-core-law"
+            "workspace": "/subscriptions/$subscription/resourceGroups/$coreMonitorRg/providers/Microsoft.OperationalInsights/workspaces/$coreLaw"
           },
           "azureMonitor": {
             "aggOptions": [
@@ -1435,7 +1435,7 @@
             "dashboardTime": false,
             "query": "//change this example to create your own time series query\n<table name>                                                              //the table to query (e.g. Usage, Heartbeat, Perf)\n| where $__timeFilter(TimeGenerated)                                      //this is a macro used to show the full chart’s time range, choose the datetime column here\n| summarize count() by <group by column>, bin(TimeGenerated, $__interval) //change “group by column” to a column in your table, such as “Computer”. The $__interval macro is used to auto-select the time grain. Can also use 1h, 5m etc.\n| order by TimeGenerated asc",
             "resultFormat": "time_series",
-            "workspace": "/subscriptions/$subscription/resourceGroups/cstar-d-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-d-itn-core-law"
+            "workspace": "/subscriptions/$subscription/resourceGroups/$coreMonitorRg/providers/Microsoft.OperationalInsights/workspaces/$coreLaw"
           },
           "azureMonitor": {
             "aggOptions": [
@@ -1545,7 +1545,7 @@
             "dashboardTime": false,
             "query": "//change this example to create your own time series query\n<table name>                                                              //the table to query (e.g. Usage, Heartbeat, Perf)\n| where $__timeFilter(TimeGenerated)                                      //this is a macro used to show the full chart’s time range, choose the datetime column here\n| summarize count() by <group by column>, bin(TimeGenerated, $__interval) //change “group by column” to a column in your table, such as “Computer”. The $__interval macro is used to auto-select the time grain. Can also use 1h, 5m etc.\n| order by TimeGenerated asc",
             "resultFormat": "time_series",
-            "workspace": "/subscriptions/$subscription/resourceGroups/cstar-d-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-d-itn-core-law"
+            "workspace": "/subscriptions/$subscription/resourceGroups/$coreMonitorRg/providers/Microsoft.OperationalInsights/workspaces/$coreLaw"
           },
           "azureMonitor": {
             "aggOptions": [
@@ -1656,7 +1656,7 @@
             "dashboardTime": false,
             "query": "//change this example to create your own time series query\n<table name>                                                              //the table to query (e.g. Usage, Heartbeat, Perf)\n| where $__timeFilter(TimeGenerated)                                      //this is a macro used to show the full chart’s time range, choose the datetime column here\n| summarize count() by <group by column>, bin(TimeGenerated, $__interval) //change “group by column” to a column in your table, such as “Computer”. The $__interval macro is used to auto-select the time grain. Can also use 1h, 5m etc.\n| order by TimeGenerated asc",
             "resultFormat": "time_series",
-            "workspace": "/subscriptions/$subscription/resourceGroups/cstar-d-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-d-itn-core-law"
+            "workspace": "/subscriptions/$subscription/resourceGroups/$coreMonitorRg/providers/Microsoft.OperationalInsights/workspaces/$coreLaw"
           },
           "azureMonitor": {
             "aggOptions": [
@@ -1781,7 +1781,7 @@
             "dashboardTime": false,
             "query": "//change this example to create your own time series query\n<table name>                                                              //the table to query (e.g. Usage, Heartbeat, Perf)\n| where $__timeFilter(TimeGenerated)                                      //this is a macro used to show the full chart’s time range, choose the datetime column here\n| summarize count() by <group by column>, bin(TimeGenerated, $__interval) //change “group by column” to a column in your table, such as “Computer”. The $__interval macro is used to auto-select the time grain. Can also use 1h, 5m etc.\n| order by TimeGenerated asc",
             "resultFormat": "time_series",
-            "workspace": "/subscriptions/$subscription/resourceGroups/cstar-d-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-d-itn-core-law"
+            "workspace": "/subscriptions/$subscription/resourceGroups/$coreMonitorRg/providers/Microsoft.OperationalInsights/workspaces/$coreLaw"
           },
           "azureMonitor": {
             "aggOptions": [
@@ -1906,7 +1906,7 @@
             "dashboardTime": false,
             "query": "//change this example to create your own time series query\n<table name>                                                              //the table to query (e.g. Usage, Heartbeat, Perf)\n| where $__timeFilter(TimeGenerated)                                      //this is a macro used to show the full chart’s time range, choose the datetime column here\n| summarize count() by <group by column>, bin(TimeGenerated, $__interval) //change “group by column” to a column in your table, such as “Computer”. The $__interval macro is used to auto-select the time grain. Can also use 1h, 5m etc.\n| order by TimeGenerated asc",
             "resultFormat": "time_series",
-            "workspace": "/subscriptions/$subscription/resourceGroups/cstar-d-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-d-itn-core-law"
+            "workspace": "/subscriptions/$subscription/resourceGroups/$coreMonitorRg/providers/Microsoft.OperationalInsights/workspaces/$coreLaw"
           },
           "azureMonitor": {
             "aggOptions": [
@@ -3778,7 +3778,7 @@
             "dashboardTime": false,
             "query": "KubePodInventory\n| where TimeGenerated > ago(2m)\n| where ClusterName == \"$aks\"\n| where Namespace == \"idpay\"\n| summarize arg_max(TimeGenerated, *) by ContainerName\n| project Name, ContainerName\n| join kind = inner (\n    Perf\n    | where TimeGenerated > ago(2m)\n    | where ObjectName == 'K8SContainer'\n    | where CounterName == 'cpuLimitNanoCores'\n    | where InstanceName contains '$aks'\n    | extend ContainerNameParts = split(InstanceName, '/')\n    | extend ContainerNamePartCount = array_length(ContainerNameParts)            \n    | extend PodUIDIndex = ContainerNamePartCount - 2, ContainerNameIndex = ContainerNamePartCount - 1 \n    | extend ContainerName = strcat(ContainerNameParts[PodUIDIndex], '/', ContainerNameParts[ContainerNameIndex])\n    | summarize arg_max(TimeGenerated, *) by ContainerName\n    | project ContainerName, CpuLimit=CounterValue\n    | join kind = inner (\n        Perf\n        | where TimeGenerated > ago(2m)\n        | where ObjectName == 'K8SContainer'\n        | where CounterName == 'cpuUsageNanoCores'\n        | where InstanceName contains '$aks'\n        | extend ContainerNameParts = split(InstanceName, '/')\n        | extend ContainerNamePartCount = array_length(ContainerNameParts)            \n        | extend PodUIDIndex = ContainerNamePartCount - 2, ContainerNameIndex = ContainerNamePartCount - 1 \n        | extend ContainerName = strcat(ContainerNameParts[PodUIDIndex], '/', ContainerNameParts[ContainerNameIndex])\n        | summarize arg_max(TimeGenerated, *) by ContainerName\n        | project TimeGenerated, ContainerName, CpuUsage=CounterValue\n    ) on ContainerName\n) on ContainerName\n| order by Name asc\n| project Name, CpuLimit=(CpuLimit / 1000000), CpuUsage=(CpuUsage / 1000000)",
             "resources": [
-              "/subscriptions/$subscription/resourceGroups/cstar-d-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-d-itn-core-law"
+              "/subscriptions/$subscription/resourceGroups/$coreMonitorRg/providers/Microsoft.OperationalInsights/workspaces/$coreLaw"
             ],
             "resultFormat": "table"
           },
@@ -3924,7 +3924,7 @@
             "dashboardTime": false,
             "query": "KubePodInventory\n| where TimeGenerated > ago(2m)\n| where ClusterName == \"$aks\"\n| where Namespace == \"keycloak\"\n| summarize arg_max(TimeGenerated, *) by ContainerName\n| project Name, ContainerName\n| join kind = inner (\n    Perf\n    | where TimeGenerated > ago(2m)\n    | where ObjectName == 'K8SContainer'\n    | where CounterName == 'cpuLimitNanoCores'\n    | where InstanceName contains '$aks'\n    | extend ContainerNameParts = split(InstanceName, '/')\n    | extend ContainerNamePartCount = array_length(ContainerNameParts)            \n    | extend PodUIDIndex = ContainerNamePartCount - 2, ContainerNameIndex = ContainerNamePartCount - 1 \n    | extend ContainerName = strcat(ContainerNameParts[PodUIDIndex], '/', ContainerNameParts[ContainerNameIndex])\n    | summarize arg_max(TimeGenerated, *) by ContainerName\n    | project ContainerName, CpuLimit=CounterValue\n    | join kind = inner (\n        Perf\n        | where TimeGenerated > ago(2m)\n        | where ObjectName == 'K8SContainer'\n        | where CounterName == 'cpuUsageNanoCores'\n        | where InstanceName contains '$aks'\n        | extend ContainerNameParts = split(InstanceName, '/')\n        | extend ContainerNamePartCount = array_length(ContainerNameParts)            \n        | extend PodUIDIndex = ContainerNamePartCount - 2, ContainerNameIndex = ContainerNamePartCount - 1 \n        | extend ContainerName = strcat(ContainerNameParts[PodUIDIndex], '/', ContainerNameParts[ContainerNameIndex])\n        | summarize arg_max(TimeGenerated, *) by ContainerName\n        | project TimeGenerated, ContainerName, CpuUsage=CounterValue\n    ) on ContainerName\n) on ContainerName\n| order by Name asc\n| project Name, CpuLimit=(CpuLimit / 1000000), CpuUsage=(CpuUsage / 1000000)",
             "resources": [
-              "/subscriptions/$subscription/resourceGroups/cstar-d-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-d-itn-core-law"
+              "/subscriptions/$subscription/resourceGroups/$coreMonitorRg/providers/Microsoft.OperationalInsights/workspaces/$coreLaw"
             ],
             "resultFormat": "table"
           },
@@ -4542,6 +4542,29 @@
         "type": "query"
       },
       {
+        "definition": "",
+        "hide": 2,
+        "name": "coreMonitorRg",
+        "options": [],
+        "query": {
+          "azureLogAnalytics": {
+            "query": "",
+            "resources": [
+              "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/$idpayDataRg/providers/Microsoft.DocumentDB/databaseAccounts/cstar-d-itn-idpay-mongodb-account"
+            ]
+          },
+          "queryType": "Azure Resource Groups",
+          "refId": "A",
+          "region": "italynorth",
+          "subscription": "$subscription"
+        },
+        "refresh": 1,
+        "regex": "/.*itn-core-monitor-rg.*/",
+        "regexApplyTo": "value",
+        "type": "query"
+      },
+
+      {
         "current": {
           "text": "cstar-d-itn-idpay-evh-00-ns",
           "value": "cstar-d-itn-idpay-evh-00-ns"
@@ -4886,6 +4909,38 @@
         },
         "refresh": 1,
         "regex": "/.*itn-idpay-redis.*/",
+        "regexApplyTo": "value",
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "cstar-d-itn-idpay-evh-00-ns",
+          "value": "cstar-d-itn-idpay-evh-00-ns"
+        },
+        "datasource": {
+          "type": "grafana-azure-monitor-datasource",
+          "uid": "azure-monitor-oob"
+        },
+        "definition": "",
+        "hide": 2,
+        "name": "coreLaw",
+        "options": [],
+        "query": {
+          "azureLogAnalytics": {
+            "query": "",
+            "resources": [
+              "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/$idpayDataRg/providers/Microsoft.DocumentDB/databaseAccounts/cstar-d-itn-idpay-mongodb-account"
+            ]
+          },
+          "namespace": "microsoft.OperationalInsights/workspaces",
+          "queryType": "Azure Resource Names",
+          "refId": "A",
+          "region": "italynorth",
+          "resourceGroup": "$coreMonitorRg",
+          "subscription": "$subscription"
+        },
+        "refresh": 1,
+        "regex": "/.*itn-core-law.*/",
         "regexApplyTo": "value",
         "type": "query"
       }
