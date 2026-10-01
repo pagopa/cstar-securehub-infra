@@ -2437,7 +2437,7 @@
             "dashboardTime": false,
             "query": "\nlet dataset = requests\n| where $__timeFilter(timestamp)\n| where url has \"$initiativeId\"\n;\ndataset\n| summarize  Avg = avg(duration)/1000, 95Prc = percentile( duration,95)/1000, 99Prc = percentile( duration,99)/1000, Count = count()\n| project operation_Name=\"All\", Avg, 95Prc, 99Prc, Count\n| union(dataset\n| summarize  Avg = avg(duration)/1000, 95Prc = percentile( duration,95)/1000, 99Prc = percentile( duration,99)/1000, Count = count() by operation_Name\n| top 20 by Avg desc\n| order by Count\n)\n\n",
             "resources": [
-              "/subscriptions/$subscription/resourceGroups/cstar-d-itn-idpay-monitoring-rg/providers/Microsoft.Insights/components/cstar-d-itn-idpay-appinsights"
+              "/subscriptions/$subscription/resourceGroups/$idpayMonitoringRg/providers/Microsoft.Insights/components/$applicationInsights"
             ],
             "resultFormat": "logs"
           },
@@ -4674,6 +4674,56 @@
         },
         "refresh": 1,
         "regex": "/.*api-rg.*/",
+        "regexApplyTo": "value",
+        "type": "query"
+      },
+      {
+        "definition": "",
+        "hide": 2,
+        "name": "idpayMonitoringRg",
+        "options": [],
+        "query": {
+          "azureLogAnalytics": {
+            "query": "",
+            "resources": [
+              "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/$idpayDataRg/providers/Microsoft.DocumentDB/databaseAccounts/cstar-d-itn-idpay-mongodb-account"
+            ]
+          },
+          "queryType": "Azure Resource Groups",
+          "refId": "A",
+          "region": "italynorth",
+          "subscription": "$subscription"
+        },
+        "refresh": 1,
+        "regex": "/.*itn-idpay-monitoring-rg.*/",
+        "regexApplyTo": "value",
+        "type": "query"
+      },
+      {
+        "datasource": {
+          "type": "grafana-azure-monitor-datasource",
+          "uid": "azure-monitor-oob"
+        },
+        "definition": "",
+        "hide": 2,
+        "name": "applicationInsights",
+        "options": [],
+        "query": {
+          "azureLogAnalytics": {
+            "query": "",
+            "resources": [
+              "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/$idpayDataRg/providers/Microsoft.DocumentDB/databaseAccounts/cstar-d-itn-idpay-mongodb-account"
+            ]
+          },
+          "namespace": "microsoft.insights/components",
+          "queryType": "Azure Resource Names",
+          "refId": "A",
+          "region": "italynorth",
+          "resourceGroup": "$idpayMonitoringRg",
+          "subscription": "$subscription"
+        },
+        "refresh": 1,
+        "regex": "/.*itn-idpay-appinsights.*/",
         "regexApplyTo": "value",
         "type": "query"
       },
