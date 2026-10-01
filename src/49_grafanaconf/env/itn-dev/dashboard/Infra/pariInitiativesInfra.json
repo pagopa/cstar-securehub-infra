@@ -87,522 +87,6 @@
         "x": 0,
         "y": 0
       },
-      "id": 101,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "12.4.8",
-      "targets": [
-        {
-          "azureMonitor": {
-            "aggregation": "Total",
-            "allowedTimeGrainsMs": [
-              60000,
-              300000,
-              900000,
-              1800000,
-              3600000,
-              21600000,
-              43200000,
-              86400000
-            ],
-            "dimensionFilters": [
-              {
-                "dimension": "EntityName",
-                "filters": [
-                  "idpay-transaction"
-                ],
-                "operator": "eq"
-              }
-            ],
-            "metricName": "IncomingMessages",
-            "metricNamespace": "microsoft.eventhub/namespaces",
-            "region": "italynorth",
-            "resources": [
-              {
-                "metricNamespace": "Microsoft.EventHub/namespaces",
-                "region": "italynorth",
-                "resourceGroup": "$idpayDataRg",
-                "resourceName": "$eventhubNs00",
-                "subscription": "$subscription"
-              }
-            ],
-            "timeGrain": "auto"
-          },
-          "queryType": "Azure Monitor",
-          "refId": "A",
-          "subscription": "$subscription"
-        }
-      ],
-      "title": "Event Hub 00 Incoming Messages",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "grafana-azure-monitor-datasource",
-        "uid": "azure-monitor-oob"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "showValues": false,
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 0
-      },
-      "id": 105,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "12.4.8",
-      "targets": [
-        {
-          "azureMonitor": {
-            "aggregation": "Total",
-            "allowedTimeGrainsMs": [
-              60000,
-              300000,
-              900000,
-              1800000,
-              3600000,
-              21600000,
-              43200000,
-              86400000
-            ],
-            "dimensionFilters": [
-              {
-                "dimension": "EntityName",
-                "filters": [
-                  "idpay-transaction"
-                ],
-                "operator": "eq"
-              }
-            ],
-            "metricName": "OutgoingMessages",
-            "metricNamespace": "microsoft.eventhub/namespaces",
-            "region": "italynorth",
-            "resources": [
-              {
-                "metricNamespace": "Microsoft.EventHub/namespaces",
-                "region": "italynorth",
-                "resourceGroup": "$idpayDataRg",
-                "resourceName": "$eventhubNs00",
-                "subscription": "$subscription"
-              }
-            ],
-            "timeGrain": "auto"
-          },
-          "queryType": "Azure Monitor",
-          "refId": "A",
-          "subscription": "$subscription"
-        }
-      ],
-      "title": "Event Hub 00 Outgoing Messages",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "grafana-azure-monitor-datasource",
-        "uid": "azure-monitor-oob"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "showValues": false,
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 8
-      },
-      "id": 106,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "12.4.8",
-      "targets": [
-        {
-          "azureMonitor": {
-            "aggregation": "Total",
-            "allowedTimeGrainsMs": [
-              60000,
-              300000,
-              900000,
-              1800000,
-              3600000,
-              21600000,
-              43200000,
-              86400000
-            ],
-            "dimensionFilters": [
-              {
-                "dimension": "EntityName",
-                "filters": [
-                  "idpay-errors",
-                  "idpay-commands",
-                  "idpay-reward-notification-storage-events",
-                  "idpay-timeline",
-                  "idpay-rule-update"
-                ],
-                "operator": "eq"
-              }
-            ],
-            "metricName": "IncomingMessages",
-            "metricNamespace": "microsoft.eventhub/namespaces",
-            "region": "italynorth",
-            "resources": [
-              {
-                "metricNamespace": "Microsoft.EventHub/namespaces",
-                "region": "italynorth",
-                "resourceGroup": "$idpayDataRg",
-                "resourceName": "$eventhubNs01",
-                "subscription": "$subscription"
-              }
-            ],
-            "timeGrain": "auto"
-          },
-          "queryType": "Azure Monitor",
-          "refId": "A",
-          "subscription": "$subscription"
-        }
-      ],
-      "title": "Event Hub 01 Incoming Messages",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "grafana-azure-monitor-datasource",
-        "uid": "azure-monitor-oob"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "showValues": false,
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 8
-      },
-      "id": 107,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "12.4.8",
-      "targets": [
-        {
-          "azureMonitor": {
-            "aggregation": "Total",
-            "allowedTimeGrainsMs": [
-              60000,
-              300000,
-              900000,
-              1800000,
-              3600000,
-              21600000,
-              43200000,
-              86400000
-            ],
-            "dimensionFilters": [
-              {
-                "dimension": "EntityName",
-                "filters": [
-                  "idpay-errors",
-                  "idpay-commands",
-                  "idpay-timeline",
-                  "idpay-reward-notification-storage-events",
-                  "idpay-rule-update"
-                ],
-                "operator": "eq"
-              }
-            ],
-            "metricName": "OutgoingMessages",
-            "metricNamespace": "microsoft.eventhub/namespaces",
-            "region": "italynorth",
-            "resources": [
-              {
-                "metricNamespace": "Microsoft.EventHub/namespaces",
-                "region": "italynorth",
-                "resourceGroup": "$idpayDataRg",
-                "resourceName": "$eventhubNs01",
-                "subscription": "$subscription"
-              }
-            ],
-            "timeGrain": "auto"
-          },
-          "queryType": "Azure Monitor",
-          "refId": "A",
-          "subscription": "$subscription"
-        }
-      ],
-      "title": "Event Hub 01 Outgoing Messages",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "grafana-azure-monitor-datasource",
-        "uid": "azure-monitor-oob"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "showValues": false,
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 16
-      },
       "id": 28,
       "options": {
         "legend": {
@@ -720,7 +204,7 @@
         "h": 8,
         "w": 11,
         "x": 12,
-        "y": 16
+        "y": 0
       },
       "id": 27,
       "options": {
@@ -783,7 +267,7 @@
         "h": 2,
         "w": 24,
         "x": 0,
-        "y": 24
+        "y": 8
       },
       "id": 24,
       "options": {
@@ -830,7 +314,7 @@
         "h": 5,
         "w": 4,
         "x": 0,
-        "y": 26
+        "y": 10
       },
       "id": 1,
       "options": {
@@ -924,7 +408,7 @@
         "h": 5,
         "w": 4,
         "x": 4,
-        "y": 26
+        "y": 10
       },
       "id": 2,
       "options": {
@@ -1077,7 +561,7 @@
         "h": 5,
         "w": 4,
         "x": 8,
-        "y": 26
+        "y": 10
       },
       "id": 4,
       "options": {
@@ -1235,7 +719,7 @@
         "h": 5,
         "w": 4,
         "x": 12,
-        "y": 26
+        "y": 10
       },
       "id": 5,
       "options": {
@@ -1392,7 +876,7 @@
         "h": 5,
         "w": 8,
         "x": 16,
-        "y": 26
+        "y": 10
       },
       "id": 3,
       "options": {
@@ -2053,7 +1537,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 31
+        "y": 15
       },
       "id": 10,
       "options": {
@@ -2156,7 +1640,7 @@
         "h": 7,
         "w": 4,
         "x": 0,
-        "y": 38
+        "y": 22
       },
       "id": 6,
       "options": {
@@ -2243,7 +1727,7 @@
         "h": 7,
         "w": 4,
         "x": 4,
-        "y": 38
+        "y": 22
       },
       "id": 8,
       "options": {
@@ -2417,7 +1901,7 @@
         "h": 13,
         "w": 16,
         "x": 8,
-        "y": 38
+        "y": 22
       },
       "id": 7,
       "options": {
@@ -2479,7 +1963,7 @@
         "h": 6,
         "w": 8,
         "x": 0,
-        "y": 45
+        "y": 29
       },
       "id": 9,
       "options": {
@@ -2575,7 +2059,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 51
+        "y": 35
       },
       "id": 11,
       "options": {
@@ -2665,7 +2149,7 @@
         "h": 5,
         "w": 5,
         "x": 0,
-        "y": 59
+        "y": 43
       },
       "id": 16,
       "options": {
@@ -2754,7 +2238,7 @@
         "h": 5,
         "w": 5,
         "x": 5,
-        "y": 59
+        "y": 43
       },
       "id": 17,
       "options": {
@@ -2841,7 +2325,7 @@
         "h": 5,
         "w": 5,
         "x": 10,
-        "y": 59
+        "y": 43
       },
       "id": 18,
       "options": {
@@ -2929,7 +2413,7 @@
         "h": 5,
         "w": 5,
         "x": 15,
-        "y": 59
+        "y": 43
       },
       "id": 19,
       "options": {
@@ -3016,7 +2500,7 @@
         "h": 5,
         "w": 4,
         "x": 20,
-        "y": 59
+        "y": 43
       },
       "id": 20,
       "options": {
@@ -3103,7 +2587,7 @@
         "h": 5,
         "w": 12,
         "x": 0,
-        "y": 64
+        "y": 48
       },
       "id": 12,
       "options": {
@@ -3205,7 +2689,7 @@
         "h": 5,
         "w": 6,
         "x": 12,
-        "y": 64
+        "y": 48
       },
       "id": 13,
       "options": {
@@ -3302,7 +2786,7 @@
         "h": 5,
         "w": 6,
         "x": 18,
-        "y": 64
+        "y": 48
       },
       "id": 21,
       "options": {
@@ -3399,7 +2883,7 @@
         "h": 5,
         "w": 12,
         "x": 0,
-        "y": 69
+        "y": 53
       },
       "id": 14,
       "options": {
@@ -3501,7 +2985,7 @@
         "h": 5,
         "w": 6,
         "x": 12,
-        "y": 69
+        "y": 53
       },
       "id": 15,
       "options": {
@@ -3598,7 +3082,7 @@
         "h": 5,
         "w": 6,
         "x": 18,
-        "y": 69
+        "y": 53
       },
       "id": 22,
       "options": {
@@ -3749,7 +3233,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 74
+        "y": 58
       },
       "id": 25,
       "options": {
@@ -3895,7 +3379,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 74
+        "y": 58
       },
       "id": 26,
       "options": {
@@ -3962,7 +3446,536 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 82
+        "y": 66
+      },
+      "id": 109,
+      "panels": [],
+      "title": "EventHub Topic",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 67
+      },
+      "id": 101,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.4.8",
+      "targets": [
+        {
+          "azureMonitor": {
+            "aggregation": "Total",
+            "allowedTimeGrainsMs": [
+              60000,
+              300000,
+              900000,
+              1800000,
+              3600000,
+              21600000,
+              43200000,
+              86400000
+            ],
+            "dimensionFilters": [
+              {
+                "dimension": "EntityName",
+                "filters": [
+                  "idpay-transaction"
+                ],
+                "operator": "eq"
+              }
+            ],
+            "metricName": "IncomingMessages",
+            "metricNamespace": "microsoft.eventhub/namespaces",
+            "region": "italynorth",
+            "resources": [
+              {
+                "metricNamespace": "Microsoft.EventHub/namespaces",
+                "region": "italynorth",
+                "resourceGroup": "$idpayDataRg",
+                "resourceName": "$eventhubNs00",
+                "subscription": "$subscription"
+              }
+            ],
+            "timeGrain": "auto"
+          },
+          "queryType": "Azure Monitor",
+          "refId": "A",
+          "subscription": "$subscription"
+        }
+      ],
+      "title": "Event Hub 00 Incoming Messages",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 67
+      },
+      "id": 105,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.4.8",
+      "targets": [
+        {
+          "azureMonitor": {
+            "aggregation": "Total",
+            "allowedTimeGrainsMs": [
+              60000,
+              300000,
+              900000,
+              1800000,
+              3600000,
+              21600000,
+              43200000,
+              86400000
+            ],
+            "dimensionFilters": [
+              {
+                "dimension": "EntityName",
+                "filters": [
+                  "idpay-transaction"
+                ],
+                "operator": "eq"
+              }
+            ],
+            "metricName": "OutgoingMessages",
+            "metricNamespace": "microsoft.eventhub/namespaces",
+            "region": "italynorth",
+            "resources": [
+              {
+                "metricNamespace": "Microsoft.EventHub/namespaces",
+                "region": "italynorth",
+                "resourceGroup": "$idpayDataRg",
+                "resourceName": "$eventhubNs00",
+                "subscription": "$subscription"
+              }
+            ],
+            "timeGrain": "auto"
+          },
+          "queryType": "Azure Monitor",
+          "refId": "A",
+          "subscription": "$subscription"
+        }
+      ],
+      "title": "Event Hub 00 Outgoing Messages",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 75
+      },
+      "id": 106,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.4.8",
+      "targets": [
+        {
+          "azureMonitor": {
+            "aggregation": "Total",
+            "allowedTimeGrainsMs": [
+              60000,
+              300000,
+              900000,
+              1800000,
+              3600000,
+              21600000,
+              43200000,
+              86400000
+            ],
+            "dimensionFilters": [
+              {
+                "dimension": "EntityName",
+                "filters": [
+                  "idpay-errors",
+                  "idpay-commands",
+                  "idpay-reward-notification-storage-events",
+                  "idpay-timeline",
+                  "idpay-rule-update"
+                ],
+                "operator": "eq"
+              }
+            ],
+            "metricName": "IncomingMessages",
+            "metricNamespace": "microsoft.eventhub/namespaces",
+            "region": "italynorth",
+            "resources": [
+              {
+                "metricNamespace": "Microsoft.EventHub/namespaces",
+                "region": "italynorth",
+                "resourceGroup": "$idpayDataRg",
+                "resourceName": "$eventhubNs01",
+                "subscription": "$subscription"
+              }
+            ],
+            "timeGrain": "auto"
+          },
+          "queryType": "Azure Monitor",
+          "refId": "A",
+          "subscription": "$subscription"
+        }
+      ],
+      "title": "Event Hub 01 Incoming Messages",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 75
+      },
+      "id": 107,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.4.8",
+      "targets": [
+        {
+          "azureMonitor": {
+            "aggregation": "Total",
+            "allowedTimeGrainsMs": [
+              60000,
+              300000,
+              900000,
+              1800000,
+              3600000,
+              21600000,
+              43200000,
+              86400000
+            ],
+            "dimensionFilters": [
+              {
+                "dimension": "EntityName",
+                "filters": [
+                  "idpay-errors",
+                  "idpay-commands",
+                  "idpay-timeline",
+                  "idpay-reward-notification-storage-events",
+                  "idpay-rule-update"
+                ],
+                "operator": "eq"
+              }
+            ],
+            "metricName": "OutgoingMessages",
+            "metricNamespace": "microsoft.eventhub/namespaces",
+            "region": "italynorth",
+            "resources": [
+              {
+                "metricNamespace": "Microsoft.EventHub/namespaces",
+                "region": "italynorth",
+                "resourceGroup": "$idpayDataRg",
+                "resourceName": "$eventhubNs01",
+                "subscription": "$subscription"
+              }
+            ],
+            "timeGrain": "auto"
+          },
+          "queryType": "Azure Monitor",
+          "refId": "A",
+          "subscription": "$subscription"
+        }
+      ],
+      "title": "Event Hub 01 Outgoing Messages",
+      "type": "timeseries"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 83
       },
       "id": 100,
       "panels": [],
@@ -4035,7 +4048,7 @@
         "h": 8,
         "w": 8,
         "x": 0,
-        "y": 83
+        "y": 84
       },
       "id": 30,
       "options": {
@@ -4164,7 +4177,7 @@
         "h": 8,
         "w": 8,
         "x": 8,
-        "y": 83
+        "y": 84
       },
       "id": 31,
       "options": {
@@ -4293,7 +4306,7 @@
         "h": 8,
         "w": 8,
         "x": 16,
-        "y": 83
+        "y": 84
       },
       "id": 29,
       "options": {
@@ -5033,6 +5046,6 @@
   "timezone": "browser",
   "title": "PariInitiativesInfra",
   "uid": "ff3s9iv832pdsf",
-  "version": 82,
+  "version": 83,
   "weekStart": ""
 }
