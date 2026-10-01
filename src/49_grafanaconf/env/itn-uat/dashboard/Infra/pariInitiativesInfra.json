@@ -4084,7 +4084,7 @@
                 "metricNamespace": "Microsoft.EventHub/namespaces",
                 "region": "italynorth",
                 "resourceGroup": "$idpayDataRg",
-                "resourceName": "cstar-d-itn-idpay-evh-rdb-ns",
+                "resourceName": "$eventhubNsRdb",
                 "subscription": "$subscription"
               }
             ],
@@ -4213,7 +4213,7 @@
                 "metricNamespace": "Microsoft.EventHub/namespaces",
                 "region": "italynorth",
                 "resourceGroup": "$idpayDataRg",
-                "resourceName": "cstar-d-itn-idpay-evh-rdb-ns",
+                "resourceName": "$eventhubNsRdb",
                 "subscription": "$subscription"
               }
             ],
@@ -4342,7 +4342,7 @@
                 "metricNamespace": "Microsoft.EventHub/namespaces",
                 "region": "italynorth",
                 "resourceGroup": "$idpayDataRg",
-                "resourceName": "cstar-d-itn-idpay-evh-rdb-ns",
+                "resourceName": "$eventhubNsRdb",
                 "subscription": "$subscription"
               }
             ],
@@ -4383,7 +4383,7 @@
                 "metricNamespace": "Microsoft.EventHub/namespaces",
                 "region": "italynorth",
                 "resourceGroup": "$idpayDataRg",
-                "resourceName": "cstar-d-itn-idpay-evh-rdb-ns",
+                "resourceName": "$eventhubNsRdb",
                 "subscription": "$subscription"
               }
             ],
@@ -4424,7 +4424,7 @@
                 "metricNamespace": "Microsoft.EventHub/namespaces",
                 "region": "italynorth",
                 "resourceGroup": "$idpayDataRg",
-                "resourceName": "cstar-d-itn-idpay-evh-rdb-ns",
+                "resourceName": "$eventhubNsRdb",
                 "subscription": "$subscription"
               }
             ],
@@ -4597,10 +4597,6 @@
         "type": "query"
       },
       {
-        "current": {
-          "text": "cstar-d-itn-idpay-evh-01-ns",
-          "value": "cstar-d-itn-idpay-evh-01-ns"
-        },
         "datasource": {
           "type": "grafana-azure-monitor-datasource",
           "uid": "azure-monitor-oob"
@@ -4625,6 +4621,34 @@
         },
         "refresh": 1,
         "regex": "/.*idpay-evh-01-ns.*/",
+        "regexApplyTo": "value",
+        "type": "query"
+      },
+      {
+        "datasource": {
+          "type": "grafana-azure-monitor-datasource",
+          "uid": "azure-monitor-oob"
+        },
+        "definition": "",
+        "hide": 2,
+        "name": "eventhubNsRdb",
+        "options": [],
+        "query": {
+          "azureLogAnalytics": {
+            "query": "",
+            "resources": [
+              "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/$idpayDataRg/providers/Microsoft.DocumentDB/databaseAccounts/cstar-d-itn-idpay-mongodb-account"
+            ]
+          },
+          "namespace": "microsoft.eventhub/namespaces",
+          "queryType": "Azure Resource Names",
+          "refId": "A",
+          "region": "italynorth",
+          "resourceGroup": "$idpayDataRg",
+          "subscription": "$subscription"
+        },
+        "refresh": 1,
+        "regex": "/.*itn-idpay-evh-rdb-ns.*/",
         "regexApplyTo": "value",
         "type": "query"
       },
