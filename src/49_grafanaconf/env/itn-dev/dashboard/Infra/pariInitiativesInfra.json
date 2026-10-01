@@ -132,8 +132,8 @@
               {
                 "metricNamespace": "Microsoft.EventHub/namespaces",
                 "region": "italynorth",
-                "resourceGroup": "cstar-d-itn-idpay-data-rg",
-                "resourceName": "cstar-d-itn-idpay-evh-00-ns",
+                "resourceGroup": "$idpayDataRg",
+                "resourceName": "$eventhubNs00",
                 "subscription": "$subscription"
               }
             ],
@@ -390,7 +390,7 @@
               {
                 "metricNamespace": "Microsoft.EventHub/namespaces",
                 "region": "italynorth",
-                "resourceGroup": "cstar-d-itn-idpay-data-rg",
+                "resourceGroup": "$idpayDataRg",
                 "resourceName": "cstar-d-itn-idpay-evh-01-ns",
                 "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
               }
@@ -521,7 +521,7 @@
               {
                 "metricNamespace": "Microsoft.EventHub/namespaces",
                 "region": "italynorth",
-                "resourceGroup": "cstar-d-itn-idpay-data-rg",
+                "resourceGroup": "$idpayDataRg",
                 "resourceName": "cstar-d-itn-idpay-evh-01-ns",
                 "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
               }
@@ -640,7 +640,7 @@
               {
                 "metricNamespace": "Microsoft.Cdn/profiles",
                 "region": "global",
-                "resourceGroup": "cstar-d-itn-idpay-data-rg",
+                "resourceGroup": "$idpayDataRg",
                 "resourceName": "cstar-d-itn-idpay-bonus-cdn-profile",
                 "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
               }
@@ -759,7 +759,7 @@
               {
                 "metricNamespace": "Microsoft.Cdn/profiles",
                 "region": "global",
-                "resourceGroup": "cstar-d-itn-idpay-data-rg",
+                "resourceGroup": "$idpayDataRg",
                 "resourceName": "cstar-d-itn-idpay-bonus-cdn-profile",
                 "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
               }
@@ -2619,7 +2619,7 @@
               {
                 "metricNamespace": "Microsoft.DocumentDB/databaseAccounts",
                 "region": "italynorth",
-                "resourceGroup": "cstar-d-itn-idpay-data-rg",
+                "resourceGroup": "$idpayDataRg",
                 "resourceName": "cstar-d-itn-idpay-mongodb-account",
                 "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
               }
@@ -2708,7 +2708,7 @@
               {
                 "metricNamespace": "Microsoft.Cache/redisEnterprise",
                 "region": "italynorth",
-                "resourceGroup": "cstar-d-itn-idpay-data-rg",
+                "resourceGroup": "$idpayDataRg",
                 "resourceName": "cstar-d-itn-idpay-redis",
                 "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
               }
@@ -2795,7 +2795,7 @@
               {
                 "metricNamespace": "Microsoft.Cache/redisEnterprise",
                 "region": "italynorth",
-                "resourceGroup": "cstar-d-itn-idpay-data-rg",
+                "resourceGroup": "$idpayDataRg",
                 "resourceName": "cstar-d-itn-idpay-redis",
                 "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
               }
@@ -2882,7 +2882,7 @@
               {
                 "metricNamespace": "Microsoft.Cache/redisEnterprise",
                 "region": "italynorth",
-                "resourceGroup": "cstar-d-itn-idpay-data-rg",
+                "resourceGroup": "$idpayDataRg",
                 "resourceName": "cstar-d-itn-idpay-redis",
                 "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
               }
@@ -2970,7 +2970,7 @@
               {
                 "metricNamespace": "Microsoft.Cache/redisEnterprise",
                 "region": "italynorth",
-                "resourceGroup": "cstar-d-itn-idpay-data-rg",
+                "resourceGroup": "$idpayDataRg",
                 "resourceName": "cstar-d-itn-idpay-redis",
                 "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
               }
@@ -3057,7 +3057,7 @@
               {
                 "metricNamespace": "Microsoft.Cache/redisEnterprise",
                 "region": "italynorth",
-                "resourceGroup": "cstar-d-itn-idpay-data-rg",
+                "resourceGroup": "$idpayDataRg",
                 "resourceName": "cstar-d-itn-idpay-redis",
                 "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
               }
@@ -4083,7 +4083,7 @@
               {
                 "metricNamespace": "Microsoft.EventHub/namespaces",
                 "region": "italynorth",
-                "resourceGroup": "cstar-d-itn-idpay-data-rg",
+                "resourceGroup": "$idpayDataRg",
                 "resourceName": "cstar-d-itn-idpay-evh-rdb-ns",
                 "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
               }
@@ -4212,7 +4212,7 @@
               {
                 "metricNamespace": "Microsoft.EventHub/namespaces",
                 "region": "italynorth",
-                "resourceGroup": "cstar-d-itn-idpay-data-rg",
+                "resourceGroup": "$idpayDataRg",
                 "resourceName": "cstar-d-itn-idpay-evh-rdb-ns",
                 "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
               }
@@ -4341,7 +4341,7 @@
               {
                 "metricNamespace": "Microsoft.EventHub/namespaces",
                 "region": "italynorth",
-                "resourceGroup": "cstar-d-itn-idpay-data-rg",
+                "resourceGroup": "$idpayDataRg",
                 "resourceName": "cstar-d-itn-idpay-evh-rdb-ns",
                 "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
               }
@@ -4382,7 +4382,7 @@
               {
                 "metricNamespace": "Microsoft.EventHub/namespaces",
                 "region": "italynorth",
-                "resourceGroup": "cstar-d-itn-idpay-data-rg",
+                "resourceGroup": "$idpayDataRg",
                 "resourceName": "cstar-d-itn-idpay-evh-rdb-ns",
                 "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
               }
@@ -4423,7 +4423,7 @@
               {
                 "metricNamespace": "Microsoft.EventHub/namespaces",
                 "region": "italynorth",
-                "resourceGroup": "cstar-d-itn-idpay-data-rg",
+                "resourceGroup": "$idpayDataRg",
                 "resourceName": "cstar-d-itn-idpay-evh-rdb-ns",
                 "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
               }
@@ -4517,8 +4517,8 @@
       },
       {
         "current": {
-          "text": "cstar-d-itn-idpay-data-rg",
-          "value": "cstar-d-itn-idpay-data-rg"
+          "text": "$idpayDataRg",
+          "value": "$idpayDataRg"
         },
         "definition": "",
         "hide": 2,
@@ -4528,7 +4528,7 @@
           "azureLogAnalytics": {
             "query": "",
             "resources": [
-              "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/cstar-d-itn-idpay-data-rg/providers/Microsoft.DocumentDB/databaseAccounts/cstar-d-itn-idpay-mongodb-account"
+              "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/$idpayDataRg/providers/Microsoft.DocumentDB/databaseAccounts/cstar-d-itn-idpay-mongodb-account"
             ]
           },
           "queryType": "Azure Resource Groups",
@@ -4543,8 +4543,8 @@
       },
       {
         "current": {
-          "text": "cstar-d-itn-idpay-evh-00-ns",
-          "value": "cstar-d-itn-idpay-evh-00-ns"
+          "text": "$eventhubNs00",
+          "value": "$eventhubNs00"
         },
         "datasource": {
           "type": "grafana-azure-monitor-datasource",
@@ -4558,7 +4558,7 @@
           "azureLogAnalytics": {
             "query": "",
             "resources": [
-              "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/cstar-d-itn-idpay-data-rg/providers/Microsoft.DocumentDB/databaseAccounts/cstar-d-itn-idpay-mongodb-account"
+              "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/$idpayDataRg/providers/Microsoft.DocumentDB/databaseAccounts/cstar-d-itn-idpay-mongodb-account"
             ]
           },
           "namespace": "microsoft.eventhub/namespaces",
