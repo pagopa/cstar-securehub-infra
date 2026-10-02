@@ -382,6 +382,7 @@ locals {
       ]
     },
     "idpay-functional-testing" = {
+      merge_queue          = true
       repository_secrets   = []
       repository_variables = []
       env_secrets = {
@@ -511,6 +512,14 @@ locals {
       ]
     }
     if(contains(local.protected_branches_by_repo[repo_name], "uat") || contains(local.protected_branches_by_repo[repo_name], "main"))
+  }
+
+  # ----------------------------------------------------------------------------
+  # Repositories that have merge queue enabled.
+  # ----------------------------------------------------------------------------
+  repositories_with_merge_queue = {
+    for repo_name, repo_data in local.repository : repo_name => repo_data
+    if try(repo_data.merge_queue, false)
   }
 
   # ----------------------------------------------------------------------------
