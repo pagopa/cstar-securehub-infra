@@ -2,7 +2,7 @@
   "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
   "database.hostname": "${env:POSTGRES_HOST}",
   "database.port": "5432",
-  "database.user": "idpaydbadmin",
+  "database.user": "${env:POSTGRES_USERNAME}",
   "database.password": "${env:POSTGRES_PASSWORD}",
   "database.dbname": "idpay-database",
   "database.sslmode": "require",

@@ -3,27 +3,33 @@
 #
 locals {
   idpay_postgres_database = "idpay-database"
-  idpay_postgres_flyway_schemas = var.idpay_pgflex_params.enabled ? toset([
-    "idpay-pagamenti",
-    "idpay-rimborsi",
-  ]) : toset([])
+  idpay_postgres_service_roles = var.idpay_pgflex_params.enabled ? {
+    payment = {
+      role_name            = "idpaydbpayment"
+      user_secret_name     = "idpay-postgres-payment-user"
+      password_secret_name = "idpay-postgres-payment-password"
+    }
+    transactions = {
+      role_name            = "idpaydbtransactions"
+      user_secret_name     = "idpay-postgres-transactions-user"
+      password_secret_name = "idpay-postgres-transactions-password"
+    }
+    kafka_connect = {
+      role_name            = "idpaydbkafkaconnect"
+      user_secret_name     = "idpay-postgres-kafka-connect-user"
+      password_secret_name = "idpay-postgres-kafka-connect-password"
+    }
+  } : {}
+  idpay_postgres_flyway_schemas = var.idpay_pgflex_params.enabled ? {
+    "idpay-pagamenti" = "payment"
+    "idpay-rimborsi"  = "transactions"
+  } : {}
 }
 
 resource "azurerm_key_vault_secret" "idpay_postgres_admin_user" {
   count        = var.idpay_pgflex_params.enabled ? 1 : 0
   name         = "idpay-postgres-admin-user"
   value        = "idpaydbadmin"
-  key_vault_id = data.azurerm_key_vault.domain_kv.id
-
-  content_type = "text/plain"
-
-  tags = module.tag_config.tags
-}
-
-resource "azurerm_key_vault_secret" "idpay_postgres_app_user" {
-  count        = var.idpay_pgflex_params.enabled ? 1 : 0
-  name         = "idpay-postgres-app-user"
-  value        = "idpaydbapp"
   key_vault_id = data.azurerm_key_vault.domain_kv.id
 
   content_type = "text/plain"
@@ -54,8 +60,21 @@ resource "azurerm_key_vault_secret" "idpay_postgres_admin_password" {
   tags = module.tag_config.tags
 }
 
-resource "random_password" "idpay_postgres_app_password" {
-  count       = var.idpay_pgflex_params.enabled ? 1 : 0
+resource "azurerm_key_vault_secret" "idpay_postgres_service_user" {
+  for_each = local.idpay_postgres_service_roles
+
+  name         = each.value.user_secret_name
+  value        = each.value.role_name
+  key_vault_id = data.azurerm_key_vault.domain_kv.id
+
+  content_type = "text/plain"
+
+  tags = module.tag_config.tags
+}
+
+resource "random_password" "idpay_postgres_service_password" {
+  for_each = local.idpay_postgres_service_roles
+
   length      = 32
   special     = true
   min_special = 1
@@ -66,10 +85,11 @@ resource "random_password" "idpay_postgres_app_password" {
   min_numeric      = 1
 }
 
-resource "azurerm_key_vault_secret" "idpay_postgres_app_password" {
-  count        = var.idpay_pgflex_params.enabled ? 1 : 0
-  name         = "idpay-postgres-app-password"
-  value        = random_password.idpay_postgres_app_password[0].result
+resource "azurerm_key_vault_secret" "idpay_postgres_service_password" {
+  for_each = local.idpay_postgres_service_roles
+
+  name         = each.value.password_secret_name
+  value        = random_password.idpay_postgres_service_password[each.key].result
   key_vault_id = data.azurerm_key_vault.domain_kv.id
 
   content_type = "text/plain"
@@ -161,80 +181,123 @@ module "idpay_pgflex" {
   tags = module.tag_config.tags_grafana_yes
 }
 
+resource "postgresql_role" "idpay_service" {
+  for_each = local.idpay_postgres_service_roles
+
+  name     = each.value.role_name
+  login    = true
+  password = azurerm_key_vault_secret.idpay_postgres_service_password[each.key].value
+
+  create_database = false
+  create_role     = false
+  replication     = each.key == "kafka_connect"
+  superuser       = false
+
+  depends_on = [module.idpay_pgflex]
+}
+
 resource "postgresql_schema" "idpay_flyway" {
   for_each = local.idpay_postgres_flyway_schemas
 
-  name     = each.value
+  name     = each.key
   database = local.idpay_postgres_database
+  owner    = postgresql_role.idpay_service[each.value].name
 
   depends_on = [module.idpay_pgflex]
 }
 
-resource "postgresql_role" "idpay_app" {
-  count = var.idpay_pgflex_params.enabled ? 1 : 0
-
-  name     = azurerm_key_vault_secret.idpay_postgres_app_user[0].value
-  login    = true
-  password = azurerm_key_vault_secret.idpay_postgres_app_password[0].value
-
-  depends_on = [module.idpay_pgflex]
-}
-
-resource "postgresql_grant" "idpay_app_database" {
-  count = var.idpay_pgflex_params.enabled ? 1 : 0
+resource "postgresql_grant" "idpay_service_database" {
+  for_each = local.idpay_postgres_service_roles
 
   database    = local.idpay_postgres_database
-  role        = postgresql_role.idpay_app[0].name
+  role        = postgresql_role.idpay_service[each.key].name
   object_type = "database"
-  privileges  = ["CONNECT", "CREATE"]
+  privileges  = each.key == "kafka_connect" ? ["CONNECT", "CREATE"] : ["CONNECT"]
 
   depends_on = [module.idpay_pgflex]
 }
 
-resource "postgresql_grant" "idpay_app_schema" {
+resource "postgresql_grant" "idpay_service_schema" {
   for_each = local.idpay_postgres_flyway_schemas
 
   database    = local.idpay_postgres_database
-  role        = postgresql_role.idpay_app[0].name
+  role        = postgresql_role.idpay_service[each.value].name
   schema      = postgresql_schema.idpay_flyway[each.key].name
   object_type = "schema"
-  privileges  = ["ALL"]
+  privileges  = ["USAGE", "CREATE"]
 
-  depends_on = [postgresql_grant.idpay_app_database]
+  depends_on = [postgresql_grant.idpay_service_database]
 }
 
-resource "postgresql_grant" "idpay_app_tables" {
+resource "postgresql_grant" "idpay_service_tables" {
   for_each = local.idpay_postgres_flyway_schemas
 
   database    = local.idpay_postgres_database
-  role        = postgresql_role.idpay_app[0].name
+  role        = postgresql_role.idpay_service[each.value].name
   schema      = each.value
   object_type = "table"
   privileges  = ["ALL"]
 
-  depends_on = [postgresql_grant.idpay_app_schema]
+  depends_on = [postgresql_grant.idpay_service_schema]
 }
 
-resource "postgresql_grant" "idpay_app_sequences" {
+resource "postgresql_grant" "idpay_service_sequences" {
   for_each = local.idpay_postgres_flyway_schemas
 
   database    = local.idpay_postgres_database
-  role        = postgresql_role.idpay_app[0].name
+  role        = postgresql_role.idpay_service[each.value].name
   schema      = each.value
   object_type = "sequence"
   privileges  = ["ALL"]
 
-  depends_on = [postgresql_grant.idpay_app_schema]
+  depends_on = [postgresql_grant.idpay_service_schema]
 }
 
-resource "postgresql_grant" "idpay_app_routines" {
+resource "postgresql_grant" "idpay_service_routines" {
   for_each = local.idpay_postgres_flyway_schemas
 
   database    = local.idpay_postgres_database
-  role        = postgresql_role.idpay_app[0].name
+  role        = postgresql_role.idpay_service[each.value].name
   schema      = each.value
   object_type = "routine"
   privileges  = ["ALL"]
 
-  depends_on = [postgresql_grant.idpay_app_schema]
+  depends_on = [postgresql_grant.idpay_service_schema]
+}
+
+resource "postgresql_grant" "idpay_kafka_connect_schema" {
+  count = var.idpay_pgflex_params.enabled ? 1 : 0
+
+  database    = local.idpay_postgres_database
+  role        = postgresql_role.idpay_service["kafka_connect"].name
+  schema      = postgresql_schema.idpay_flyway["idpay-pagamenti"].name
+  object_type = "schema"
+  privileges  = ["USAGE"]
+
+  depends_on = [postgresql_grant.idpay_service_database]
+}
+
+resource "postgresql_grant" "idpay_kafka_connect_tables" {
+  count = var.idpay_pgflex_params.enabled ? 1 : 0
+
+  database    = local.idpay_postgres_database
+  role        = postgresql_role.idpay_service["kafka_connect"].name
+  schema      = postgresql_schema.idpay_flyway["idpay-pagamenti"].name
+  object_type = "table"
+  privileges  = ["SELECT"]
+
+  depends_on = [postgresql_grant.idpay_kafka_connect_schema]
+}
+
+resource "postgresql_default_privileges" "idpay_kafka_connect_tables" {
+  count = var.idpay_pgflex_params.enabled ? 1 : 0
+
+  database    = local.idpay_postgres_database
+  owner       = postgresql_role.idpay_service["payment"].name
+  role        = postgresql_role.idpay_service["kafka_connect"].name
+  schema      = postgresql_schema.idpay_flyway["idpay-pagamenti"].name
+  object_type = "table"
+  privileges  = ["SELECT"]
+
+  depends_on = [postgresql_grant.idpay_kafka_connect_schema]
 }
