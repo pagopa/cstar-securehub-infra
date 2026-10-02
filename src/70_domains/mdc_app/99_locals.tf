@@ -97,6 +97,10 @@ locals {
     {
       name : "emd-message-core",
       short_name : "message-core"
+    },
+    {
+      name : "emd-notifier-sender",
+      short_name : "notifier-sender"
     }
   ]
 
