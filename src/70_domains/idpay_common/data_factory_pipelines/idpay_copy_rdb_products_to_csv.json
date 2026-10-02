@@ -152,53 +152,6 @@
                   "referenceName": "data_export_csv_initiative",
                   "type": "DatasetReference",
                   "parameters": {
-                    "initiativeId": "@pipeline().parameters.initiativeId"
-                  }
-                }
-              ]
-            },
-            {
-              "name": "Copy_To_Bonus",
-              "type": "Copy",
-              "dependsOn": [
-                {
-                  "activity": "Copy_ADX_to_CSV",
-                  "dependencyConditions": [
-                    "Succeeded"
-                  ]
-                }
-              ],
-              "policy": {
-                "timeout": "0.01:00:00",
-                "retry": 2,
-                "retryIntervalInSeconds": 30,
-                "secureOutput": false,
-                "secureInput": false
-              },
-              "userProperties": [],
-              "typeProperties": {
-                "source": {
-                  "type": "BinarySource"
-                },
-                "sink": {
-                  "type": "BinarySink"
-                },
-                "enableStaging": false
-              },
-              "inputs": [
-                {
-                  "referenceName": "data_export_csv_file_initiative",
-                  "type": "DatasetReference",
-                  "parameters": {
-                    "initiativeId": "@pipeline().parameters.initiativeId"
-                  }
-                }
-              ],
-              "outputs": [
-                {
-                  "referenceName": "data_export_csv_file_bonus_initiative",
-                  "type": "DatasetReference",
-                  "parameters": {
                     "initiativeFolder": "@pipeline().parameters.initiativeFolder",
                     "initiativeId": "@pipeline().parameters.initiativeId"
                   }
@@ -220,9 +173,48 @@
         }
       },
       {
+        "name": "Set_CSV_ContentType",
+        "description": "Set Content-Type header to text/csv for CSV export file",
+        "type": "WebActivity",
+        "dependsOn": [
+          {
+            "activity": "Validate_Initiative_Export_Configuration",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.00:05:00",
+          "retry": 1,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "userProperties": [],
+        "typeProperties": {
+          "method": "PUT",
+          "headers": {
+            "x-ms-blob-content-type": "text/csv",
+            "x-ms-version": "2021-12-02"
+          },
+          "url": {
+            "value": "@concat('https://', pipeline().parameters.exportAccountName, '.blob.core.windows.net/$web/', pipeline().parameters.initiativeFolder, '/elenco-prodotti/data/export_daily_', pipeline().parameters.initiativeId, '_', formatDateTime(convertTimeZone(utcNow(), 'UTC', 'W. Europe Standard Time'),'yyyy-MM-dd'), '.csv?comp=properties')",
+            "type": "Expression"
+          },
+          "connectVia": {
+            "referenceName": "AutoResolveIntegrationRuntime",
+            "type": "IntegrationRuntimeReference"
+          },
+          "authentication": {
+            "type": "MSI",
+            "resource": "https://storage.azure.com/"
+          }
+        }
+      },
+      {
         "name": "Generate_SAS",
         "type": "WebActivity",
-        "state": "Inactive",
         "onInactiveMarkAs": "Succeeded",
         "dependsOn": [
           {
@@ -256,7 +248,7 @@
           "body": {
             "canonicalizedResource": {
               "type": "Expression",
-              "value": "@concat('/blob/', pipeline().parameters.exportAccountName, '/', pipeline().parameters.initiativeFolder, '/elencoprodotti/data/export_daily_', pipeline().parameters.initiativeId, '_', formatDateTime(utcNow(),'yyyy-MM-dd'), '.csv')"
+              "value": "@concat('/blob/', pipeline().parameters.exportAccountName, '/$web/', pipeline().parameters.initiativeFolder, '/elenco-prodotti/data/export_daily_', pipeline().parameters.initiativeId, '_', formatDateTime(convertTimeZone(utcNow(), 'UTC', 'W. Europe Standard Time'),'yyyy-MM-dd'), '.csv')"
             },
             "signedExpiry": {
               "type": "Expression",
@@ -280,7 +272,6 @@
       {
         "name": "Get_SubKey",
         "type": "WebActivity",
-        "state": "Inactive",
         "onInactiveMarkAs": "Succeeded",
         "dependsOn": [
           {
@@ -321,7 +312,6 @@
       {
         "name": "Get_NotifyTo",
         "type": "WebActivity",
-        "state": "Inactive",
         "onInactiveMarkAs": "Succeeded",
         "dependsOn": [
           {
@@ -362,7 +352,6 @@
       {
         "name": "Notify_Email_via_MS",
         "type": "WebActivity",
-        "state": "Inactive",
         "onInactiveMarkAs": "Succeeded",
         "dependsOn": [
           {
@@ -404,17 +393,17 @@
             },
             "subject": {
               "type": "Expression",
-              "value": "@concat('Export giornaliero dei prodotti ', formatDateTime(utcNow(),'yyyy-MM-dd'))"
+              "value": "@concat('Export giornaliero dei prodotti ', formatDateTime(convertTimeZone(utcNow(), 'UTC', 'W. Europe Standard Time'),'yyyy-MM-dd'))"
             },
             "templateName": "Email_ExportDaily_Products",
             "templateValues": {
               "downloadLink": {
                 "type": "Expression",
-                "value": "@concat('https://', pipeline().parameters.exportAccountName, '.blob.core.windows.net/$web/', pipeline().parameters.initiativeFolder, '/elencoprodotti/data/export_daily_', pipeline().parameters.initiativeId, '_', formatDateTime(utcNow(),'yyyy-MM-dd'), '.csv?', activity('Generate_SAS').output.serviceSasToken)"
+                "value": "@concat('https://', pipeline().parameters.exportAccountName, '.blob.core.windows.net/$web/', pipeline().parameters.initiativeFolder, '/elenco-prodotti/data/export_daily_', pipeline().parameters.initiativeId, '_', formatDateTime(convertTimeZone(utcNow(), 'UTC', 'W. Europe Standard Time'),'yyyy-MM-dd'), '.csv?', activity('Generate_SAS').output.serviceSasToken)"
               },
               "exportDate": {
                 "type": "Expression",
-                "value": "@formatDateTime(utcNow(),'yyyy-MM-dd')"
+                "value": "@formatDateTime(convertTimeZone(utcNow(), 'UTC', 'W. Europe Standard Time'),'yyyy-MM-dd')"
               },
               "initiativeName": {
                 "type": "Expression",
@@ -423,7 +412,7 @@
               "orgName": "PagoPA S.p.A.",
               "productFileName": {
                 "type": "Expression",
-                "value": "@concat('export_daily_', pipeline().parameters.initiativeId, '_', formatDateTime(utcNow(),'yyyy-MM-dd'), '.csv')"
+                "value": "@concat('export_daily_', pipeline().parameters.initiativeId, '_', formatDateTime(convertTimeZone(utcNow(), 'UTC', 'W. Europe Standard Time'),'yyyy-MM-dd'), '.csv')"
               }
             }
           }

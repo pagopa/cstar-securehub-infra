@@ -21,6 +21,8 @@ module "aks_user_node_pool_blue" {
   node_tags             = { node_tag : "blue", phase : "blue" }
   kubernetes_cluster_id = module.aks.id
   vnet_subnet_id        = module.aks_user_snet.id
+
+  autoscale_enabled = var.aks_nodepool_blue.autoscale_enabled
 }
 
 module "aks_user_node_pool_green" {
