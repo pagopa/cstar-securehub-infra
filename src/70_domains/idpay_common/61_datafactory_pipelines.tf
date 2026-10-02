@@ -91,6 +91,10 @@ resource "azurerm_data_factory_pipeline" "idpay_reward_batch_csv" {
   name            = local.pipeline_reward_batch_csv_json.name
   data_factory_id = data.azurerm_data_factory.data_factory.id
 
+  depends_on = [
+    azurerm_data_factory_custom_dataset.datasets
+  ]
+
   description = try(local.pipeline_reward_batch_csv_json.properties.description, null)
   concurrency = try(local.pipeline_reward_batch_csv_json.properties.concurrency, null)
   annotations = try(local.pipeline_reward_batch_csv_json.properties.annotations, [])
