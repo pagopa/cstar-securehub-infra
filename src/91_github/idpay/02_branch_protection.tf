@@ -132,6 +132,24 @@ resource "github_repository_ruleset" "uat_and_main" {
         context        = "SonarCloud Code Analysis"
         integration_id = 12526
       }
+
+      dynamic "required_check" {
+        for_each = each.key == "idpay-functional-testing" ? [
+          "run-bdd / run-bdd-feature-tests"
+        ] : []
+
+        content {
+          context = required_check.value
+        }
+      }
+    }
+
+    dynamic "merge_queue" {
+      for_each = contains(keys(local.repositories_with_merge_queue), each.key) ? [1] : []
+
+      content {
+        merge_method = "MERGE"
+      }
     }
 
     required_code_scanning {
