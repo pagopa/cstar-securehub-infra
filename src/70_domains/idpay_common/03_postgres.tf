@@ -161,6 +161,15 @@ module "idpay_pgflex" {
   tags = module.tag_config.tags_grafana_yes
 }
 
+resource "postgresql_schema" "idpay_flyway" {
+  for_each = local.idpay_postgres_flyway_schemas
+
+  name     = each.value
+  database = local.idpay_postgres_database
+
+  depends_on = [module.idpay_pgflex]
+}
+
 resource "postgresql_role" "idpay_app" {
   count = var.idpay_pgflex_params.enabled ? 1 : 0
 
@@ -187,7 +196,7 @@ resource "postgresql_grant" "idpay_app_schema" {
 
   database    = local.idpay_postgres_database
   role        = postgresql_role.idpay_app[0].name
-  schema      = each.value
+  schema      = postgresql_schema.idpay_flyway[each.key].name
   object_type = "schema"
   privileges  = ["ALL"]
 
