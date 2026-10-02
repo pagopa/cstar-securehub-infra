@@ -439,7 +439,7 @@
         "type": "grafana-azure-monitor-datasource",
         "uid": "azure-monitor-oob"
       },
-      "description": "Conteggio giornaliero delle attivazioni completate con successo per ciascun PSP.",
+      "description": "Conteggio giornaliero delle attivazioni completate con successo (HTTP 201 su POST /rtpactivator/activations) per PSP (JWT Subject). Query allineata alla Workbook Azure 'SRTP OER' esistente.",
       "gridPos": {
         "h": 8,
         "w": 12,
@@ -452,9 +452,10 @@
           "azureLogAnalytics": {
             "dashboardTime": false,
             "mode": "raw",
-            "query": "AppTraces\n| where $__timeFilter(TimeGenerated)\n| where AppRoleName == \"rtp-activator\"\n| where Message startswith \"Payer activated with id:\"\n| extend p = todynamic(Properties)\n| extend PSP = coalesce(tostring(p[\"sub_token\"]), tostring(p[\"mdc.sub_token\"]), extract(@\"SubToken:\\s*([^,\\]]+)\", 1, Message))\n| summarize AttivazioniCompletateSuccesso = count() by bin(TimeGenerated, 1d), PSP = iff(isempty(PSP), \"UNKNOWN\", PSP)\n| order by TimeGenerated asc",
+            "query": "let validOps =\n    AppDependencies\n    | where $__timeFilter(TimeGenerated)\n    | where Name startswith \"POST\" and Name contains \"/rtpactivator/activations\"\n    | distinct OperationId;\nlet deps =\n    AppDependencies\n    | where $__timeFilter(TimeGenerated)\n    | where Name startswith \"POST\" and Name contains \"/rtpactivator/activations\"\n    | extend JWT_Subject = tostring(Properties[\"Request-X-JWT-Subject\"])\n    | summarize JWT_Subject = any(JWT_Subject) by OperationId;\nAppRequests\n| where $__timeFilter(TimeGenerated)\n| where AppRoleName == \"rtp-activator\"\n| where Name startswith \"POST\" and Name contains \"activations\"\n| join kind=inner validOps on OperationId\n| where ResultCode == \"201\"\n| project OperationId, TimeGenerated\n| join kind=leftouter deps on OperationId\n| extend JWT_Subject = iif(isempty(JWT_Subject), \"UNKNOWN\", JWT_Subject)\n| summarize AttivazioniCompletateSuccesso = count() by bin(TimeGenerated, 1d), PSP = JWT_Subject\n| order by TimeGenerated asc",
             "resources": [
-              "/subscriptions/$subscription/resourceGroups/$SrtpMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$SrtpLaw"
+              "/subscriptions/$subscription/resourceGroups/$SrtpMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$SrtpLaw",
+              "/subscriptions/$subscription/resourceGroups/$CoreMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$CoreLaw"
             ],
             "resultFormat": "time_series",
             "timeColumn": "TimeGenerated"
@@ -472,7 +473,7 @@
           "subscription": "$subscription"
         }
       ],
-      "title": "Activation Success Rate per PSP",
+      "title": "✅ Activation Success Rate per PSP (HTTP 201)",
       "type": "timeseries"
     },
     {
@@ -480,7 +481,7 @@
         "type": "grafana-azure-monitor-datasource",
         "uid": "azure-monitor-oob"
       },
-      "description": "",
+      "description": "% di chiamate POST /rtp/rtps/{id}/cancel andate a buon fine (HTTP 204) sul totale, per giorno. Proxy a livello API Gateway (AzureDiagnostics, workspace core) della Request for Cancellation; query allineata alla Workbook Azure 'SRTP OER' esistente (tab Invii SRTP > Cancellazioni). Non traccia ancora il round-trip completo camt.055/camt.029 verso il PSP.",
       "gridPos": {
         "h": 8,
         "w": 12,
@@ -488,13 +489,33 @@
         "y": 24
       },
       "id": 11,
-      "targets": [],
-      "title": "Cancellation Success Rate",
-      "type": "text",
-      "options": {
-        "mode": "markdown",
-        "content": "⚠️ **KQL non ancora definita.**\n\n% di Request for Cancellation (camt.055) completate con successo (camt.029) per evitare doppi addebiti su pagamenti Off-Channel.\n\nDa implementare non appena saranno tracciati gli eventi custom `RTP_RfC_Dispatched` (vedi sezione *Data Tracking* più sotto)."
-      }
+      "targets": [
+        {
+          "azureLogAnalytics": {
+            "dashboardTime": false,
+            "mode": "raw",
+            "query": "AzureDiagnostics\n| where $__timeFilter(TimeGenerated)\n| where requestUri_s startswith \"/rtp/rtps/\"\n| where requestUri_s endswith \"/cancel\"\n| where httpMethod_s == \"POST\"\n| summarize\n    Successo   = countif(toint(httpStatus_d) == 204),\n    Fallimento = countif(toint(httpStatus_d) != 204)\n  by bin(TimeGenerated, 1d)\n| extend [\"Cancellation Success Rate %\"] = round(100.0 * Successo / iff((Successo + Fallimento) == 0, 1, Successo + Fallimento), 2)\n| order by TimeGenerated asc",
+            "resources": [
+              "/subscriptions/$subscription/resourceGroups/$CoreMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$CoreLaw"
+            ],
+            "resultFormat": "time_series",
+            "timeColumn": "TimeGenerated"
+          },
+          "azureMonitor": {
+            "allowedTimeGrainsMs": [],
+            "dimensionFilters": []
+          },
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "refId": "A",
+          "subscription": "$subscription"
+        }
+      ],
+      "title": "Cancellation Success Rate (API /cancel, HTTP 204)",
+      "type": "timeseries"
     },
     {
       "collapsed": false,
@@ -581,7 +602,7 @@
       "type": "text",
       "options": {
         "mode": "markdown",
-        "content": "### Epic: Riconciliazione e Attribuzione Canale RTP\n\n**User Story**: Come Motore di Orchestrazione SRTP, voglio intercettare l'evento di avvenuto pagamento\n(Update - Pagato) e confrontare il PSP esecutore con il PSP destinatario dell'SRTP, in modo da classificare\nl'attribuzione della conversione e inviare una Request for Cancellation (RfC) se il debito è stato saldato\nsu un canale differente.\n\n#### Criteri di Accettazione\n\n- **AC1 – Pagamento In-Channel**: se il PSP esecutore coincide con il `Debtor_SRTPSP_ID`, la SRTP passa a\n  `PAID (Direct Match)`, viene emesso l'evento `RTP_Position_Settled` con esito `IN_CHANNEL` e **nessuna**\n  cancellazione viene inviata.\n- **AC2 – Pagamento Off-Channel**: se il PSP esecutore NON coincide (o pagamento cash/altro circuito), la\n  SRTP passa a `PAID (Cross-Channel)`, viene emesso `RTP_Position_Settled` con esito `OFF_CHANNEL` e il\n  sistema invia una Request for Cancellation (camt.055 / DS-11) al SRTPSP del debitore.\n- **AC3 – Risposta alla Cancellazione**: alla ricezione della risposta (camt.029 / DS-12), l'esito viene\n  registrato nello storico.\n- **AC4 – Errori & Edge Case**: timeout → retry con backoff esponenziale poi `FAILED`; conflitto 409 →\n  `MANUAL_REVIEW` (race condition); segregazione delle chiavi crittografiche per Ente/PSP garantita sempre.\n\n#### Eventi custom da tracciare su AppInsights (correlati via `NoticeNumber`)\n\n**`RTP_Position_Settled`** *(AC1/AC2)*\n```json\n{\n  \"EventName\": \"RTP_Position_Settled\",\n  \"CorrelationID\": \"{NoticeNumber}\",\n  \"Payment_Status\": \"PAID\",\n  \"Executing_PSP_ID\": \"<ID_PSP_Che_Ha_Saldato>\",\n  \"Debtor_SRTPSP_ID\": \"<ID_PSP_Destinatario_RTP_Originale>\",\n  \"Attribution_Type\": \"IN_CHANNEL | OFF_CHANNEL\"\n}\n```\n\n**`RTP_RfC_Dispatched`** *(AC2)*\n```json\n{\n  \"EventName\": \"RTP_RfC_Dispatched\",\n  \"CorrelationID\": \"{NoticeNumber}\",\n  \"Cancellation_Reason\": \"Paid_Via_Alternative_Channel\",\n  \"RfC_Status\": \"Success | Failed_Timeout | Failed_409\"\n}\n```\n\n> 📌 Nota: i pannelli di questa dashboard sono calcolati sui log applicativi esistenti (`AppTraces`); una\n> volta rilasciati i due eventi custom sopra, i pannelli \"Attribuzione\" e \"Cancellation Success Rate\"\n> potranno essere ricostruiti in modo più affidabile e granulare.\n"
+        "content": "### Epic: Riconciliazione e Attribuzione Canale RTP\n\n**User Story**: Come Motore di Orchestrazione SRTP, voglio intercettare l'evento di avvenuto pagamento\n(Update - Pagato) e confrontare il PSP esecutore con il PSP destinatario dell'SRTP, in modo da classificare\nl'attribuzione della conversione e inviare una Request for Cancellation (RfC) se il debito è stato saldato\nsu un canale differente.\n\n#### Criteri di Accettazione\n\n- **AC1 – Pagamento In-Channel**: se il PSP esecutore coincide con il `Debtor_SRTPSP_ID`, la SRTP passa a\n  `PAID (Direct Match)`, viene emesso l'evento `RTP_Position_Settled` con esito `IN_CHANNEL` e **nessuna**\n  cancellazione viene inviata.\n- **AC2 – Pagamento Off-Channel**: se il PSP esecutore NON coincide (o pagamento cash/altro circuito), la\n  SRTP passa a `PAID (Cross-Channel)`, viene emesso `RTP_Position_Settled` con esito `OFF_CHANNEL` e il\n  sistema invia una Request for Cancellation (camt.055 / DS-11) al SRTPSP del debitore.\n- **AC3 – Risposta alla Cancellazione**: alla ricezione della risposta (camt.029 / DS-12), l'esito viene\n  registrato nello storico.\n- **AC4 – Errori & Edge Case**: timeout → retry con backoff esponenziale poi `FAILED`; conflitto 409 →\n  `MANUAL_REVIEW` (race condition); segregazione delle chiavi crittografiche per Ente/PSP garantita sempre.\n\n#### Eventi custom da tracciare su AppInsights (correlati via `NoticeNumber`)\n\n**`RTP_Position_Settled`** *(AC1/AC2)*\n```json\n{\n  \"EventName\": \"RTP_Position_Settled\",\n  \"CorrelationID\": \"{NoticeNumber}\",\n  \"Payment_Status\": \"PAID\",\n  \"Executing_PSP_ID\": \"<ID_PSP_Che_Ha_Saldato>\",\n  \"Debtor_SRTPSP_ID\": \"<ID_PSP_Destinatario_RTP_Originale>\",\n  \"Attribution_Type\": \"IN_CHANNEL | OFF_CHANNEL\"\n}\n```\n\n**`RTP_RfC_Dispatched`** *(AC2)*\n```json\n{\n  \"EventName\": \"RTP_RfC_Dispatched\",\n  \"CorrelationID\": \"{NoticeNumber}\",\n  \"Cancellation_Reason\": \"Paid_Via_Alternative_Channel\",\n  \"RfC_Status\": \"Success | Failed_Timeout | Failed_409\"\n}\n```\n\n> 📌 Nota: i pannelli di questa dashboard sono calcolati sui log applicativi esistenti (`AppTraces`,\n> `AppRequests`/`AppDependencies`, `AzureDiagnostics`), allineati alle query già in produzione nella\n> Workbook Azure \"SRTP OER\". Una volta rilasciati i due eventi custom sopra, i pannelli \"Attribuzione\" e\n> \"Cancellation Success Rate\" potranno essere ricostruiti in modo più affidabile e granulare (round-trip\n> camt.055/camt.029 completo, invece del solo esito HTTP della chiamata /cancel).\n>\n> 📌 **Fuori scope**: il filtro di eleggibilità per tassonomia e la gestione dell'opt-out avvengono\n> upstream nel servizio `pagopa-gpd-rtp` (lato GPD, non di competenza SRTP). SRTP osserva solo i messaggi\n> già filtrati in ingresso al Consumer (`\"New GPD message received\"` / `\"Payload: ... status=VALID\"`),\n> che rappresentano quindi i soli candidati già ritenuti eleggibili a monte.\n"
       }
     }
   ],
@@ -672,6 +693,62 @@
         },
         "refresh": 1,
         "regex": "/cstar-.+-srtp-law/",
+        "regexApplyTo": "value",
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "",
+          "value": ""
+        },
+        "datasource": {
+          "type": "grafana-azure-monitor-datasource",
+          "uid": "azure-monitor-oob"
+        },
+        "definition": "",
+        "hide": 2,
+        "name": "CoreMonitoringRg",
+        "options": [],
+        "query": {
+          "azureLogAnalytics": {
+            "query": "",
+            "resources": []
+          },
+          "queryType": "Azure Resource Groups",
+          "refId": "A",
+          "subscription": "$subscription"
+        },
+        "refresh": 1,
+        "regex": "/^cstar-.-monitor-rg$/",
+        "regexApplyTo": "value",
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "",
+          "value": ""
+        },
+        "datasource": {
+          "type": "grafana-azure-monitor-datasource",
+          "uid": "azure-monitor-oob"
+        },
+        "definition": "",
+        "hide": 2,
+        "name": "CoreLaw",
+        "options": [],
+        "query": {
+          "azureLogAnalytics": {
+            "query": "",
+            "resources": []
+          },
+          "namespace": "microsoft.operationalinsights/workspaces",
+          "queryType": "Azure Resource Names",
+          "refId": "A",
+          "resourceGroup": "$CoreMonitoringRg",
+          "subscription": "$subscription"
+        },
+        "refresh": 1,
+        "regex": "/^cstar-.-law$/",
         "regexApplyTo": "value",
         "type": "query"
       }
