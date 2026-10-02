@@ -1,232 +1,471 @@
 {
-    "name": "rdb_product_copy",
-    "properties": {
-        "activities": [
-            {
-                "name": "Clear products table",
-                "type": "AzureDataExplorerCommand",
-                "dependsOn": [],
-                "policy": {
-                    "timeout": "0.12:00:00",
-                    "retry": 0,
-                    "retryIntervalInSeconds": 30,
-                    "secureOutput": false,
-                    "secureInput": false
+  "name": "rdb_product_copy",
+  "properties": {
+    "activities": [
+      {
+        "name": "Clear products staging table",
+        "type": "AzureDataExplorerCommand",
+        "dependsOn": [],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "userProperties": [],
+        "typeProperties": {
+          "command": ".clear table products_staging data",
+          "commandTimeout": "00:20:00"
+        },
+        "linkedServiceName": {
+          "referenceName": "idpay-Kusto-idpay-ls",
+          "type": "LinkedServiceReference"
+        }
+      },
+      {
+        "name": "Copy products collection",
+        "type": "Copy",
+        "dependsOn": [
+          {
+            "activity": "Clear products staging table",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "userProperties": [],
+        "typeProperties": {
+          "source": {
+            "type": "CosmosDbMongoDbApiSource",
+            "batchSize": 100
+          },
+          "sink": {
+            "type": "AzureDataExplorerSink"
+          },
+          "enableStaging": false,
+          "translator": {
+            "type": "TabularTranslator",
+            "mappings": [
+              {
+                "source": {
+                  "path": "$['_id']"
                 },
-                "userProperties": [],
-                "typeProperties": {
-                    "command": ".clear table products data",
-                    "commandTimeout": "00:20:00"
-                },
-                "linkedServiceName": {
-                    "referenceName": "idpay-Kusto-idpay-ls",
-                    "type": "LinkedServiceReference"
+                "sink": {
+                  "name": "_id",
+                  "type": "String"
                 }
+              },
+              {
+                "source": {
+                  "path": "$['gtinCode']"
+                },
+                "sink": {
+                  "name": "gtinCode",
+                  "type": "String"
+                }
+              },
+              {
+                "source": {
+                  "path": "$['productFileId']"
+                },
+                "sink": {
+                  "name": "productFileId",
+                  "type": "String"
+                }
+              },
+              {
+                "source": {
+                  "path": "$['organizationId']"
+                },
+                "sink": {
+                  "name": "organizationId",
+                  "type": "String"
+                }
+              },
+              {
+                "source": {
+                  "path": "$['initiativeId']"
+                },
+                "sink": {
+                  "name": "initiativeId",
+                  "type": "String"
+                }
+              },
+              {
+                "source": {
+                  "path": "registrationDate.$date"
+                },
+                "sink": {
+                  "name": "registrationDate",
+                  "type": "String"
+                }
+              },
+              {
+                "source": {
+                  "path": "$['status']"
+                },
+                "sink": {
+                  "name": "status",
+                  "type": "String"
+                }
+              },
+              {
+                "source": {
+                  "path": "$['model']"
+                },
+                "sink": {
+                  "name": "model",
+                  "type": "String"
+                }
+              },
+              {
+                "source": {
+                  "path": "$['productGroup']"
+                },
+                "sink": {
+                  "name": "productGroup",
+                  "type": "String"
+                }
+              },
+              {
+                "source": {
+                  "path": "$['category']"
+                },
+                "sink": {
+                  "name": "category",
+                  "type": "String"
+                }
+              },
+              {
+                "source": {
+                  "path": "$['brand']"
+                },
+                "sink": {
+                  "name": "brand",
+                  "type": "String"
+                }
+              },
+              {
+                "source": {
+                  "path": "$['eprelCode']"
+                },
+                "sink": {
+                  "name": "eprelCode",
+                  "type": "String"
+                }
+              },
+              {
+                "source": {
+                  "path": "$['productCode']"
+                },
+                "sink": {
+                  "name": "productCode",
+                  "type": "String"
+                }
+              },
+              {
+                "source": {
+                  "path": "$['countryOfProduction']"
+                },
+                "sink": {
+                  "name": "countryOfProduction",
+                  "type": "String"
+                }
+              },
+              {
+                "source": {
+                  "path": "$['energyClass']"
+                },
+                "sink": {
+                  "name": "energyClass",
+                  "type": "String"
+                }
+              },
+              {
+                "source": {
+                  "path": "$['capacity']"
+                },
+                "sink": {
+                  "name": "capacity",
+                  "type": "String"
+                }
+              },
+              {
+                "source": {
+                  "path": "$['statusChangeChronology']"
+                },
+                "sink": {
+                  "name": "statusChangeChronology",
+                  "type": "String"
+                }
+              },
+              {
+                "source": {
+                  "path": "$['formalMotivation']"
+                },
+                "sink": {
+                  "name": "formalMotivation",
+                  "type": "String"
+                }
+              },
+              {
+                "source": {
+                  "path": "$['productName']"
+                },
+                "sink": {
+                  "name": "productName",
+                  "type": "String"
+                }
+              },
+              {
+                "source": {
+                  "path": "$['fullProductName']"
+                },
+                "sink": {
+                  "name": "fullProductName",
+                  "type": "String"
+                }
+              },
+              {
+                "source": {
+                  "path": "$['organizationName']"
+                },
+                "sink": {
+                  "name": "organizationName",
+                  "type": "String"
+                }
+              },
+              {
+                "source": {
+                  "path": "$['_class']"
+                },
+                "sink": {
+                  "name": "_class",
+                  "type": "String"
+                }
+              }
+            ],
+            "mapComplexValuesToString": true
+          }
+        },
+        "inputs": [
+          {
+            "referenceName": "cosmos_rdb_products",
+            "type": "DatasetReference"
+          }
+        ],
+        "outputs": [
+          {
+            "referenceName": "data_explorer_rdb_products_staging",
+            "type": "DatasetReference"
+          }
+        ]
+      },
+      {
+        "name": "Validate products staging rows",
+        "type": "Lookup",
+        "dependsOn": [
+          {
+            "activity": "Copy products collection",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "userProperties": [],
+        "typeProperties": {
+          "source": {
+            "type": "AzureDataExplorerSource",
+            "query": "products_staging | count"
+          },
+          "dataset": {
+            "referenceName": "data_explorer_rdb_products_staging",
+            "type": "DatasetReference"
+          },
+          "firstRowOnly": true
+        }
+      },
+      {
+        "name": "Validate products refresh",
+        "type": "IfCondition",
+        "dependsOn": [
+          {
+            "activity": "Validate products staging rows",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "typeProperties": {
+          "expression": {
+            "value": "@greater(int(activity('Validate products staging rows').output.firstRow.Count), 0)",
+            "type": "Expression"
+          },
+          "ifTrueActivities": [
+            {
+              "name": "Swap products table",
+              "type": "AzureDataExplorerCommand",
+              "dependsOn": [],
+              "policy": {
+                "timeout": "0.12:00:00",
+                "retry": 0,
+                "retryIntervalInSeconds": 30,
+                "secureOutput": false,
+                "secureInput": false
+              },
+              "userProperties": [],
+              "typeProperties": {
+                "command": ".set-or-replace products <| products_staging",
+                "commandTimeout": "00:20:00"
+              },
+              "linkedServiceName": {
+                "referenceName": "idpay-Kusto-idpay-ls",
+                "type": "LinkedServiceReference"
+              }
             },
             {
-                "name": "Copy products collection",
-                "type": "Copy",
-                "dependsOn": [
-                    {
-                        "activity": "Clear products table",
-                        "dependencyConditions": [
-                            "Succeeded"
-                        ]
-                    }
-                ],
-                "policy": {
-                    "timeout": "0.12:00:00",
-                    "retry": 0,
-                    "retryIntervalInSeconds": 30,
-                    "secureOutput": false,
-                    "secureInput": false
-                },
-                "userProperties": [],
-                "typeProperties": {
-                    "source": {
-                        "type": "CosmosDbMongoDbApiSource",
-                        "batchSize": 100
-                    },
-                    "sink": {
-                        "type": "AzureDataExplorerSink"
-                    },
-                    "enableStaging": false,
-                    "translator": {
-                        "type": "TabularTranslator",
-                        "mappings": [
-                            {
-                                "source": {
-                                    "path": "$['_id']"
-                                },
-                                "sink": {
-                                    "name": "_id",
-                                    "type": "String"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['productFileId']"
-                                },
-                                "sink": {
-                                    "name": "productFileId",
-                                    "type": "String"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['organizationId']"
-                                },
-                                "sink": {
-                                    "name": "organizationId",
-                                    "type": "String"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['status']"
-                                },
-                                "sink": {
-                                    "name": "status",
-                                    "type": "String"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['model']"
-                                },
-                                "sink": {
-                                    "name": "model",
-                                    "type": "String"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['productGroup']"
-                                },
-                                "sink": {
-                                    "name": "productGroup",
-                                    "type": "String"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['category']"
-                                },
-                                "sink": {
-                                    "name": "category",
-                                    "type": "String"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['brand']"
-                                },
-                                "sink": {
-                                    "name": "brand",
-                                    "type": "String"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['eprelCode']"
-                                },
-                                "sink": {
-                                    "name": "eprelCode",
-                                    "type": "String"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['productCode']"
-                                },
-                                "sink": {
-                                    "name": "productCode",
-                                    "type": "String"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['countryOfProduction']"
-                                },
-                                "sink": {
-                                    "name": "countryOfProduction",
-                                    "type": "String"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['energyClass']"
-                                },
-                                "sink": {
-                                    "name": "energyClass",
-                                    "type": "String"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['capacity']"
-                                },
-                                "sink": {
-                                    "name": "capacity",
-                                    "type": "String"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['productName']"
-                                },
-                                "sink": {
-                                    "name": "productName",
-                                    "type": "String"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['organizationName']"
-                                },
-                                "sink": {
-                                    "name": "organizationName",
-                                    "type": "String"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['gtinCode']"
-                                },
-                                "sink": {
-                                    "name": "gtinCode",
-                                    "type": "String"
-                                }
-                            },
-                            {
-                                "source": {
-                                    "path": "$['initiativeId']"
-                                },
-                                "sink": {
-                                    "name": "initiativeId",
-                                    "type": "String"
-                                }
-                            }
-                        ],
-                        "mapComplexValuesToString": true
-                    }
-                },
-                "inputs": [
-                    {
-                        "referenceName": "cosmos_rdb_products",
-                        "type": "DatasetReference"
-                    }
-                ],
-                "outputs": [
-                    {
-                        "referenceName": "data_explorer_rdb_products",
-                        "type": "DatasetReference"
-                    }
-                ]
+              "name": "Write products refresh status",
+              "type": "AzureDataExplorerCommand",
+              "dependsOn": [
+                {
+                  "activity": "Swap products table",
+                  "dependencyConditions": [
+                    "Succeeded"
+                  ]
+                }
+              ],
+              "policy": {
+                "timeout": "0.12:00:00",
+                "retry": 0,
+                "retryIntervalInSeconds": 30,
+                "secureOutput": false,
+                "secureInput": false
+              },
+              "userProperties": [],
+              "typeProperties": {
+                "command": ".set-or-append export_refresh_status <|\nprint\ndatasetName=\"products\",\nexecutionId=\"ADF_RUN_ID\",\nrefreshTimestamp=now(),\nstatus=\"SUCCESS\",\nrecordCount=tolong(toscalar(products | count)),\ndurationSeconds=0,\nerrorMessage=\"\"",
+                "commandTimeout": "00:20:00"
+              },
+              "linkedServiceName": {
+                "referenceName": "idpay-Kusto-idpay-ls",
+                "type": "LinkedServiceReference"
+              }
+            },
+            {
+              "name": "Clear products staging table at end",
+              "type": "AzureDataExplorerCommand",
+              "dependsOn": [
+                {
+                  "activity": "Write products refresh status",
+                  "dependencyConditions": [
+                    "Succeeded"
+                  ]
+                }
+              ],
+              "policy": {
+                "timeout": "0.12:00:00",
+                "retry": 0,
+                "retryIntervalInSeconds": 30,
+                "secureOutput": false,
+                "secureInput": false
+              },
+              "userProperties": [],
+              "typeProperties": {
+                "command": ".clear table products_staging data",
+                "commandTimeout": "00:20:00"
+              },
+              "linkedServiceName": {
+                "referenceName": "idpay-Kusto-idpay-ls",
+                "type": "LinkedServiceReference"
+              }
             }
-        ],
-        "annotations": [],
-        "lastPublishTime": "2025-10-08T09:22:11Z"
-    },
-    "type": "Microsoft.DataFactory/factories/pipelines"
+          ],
+          "ifFalseActivities": [
+            {
+              "name": "Write products refresh failed",
+              "type": "AzureDataExplorerCommand",
+              "dependsOn": [],
+              "policy": {
+                "timeout": "0.12:00:00",
+                "retry": 0,
+                "retryIntervalInSeconds": 30,
+                "secureOutput": false,
+                "secureInput": false
+              },
+              "userProperties": [],
+              "typeProperties": {
+                "command": ".set-or-append export_refresh_status <|\nprint\ndatasetName=\"products\",\nexecutionId=\"ADF_RUN_ID\",\nrefreshTimestamp=now(),\nstatus=\"FAILED\",\nrecordCount=0,\ndurationSeconds=0,\nerrorMessage=\"No records copied into products_staging\"",
+                "commandTimeout": "00:20:00"
+              },
+              "linkedServiceName": {
+                "referenceName": "idpay-Kusto-idpay-ls",
+                "type": "LinkedServiceReference"
+              }
+            },
+            {
+              "name": "Clear products staging table after failure",
+              "type": "AzureDataExplorerCommand",
+              "dependsOn": [
+                {
+                  "activity": "Write products refresh failed",
+                  "dependencyConditions": [
+                    "Succeeded"
+                  ]
+                }
+              ],
+              "policy": {
+                "timeout": "0.12:00:00",
+                "retry": 0,
+                "retryIntervalInSeconds": 30,
+                "secureOutput": false,
+                "secureInput": false
+              },
+              "userProperties": [],
+              "typeProperties": {
+                "command": ".clear table products_staging data",
+                "commandTimeout": "00:20:00"
+              },
+              "linkedServiceName": {
+                "referenceName": "idpay-Kusto-idpay-ls",
+                "type": "LinkedServiceReference"
+              }
+            },
+            {
+              "name": "Fail products refresh",
+              "type": "Fail",
+              "dependsOn": [
+                {
+                  "activity": "Clear products staging table after failure",
+                  "dependencyConditions": [
+                    "Succeeded"
+                  ]
+                }
+              ],
+              "typeProperties": {
+                "message": "Products staging refresh produced zero rows.",
+                "errorCode": "ProductsRefreshValidationFailed"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "annotations": []
+  },
+  "type": "Microsoft.DataFactory/factories/pipelines"
 }

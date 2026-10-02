@@ -1,0 +1,15 @@
+{
+  "name": "data_explorer_initiative_export_configuration",
+  "properties": {
+    "linkedServiceName": {
+      "referenceName": "idpay-Kusto-idpay-ls",
+      "type": "LinkedServiceReference"
+    },
+    "annotations": [],
+    "type": "AzureDataExplorerTable",
+    "typeProperties": {
+      "table": "initiative_export_configuration"
+    }
+  },
+  "type": "Microsoft.DataFactory/factories/datasets"
+}

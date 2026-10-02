@@ -120,6 +120,11 @@ data "azurerm_key_vault_secret" "argocd_entra_app_client_id" {
 }
 
 
+data "azurerm_key_vault_secret" "adf_database_map" {
+  name         = "${var.prefix}-${var.env_short}-adf-proxy-database-map"
+  key_vault_id = data.azurerm_key_vault.core_kv.id
+}
+
 #---------------------------------------------------------------
 # Monitor
 #---------------------------------------------------------------
@@ -175,4 +180,10 @@ data "azuread_group" "adgroup_domain_oncall" {
   for_each = var.env == "prod" ? local.domains : []
 
   display_name = "${local.product}-${each.key}-adgroup-oncall"
+}
+
+
+data "azurerm_private_link_service" "vmss_pls" {
+  name                = "${var.prefix}-${var.env_short}-adf-proxy-privatelink"
+  resource_group_name = local.vnet_rg_name
 }
