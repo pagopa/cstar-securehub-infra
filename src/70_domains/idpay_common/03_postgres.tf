@@ -234,7 +234,7 @@ resource "postgresql_grant" "idpay_service_tables" {
 
   database    = local.idpay_postgres_database
   role        = postgresql_role.idpay_service[each.value].name
-  schema      = each.value
+  schema      = postgresql_schema.idpay_flyway[each.key].name
   object_type = "table"
   privileges  = ["ALL"]
 
@@ -246,7 +246,7 @@ resource "postgresql_grant" "idpay_service_sequences" {
 
   database    = local.idpay_postgres_database
   role        = postgresql_role.idpay_service[each.value].name
-  schema      = each.value
+  schema      = postgresql_schema.idpay_flyway[each.key].name
   object_type = "sequence"
   privileges  = ["ALL"]
 
@@ -258,7 +258,7 @@ resource "postgresql_grant" "idpay_service_routines" {
 
   database    = local.idpay_postgres_database
   role        = postgresql_role.idpay_service[each.value].name
-  schema      = each.value
+  schema      = postgresql_schema.idpay_flyway[each.key].name
   object_type = "routine"
   privileges  = ["ALL"]
 
