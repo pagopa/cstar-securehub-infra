@@ -390,6 +390,7 @@ locals {
       query       = <<-QUERY
             AppRequests
             | where Name matches regex @"^PUT /idpay-itn/merchant-op/transactions/bar-code/[^/]+/capture$"
+                or Name matches regex @"^PUT /idpay-itn/merchant-op/initiatives/[^/]+/transactions/bar-code/[^/]+/capture$"
             | where ResultCode startswith "5"
           QUERY
       criteria = {
@@ -406,6 +407,7 @@ locals {
       query       = <<-QUERY
             AppRequests
             | where Name matches regex @"^PUT /idpay-itn/merchant-op/transactions/bar-code/[^/]+/capture$"
+                or Name matches regex @"^PUT /idpay-itn/merchant-op/initiatives/[^/]+/transactions/bar-code/[^/]+/capture$"
             | where ResultCode in ("401", "404", "429")
           QUERY
       criteria = {
@@ -422,6 +424,7 @@ locals {
       query       = <<-QUERY
             AppRequests
             | where Name matches regex @"^PUT /idpay-itn/merchant-op/transactions/bar-code/[^/]+/preview$"
+                or Name matches regex @"^PUT /idpay-itn/merchant-op/initiatives/[^/]+/transactions/bar-code/[^/]+/preview$"
             | where ResultCode startswith "5"
           QUERY
       criteria = {
@@ -438,6 +441,7 @@ locals {
       query       = <<-QUERY
             AppRequests
             | where Name matches regex @"^PUT /idpay-itn/merchant-op/transactions/bar-code/[^/]+/preview$"
+                or Name matches regex @"^PUT /idpay-itn/merchant-op/initiatives/[^/]+/transactions/bar-code/[^/]+/preview$"
             | where ResultCode in ("401", "429")
           QUERY
       criteria = {
@@ -454,6 +458,7 @@ locals {
       query       = <<-QUERY
             AppRequests
             | where Name matches regex @"^PUT /idpay-itn/merchant-op/transactions/bar-code/[^/]+/authorize$"
+                or Name matches regex @"^PUT /idpay-itn/merchant-op/initiatives/[^/]+/transactions/bar-code/[^/]+/authorize$"
             | where ResultCode startswith "5"
           QUERY
       criteria = {
@@ -470,6 +475,7 @@ locals {
       query       = <<-QUERY
             AppRequests
             | where Name matches regex @"^PUT /idpay-itn/merchant-op/transactions/bar-code/[^/]+/authorize$"
+                or Name matches regex @"^PUT /idpay-itn/merchant-op/initiatives/[^/]+/transactions/bar-code/[^/]+/authorize$"
             | where ResultCode in ("401", "403", "429")
           QUERY
       criteria = {
@@ -551,6 +557,7 @@ locals {
       query       = <<-QUERY
             AppRequests
             | where Name matches regex @"^DELETE /idpay-itn/merchant-op/transactions/[^/]+$"
+                or Name matches regex @"^DELETE /idpay-itn/merchant-op/initiatives/[^/]+/transactions/[^/]+$"
             | where ResultCode startswith "5"
           QUERY
       criteria = {
@@ -568,6 +575,7 @@ locals {
       query       = <<-QUERY
             AppRequests
             | where Name matches regex @"^DELETE /idpay-itn/merchant-op/transactions/[^/]+$"
+                or Name matches regex @"^DELETE /idpay-itn/merchant-op/initiatives/[^/]+/transactions/[^/]+$"
             | where ResultCode in ("401", "403", "404", "429")
           QUERY
       criteria = {
@@ -584,6 +592,7 @@ locals {
       query       = <<-QUERY
             AppRequests
             | where Name matches regex @"^POST /idpay-itn/merchant-op/transactions/[^/]+/reversal$"
+                or Name matches regex @"^POST /idpay-itn/merchant-op/initiatives/[^/]+/transactions/[^/]+/reversal$"
             | where ResultCode startswith "5"
           QUERY
       criteria = {
@@ -600,6 +609,7 @@ locals {
       query       = <<-QUERY
             AppRequests
             | where Name matches regex @"^POST /idpay-itn/merchant-op/transactions/[^/]+/reward$"
+                or Name matches regex @"^POST /idpay-itn/merchant-op/initiatives/[^/]+/transactions/[^/]+/reward$"
             | where ResultCode startswith "5"
           QUERY
       criteria = {
@@ -616,6 +626,7 @@ locals {
       query       = <<-QUERY
             AppRequests
             | where Name == "GET /idpay-itn/merchant-op/products"
+                or Name matches regex @"^GET /idpay-itn/merchant-op/initiatives/[^/]+/products$"
             | where ResultCode startswith "5"
           QUERY
       criteria = {
@@ -632,6 +643,7 @@ locals {
       query       = <<-QUERY
             AppRequests
             | where Name == "GET /idpay-itn/merchant-op/products"
+                or Name matches regex @"^GET /idpay-itn/merchant-op/initiatives/[^/]+/products$"
             | where ResultCode in ("401", "404", "429")
           QUERY
       criteria = {
@@ -651,6 +663,7 @@ locals {
       query       = <<-QUERY
             AppRequests
             | where Name matches regex @"^GET /idpay-itn/merchant/portal/[^/]+/transactions/[^/]+/download$"
+                or Name matches regex @"^GET /idpay-itn/merchant/portal/initiatives/[^/]+/point-of-sales/[^/]+/transactions/[^/]+/download$"
             | where ResultCode startswith "5"
           QUERY
       criteria = {
@@ -668,6 +681,7 @@ locals {
       query       = <<-QUERY
             AppRequests
             | where Name matches regex @"^GET /idpay-itn/merchant/portal/[^/]+/transactions/[^/]+/download$"
+                or Name matches regex @"^GET /idpay-itn/merchant/portal/initiatives/[^/]+/point-of-sales/[^/]+/transactions/[^/]+/download$"
             | where ResultCode in ("400", "401", "429")
           QUERY
       criteria = {
@@ -685,6 +699,7 @@ locals {
       query       = <<-QUERY
             AppRequests
             | where Name matches regex @"^GET /idpay-itn/merchant/portal/[^/]+/point-of-sales/[^/]+$"
+                or Name matches regex @"^GET /idpay-itn/merchant/portal/[^/]+/initiatives/[^/]+/point-of-sales/[^/]+$"
             | where ResultCode startswith "5"
           QUERY
       criteria = {
@@ -702,6 +717,7 @@ locals {
       query       = <<-QUERY
             AppRequests
             | where Name matches regex @"^GET /idpay-itn/merchant/portal/[^/]+/point-of-sales/[^/]+$"
+                or Name matches regex @"^GET /idpay-itn/merchant/portal/[^/]+/initiatives/[^/]+/point-of-sales/[^/]+$"
             | where ResultCode in ("401", "404", "429")
           QUERY
       criteria = {
