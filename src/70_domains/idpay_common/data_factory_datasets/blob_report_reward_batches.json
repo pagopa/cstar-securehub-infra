@@ -1,0 +1,45 @@
+{
+    "name": "blob_report_reward_batches",
+    "properties": {
+        "linkedServiceName": {
+            "referenceName": "idpay-report-trx-blob-storage-ls",
+            "type": "LinkedServiceReference"
+        },
+        "parameters": {
+            "initiativeId": {
+                "type": "String"
+            },
+            "merchantId": {
+                "type": "String"
+            },
+            "rewardBatchId": {
+                "type": "String"
+            },
+            "reportName": {
+                "type": "String"
+            }
+        },
+        "annotations": [],
+        "type": "DelimitedText",
+        "typeProperties": {
+            "location": {
+                "type": "AzureBlobStorageLocation",
+                "fileName": {
+                    "value": "@dataset().reportName",
+                    "type": "Expression"
+                },
+                "folderPath": {
+                    "value": "@concat('initiative/',dataset().initiativeId,'/merchant/',dataset().merchantId,'/batch/',dataset().rewardBatchId)",
+                    "type": "Expression"
+                },
+                "container": "reward-batches"
+            },
+            "columnDelimiter": ";",
+            "escapeChar": "\\",
+            "firstRowAsHeader": true,
+            "quoteChar": "\""
+        },
+        "schema": []
+    },
+    "type": "Microsoft.DataFactory/factories/datasets"
+}
