@@ -62,7 +62,11 @@ locals {
         {
           keys   = ["originId"]
           unique = false
-        }
+        },
+        {
+          keys   = ["messageRegistrationDate"]
+          unique = false
+        },
       ]
 
     },

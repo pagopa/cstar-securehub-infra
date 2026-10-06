@@ -101,7 +101,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.4.3",
+      "pluginVersion": "12.4.8",
       "targets": [
         {
           "azureMonitor": {
@@ -124,16 +124,16 @@
               {
                 "metricNamespace": "Microsoft.Cdn/profiles",
                 "region": "global",
-                "resourceGroup": "cstar-d-itn-idpay-data-rg",
-                "resourceName": "cstar-d-itn-idpay-bonus-cdn-profile",
-                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+                "resourceGroup": "$idpayDataRg",
+                "resourceName": "$bonusCdnProfile",
+                "subscription": "$subscription"
               }
             ],
             "timeGrain": "auto"
           },
           "queryType": "Azure Monitor",
           "refId": "A",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "$subscription"
         }
       ],
       "title": "CDN Latency",
@@ -202,7 +202,7 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 11,
+        "w": 12,
         "x": 12,
         "y": 0
       },
@@ -220,7 +220,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.4.3",
+      "pluginVersion": "12.4.8",
       "targets": [
         {
           "azureMonitor": {
@@ -243,16 +243,16 @@
               {
                 "metricNamespace": "Microsoft.Cdn/profiles",
                 "region": "global",
-                "resourceGroup": "cstar-d-itn-idpay-data-rg",
-                "resourceName": "cstar-d-itn-idpay-bonus-cdn-profile",
-                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+                "resourceGroup": "$idpayDataRg",
+                "resourceName": "$bonusCdnProfile",
+                "subscription": "$subscription"
               }
             ],
             "timeGrain": "auto"
           },
           "queryType": "Azure Monitor",
           "refId": "A",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "$subscription"
         }
       ],
       "title": "CDN Request Count",
@@ -279,7 +279,7 @@
         "content": "# PARI Initiatives\n",
         "mode": "markdown"
       },
-      "pluginVersion": "12.4.3",
+      "pluginVersion": "12.4.8",
       "title": "",
       "type": "text"
     },
@@ -334,7 +334,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.4.3",
+      "pluginVersion": "12.4.8",
       "targets": [
         {
           "azureMonitor": {
@@ -357,9 +357,9 @@
               {
                 "metricNamespace": "Microsoft.Network/applicationGateways",
                 "region": "westeurope",
-                "resourceGroup": "cstar-d-vnet-rg",
-                "resourceName": "cstar-d-app-gw-maz",
-                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+                "resourceGroup": "$vnetRg",
+                "resourceName": "$appGateway",
+                "subscription": "$subscription"
               }
             ],
             "timeGrain": "auto"
@@ -370,7 +370,7 @@
           },
           "queryType": "Azure Monitor",
           "refId": "A",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "$subscription"
         }
       ],
       "title": "App Gateway Request 1min",
@@ -428,7 +428,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.4.3",
+      "pluginVersion": "12.4.8",
       "targets": [
         {
           "appInsights": {
@@ -444,7 +444,7 @@
             "dashboardTime": false,
             "query": "//change this example to create your own time series query\n<table name>                                                              //the table to query (e.g. Usage, Heartbeat, Perf)\n| where $__timeFilter(TimeGenerated)                                      //this is a macro used to show the full chart’s time range, choose the datetime column here\n| summarize count() by <group by column>, bin(TimeGenerated, $__interval) //change “group by column” to a column in your table, such as “Computer”. The $__interval macro is used to auto-select the time grain. Can also use 1h, 5m etc.\n| order by TimeGenerated asc",
             "resultFormat": "time_series",
-            "workspace": "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/cstar-d-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-d-itn-core-law"
+            "workspace": "/subscriptions/$subscription/resourceGroups/$coreMonitorRg/providers/Microsoft.OperationalInsights/workspaces/$coreLaw"
           },
           "azureMonitor": {
             "aggOptions": [
@@ -467,8 +467,8 @@
             "metricNamespace": "Microsoft.Network/applicationGateways",
             "resources": [
               {
-                "resourceGroup": "cstar-d-vnet-rg",
-                "resourceName": "cstar-d-app-gw-maz"
+                "resourceGroup": "$vnetRg",
+                "resourceName": "$appGateway"
               }
             ],
             "timeGrain": "auto",
@@ -581,7 +581,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.4.3",
+      "pluginVersion": "12.4.8",
       "targets": [
         {
           "appInsights": {
@@ -597,7 +597,7 @@
             "dashboardTime": false,
             "query": "//change this example to create your own time series query\n<table name>                                                              //the table to query (e.g. Usage, Heartbeat, Perf)\n| where $__timeFilter(TimeGenerated)                                      //this is a macro used to show the full chart’s time range, choose the datetime column here\n| summarize count() by <group by column>, bin(TimeGenerated, $__interval) //change “group by column” to a column in your table, such as “Computer”. The $__interval macro is used to auto-select the time grain. Can also use 1h, 5m etc.\n| order by TimeGenerated asc",
             "resultFormat": "time_series",
-            "workspace": "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/cstar-d-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-d-itn-core-law"
+            "workspace": "/subscriptions/$subscription/resourceGroups/$coreMonitorRg/providers/Microsoft.OperationalInsights/workspaces/$coreLaw"
           },
           "azureMonitor": {
             "aggOptions": [
@@ -620,8 +620,8 @@
             "metricNamespace": "Microsoft.Network/applicationGateways",
             "resources": [
               {
-                "resourceGroup": "cstar-d-vnet-rg",
-                "resourceName": "cstar-d-app-gw-maz"
+                "resourceGroup": "$vnetRg",
+                "resourceName": "$appGateway"
               }
             ],
             "timeGrain": "auto",
@@ -739,7 +739,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.4.3",
+      "pluginVersion": "12.4.8",
       "targets": [
         {
           "appInsights": {
@@ -755,7 +755,7 @@
             "dashboardTime": false,
             "query": "//change this example to create your own time series query\n<table name>                                                              //the table to query (e.g. Usage, Heartbeat, Perf)\n| where $__timeFilter(TimeGenerated)                                      //this is a macro used to show the full chart’s time range, choose the datetime column here\n| summarize count() by <group by column>, bin(TimeGenerated, $__interval) //change “group by column” to a column in your table, such as “Computer”. The $__interval macro is used to auto-select the time grain. Can also use 1h, 5m etc.\n| order by TimeGenerated asc",
             "resultFormat": "time_series",
-            "workspace": "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/cstar-d-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-d-itn-core-law"
+            "workspace": "/subscriptions/$subscription/resourceGroups/$coreMonitorRg/providers/Microsoft.OperationalInsights/workspaces/$coreLaw"
           },
           "azureMonitor": {
             "aggOptions": [
@@ -778,8 +778,8 @@
             "metricNamespace": "Microsoft.Network/applicationGateways",
             "resources": [
               {
-                "resourceGroup": "cstar-d-vnet-rg",
-                "resourceName": "cstar-d-app-gw-maz"
+                "resourceGroup": "$vnetRg",
+                "resourceName": "$appGateway"
               }
             ],
             "timeGrain": "auto",
@@ -903,7 +903,7 @@
         "sizing": "auto",
         "valueMode": "color"
       },
-      "pluginVersion": "12.4.3",
+      "pluginVersion": "12.4.8",
       "targets": [
         {
           "appInsights": {
@@ -919,7 +919,7 @@
             "dashboardTime": false,
             "query": "//change this example to create your own time series query\n<table name>                                                              //the table to query (e.g. Usage, Heartbeat, Perf)\n| where $__timeFilter(TimeGenerated)                                      //this is a macro used to show the full chart’s time range, choose the datetime column here\n| summarize count() by <group by column>, bin(TimeGenerated, $__interval) //change “group by column” to a column in your table, such as “Computer”. The $__interval macro is used to auto-select the time grain. Can also use 1h, 5m etc.\n| order by TimeGenerated asc",
             "resultFormat": "time_series",
-            "workspace": "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/cstar-d-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-d-itn-core-law"
+            "workspace": "/subscriptions/$subscription/resourceGroups/$coreMonitorRg/providers/Microsoft.OperationalInsights/workspaces/$coreLaw"
           },
           "azureMonitor": {
             "aggOptions": [
@@ -953,8 +953,8 @@
             "metricNamespace": "Microsoft.Network/applicationGateways",
             "resources": [
               {
-                "resourceGroup": "cstar-d-vnet-rg",
-                "resourceName": "cstar-d-app-gw-maz"
+                "resourceGroup": "$vnetRg",
+                "resourceName": "$appGateway"
               }
             ],
             "timeGrain": "auto",
@@ -1029,7 +1029,7 @@
             "dashboardTime": false,
             "query": "//change this example to create your own time series query\n<table name>                                                              //the table to query (e.g. Usage, Heartbeat, Perf)\n| where $__timeFilter(TimeGenerated)                                      //this is a macro used to show the full chart’s time range, choose the datetime column here\n| summarize count() by <group by column>, bin(TimeGenerated, $__interval) //change “group by column” to a column in your table, such as “Computer”. The $__interval macro is used to auto-select the time grain. Can also use 1h, 5m etc.\n| order by TimeGenerated asc",
             "resultFormat": "time_series",
-            "workspace": "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/cstar-d-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-d-itn-core-law"
+            "workspace": "/subscriptions/$subscription/resourceGroups/$coreMonitorRg/providers/Microsoft.OperationalInsights/workspaces/$coreLaw"
           },
           "azureMonitor": {
             "aggOptions": [
@@ -1063,8 +1063,8 @@
             "metricNamespace": "Microsoft.Network/applicationGateways",
             "resources": [
               {
-                "resourceGroup": "cstar-d-vnet-rg",
-                "resourceName": "cstar-d-app-gw-maz"
+                "resourceGroup": "$vnetRg",
+                "resourceName": "$appGateway"
               }
             ],
             "timeGrain": "auto",
@@ -1140,7 +1140,7 @@
             "dashboardTime": false,
             "query": "//change this example to create your own time series query\n<table name>                                                              //the table to query (e.g. Usage, Heartbeat, Perf)\n| where $__timeFilter(TimeGenerated)                                      //this is a macro used to show the full chart’s time range, choose the datetime column here\n| summarize count() by <group by column>, bin(TimeGenerated, $__interval) //change “group by column” to a column in your table, such as “Computer”. The $__interval macro is used to auto-select the time grain. Can also use 1h, 5m etc.\n| order by TimeGenerated asc",
             "resultFormat": "time_series",
-            "workspace": "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/cstar-d-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-d-itn-core-law"
+            "workspace": "/subscriptions/$subscription/resourceGroups/$coreMonitorRg/providers/Microsoft.OperationalInsights/workspaces/$coreLaw"
           },
           "azureMonitor": {
             "aggOptions": [
@@ -1189,8 +1189,8 @@
             "metricNamespace": "Microsoft.Network/applicationGateways",
             "resources": [
               {
-                "resourceGroup": "cstar-d-vnet-rg",
-                "resourceName": "cstar-d-app-gw-maz"
+                "resourceGroup": "$vnetRg",
+                "resourceName": "$appGateway"
               }
             ],
             "timeGrain": "auto",
@@ -1265,7 +1265,7 @@
             "dashboardTime": false,
             "query": "//change this example to create your own time series query\n<table name>                                                              //the table to query (e.g. Usage, Heartbeat, Perf)\n| where $__timeFilter(TimeGenerated)                                      //this is a macro used to show the full chart’s time range, choose the datetime column here\n| summarize count() by <group by column>, bin(TimeGenerated, $__interval) //change “group by column” to a column in your table, such as “Computer”. The $__interval macro is used to auto-select the time grain. Can also use 1h, 5m etc.\n| order by TimeGenerated asc",
             "resultFormat": "time_series",
-            "workspace": "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/cstar-d-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-d-itn-core-law"
+            "workspace": "/subscriptions/$subscription/resourceGroups/$coreMonitorRg/providers/Microsoft.OperationalInsights/workspaces/$coreLaw"
           },
           "azureMonitor": {
             "aggOptions": [
@@ -1314,8 +1314,8 @@
             "metricNamespace": "Microsoft.Network/applicationGateways",
             "resources": [
               {
-                "resourceGroup": "cstar-d-vnet-rg",
-                "resourceName": "cstar-d-app-gw-maz"
+                "resourceGroup": "$vnetRg",
+                "resourceName": "$appGateway"
               }
             ],
             "timeGrain": "auto",
@@ -1390,7 +1390,7 @@
             "dashboardTime": false,
             "query": "//change this example to create your own time series query\n<table name>                                                              //the table to query (e.g. Usage, Heartbeat, Perf)\n| where $__timeFilter(TimeGenerated)                                      //this is a macro used to show the full chart’s time range, choose the datetime column here\n| summarize count() by <group by column>, bin(TimeGenerated, $__interval) //change “group by column” to a column in your table, such as “Computer”. The $__interval macro is used to auto-select the time grain. Can also use 1h, 5m etc.\n| order by TimeGenerated asc",
             "resultFormat": "time_series",
-            "workspace": "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/cstar-d-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-d-itn-core-law"
+            "workspace": "/subscriptions/$subscription/resourceGroups/$coreMonitorRg/providers/Microsoft.OperationalInsights/workspaces/$coreLaw"
           },
           "azureMonitor": {
             "aggOptions": [
@@ -1439,8 +1439,8 @@
             "metricNamespace": "Microsoft.Network/applicationGateways",
             "resources": [
               {
-                "resourceGroup": "cstar-d-vnet-rg",
-                "resourceName": "cstar-d-app-gw-maz"
+                "resourceGroup": "$vnetRg",
+                "resourceName": "$appGateway"
               }
             ],
             "timeGrain": "auto",
@@ -1564,7 +1564,7 @@
         "sizing": "auto",
         "valueMode": "color"
       },
-      "pluginVersion": "12.4.3",
+      "pluginVersion": "12.4.8",
       "targets": [
         {
           "azureMonitor": {
@@ -1594,16 +1594,16 @@
               {
                 "metricNamespace": "Microsoft.Network/applicationGateways",
                 "region": "westeurope",
-                "resourceGroup": "cstar-d-vnet-rg",
-                "resourceName": "cstar-d-app-gw-maz",
-                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+                "resourceGroup": "$vnetRg",
+                "resourceName": "$appGateway",
+                "subscription": "$subscription"
               }
             ],
             "timeGrain": "auto"
           },
           "queryType": "Azure Monitor",
           "refId": "A",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "$subscription"
         }
       ],
       "title": "App Gateway Response code",
@@ -1658,7 +1658,7 @@
         "showThresholdMarkers": true,
         "sizing": "auto"
       },
-      "pluginVersion": "12.4.3",
+      "pluginVersion": "12.4.8",
       "targets": [
         {
           "azureMonitor": {
@@ -1681,16 +1681,16 @@
               {
                 "metricNamespace": "Microsoft.ApiManagement/service",
                 "region": "westeurope",
-                "resourceGroup": "cstar-d-api-rg",
-                "resourceName": "cstar-d-apim",
-                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+                "resourceGroup": "$apiRg",
+                "resourceName": "$apim",
+                "subscription": "$subscription"
               }
             ],
             "timeGrain": "auto"
           },
           "queryType": "Azure Monitor",
           "refId": "A",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "$subscription"
         }
       ],
       "title": "APIM Request",
@@ -1745,7 +1745,7 @@
         "showThresholdMarkers": true,
         "sizing": "auto"
       },
-      "pluginVersion": "12.4.3",
+      "pluginVersion": "12.4.8",
       "targets": [
         {
           "azureMonitor": {
@@ -1768,16 +1768,16 @@
               {
                 "metricNamespace": "Microsoft.ApiManagement/service",
                 "region": "westeurope",
-                "resourceGroup": "cstar-d-api-rg",
-                "resourceName": "cstar-d-apim",
-                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+                "resourceGroup": "$apiRg",
+                "resourceName": "$apim",
+                "subscription": "$subscription"
               }
             ],
             "timeGrain": "auto"
           },
           "queryType": "Azure Monitor",
           "refId": "A",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "$subscription"
         }
       ],
       "title": "APIM Capacity",
@@ -1812,15 +1812,16 @@
                 "value": 0
               },
               {
-                "color": "semi-dark-green",
-                "value": 0.5
+                "color": "yellow",
+                "value": 500
               },
               {
                 "color": "red",
-                "value": 1
+                "value": 1000
               }
             ]
-          }
+          },
+          "unit": "ms"
         },
         "overrides": [
           {
@@ -1892,6 +1893,10 @@
                     }
                   ]
                 }
+              },
+              {
+                "id": "unit",
+                "value": "none"
               }
             ]
           }
@@ -1914,14 +1919,15 @@
           }
         ]
       },
-      "pluginVersion": "12.4.3",
+      "pluginVersion": "12.4.8",
       "targets": [
         {
           "azureLogAnalytics": {
             "dashboardTime": false,
-            "query": "\nlet dataset = requests\n| where $__timeFilter(timestamp)\n| where url has \"$initiativeId\"\n;\ndataset\n| summarize  Avg = avg(duration)/1000, 95Prc = percentile( duration,95)/1000, 99Prc = percentile( duration,99)/1000, Count = count()\n| project operation_Name=\"All\", Avg, 95Prc, 99Prc, Count\n| union(dataset\n| summarize  Avg = avg(duration)/1000, 95Prc = percentile( duration,95)/1000, 99Prc = percentile( duration,99)/1000, Count = count() by operation_Name\n| top 20 by Avg desc\n| order by Count\n)\n\n",
+            "mode": "raw",
+            "query": "\nlet dataset = requests\n| where $__timeFilter(timestamp)\n| where url has \"$initiativeId\"\n;\ndataset\n| summarize  Avg = avg(duration), 95Prc = percentile( duration,95), 99Prc = percentile( duration,99), Count = count()\n| project operation_Name=\"All\", Avg, 95Prc, 99Prc, Count\n| union(dataset\n| summarize  Avg = avg(duration), 95Prc = percentile( duration,95), 99Prc = percentile( duration,99), Count = count() by operation_Name\n| top 20 by Avg desc\n| order by Count\n)\n\n",
             "resources": [
-              "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/cstar-d-itn-idpay-monitoring-rg/providers/Microsoft.Insights/components/cstar-d-itn-idpay-appinsights"
+              "/subscriptions/$subscription/resourceGroups/$idpayMonitoringRg/providers/Microsoft.Insights/components/$applicationInsights"
             ],
             "resultFormat": "logs"
           },
@@ -1983,7 +1989,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.4.3",
+      "pluginVersion": "12.4.8",
       "targets": [
         {
           "azureMonitor": {
@@ -2006,16 +2012,16 @@
               {
                 "metricNamespace": "Microsoft.ApiManagement/service",
                 "region": "westeurope",
-                "resourceGroup": "cstar-d-api-rg",
-                "resourceName": "cstar-d-apim",
-                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+                "resourceGroup": "$apiRg",
+                "resourceName": "$apim",
+                "subscription": "$subscription"
               }
             ],
             "timeGrain": "auto"
           },
           "queryType": "Azure Monitor",
           "refId": "A",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "$subscription"
         }
       ],
       "title": "APIM Backend Time",
@@ -2077,7 +2083,7 @@
         "showThresholdMarkers": true,
         "sizing": "auto"
       },
-      "pluginVersion": "12.4.3",
+      "pluginVersion": "12.4.8",
       "targets": [
         {
           "azureMonitor": {
@@ -2103,16 +2109,16 @@
               {
                 "metricNamespace": "Microsoft.DocumentDB/databaseAccounts",
                 "region": "italynorth",
-                "resourceGroup": "cstar-d-itn-idpay-data-rg",
-                "resourceName": "cstar-d-itn-idpay-mongodb-account",
-                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+                "resourceGroup": "$idpayDataRg",
+                "resourceName": "$idpayMongoDbAccount",
+                "subscription": "$subscription"
               }
             ],
             "timeGrain": "auto"
           },
           "queryType": "Azure Monitor",
           "refId": "A",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "$subscription"
         }
       ],
       "title": "MongoDB RU",
@@ -2169,7 +2175,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.4.3",
+      "pluginVersion": "12.4.8",
       "targets": [
         {
           "azureMonitor": {
@@ -2192,16 +2198,16 @@
               {
                 "metricNamespace": "Microsoft.Cache/redisEnterprise",
                 "region": "italynorth",
-                "resourceGroup": "cstar-d-itn-idpay-data-rg",
-                "resourceName": "cstar-d-itn-idpay-redis",
-                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+                "resourceGroup": "$idpayDataRg",
+                "resourceName": "$idpayRedis",
+                "subscription": "$subscription"
               }
             ],
             "timeGrain": "auto"
           },
           "queryType": "Azure Monitor",
           "refId": "A",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "$subscription"
         }
       ],
       "title": "Redis Connected client",
@@ -2256,7 +2262,7 @@
         "showThresholdMarkers": true,
         "sizing": "auto"
       },
-      "pluginVersion": "12.4.3",
+      "pluginVersion": "12.4.8",
       "targets": [
         {
           "azureMonitor": {
@@ -2279,16 +2285,16 @@
               {
                 "metricNamespace": "Microsoft.Cache/redisEnterprise",
                 "region": "italynorth",
-                "resourceGroup": "cstar-d-itn-idpay-data-rg",
-                "resourceName": "cstar-d-itn-idpay-redis",
-                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+                "resourceGroup": "$idpayDataRg",
+                "resourceName": "$idpayRedis",
+                "subscription": "$subscription"
               }
             ],
             "timeGrain": "auto"
           },
           "queryType": "Azure Monitor",
           "refId": "A",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "$subscription"
         }
       ],
       "title": "Redis Used Memory",
@@ -2343,7 +2349,7 @@
         "showThresholdMarkers": true,
         "sizing": "auto"
       },
-      "pluginVersion": "12.4.3",
+      "pluginVersion": "12.4.8",
       "targets": [
         {
           "azureMonitor": {
@@ -2366,16 +2372,16 @@
               {
                 "metricNamespace": "Microsoft.Cache/redisEnterprise",
                 "region": "italynorth",
-                "resourceGroup": "cstar-d-itn-idpay-data-rg",
-                "resourceName": "cstar-d-itn-idpay-redis",
-                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+                "resourceGroup": "$idpayDataRg",
+                "resourceName": "$idpayRedis",
+                "subscription": "$subscription"
               }
             ],
             "timeGrain": "auto"
           },
           "queryType": "Azure Monitor",
           "refId": "A",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "$subscription"
         }
       ],
       "title": "Redis CPU",
@@ -2431,7 +2437,7 @@
         "showThresholdMarkers": true,
         "sizing": "auto"
       },
-      "pluginVersion": "12.4.3",
+      "pluginVersion": "12.4.8",
       "targets": [
         {
           "azureMonitor": {
@@ -2454,16 +2460,16 @@
               {
                 "metricNamespace": "Microsoft.Cache/redisEnterprise",
                 "region": "italynorth",
-                "resourceGroup": "cstar-d-itn-idpay-data-rg",
-                "resourceName": "cstar-d-itn-idpay-redis",
-                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+                "resourceGroup": "$idpayDataRg",
+                "resourceName": "$idpayRedis",
+                "subscription": "$subscription"
               }
             ],
             "timeGrain": "auto"
           },
           "queryType": "Azure Monitor",
           "refId": "A",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "$subscription"
         }
       ],
       "title": "Redis Key number",
@@ -2518,7 +2524,7 @@
         "showThresholdMarkers": true,
         "sizing": "auto"
       },
-      "pluginVersion": "12.4.3",
+      "pluginVersion": "12.4.8",
       "targets": [
         {
           "azureMonitor": {
@@ -2541,16 +2547,16 @@
               {
                 "metricNamespace": "Microsoft.Cache/redisEnterprise",
                 "region": "italynorth",
-                "resourceGroup": "cstar-d-itn-idpay-data-rg",
-                "resourceName": "cstar-d-itn-idpay-redis",
-                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+                "resourceGroup": "$idpayDataRg",
+                "resourceName": "$idpayRedis",
+                "subscription": "$subscription"
               }
             ],
             "timeGrain": "auto"
           },
           "queryType": "Azure Monitor",
           "refId": "A",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "$subscription"
         }
       ],
       "title": "Redis Miss rate",
@@ -2607,7 +2613,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.4.3",
+      "pluginVersion": "12.4.8",
       "targets": [
         {
           "azureMonitor": {
@@ -2643,16 +2649,16 @@
               {
                 "metricNamespace": "Microsoft.ContainerService/managedClusters",
                 "region": "italynorth",
-                "resourceGroup": "cstar-d-itn-core-aks-rg",
-                "resourceName": "cstar-d-itn-dev-aks",
-                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+                "resourceGroup": "$coreAksRg",
+                "resourceName": "$aks",
+                "subscription": "$subscription"
               }
             ],
             "timeGrain": "auto"
           },
           "queryType": "Azure Monitor",
           "refId": "A",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "$subscription"
         }
       ],
       "title": "Idpay Pod by Phase",
@@ -2709,7 +2715,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.4.3",
+      "pluginVersion": "12.4.8",
       "targets": [
         {
           "azureMonitor": {
@@ -2740,16 +2746,16 @@
               {
                 "metricNamespace": "Microsoft.ContainerService/managedClusters",
                 "region": "italynorth",
-                "resourceGroup": "cstar-d-itn-core-aks-rg",
-                "resourceName": "cstar-d-itn-dev-aks",
-                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+                "resourceGroup": "$coreAksRg",
+                "resourceName": "$aks",
+                "subscription": "$subscription"
               }
             ],
             "timeGrain": "auto"
           },
           "queryType": "Azure Monitor",
           "refId": "A",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "$subscription"
         }
       ],
       "title": "Idpay Nodepool CPU",
@@ -2806,7 +2812,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.4.3",
+      "pluginVersion": "12.4.8",
       "targets": [
         {
           "azureMonitor": {
@@ -2837,16 +2843,16 @@
               {
                 "metricNamespace": "Microsoft.ContainerService/managedClusters",
                 "region": "italynorth",
-                "resourceGroup": "cstar-d-itn-core-aks-rg",
-                "resourceName": "cstar-d-itn-dev-aks",
-                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+                "resourceGroup": "$coreAksRg",
+                "resourceName": "$aks",
+                "subscription": "$subscription"
               }
             ],
             "timeGrain": "auto"
           },
           "queryType": "Azure Monitor",
           "refId": "A",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "$subscription"
         }
       ],
       "title": "Idpay Nodepool MEM",
@@ -2903,7 +2909,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.4.3",
+      "pluginVersion": "12.4.8",
       "targets": [
         {
           "azureMonitor": {
@@ -2939,16 +2945,16 @@
               {
                 "metricNamespace": "Microsoft.ContainerService/managedClusters",
                 "region": "italynorth",
-                "resourceGroup": "cstar-d-itn-core-aks-rg",
-                "resourceName": "cstar-d-itn-dev-aks",
-                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+                "resourceGroup": "$coreAksRg",
+                "resourceName": "$aks",
+                "subscription": "$subscription"
               }
             ],
             "timeGrain": "auto"
           },
           "queryType": "Azure Monitor",
           "refId": "A",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "$subscription"
         }
       ],
       "title": "Keycloak Pod by Phase",
@@ -3005,7 +3011,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.4.3",
+      "pluginVersion": "12.4.8",
       "targets": [
         {
           "azureMonitor": {
@@ -3036,16 +3042,16 @@
               {
                 "metricNamespace": "Microsoft.ContainerService/managedClusters",
                 "region": "italynorth",
-                "resourceGroup": "cstar-d-itn-core-aks-rg",
-                "resourceName": "cstar-d-itn-dev-aks",
-                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+                "resourceGroup": "$coreAksRg",
+                "resourceName": "$aks",
+                "subscription": "$subscription"
               }
             ],
             "timeGrain": "auto"
           },
           "queryType": "Azure Monitor",
           "refId": "A",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "$subscription"
         }
       ],
       "title": "Keycloak Nodepool CPU",
@@ -3102,7 +3108,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.4.3",
+      "pluginVersion": "12.4.8",
       "targets": [
         {
           "azureMonitor": {
@@ -3133,16 +3139,16 @@
               {
                 "metricNamespace": "Microsoft.ContainerService/managedClusters",
                 "region": "italynorth",
-                "resourceGroup": "cstar-d-itn-core-aks-rg",
-                "resourceName": "cstar-d-itn-dev-aks",
-                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+                "resourceGroup": "$coreAksRg",
+                "resourceName": "$aks",
+                "subscription": "$subscription"
               }
             ],
             "timeGrain": "auto"
           },
           "queryType": "Azure Monitor",
           "refId": "A",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "$subscription"
         }
       ],
       "title": "Keycloak Nodepool MEM",
@@ -3246,7 +3252,7 @@
           }
         ]
       },
-      "pluginVersion": "12.4.3",
+      "pluginVersion": "12.4.8",
       "targets": [
         {
           "appInsights": {
@@ -3260,9 +3266,9 @@
           },
           "azureLogAnalytics": {
             "dashboardTime": false,
-            "query": "KubePodInventory\n| where TimeGenerated > ago(2m)\n| where ClusterName == \"cstar-d-itn-dev-aks\"\n| where Namespace == \"idpay\"\n| summarize arg_max(TimeGenerated, *) by ContainerName\n| project Name, ContainerName\n| join kind = inner (\n    Perf\n    | where TimeGenerated > ago(2m)\n    | where ObjectName == 'K8SContainer'\n    | where CounterName == 'cpuLimitNanoCores'\n    | where InstanceName contains 'cstar-d-itn-dev-aks'\n    | extend ContainerNameParts = split(InstanceName, '/')\n    | extend ContainerNamePartCount = array_length(ContainerNameParts)            \n    | extend PodUIDIndex = ContainerNamePartCount - 2, ContainerNameIndex = ContainerNamePartCount - 1 \n    | extend ContainerName = strcat(ContainerNameParts[PodUIDIndex], '/', ContainerNameParts[ContainerNameIndex])\n    | summarize arg_max(TimeGenerated, *) by ContainerName\n    | project ContainerName, CpuLimit=CounterValue\n    | join kind = inner (\n        Perf\n        | where TimeGenerated > ago(2m)\n        | where ObjectName == 'K8SContainer'\n        | where CounterName == 'cpuUsageNanoCores'\n        | where InstanceName contains 'cstar-d-itn-dev-aks'\n        | extend ContainerNameParts = split(InstanceName, '/')\n        | extend ContainerNamePartCount = array_length(ContainerNameParts)            \n        | extend PodUIDIndex = ContainerNamePartCount - 2, ContainerNameIndex = ContainerNamePartCount - 1 \n        | extend ContainerName = strcat(ContainerNameParts[PodUIDIndex], '/', ContainerNameParts[ContainerNameIndex])\n        | summarize arg_max(TimeGenerated, *) by ContainerName\n        | project TimeGenerated, ContainerName, CpuUsage=CounterValue\n    ) on ContainerName\n) on ContainerName\n| order by Name asc\n| project Name, CpuLimit=(CpuLimit / 1000000), CpuUsage=(CpuUsage / 1000000)",
+            "query": "KubePodInventory\n| where TimeGenerated > ago(2m)\n| where ClusterName == \"$aks\"\n| where Namespace == \"idpay\"\n| summarize arg_max(TimeGenerated, *) by ContainerName\n| project Name, ContainerName\n| join kind = inner (\n    Perf\n    | where TimeGenerated > ago(2m)\n    | where ObjectName == 'K8SContainer'\n    | where CounterName == 'cpuLimitNanoCores'\n    | where InstanceName contains '$aks'\n    | extend ContainerNameParts = split(InstanceName, '/')\n    | extend ContainerNamePartCount = array_length(ContainerNameParts)            \n    | extend PodUIDIndex = ContainerNamePartCount - 2, ContainerNameIndex = ContainerNamePartCount - 1 \n    | extend ContainerName = strcat(ContainerNameParts[PodUIDIndex], '/', ContainerNameParts[ContainerNameIndex])\n    | summarize arg_max(TimeGenerated, *) by ContainerName\n    | project ContainerName, CpuLimit=CounterValue\n    | join kind = inner (\n        Perf\n        | where TimeGenerated > ago(2m)\n        | where ObjectName == 'K8SContainer'\n        | where CounterName == 'cpuUsageNanoCores'\n        | where InstanceName contains '$aks'\n        | extend ContainerNameParts = split(InstanceName, '/')\n        | extend ContainerNamePartCount = array_length(ContainerNameParts)            \n        | extend PodUIDIndex = ContainerNamePartCount - 2, ContainerNameIndex = ContainerNamePartCount - 1 \n        | extend ContainerName = strcat(ContainerNameParts[PodUIDIndex], '/', ContainerNameParts[ContainerNameIndex])\n        | summarize arg_max(TimeGenerated, *) by ContainerName\n        | project TimeGenerated, ContainerName, CpuUsage=CounterValue\n    ) on ContainerName\n) on ContainerName\n| order by Name asc\n| project Name, CpuLimit=(CpuLimit / 1000000), CpuUsage=(CpuUsage / 1000000)",
             "resources": [
-              "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/cstar-d-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-d-itn-core-law"
+              "/subscriptions/$subscription/resourceGroups/$coreMonitorRg/providers/Microsoft.OperationalInsights/workspaces/$coreLaw"
             ],
             "resultFormat": "table"
           },
@@ -3392,7 +3398,7 @@
           }
         ]
       },
-      "pluginVersion": "12.4.3",
+      "pluginVersion": "12.4.8",
       "targets": [
         {
           "appInsights": {
@@ -3406,9 +3412,9 @@
           },
           "azureLogAnalytics": {
             "dashboardTime": false,
-            "query": "KubePodInventory\n| where TimeGenerated > ago(2m)\n| where ClusterName == \"cstar-d-itn-dev-aks\"\n| where Namespace == \"keycloak\"\n| summarize arg_max(TimeGenerated, *) by ContainerName\n| project Name, ContainerName\n| join kind = inner (\n    Perf\n    | where TimeGenerated > ago(2m)\n    | where ObjectName == 'K8SContainer'\n    | where CounterName == 'cpuLimitNanoCores'\n    | where InstanceName contains 'cstar-d-itn-dev-aks'\n    | extend ContainerNameParts = split(InstanceName, '/')\n    | extend ContainerNamePartCount = array_length(ContainerNameParts)            \n    | extend PodUIDIndex = ContainerNamePartCount - 2, ContainerNameIndex = ContainerNamePartCount - 1 \n    | extend ContainerName = strcat(ContainerNameParts[PodUIDIndex], '/', ContainerNameParts[ContainerNameIndex])\n    | summarize arg_max(TimeGenerated, *) by ContainerName\n    | project ContainerName, CpuLimit=CounterValue\n    | join kind = inner (\n        Perf\n        | where TimeGenerated > ago(2m)\n        | where ObjectName == 'K8SContainer'\n        | where CounterName == 'cpuUsageNanoCores'\n        | where InstanceName contains 'cstar-d-itn-dev-aks'\n        | extend ContainerNameParts = split(InstanceName, '/')\n        | extend ContainerNamePartCount = array_length(ContainerNameParts)            \n        | extend PodUIDIndex = ContainerNamePartCount - 2, ContainerNameIndex = ContainerNamePartCount - 1 \n        | extend ContainerName = strcat(ContainerNameParts[PodUIDIndex], '/', ContainerNameParts[ContainerNameIndex])\n        | summarize arg_max(TimeGenerated, *) by ContainerName\n        | project TimeGenerated, ContainerName, CpuUsage=CounterValue\n    ) on ContainerName\n) on ContainerName\n| order by Name asc\n| project Name, CpuLimit=(CpuLimit / 1000000), CpuUsage=(CpuUsage / 1000000)",
+            "query": "KubePodInventory\n| where TimeGenerated > ago(2m)\n| where ClusterName == \"$aks\"\n| where Namespace == \"keycloak\"\n| summarize arg_max(TimeGenerated, *) by ContainerName\n| project Name, ContainerName\n| join kind = inner (\n    Perf\n    | where TimeGenerated > ago(2m)\n    | where ObjectName == 'K8SContainer'\n    | where CounterName == 'cpuLimitNanoCores'\n    | where InstanceName contains '$aks'\n    | extend ContainerNameParts = split(InstanceName, '/')\n    | extend ContainerNamePartCount = array_length(ContainerNameParts)            \n    | extend PodUIDIndex = ContainerNamePartCount - 2, ContainerNameIndex = ContainerNamePartCount - 1 \n    | extend ContainerName = strcat(ContainerNameParts[PodUIDIndex], '/', ContainerNameParts[ContainerNameIndex])\n    | summarize arg_max(TimeGenerated, *) by ContainerName\n    | project ContainerName, CpuLimit=CounterValue\n    | join kind = inner (\n        Perf\n        | where TimeGenerated > ago(2m)\n        | where ObjectName == 'K8SContainer'\n        | where CounterName == 'cpuUsageNanoCores'\n        | where InstanceName contains '$aks'\n        | extend ContainerNameParts = split(InstanceName, '/')\n        | extend ContainerNamePartCount = array_length(ContainerNameParts)            \n        | extend PodUIDIndex = ContainerNamePartCount - 2, ContainerNameIndex = ContainerNamePartCount - 1 \n        | extend ContainerName = strcat(ContainerNameParts[PodUIDIndex], '/', ContainerNameParts[ContainerNameIndex])\n        | summarize arg_max(TimeGenerated, *) by ContainerName\n        | project TimeGenerated, ContainerName, CpuUsage=CounterValue\n    ) on ContainerName\n) on ContainerName\n| order by Name asc\n| project Name, CpuLimit=(CpuLimit / 1000000), CpuUsage=(CpuUsage / 1000000)",
             "resources": [
-              "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/cstar-d-itn-core-monitor-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-d-itn-core-law"
+              "/subscriptions/$subscription/resourceGroups/$coreMonitorRg/providers/Microsoft.OperationalInsights/workspaces/$coreLaw"
             ],
             "resultFormat": "table"
           },
@@ -3447,6 +3453,535 @@
         "w": 24,
         "x": 0,
         "y": 66
+      },
+      "id": 109,
+      "panels": [],
+      "title": "EventHub Topic",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 67
+      },
+      "id": 101,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.4.8",
+      "targets": [
+        {
+          "azureMonitor": {
+            "aggregation": "Total",
+            "allowedTimeGrainsMs": [
+              60000,
+              300000,
+              900000,
+              1800000,
+              3600000,
+              21600000,
+              43200000,
+              86400000
+            ],
+            "dimensionFilters": [
+              {
+                "dimension": "EntityName",
+                "filters": [
+                  "idpay-transaction"
+                ],
+                "operator": "eq"
+              }
+            ],
+            "metricName": "IncomingMessages",
+            "metricNamespace": "microsoft.eventhub/namespaces",
+            "region": "italynorth",
+            "resources": [
+              {
+                "metricNamespace": "Microsoft.EventHub/namespaces",
+                "region": "italynorth",
+                "resourceGroup": "$idpayDataRg",
+                "resourceName": "$eventhubNs00",
+                "subscription": "$subscription"
+              }
+            ],
+            "timeGrain": "auto"
+          },
+          "queryType": "Azure Monitor",
+          "refId": "A",
+          "subscription": "$subscription"
+        }
+      ],
+      "title": "Event Hub 00 Incoming Messages",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 67
+      },
+      "id": 105,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.4.8",
+      "targets": [
+        {
+          "azureMonitor": {
+            "aggregation": "Total",
+            "allowedTimeGrainsMs": [
+              60000,
+              300000,
+              900000,
+              1800000,
+              3600000,
+              21600000,
+              43200000,
+              86400000
+            ],
+            "dimensionFilters": [
+              {
+                "dimension": "EntityName",
+                "filters": [
+                  "idpay-transaction"
+                ],
+                "operator": "eq"
+              }
+            ],
+            "metricName": "OutgoingMessages",
+            "metricNamespace": "microsoft.eventhub/namespaces",
+            "region": "italynorth",
+            "resources": [
+              {
+                "metricNamespace": "Microsoft.EventHub/namespaces",
+                "region": "italynorth",
+                "resourceGroup": "$idpayDataRg",
+                "resourceName": "$eventhubNs00",
+                "subscription": "$subscription"
+              }
+            ],
+            "timeGrain": "auto"
+          },
+          "queryType": "Azure Monitor",
+          "refId": "A",
+          "subscription": "$subscription"
+        }
+      ],
+      "title": "Event Hub 00 Outgoing Messages",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 75
+      },
+      "id": 106,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.4.8",
+      "targets": [
+        {
+          "azureMonitor": {
+            "aggregation": "Total",
+            "allowedTimeGrainsMs": [
+              60000,
+              300000,
+              900000,
+              1800000,
+              3600000,
+              21600000,
+              43200000,
+              86400000
+            ],
+            "dimensionFilters": [
+              {
+                "dimension": "EntityName",
+                "filters": [
+                  "idpay-errors",
+                  "idpay-commands",
+                  "idpay-reward-notification-storage-events",
+                  "idpay-timeline",
+                  "idpay-rule-update"
+                ],
+                "operator": "eq"
+              }
+            ],
+            "metricName": "IncomingMessages",
+            "metricNamespace": "microsoft.eventhub/namespaces",
+            "region": "italynorth",
+            "resources": [
+              {
+                "metricNamespace": "Microsoft.EventHub/namespaces",
+                "region": "italynorth",
+                "resourceGroup": "$idpayDataRg",
+                "resourceName": "$eventhubNs01",
+                "subscription": "$subscription"
+              }
+            ],
+            "timeGrain": "auto"
+          },
+          "queryType": "Azure Monitor",
+          "refId": "A",
+          "subscription": "$subscription"
+        }
+      ],
+      "title": "Event Hub 01 Incoming Messages",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 75
+      },
+      "id": 107,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.4.8",
+      "targets": [
+        {
+          "azureMonitor": {
+            "aggregation": "Total",
+            "allowedTimeGrainsMs": [
+              60000,
+              300000,
+              900000,
+              1800000,
+              3600000,
+              21600000,
+              43200000,
+              86400000
+            ],
+            "dimensionFilters": [
+              {
+                "dimension": "EntityName",
+                "filters": [
+                  "idpay-errors",
+                  "idpay-commands",
+                  "idpay-timeline",
+                  "idpay-reward-notification-storage-events",
+                  "idpay-rule-update"
+                ],
+                "operator": "eq"
+              }
+            ],
+            "metricName": "OutgoingMessages",
+            "metricNamespace": "microsoft.eventhub/namespaces",
+            "region": "italynorth",
+            "resources": [
+              {
+                "metricNamespace": "Microsoft.EventHub/namespaces",
+                "region": "italynorth",
+                "resourceGroup": "$idpayDataRg",
+                "resourceName": "$eventhubNs01",
+                "subscription": "$subscription"
+              }
+            ],
+            "timeGrain": "auto"
+          },
+          "queryType": "Azure Monitor",
+          "refId": "A",
+          "subscription": "$subscription"
+        }
+      ],
+      "title": "Event Hub 01 Outgoing Messages",
+      "type": "timeseries"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 83
       },
       "id": 100,
       "panels": [],
@@ -3519,7 +4054,7 @@
         "h": 8,
         "w": 8,
         "x": 0,
-        "y": 67
+        "y": 84
       },
       "id": 30,
       "options": {
@@ -3535,7 +4070,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.4.3",
+      "pluginVersion": "12.4.8",
       "targets": [
         {
           "azureMonitor": {
@@ -3567,16 +4102,16 @@
               {
                 "metricNamespace": "Microsoft.EventHub/namespaces",
                 "region": "italynorth",
-                "resourceGroup": "cstar-d-itn-idpay-data-rg",
-                "resourceName": "cstar-d-itn-idpay-evh-rdb-ns",
-                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+                "resourceGroup": "$idpayDataRg",
+                "resourceName": "$eventhubNsRdb",
+                "subscription": "$subscription"
               }
             ],
             "timeGrain": "auto"
           },
           "queryType": "Azure Monitor",
           "refId": "A",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "$subscription"
         }
       ],
       "title": "RDB Topic Incoming Messages",
@@ -3648,7 +4183,7 @@
         "h": 8,
         "w": 8,
         "x": 8,
-        "y": 67
+        "y": 84
       },
       "id": 31,
       "options": {
@@ -3664,7 +4199,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.4.3",
+      "pluginVersion": "12.4.8",
       "targets": [
         {
           "azureMonitor": {
@@ -3696,16 +4231,16 @@
               {
                 "metricNamespace": "Microsoft.EventHub/namespaces",
                 "region": "italynorth",
-                "resourceGroup": "cstar-d-itn-idpay-data-rg",
-                "resourceName": "cstar-d-itn-idpay-evh-rdb-ns",
-                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+                "resourceGroup": "$idpayDataRg",
+                "resourceName": "$eventhubNsRdb",
+                "subscription": "$subscription"
               }
             ],
             "timeGrain": "auto"
           },
           "queryType": "Azure Monitor",
           "refId": "A",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "$subscription"
         }
       ],
       "title": "RDB Topic Outgoing Messages",
@@ -3777,7 +4312,7 @@
         "h": 8,
         "w": 8,
         "x": 16,
-        "y": 67
+        "y": 84
       },
       "id": 29,
       "options": {
@@ -3793,7 +4328,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.4.3",
+      "pluginVersion": "12.4.8",
       "targets": [
         {
           "azureMonitor": {
@@ -3825,16 +4360,16 @@
               {
                 "metricNamespace": "Microsoft.EventHub/namespaces",
                 "region": "italynorth",
-                "resourceGroup": "cstar-d-itn-idpay-data-rg",
-                "resourceName": "cstar-d-itn-idpay-evh-rdb-ns",
-                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+                "resourceGroup": "$idpayDataRg",
+                "resourceName": "$eventhubNsRdb",
+                "subscription": "$subscription"
               }
             ],
             "timeGrain": "auto"
           },
           "queryType": "Azure Monitor",
           "refId": "A",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "$subscription"
         },
         {
           "azureMonitor": {
@@ -3866,16 +4401,16 @@
               {
                 "metricNamespace": "Microsoft.EventHub/namespaces",
                 "region": "italynorth",
-                "resourceGroup": "cstar-d-itn-idpay-data-rg",
-                "resourceName": "cstar-d-itn-idpay-evh-rdb-ns",
-                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+                "resourceGroup": "$idpayDataRg",
+                "resourceName": "$eventhubNsRdb",
+                "subscription": "$subscription"
               }
             ],
             "timeGrain": "auto"
           },
           "queryType": "Azure Monitor",
           "refId": "B",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "$subscription"
         },
         {
           "azureMonitor": {
@@ -3907,16 +4442,16 @@
               {
                 "metricNamespace": "Microsoft.EventHub/namespaces",
                 "region": "italynorth",
-                "resourceGroup": "cstar-d-itn-idpay-data-rg",
-                "resourceName": "cstar-d-itn-idpay-evh-rdb-ns",
-                "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+                "resourceGroup": "$idpayDataRg",
+                "resourceName": "$eventhubNsRdb",
+                "subscription": "$subscription"
               }
             ],
             "timeGrain": "auto"
           },
           "queryType": "Azure Monitor",
           "refId": "C",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          "subscription": "$subscription"
         }
       ],
       "title": "RDB Topic Errors and Throttling",
@@ -3976,6 +4511,536 @@
         "regex": "",
         "regexApplyTo": "value",
         "type": "query"
+      },
+      {
+        "current": {
+          "text": "DEV-CSTAR",
+          "value": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+        },
+        "definition": "",
+        "hide": 2,
+        "name": "subscription",
+        "options": [],
+        "query": {
+          "azureLogAnalytics": {
+            "query": "",
+            "resources": []
+          },
+          "queryType": "Azure Subscriptions",
+          "refId": "A"
+        },
+        "refresh": 1,
+        "regex": "",
+        "regexApplyTo": "value",
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "cstar-d-itn-idpay-data-rg",
+          "value": "cstar-d-itn-idpay-data-rg"
+        },
+        "definition": "",
+        "hide": 2,
+        "name": "idpayDataRg",
+        "options": [],
+        "query": {
+          "azureLogAnalytics": {
+            "query": "",
+            "resources": [
+              "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/$idpayDataRg/providers/Microsoft.DocumentDB/databaseAccounts/cstar-d-itn-idpay-mongodb-account"
+            ]
+          },
+          "queryType": "Azure Resource Groups",
+          "refId": "A",
+          "region": "italynorth",
+          "subscription": "$subscription"
+        },
+        "refresh": 1,
+        "regex": "/.*itn-idpay-data-rg.*/",
+        "regexApplyTo": "value",
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "cstar-d-itn-core-monitor-rg",
+          "value": "cstar-d-itn-core-monitor-rg"
+        },
+        "definition": "",
+        "hide": 2,
+        "name": "coreMonitorRg",
+        "options": [],
+        "query": {
+          "azureLogAnalytics": {
+            "query": "",
+            "resources": [
+              "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/$idpayDataRg/providers/Microsoft.DocumentDB/databaseAccounts/cstar-d-itn-idpay-mongodb-account"
+            ]
+          },
+          "queryType": "Azure Resource Groups",
+          "refId": "A",
+          "region": "italynorth",
+          "subscription": "$subscription"
+        },
+        "refresh": 1,
+        "regex": "/.*itn-core-monitor-rg.*/",
+        "regexApplyTo": "value",
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "cstar-d-itn-idpay-evh-00-ns",
+          "value": "cstar-d-itn-idpay-evh-00-ns"
+        },
+        "datasource": {
+          "type": "grafana-azure-monitor-datasource",
+          "uid": "azure-monitor-oob"
+        },
+        "definition": "",
+        "hide": 2,
+        "name": "eventhubNs00",
+        "options": [],
+        "query": {
+          "azureLogAnalytics": {
+            "query": "",
+            "resources": [
+              "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/$idpayDataRg/providers/Microsoft.DocumentDB/databaseAccounts/cstar-d-itn-idpay-mongodb-account"
+            ]
+          },
+          "namespace": "microsoft.eventhub/namespaces",
+          "queryType": "Azure Resource Names",
+          "refId": "A",
+          "region": "italynorth",
+          "resourceGroup": "$idpayDataRg",
+          "subscription": "$subscription"
+        },
+        "refresh": 1,
+        "regex": "/.*idpay-evh-00-ns.*/",
+        "regexApplyTo": "value",
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "cstar-d-itn-idpay-evh-01-ns",
+          "value": "cstar-d-itn-idpay-evh-01-ns"
+        },
+        "datasource": {
+          "type": "grafana-azure-monitor-datasource",
+          "uid": "azure-monitor-oob"
+        },
+        "definition": "",
+        "hide": 2,
+        "name": "eventhubNs01",
+        "options": [],
+        "query": {
+          "azureLogAnalytics": {
+            "query": "",
+            "resources": [
+              "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/$idpayDataRg/providers/Microsoft.DocumentDB/databaseAccounts/cstar-d-itn-idpay-mongodb-account"
+            ]
+          },
+          "namespace": "microsoft.eventhub/namespaces",
+          "queryType": "Azure Resource Names",
+          "refId": "A",
+          "region": "italynorth",
+          "resourceGroup": "$idpayDataRg",
+          "subscription": "$subscription"
+        },
+        "refresh": 1,
+        "regex": "/.*idpay-evh-01-ns.*/",
+        "regexApplyTo": "value",
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "cstar-d-itn-idpay-evh-rdb-ns",
+          "value": "cstar-d-itn-idpay-evh-rdb-ns"
+        },
+        "datasource": {
+          "type": "grafana-azure-monitor-datasource",
+          "uid": "azure-monitor-oob"
+        },
+        "definition": "",
+        "hide": 2,
+        "name": "eventhubNsRdb",
+        "options": [],
+        "query": {
+          "azureLogAnalytics": {
+            "query": "",
+            "resources": [
+              "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/$idpayDataRg/providers/Microsoft.DocumentDB/databaseAccounts/cstar-d-itn-idpay-mongodb-account"
+            ]
+          },
+          "namespace": "microsoft.eventhub/namespaces",
+          "queryType": "Azure Resource Names",
+          "refId": "A",
+          "region": "italynorth",
+          "resourceGroup": "$idpayDataRg",
+          "subscription": "$subscription"
+        },
+        "refresh": 1,
+        "regex": "/.*itn-idpay-evh-rdb-ns.*/",
+        "regexApplyTo": "value",
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "cstar-d-itn-idpay-bonus-cdn-profile",
+          "value": "cstar-d-itn-idpay-bonus-cdn-profile"
+        },
+        "datasource": {
+          "type": "grafana-azure-monitor-datasource",
+          "uid": "azure-monitor-oob"
+        },
+        "definition": "",
+        "hide": 2,
+        "name": "bonusCdnProfile",
+        "options": [],
+        "query": {
+          "azureLogAnalytics": {
+            "query": "",
+            "resources": [
+              "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/$idpayDataRg/providers/Microsoft.DocumentDB/databaseAccounts/cstar-d-itn-idpay-mongodb-account"
+            ]
+          },
+          "namespace": "microsoft.cdn/profiles",
+          "queryType": "Azure Resource Names",
+          "refId": "A",
+          "region": "global",
+          "resourceGroup": "$idpayDataRg",
+          "subscription": "$subscription"
+        },
+        "refresh": 1,
+        "regex": "/.*itn-idpay-bonus-cdn-profile.*/",
+        "regexApplyTo": "value",
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "cstar-d-vnet-rg",
+          "value": "cstar-d-vnet-rg"
+        },
+        "definition": "",
+        "hide": 2,
+        "name": "vnetRg",
+        "options": [],
+        "query": {
+          "azureLogAnalytics": {
+            "query": "",
+            "resources": [
+              "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/$idpayDataRg/providers/Microsoft.DocumentDB/databaseAccounts/cstar-d-itn-idpay-mongodb-account"
+            ]
+          },
+          "queryType": "Azure Resource Groups",
+          "refId": "A",
+          "region": "westeurope",
+          "subscription": "$subscription"
+        },
+        "refresh": 1,
+        "regex": "/.*vnet-rg.*/",
+        "regexApplyTo": "value",
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "cstar-d-api-rg",
+          "value": "cstar-d-api-rg"
+        },
+        "definition": "",
+        "hide": 2,
+        "name": "apiRg",
+        "options": [],
+        "query": {
+          "azureLogAnalytics": {
+            "query": "",
+            "resources": [
+              "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/$idpayDataRg/providers/Microsoft.DocumentDB/databaseAccounts/cstar-d-itn-idpay-mongodb-account"
+            ]
+          },
+          "queryType": "Azure Resource Groups",
+          "refId": "A",
+          "region": "westeurope",
+          "subscription": "$subscription"
+        },
+        "refresh": 1,
+        "regex": "/.*api-rg.*/",
+        "regexApplyTo": "value",
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "cstar-d-itn-idpay-monitoring-rg",
+          "value": "cstar-d-itn-idpay-monitoring-rg"
+        },
+        "definition": "",
+        "hide": 2,
+        "name": "idpayMonitoringRg",
+        "options": [],
+        "query": {
+          "azureLogAnalytics": {
+            "query": "",
+            "resources": [
+              "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/$idpayDataRg/providers/Microsoft.DocumentDB/databaseAccounts/cstar-d-itn-idpay-mongodb-account"
+            ]
+          },
+          "queryType": "Azure Resource Groups",
+          "refId": "A",
+          "region": "italynorth",
+          "subscription": "$subscription"
+        },
+        "refresh": 1,
+        "regex": "/.*itn-idpay-monitoring-rg.*/",
+        "regexApplyTo": "value",
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "cstar-d-itn-core-aks-rg",
+          "value": "cstar-d-itn-core-aks-rg"
+        },
+        "definition": "",
+        "hide": 2,
+        "name": "coreAksRg",
+        "options": [],
+        "query": {
+          "azureLogAnalytics": {
+            "query": "",
+            "resources": [
+              "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/$idpayDataRg/providers/Microsoft.DocumentDB/databaseAccounts/cstar-d-itn-idpay-mongodb-account"
+            ]
+          },
+          "queryType": "Azure Resource Groups",
+          "refId": "A",
+          "region": "italynorth",
+          "subscription": "$subscription"
+        },
+        "refresh": 1,
+        "regex": "/.*itn-core-aks-rg.*/",
+        "regexApplyTo": "value",
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "cstar-d-itn-dev-aks",
+          "value": "cstar-d-itn-dev-aks"
+        },
+        "datasource": {
+          "type": "grafana-azure-monitor-datasource",
+          "uid": "azure-monitor-oob"
+        },
+        "definition": "",
+        "hide": 2,
+        "name": "aks",
+        "options": [],
+        "query": {
+          "azureLogAnalytics": {
+            "query": "",
+            "resources": [
+              "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/$idpayDataRg/providers/Microsoft.DocumentDB/databaseAccounts/cstar-d-itn-idpay-mongodb-account"
+            ]
+          },
+          "namespace": "microsoft.containerservice/managedclusters",
+          "queryType": "Azure Resource Names",
+          "refId": "A",
+          "region": "italynorth",
+          "resourceGroup": "$coreAksRg",
+          "subscription": "$subscription"
+        },
+        "refresh": 1,
+        "regex": "/.*aks.*/",
+        "regexApplyTo": "value",
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "cstar-d-itn-idpay-appinsights",
+          "value": "cstar-d-itn-idpay-appinsights"
+        },
+        "datasource": {
+          "type": "grafana-azure-monitor-datasource",
+          "uid": "azure-monitor-oob"
+        },
+        "definition": "",
+        "hide": 2,
+        "name": "applicationInsights",
+        "options": [],
+        "query": {
+          "azureLogAnalytics": {
+            "query": "",
+            "resources": [
+              "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/$idpayDataRg/providers/Microsoft.DocumentDB/databaseAccounts/cstar-d-itn-idpay-mongodb-account"
+            ]
+          },
+          "namespace": "microsoft.insights/components",
+          "queryType": "Azure Resource Names",
+          "refId": "A",
+          "region": "italynorth",
+          "resourceGroup": "$idpayMonitoringRg",
+          "subscription": "$subscription"
+        },
+        "refresh": 1,
+        "regex": "/.*itn-idpay-appinsights.*/",
+        "regexApplyTo": "value",
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "cstar-d-app-gw-maz",
+          "value": "cstar-d-app-gw-maz"
+        },
+        "datasource": {
+          "type": "grafana-azure-monitor-datasource",
+          "uid": "azure-monitor-oob"
+        },
+        "definition": "",
+        "hide": 2,
+        "name": "appGateway",
+        "options": [],
+        "query": {
+          "azureLogAnalytics": {
+            "query": "",
+            "resources": [
+              "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/$idpayDataRg/providers/Microsoft.DocumentDB/databaseAccounts/cstar-d-itn-idpay-mongodb-account"
+            ]
+          },
+          "namespace": "microsoft.network/applicationgateways",
+          "queryType": "Azure Resource Names",
+          "refId": "A",
+          "region": "westeurope",
+          "resourceGroup": "$vnetRg",
+          "subscription": "$subscription"
+        },
+        "refresh": 1,
+        "regex": "/.*app-gw-maz.*/",
+        "regexApplyTo": "value",
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "cstar-d-apim",
+          "value": "cstar-d-apim"
+        },
+        "datasource": {
+          "type": "grafana-azure-monitor-datasource",
+          "uid": "azure-monitor-oob"
+        },
+        "definition": "",
+        "hide": 2,
+        "name": "apim",
+        "options": [],
+        "query": {
+          "azureLogAnalytics": {
+            "query": "",
+            "resources": [
+              "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/$idpayDataRg/providers/Microsoft.DocumentDB/databaseAccounts/cstar-d-itn-idpay-mongodb-account"
+            ]
+          },
+          "namespace": "microsoft.apimanagement/service",
+          "queryType": "Azure Resource Names",
+          "refId": "A",
+          "region": "westeurope",
+          "resourceGroup": "$apiRg",
+          "subscription": "$subscription"
+        },
+        "refresh": 1,
+        "regex": "/.*apim.*/",
+        "regexApplyTo": "value",
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "cstar-d-itn-idpay-mongodb-account",
+          "value": "cstar-d-itn-idpay-mongodb-account"
+        },
+        "datasource": {
+          "type": "grafana-azure-monitor-datasource",
+          "uid": "azure-monitor-oob"
+        },
+        "definition": "",
+        "hide": 2,
+        "name": "idpayMongoDbAccount",
+        "options": [],
+        "query": {
+          "azureLogAnalytics": {
+            "query": "",
+            "resources": [
+              "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/$idpayDataRg/providers/Microsoft.DocumentDB/databaseAccounts/cstar-d-itn-idpay-mongodb-account"
+            ]
+          },
+          "namespace": "microsoft.documentdb/databaseaccounts",
+          "queryType": "Azure Resource Names",
+          "refId": "A",
+          "region": "italynorth",
+          "resourceGroup": "$idpayDataRg",
+          "subscription": "$subscription"
+        },
+        "refresh": 1,
+        "regex": "/.*itn-idpay-mongodb-account.*/",
+        "regexApplyTo": "value",
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "cstar-d-itn-idpay-redis",
+          "value": "cstar-d-itn-idpay-redis"
+        },
+        "datasource": {
+          "type": "grafana-azure-monitor-datasource",
+          "uid": "azure-monitor-oob"
+        },
+        "definition": "",
+        "hide": 2,
+        "name": "idpayRedis",
+        "options": [],
+        "query": {
+          "azureLogAnalytics": {
+            "query": "",
+            "resources": [
+              "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/$idpayDataRg/providers/Microsoft.DocumentDB/databaseAccounts/cstar-d-itn-idpay-mongodb-account"
+            ]
+          },
+          "namespace": "microsoft.cache/redisenterprise",
+          "queryType": "Azure Resource Names",
+          "refId": "A",
+          "region": "italynorth",
+          "resourceGroup": "$idpayDataRg",
+          "subscription": "$subscription"
+        },
+        "refresh": 1,
+        "regex": "/.*itn-idpay-redis.*/",
+        "regexApplyTo": "value",
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "cstar-d-itn-core-law",
+          "value": "cstar-d-itn-core-law"
+        },
+        "datasource": {
+          "type": "grafana-azure-monitor-datasource",
+          "uid": "azure-monitor-oob"
+        },
+        "definition": "",
+        "hide": 2,
+        "name": "coreLaw",
+        "options": [],
+        "query": {
+          "azureLogAnalytics": {
+            "query": "",
+            "resources": [
+              "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/$idpayDataRg/providers/Microsoft.DocumentDB/databaseAccounts/cstar-d-itn-idpay-mongodb-account"
+            ]
+          },
+          "namespace": "microsoft.OperationalInsights/workspaces",
+          "queryType": "Azure Resource Names",
+          "refId": "A",
+          "region": "italynorth",
+          "resourceGroup": "$coreMonitorRg",
+          "subscription": "$subscription"
+        },
+        "refresh": 1,
+        "regex": "/.*itn-core-law.*/",
+        "regexApplyTo": "value",
+        "type": "query"
       }
     ]
   },
@@ -3987,6 +5052,6 @@
   "timezone": "browser",
   "title": "PariInitiativesInfra",
   "uid": "ff3s9iv832pdsf",
-  "version": 45,
+  "version": 87,
   "weekStart": ""
 }

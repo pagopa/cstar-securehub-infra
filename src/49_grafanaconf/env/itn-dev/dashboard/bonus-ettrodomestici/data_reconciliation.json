@@ -781,7 +781,7 @@
           },
           "hide": false,
           "pluginVersion": "7.2.2",
-          "query": "let total_rewards =\r\n    toscalar(\r\n        transaction\r\n        | where tostring(rewardInitiatieveId) == \"68dd003ccce8c534d1da22bc\"\r\n        | where tostring(status) in (\"CAPTURED\", \"INVOICED\", \"REWARDED\")\r\n        | summarize sum(toint(rewardAccruedRewardCents))\r\n    );\r\ninitiative_counters\r\n| where _id == strcat('{\"$oid\":\"', \"$initiativeId\", '\"}')\r\n| project \r\n    result = (spentInitiativeBudgetCents - coalesce(total_rewards, 0)) / 100",
+          "query": "let total_rewards =\r\n    toscalar(\r\n        transaction\r\n        | where tostring(initiativeId) == \"68dd003ccce8c534d1da22bc\"\r\n        | where tostring(status) in (\"CAPTURED\", \"INVOICED\", \"REWARDED\")\r\n        | summarize sum(toint(rewardAccruedRewardCents))\r\n    );\r\ninitiative_counters\r\n| where _id == strcat('{\"$oid\":\"', \"$initiativeId\", '\"}')\r\n| project \r\n    result = (spentInitiativeBudgetCents - coalesce(total_rewards, 0)) / 100",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
