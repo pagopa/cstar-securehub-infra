@@ -128,18 +128,12 @@ resource "github_repository_ruleset" "uat_and_main" {
     required_status_checks {
       strict_required_status_checks_policy = true
       do_not_enforce_on_create             = false
-      required_check {
-        context        = "SonarCloud Code Analysis"
-        integration_id = 12526
-      }
-
       dynamic "required_check" {
-        for_each = each.key == "idpay-functional-testing" ? [
-          "run-bdd / run-bdd-feature-tests"
-        ] : []
+        for_each = each.value.required_status_checks
 
         content {
-          context = required_check.value
+          context        = required_check.value.context
+          integration_id = required_check.value.integration_id
         }
       }
     }
