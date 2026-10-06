@@ -214,7 +214,7 @@ resource "postgresql_grant" "idpay_service_database" {
   object_type = "database"
   privileges  = each.key == "kafka_connect" ? ["CONNECT", "CREATE"] : ["CONNECT"]
 
-  depends_on = [module.idpay_pgflex]
+  depends_on = [module.idpay_pgflex, postgresql_schema.idpay_flyway]
 }
 
 resource "postgresql_grant" "idpay_service_schema" {
