@@ -1,0 +1,37 @@
+let pipelineRunId = '@{pipeline().RunId}';
+let rawDate = @'@{replace(coalesce(pipeline().parameters.target_date, ''), '''', '''''')}';
+let isoDate = iff(strlen(rawDate) == 10 and substring(rawDate, 2, 1) == '-', strcat(substring(rawDate, 6, 4), '-', substring(rawDate, 3, 2), '-', substring(rawDate, 0, 2)), rawDate);
+let targetDateLabel = iff(isempty(rawDate), startofday(datetime_utc_to_local(now(), 'Europe/Rome'), -1), todatetime(isoDate));
+let startOfYesterday = datetime_local_to_utc(targetDateLabel, 'Europe/Rome');
+let proxyTraces = cluster('https://ade.loganalytics.io__LAW_ID__').database('__LAW_NAME__').AppTraces;
+let saveLog = proxyTraces
+    | where TimeGenerated >= startOfYesterday and TimeGenerated < startOfYesterday + 1d
+    | where AppRoleName == "rtp-sender"
+    | where Message startswith "Rtp to be sent saved with id:"
+    | extend debtor_service_provider = extract(@"service_provider:\s*(\S+)", 1, Message)
+    | project OperationId, debtor_service_provider;
+let successfulSends = proxyTraces
+    | where TimeGenerated >= startOfYesterday and TimeGenerated < startOfYesterday + 1d
+    | where AppRoleName == "rtp-sender"
+    | where Message startswith "Rtp sent successfully with id:"
+    | join kind=inner saveLog on OperationId
+    | extend metric = "successful_sends";
+let paidInChannel = proxyTraces
+    | where TimeGenerated >= startOfYesterday and TimeGenerated < startOfYesterday + 1d
+    | where AppRoleName == "rtp-sender"
+    | where Message startswith "Successfully updated paid RTP with same psp scenario."
+    | extend debtor_service_provider = extract(@"PSP BIC:\s*(\S+)", 1, Message)
+    | extend metric = "paid_in_channel";
+let actuals = materialize(
+    union successfulSends, paidInChannel
+    | summarize
+        successful_sends = countif(metric == "successful_sends"),
+        paid_in_channel = countif(metric == "paid_in_channel")
+        by window_start = targetDateLabel, debtor_service_provider = iff(isempty(debtor_service_provider), "UNKNOWN", debtor_service_provider)
+    | extend is_dummy = 0, pipeline_run_id = pipelineRunId
+);
+let default_row = print window_start = targetDateLabel, debtor_service_provider = "UNKNOWN", successful_sends = tolong(0), paid_in_channel = tolong(0), is_dummy = 1, pipeline_run_id = pipelineRunId;
+union actuals, default_row
+| where toscalar(actuals | count) == 0 or is_dummy == 0
+| order by successful_sends desc
+| project window_start, debtor_service_provider, successful_sends, paid_in_channel, pipeline_run_id

@@ -59,7 +59,7 @@ single_page_applications_roots_dirs = [
 ]
 
 single_page_applications_asset_register_roots_dirs = [
-  "elenco-informatico-elettrodomestici"
+  "registro-dei-beni"
 ]
 
 single_page_applications_portal_merchants_operator_roots_dirs = [
@@ -97,12 +97,33 @@ data_factory_api_base_url = "https://api-io.uat.cstar.pagopa.it/idpay-itn/df"
 
 ## Postgres
 idpay_pgflex_params = {
-  enabled                                = false
-  idh_resource_tier                      = "PLACEHOLDER" #PLACEHOLDER, to be defined after sizing analysis
+  enabled                                = true
+  idh_resource_tier                      = "pgflex2"
   geo_replication_enabled                = false
   zone                                   = 1
   pgres_flex_pgbouncer_enabled           = true
   pgres_flex_diagnostic_settings_enabled = false
   auto_grow_enabled                      = false
-  storage_tier                           = "PLACEHOLDER" #PLACEHOLDER, to be defined after sizing analysis
+  storage_tier                           = "P4"
 }
+
+enabled_cdn_multi_initiative = true
+
+export_initiatives = [
+  {
+    key               = "bonusdecoder"
+    initiative_id     = "69e0fa95e21efa516c7b8dec"
+    initiative_folder = "bonusdecoder"
+    initiative_name   = "Bonus Decoder"
+    kv_secret_subkey  = "apim-idpay-email-export-subkey"
+    kv_secret_email   = "idpay-export-email-mimit"
+  },
+  {
+    key               = "bonuselettrodomestici"
+    initiative_id     = "68dd003ccce8c534d1da22bc"
+    initiative_folder = "bonuselettrodomestici"
+    initiative_name   = "Bonus Elettrodomestici"
+    kv_secret_subkey  = "apim-idpay-email-export-subkey"
+    kv_secret_email   = "idpay-export-email-mimit"
+  }
+]

@@ -12,12 +12,14 @@ resource "keycloak_openid_client" "merchant_operator_frontend" {
     [
       local.keycloak_external_hostname,
       "http://localhost:5173",
+      "https://${local.public_dns_zone_pari}",
   ], formatlist("https://%s", local.public_dns_zone_bonus_elettrodomestici.zones)])
 
   valid_redirect_uris = flatten([
     [
       "${local.keycloak_external_hostname}/*",
       "http://localhost:5173/*",
+      "https://${local.public_dns_zone_pari}/*",
   ], formatlist("https://%s/*", local.public_dns_zone_bonus_elettrodomestici.zones)])
 
   depends_on = [
@@ -239,6 +241,57 @@ resource "keycloak_openid_client_scope" "transaction_invoicelifecycle_scope" {
 resource "keycloak_openid_client_default_scopes" "merchant_frontend_defaults" {
   realm_id  = module.keycloak_setup.realm_ids["merchant-operator"]
   client_id = keycloak_openid_client.merchant_operator_frontend.id
+
+  default_scopes = [
+    "web-origins",
+    "roles",
+    "profile",
+    "email",
+    "basic",
+    "acr",
+    keycloak_openid_client_scope.merchant_id_scope.name,
+    keycloak_openid_client_scope.point_of_sale_id_scope.name,
+    keycloak_openid_client_scope.transaction_invoicelifecycle_scope.name
+  ]
+}
+
+### Client for functional testing on payments, only in DEV and UAT environments, not in PROD
+resource "random_password" "keycloak_merchant_operator_functional_test_client" {
+  count   = var.env_short != "p" ? 1 : 0
+  length  = 30
+  special = false
+}
+
+resource "azurerm_key_vault_secret" "keycloak_merchant_operator_functional_test_client_secret" {
+  count        = var.env_short != "p" ? 1 : 0
+  name         = "keycloak-merchant-op-functional-test-client-secret"
+  value        = random_password.keycloak_merchant_operator_functional_test_client[0].result
+  key_vault_id = data.azurerm_key_vault.domain_kv.id
+
+  depends_on = [random_password.keycloak_merchant_operator_functional_test_client[0]]
+}
+
+
+resource "keycloak_openid_client" "merchant_operator_functional_test_client" {
+  count    = var.env_short != "p" ? 1 : 0
+  realm_id = module.keycloak_setup.realm_ids["merchant-operator"]
+  name     = "Merchant Op Functional Test Client"
+  enabled  = true
+
+  client_id                = "merchant-operator-functional-test-client"
+  client_secret_wo         = random_password.keycloak_merchant_operator_functional_test_client[0].result
+  client_secret_wo_version = 1
+
+  access_type              = "CONFIDENTIAL"
+  service_accounts_enabled = true
+
+  depends_on = [random_password.keycloak_merchant_operator_functional_test_client[0]]
+}
+
+resource "keycloak_openid_client_default_scopes" "merchant_operator_functional_test_defaults" {
+  count     = var.env_short != "p" ? 1 : 0
+  realm_id  = module.keycloak_setup.realm_ids["merchant-operator"]
+  client_id = keycloak_openid_client.merchant_operator_functional_test_client[0].id
 
   default_scopes = [
     "web-origins",

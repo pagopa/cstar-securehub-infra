@@ -97,6 +97,8 @@ resource "argocd_project" "domain_project" {
         "p, proj:${local.argocd_project_name}:developer, applications, delete, ${local.argocd_project_name}/*, allow",
         "p, proj:${local.argocd_project_name}:developer, applications, sync, ${local.argocd_project_name}/*, allow",
         "p, proj:${local.argocd_project_name}:developer, applicationsets, *, ${local.argocd_project_name}/*, allow",
+        "p, proj:${local.argocd_project_name}:developer, applications, delete/*/Pod/*/*, ${local.argocd_project_name}/*, allow",
+        "p, proj:${local.argocd_project_name}:developer, applications, action/apps/Deployment/restart, ${local.argocd_project_name}/*, allow",
         "p, proj:${local.argocd_project_name}:developer, logs, get, ${local.argocd_project_name}/*, allow",
       ]
     }

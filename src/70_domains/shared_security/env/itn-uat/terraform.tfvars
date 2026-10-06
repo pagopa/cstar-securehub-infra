@@ -1,0 +1,6 @@
+prefix         = "cstar"
+env_short      = "u"
+env            = "uat"
+domain         = "shared"
+location_short = "itn"
+location       = "italynorth"

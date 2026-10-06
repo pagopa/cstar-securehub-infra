@@ -1,0 +1,49 @@
+.set-or-replace initiative_export_configuration <|
+datatable(initiativeId:string, exportConfiguration:dynamic)
+[
+  "69e0fa95e21efa516c7b8dec", dynamic({
+    "fields": ["gtinCode", "model", "brand", "productName", "category", "productCode"],
+    "headers": {
+      "gtinCode": "GTIN",
+      "model": "Modello",
+      "brand": "Marca",
+      "productName": "Nome del prodotto",
+      "category": "Categoria",
+      "productCode": "Codice prodotto"
+    }
+  }),
+  "68dd003ccce8c534d1da22bc", dynamic({
+    "fields": ["gtinCode", "model", "brand", "eprelCode", "countryOfProduction", "energyClass", "capacity", "productName", "category", "productGroup", "productCode"],
+    "headers": {
+      "gtinCode": "GTIN",
+      "model": "Modello",
+      "brand": "Marca",
+      "eprelCode": "Codice Eprel",
+      "countryOfProduction": "Paese di Produzione",
+      "energyClass": "Classe Energetica",
+      "capacity": "Capacita",
+      "productName": "Nome del prodotto",
+      "category": "Categoria",
+      "productGroup": "Gruppo prodotto",
+      "productCode": "Codice prodotto"
+    }
+  })
+];
+
+.set-or-replace category_translation <|
+datatable(initiativeId:string, categoryCode:string, language:string, description:string)
+[
+  "69e0fa95e21efa516c7b8dec", "DS", "it", "Satellitare",
+  "69e0fa95e21efa516c7b8dec", "DT", "it", "Terrestre",
+  "69e0fa95e21efa516c7b8dec", "DTS", "it", "Terrestre e Satellitare",
+  "69e0fa95e21efa516c7b8dec", "DTC", "it", "Terrestre via Cavo",
+  "69e0fa95e21efa516c7b8dec", "DTSC", "it", "Terrestre, Satellitare e via Cavo",
+  "68dd003ccce8c534d1da22bc", "WASHINGMACHINES", "it", "Lavatrice",
+  "68dd003ccce8c534d1da22bc", "WASHERDRIERS", "it", "Lavasciuga",
+  "68dd003ccce8c534d1da22bc", "OVENS", "it", "Forno",
+  "68dd003ccce8c534d1da22bc", "RANGEHOODS", "it", "Cappa da cucina",
+  "68dd003ccce8c534d1da22bc", "DISHWASHERS", "it", "Lavastoviglie",
+  "68dd003ccce8c534d1da22bc", "TUMBLEDRYERS", "it", "Asciugatrice",
+  "68dd003ccce8c534d1da22bc", "REFRIGERATINGAPPL", "it", "Apparecchio di refrigerazione",
+  "68dd003ccce8c534d1da22bc", "COOKINGHOBS", "it", "Piano cottura"
+];

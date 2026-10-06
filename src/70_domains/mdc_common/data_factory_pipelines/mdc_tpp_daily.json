@@ -37,24 +37,20 @@
             "type": "TabularTranslator",
             "mappings": [
               {
-                "source": {
-                  "path": "$['tppId']"
-                },
-                "sink": {
-                  "name": "tpp_id"
-                }
+                "source": { "path": "$['tppId']" },
+                "sink": { "name": "tpp_id" }
               },
               {
                 "source": { "path": "$['entityId']" },
                 "sink": { "name": "entity_id" }
               },
               {
-                "source": {
-                  "path": "$['businessName']"
-                },
-                "sink": {
-                  "name": "business_name"
-                }
+                "source": { "path": "$['businessName']" },
+                "sink": { "name": "business_name" }
+              },
+              {
+                "source": { "path": "$['state']" },
+                "sink": { "name": "state" }
               }
             ]
           }

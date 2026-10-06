@@ -97,6 +97,9 @@ extraVolumes:
   - name: pagopa-theme
     configMap:
       name: keycloak-pagopa-theme
+  - name: mdc-portal-theme
+    configMap:
+      name: keycloak-mdc-portal-theme
   - name: keycloak-providers
     configMap:
       name: keycloak-providers

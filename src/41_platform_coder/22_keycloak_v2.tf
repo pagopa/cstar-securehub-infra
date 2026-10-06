@@ -36,8 +36,37 @@ locals {
     if !endswith(f, "/")
   ]
 
+  # --- Tema dedicato "mdc-internal-portal" (login con Microsoft Entra) ---
+  # Montato tramite un configmap separato per non toccare il tema "pagopa"
+  # esistente ed evitare il limite di 1 MiB per configmap.
+  mdc_theme_dir     = "${path.module}/k8s/keycloak/themes/mdc-internal-portal"
+  mdc_files         = fileset(local.mdc_theme_dir, "**")
+  mdc_flattened_key = { for f in local.mdc_files : f => replace(f, "/", "__") }
+
+  mdc_text_files = {
+    for f in local.mdc_files :
+    local.mdc_flattened_key[f] => file("${local.mdc_theme_dir}/${f}")
+    if !endswith(f, "/") && !contains(local.binary_exts, lower(substr(f, length(f) - 4, 5)))
+  }
+
+  mdc_binary_files = {
+    for f in local.mdc_files :
+    local.mdc_flattened_key[f] => filebase64("${local.mdc_theme_dir}/${f}")
+    if !endswith(f, "/") && contains(local.binary_exts, lower(substr(f, length(f) - 4, 5)))
+  }
+
+  mdc_theme_volume_mounts = [
+    for f in local.mdc_files : {
+      name      = "mdc-portal-theme"
+      mountPath = "/opt/bitnami/keycloak/themes/mdc-internal-portal/${f}"
+      subPath   = local.mdc_flattened_key[f]
+      readOnly  = true
+    }
+    if !endswith(f, "/")
+  ]
+
   # Merge volume mount
-  keycloak_extra_volume_mounts = concat(local.fixed_volume_mounts, local.theme_volume_mounts, [local.provider_volume_mount])
+  keycloak_extra_volume_mounts = concat(local.fixed_volume_mounts, local.theme_volume_mounts, local.mdc_theme_volume_mounts, [local.provider_volume_mount])
 
   # ConfigMap for JAR provider
   keycloak_provider_jar_path = "${path.module}/k8s/keycloak/providers/keycloak-idp-strip-tinit-1.0.0.jar"
@@ -164,6 +193,17 @@ resource "kubernetes_config_map" "keycloak_pagopa_theme" {
 
   data        = local.text_files
   binary_data = local.binary_files
+}
+
+# ConfigMap del tema dedicato "mdc-internal-portal"
+resource "kubernetes_config_map" "keycloak_mdc_portal_theme" {
+  metadata {
+    name      = "keycloak-mdc-portal-theme"
+    namespace = local.keycloak_namespace
+  }
+
+  data        = local.mdc_text_files
+  binary_data = local.mdc_binary_files
 }
 
 resource "kubernetes_config_map" "keycloak_providers" {

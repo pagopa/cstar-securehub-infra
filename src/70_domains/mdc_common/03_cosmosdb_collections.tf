@@ -33,6 +33,10 @@ locals {
         {
           keys   = ["entityId"]
           unique = true
+        },
+        {
+          keys   = ["businessName"]
+          unique = false
         }
       ]
 
@@ -58,7 +62,11 @@ locals {
         {
           keys   = ["originId"]
           unique = false
-        }
+        },
+        {
+          keys   = ["messageRegistrationDate"]
+          unique = false
+        },
       ]
 
     },

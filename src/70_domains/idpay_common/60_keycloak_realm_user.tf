@@ -12,12 +12,14 @@ resource "keycloak_openid_client" "user_frontend" {
     [
       local.keycloak_external_hostname,
       "http://localhost:5173",
+      "https://${local.public_dns_zone_pari}",
   ], formatlist("https://%s", local.public_dns_zone_bonus_elettrodomestici.zones)])
 
   valid_redirect_uris = flatten([
     [
       "${local.keycloak_external_hostname}/*",
       "http://localhost:5173/*",
+      "https://${local.public_dns_zone_pari}/*",
   ], formatlist("https://%s/*", local.public_dns_zone_bonus_elettrodomestici.zones)])
 
   depends_on = [

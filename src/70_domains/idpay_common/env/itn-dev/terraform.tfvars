@@ -57,7 +57,7 @@ single_page_applications_roots_dirs = [
 ]
 
 single_page_applications_asset_register_roots_dirs = [
-  "elenco-informatico-elettrodomestici"
+  "registro-dei-beni"
 ]
 
 single_page_applications_portal_merchants_operator_roots_dirs = [
@@ -104,3 +104,24 @@ idpay_pgflex_params = {
   auto_grow_enabled                      = false
   storage_tier                           = "P4"
 }
+
+enabled_cdn_multi_initiative = true
+
+export_initiatives = [
+  {
+    key               = "bonusdecoder"
+    initiative_id     = "69e0fa95e21efa516c7b8dec"
+    initiative_folder = "bonusdecoder"
+    initiative_name   = "Bonus Decoder"
+    kv_secret_subkey  = "apim-idpay-email-export-subkey"
+    kv_secret_email   = "idpay-export-email-mimit"
+  },
+  {
+    key               = "bonuselettrodomestici"
+    initiative_id     = "68dd003ccce8c534d1da22bc"
+    initiative_folder = "bonuselettrodomestici"
+    initiative_name   = "Bonus Elettrodomestici"
+    kv_secret_subkey  = "apim-idpay-email-export-subkey"
+    kv_secret_email   = "idpay-export-email-mimit"
+  }
+]

@@ -47,3 +47,8 @@ variable "env" {
 variable "env_short" {
   type = string
 }
+
+variable "core_state_bucket" {
+  type        = string
+  description = "S3 bucket name for core terraform state"
+}

@@ -64,3 +64,9 @@ variable "team_groups" {
   })))
   default = {}
 }
+
+variable "idpay_grafana_alert_enabled" {
+  type        = bool
+  description = "Enable Grafana alerting resources for the IDPay app."
+  default     = false
+}
