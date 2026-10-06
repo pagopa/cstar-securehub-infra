@@ -61,7 +61,7 @@ single_page_applications_roots_dirs = [
 ]
 
 single_page_applications_asset_register_roots_dirs = [
-  "elenco-informatico-elettrodomestici"
+  "registro-dei-beni"
 ]
 
 single_page_applications_portal_merchants_operator_roots_dirs = [
@@ -116,7 +116,7 @@ idpay_pgflex_params = {
   storage_tier                           = "P4"
 }
 
-enabled_cdn_multi_initiative = false
+enabled_cdn_multi_initiative = true
 
 export_initiatives = [
   {
