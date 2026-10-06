@@ -184,9 +184,9 @@ module "idpay_pgflex" {
 resource "postgresql_role" "idpay_service" {
   for_each = local.idpay_postgres_service_roles
 
-  name     = each.value.role_name
-  login    = true
-  password_wo = azurerm_key_vault_secret.idpay_postgres_service_password[each.key].value
+  name                = each.value.role_name
+  login               = true
+  password_wo         = azurerm_key_vault_secret.idpay_postgres_service_password[each.key].value
   password_wo_version = 1
 
   create_database = false
@@ -213,7 +213,11 @@ resource "postgresql_grant" "idpay_service_database" {
   database    = local.idpay_postgres_database
   role        = postgresql_role.idpay_service[each.key].name
   object_type = "database"
-  privileges  = each.key == "kafka_connect" ? ["CONNECT", "CREATE"] : ["CONNECT"]
+  # Flyway V1 initializes each service-owned schema.
+  privileges = (
+    contains(values(local.idpay_postgres_flyway_schemas), each.key) ||
+    each.key == "kafka_connect"
+  ) ? ["CONNECT", "CREATE"] : ["CONNECT"]
 
   depends_on = [module.idpay_pgflex, postgresql_schema.idpay_flyway]
 }
