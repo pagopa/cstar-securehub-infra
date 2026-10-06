@@ -116,7 +116,7 @@ idpay_pgflex_params = {
   storage_tier                           = "P4"
 }
 
-enabled_cdn_multi_initiative = false
+enabled_cdn_multi_initiative = true
 
 export_initiatives = [
   {
