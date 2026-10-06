@@ -527,7 +527,7 @@ locals {
         try(local.repository[repo_name].additional_required_status_checks, [])
       )
       allowed_merge_methods   = try(local.repository[repo_name].trunk_based, false) ? ["squash"] : ["merge"]
-      required_linear_history = try(local.repository[repo_name].trunk_based, false)
+      required_linear_history = try(local.repository[repo_name].required_linear_history, true)
     }
     if(contains(local.protected_branches_by_repo[repo_name], "uat") || contains(local.protected_branches_by_repo[repo_name], "main"))
   }
