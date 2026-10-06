@@ -102,7 +102,7 @@ resource "azurerm_data_factory_pipeline" "idpay_reward_batch_csv" {
     {}
   )
   activities_json = jsonencode(local.pipeline_reward_batch_csv_json.properties.activities)
-  depends_on = [azurerm_data_factory_custom_dataset.datasets]
+  depends_on      = [azurerm_data_factory_custom_dataset.datasets]
 }
 
 resource "azapi_resource" "idpay_producers_import" {
