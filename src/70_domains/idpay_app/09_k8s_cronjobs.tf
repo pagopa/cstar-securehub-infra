@@ -218,7 +218,7 @@ resource "kubernetes_cron_job_v1" "reminder_voucher_expiration" {
           }
           spec {
             container {
-              name    = "reminder-voucher-expiration-elettrodomestici"
+              name    = "reminder-voucher-expiration"
               image   = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
               command = ["/bin/sh", "-c"]
               args = concat(
@@ -226,26 +226,14 @@ resource "kubernetes_cron_job_v1" "reminder_voucher_expiration" {
                 local.idpay_batch_curl_args,
                 [
                   "-X", "POST",
-                  "${local.idpay_wallet_service_url}/idpay/wallet/batch/run/${var.bonus_elettrodomestici_initiative_id}",
+                  "-H", "Content-Type: application/json",
+                  "-d", jsonencode({ initiativeIds = concat(
+                    [var.bonus_elettrodomestici_initiative_id],
+                    contains(["d", "u"], var.env_short) ? [var.bonus_decoder_initiative_id] : []
+                  ) }),
+                  "${local.idpay_wallet_service_url}/idpay/wallet/batch/run",
                 ]
               )
-            }
-            dynamic "container" {
-              for_each = contains(["d", "u"], var.env_short) ? [1] : []
-
-              content {
-                name    = "reminder-voucher-expiration-decoder"
-                image   = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
-                command = ["/bin/sh", "-c"]
-                args = concat(
-                  ["curl \"$@\"", "curl"],
-                  local.idpay_batch_curl_args,
-                  [
-                    "-X", "POST",
-                    "${local.idpay_wallet_service_url}/idpay/wallet/batch/run/${var.bonus_decoder_initiative_id}",
-                  ]
-                )
-              }
             }
             restart_policy = "OnFailure"
           }
