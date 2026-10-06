@@ -290,22 +290,6 @@ locals {
       ]
     },
     {
-      name                = "point_of_sales_initiative"
-      shard_key           = null
-      default_ttl_seconds = null
-      indexes = [
-        { keys = ["_id"], unique = true },
-        {
-          keys   = ["pointOfSaleId", "initiativeId", "merchantId"]
-          unique = true
-        },
-        {
-          keys   = ["initiativeId", "merchantId", "enabled"]
-          unique = false
-        }
-      ]
-    },
-    {
       name                = "reward_notification_rule"
       shard_key           = null
       default_ttl_seconds = null
