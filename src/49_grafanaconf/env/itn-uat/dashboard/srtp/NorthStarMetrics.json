@@ -398,7 +398,7 @@
         "type": "grafana-azure-monitor-datasource",
         "uid": "azure-monitor-oob"
       },
-      "description": "% dei messaggi di rifiuto esplicito (payer/PSP) sul totale RTP inviate con successo nel periodo selezionato.",
+      "description": "% dei messaggi di rifiuto esplicito (payer/PSP) sul totale RTP inviate con successo nel periodo selezionato. PSP estratto da Properties.debtor_service_provider (iniettato da ContextUtils.injectRtpDetails) con fallback sul testo del messaggio per il ramo Send/EPC. Il ramo Callback (Payer/PSP) risulta 'N/D' perché SendCallbackHandler non inietta il PSP in questo punto del codice (StatusUtility.triggerStatus) — gap di logging lato rtp-sender, non recuperabile via query.",
       "gridPos": {
         "h": 8,
         "w": 12,
@@ -411,7 +411,7 @@
           "azureLogAnalytics": {
             "dashboardTime": false,
             "mode": "raw",
-            "query": "let totalSent = toscalar(\n    AppTraces\n    | where $__timeFilter(TimeGenerated)\n    | where AppRoleName == \"rtp-sender\"\n    | where Message startswith \"Rtp sent successfully with id:\"\n    | count\n    | project Count\n);\nAppTraces\n| where $__timeFilter(TimeGenerated)\n| where AppRoleName == \"rtp-sender\"\n| where Message has \"Triggering REJECT transition for RTP\" or Message has \"Send RTP request rejected for\"\n| extend DebtorSP = coalesce(extract(@\"service_provider:\\s*(\\S+)\", 1, Message), extract(@\"Send RTP request rejected for ([^:]+):\", 1, Message))\n| extend TipoRifiuto = case(\n    Message has \"Triggering REJECT transition for RTP\", \"Callback (Payer/PSP)\",\n    Message has \"Send RTP request rejected for\", \"Send/EPC (PSP)\",\n    \"Altro Rifiuto\")\n| summarize Rifiuti = count() by TipoRifiuto, DebtorSP\n| extend TotaleInviati = coalesce(totalSent, 0)\n| extend [\"Refusal Rate %\"] = round(todouble(Rifiuti) * 100.0 / iff(TotaleInviati == 0, 1, TotaleInviati), 2)\n| order by Rifiuti desc",
+            "query": "let totalSent = toscalar(\n    AppTraces\n    | where $__timeFilter(TimeGenerated)\n    | where AppRoleName == \"rtp-sender\"\n    | where Message startswith \"Rtp sent successfully with id:\"\n    | count\n    | project Count\n);\nAppTraces\n| where $__timeFilter(TimeGenerated)\n| where AppRoleName == \"rtp-sender\"\n| where Message has \"Triggering REJECT transition for RTP\" or Message has \"Send RTP request rejected for\"\n| extend props = todynamic(Properties)\n| extend SP_Prop = tostring(props[\"debtor_service_provider\"])\n| extend SP_Send = trim(\" \", extract(@\"Send RTP request rejected for ([^:]+):\", 1, Message))\n| extend DebtorSP = case(\n    isnotempty(SP_Prop), SP_Prop,\n    isnotempty(SP_Send), SP_Send,\n    \"N/D - non tracciato dal codice\")\n| extend TipoRifiuto = case(\n    Message has \"Triggering REJECT transition for RTP\", \"Callback (Payer/PSP)\",\n    Message has \"Send RTP request rejected for\", \"Send/EPC (PSP)\",\n    \"Altro Rifiuto\")\n| summarize Rifiuti = count() by TipoRifiuto, DebtorSP\n| extend TotaleInviati = totalSent\n| extend [\"Refusal Rate %\"] = round(todouble(Rifiuti) * 100.0 / iff(TotaleInviati == 0, 1, TotaleInviati), 2)\n| order by Rifiuti desc",
             "resources": [
               "/subscriptions/$subscription/resourceGroups/$SrtpMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$SrtpLaw"
             ],
