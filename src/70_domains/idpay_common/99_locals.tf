@@ -49,6 +49,11 @@ locals {
     ]
   }
 
+  ########################################
+  # PARI DNS Public zone
+  ########################################
+
+  public_dns_zone_pari = "${var.env_short != "p" ? "${var.env}." : ""}pari.${var.external_domain}"
   #
   # 🔑 KeyVault
   #
