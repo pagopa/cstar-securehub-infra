@@ -2,7 +2,7 @@ module "adf_proxy" {
   source = "./.terraform/modules/__v4__/IDH/adf_egress_proxy"
 
   env               = var.env
-  idh_resource_tier = "small"
+  idh_resource_tier = var.adf_proxy_tier
   product_name      = var.prefix
 
   name = "${var.prefix}-${var.env_short}-adf-proxy"

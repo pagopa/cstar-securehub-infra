@@ -6,6 +6,7 @@ module "cdn_multi_initiative" {
   location                   = var.location
   log_analytics_workspace_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
   tenant_id                  = data.azurerm_client_config.current.tenant_id
+  enable_diagnostic_setting  = contains(["d", "u"], var.env_short) ? false : true
 
   # CDN Profile
   profile = {
@@ -76,6 +77,56 @@ module "cdn_multi_initiative" {
     "MultiIniziativeGlobal" = {
       description = "Global ruleset for multi-initiative CDN"
       rules = {
+        # The initiative segment is variable (for example
+        # bonuselettrodomestici or bonusdecoder). This rule disables Front Door
+        # caching only for the generated pos_export_*.json files across initiatives.
+        "DisableCacheListaPuntiVenditaData" = {
+          order             = 1
+          behavior_on_match = "Stop"
+
+          conditions = [
+            {
+              type         = "url_path"
+              operator     = "RegEx"
+              match_values = ["^/?(${local.multi_initiatives_regex})/lista-punti-vendita/data/pos_export_[^/]+\\.json$"]
+              negate       = false
+              transforms   = []
+            }
+          ]
+
+          # Disable caching only for requests matching the condition above.
+          actions = [
+            {
+              type     = "cache"
+              behavior = "Disabled"
+            }
+          ]
+        }
+
+        # Disable caching only for generated product JSON and daily CSV exports.
+        # Every other asset keeps the route cache policy.
+        "DisableCacheElencoProdottiData" = {
+          order             = 2
+          behavior_on_match = "Stop"
+
+          conditions = [
+            {
+              type         = "url_path"
+              operator     = "RegEx"
+              match_values = ["^/?(${local.multi_initiatives_regex})/elenco-prodotti/data/(product_export_[^/]+\\.json|export_daily_[^/]+\\.csv)$"]
+              negate       = false
+              transforms   = []
+            }
+          ]
+
+          actions = [
+            {
+              type     = "cache"
+              behavior = "Disabled"
+            }
+          ]
+        }
+
         "RewriteInitiativeSpaRouting" = {
           order             = 10
           behavior_on_match = "Stop"
@@ -107,7 +158,8 @@ module "cdn_multi_initiative" {
             destination             = "/{url_path:seg0}/{url_path:seg1}/index.html"
             preserve_unmatched_path = false
           }]
-        },
+        }
+
         "RewriteEsercente" = {
           order             = 20
           behavior_on_match = "Stop"

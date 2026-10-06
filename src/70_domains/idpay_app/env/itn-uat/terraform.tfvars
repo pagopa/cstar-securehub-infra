@@ -126,3 +126,8 @@ rate_limit_merchants_portal_product = 2500
 #
 bonus_elettrodomestici_initiative_id = "68dd003ccce8c534d1da22bc"
 bonus_decoder_initiative_id          = "69e0fa95e21efa516c7b8dec"
+# initiatives test
+bonus_test_decoder_open_initiative_id           = "6a9921bc8b29fef67e2629f0"
+bonus_test_decoder_close_initiative_id          = "6a994f751e7955f5e4e7829e"
+bonus_test_elettrodomestici_open_initiative_id  = "6a99684c8b29fef67e262a04"
+bonus_test_elettrodomestici_close_initiative_id = "6a9989d18b29fef67e262a05"

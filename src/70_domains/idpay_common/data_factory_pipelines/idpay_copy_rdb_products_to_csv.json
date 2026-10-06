@@ -215,7 +215,6 @@
       {
         "name": "Generate_SAS",
         "type": "WebActivity",
-        "state": "Inactive",
         "onInactiveMarkAs": "Succeeded",
         "dependsOn": [
           {
@@ -249,7 +248,7 @@
           "body": {
             "canonicalizedResource": {
               "type": "Expression",
-              "value": "@concat('/blob/', pipeline().parameters.exportAccountName, '/', pipeline().parameters.initiativeFolder, '/elenco-prodotti/data/export_daily_', pipeline().parameters.initiativeId, '_', formatDateTime(convertTimeZone(utcNow(), 'UTC', 'W. Europe Standard Time'),'yyyy-MM-dd'), '.csv')"
+              "value": "@concat('/blob/', pipeline().parameters.exportAccountName, '/$web/', pipeline().parameters.initiativeFolder, '/elenco-prodotti/data/export_daily_', pipeline().parameters.initiativeId, '_', formatDateTime(convertTimeZone(utcNow(), 'UTC', 'W. Europe Standard Time'),'yyyy-MM-dd'), '.csv')"
             },
             "signedExpiry": {
               "type": "Expression",
@@ -273,7 +272,6 @@
       {
         "name": "Get_SubKey",
         "type": "WebActivity",
-        "state": "Inactive",
         "onInactiveMarkAs": "Succeeded",
         "dependsOn": [
           {
@@ -314,7 +312,6 @@
       {
         "name": "Get_NotifyTo",
         "type": "WebActivity",
-        "state": "Inactive",
         "onInactiveMarkAs": "Succeeded",
         "dependsOn": [
           {
@@ -355,7 +352,6 @@
       {
         "name": "Notify_Email_via_MS",
         "type": "WebActivity",
-        "state": "Inactive",
         "onInactiveMarkAs": "Succeeded",
         "dependsOn": [
           {
@@ -397,7 +393,7 @@
             },
             "subject": {
               "type": "Expression",
-                "value": "@concat('Export giornaliero dei prodotti ', formatDateTime(convertTimeZone(utcNow(), 'UTC', 'W. Europe Standard Time'),'yyyy-MM-dd'))"
+              "value": "@concat('Export giornaliero dei prodotti ', formatDateTime(convertTimeZone(utcNow(), 'UTC', 'W. Europe Standard Time'),'yyyy-MM-dd'))"
             },
             "templateName": "Email_ExportDaily_Products",
             "templateValues": {
