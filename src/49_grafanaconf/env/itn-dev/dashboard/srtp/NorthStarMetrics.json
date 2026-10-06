@@ -28,12 +28,612 @@
   "links": [],
   "panels": [
     {
+      "id": 16,
+      "type": "row",
+      "title": "📊 KPI di Prodotto (Flussi - calcolati dai log)",
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 1
+      },
+      "panels": []
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "description": "FLUSSO. Ogni messaggio GpdMessage ricevuto da rtp-consumer (qualunque status/operation), confermato: GpdEventHandler.java:135 logga \"Payload: {}\" per OGNI messaggio che supera la bean-validation, senza filtro su status (il filtro reale e' a monte in pagopa-gpd-rtp). Rappresenta \"messaggi GPD gestiti\" nel senso del deck PO (tutti i GpdMessage che arrivano al consumer).",
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 0,
+        "y": 2
+      },
+      "id": 17,
+      "targets": [
+        {
+          "azureLogAnalytics": {
+            "dashboardTime": false,
+            "mode": "raw",
+            "query": "AppTraces\n| where $__timeFilter(TimeGenerated)\n| where AppRoleName == \"rtp-consumer\"\n| where Message startswith \"Payload: GpdMessage\"\n| summarize Count = count() by bin(TimeGenerated, 1d)\n| order by TimeGenerated asc",
+            "resources": [
+              "/subscriptions/$subscription/resourceGroups/$SrtpMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$SrtpLaw"
+            ],
+            "resultFormat": "table",
+            "timeColumn": "TimeGenerated"
+          },
+          "azureMonitor": {
+            "allowedTimeGrainsMs": [],
+            "dimensionFilters": []
+          },
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "refId": "A",
+          "subscription": "$subscription"
+        }
+      ],
+      "title": "📥 Messaggi GPD Gestiti",
+      "type": "stat",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      }
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "description": "FLUSSO (proxy). \"Potenziale RTP inviabile\" qui = messaggi GPD con status=VALID visti dal consumer. ATTENZIONE: non e' equivalente a \"idonea RTP\" in senso stretto - l'eligibility/taxonomy/opt-out reale e' gia' stata applicata A MONTE in pagopa-gpd-rtp (FilterServiceImpl) prima che il messaggio arrivi qui; quindi questo numero e' gia' \"depurato\" dai non eleggibili, ma non lo misura direttamente (vedi anche pannello \"GPD Validi Ricevuti\").",
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 6,
+        "y": 2
+      },
+      "id": 18,
+      "targets": [
+        {
+          "azureLogAnalytics": {
+            "dashboardTime": false,
+            "mode": "raw",
+            "query": "AppTraces\n| where $__timeFilter(TimeGenerated)\n| where AppRoleName == \"rtp-consumer\"\n| where Message startswith \"Payload: GpdMessage\"\n| extend Status = extract(@\"status=([^,\\s\\]]+)\", 1, Message)\n| where toupper(Status) == \"VALID\"\n| summarize Count = count() by bin(TimeGenerated, 1d)\n| order by TimeGenerated asc",
+            "resources": [
+              "/subscriptions/$subscription/resourceGroups/$SrtpMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$SrtpLaw"
+            ],
+            "resultFormat": "table",
+            "timeColumn": "TimeGenerated"
+          },
+          "azureMonitor": {
+            "allowedTimeGrainsMs": [],
+            "dimensionFilters": []
+          },
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "refId": "A",
+          "subscription": "$subscription"
+        }
+      ],
+      "title": "🎯 Potenziali RTP Inviabili (status=VALID)",
+      "type": "stat",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      }
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "description": "FLUSSO. RTP inviate con successo al PSP (rtp-sender, log \"Rtp sent successfully with id:\").",
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 12,
+        "y": 2
+      },
+      "id": 19,
+      "targets": [
+        {
+          "azureLogAnalytics": {
+            "dashboardTime": false,
+            "mode": "raw",
+            "query": "AppTraces\n| where $__timeFilter(TimeGenerated)\n| where AppRoleName == \"rtp-sender\"\n| where Message startswith \"Rtp sent successfully with id:\"\n| summarize Count = count() by bin(TimeGenerated, 1d)\n| order by TimeGenerated asc",
+            "resources": [
+              "/subscriptions/$subscription/resourceGroups/$SrtpMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$SrtpLaw"
+            ],
+            "resultFormat": "table",
+            "timeColumn": "TimeGenerated"
+          },
+          "azureMonitor": {
+            "allowedTimeGrainsMs": [],
+            "dimensionFilters": []
+          },
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "refId": "A",
+          "subscription": "$subscription"
+        }
+      ],
+      "title": "📤 RTP Inviati",
+      "type": "stat",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      }
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "description": "STOCK/FLUSSO ibrido, no sparkline: numero di PSP debitori distinti che hanno ricevuto almeno un invio riuscito nel periodo. Nessun bucket giornaliero: dcount non e' sommabile tra giorni (sommare dcount giornalieri sovrastimerebbe i PSP ricorrenti), quindi qui il valore e' calcolato una sola volta sull'intero periodo selezionato (non e' possibile uno sparkline corretto senza un merge dcount dedicato).",
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 18,
+        "y": 2
+      },
+      "id": 20,
+      "targets": [
+        {
+          "azureLogAnalytics": {
+            "dashboardTime": false,
+            "mode": "raw",
+            "query": "AppTraces\n| where $__timeFilter(TimeGenerated)\n| where AppRoleName == \"rtp-sender\"\n| where Message startswith \"Rtp sent successfully with id:\"\n| extend DebtorSP = tostring(todynamic(Properties)[\"debtor_service_provider\"])\n| where isnotempty(DebtorSP)\n| summarize [\"PSP distinti\"] = dcount(DebtorSP)\n| project [\"PSP distinti\"]",
+            "resources": [
+              "/subscriptions/$subscription/resourceGroups/$SrtpMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$SrtpLaw"
+            ],
+            "resultFormat": "table",
+            "timeColumn": "TimeGenerated"
+          },
+          "azureMonitor": {
+            "allowedTimeGrainsMs": [],
+            "dimensionFilters": []
+          },
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "refId": "A",
+          "subscription": "$subscription"
+        }
+      ],
+      "title": "🏦 PSP Attivi Distinti",
+      "type": "stat",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      }
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "description": "FLUSSO. RTP pagate presso lo stesso PSP che ha ricevuto la richiesta (same psp scenario), per evento di pagamento (non per coorte di invio - vedi Panel 2 per il tasso).",
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 0,
+        "y": 8
+      },
+      "id": 21,
+      "targets": [
+        {
+          "azureLogAnalytics": {
+            "dashboardTime": false,
+            "mode": "raw",
+            "query": "AppTraces\n| where $__timeFilter(TimeGenerated)\n| where AppRoleName == \"rtp-sender\"\n| where Message startswith \"Successfully updated paid RTP with same psp scenario.\"\n| summarize Count = count() by bin(TimeGenerated, 1d)\n| order by TimeGenerated asc",
+            "resources": [
+              "/subscriptions/$subscription/resourceGroups/$SrtpMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$SrtpLaw"
+            ],
+            "resultFormat": "table",
+            "timeColumn": "TimeGenerated"
+          },
+          "azureMonitor": {
+            "allowedTimeGrainsMs": [],
+            "dimensionFilters": []
+          },
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "refId": "A",
+          "subscription": "$subscription"
+        }
+      ],
+      "title": "✅ Pagate In-Channel (stesso PSP)",
+      "type": "stat",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      }
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "description": "FLUSSO. RTP pagate presso un PSP diverso da quello che aveva ricevuto la richiesta (different psp scenario). Confermato: questo scenario innesca ANCHE una cancellazione automatica (RfC) verso il PSP originale (UpdatePaidOperationProcessor.java:156-162 -> SendRTPServiceImpl.updateRtpCancelPaid, reason=PAID).",
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 6,
+        "y": 8
+      },
+      "id": 22,
+      "targets": [
+        {
+          "azureLogAnalytics": {
+            "dashboardTime": false,
+            "mode": "raw",
+            "query": "AppTraces\n| where $__timeFilter(TimeGenerated)\n| where AppRoleName == \"rtp-sender\"\n| where Message has \"Successfully updated paid RTP with different psp scenario\"\n| summarize Count = count() by bin(TimeGenerated, 1d)\n| order by TimeGenerated asc",
+            "resources": [
+              "/subscriptions/$subscription/resourceGroups/$SrtpMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$SrtpLaw"
+            ],
+            "resultFormat": "table",
+            "timeColumn": "TimeGenerated"
+          },
+          "azureMonitor": {
+            "allowedTimeGrainsMs": [],
+            "dimensionFilters": []
+          },
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "refId": "A",
+          "subscription": "$subscription"
+        }
+      ],
+      "title": "🔀 Pagate Off-Channel (PSP diverso)",
+      "type": "stat",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      }
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "description": "FLUSSO. Attivazioni completate con successo (HTTP 201) su POST activations (rtp-activator). Non include i takeover completati (endpoint separato, non ancora strumentato qui - vedi roadmap).",
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 12,
+        "y": 8
+      },
+      "id": 23,
+      "targets": [
+        {
+          "azureLogAnalytics": {
+            "dashboardTime": false,
+            "mode": "raw",
+            "query": "AppRequests\n| where $__timeFilter(TimeGenerated)\n| where AppRoleName == \"rtp-activator\"\n| where Name startswith \"POST\" and Name contains \"activations\"\n| where ResultCode == \"201\"\n| summarize Count = count() by bin(TimeGenerated, 1d)\n| order by TimeGenerated asc",
+            "resources": [
+              "/subscriptions/$subscription/resourceGroups/$SrtpMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$SrtpLaw",
+              "/subscriptions/$subscription/resourceGroups/$CoreMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$CoreLaw"
+            ],
+            "resultFormat": "table",
+            "timeColumn": "TimeGenerated"
+          },
+          "azureMonitor": {
+            "allowedTimeGrainsMs": [],
+            "dimensionFilters": []
+          },
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "refId": "A",
+          "subscription": "$subscription"
+        }
+      ],
+      "title": "🔑 Attivazioni Completate",
+      "type": "stat",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      }
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "description": "FLUSSO. Cancellazioni completate con successo lato chiamata sincrona POST /cancel (SendRTPServiceImpl.java:194 \"RTP cancellation succeeded. service_provider: {}\"). Non deduplica rispetto alla conferma asincrona camt.029 (\"Triggering CANCEL transition for RTP\") - vedi roadmap per un pannello unificato sul round-trip completo.",
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 18,
+        "y": 8
+      },
+      "id": 24,
+      "targets": [
+        {
+          "azureLogAnalytics": {
+            "dashboardTime": false,
+            "mode": "raw",
+            "query": "AppTraces\n| where $__timeFilter(TimeGenerated)\n| where AppRoleName == \"rtp-sender\"\n| where Message startswith \"RTP cancellation succeeded\"\n| summarize Count = count() by bin(TimeGenerated, 1d)\n| order by TimeGenerated asc",
+            "resources": [
+              "/subscriptions/$subscription/resourceGroups/$SrtpMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$SrtpLaw"
+            ],
+            "resultFormat": "table",
+            "timeColumn": "TimeGenerated"
+          },
+          "azureMonitor": {
+            "allowedTimeGrainsMs": [],
+            "dimensionFilters": []
+          },
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "refId": "A",
+          "subscription": "$subscription"
+        }
+      ],
+      "title": "🚫 Cancellazioni Riuscite",
+      "type": "stat",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      }
+    },
+    {
+      "id": 25,
+      "type": "row",
+      "title": "📌 KPI di Prodotto (Stock) - non ancora disponibili in Grafana, richiedono sviluppo",
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 14
+      },
+      "panels": []
+    },
+    {
+      "id": 26,
+      "type": "text",
+      "title": "KPI di Prodotto (Stock) - Dettaglio e Roadmap",
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 15
+      },
+      "options": {
+        "mode": "markdown",
+        "content": "# 📌 KPI di Prodotto - STOCK (valore a una data)\n\nQuesti KPI **non sono flussi di eventi** e non si possono ricavare da una query sulla finestra temporale del picker: rappresentano uno **stato** (snapshot) a una data. Oggi **non sono disponibili in Grafana/LAW** (retention 30gg, solo log). Valori dall'ultimo deck PO (SRTP - Analisi numeriche):\n\n| KPI | 24/07/2026 | 30/09/2026 | Dove vive oggi | Come esporlo |\n|---|---|---|---|---|\n| Enti in whitelist | 1.443 | 1.445 | Redis Set `rtp_flag_optin` (pagopa-gpd-rtp, `RedisCacheRepository.java:24`), popolato da `rtp-payees` via `/payees/payees` | Export periodico (giornaliero) Redis/rtp-payees -> ADX, es. nuova tabella NSM `whitelist_enti_snapshot` |\n| Enti in opt-out | 9 | 10 | Dedotto per differenza/tassonomia (`FilterServiceImpl.java:81-89`, prefissi tassonomia 6/7/8) - non esiste un \"elenco enti opt-out\" esplicito, e' una condizione per transazione | Richiede nuova aggregazione lato pagopa-gpd-rtp (conteggio enti distinti con eventi TRANSFERS_CATEGORIES_NOT_VALID_FOR_RTP) |\n| Utenti attivi | 308.612 | 495.082 | MongoDB collection `activations` (rtp-activator, `ActivationEntity.java:20`) - snapshot live, nessuna vista storica | Export giornaliero count(`activations`) -> ADX (stesso pattern dello spike RtpsTest, branch SRTP-2254-spike-adx) |\n| Utenti disattivati | 10.070 | 18.147 | MongoDB collection `deleted_activations` (rtp-activator, `DeletedActivationEntity.java:18`), con `reason` (USER_REQUESTED / TAKEOVER) | Export giornaliero count(`deleted_activations` dove deactivationDate<=oggi) -> ADX |\n\n**Come li ha probabilmente ottenuti il PO**: query dirette su Mongo (count per collection) fatte manualmente/periodicamente, non un export automatizzato - nessun endpoint o job di aggregazione trovato nel codice di rtp-activator.\n\n**% RTP pagate su stesso PSP (deck: 12% al 24/07)**: questo e' in realta' un FLUSSO (vedi Panel \"In-Channel Settlement Rate\" in alto), ma il valore del deck e' probabilmente CUMULATIVO da inizio servizio (maggio), non calcolabile con il time-picker Grafana data la retention LAW di 30gg: per riprodurre lo storico servono le tabelle NSM gia' su ADX (`in_channel_settlement_rate`, pipeline ADF giornaliera, `63_dataexplorer_nsm.tf`).\n\n**Prossimo passo consigliato**: estendere la pipeline ADF/ADX esistente (NSM) con un job giornaliero di snapshot per `activations`/`deleted_activations`/whitelist enti, analogo a quanto gia' fatto per le metriche di flusso."
+      }
+    },
+    {
       "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 0
+        "y": 22
       },
       "id": 1,
       "panels": [],
@@ -45,12 +645,12 @@
         "type": "grafana-azure-monitor-datasource",
         "uid": "azure-monitor-oob"
       },
-      "description": "% di RTP inviate (pain.013) pagate presso lo stesso PSP che ha ricevuto la richiesta, nel periodo selezionato.",
+      "description": "CORRETTO (P1/P2): tasso calcolato per COORTE (stesse RTP), non piu' su due conteggi indipendenti nella stessa finestra. Join su Properties.resource_id (MDC comune a invio e pagamento, confermato in SendRTPServiceImpl.java:140 e UpdatePaidOperationProcessor.java:97-100). Il lookup dei pagamenti usa una finestra allargata (+37gg fissi, indipendente dal time-picker) per intercettare pagamenti arrivati dopo l'invio, entro il limite della retention LAW (30gg) + margine: se il periodo selezionato e' vicino al bordo della retention, alcuni pagamenti tardivi potrebbero non essere intercettati.",
       "gridPos": {
         "h": 6,
         "w": 8,
         "x": 0,
-        "y": 1
+        "y": 23
       },
       "id": 2,
       "targets": [
@@ -58,7 +658,7 @@
           "azureLogAnalytics": {
             "dashboardTime": false,
             "mode": "raw",
-            "query": "let saveLog = AppTraces\n| where $__timeFilter(TimeGenerated)\n| where AppRoleName == \"rtp-sender\"\n| where Message startswith \"Rtp to be sent saved with id:\"\n| project OperationId;\nlet sentCount = toscalar(\n    AppTraces\n    | where $__timeFilter(TimeGenerated)\n    | where AppRoleName == \"rtp-sender\"\n    | where Message startswith \"Rtp sent successfully with id:\"\n    | join kind=inner saveLog on OperationId\n    | count\n    | project Count\n);\nlet paidCount = toscalar(\n    AppTraces\n    | where $__timeFilter(TimeGenerated)\n    | where AppRoleName == \"rtp-sender\"\n    | where Message startswith \"Successfully updated paid RTP with same psp scenario.\"\n    | count\n    | project Count\n);\nprint [\"In-Channel Settlement Rate\"] = round(100.0 * paidCount / iff(sentCount == 0, 1, sentCount), 2)",
+            "query": "let sentInWindow = AppTraces\n| where $__timeFilter(TimeGenerated)\n| where AppRoleName == \"rtp-sender\"\n| where Message startswith \"Rtp sent successfully with id:\"\n| extend ResourceId = tostring(todynamic(Properties)[\"resource_id\"])\n| where isnotempty(ResourceId)\n| distinct ResourceId;\nlet paidSamePspLookup = AppTraces\n| where TimeGenerated > ago(37d)\n| where AppRoleName == \"rtp-sender\"\n| where Message startswith \"Successfully updated paid RTP with same psp scenario.\"\n| extend ResourceId = tostring(todynamic(Properties)[\"resource_id\"])\n| where isnotempty(ResourceId)\n| distinct ResourceId;\nlet totalSent = toscalar(sentInWindow | count);\nlet totalPaidSameOfCohort = toscalar(sentInWindow | join kind=inner paidSamePspLookup on ResourceId | count);\nprint [\"In-Channel Settlement Rate %\"] = round(100.0 * totalPaidSameOfCohort / iff(totalSent == 0, 1, totalSent), 2), [\"RTP inviate (coorte)\"] = totalSent, [\"Pagate stesso PSP (coorte)\"] = totalPaidSameOfCohort",
             "resources": [
               "/subscriptions/$subscription/resourceGroups/$SrtpMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$SrtpLaw"
             ],
@@ -125,12 +725,12 @@
         "type": "grafana-azure-monitor-datasource",
         "uid": "azure-monitor-oob"
       },
-      "description": "Proxy calcolato come invii RTP riusciti / (riusciti + falliti) nel periodo selezionato. La metrica di prodotto completa (CF processabili in GPD vs CF attivati) richiede l'incrocio con i dati GPD, non ancora disponibile via log.",
+      "description": "CORRETTO (P4): denominatore ora limitato ai soli fallimenti per \"payer is not activated\" (match testuale sul messaggio errore, confermato: nessun error_type/MDC dedicato esiste in SendRTPServiceImpl.java, PayerNotActivatedException.java:11/16 - unico modo e' il pattern matching), escludendo errori tecnici generici (timeout, Mongo, rete) che prima gonfiavano il denominatore. Resta un proxy a livello di EVENTI, non di Codici Fiscali distinti: nessun identificativo payer (hash o CF) e' mai loggato da rtp-sender (confermato: rtp.payerId() non e' mai interpolato in un log). La metrica di prodotto reale (CF processabili in GPD vs CF attivati nel Registry) richiede incrocio con la collection \"activations\" di rtp-activator (Mongo) e con pagopa-gpd-rtp - non disponibile oggi via log/LAW, vedi roadmap.",
       "gridPos": {
         "h": 6,
         "w": 8,
         "x": 8,
-        "y": 1
+        "y": 23
       },
       "id": 3,
       "targets": [
@@ -138,7 +738,7 @@
           "azureLogAnalytics": {
             "dashboardTime": false,
             "mode": "raw",
-            "query": "let successi = toscalar(\n    AppTraces\n    | where $__timeFilter(TimeGenerated)\n    | where AppRoleName == \"rtp-sender\"\n    | where SeverityLevel == 1\n    | where Message startswith \"Rtp sent successfully with id:\"\n    | count\n    | project Count\n);\nlet fallimenti = toscalar(\n    AppTraces\n    | where $__timeFilter(TimeGenerated)\n    | where AppRoleName == \"rtp-sender\"\n    | where SeverityLevel == 3\n    | where Message startswith \"Error sending Rtp to be sent:\"\n    | count\n    | project Count\n);\nprint [\"Active Payer Reachability\"] = round(100.0 * successi / iff((successi + fallimenti) == 0, 1, successi + fallimenti), 2)",
+            "query": "let inviateConSuccesso = toscalar(\n    AppTraces\n    | where $__timeFilter(TimeGenerated)\n    | where AppRoleName == \"rtp-sender\"\n    | where Message startswith \"Rtp sent successfully with id:\"\n    | count\n    | project Count\n);\nlet payerNonAttivato = toscalar(\n    AppTraces\n    | where $__timeFilter(TimeGenerated)\n    | where AppRoleName == \"rtp-sender\"\n    | where Message startswith \"Error sending Rtp to be sent:\"\n    | where Message has \"payer is not activated\" or Message has \"The payer is not activated\"\n    | count\n    | project Count\n);\nprint [\"Active Payer Reachability %\"] = round(100.0 * inviateConSuccesso / iff((inviateConSuccesso + payerNonAttivato) == 0, 1, inviateConSuccesso + payerNonAttivato), 2), [\"Inviate con successo\"] = inviateConSuccesso, [\"Payer non attivato\"] = payerNonAttivato",
             "resources": [
               "/subscriptions/$subscription/resourceGroups/$SrtpMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$SrtpLaw"
             ],
@@ -210,7 +810,7 @@
         "h": 6,
         "w": 8,
         "x": 16,
-        "y": 1
+        "y": 23
       },
       "id": 4,
       "targets": [],
@@ -231,7 +831,7 @@
         "h": 8,
         "w": 16,
         "x": 0,
-        "y": 7
+        "y": 29
       },
       "id": 5,
       "targets": [
@@ -308,7 +908,7 @@
         "h": 8,
         "w": 8,
         "x": 16,
-        "y": 7
+        "y": 29
       },
       "id": 6,
       "targets": [
@@ -345,7 +945,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 15
+        "y": 37
       },
       "id": 7,
       "panels": [],
@@ -357,12 +957,12 @@
         "type": "grafana-azure-monitor-datasource",
         "uid": "azure-monitor-oob"
       },
-      "description": "Avvisi caricati su GPD con codici tassonomici idonei all'RTP, per giorno e tipo operazione.",
+      "description": "RINOMINATO/CHIARITO (P da rifare): questo pannello NON misura la vera \"Taxonomy Eligibility Rate\". La ricerca sul codice conferma che il filtro di eligibility/opt-out/tassonomia (FilterServiceImpl: filterByOptInFlag, filterByStatus, filterByTaxonomy 6/7/8) avviene a MONTE in pagopa-gpd-rtp, PRIMA che il messaggio diventi un evento Kafka \"GpdMessage\" consumato da rtp-consumer. rtp-consumer (GpdEventHandler.java:135, GpdMessageService.java) e' un puro inoltratore verso rtp-sender, senza logica di eligibility/tassonomia (confermato: 0 match per taxonomy/eligib/whitelist/opt-out in rtp-consumer). Questo pannello conta quindi solo i messaggi GPD con status=VALID GIA' FILTRATI a monte, non un vero \"tasso di idoneita'\". Per il tasso reale servirebbe strumentare pagopa-gpd-rtp (conteggio AppError per tipo: TAX_CODE_NOT_VALID_FOR_RTP, EC_NOT_ENABLED_FOR_RTP, TRANSFERS_CATEGORIES_NOT_VALID_FOR_RTP, PAYMENT_POSITION_STATUS_NOT_VALID_FOR_RTP) - verificare se pagopa-gpd-rtp scrive sulla stessa LAW SRTP (uso confermato di applicationinsights-spring-boot-starter con connection string propria \"ai-d/u/p-connection-string\": non e' stato possibile confermare con certezza se punta allo stesso Application Insights di rtp-sender o a uno diverso - verificare lato infra). Vedi roadmap sviluppi.",
       "gridPos": {
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 16
+        "y": 38
       },
       "id": 8,
       "targets": [
@@ -390,7 +990,7 @@
           "subscription": "$subscription"
         }
       ],
-      "title": "Taxonomy Eligibility Rate",
+      "title": "📋 GPD Validi Ricevuti dal Consumer (proxy pre-eligibility, status=VALID)",
       "type": "table"
     },
     {
@@ -398,12 +998,12 @@
         "type": "grafana-azure-monitor-datasource",
         "uid": "azure-monitor-oob"
       },
-      "description": "% dei messaggi di rifiuto esplicito (payer/PSP) sul totale RTP inviate con successo nel periodo selezionato. PSP estratto da Properties.debtor_service_provider (iniettato da ContextUtils.injectRtpDetails) con fallback sul testo del messaggio per il ramo Send/EPC. Il ramo Callback (Payer/PSP) risulta 'N/D' perché SendCallbackHandler non inietta il PSP in questo punto del codice (StatusUtility.triggerStatus) — gap di logging lato rtp-sender, non recuperabile via query.",
+      "description": "AGGIORNATO (P5): denominatore ora calcolato PER SINGOLO PSP (join su Properties.debtor_service_provider, disponibile anche sul log \"Rtp sent successfully with id:\" perche' iniettato nel Reactor Context per tutta la catena send() - SendRTPServiceImpl.java:140), non piu' diviso per il totale globale degli invii. Confermato via codice: \"Triggering REJECT transition for RTP\" (StatusUtility.java:55-64) NON e' solo il rifiuto esplicito del payer: scatta per qualunque TxSts=RJCT ricevuto via callback pacs.002 dal PSP (sia per invio che, tramite lo stesso handler, per cancellazione), motivo generico non distinguibile a livello applicativo. Il ramo \"Callback (Payer/PSP)\" resta \"N/D - non tracciato dal codice\": confermato che SendCallbackHandler.java non chiama mai injectRtpDetails, quindi il PSP e' tecnicamente risalibile in memoria (rtpToUpdate.serviceProviderDebtor()) ma MAI scritto in log/MDC in quel punto - gap di codice reale, non di query.",
       "gridPos": {
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 16
+        "y": 38
       },
       "id": 9,
       "targets": [
@@ -411,7 +1011,7 @@
           "azureLogAnalytics": {
             "dashboardTime": false,
             "mode": "raw",
-            "query": "let totalSent = toscalar(\n    AppTraces\n    | where $__timeFilter(TimeGenerated)\n    | where AppRoleName == \"rtp-sender\"\n    | where Message startswith \"Rtp sent successfully with id:\"\n    | count\n    | project Count\n);\nAppTraces\n| where $__timeFilter(TimeGenerated)\n| where AppRoleName == \"rtp-sender\"\n| where Message has \"Triggering REJECT transition for RTP\" or Message has \"Send RTP request rejected for\"\n| extend props = todynamic(Properties)\n| extend SP_Prop = tostring(props[\"debtor_service_provider\"])\n| extend SP_Send = trim(\" \", extract(@\"Send RTP request rejected for ([^:]+):\", 1, Message))\n| extend DebtorSP = case(\n    isnotempty(SP_Prop), SP_Prop,\n    isnotempty(SP_Send), SP_Send,\n    \"N/D - non tracciato dal codice\")\n| extend TipoRifiuto = case(\n    Message has \"Triggering REJECT transition for RTP\", \"Callback (Payer/PSP)\",\n    Message has \"Send RTP request rejected for\", \"Send/EPC (PSP)\",\n    \"Altro Rifiuto\")\n| summarize Rifiuti = count() by TipoRifiuto, DebtorSP\n| extend TotaleInviati = totalSent\n| extend [\"Refusal Rate %\"] = round(todouble(Rifiuti) * 100.0 / iff(TotaleInviati == 0, 1, TotaleInviati), 2)\n| order by Rifiuti desc",
+            "query": "let totalSentByPsp = AppTraces\n| where $__timeFilter(TimeGenerated)\n| where AppRoleName == \"rtp-sender\"\n| where Message startswith \"Rtp sent successfully with id:\"\n| extend props = todynamic(Properties)\n| extend DebtorSP = tostring(props[\"debtor_service_provider\"])\n| where isnotempty(DebtorSP)\n| summarize TotaleInviati = count() by DebtorSP;\nAppTraces\n| where $__timeFilter(TimeGenerated)\n| where AppRoleName == \"rtp-sender\"\n| where Message has \"Triggering REJECT transition for RTP\" or Message has \"Send RTP request rejected for\"\n| extend props = todynamic(Properties)\n| extend SP_Prop = tostring(props[\"debtor_service_provider\"])\n| extend SP_Send = trim(\" \", extract(@\"Send RTP request rejected for ([^:]+):\", 1, Message))\n| extend DebtorSP = case(\n    isnotempty(SP_Prop), SP_Prop,\n    isnotempty(SP_Send), SP_Send,\n    \"N/D - non tracciato dal codice\")\n| extend TipoRifiuto = case(\n    Message has \"Triggering REJECT transition for RTP\", \"Callback (Payer/PSP)\",\n    Message has \"Send RTP request rejected for\", \"Send/EPC (PSP)\",\n    \"Altro Rifiuto\")\n| summarize Rifiuti = count() by TipoRifiuto, DebtorSP\n| join kind=leftouter totalSentByPsp on DebtorSP\n| extend [\"Refusal Rate %\"] = round(todouble(Rifiuti) * 100.0 / iff(TotaleInviati == 0 or isnull(TotaleInviati), 1, TotaleInviati), 2)\n| project TipoRifiuto, DebtorSP, Rifiuti, TotaleInviati, [\"Refusal Rate %\"]\n| order by Rifiuti desc",
             "resources": [
               "/subscriptions/$subscription/resourceGroups/$SrtpMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$SrtpLaw"
             ],
@@ -439,12 +1039,12 @@
         "type": "grafana-azure-monitor-datasource",
         "uid": "azure-monitor-oob"
       },
-      "description": "Conteggio giornaliero delle attivazioni completate con successo (HTTP 201 su POST /rtpactivator/activations) per PSP (JWT Subject). Query allineata alla Workbook Azure 'SRTP OER' esistente.",
+      "description": "RINOMINATO E CORRETTO (P6): era un conteggio assoluto, ora e' un vero TASSO (Successo/Totale tentativi sullo stesso endpoint, per giorno). IMPORTANTE: raggruppato per \"TSP\" (Technical Service Provider id), NON per PSP business. Confermato nel codice: il \"JWT Subject\"/sub_token e' il claim OAuth2 \"sub\" del chiamante (ContextUtils.java:28-35, SecurityConfig.java:59 setPrincipalClaimName(\"sub\")), cioe' l'ID TECNICO del service provider (tspId), risolto poi verso 1 o piu' PSP business tramite RegistryDataService.getServiceProvidersByTspId(tspId) (AuthorizationChecker.java:58-61) - non e' il codice PSP business. Il \"takeover\" (quando il payer esiste gia') NON risponde 201: genera OTP e risponde 409 Conflict (ActivationAPIControllerImpl.java:160-191); il completamento effettivo del takeover (endpoint separato con l'OTP) non e' incluso in questa query - vedi roadmap per un pannello dedicato al takeover.",
       "gridPos": {
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 24
+        "y": 46
       },
       "id": 10,
       "targets": [
@@ -452,7 +1052,7 @@
           "azureLogAnalytics": {
             "dashboardTime": false,
             "mode": "raw",
-            "query": "let validOps =\n    AppDependencies\n    | where $__timeFilter(TimeGenerated)\n    | where Name startswith \"POST\" and Name contains \"/rtpactivator/activations\"\n    | distinct OperationId;\nlet deps =\n    AppDependencies\n    | where $__timeFilter(TimeGenerated)\n    | where Name startswith \"POST\" and Name contains \"/rtpactivator/activations\"\n    | extend JWT_Subject = tostring(Properties[\"Request-X-JWT-Subject\"])\n    | summarize JWT_Subject = any(JWT_Subject) by OperationId;\nAppRequests\n| where $__timeFilter(TimeGenerated)\n| where AppRoleName == \"rtp-activator\"\n| where Name startswith \"POST\" and Name contains \"activations\"\n| join kind=inner validOps on OperationId\n| where ResultCode == \"201\"\n| project OperationId, TimeGenerated\n| join kind=leftouter deps on OperationId\n| extend JWT_Subject = iif(isempty(JWT_Subject), \"UNKNOWN\", JWT_Subject)\n| summarize AttivazioniCompletateSuccesso = count() by bin(TimeGenerated, 1d), PSP = JWT_Subject\n| order by TimeGenerated asc",
+            "query": "let allReq =\n    AppRequests\n    | where $__timeFilter(TimeGenerated)\n    | where AppRoleName == \"rtp-activator\"\n    | where Name startswith \"POST\" and Name contains \"activations\"\n    | project OperationId, ResultCode, TimeGenerated;\nlet deps =\n    AppDependencies\n    | where $__timeFilter(TimeGenerated)\n    | where Name startswith \"POST\" and Name contains \"/rtpactivator/activations\"\n    | extend JWT_Subject = tostring(Properties[\"Request-X-JWT-Subject\"])\n    | summarize JWT_Subject = any(JWT_Subject) by OperationId;\nallReq\n| join kind=leftouter deps on OperationId\n| extend TSP = iif(isempty(JWT_Subject), \"UNKNOWN\", JWT_Subject)\n| summarize Totale = count(), Successo = countif(ResultCode == \"201\") by bin(TimeGenerated, 1d), TSP\n| extend [\"Activation Success Rate %\"] = round(100.0 * Successo / iff(Totale == 0, 1, Totale), 2)\n| order by TimeGenerated asc",
             "resources": [
               "/subscriptions/$subscription/resourceGroups/$SrtpMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$SrtpLaw",
               "/subscriptions/$subscription/resourceGroups/$CoreMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$CoreLaw"
@@ -473,7 +1073,7 @@
           "subscription": "$subscription"
         }
       ],
-      "title": "✅ Activation Success Rate per PSP (HTTP 201)",
+      "title": "✅ Activation Success Rate per TSP (tasso, HTTP 201/Totale)",
       "type": "timeseries"
     },
     {
@@ -481,12 +1081,12 @@
         "type": "grafana-azure-monitor-datasource",
         "uid": "azure-monitor-oob"
       },
-      "description": "% di chiamate POST /rtp/rtps/{id}/cancel andate a buon fine (HTTP 204) sul totale, per giorno. Proxy a livello API Gateway (AzureDiagnostics, workspace core) della Request for Cancellation; query allineata alla Workbook Azure 'SRTP OER' esistente (tab Invii SRTP > Cancellazioni). Non traccia ancora il round-trip completo camt.055/camt.029 verso il PSP.",
+      "description": "CORRETTO (P7): separati i 4xx (rifiuto client, es. 404 RTP non trovata, 409 stato non cancellabile - NON sono fallimenti del servizio) dai 5xx (errore server reale) invece di un unico bucket \"Fallimento\". Resta confermato (vedi codice rtp-sender, RequestToPayCancellationController.java): questo pannello misura SOLO la risposta HTTP sincrona della POST /cancel, non il round-trip completo camt.055 (RfC inviata) -> camt.029 (risposta PSP), che in realta' avviene su un canale ASINCRONO SEPARATO (StatusUtility.java case CNCL/RJCR, log \"Triggering CANCEL transition for RTP\" / \"Triggering ERROR_CANCEL transition for RTP\") gestito da RequestToPayCancellationController - vedi KPI \"Cancellazioni Riuscite\" e roadmap per un pannello dedicato al round-trip asincrono reale.",
       "gridPos": {
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 24
+        "y": 46
       },
       "id": 11,
       "targets": [
@@ -494,7 +1094,7 @@
           "azureLogAnalytics": {
             "dashboardTime": false,
             "mode": "raw",
-            "query": "AzureDiagnostics\n| where $__timeFilter(TimeGenerated)\n| where requestUri_s startswith \"/rtp/rtps/\"\n| where requestUri_s endswith \"/cancel\"\n| where httpMethod_s == \"POST\"\n| summarize\n    Successo   = countif(toint(httpStatus_d) == 204),\n    Fallimento = countif(toint(httpStatus_d) != 204)\n  by bin(TimeGenerated, 1d)\n| extend [\"Cancellation Success Rate %\"] = round(100.0 * Successo / iff((Successo + Fallimento) == 0, 1, Successo + Fallimento), 2)\n| order by TimeGenerated asc",
+            "query": "AzureDiagnostics\n| where $__timeFilter(TimeGenerated)\n| where requestUri_s startswith \"/rtp/rtps/\"\n| where requestUri_s endswith \"/cancel\"\n| where httpMethod_s == \"POST\"\n| extend StatusClass = case(\n    toint(httpStatus_d) == 204, \"Successo (204)\",\n    toint(httpStatus_d) between (400 .. 499), \"Rifiuto Client (4xx)\",\n    toint(httpStatus_d) between (500 .. 599), \"Errore Server (5xx)\",\n    \"Altro\")\n| summarize Count = count() by bin(TimeGenerated, 1d), StatusClass\n| order by TimeGenerated asc",
             "resources": [
               "/subscriptions/$subscription/resourceGroups/$CoreMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$CoreLaw"
             ],
@@ -514,7 +1114,7 @@
           "subscription": "$subscription"
         }
       ],
-      "title": "Cancellation Success Rate (API /cancel, HTTP 204)",
+      "title": "Cancellation: Esiti POST /cancel per classe HTTP (204 / 4xx / 5xx)",
       "type": "timeseries"
     },
     {
@@ -523,7 +1123,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 32
+        "y": 54
       },
       "id": 12,
       "panels": [],
@@ -540,7 +1140,7 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 33
+        "y": 55
       },
       "id": 13,
       "targets": [
@@ -577,7 +1177,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 42
+        "y": 64
       },
       "id": 14,
       "panels": [],
@@ -594,7 +1194,7 @@
         "h": 16,
         "w": 24,
         "x": 0,
-        "y": 43
+        "y": 65
       },
       "id": 15,
       "targets": [],
