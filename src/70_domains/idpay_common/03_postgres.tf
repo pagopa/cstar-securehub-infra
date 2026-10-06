@@ -186,7 +186,8 @@ resource "postgresql_role" "idpay_service" {
 
   name     = each.value.role_name
   login    = true
-  password = azurerm_key_vault_secret.idpay_postgres_service_password[each.key].value
+  password_wo = azurerm_key_vault_secret.idpay_postgres_service_password[each.key].value
+  password_wo_version = 1
 
   create_database = false
   create_role     = false
