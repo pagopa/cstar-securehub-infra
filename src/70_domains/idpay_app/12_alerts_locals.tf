@@ -650,8 +650,7 @@ locals {
       severity    = 3
       query       = <<-QUERY
             AppRequests
-            | where Name matches regex @"^GET /idpay-itn/merchant/portal/[^/]+/transactions/[^/]+/download$"
-                or Name matches regex @"^GET /idpay-itn/merchant/portal/initiatives/[^/]+/point-of-sales/[^/]+/transactions/[^/]+/download$"
+            | where Name == "GET /idpay/initiatives/{initiativeId}/point-of-sales/{pointOfSaleId}/transactions/{transactionId}/download"
             | where ResultCode startswith "5"
           QUERY
       criteria = {
@@ -668,8 +667,7 @@ locals {
       severity    = 3
       query       = <<-QUERY
             AppRequests
-            | where Name matches regex @"^GET /idpay-itn/merchant/portal/[^/]+/transactions/[^/]+/download$"
-                or Name matches regex @"^GET /idpay-itn/merchant/portal/initiatives/[^/]+/point-of-sales/[^/]+/transactions/[^/]+/download$"
+            | where Name == "GET /idpay/initiatives/{initiativeId}/point-of-sales/{pointOfSaleId}/transactions/{transactionId}/download"
             | where ResultCode in ("400", "401", "429")
           QUERY
       criteria = {
@@ -686,8 +684,8 @@ locals {
       severity    = 3
       query       = <<-QUERY
             AppRequests
-            | where Name matches regex @"^GET /idpay-itn/merchant/portal/[^/]+/point-of-sales/[^/]+$"
-                or Name matches regex @"^GET /idpay-itn/merchant/portal/[^/]+/initiatives/[^/]+/point-of-sales/[^/]+$"
+            | where Name == "GET /idpay/merchant/portal/{merchantId}/point-of-sales/{pointOfSaleId}"
+                or Name == "GET /idpay/merchant/portal/{merchantId}/initiatives/{initiativeId}/point-of-sales/{pointOfSaleId}"
             | where ResultCode startswith "5"
           QUERY
       criteria = {
@@ -704,8 +702,8 @@ locals {
       severity    = 3
       query       = <<-QUERY
             AppRequests
-            | where Name matches regex @"^GET /idpay-itn/merchant/portal/[^/]+/point-of-sales/[^/]+$"
-                or Name matches regex @"^GET /idpay-itn/merchant/portal/[^/]+/initiatives/[^/]+/point-of-sales/[^/]+$"
+            | where Name == "GET /idpay/merchant/portal/{merchantId}/point-of-sales/{pointOfSaleId}"
+                or Name == "GET /idpay/merchant/portal/{merchantId}/initiatives/{initiativeId}/point-of-sales/{pointOfSaleId}"
             | where ResultCode in ("401", "404", "429")
           QUERY
       criteria = {
