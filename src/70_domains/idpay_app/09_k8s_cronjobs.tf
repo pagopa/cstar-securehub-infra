@@ -410,7 +410,7 @@ resource "kubernetes_cron_job_v1" "delete_invoiced_transactions" {
     concurrency_policy = "Forbid"
 
     #Active only in PROD
-    suspend = var.env_short != "p"
+    suspend = true
 
     job_template {
       metadata {
