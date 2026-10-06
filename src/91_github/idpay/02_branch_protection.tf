@@ -114,7 +114,7 @@ resource "github_repository_ruleset" "uat_and_main" {
     update                  = true
     deletion                = true
     non_fast_forward        = true
-    required_linear_history = true
+    required_linear_history = each.value.required_linear_history
 
     pull_request {
       require_code_owner_review         = true
@@ -122,7 +122,7 @@ resource "github_repository_ruleset" "uat_and_main" {
       dismiss_stale_reviews_on_push     = true
       required_review_thread_resolution = true
       require_last_push_approval        = false
-      allowed_merge_methods             = ["merge"]
+      allowed_merge_methods             = each.value.allowed_merge_methods
     }
 
     required_status_checks {
@@ -142,7 +142,7 @@ resource "github_repository_ruleset" "uat_and_main" {
       for_each = contains(keys(local.repositories_with_merge_queue), each.key) ? [1] : []
 
       content {
-        merge_method = "MERGE"
+        merge_method = upper(each.value.allowed_merge_methods[0])
       }
     }
 
