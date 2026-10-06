@@ -87,7 +87,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 184
+                "value": 192
               }
             ]
           },
@@ -102,6 +102,22 @@
                 "value": 299
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Message"
+            },
+            "properties": [
+              {
+                "id": "custom.wrapText",
+                "value": true
+              },
+              {
+                "id": "custom.inspect",
+                "value": true
+              }
+            ]
           }
         ]
       },
@@ -114,7 +130,8 @@
       "id": 1,
       "options": {
         "cellHeight": "sm",
-        "enablePagination": true,
+        "enablePagination": false,
+        "maxRowHeight": 120,
         "showHeader": true
       },
       "pluginVersion": "12.4.8",
@@ -151,7 +168,6 @@
           "text": "",
           "value": ""
         },
-        "hide": 2,
         "label": "entityId",
         "name": "entityId",
         "options": [
@@ -169,7 +185,6 @@
           "text": "",
           "value": ""
         },
-        "hide": 2,
         "label": "messageId",
         "name": "messageId",
         "options": [
@@ -216,13 +231,13 @@
     ]
   },
   "time": {
-    "from": "now-1y",
+    "from": "now-90d",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "utc",
   "title": "MDC - On-call",
   "uid": "mafcnfj",
-  "version": 4,
+  "version": 26,
   "weekStart": ""
 }
