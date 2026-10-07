@@ -1059,7 +1059,6 @@
         "type": "grafana-azure-monitor-datasource",
         "uid": "azure-monitor-oob"
       },
-      "description": "",
       "fieldConfig": {
         "defaults": {
           "custom": {
@@ -1097,8 +1096,8 @@
               {
                 "id": "custom.cellOptions",
                 "value": {
-                  "type": "gauge",
-                  "mode": "basic"
+                  "mode": "basic",
+                  "type": "gauge"
                 }
               }
             ]
@@ -1392,6 +1391,6 @@
   "timezone": "browser",
   "title": "🌟 North Star Metrics - SRTP",
   "uid": "srtp-north-star-metrics",
-  "version": 8,
+  "version": 15,
   "weekStart": ""
 }
