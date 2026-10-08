@@ -304,16 +304,6 @@ resource "postgresql_default_privileges" "idpay_kafka_connect_tables" {
   depends_on = [postgresql_grant.idpay_kafka_connect_schema]
 }
 
-import {
-  for_each = (
-    var.idpay_pgflex_params.enabled &&
-    var.idpay_pgflex_params.outbox_publication_enabled
-  ) ? toset(["idpay_outbox_pub"]) : toset([])
-
-  to = postgresql_publication.idpay_outbox[0]
-  id = "${local.idpay_postgres_database}.${each.key}"
-}
-
 resource "postgresql_publication" "idpay_outbox" {
   count = (
     var.idpay_pgflex_params.enabled &&
