@@ -402,6 +402,11 @@ locals {
   upload_eie_files = fileset("${path.module}/cdn/bonus-el-products", "**")
   ## Point of Sales
   upload_pos_files = fileset("${path.module}/cdn/bonus-el-pos", "**")
+  ## ItWallet
+  upload_itwallet_files = [
+    for file in fileset("${path.module}/cdn/itwallet", "**") : file
+    if file != ".gitkeep"
+  ]
 
   content_type_map = {
     ".html"  = "text/html"
@@ -508,6 +513,22 @@ resource "azurerm_storage_blob" "pos_static_files" {
   storage_container_name = "$web"
   type                   = "Block"
   source                 = "${path.module}/cdn/bonus-el-pos/${each.value}"
+  content_type = lookup(
+    local.content_type_map,
+    try(lower(regex("\\.[^.]+$", each.value)), ""),
+    "application/octet-stream"
+  )
+}
+
+## Upload static content for ItWallet
+resource "azurerm_storage_blob" "itwallet_static_files" {
+  for_each = toset(local.upload_itwallet_files)
+
+  name                   = "itwallet/${each.value}"
+  storage_account_name   = module.cdn_idpay_bonuselettrodomestici.storage_name
+  storage_container_name = "$web"
+  type                   = "Block"
+  source                 = "${path.module}/cdn/itwallet/${each.value}"
   content_type = lookup(
     local.content_type_map,
     try(lower(regex("\\.[^.]+$", each.value)), ""),
