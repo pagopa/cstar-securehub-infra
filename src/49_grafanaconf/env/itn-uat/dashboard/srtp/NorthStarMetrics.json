@@ -128,53 +128,13 @@
             "mode": "palette-classic"
           },
           "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
               "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "showValues": false,
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
             }
           },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
+          "mappings": []
         },
         "overrides": []
       },
@@ -187,11 +147,19 @@
       "id": 3,
       "options": {
         "legend": {
-          "calcs": [],
           "displayMode": "list",
           "placement": "bottom",
           "showLegend": true
         },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "sort": "desc",
         "tooltip": {
           "hideZeros": false,
           "mode": "single",
@@ -248,7 +216,7 @@
         }
       ],
       "title": "Invii con Successo vs RTP Pagate In-Channel (per Debtor Service Provider)",
-      "type": "timeseries"
+      "type": "piechart"
     },
     {
       "datasource": {
@@ -1072,6 +1040,19 @@
             "inspect": false
           },
           "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
           "unit": "short"
         },
         "overrides": [
@@ -1391,6 +1372,6 @@
   "timezone": "browser",
   "title": "🌟 North Star Metrics - SRTP",
   "uid": "srtp-north-star-metrics",
-  "version": 15,
+  "version": 4,
   "weekStart": ""
 }
