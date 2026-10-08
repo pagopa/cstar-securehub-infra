@@ -60,7 +60,7 @@ module "keycloak_setup" {
         port              = local.ses_smtp_port
         from              = data.azurerm_key_vault_secret.pari_ses_from_address.value
         ssl               = true
-        from_display_name = "Portale Punto Vendita"
+        from_display_name = "Portale Bonus"
 
         auth = {
           username = data.azurerm_key_vault_secret.pari_ses_smtp_username.value
