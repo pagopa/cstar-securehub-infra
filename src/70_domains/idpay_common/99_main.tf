@@ -72,6 +72,18 @@ provider "postgresql" {
   superuser = false
 }
 
+provider "postgresql" {
+  alias = "payment"
+
+  host      = try(module.idpay_pgflex[0].fqdn, "localhost")
+  port      = 5432
+  database  = "idpay-database"
+  username  = try(azurerm_key_vault_secret.idpay_postgres_service_user["payment"].value, "disabled")
+  password  = try(azurerm_key_vault_secret.idpay_postgres_service_password["payment"].value, "disabled")
+  sslmode   = "require"
+  superuser = false
+}
+
 provider "argocd" {
   server_addr = local.argocd_internal_url
   username    = data.azurerm_key_vault_secret.argocd_admin_username.value

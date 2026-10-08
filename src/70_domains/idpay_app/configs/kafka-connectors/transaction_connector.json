@@ -7,7 +7,7 @@
   "database.dbname": "idpay-database",
   "database.sslmode": "require",
   "plugin.name": "pgoutput",
-  "publication.autocreate.mode": "filtered",
+  "publication.autocreate.mode": "disabled",
   "publication.name": "idpay_outbox_pub",
   "slot.name": "idpay_outbox_pagamenti_slot",
   "table.include.list": "idpay-pagamenti.transaction_outbox",
