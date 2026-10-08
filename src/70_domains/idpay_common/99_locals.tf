@@ -48,6 +48,7 @@ locals {
       "bonuselettrodomestici.pagopa.it"
     ]
   }
+
   ########################################
   # PARI DNS Public zone
   ########################################
