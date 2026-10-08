@@ -213,7 +213,7 @@ resource "postgresql_grant" "idpay_service_database" {
   database    = local.idpay_postgres_database
   role        = postgresql_role.idpay_service[each.key].name
   object_type = "database"
-  # Flyway V1 initializes each service-owned schema.
+  # Flyway initializes service-owned schemas; Kafka Connect manages its Debezium publication.
   privileges = (
     contains(values(local.idpay_postgres_flyway_schemas), each.key) ||
     each.key == "kafka_connect"
@@ -305,4 +305,16 @@ resource "postgresql_default_privileges" "idpay_kafka_connect_tables" {
   privileges  = ["SELECT"]
 
   depends_on = [postgresql_grant.idpay_kafka_connect_schema]
+}
+
+resource "postgresql_publication" "idpay_outbox" {
+  count = var.idpay_pgflex_params.enabled && var.env != "prod" ? 1 : 0
+
+  name     = "idpay_outbox_pub"
+  database = local.idpay_postgres_database
+  owner    = postgresql_role.idpay_service["kafka_connect"].name
+
+  # Import an existing Debezium-created publication before managing its owner.
+  # Debezium's filtered mode manages the publication's table membership.
+  depends_on = [postgresql_grant.idpay_service_database]
 }
