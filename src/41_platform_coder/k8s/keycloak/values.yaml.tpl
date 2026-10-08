@@ -114,6 +114,9 @@ ingress:
   enabled: true
   hostname: ${keycloak_ingress_hostname}
   ingressClassName: "nginx"
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "120"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "120"
   tls: true
   extraTls:
     - hosts:
