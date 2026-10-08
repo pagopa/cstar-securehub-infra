@@ -1,0 +1,74 @@
+{
+  "name": "idpay_reward_batch_csv_load_test",
+  "properties": {
+    "description": "Load test pipeline that triggers idpay_reward_batch_csv multiple times with different parameters",
+    "activities": [
+      {
+        "name": "RunRewardBatchCsvInParallel",
+        "type": "ForEach",
+        "dependsOn": [],
+        "userProperties": [],
+        "typeProperties": {
+          "isSequential": false,
+          "batchCount": 100,
+          "items": {
+            "value": "@pipeline().parameters.testCases",
+            "type": "Expression"
+          },
+          "activities": [
+            {
+              "name": "ExecuteRewardBatchCsv",
+              "type": "ExecutePipeline",
+              "dependsOn": [],
+              "policy": {
+                "timeout": "02:00:00",
+                "retry": 0,
+                "retryIntervalInSeconds": 30,
+                "secureOutput": false,
+                "secureInput": false
+              },
+              "userProperties": [],
+              "typeProperties": {
+                "pipeline": {
+                  "referenceName": "idpay_reward_batch_csv",
+                  "type": "PipelineReference"
+                },
+                "waitOnCompletion": true,
+                "parameters": {
+                  "initiativeId": {
+                    "value": "@item().initiativeId",
+                    "type": "Expression"
+                  },
+                  "merchantId": {
+                    "value": "@item().merchantId",
+                    "type": "Expression"
+                  },
+                  "rewardBatchId": {
+                    "value": "@item().rewardBatchId",
+                    "type": "Expression"
+                  },
+                  "reportName": {
+                    "value": "@item().reportName",
+                    "type": "Expression"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "parameters": {
+      "testCases": {
+        "type": "Array",
+        "defaultValue": []
+      }
+    },
+    "annotations": [
+      "load-test",
+      "idpay",
+      "reward-batch-csv"
+    ]
+  },
+  "type": "Microsoft.DataFactory/factories/pipelines"
+}
