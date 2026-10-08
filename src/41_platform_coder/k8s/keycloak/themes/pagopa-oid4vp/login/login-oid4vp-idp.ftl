@@ -7,6 +7,10 @@
     <#if section = "header">
         Inquadra il codice QR
     <#elseif section = "form">
+        <div id="oid4vp-browser-refresh-config" data-refresh-url="${url.loginUrl}" data-cancel-url="${oid4vpCancelUrl}" hidden></div>
+        <#list properties.scripts?split(' ') as script>
+            <script nonce="${cspNonce!}" src="${url.resourcesPath}/${script}"></script>
+        </#list>
         <form id="oid4vpForm" action="${formActionUrl!''}" method="post">
             <input type="hidden" id="state" name="state" value="${state!''}"/>
             <input type="hidden" id="requestHandle" value="${requestHandle!''}"/>
