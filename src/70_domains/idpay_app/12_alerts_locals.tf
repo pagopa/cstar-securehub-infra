@@ -378,6 +378,29 @@ locals {
   }
 
   # =============================================================
+  # Alerts External Dependencies
+  # =============================================================
+
+  alerts_external_dependencies = {
+
+    # External dependency – ANPR C021 (recupero del nucleo familiare)
+    pari_anpr_c021_dependency_alert = {
+      name        = "pari-anpr-c021-dependency-alert"
+      description = "ANPR C021 – recupero del nucleo familiare: dependency failure threshold exceeded (> 10 in 5m)"
+      query       = <<-QUERY
+            AppDependencies
+            | where Name == "POST /govway/rest/in/MinInternoPortaANPR-PDND/C021-servizioAccertamentoStatoFamiglia/v1/anpr-service-e002"
+            | where Success == false
+          QUERY
+      criteria = {
+        operator  = "GreaterThanOrEqual"
+        threshold = 10
+      }
+      email_subject = "[PARI][HIGH] ANPR C021 external dependency alert"
+    }
+  }
+
+  # =============================================================
   # Alerts API ESE
   # =============================================================
 
@@ -1440,6 +1463,7 @@ locals {
   alerts_groups = [
     local.alerts_eie,
     local.alerts_bonus_elettrodomestici,
+    local.alerts_external_dependencies,
     local.alerts_ese,
     local.alerts_upbe,
     local.alerts_keycloak,
