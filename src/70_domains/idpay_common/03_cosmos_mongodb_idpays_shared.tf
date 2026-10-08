@@ -277,13 +277,16 @@ locals {
       default_ttl_seconds = null
       indexes = [
         { keys = ["_id"], unique = true },
+        { keys = ["merchantId"], unique = false },
         { keys = ["franchiseName"], unique = false },
         { keys = ["type"], unique = false },
         { keys = ["address"], unique = false },
         { keys = ["website"], unique = false },
         { keys = ["city"], unique = false },
         { keys = ["contactEmail"], unique = true },
-        { keys = ["contactName", "contactSurname"], unique = false }
+        { keys = ["contactName", "contactSurname"], unique = false },
+        # Temporarily comment out this index before running Terraform apply in PROD.
+        { keys = ["franchiseName", "type", "city", "address", "website"], unique = true }
       ]
     },
     {
