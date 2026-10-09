@@ -102,7 +102,7 @@ locals {
       text   = local.mdc_text_files
       binary = local.mdc_binary_files
     }
-    provider_jar = filebase64(local.keycloak_provider_jar_path)
+    #provider_jar = filebase64(local.provider_files)
     server_config = {
       KC_HEALTH_ENABLED    = "true"
       KC_METRICS_ENABLED   = "true"
