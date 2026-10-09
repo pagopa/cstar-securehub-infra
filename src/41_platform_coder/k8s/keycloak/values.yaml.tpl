@@ -1,6 +1,5 @@
 production: true
 proxyHeaders: "xforwarded"
-httpEnabled: true
 httpRelativePath: "/"
 
 cache:
