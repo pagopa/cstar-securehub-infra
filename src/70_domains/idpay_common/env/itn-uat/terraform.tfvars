@@ -102,7 +102,7 @@ idpay_pgflex_params = {
   geo_replication_enabled                = false
   zone                                   = 1
   pgres_flex_pgbouncer_enabled           = true
-  pgres_flex_diagnostic_settings_enabled = false
+  pgres_flex_diagnostic_settings_enabled = true
   auto_grow_enabled                      = false
   storage_tier                           = "P4"
 }
