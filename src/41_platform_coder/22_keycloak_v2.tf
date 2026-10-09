@@ -1,14 +1,16 @@
 locals {
-  theme_dir   = "${path.module}/k8s/keycloak/themes/pagopa"
-  files       = fileset(local.theme_dir, "**")
-  binary_exts = [".png", ".jpg", ".jpeg", ".ico", ".woff", ".woff2"]
+  themes_dir     = "${path.module}/k8s/keycloak/themes"
+  files          = fileset(local.themes_dir, "**")
+  binary_exts    = [".png", ".jpg", ".jpeg", ".ico", ".woff", ".woff2", ".ttf"]
+  provider_dir   = "${path.module}/k8s/keycloak/providers"
+  provider_files = fileset(local.provider_dir, "*.jar")
 
   flattened_key = { for f in local.files : f => replace(f, "/", "__") }
 
   text_files = {
     for f in local.files :
     local.flattened_key[f] => replace(
-      replace(file("${local.theme_dir}/${f}"), "themeVersion", substr(filesha256("${local.theme_dir}/login/resources/css/login.css"), 0, 12)),
+      replace(file("${local.themes_dir}/${f}"), "themeVersion", substr(filesha256("${local.themes_dir}/${startswith(f, "pagopa-oid4vp/") ? "pagopa-oid4vp" : "pagopa"}/login/resources/css/login.css"), 0, 12)),
       "__BASE_URL__",
       local.pari_base_url
     )
@@ -17,7 +19,7 @@ locals {
 
   binary_files = {
     for f in local.files :
-    local.flattened_key[f] => filebase64("${local.theme_dir}/${f}")
+    local.flattened_key[f] => filebase64("${local.themes_dir}/${f}")
     if !endswith(f, "/") && contains(local.binary_exts, lower(substr(f, length(f) - 4, 5)))
   }
 
@@ -25,7 +27,7 @@ locals {
   fixed_volume_mounts = [
     {
       name      = "agent"
-      mountPath = "/opt/bitnami/keycloak/agent"
+      mountPath = "/opt/keycloak/agent"
     }
   ]
 
@@ -33,7 +35,7 @@ locals {
   theme_volume_mounts = [
     for f in local.files : {
       name      = "pagopa-theme"
-      mountPath = "/opt/bitnami/keycloak/themes/pagopa/${f}"
+      mountPath = "/opt/keycloak/themes/${f}"
       subPath   = local.flattened_key[f]
       readOnly  = true
     }
@@ -62,20 +64,27 @@ locals {
   mdc_theme_volume_mounts = [
     for f in local.mdc_files : {
       name      = "mdc-portal-theme"
-      mountPath = "/opt/bitnami/keycloak/themes/mdc-internal-portal/${f}"
+      mountPath = "/opt/keycloak/themes/mdc-internal-portal/${f}"
       subPath   = local.mdc_flattened_key[f]
       readOnly  = true
     }
     if !endswith(f, "/")
   ]
 
-  # Merge volume mount
-  keycloak_extra_volume_mounts = concat(local.fixed_volume_mounts, local.theme_volume_mounts, local.mdc_theme_volume_mounts, [local.provider_volume_mount])
+  provider_volume_mounts = [
+    for f in local.provider_files : {
+      name      = "keycloak-providers"
+      mountPath = "/opt/keycloak/providers/${f}"
+      subPath   = f
+      readOnly  = true
+    }
+  ]
 
-  # ConfigMap for JAR provider
-  keycloak_provider_jar_path = "${path.module}/k8s/keycloak/providers/keycloak-idp-strip-tinit-1.0.0.jar"
-  keycloak_provider_cm_name  = "keycloak-providers"
-  keycloak_provider_file     = basename(local.keycloak_provider_jar_path)
+  # Merge volume mount
+  keycloak_extra_volume_mounts = concat(local.fixed_volume_mounts, local.theme_volume_mounts, local.provider_volume_mounts)
+
+  keycloak_provider_cm_name = "keycloak-providers"
+
   # Volume for providers
   provider_volume = {
     name = "keycloak-providers"
@@ -83,13 +92,26 @@ locals {
       name = kubernetes_config_map.keycloak_providers.metadata[0].name
     }
   }
-  # Mount for single JAR with subPath in /opt/bitnami/keycloak/providers
-  provider_volume_mount = {
-    name      = "keycloak-providers"
-    mountPath = "/opt/bitnami/keycloak/providers/${local.keycloak_provider_file}"
-    subPath   = local.keycloak_provider_file
-    readOnly  = true
-  }
+
+  keycloak_rollout_checksum = nonsensitive(sha256(jsonencode({
+    pagopa_theme = {
+      text   = local.text_files
+      binary = local.binary_files
+    }
+    mdc_theme = {
+      text   = local.mdc_text_files
+      binary = local.mdc_binary_files
+    }
+    #provider_jar = filebase64(local.provider_files)
+    server_config = {
+      KC_HEALTH_ENABLED    = "true"
+      KC_METRICS_ENABLED   = "true"
+      KC_DB_URL_PROPERTIES = "?sslmode=require"
+    }
+    terraform_client_config = templatefile("${path.module}/k8s/keycloak/terraform_client.json.tpl", {
+      keycloak_terraform_client_secret = azurerm_key_vault_secret.terraform_client_secret_for_keycloak.value
+    })
+  })))
 
 }
 
@@ -171,7 +193,7 @@ resource "kubernetes_config_map" "keycloak_config" {
   data = {
     KC_HEALTH_ENABLED    = "true"
     KC_METRICS_ENABLED   = "true"
-    KC_DB_URL_PROPERTIES = "sslmode=require"
+    KC_DB_URL_PROPERTIES = "?sslmode=require"
   }
 }
 
@@ -180,11 +202,42 @@ resource "kubernetes_config_map" "keycloak-terraform-client-config" {
     name      = "keycloak-terraform-client-config"
     namespace = local.keycloak_namespace
   }
-  data = {
+  data = merge({
     "terraform_client.json" = templatefile("${path.module}/k8s/keycloak/terraform_client.json.tpl", {
       keycloak_terraform_client_secret = azurerm_key_vault_secret.terraform_client_secret_for_keycloak.value
     })
-  }
+    }, var.it_wallet_oid4vp_provider.enabled ? {
+    "user_it_wallet_oid4vp_provider.json" = templatefile("${path.module}/k8s/keycloak/user_it_wallet_oid4vp_provider.json.tpl", {
+      alias                            = var.it_wallet_oid4vp_provider.alias
+      display_name                     = var.it_wallet_oid4vp_provider.display_name
+      realm_name                       = var.it_wallet_oid4vp_provider.realm_name
+      credential_format                = var.it_wallet_oid4vp_provider.credential_format
+      credential_type                  = var.it_wallet_oid4vp_provider.credential_type
+      first_name_claim                 = var.it_wallet_oid4vp_provider.first_name_claim
+      last_name_claim                  = var.it_wallet_oid4vp_provider.last_name_claim
+      date_of_birth_claim              = var.it_wallet_oid4vp_provider.date_of_birth_claim
+      username_claim                   = var.it_wallet_oid4vp_provider.username_claim
+      fiscal_number_claim              = var.it_wallet_oid4vp_provider.fiscal_number_claim
+      user_mapping_claim               = var.it_wallet_oid4vp_provider.user_mapping_claim
+      user_mapping_claim_mdoc          = var.it_wallet_oid4vp_provider.user_mapping_claim_mdoc
+      same_device_enabled              = tostring(var.it_wallet_oid4vp_provider.same_device_enabled)
+      cross_device_enabled             = tostring(var.it_wallet_oid4vp_provider.cross_device_enabled)
+      wallet_scheme                    = var.it_wallet_oid4vp_provider.wallet_scheme
+      response_mode                    = var.it_wallet_oid4vp_provider.response_mode
+      client_id_scheme                 = var.it_wallet_oid4vp_provider.client_id_scheme
+      enforce_haip                     = tostring(var.it_wallet_oid4vp_provider.enforce_haip)
+      credential_set_mode              = var.it_wallet_oid4vp_provider.credential_set_mode
+      credential_set_purpose_json      = jsonencode(var.it_wallet_oid4vp_provider.credential_set_purpose)
+      dcql_query_json                  = jsonencode(var.it_wallet_oid4vp_provider.dcql_query)
+      verifier_info_json               = jsonencode(var.it_wallet_oid4vp_provider.verifier_info)
+      x509_certificate_pem_json        = jsonencode(data.azurerm_key_vault_secret.itwallet-oid4vp-x509-certificate-pem.value)
+      trust_list_url_json              = jsonencode(var.it_wallet_oid4vp_provider.trust_list_url)
+      trust_list_lote_type_json        = jsonencode(var.it_wallet_oid4vp_provider.trust_list_lote_type)
+      trusted_authorities_mode         = var.it_wallet_oid4vp_provider.trusted_authorities_mode
+      trust_list_signing_cert_pem_json = "" //todo jsonencode(try(data.azurerm_key_vault_secret.it_wallet_trust_list_signing_cert_pem[0].value, ""))
+      allowed_issuers                  = var.it_wallet_oid4vp_provider.allowed_issuers
+    })
+  } : {})
 
   depends_on = [azurerm_key_vault_secret.terraform_client_secret_for_keycloak]
 }
@@ -217,17 +270,17 @@ resource "kubernetes_config_map" "keycloak_providers" {
   }
 
   binary_data = {
-    "${local.keycloak_provider_file}" = filebase64(local.keycloak_provider_jar_path)
+    for f in local.provider_files : f => filebase64("${local.provider_dir}/${f}")
   }
 }
 
 resource "helm_release" "keycloak" {
   name      = "keycloak"
   namespace = kubernetes_namespace.keycloak.metadata[0].name
+  # Keep the Bitnami chart while using the upstream Keycloak image.
   #https://github.com/bitnami/charts/tree/main/bitnami/keycloak
   repository = "oci://registry-1.docker.io/bitnamicharts"
   #https://artifacthub.io/packages/helm/bitnami/keycloak/
-  #https://gallery.ecr.aws/bitnami/keycloak
   chart   = "keycloak"
   version = var.keycloak_configuration.chart_version
 
@@ -255,17 +308,22 @@ resource "helm_release" "keycloak" {
       cpu_limit                                       = var.keycloak_configuration.cpu_limit
       memory_request                                  = var.keycloak_configuration.memory_request
       memory_limit                                    = var.keycloak_configuration.memory_limit
-      force_deploy_version                            = "v2"
       keycloak_extra_volume_mounts                    = yamlencode(local.keycloak_extra_volume_mounts)
       keycloak_http_client_connection_ttl_millis      = var.keycloak_configuration.http_client_connection_ttl_millis
       keycloak_http_client_connection_max_idle_millis = var.keycloak_configuration.http_client_connection_max_idle_time_millis
       appinsights_connection_string                   = data.azurerm_application_insights.app_insights_core.connection_string
+      keycloak_namespace                              = local.keycloak_namespace
+      keycloak_rollout_checksum                       = local.keycloak_rollout_checksum
     })
   ]
   depends_on = [
     kubernetes_secret.keycloak_admin,
     kubernetes_secret.keycloak_db,
     kubernetes_config_map.keycloak_config,
+    kubernetes_config_map.keycloak-terraform-client-config,
+    kubernetes_config_map.keycloak_pagopa_theme,
+    kubernetes_config_map.keycloak_mdc_portal_theme,
+    kubernetes_config_map.keycloak_providers,
     kubernetes_namespace.keycloak
   ]
 }

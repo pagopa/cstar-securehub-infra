@@ -24,9 +24,9 @@ keycloak_pgflex_params = {
 }
 
 keycloak_configuration = {
-  image_registry                              = "public.ecr.aws"
-  image_repository                            = "bitnami/keycloak"
-  image_tag                                   = "26.6.1-debian-12-r0"
+  image_registry                              = "quay.io"
+  image_repository                            = "keycloak/keycloak"
+  image_tag                                   = "26.6.1"
   chart_version                               = "24.7.7"
   replica_count_min                           = 1
   replica_count_max                           = 2
@@ -46,4 +46,16 @@ aks_user_node_pool_keycloak = {
   idh_resource_tier = "Standard_B4ms_active"
   node_count_min    = 1
   node_count_max    = 1
+}
+
+it_wallet_oid4vp_provider = {
+  enabled                          = true
+  credential_type                  = "urn:eudi:pid:it:1"
+  user_mapping_claim               = "personal_administrative_number"
+  x509_certificate_pem_secret_name = "itwallet-oid4vp-x509-certificate-pem"
+  allowUntrustedX5cDevMode         = true
+  // NOT REQUIRED FOR THE POC
+  //trust_list_url                          = "__TODO_IT_WALLET_TRUST_LIST_URL__"
+  //trust_list_lote_type                    = "__TODO_IT_WALLET_TRUST_LIST_LOTE_TYPE__"
+  //trust_list_signing_cert_pem_secret_name = "__TODO_IT_WALLET_TRUST_LIST_SIGNING_CERT_PEM_SECRET_NAME__"
 }
