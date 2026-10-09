@@ -114,7 +114,7 @@ resource "github_repository_ruleset" "uat_and_main" {
     update                  = true
     deletion                = true
     non_fast_forward        = true
-    required_linear_history = true
+    required_linear_history = each.value.required_linear_history
 
     pull_request {
       require_code_owner_review         = true
@@ -122,15 +122,27 @@ resource "github_repository_ruleset" "uat_and_main" {
       dismiss_stale_reviews_on_push     = true
       required_review_thread_resolution = true
       require_last_push_approval        = false
-      allowed_merge_methods             = ["merge"]
+      allowed_merge_methods             = each.value.allowed_merge_methods
     }
 
     required_status_checks {
       strict_required_status_checks_policy = true
       do_not_enforce_on_create             = false
-      required_check {
-        context        = "SonarCloud Code Analysis"
-        integration_id = 12526
+      dynamic "required_check" {
+        for_each = each.value.required_status_checks
+
+        content {
+          context        = required_check.value.context
+          integration_id = required_check.value.integration_id
+        }
+      }
+    }
+
+    dynamic "merge_queue" {
+      for_each = contains(keys(local.repositories_with_merge_queue), each.key) ? [1] : []
+
+      content {
+        merge_method = upper(each.value.allowed_merge_methods[0])
       }
     }
 

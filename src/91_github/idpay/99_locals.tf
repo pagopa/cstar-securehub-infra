@@ -382,8 +382,16 @@ locals {
       ]
     },
     "idpay-functional-testing" = {
+      merge_queue          = true
+      trunk_based          = true
       repository_secrets   = []
       repository_variables = []
+      additional_required_status_checks = [
+        {
+          context        = "run-bdd / run-bdd-feature-tests"
+          integration_id = 15368
+        }
+      ]
       env_secrets = {
         envs = ["dev", "uat"]
         secrets = {
@@ -509,8 +517,27 @@ locals {
         for branch in ["uat", "main"] : "refs/heads/${branch}"
         if contains(local.protected_branches_by_repo[repo_name], branch)
       ]
+      required_status_checks = concat(
+        [
+          {
+            context        = "SonarCloud Code Analysis"
+            integration_id = 12526
+          }
+        ],
+        try(local.repository[repo_name].additional_required_status_checks, [])
+      )
+      allowed_merge_methods   = try(local.repository[repo_name].trunk_based, false) ? ["squash"] : ["merge"]
+      required_linear_history = try(local.repository[repo_name].required_linear_history, true)
     }
     if(contains(local.protected_branches_by_repo[repo_name], "uat") || contains(local.protected_branches_by_repo[repo_name], "main"))
+  }
+
+  # ----------------------------------------------------------------------------
+  # Repositories that have merge queue enabled.
+  # ----------------------------------------------------------------------------
+  repositories_with_merge_queue = {
+    for repo_name, repo_data in local.repository : repo_name => repo_data
+    if try(repo_data.merge_queue, false)
   }
 
   # ----------------------------------------------------------------------------
