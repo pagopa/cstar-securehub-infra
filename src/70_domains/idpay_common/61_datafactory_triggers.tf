@@ -100,7 +100,7 @@ resource "azurerm_data_factory_trigger_schedule" "daily_triggers_data_vault" {
   time_zone  = "W. Europe Standard Time"
 
   schedule {
-    hours   = [4]
+    hours   = [2]
     minutes = [0]
   }
 
