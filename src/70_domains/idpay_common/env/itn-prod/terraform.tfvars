@@ -107,6 +107,7 @@ additional_geo_locations = [{
 ## Postgres
 idpay_pgflex_params = {
   enabled                                = true
+  outbox_publication_enabled             = true
   idh_resource_tier                      = "pgflex2"
   geo_replication_enabled                = false
   zone                                   = 1

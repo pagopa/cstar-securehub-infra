@@ -301,8 +301,9 @@ variable "idpay_pgflex_params" {
     pgres_flex_diagnostic_settings_enabled = bool
     auto_grow_enabled                      = bool
     storage_tier                           = optional(string, null)
+    outbox_publication_enabled             = optional(bool, false)
   })
-  description = "Parameters to provision the IDPay PostgreSQL Flexible Server (and related supporting resources)."
+  description = "Parameters to provision IDPay PostgreSQL. Enable the outbox publication only after Flyway creates the transaction_outbox table."
 }
 
 variable "enabled_cdn_multi_initiative" {
