@@ -29,12 +29,13 @@ module "keycloak_setup" {
       }
     },
     {
-      name         = "merchant-operator"
-      display_name = "merchant-operator"
-      description  = "Merchant Operator Realm"
-      enabled      = true
-      login_theme  = "pagopa"
-      email_theme  = "pagopa"
+      name                   = "merchant-operator"
+      display_name           = "merchant-operator"
+      description            = "Merchant Operator Realm"
+      enabled                = true
+      login_theme            = "pagopa"
+      email_theme            = "pagopa"
+      reset_password_allowed = true
 
       # Password policy applied on first-time password set (executeActionsEmail -> UPDATE_PASSWORD)
       # and on any subsequent password change.
@@ -54,15 +55,15 @@ module "keycloak_setup" {
       }
 
       smtp_server = {
-        host              = contains(["d", "u"], var.env_short) ? data.azurerm_key_vault_secret.pari_ses_smtp_host.value : data.azurerm_key_vault_secret.ses_smtp_host.value
+        host              = data.azurerm_key_vault_secret.pari_ses_smtp_host.value
         port              = local.ses_smtp_port
-        from              = contains(["d", "u"], var.env_short) ? data.azurerm_key_vault_secret.pari_ses_from_address.value : data.azurerm_key_vault_secret.ses_from_address.value
+        from              = data.azurerm_key_vault_secret.pari_ses_from_address.value
         ssl               = true
         from_display_name = "Portale Punto Vendita"
 
         auth = {
-          username = contains(["d", "u"], var.env_short) ? data.azurerm_key_vault_secret.pari_ses_smtp_username.value : data.azurerm_key_vault_secret.ses_smtp_username.value
-          password = contains(["d", "u"], var.env_short) ? data.azurerm_key_vault_secret.pari_ses_smtp_password.value : data.azurerm_key_vault_secret.ses_smtp_password.value
+          username = data.azurerm_key_vault_secret.pari_ses_smtp_username.value
+          password = data.azurerm_key_vault_secret.pari_ses_smtp_password.value
         }
       }
     }
