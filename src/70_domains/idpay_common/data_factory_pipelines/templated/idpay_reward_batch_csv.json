@@ -4,10 +4,57 @@
         "description": "Generate approved reward batch CSV and save it to Blob Storage",
         "activities": [
             {
+                "name": "Set_Processing",
+                "type": "WebActivity",
+                "dependsOn": [
+                    {
+                        "activity": "Get_SubKey",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "00:10:00",
+                    "retry": 2,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "method": "PATCH",
+                    "headers": {
+                        "Ocp-Apim-Subscription-Key": {
+                            "value": "@activity('Get_SubKey').output.value",
+                            "type": "Expression"
+                        }
+                    },
+                    "url": {
+                        "value": "@concat(\n  '${data_factory_api_base_url}/initiatives/',\n  pipeline().parameters.initiativeId,\n  '/reward-batches/',\n  pipeline().parameters.rewardBatchId,\n  '/csv-status'\n)",
+                        "type": "Expression"
+                    },
+                    "connectVia": {
+                        "referenceName": "AutoResolveIntegrationRuntime",
+                        "type": "IntegrationRuntimeReference"
+                    },
+                    "body": {
+                        "csvGenerationStatus": "IN_PROGRESS"
+                    }
+                }
+            },
+            {
                 "name": "GenerateCsvToBlob",
                 "description": "Run Kusto query on approved/rejected reward batch transactions and save result as CSV to Blob",
                 "type": "Copy",
-                "dependsOn": [],
+                "dependsOn": [
+                    {
+                        "activity": "Set_Processing",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
                 "policy": {
                     "timeout": "02:00:00",
                     "retry": 2,
@@ -69,6 +116,129 @@
                         }
                     }
                 ]
+            },
+            {
+                "name": "Set_Done",
+                "type": "WebActivity",
+                "dependsOn": [
+                    {
+                        "activity": "GenerateCsvToBlob",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    },
+                    {
+                        "activity": "Get_SubKey",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "00:10:00",
+                    "retry": 2,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "method": "PATCH",
+                    "headers": {
+                        "Ocp-Apim-Subscription-Key": {
+                            "value": "@activity('Get_SubKey').output.value",
+                            "type": "Expression"
+                        }
+                    },
+                    "url": {
+                        "value": "@concat(\n  '${data_factory_api_base_url}/initiatives/',\n  pipeline().parameters.initiativeId,\n  '/reward-batches/',\n  pipeline().parameters.rewardBatchId,\n  '/csv-status'\n)",
+                        "type": "Expression"
+                    },
+                    "connectVia": {
+                        "referenceName": "AutoResolveIntegrationRuntime",
+                        "type": "IntegrationRuntimeReference"
+                    },
+                    "body": {
+                        "csvGenerationStatus": "GENERATED"
+                    }
+                }
+            },
+            {
+                "name": "Set_Failed",
+                "type": "WebActivity",
+                "dependsOn": [
+                    {
+                        "activity": "GenerateCsvToBlob",
+                        "dependencyConditions": [
+                            "Failed"
+                        ]
+                    },
+                    {
+                        "activity": "Get_SubKey",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "00:10:00",
+                    "retry": 1,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "method": "PATCH",
+                    "headers": {
+                        "Ocp-Apim-Subscription-Key": {
+                            "value": "@activity('Get_SubKey').output.value",
+                            "type": "Expression"
+                        }
+                    },
+                    "url": {
+                        "value": "@concat(\n  '${data_factory_api_base_url}/initiatives/',\n  pipeline().parameters.initiativeId,\n  '/reward-batches/',\n  pipeline().parameters.rewardBatchId,\n  '/csv-status'\n)",
+                        "type": "Expression"
+                    },
+                    "connectVia": {
+                        "referenceName": "AutoResolveIntegrationRuntime",
+                        "type": "IntegrationRuntimeReference"
+                    },
+                    "body": {
+                        "csvGenerationStatus": "FAILED"
+                    }
+                }
+            },
+            {
+                "name": "Get_SubKey",
+                "type": "WebActivity",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 3,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": true,
+                    "secureInput": true
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "method": "GET",
+                    "headers": {
+                        "Content-Type": "application/json"
+                    },
+                    "url": {
+                        "value": "${kv_url}secrets/idpay-df-subscription-key?api-version=7.3",
+                        "type": "Expression"
+                    },
+                    "connectVia": {
+                        "referenceName": "AutoResolveIntegrationRuntime",
+                        "type": "IntegrationRuntimeReference"
+                    },
+                    "authentication": {
+                        "type": "MSI",
+                        "resource": "https://vault.azure.net"
+                    }
+                }
             }
         ],
         "concurrency": 5,
