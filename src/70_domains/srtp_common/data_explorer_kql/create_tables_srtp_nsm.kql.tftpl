@@ -15,15 +15,6 @@
     pipeline_run_id: string
 )
 
-.create-merge table active_payer_reachability_v2 (
-    window_start: datetime,
-    category: string,
-    total: long,
-    total_failures: long,
-    total_successes: long,
-    pipeline_run_id: string
-)
-
 .create-merge table activation_success_rate (
     activation_day: datetime,
     psp: string,
@@ -50,16 +41,6 @@
 '{"column":"pipeline_run_id","path":"$.pipeline_run_id","datatype":"string"}'
 ']'
 
-.create-or-alter table active_payer_reachability_v2 ingestion json mapping 'active_payer_reachability_v2Mapping'
-'['
-'{"column":"window_start","path":"$.window_start","datatype":"datetime"},'
-'{"column":"category","path":"$.category","datatype":"string"},'
-'{"column":"total","path":"$.total","datatype":"long"},'
-'{"column":"total_failures","path":"$.total_failures","datatype":"long"},'
-'{"column":"total_successes","path":"$.total_successes","datatype":"long"},'
-'{"column":"pipeline_run_id","path":"$.pipeline_run_id","datatype":"string"}'
-']'
-
 .create-or-alter table activation_success_rate ingestion json mapping 'ActivationSuccessRateMapping'
 '['
 '{"column":"activation_day","path":"$.activation_day","datatype":"datetime"},'
@@ -71,8 +52,6 @@
 .alter table in_channel_settlement_rate policy streamingingestion enable
 
 .alter table active_payer_reachability policy streamingingestion enable
-
-.alter table active_payer_reachability_v2 policy streamingingestion enable
 
 .alter table activation_success_rate policy streamingingestion enable
 
@@ -90,13 +69,6 @@
 }
 ```
 
-.alter table active_payer_reachability_v2 policy retention ```
-{
-  "SoftDeletePeriod": "${soft_delete_period}",
-  "Recoverability": "Enabled"
-}
-```
-
 .alter table activation_success_rate policy retention ```
 {
   "SoftDeletePeriod": "${soft_delete_period}",
@@ -107,8 +79,6 @@
 .alter table in_channel_settlement_rate policy caching hot = ${hot_cache_period}
 
 .alter table active_payer_reachability policy caching hot = ${hot_cache_period}
-
-.alter table active_payer_reachability_v2 policy caching hot = ${hot_cache_period}
 
 .alter table activation_success_rate policy caching hot = ${hot_cache_period}
 
