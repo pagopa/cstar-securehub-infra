@@ -5,7 +5,8 @@ locals {
     "srtp_in_channel_settlement_rate_daily",
     "srtp_user_refusal_rate_daily",
     "srtp_taxonomy_eligibility_rate_daily",
-    "srtp_active_payer_reachability_daily"
+    "srtp_active_payer_reachability_daily",
+    "srtp_active_payer_reachability_daily_v2"
   ]
 
   pipelines_logs_indexed = {
