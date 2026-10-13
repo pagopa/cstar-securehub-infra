@@ -128,14 +128,7 @@ export_initiatives = [
 ]
 
 
-aks_nodepool_green = {
-  vm_sku_name       = "Standard_B8ms_active"
-  autoscale_enabled = true
-  node_count_min    = 1
-  node_count_max    = 3
-}
-
-blue_green_node_pool_enabled = true
+blue_green_node_pool_enabled = false
 aks_foobar_idpay_node_pool_configuration = {
   enabled         = true,
   tier            = "Standard_B8ms"
