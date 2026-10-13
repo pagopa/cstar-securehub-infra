@@ -378,6 +378,29 @@ locals {
   }
 
   # =============================================================
+  # Alerts External Dependencies
+  # =============================================================
+
+  alerts_external_dependencies = {
+
+    # External dependency – ANPR C021 (recupero del nucleo familiare)
+    pari_anpr_c021_dependency_alert = {
+      name        = "pari-anpr-c021-dependency-alert"
+      description = "ANPR C021 – recupero del nucleo familiare: dependency failure threshold exceeded (> 10 in 5m)"
+      query       = <<-QUERY
+            AppDependencies
+            | where Name == "POST /govway/rest/in/MinInternoPortaANPR-PDND/C021-servizioAccertamentoStatoFamiglia/v1/anpr-service-e002"
+            | where Success == false
+          QUERY
+      criteria = {
+        operator  = "GreaterThanOrEqual"
+        threshold = 10
+      }
+      email_subject = "[PARI][HIGH] ANPR C021 external dependency alert"
+    }
+  }
+
+  # =============================================================
   # Alerts API ESE
   # =============================================================
 
@@ -389,7 +412,7 @@ locals {
       description = "API Capture Transaction: 5xx error count exceeded (> 2 in 5m)"
       query       = <<-QUERY
             AppRequests
-            | where Name matches regex @"^PUT /idpay-itn/merchant-op/transactions/bar-code/[^/]+/capture$"
+            | where Name == "PUT /idpay/payment/initiatives/{initiativeId}/bar-code/{trxCode}/capture"
             | where ResultCode startswith "5"
           QUERY
       criteria = {
@@ -405,7 +428,7 @@ locals {
       description = "API Capture Transaction: 401/404/429 error count exceeded (> 20 in 5m)"
       query       = <<-QUERY
             AppRequests
-            | where Name matches regex @"^PUT /idpay-itn/merchant-op/transactions/bar-code/[^/]+/capture$"
+            | where Name == "PUT /idpay/payment/initiatives/{initiativeId}/bar-code/{trxCode}/capture"
             | where ResultCode in ("401", "404", "429")
           QUERY
       criteria = {
@@ -421,7 +444,7 @@ locals {
       description = "API Preview Payment: 5xx error count exceeded (> 2 in 5m)"
       query       = <<-QUERY
             AppRequests
-            | where Name matches regex @"^PUT /idpay-itn/merchant-op/transactions/bar-code/[^/]+/preview$"
+            | where Name == "PUT /idpay/payment/initiatives/{initiativeId}/bar-code/{trxCode}/preview"
             | where ResultCode startswith "5"
           QUERY
       criteria = {
@@ -437,7 +460,7 @@ locals {
       description = "API Preview Payment: 401/429 error count exceeded (> 20 in 5m)"
       query       = <<-QUERY
             AppRequests
-            | where Name matches regex @"^PUT /idpay-itn/merchant-op/transactions/bar-code/[^/]+/preview$"
+            | where Name == "PUT /idpay/payment/initiatives/{initiativeId}/bar-code/{trxCode}/preview"
             | where ResultCode in ("401", "429")
           QUERY
       criteria = {
@@ -453,7 +476,7 @@ locals {
       description = "API Authorize Payment: 5xx error count exceeded (> 2 in 5m)"
       query       = <<-QUERY
             AppRequests
-            | where Name matches regex @"^PUT /idpay-itn/merchant-op/transactions/bar-code/[^/]+/authorize$"
+            | where Name == "PUT /idpay/payment/initiatives/{initiativeId}/bar-code/{trxCode}/authorize"
             | where ResultCode startswith "5"
           QUERY
       criteria = {
@@ -469,7 +492,7 @@ locals {
       description = "API Authorize Payment: 401/403/404/429 error count exceeded (> 20 in 5m)"
       query       = <<-QUERY
             AppRequests
-            | where Name matches regex @"^PUT /idpay-itn/merchant-op/transactions/bar-code/[^/]+/authorize$"
+            | where Name == "PUT /idpay/payment/initiatives/{initiativeId}/bar-code/{trxCode}/authorize"
             | where ResultCode in ("401", "403", "429")
           QUERY
       criteria = {
@@ -485,7 +508,7 @@ locals {
       description = "API POS In Progress Transactions List: 5xx error count exceeded (> 50 in 5m)"
       query       = <<-QUERY
             AppRequests
-            | where Name matches regex @"^GET /idpay-itn/merchant-op/initiatives/[^/]+/point-of-sales/[^/]+/transactions$"
+            | where Name == "GET /idpay/initiatives/{initiativeId}/point-of-sales/{pointOfSaleId}/transactions"
             | where ResultCode startswith "5"
           QUERY
       criteria = {
@@ -501,7 +524,7 @@ locals {
       description = "API POS In Progress Transactions List: 401/404/429 error count exceeded (> 5 in 5m)"
       query       = <<-QUERY
             AppRequests
-            | where Name matches regex @"^GET /idpay-itn/merchant-op/initiatives/[^/]+/point-of-sales/[^/]+/transactions$"
+            | where Name == "GET /idpay/initiatives/{initiativeId}/point-of-sales/{pointOfSaleId}/transactions"
             | where ResultCode in ("401", "404", "429")
           QUERY
       criteria = {
@@ -517,7 +540,7 @@ locals {
       description = "API POS Processed Transactions List: 5xx error count exceeded (> 2 in 5m)"
       query       = <<-QUERY
             AppRequests
-            | where Name matches regex @"^GET /idpay-itn/merchant-op/initiatives/[^/]+/point-of-sales/[^/]+/transactions/processed$"
+            | where Name == "GET /idpay/initiatives/{initiativeId}/point-of-sales/{pointOfSaleId}/transactions/processed"
             | where ResultCode startswith "5"
           QUERY
       criteria = {
@@ -533,7 +556,7 @@ locals {
       description = "API POS Processed Transactions List: 401/404/429 error count exceeded (> 5 in 5m)"
       query       = <<-QUERY
             AppRequests
-            | where Name matches regex @"^GET /idpay-itn/merchant-op/initiatives/[^/]+/point-of-sales/[^/]+/transactions/processed$"
+            | where Name == "GET /idpay/initiatives/{initiativeId}/point-of-sales/{pointOfSaleId}/transactions/processed"
             | where ResultCode in ("401", "404", "429")
           QUERY
       criteria = {
@@ -550,7 +573,7 @@ locals {
       severity    = 3
       query       = <<-QUERY
             AppRequests
-            | where Name matches regex @"^DELETE /idpay-itn/merchant-op/transactions/[^/]+$"
+            | where Name == "DELETE /idpay/payment/initiatives/{initiativeId}/transactions/{transactionId}"
             | where ResultCode startswith "5"
           QUERY
       criteria = {
@@ -567,7 +590,7 @@ locals {
       severity    = 3
       query       = <<-QUERY
             AppRequests
-            | where Name matches regex @"^DELETE /idpay-itn/merchant-op/transactions/[^/]+$"
+            | where Name == "DELETE /idpay/payment/initiatives/{initiativeId}/transactions/{transactionId}"
             | where ResultCode in ("401", "403", "404", "429")
           QUERY
       criteria = {
@@ -583,7 +606,7 @@ locals {
       description = "API Reversal Transaction: 5xx error count exceeded (> 2 in 5m)"
       query       = <<-QUERY
             AppRequests
-            | where Name matches regex @"^POST /idpay-itn/merchant-op/transactions/[^/]+/reversal$"
+            | where Name == "POST /idpay/payment/initiatives/{initiativeId}/transactions/{transactionId}/reversal"
             | where ResultCode startswith "5"
           QUERY
       criteria = {
@@ -599,7 +622,7 @@ locals {
       description = "API Reward Transaction: 5xx error count exceeded (> 2 in 5m)"
       query       = <<-QUERY
             AppRequests
-            | where Name matches regex @"^POST /idpay-itn/merchant-op/transactions/[^/]+/reward$"
+            | where Name == "POST /idpay/payment/initiatives/{initiativeId}/transactions/{transactionId}/reward"
             | where ResultCode startswith "5"
           QUERY
       criteria = {
@@ -615,7 +638,7 @@ locals {
       description = "API Products List: 5xx error count exceeded (> 50 in 5m)"
       query       = <<-QUERY
             AppRequests
-            | where Name == "GET /idpay-itn/merchant-op/products"
+            | where Name == "GET /idpay/register/initiatives/{initiativeId}/products"
             | where ResultCode startswith "5"
           QUERY
       criteria = {
@@ -631,7 +654,7 @@ locals {
       description = "API Products List: 401/404/429 error count exceeded (> 15 in 5m)"
       query       = <<-QUERY
             AppRequests
-            | where Name == "GET /idpay-itn/merchant-op/products"
+            | where Name == "GET /idpay/register/initiatives/{initiativeId}/products"
             | where ResultCode in ("401", "404", "429")
           QUERY
       criteria = {
@@ -650,7 +673,7 @@ locals {
       severity    = 3
       query       = <<-QUERY
             AppRequests
-            | where Name matches regex @"^GET /idpay-itn/merchant/portal/[^/]+/transactions/[^/]+/download$"
+            | where Name == "GET /idpay/initiatives/{initiativeId}/point-of-sales/{pointOfSaleId}/transactions/{transactionId}/download"
             | where ResultCode startswith "5"
           QUERY
       criteria = {
@@ -667,7 +690,7 @@ locals {
       severity    = 3
       query       = <<-QUERY
             AppRequests
-            | where Name matches regex @"^GET /idpay-itn/merchant/portal/[^/]+/transactions/[^/]+/download$"
+            | where Name == "GET /idpay/initiatives/{initiativeId}/point-of-sales/{pointOfSaleId}/transactions/{transactionId}/download"
             | where ResultCode in ("400", "401", "429")
           QUERY
       criteria = {
@@ -684,7 +707,8 @@ locals {
       severity    = 3
       query       = <<-QUERY
             AppRequests
-            | where Name matches regex @"^GET /idpay-itn/merchant/portal/[^/]+/point-of-sales/[^/]+$"
+            | where Name == "GET /idpay/merchant/portal/{merchantId}/point-of-sales/{pointOfSaleId}"
+                or Name == "GET /idpay/merchant/portal/{merchantId}/initiatives/{initiativeId}/point-of-sales/{pointOfSaleId}"
             | where ResultCode startswith "5"
           QUERY
       criteria = {
@@ -701,7 +725,8 @@ locals {
       severity    = 3
       query       = <<-QUERY
             AppRequests
-            | where Name matches regex @"^GET /idpay-itn/merchant/portal/[^/]+/point-of-sales/[^/]+$"
+            | where Name == "GET /idpay/merchant/portal/{merchantId}/point-of-sales/{pointOfSaleId}"
+                or Name == "GET /idpay/merchant/portal/{merchantId}/initiatives/{initiativeId}/point-of-sales/{pointOfSaleId}"
             | where ResultCode in ("401", "404", "429")
           QUERY
       criteria = {
@@ -1440,6 +1465,7 @@ locals {
   alerts_groups = [
     local.alerts_eie,
     local.alerts_bonus_elettrodomestici,
+    local.alerts_external_dependencies,
     local.alerts_ese,
     local.alerts_upbe,
     local.alerts_keycloak,
