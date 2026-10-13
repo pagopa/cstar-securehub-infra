@@ -36,3 +36,11 @@ redis_idh_resource_tier = "basic"
 ### ADX
 adx_db_soft_delete_period_days = 7
 adx_db_hot_cache_period_days   = 3
+
+blue_green_node_pool_enabled = true
+aks_foobar_srtp_node_pool_configuration = {
+  enabled        = true,
+  tier           = "Standard_B4ms"
+  node_count_min = 1,
+  node_count_max = 2,
+}

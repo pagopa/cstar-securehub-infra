@@ -92,3 +92,13 @@ reloader_helm = {
   image_name    = "stakater/reloader"
   image_tag     = "v1.4.0@sha256:40e379c2b20350235aca2f0a43cc6f8a89397cef6869cb3a95db03390684390a"
 }
+
+blue_green_node_pool_enabled = true
+
+
+aks_foobar_user_node_pool_configuration = {
+  enabled        = true,
+  tier           = "Standard_B4ms"
+  node_count_min = 2,
+  node_count_max = 3,
+}
