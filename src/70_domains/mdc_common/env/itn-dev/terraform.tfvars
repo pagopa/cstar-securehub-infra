@@ -26,6 +26,7 @@ audit_export_enabled  = false
 redis_idh_tier = "basic"
 
 aks_nodepool = {
+  enabled           = false
   vm_sku_name       = "Standard_B4ms_active"
   autoscale_enabled = true
   node_count_min    = 1

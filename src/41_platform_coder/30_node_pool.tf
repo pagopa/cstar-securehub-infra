@@ -54,6 +54,16 @@ module "aks_user_foobar_node_pool_keycloak" {
   node_count_min = var.aks_user_foobar_node_pool_keycloak.node_count_min
   node_count_max = var.aks_user_foobar_node_pool_keycloak.node_count_max
 
+  double_node_pool = {
+    enabled = true
+    node_pool_foo = {
+      active = true
+    }
+    node_pool_bar = {
+      active = false
+    }
+  }
+
   node_labels = {
     node_name : "usr-keycloak",
     node_type : "user",

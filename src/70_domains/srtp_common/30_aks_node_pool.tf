@@ -68,20 +68,20 @@ module "aks_srtp_node_pool_green" {
   vnet_subnet_id        = module.aks_overlay_snet.id
 }
 
-module "foo_bar_user_node_pool" {
+module "foo_bar_srtp_node_pool" {
   source = "./.terraform/modules/__v4__/IDH/aks_node_pool"
-  count  = var.aks_foobar_user_node_pool_configuration.enabled ? 1 : 0
+  count  = var.aks_foobar_srtp_node_pool_configuration.enabled ? 1 : 0
 
   product_name      = var.prefix
   env               = var.env
-  idh_resource_tier = var.aks_foobar_user_node_pool_configuration.tier
+  idh_resource_tier = var.aks_foobar_srtp_node_pool_configuration.tier
 
   name                  = "srtp"
   kubernetes_cluster_id = data.azurerm_kubernetes_cluster.aks.id
   vnet_subnet_id        = module.aks_overlay_snet.id
 
-  node_count_min    = var.aks_foobar_user_node_pool_configuration.node_count_min
-  node_count_max    = var.aks_foobar_user_node_pool_configuration.node_count_max
+  node_count_min    = var.aks_foobar_srtp_node_pool_configuration.node_count_min
+  node_count_max    = var.aks_foobar_srtp_node_pool_configuration.node_count_max
   autoscale_enabled = true
 
   double_node_pool = {

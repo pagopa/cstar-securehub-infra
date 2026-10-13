@@ -29,13 +29,13 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | b84460491aa96bd2418a338db8605ebc1b7e3ff8 |
+| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | d7bae26eb67406e1c7aab9ce3a4de633f6b00f46 |
 | <a name="module_aks_overlay_snet"></a> [aks\_overlay\_snet](#module\_aks\_overlay\_snet) | ./.terraform/modules/__v4__/IDH/subnet | n/a |
 | <a name="module_aks_srtp_node_pool_blue"></a> [aks\_srtp\_node\_pool\_blue](#module\_aks\_srtp\_node\_pool\_blue) | ./.terraform/modules/__v4__/IDH/aks_node_pool | n/a |
 | <a name="module_aks_srtp_node_pool_green"></a> [aks\_srtp\_node\_pool\_green](#module\_aks\_srtp\_node\_pool\_green) | ./.terraform/modules/__v4__/IDH/aks_node_pool | n/a |
 | <a name="module_cdn_frontdoor"></a> [cdn\_frontdoor](#module\_cdn\_frontdoor) | ./.terraform/modules/__v4__/cdn_frontdoor | n/a |
 | <a name="module_cosmos_db_account"></a> [cosmos\_db\_account](#module\_cosmos\_db\_account) | ./.terraform/modules/__v4__/IDH/cosmosdb_account | n/a |
-| <a name="module_foo_bar_user_node_pool"></a> [foo\_bar\_user\_node\_pool](#module\_foo\_bar\_user\_node\_pool) | ./.terraform/modules/__v4__/IDH/aks_node_pool | n/a |
+| <a name="module_foo_bar_srtp_node_pool"></a> [foo\_bar\_srtp\_node\_pool](#module\_foo\_bar\_srtp\_node\_pool) | ./.terraform/modules/__v4__/IDH/aks_node_pool | n/a |
 | <a name="module_kubernetes_service_account"></a> [kubernetes\_service\_account](#module\_kubernetes\_service\_account) | ./.terraform/modules/__v4__/kubernetes_service_account | n/a |
 | <a name="module_managed_redis"></a> [managed\_redis](#module\_managed\_redis) | ./.terraform/modules/__v4__/IDH/managed_redis | n/a |
 | <a name="module_namespace_keycloak_role_bindings"></a> [namespace\_keycloak\_role\_bindings](#module\_namespace\_keycloak\_role\_bindings) | ./.terraform/modules/__v4__/kubernetes_namespace_role_binding | n/a |
