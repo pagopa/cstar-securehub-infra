@@ -101,6 +101,10 @@ locals {
     {
       name : "emd-notifier-sender",
       short_name : "notifier-sender"
+    },
+    {
+      name : "emd-tpp",
+      short_name : "tpp"
     }
   ]
 
