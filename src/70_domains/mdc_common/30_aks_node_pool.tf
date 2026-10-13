@@ -52,6 +52,8 @@ module "aks_foobar_node_pool" {
   node_taints           = ["${var.domain}Only=true:NoSchedule"]
   kubernetes_cluster_id = data.azurerm_kubernetes_cluster.aks.id
 
+  autoscale_enabled = var.aks_foobar_nodepool.autoscale_enabled
+
   double_node_pool = {
     enabled = true
     node_pool_foo = {
