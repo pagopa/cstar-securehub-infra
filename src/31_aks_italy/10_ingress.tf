@@ -15,15 +15,16 @@ module "nginx_ingress" {
     name          = "nginx-ingress"
     version       = var.nginx_helm.version
     chart         = "ingress-nginx"
-    recreate_pods = false #https://github.com/helm/helm/issues/6378 -> fixed in k8s 1.22
-    deploy        = 1
+    recreate_pods = true #https://github.com/helm/helm/issues/6378 -> fixed in k8s 1.22
+    deploy        = true
   }
 
   values = [
-    templatefile("${path.module}/ingress/loadbalancer.yaml.tpl", { load_balancer_ip = var.ingress_load_balancer_ip }),
+    templatefile("${path.module}/ingress/loadbalancer.yaml.tpl", {
+      load_balancer_ip = var.ingress_load_balancer_ip
+    }),
     templatefile(
-      "${path.module}/ingress/autoscaling.yaml.tpl",
-      {
+      "${path.module}/ingress/autoscaling.yaml.tpl", {
         min_replicas     = var.ingress_min_replica_count
         max_replicas     = var.ingress_max_replica_count
         polling_interval = 30  # seconds
@@ -49,13 +50,6 @@ module "nginx_ingress" {
   ]
 
   set = [
-    {
-      name  = "controller.image.digest"
-      value = var.nginx_helm.controller.image.digest
-      }, {
-      name  = "controller.image.digestChroot"
-      value = var.nginx_helm.controller.image.digestchroot
-    },
     {
       name  = "controller.nodeSelector.beta\\.kubernetes\\.io/os"
       value = "linux"
