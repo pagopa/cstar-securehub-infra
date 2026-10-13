@@ -1,10 +1,20 @@
+moved {
+  from = module.aks_user_node_pool_blue
+  to   = module.aks_user_node_pool_blue[0]
+}
+
+moved {
+  from = module.aks_user_node_pool_green
+  to   = module.aks_user_node_pool_green[0]
+}
+
 #
 # 👤 User node pool
 #
 module "aks_user_node_pool_blue" {
   source = "./.terraform/modules/__v4__/IDH/aks_node_pool"
   # source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//IDH/aks_node_pool?ref=PAYMCLOUD-449-idh-node-pool-aks"
-
+  count        = var.blue_green_node_pool_enabled ? 1 : 0
   product_name = var.prefix
   env          = var.env
   tags         = module.tag_config.tags
@@ -28,6 +38,7 @@ module "aks_user_node_pool_blue" {
 module "aks_user_node_pool_green" {
   source = "./.terraform/modules/__v4__/IDH/aks_node_pool"
   # source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//IDH/aks_node_pool?ref=PAYMCLOUD-449-idh-node-pool-aks"
+  count = var.blue_green_node_pool_enabled ? 1 : 0
 
   product_name = var.prefix
   env          = var.env
@@ -46,4 +57,59 @@ module "aks_user_node_pool_green" {
   node_tags             = { node_tag : "green", phase : "green" }
   kubernetes_cluster_id = module.aks.id
   vnet_subnet_id        = module.aks_user_snet.id
+}
+
+
+
+module "foo_bar_user_node_pool" {
+  source = "./.terraform/modules/__v4__/IDH/aks_node_pool"
+  count  = var.aks_foobar_user_node_pool_configuration.enabled ? 1 : 0
+
+  product_name      = var.prefix
+  env               = var.env
+  idh_resource_tier = var.aks_foobar_user_node_pool_configuration.tier
+
+  name                  = "user"
+  kubernetes_cluster_id = module.aks.id
+  vnet_subnet_id        = module.aks_user_snet.id
+
+  node_count_min    = var.aks_foobar_user_node_pool_configuration.node_count_min
+  node_count_max    = var.aks_foobar_user_node_pool_configuration.node_count_max
+  autoscale_enabled = true
+
+  double_node_pool = {
+    enabled = true
+    node_pool_foo = {
+      active = true
+    }
+    node_pool_bar = {
+      active = false
+    }
+  }
+
+  node_labels = { node_type : "user", domain : var.domain }
+  node_tags   = {}
+  node_taints = []
+  tags        = module.tag_config.tags
+}
+
+module "temp_user_node_pool" {
+  source = "./.terraform/modules/__v4__/IDH/aks_node_pool"
+
+  product_name      = var.prefix
+  env               = var.env
+  idh_resource_tier = var.aks_foobar_user_node_pool_configuration.tier
+
+  name                  = "temp"
+  kubernetes_cluster_id = module.aks.id
+  vnet_subnet_id        = module.aks_user_snet.id
+
+  node_count_min    = var.aks_foobar_user_node_pool_configuration.node_count_min
+  node_count_max    = var.aks_foobar_user_node_pool_configuration.node_count_max
+  autoscale_enabled = true
+
+  node_labels = { node_type : "user", domain : var.domain }
+  node_tags   = {}
+  node_taints = []
+  tags        = module.tag_config.tags
 }
