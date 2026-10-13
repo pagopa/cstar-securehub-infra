@@ -111,7 +111,7 @@ resource "github_repository_ruleset" "uat_and_main" {
 
   rules {
     creation                = true
-    update                  = true
+    update                  = each.value.restrict_updates
     deletion                = true
     non_fast_forward        = true
     required_linear_history = each.value.required_linear_history
