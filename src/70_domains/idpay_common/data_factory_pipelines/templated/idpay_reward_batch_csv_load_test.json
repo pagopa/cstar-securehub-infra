@@ -47,6 +47,10 @@
                     "value": "@item().rewardBatchId",
                     "type": "Expression"
                   },
+                  "reportId": {
+                    "value": "@item().reportId",
+                    "type": "Expression"
+                  },
                   "reportName": {
                     "value": "@item().reportName",
                     "type": "Expression"
