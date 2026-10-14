@@ -323,3 +323,17 @@ variable "export_initiatives" {
   }))
   default = []
 }
+
+variable "blue_green_node_pool_enabled" {
+  type    = bool
+  default = true
+}
+
+variable "aks_foobar_idpay_node_pool_configuration" {
+  type = object({
+    enabled        = optional(bool, false),
+    tier           = string,
+    node_count_min = number,
+    node_count_max = number,
+  })
+}
