@@ -199,28 +199,17 @@
               "type": "and"
             }
           },
-          "pluginVersion": "6.2.0",
-          "query": "transaction\r\n| join kind=rightouter (\r\n    point_of_sales\r\n    | project _id, type\r\n) on $left.pointOfSaleId == $right._id\r\n| summarize TotaleTransazioni = count() by type",
-          "querySource": "raw",
+           "pluginVersion": "6.2.0",
+           "query": "transaction\r\n| where rewardInitiatieveId == \"68dd003ccce8c534d1da22bc\"\r\n| join kind=rightouter (\r\n    point_of_sales\r\n    | project _id, type\r\n) on $left.pointOfSaleId == $right._id\r\n| summarize TotaleTransazioni = countif(isnotempty(pointOfSaleId)) by type",
+           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
           "refId": "A",
           "resultFormat": "table"
         }
-      ],
-      "title": "Numero Transazioni Per Tipologia Punto Vendita",
-      "transformations": [
-        {
-          "id": "partitionByValues",
-          "options": {
-            "fields": [
-              "businessName"
-            ],
-            "keepFields": true
-          }
-        }
-      ],
-      "transparent": true,
+       ],
+       "title": "Numero Transazioni Per Tipologia Punto Vendita",
+       "transparent": true,
       "type": "piechart"
     },
     {
@@ -303,7 +292,7 @@
             }
           },
           "pluginVersion": "6.2.0",
-          "query": "transaction\r\n| where status in ( 'INVOICED', 'CAPTURED')\r\n| extend LungaDurata = (trxChargeDate - trxDate) > 15m\r\n| summarize TransazioniCount = count() by LungaDurata\r\n| extend Category = iff(LungaDurata, \"Voucher statico\", \"Voucher app\")\r\n| project Category, TransazioniCount\r\n",
+          "query": "transaction\r\n| where rewardInitiatieveId == \"68dd003ccce8c534d1da22bc\"\r\n| where status in ( 'INVOICED', 'CAPTURED')\r\n| extend LungaDurata = (trxChargeDate - trxDate) > 15m\r\n| summarize TransazioniCount = count() by LungaDurata\r\n| extend Category = iff(LungaDurata, \"Voucher statico\", \"Voucher app\")\r\n| project Category, TransazioniCount\r\n",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -311,14 +300,14 @@
           "resultFormat": "table"
         }
       ],
-      "title": "Numero Transazioni Per Tipologia Voucher",
-      "transformations": [
-        {
-          "id": "partitionByValues",
-          "options": {
-            "fields": [
-              "businessName"
-            ],
+       "title": "Numero Transazioni Per Tipologia Voucher",
+       "transformations": [
+         {
+           "id": "partitionByValues",
+           "options": {
+             "fields": [
+               "Category"
+             ],
             "keepFields": true
           }
         }
@@ -513,7 +502,7 @@
             }
           },
           "pluginVersion": "6.2.0",
-          "query": "point_of_sales\r\n| summarize Totale = count() by region\r\n| order by Totale desc ",
+          "query": "point_of_sales\r\n| join kind=inner (\r\n    point_of_sales_initiative\r\n    | where initiativeId == \"68dd003ccce8c534d1da22bc\"\r\n    | project pointOfSaleId\r\n) on $left._id == $right.pointOfSaleId\r\n| summarize Totale = count() by region\r\n| order by Totale desc ",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -661,7 +650,7 @@
             }
           },
           "pluginVersion": "6.2.0",
-          "query": "merchant\r\n| join kind=rightouter  (\r\n    point_of_sales\r\n) on $left._id == $right.merchantId\r\n| summarize Totale = count() by businessName\r\n| order by Totale desc \r\n| limit 10",
+          "query": "merchant\r\n| join kind=rightouter  (\r\n    point_of_sales\r\n    | join kind=inner (\r\n        point_of_sales_initiative\r\n        | where initiativeId == \"68dd003ccce8c534d1da22bc\"\r\n        | project pointOfSaleId\r\n    ) on $left._id == $right.pointOfSaleId\r\n) on $left._id == $right.merchantId\r\n| summarize Totale = count() by businessName\r\n| order by Totale desc \r\n| limit 10",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
