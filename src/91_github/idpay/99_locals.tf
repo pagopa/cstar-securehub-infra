@@ -526,6 +526,7 @@ locals {
         ],
         try(local.repository[repo_name].additional_required_status_checks, [])
       )
+      restrict_updates        = !try(local.repository[repo_name].trunk_based, false)
       allowed_merge_methods   = try(local.repository[repo_name].trunk_based, false) ? ["squash"] : ["merge"]
       required_linear_history = try(local.repository[repo_name].required_linear_history, true)
     }
