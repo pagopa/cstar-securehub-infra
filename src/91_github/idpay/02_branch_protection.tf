@@ -142,7 +142,8 @@ resource "github_repository_ruleset" "uat_and_main" {
       for_each = contains(keys(local.repositories_with_merge_queue), each.key) ? [1] : []
 
       content {
-        merge_method = upper(each.value.allowed_merge_methods[0])
+        merge_method                   = upper(each.value.allowed_merge_methods[0])
+        check_response_timeout_minutes = 120
       }
     }
 
