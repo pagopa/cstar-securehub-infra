@@ -92,24 +92,3 @@ module "foo_bar_user_node_pool" {
   node_taints = []
   tags        = module.tag_config.tags
 }
-
-module "temp_user_node_pool" {
-  source = "./.terraform/modules/__v4__/IDH/aks_node_pool"
-
-  product_name      = var.prefix
-  env               = var.env
-  idh_resource_tier = var.aks_foobar_user_node_pool_configuration.tier
-
-  name                  = "temp"
-  kubernetes_cluster_id = module.aks.id
-  vnet_subnet_id        = module.aks_user_snet.id
-
-  node_count_min    = var.aks_foobar_user_node_pool_configuration.node_count_min
-  node_count_max    = var.aks_foobar_user_node_pool_configuration.node_count_max
-  autoscale_enabled = true
-
-  node_labels = { node_type : "user", domain : var.domain }
-  node_tags   = {}
-  node_taints = []
-  tags        = module.tag_config.tags
-}

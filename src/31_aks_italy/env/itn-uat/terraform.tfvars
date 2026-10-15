@@ -97,7 +97,7 @@ reloader_helm = {
 blue_green_node_pool_enabled = true
 
 aks_foobar_user_node_pool_configuration = {
-  enabled        = false,
+  enabled        = true,
   tier           = "Standard_D4ads"
   node_count_min = 1,
   node_count_max = 3,
