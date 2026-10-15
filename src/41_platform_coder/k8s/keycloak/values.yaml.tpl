@@ -1,7 +1,6 @@
-forceDeployVersion: ${force_deploy_version}
-
 production: true
-proxy: "edge"
+proxyHeaders: "xforwarded"
+httpRelativePath: "/"
 
 cache:
   stack: "jdbc-ping"
@@ -15,19 +14,45 @@ image:
   repository: ${image_repository}
   tag: ${image_tag}
 
+usePasswordFiles: false
+enableDefaultInitContainers: false
+
+command: ["/opt/keycloak/bin/kc.sh"]
+# Do not use --optimized: the mounted provider is incorporated at startup.
+args: ["start"]
+
+podSecurityContext:
+  enabled: true
+  fsGroup: 1000
+
+containerSecurityContext:
+  enabled: true
+  runAsUser: 1000
+  runAsGroup: 1000
+  runAsNonRoot: true
+  privileged: false
+  # Keycloak augments its runtime at startup because the provider JAR is mounted from a ConfigMap.
+  readOnlyRootFilesystem: false
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop: ["ALL"]
+  seccompProfile:
+    type: RuntimeDefault
+
 auth:
   adminUser: "${keycloak_admin_username}"
   existingSecret: "keycloak-admin-secret" #keycloak admin password is in this secret
+  passwordSecretKey: "admin-password"
 
 extraEnvVarsCM: "keycloak-config"
 
 initContainers:
   - name: agent-downloader
     image: curlimages/curl:latest
-    command: ["curl", "-L", "-o", "/opt/bitnami/keycloak/agent/applicationinsights-agent.jar", "https://github.com/microsoft/ApplicationInsights-Java/releases/download/3.7.4/applicationinsights-agent-3.7.4.jar"]
+    command: ["curl", "-L", "-o", "/opt/keycloak/agent/applicationinsights-agent.jar", "https://github.com/microsoft/ApplicationInsights-Java/releases/download/3.7.4/applicationinsights-agent-3.7.4.jar"]
     volumeMounts:
       - name: agent
-        mountPath: "/opt/bitnami/keycloak/agent"
+        mountPath: "/opt/keycloak/agent"
 
 resources:
   requests:
@@ -49,12 +74,31 @@ externalDatabase:
 
 # TLS/SSL per la connessione al DB
 extraEnvVars:
+  - name: KC_DB
+    value: postgres
+  - name: KC_DB_URL_HOST
+    value: "${postgres_db_host}"
+  - name: KC_DB_URL_PORT
+    value: "${postgres_db_port}"
+  - name: KC_DB_URL_DATABASE
+    value: "${postgres_db_name}"
+  - name: KC_DB_USERNAME
+    value: "${postgres_db_username}"
+  - name: KC_DB_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: keycloak-db-secret
+        key: db-password
+  - name: KC_CACHE
+    value: "ispn"
   - name: KC_HTTP_ENABLED
     value: "true"
+  - name: KC_HTTP_RELATIVE_PATH
+    value: "/"
   - name: KC_PROXY_HEADERS
     value: "xforwarded"
   - name: KC_DB_URL_PROPERTIES
-    value: "sslmode=require"
+    value: "?sslmode=require"
   - name: KC_HOSTNAME
     value: "https://${keycloak_ingress_hostname}"
   - name: KC_HOSTNAME_BACKCHANNEL_DYNAMIC
@@ -84,8 +128,8 @@ extraEnvVars:
     value: "${keycloak_http_client_connection_ttl_millis}"
   - name: KC_SPI_CONNECTIONS_HTTP_CLIENT_DEFAULT_MAX_CONNECTION_IDLE_TIME_MILLIS
     value: "${keycloak_http_client_connection_max_idle_millis}"
-  - name: JAVA_OPTS
-    value: "-javaagent:/opt/bitnami/keycloak/agent/applicationinsights-agent.jar -XX:+UseG1GC -Xmx4096m"
+  - name: JAVA_OPTS_APPEND
+    value: "-Djgroups.dns.query=keycloak-headless.${keycloak_namespace}.svc.cluster.local -javaagent:/opt/keycloak/agent/applicationinsights-agent.jar"
   - name: KC_DB_POOL_MAX_SIZE
     value: "75"
   - name: KC_DB_POOL_MIN_SIZE
@@ -109,6 +153,8 @@ extraVolumes:
 extraVolumeMounts:
 ${keycloak_extra_volume_mounts}
 
+podAnnotations:
+  checksum/keycloak-assets: "${keycloak_rollout_checksum}"
 
 ingress:
   enabled: true

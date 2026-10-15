@@ -29,12 +29,13 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | b84460491aa96bd2418a338db8605ebc1b7e3ff8 |
+| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | d7bae26eb67406e1c7aab9ce3a4de633f6b00f46 |
 | <a name="module_aks_overlay_snet"></a> [aks\_overlay\_snet](#module\_aks\_overlay\_snet) | ./.terraform/modules/__v4__/IDH/subnet | n/a |
 | <a name="module_aks_srtp_node_pool_blue"></a> [aks\_srtp\_node\_pool\_blue](#module\_aks\_srtp\_node\_pool\_blue) | ./.terraform/modules/__v4__/IDH/aks_node_pool | n/a |
 | <a name="module_aks_srtp_node_pool_green"></a> [aks\_srtp\_node\_pool\_green](#module\_aks\_srtp\_node\_pool\_green) | ./.terraform/modules/__v4__/IDH/aks_node_pool | n/a |
 | <a name="module_cdn_frontdoor"></a> [cdn\_frontdoor](#module\_cdn\_frontdoor) | ./.terraform/modules/__v4__/cdn_frontdoor | n/a |
 | <a name="module_cosmos_db_account"></a> [cosmos\_db\_account](#module\_cosmos\_db\_account) | ./.terraform/modules/__v4__/IDH/cosmosdb_account | n/a |
+| <a name="module_foo_bar_srtp_node_pool"></a> [foo\_bar\_srtp\_node\_pool](#module\_foo\_bar\_srtp\_node\_pool) | ./.terraform/modules/__v4__/IDH/aks_node_pool | n/a |
 | <a name="module_kubernetes_service_account"></a> [kubernetes\_service\_account](#module\_kubernetes\_service\_account) | ./.terraform/modules/__v4__/kubernetes_service_account | n/a |
 | <a name="module_managed_redis"></a> [managed\_redis](#module\_managed\_redis) | ./.terraform/modules/__v4__/IDH/managed_redis | n/a |
 | <a name="module_namespace_keycloak_role_bindings"></a> [namespace\_keycloak\_role\_bindings](#module\_namespace\_keycloak\_role\_bindings) | ./.terraform/modules/__v4__/kubernetes_namespace_role_binding | n/a |
@@ -185,9 +186,11 @@
 | <a name="input_adx_db_soft_delete_period_days"></a> [adx\_db\_soft\_delete\_period\_days](#input\_adx\_db\_soft\_delete\_period\_days) | Default soft delete period for ADX database (in days) | `number` | n/a | yes |
 | <a name="input_adx_table_hot_cache_period_days"></a> [adx\_table\_hot\_cache\_period\_days](#input\_adx\_table\_hot\_cache\_period\_days) | Hot cache period override for specific ADX tables (in days). If null, falls back to DB default. | `number` | `null` | no |
 | <a name="input_adx_table_soft_delete_period_days"></a> [adx\_table\_soft\_delete\_period\_days](#input\_adx\_table\_soft\_delete\_period\_days) | Soft delete period override for specific ADX tables (in days). If null, falls back to DB default. | `number` | `null` | no |
+| <a name="input_aks_foobar_srtp_node_pool_configuration"></a> [aks\_foobar\_srtp\_node\_pool\_configuration](#input\_aks\_foobar\_srtp\_node\_pool\_configuration) | n/a | <pre>object({<br/>    enabled        = optional(bool, false),<br/>    tier           = string,<br/>    node_count_min = number,<br/>    node_count_max = number,<br/>  })</pre> | n/a | yes |
 | <a name="input_aks_nodepool_blue"></a> [aks\_nodepool\_blue](#input\_aks\_nodepool\_blue) | Parameters for blue node pool | <pre>object({<br/>    vm_sku_name       = string<br/>    autoscale_enabled = optional(bool, true)<br/>    node_count_min    = number<br/>    node_count_max    = number<br/>  })</pre> | n/a | yes |
 | <a name="input_aks_nodepool_green"></a> [aks\_nodepool\_green](#input\_aks\_nodepool\_green) | Parameters for green node pool | <pre>object({<br/>    vm_sku_name       = string<br/>    autoscale_enabled = optional(bool, true)<br/>    node_count_min    = number<br/>    node_count_max    = number<br/>  })</pre> | n/a | yes |
 | <a name="input_azuread_service_principal_azure_cdn_frontdoor_id"></a> [azuread\_service\_principal\_azure\_cdn\_frontdoor\_id](#input\_azuread\_service\_principal\_azure\_cdn\_frontdoor\_id) | Azure CDN Front Door Principal ID - Microsoft.AzureFrontDoor-Cdn | `string` | n/a | yes |
+| <a name="input_blue_green_node_pool_enabled"></a> [blue\_green\_node\_pool\_enabled](#input\_blue\_green\_node\_pool\_enabled) | n/a | `bool` | `true` | no |
 | <a name="input_cdn_location"></a> [cdn\_location](#input\_cdn\_location) | One of westeurope, northeurope | `string` | n/a | yes |
 | <a name="input_cosmos_activation_db_autoscale_max_throughput"></a> [cosmos\_activation\_db\_autoscale\_max\_throughput](#input\_cosmos\_activation\_db\_autoscale\_max\_throughput) | Max throughput for activation database (shared across collections) | `number` | `null` | no |
 | <a name="input_cosmos_collections_max_throughput"></a> [cosmos\_collections\_max\_throughput](#input\_cosmos\_collections\_max\_throughput) | Max throughput for collections | `number` | `null` | no |

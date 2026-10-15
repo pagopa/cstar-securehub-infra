@@ -20,7 +20,7 @@ locals {
     "idpay_wallet_copy"
   ]
 
-  pipelines_weekly = [
+  pipelines_daily = [
     "idpay_data_vault_copy"
   ]
 
@@ -87,22 +87,21 @@ resource "azurerm_data_factory_trigger_schedule" "daily_triggers_U" {
   depends_on = [azurerm_data_factory_pipeline.pipelines]
 }
 
-resource "azurerm_data_factory_trigger_schedule" "weekly_triggers" {
-  for_each = toset(local.pipelines_weekly)
+resource "azurerm_data_factory_trigger_schedule" "daily_triggers_data_vault" {
+  for_each = toset(local.pipelines_daily)
 
   name            = "trigger-${each.key}"
   data_factory_id = data.azurerm_data_factory.data_factory.id
   activated       = true
-  frequency       = "Week"
+  frequency       = "Day"
   interval        = 1
 
   start_time = "2025-10-08T08:00:00Z"
   time_zone  = "W. Europe Standard Time"
 
   schedule {
-    days_of_week = ["Monday"]
-    hours        = [0]
-    minutes      = [0]
+    hours   = [2]
+    minutes = [0]
   }
 
   pipeline {

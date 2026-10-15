@@ -67,6 +67,10 @@ locals {
           keys   = ["messageRegistrationDate"]
           unique = false
         },
+        {
+          keys   = ["messageRegistrationDate", "_id"]
+          unique = false
+        },
       ]
 
     },

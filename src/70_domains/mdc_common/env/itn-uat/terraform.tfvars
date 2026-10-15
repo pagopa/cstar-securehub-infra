@@ -32,7 +32,15 @@ aks_nodepool = {
   node_count_max    = 2
 }
 
+aks_foobar_nodepool = {
+  enabled           = false
+  vm_sku_name       = "Standard_D4ads"
+  autoscale_enabled = true
+  node_count_min    = 1
+  node_count_max    = 2
+}
+
 cosmos_mongodb_common_configuration = {
-  max_throughput    = 1000
+  max_throughput    = 10000
   autoscale_enabled = true
 }
