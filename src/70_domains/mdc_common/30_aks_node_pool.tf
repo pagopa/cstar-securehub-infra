@@ -60,7 +60,7 @@ module "aks_foobar_node_pool" {
       active = false
     }
     node_pool_bar = {
-      active = true
+      active           = true
       version_override = "1.35.8"
     }
   }

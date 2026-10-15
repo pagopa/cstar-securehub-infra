@@ -26,7 +26,7 @@ law_daily_quota_gb    = 15
 audit_export_enabled  = false
 
 aks_nodepool = {
-  enabled = false
+  enabled           = false
   vm_sku_name       = "Standard_D4ads_v5_active"
   autoscale_enabled = true
   node_count_min    = 1
