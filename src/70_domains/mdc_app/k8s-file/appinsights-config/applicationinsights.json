@@ -1,4 +1,25 @@
 {
+  "sampling": {
+    "percentage": 100,
+    "overrides": [
+      {
+        "telemetryType": "request",
+        "percentage": 100
+      },
+      {
+        "telemetryType": "dependency",
+        "percentage": 100
+      },
+      {
+        "telemetryType": "trace",
+        "percentage": 100
+      },
+      {
+        "telemetryType": "exception",
+        "percentage": 100
+      }
+    ]
+  },
   "preview": {
     "processors": [
       {
