@@ -46,7 +46,7 @@ adx_db_hot_cache_period_days   = 5
 
 blue_green_node_pool_enabled = true
 aks_foobar_srtp_node_pool_configuration = {
-  enabled        = false,
+  enabled        = true,
   tier           = "Standard_D4ads"
   node_count_min = 1,
   node_count_max = 2,
