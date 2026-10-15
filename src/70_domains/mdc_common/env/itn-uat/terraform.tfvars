@@ -41,6 +41,6 @@ aks_foobar_nodepool = {
 }
 
 cosmos_mongodb_common_configuration = {
-  max_throughput    = 1000
+  max_throughput    = 10000
   autoscale_enabled = true
 }
