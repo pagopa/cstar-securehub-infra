@@ -11,7 +11,7 @@ moved {
 module "aks_srtp_node_pool_blue" {
   source = "./.terraform/modules/__v4__/IDH/aks_node_pool"
 
-  count = var.blue_green_node_pool_enabled ? 1 : 0
+  count = var.env_short == "u" ? 0 : var.blue_green_node_pool_enabled ? 1 : 0
 
   product_name = var.prefix
   env          = var.env
@@ -87,10 +87,10 @@ module "foo_bar_srtp_node_pool" {
   double_node_pool = {
     enabled = true
     node_pool_foo = {
-      active = true
+      active = false
     }
     node_pool_bar = {
-      active = false
+      active = true
     }
   }
 
