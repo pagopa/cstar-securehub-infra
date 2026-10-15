@@ -87,10 +87,10 @@ module "foo_bar_srtp_node_pool" {
   double_node_pool = {
     enabled = true
     node_pool_foo = {
-      active = false
+      active = var.env_short == "d"
     }
     node_pool_bar = {
-      active = true
+      active = var.env_short != "d"
     }
   }
 
