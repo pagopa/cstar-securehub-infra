@@ -131,7 +131,7 @@ export_initiatives = [
 
 blue_green_node_pool_enabled = true
 aks_foobar_idpay_node_pool_configuration = {
-  enabled        = false,
+  enabled        = true,
   tier           = "Standard_D8ads"
   node_count_min = 2,
   node_count_max = 3

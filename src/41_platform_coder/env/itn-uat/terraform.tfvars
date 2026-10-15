@@ -53,8 +53,10 @@ aks_user_node_pool_keycloak = {
 
 
 aks_user_foobar_node_pool_keycloak = {
-  enabled           = false
+  enabled           = true
   idh_resource_tier = "Standard_D2ads"
   node_count_min    = 1
-  node_count_max    = 1
+  node_count_max    = 2
+  os_disk_size_gb   = 300
+  os_disk_type      = "Managed"
 }
