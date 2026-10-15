@@ -25,9 +25,9 @@ keycloak_pgflex_params = {
 }
 
 keycloak_configuration = {
-  image_registry                              = "public.ecr.aws"
-  image_repository                            = "bitnami/keycloak"
-  image_tag                                   = "26.6.1-debian-12-r0"
+  image_registry                              = "quay.io"
+  image_repository                            = "keycloak/keycloak"
+  image_tag                                   = "26.6.1"
   chart_version                               = "24.7.7"
   replica_count_min                           = 1
   replica_count_max                           = 2
@@ -49,4 +49,12 @@ aks_user_node_pool_keycloak = {
   node_count_max    = 3
   os_disk_size_gb   = 300
   os_disk_type      = "Managed"
+}
+
+
+aks_user_foobar_node_pool_keycloak = {
+  enabled           = false
+  idh_resource_tier = "Standard_D2ads"
+  node_count_min    = 1
+  node_count_max    = 1
 }
