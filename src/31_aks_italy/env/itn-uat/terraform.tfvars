@@ -21,7 +21,7 @@ aks_sku_tier                   = "Standard"
 aks_private_cluster_is_enabled = true
 aks_alerts_enabled             = false
 
-aks_kubernetes_version = "1.34.2"
+aks_kubernetes_version = "1.35.8"
 
 # Standard is recommended tier
 # D – General purpose compute
@@ -61,22 +61,14 @@ aks_nodepool_blue = {
 aks_cidr_subnet      = ["10.10.1.0/24"] # 10.10.1.0 -> 10.10.1.255
 aks_cidr_subnet_user = ["10.10.2.0/24"] # 10.10.2.0 -> 10.10.2.255
 
-ingress_min_replica_count = "3"
+ingress_min_replica_count = "2"
 ingress_max_replica_count = "10"
 ingress_load_balancer_ip  = "10.10.1.250"
 
 # ingress-nginx helm charts releases 4.X.X: https://github.com/kubernetes/ingress-nginx/releases?expanded=true&page=1&q=tag%3Ahelm-chart-4
-# Pinned versions from "4.12.8" release: https://github.com/kubernetes/ingress-nginx/releases/tag/helm-chart-4.12.8
 nginx_helm = {
-  version = "4.14.2"
+  version = "4.15.1"
   controller = {
-    image = {
-      registry     = "k8s.gcr.io"
-      image        = "ingress-nginx/controller"
-      tag          = "v1.12.8"
-      digest       = "sha256:8f8343060688fb2a85752b7345a988d0d3c890d774e18e80b9e8730756e5b530"
-      digestchroot = "sha256:07c743429b823dfba7c2e5d399351ef0e43816abab48343ca7c01d00fd6517e3"
-    },
     resources = {
       requests = {
         memory = "300Mi"
@@ -92,7 +84,7 @@ nginx_helm = {
 # chart releases: https://github.com/kedacore/charts/releases
 # keda image tags: https://github.com/kedacore/keda/pkgs/container/keda/versions
 # keda-metrics-apiserver image tags: https://github.com/kedacore/keda/pkgs/container/keda-metrics-apiserver/versions
-keda_helm_chart_version = "2.17.2"
+keda_helm_chart_version = "2.20.2"
 
 # chart releases: https://github.com/stakater/Reloader/releases
 # image tags: https://hub.docker.com/r/stakater/reloader/tags
@@ -100,4 +92,13 @@ reloader_helm = {
   chart_version = "v1.3.0"
   image_name    = "stakater/reloader"
   image_tag     = "v1.4.0@sha256:40e379c2b20350235aca2f0a43cc6f8a89397cef6869cb3a95db03390684390a"
+}
+
+blue_green_node_pool_enabled = false
+
+aks_foobar_user_node_pool_configuration = {
+  enabled        = true,
+  tier           = "Standard_D4ads"
+  node_count_min = 1,
+  node_count_max = 3,
 }

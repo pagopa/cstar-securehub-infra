@@ -9,7 +9,7 @@
 .create-merge table active_payer_reachability (
     window_start: datetime,
     category: string,
-    count: long,
+    total: long,
     total_failures: long,
     total_successes: long,
     pipeline_run_id: string
@@ -35,7 +35,7 @@
 '['
 '{"column":"window_start","path":"$.window_start","datatype":"datetime"},'
 '{"column":"category","path":"$.category","datatype":"string"},'
-'{"column":"count","path":"$.count","datatype":"long"},'
+'{"column":"total","path":"$.total","datatype":"long"},'
 '{"column":"total_failures","path":"$.total_failures","datatype":"long"},'
 '{"column":"total_successes","path":"$.total_successes","datatype":"long"},'
 '{"column":"pipeline_run_id","path":"$.pipeline_run_id","datatype":"string"}'
