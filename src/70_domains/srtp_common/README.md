@@ -29,7 +29,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | d7bae26eb67406e1c7aab9ce3a4de633f6b00f46 |
+| <a name="module___v4__"></a> [\_\_v4\_\_](#module\_\_\_v4\_\_) | git::https://github.com/pagopa/terraform-azurerm-v4.git | 7e5635fc04118ced0abbf7089611b4178d447322 |
 | <a name="module_aks_overlay_snet"></a> [aks\_overlay\_snet](#module\_aks\_overlay\_snet) | ./.terraform/modules/__v4__/IDH/subnet | n/a |
 | <a name="module_aks_srtp_node_pool_blue"></a> [aks\_srtp\_node\_pool\_blue](#module\_aks\_srtp\_node\_pool\_blue) | ./.terraform/modules/__v4__/IDH/aks_node_pool | n/a |
 | <a name="module_aks_srtp_node_pool_green"></a> [aks\_srtp\_node\_pool\_green](#module\_aks\_srtp\_node\_pool\_green) | ./.terraform/modules/__v4__/IDH/aks_node_pool | n/a |
