@@ -1,0 +1,183 @@
+{
+  "name": "idpay_postgres_reward_batches_copy",
+  "properties": {
+    "activities": [
+      {
+        "name": "Clear reward_batches table",
+        "type": "AzureDataExplorerCommand",
+        "dependsOn": [],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "userProperties": [],
+        "typeProperties": {
+          "command": ".clear table reward_batches data",
+          "commandTimeout": "00:20:00"
+        },
+        "linkedServiceName": {
+          "referenceName": "idpay-Kusto-idpay-ls",
+          "type": "LinkedServiceReference"
+        }
+      },
+      {
+        "name": "Copy reward_batches table from Postgres",
+        "type": "Copy",
+        "dependsOn": [
+          {
+            "activity": "Clear reward_batches table",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "userProperties": [],
+        "typeProperties": {
+          "source": {
+            "type": "PostgreSqlSource",
+            "batchSize": 100
+          },
+          "sink": {
+            "type": "AzureDataExplorerSink"
+          },
+          "enableStaging": false,
+          "translator": {
+            "type": "TabularTranslator",
+            "mappings": [
+              {
+                "source": { "name": "id" },
+                "sink": { "name": "_id", "type": "String" }
+              },
+              {
+                "source": { "name": "initiative_id" },
+                "sink": { "name": "initiativeId", "type": "String" }
+              },
+              {
+                "source": { "name": "merchant_id" },
+                "sink": { "name": "merchantId", "type": "String" }
+              },
+              {
+                "source": { "name": "business_name" },
+                "sink": { "name": "businessName", "type": "String" }
+              },
+              {
+                "source": { "name": "month" },
+                "sink": { "name": "month", "type": "String" }
+              },
+              {
+                "source": { "name": "pos_type" },
+                "sink": { "name": "posType", "type": "String" }
+              },
+              {
+                "source": { "name": "status" },
+                "sink": { "name": "status", "type": "String" }
+              },
+              {
+                "source": { "name": "partial" },
+                "sink": { "name": "partial", "type": "Boolean" }
+              },
+              {
+                "source": { "name": "name" },
+                "sink": { "name": "name", "type": "String" }
+              },
+              {
+                "source": { "name": "start_date" },
+                "sink": { "name": "startDate", "type": "DateTime" }
+              },
+              {
+                "source": { "name": "end_date" },
+                "sink": { "name": "endDate", "type": "DateTime" }
+              },
+              {
+                "source": { "name": "creation_date" },
+                "sink": { "name": "creationDate", "type": "DateTime" }
+              },
+              {
+                "source": { "name": "update_date" },
+                "sink": { "name": "updateDate", "type": "DateTime" }
+              },
+              {
+                "source": { "name": "merchant_send_date" },
+                "sink": { "name": "merchantSendDate", "type": "DateTime" }
+              },
+              {
+                "source": { "name": "approval_date" },
+                "sink": { "name": "approvalDate", "type": "DateTime" }
+              },
+              {
+                "source": { "name": "delivery_date_request" },
+                "sink": { "name": "deliveryDateRequest", "type": "DateTime" }
+              },
+              {
+                "source": { "name": "delivery_amount_cents" },
+                "sink": { "name": "deliveryAmountCents", "type": "Long" }
+              },
+              {
+                "source": { "name": "initial_amount_cents_at_send" },
+                "sink": { "name": "initialAmountCentsAtSend", "type": "Long" }
+              },
+              {
+                "source": { "name": "suspended_amount_cents_at_approving" },
+                "sink": { "name": "suspendedAmountCentsAtApproving", "type": "Long" }
+              },
+              {
+                "source": { "name": "refund_outcome_timestamp" },
+                "sink": { "name": "refundOutcomeTimestamp", "type": "DateTime" }
+              },
+              {
+                "source": { "name": "report_path" },
+                "sink": { "name": "reportPath", "type": "String" }
+              },
+              {
+                "source": { "name": "filename" },
+                "sink": { "name": "filename", "type": "String" }
+              },
+              {
+                "source": { "name": "assignee_level" },
+                "sink": { "name": "assigneeLevel", "type": "String" }
+              },
+              {
+                "source": { "name": "refund_valuta_date" },
+                "sink": { "name": "refundValutaDate", "type": "DateTime" }
+              },
+              {
+                "source": { "name": "refund_error_message" },
+                "sink": { "name": "refundErrorMessage", "type": "String" }
+              },
+              {
+                "source": { "name": "delivery_outcome" },
+                "sink": { "name": "deliveryOutcome", "type": "String" }
+              }
+            ],
+            "mapComplexValuesToString": true
+          }
+        },
+        "inputs": [
+          {
+            "referenceName": "postgres_idpay_reward_batches",
+            "type": "DatasetReference"
+          }
+        ],
+        "outputs": [
+          {
+            "referenceName": "data_explorer_idpay_reward_batches",
+            "type": "DatasetReference"
+          }
+        ]
+      }
+    ],
+    "annotations": [],
+    "lastPublishTime": "2026-09-25T00:00:00Z"
+  },
+  "type": "Microsoft.DataFactory/factories/pipelines"
+}

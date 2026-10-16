@@ -59,7 +59,7 @@ single_page_applications_roots_dirs = [
 ]
 
 single_page_applications_asset_register_roots_dirs = [
-  "elenco-informatico-elettrodomestici"
+  "registro-dei-beni"
 ]
 
 single_page_applications_portal_merchants_operator_roots_dirs = [
@@ -98,6 +98,7 @@ data_factory_api_base_url = "https://api-io.uat.cstar.pagopa.it/idpay-itn/df"
 ## Postgres
 idpay_pgflex_params = {
   enabled                                = true
+  outbox_publication_enabled             = true
   idh_resource_tier                      = "pgflex2"
   geo_replication_enabled                = false
   zone                                   = 1

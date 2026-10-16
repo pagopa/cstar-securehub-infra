@@ -11,6 +11,7 @@
         "responseMode": "${response_mode}",
         "sameDeviceEnabled": "${same_device_enabled}",
         "crossDeviceEnabled": "${cross_device_enabled}",
+        "ssePingIntervalSeconds": "10",
         "walletScheme": "${wallet_scheme}",
         "enforceHaip": "${enforce_haip}",
         "credentialSetMode": "${credential_set_mode}",

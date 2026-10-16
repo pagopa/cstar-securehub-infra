@@ -6,6 +6,7 @@ module "cdn_multi_initiative" {
   location                   = var.location
   log_analytics_workspace_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
   tenant_id                  = data.azurerm_client_config.current.tenant_id
+  enable_diagnostic_setting  = contains(["d", "u"], var.env_short) ? false : true
 
   # CDN Profile
   profile = {

@@ -1,4 +1,4 @@
-.create table products (
+.create-merge table products (
     _id:string,
     gtinCode:string,
     productFileId:string,
@@ -48,7 +48,7 @@
     _class:string
 )
 
-.create table merchant (
+.create-merge table merchant (
     _id:string,
     acquirerId:string,
     businessName:string,
@@ -72,7 +72,7 @@
     createdAtString:string
 )
 
-.create table merchant_initiative_counters (
+.create-merge table merchant_initiative_counters (
     _id:string,
     merchantId:string,
     initiativeId:string,
@@ -86,7 +86,7 @@
     createdAtString: string
 )
 
-.create table point_of_sales (
+.create-merge table point_of_sales (
     _id:string,
     type:string,
     franchiseName:string,
@@ -217,7 +217,7 @@
 )
 
 
-.create table transaction (
+.create-merge table transaction (
     _id:string,
     trxDateString:string,
     operationType:string,
@@ -231,7 +231,6 @@
     status:string,
     rejectionReasons:dynamic,
     initiativeRejectionReasons:dynamic,
-    rewardInitiatieveId:string,
     rewardOrganizationId:string,
     rewardProvidedRewardCents:long,
     rewardAccruedRewardCents:long,
@@ -263,23 +262,24 @@
     voucherAmountCents: long,
     extendedAuthorization: bool,
     rewardBatchLastMonthElaborated:string,
+    initiativeId:string,
     trxDate:datetime,
     trxChargeDate:datetime,
     elaborationDateTime:datetime
 )
 
-.create table transaction_rejection_reasons (
+.create-merge table transaction_rejection_reasons (
     transactionId:string,
     rejectionReason:string
 )
 
-.create table transaction_initiative_rejection_reasons (
+.create-merge table transaction_initiative_rejection_reasons (
     transactionId:string,
     initiativeId:string,
     rejectionReason:string
 )
 
-.create table transaction_in_progress (
+.create-merge table transaction_in_progress (
     id:string,
     trxCode:string,
     idTrxAcquirer:string,
@@ -336,18 +336,18 @@
     initiativeEndDateString:string
 )
 
-.create table transaction_in_progress_rejection_reasons (
+.create-merge table transaction_in_progress_rejection_reasons (
     transactionId:string,
     rejectionReason:string
 )
 
-.create table transaction_in_progress_initiative_rejection_reasons (
+.create-merge table transaction_in_progress_initiative_rejection_reasons (
     transactionId:string,
     initiativeId:string,
     rejectionReason:string
 )
 
-.create table wallet (
+.create-merge table wallet (
     id: string,
     userId: string,
     familyId: string,
@@ -394,7 +394,7 @@
     surname: string
 )
 
-.create table wallet_refund_history (
+.create-merge table wallet_refund_history (
     walletId: string,
     key: string,
     feedbackProgressive: long
@@ -402,7 +402,7 @@
 
 
 
-.create table notification (
+.create-merge table notification (
     id: string,
     notificationId: string,
     notificationStatus: string,
@@ -434,18 +434,18 @@
     updateDateString: string
 )
 
-.create table notification_reject_reasons (
+.create-merge table notification_reject_reasons (
     notificationId: string,
     rejectionReason: string
 )
 
-.create table notification_template_values (
+.create-merge table notification_template_values (
     notificationId: string,
     key: string,
     value: string
 )
 
-.create table timeline (
+.create-merge table timeline (
     operationId: string,
     userId: string,
     initiativeId: string,
@@ -484,7 +484,7 @@
     createdAtString: string
 )
 
-.create table initiative_counters (
+.create-merge table initiative_counters (
     _id: string,
     initiativeId: string,
     userId: string,
@@ -504,7 +504,7 @@
     updateDateString: string
 )
 
-.create table onboarding_citizen (
+.create-merge table onboarding_citizen (
     _id:string,
     userId:string,
     familyId:string,
@@ -525,8 +525,9 @@
     updateDate:datetime
 )
 
-.create table rewards_batch (
+.create-merge table reward_batches (
     _id:string,
+    initiativeId:string,
     merchantId:string,
     businessName:string,
     month:string,
@@ -535,34 +536,81 @@
     partial:bool,
     name:string,
     startDate:datetime,
-    startDateString:string,
     endDate:datetime,
-    endDateString:string,
-    approvedAmountCents:long,
-    initialAmountCents:long,
-    numberOfTransactions:long,
-    numberOfTransactionsElaborated:long,
-    reportPath:string,
-    assigneeLevel:string,
-    numberOfTransactionsSuspended:long,
-    numberOfTransactionsRejected:long,
     creationDate:datetime,
-    creationDateString:string,
     updateDate:datetime,
-    updateDateString:string,
+    merchantSendDate:datetime,
     approvalDate:datetime,
-    approvalDateString:string,
-    suspendedAmountCents:long,
-    filename: string
+    deliveryDateRequest:datetime,
+    deliveryAmountCents:long,
+    initialAmountCentsAtSend:long,
+    suspendedAmountCentsAtApproving:long,
+    refundOutcomeTimestamp:datetime,
+    reportPath:string,
+    filename:string,
+    assigneeLevel:string,
+    refundValutaDate:datetime,
+    refundErrorMessage:string,
+    deliveryOutcome:dynamic
 )
 
-.create table data_vault (
+.create-merge table reward_transactions (
+    _id:string,
+    initiativeId:string,
+    rewardBatchId:string,
+    idTrxAcquirer:string,
+    acquirerCode:string,
+    trxDate:datetime,
+    operationType:string,
+    circuitType:string,
+    idTrxIssuer:string,
+    correlationId:string,
+    amountCents:long,
+    amountCurrency:string,
+    acquirerId:string,
+    merchantId:string,
+    pointOfSaleId:string,
+    posType:string,
+    status:string,
+    rejectionReasons:dynamic,
+    initiativeRejectionReasons:dynamic,
+    rewards:dynamic,
+    userId:string,
+    operationTypeTranscoded:string,
+    effectiveAmountCents:long,
+    trxChargeDate:datetime,
+    refundInfo:dynamic,
+    elaborationDateTime:datetime,
+    channel:string,
+    additionalProperties:dynamic,
+    invoiceData:dynamic,
+    creditNoteData:dynamic,
+    trxCode:string,
+    rewardBatchTrxStatus:string,
+    rewardBatchRejectionReasons:dynamic,
+    rewardBatchInclusionDate:datetime,
+    franchiseName:string,
+    pointOfSaleType:string,
+    businessName:string,
+    invoiceUploadDate:datetime,
+    samplingKey:long,
+    updateDate:datetime,
+    extendedAuthorization:bool,
+    voucherAmountCents:long,
+    rewardBatchLastMonthElaborated:string,
+    checksError:dynamic,
+    accruedRewardCents:long,
+    transactionRevision:long,
+    latestAppliedPaymentImpactRevision:long
+)
+
+.create-merge table data_vault (
     _id:string,
     data:string,
     page:long
 )
 
-.create table reported_user (
+.create-merge table reported_user (
     _id:string,
     merchantId:string,
     initiativeId:string,

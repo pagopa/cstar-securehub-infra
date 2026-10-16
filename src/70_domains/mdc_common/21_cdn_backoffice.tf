@@ -5,9 +5,10 @@
 module "cdn_mdc_backoffice" {
   source = "./.terraform/modules/__v4__/cdn_frontdoor"
 
-  cdn_prefix_name     = "${local.project}-backoffice"
-  resource_group_name = data.azurerm_resource_group.mdc_data_rg.name
-  location            = var.location
+  cdn_prefix_name           = "${local.project}-backoffice"
+  resource_group_name       = data.azurerm_resource_group.mdc_data_rg.name
+  location                  = var.location
+  enable_diagnostic_setting = contains(["d", "u"], var.env_short) ? false : true
 
   custom_domains = [
     {

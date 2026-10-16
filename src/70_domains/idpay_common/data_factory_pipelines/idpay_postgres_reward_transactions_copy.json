@@ -1,0 +1,267 @@
+{
+  "name": "idpay_postgres_reward_transactions_copy",
+  "properties": {
+    "activities": [
+      {
+        "name": "Clear reward_transactions table",
+        "type": "AzureDataExplorerCommand",
+        "dependsOn": [],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "userProperties": [],
+        "typeProperties": {
+          "command": ".clear table reward_transactions data",
+          "commandTimeout": "00:20:00"
+        },
+        "linkedServiceName": {
+          "referenceName": "idpay-Kusto-idpay-ls",
+          "type": "LinkedServiceReference"
+        }
+      },
+      {
+        "name": "Copy reward_transactions table from Postgres",
+        "type": "Copy",
+        "dependsOn": [
+          {
+            "activity": "Clear reward_transactions table",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "userProperties": [],
+        "typeProperties": {
+          "source": {
+            "type": "PostgreSqlSource",
+            "batchSize": 100
+          },
+          "sink": {
+            "type": "AzureDataExplorerSink"
+          },
+          "enableStaging": false,
+          "translator": {
+            "type": "TabularTranslator",
+            "mappings": [
+              {
+                "source": { "name": "transaction_id" },
+                "sink": { "name": "_id", "type": "String" }
+              },
+              {
+                "source": { "name": "initiative_id" },
+                "sink": { "name": "initiativeId", "type": "String" }
+              },
+              {
+                "source": { "name": "reward_batch_id" },
+                "sink": { "name": "rewardBatchId", "type": "String" }
+              },
+              {
+                "source": { "name": "id_trx_acquirer" },
+                "sink": { "name": "idTrxAcquirer", "type": "String" }
+              },
+              {
+                "source": { "name": "acquirer_code" },
+                "sink": { "name": "acquirerCode", "type": "String" }
+              },
+              {
+                "source": { "name": "trx_date" },
+                "sink": { "name": "trxDate", "type": "DateTime" }
+              },
+              {
+                "source": { "name": "operation_type" },
+                "sink": { "name": "operationType", "type": "String" }
+              },
+              {
+                "source": { "name": "circuit_type" },
+                "sink": { "name": "circuitType", "type": "String" }
+              },
+              {
+                "source": { "name": "id_trx_issuer" },
+                "sink": { "name": "idTrxIssuer", "type": "String" }
+              },
+              {
+                "source": { "name": "correlation_id" },
+                "sink": { "name": "correlationId", "type": "String" }
+              },
+              {
+                "source": { "name": "amount_cents" },
+                "sink": { "name": "amountCents", "type": "Long" }
+              },
+              {
+                "source": { "name": "amount_currency" },
+                "sink": { "name": "amountCurrency", "type": "String" }
+              },
+              {
+                "source": { "name": "acquirer_id" },
+                "sink": { "name": "acquirerId", "type": "String" }
+              },
+              {
+                "source": { "name": "merchant_id" },
+                "sink": { "name": "merchantId", "type": "String" }
+              },
+              {
+                "source": { "name": "point_of_sale_id" },
+                "sink": { "name": "pointOfSaleId", "type": "String" }
+              },
+              {
+                "source": { "name": "pos_type" },
+                "sink": { "name": "posType", "type": "String" }
+              },
+              {
+                "source": { "name": "status" },
+                "sink": { "name": "status", "type": "String" }
+              },
+              {
+                "source": { "name": "rejection_reasons" },
+                "sink": { "name": "rejectionReasons", "type": "String" }
+              },
+              {
+                "source": { "name": "initiative_rejection_reasons" },
+                "sink": { "name": "initiativeRejectionReasons", "type": "String" }
+              },
+              {
+                "source": { "name": "rewards" },
+                "sink": { "name": "rewards", "type": "String" }
+              },
+              {
+                "source": { "name": "user_id" },
+                "sink": { "name": "userId", "type": "String" }
+              },
+              {
+                "source": { "name": "operation_type_transcoded" },
+                "sink": { "name": "operationTypeTranscoded", "type": "String" }
+              },
+              {
+                "source": { "name": "effective_amount_cents" },
+                "sink": { "name": "effectiveAmountCents", "type": "Long" }
+              },
+              {
+                "source": { "name": "trx_charge_date" },
+                "sink": { "name": "trxChargeDate", "type": "DateTime" }
+              },
+              {
+                "source": { "name": "refund_info" },
+                "sink": { "name": "refundInfo", "type": "String" }
+              },
+              {
+                "source": { "name": "elaboration_date_time" },
+                "sink": { "name": "elaborationDateTime", "type": "DateTime" }
+              },
+              {
+                "source": { "name": "channel" },
+                "sink": { "name": "channel", "type": "String" }
+              },
+              {
+                "source": { "name": "additional_properties" },
+                "sink": { "name": "additionalProperties", "type": "String" }
+              },
+              {
+                "source": { "name": "invoice_data" },
+                "sink": { "name": "invoiceData", "type": "String" }
+              },
+              {
+                "source": { "name": "credit_note_data" },
+                "sink": { "name": "creditNoteData", "type": "String" }
+              },
+              {
+                "source": { "name": "trx_code" },
+                "sink": { "name": "trxCode", "type": "String" }
+              },
+              {
+                "source": { "name": "reward_batch_trx_status" },
+                "sink": { "name": "rewardBatchTrxStatus", "type": "String" }
+              },
+              {
+                "source": { "name": "reward_batch_rejection_reasons" },
+                "sink": { "name": "rewardBatchRejectionReasons", "type": "String" }
+              },
+              {
+                "source": { "name": "reward_batch_inclusion_date" },
+                "sink": { "name": "rewardBatchInclusionDate", "type": "DateTime" }
+              },
+              {
+                "source": { "name": "franchise_name" },
+                "sink": { "name": "franchiseName", "type": "String" }
+              },
+              {
+                "source": { "name": "point_of_sale_type" },
+                "sink": { "name": "pointOfSaleType", "type": "String" }
+              },
+              {
+                "source": { "name": "business_name" },
+                "sink": { "name": "businessName", "type": "String" }
+              },
+              {
+                "source": { "name": "invoice_upload_date" },
+                "sink": { "name": "invoiceUploadDate", "type": "DateTime" }
+              },
+              {
+                "source": { "name": "sampling_key" },
+                "sink": { "name": "samplingKey", "type": "Long" }
+              },
+              {
+                "source": { "name": "update_date" },
+                "sink": { "name": "updateDate", "type": "DateTime" }
+              },
+              {
+                "source": { "name": "extended_authorization" },
+                "sink": { "name": "extendedAuthorization", "type": "Boolean" }
+              },
+              {
+                "source": { "name": "voucher_amount_cents" },
+                "sink": { "name": "voucherAmountCents", "type": "Long" }
+              },
+              {
+                "source": { "name": "reward_batch_last_month_elaborated" },
+                "sink": { "name": "rewardBatchLastMonthElaborated", "type": "String" }
+              },
+              {
+                "source": { "name": "checks_error" },
+                "sink": { "name": "checksError", "type": "String" }
+              },
+              {
+                "source": { "name": "accrued_reward_cents" },
+                "sink": { "name": "accruedRewardCents", "type": "Long" }
+              },
+              {
+                "source": { "name": "transaction_revision" },
+                "sink": { "name": "transactionRevision", "type": "Long" }
+              },
+              {
+                "source": { "name": "latest_applied_payment_impact_revision" },
+                "sink": { "name": "latestAppliedPaymentImpactRevision", "type": "Long" }
+              }
+            ],
+            "mapComplexValuesToString": true
+          }
+        },
+        "inputs": [
+          {
+            "referenceName": "postgres_idpay_reward_transactions",
+            "type": "DatasetReference"
+          }
+        ],
+        "outputs": [
+          {
+            "referenceName": "data_explorer_idpay_reward_transactions",
+            "type": "DatasetReference"
+          }
+        ]
+      }
+    ],
+    "annotations": [],
+    "lastPublishTime": "2026-09-25T00:00:00Z"
+  },
+  "type": "Microsoft.DataFactory/factories/pipelines"
+}
