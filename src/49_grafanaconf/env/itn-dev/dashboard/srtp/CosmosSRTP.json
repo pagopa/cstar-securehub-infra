@@ -1,6 +1,19 @@
 {
   "annotations": {
-    "list": []
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
   },
   "description": "",
   "editable": true,
@@ -8,23 +21,20 @@
   "graphTooltip": 1,
   "links": [
     {
-      "type": "dashboards",
-      "title": "SRTP",
-      "tags": [
-        "srtp"
-      ],
       "asDropdown": true,
       "icon": "external link",
       "includeVars": false,
       "keepTime": true,
-      "targetBlank": false
+      "tags": [
+        "srtp"
+      ],
+      "targetBlank": false,
+      "title": "SRTP",
+      "type": "dashboards"
     }
   ],
   "panels": [
     {
-      "type": "row",
-      "id": 100,
-      "title": "Cosmos · $cosmos_account",
       "collapsed": false,
       "gridPos": {
         "h": 1,
@@ -32,392 +42,42 @@
         "x": 0,
         "y": 0
       },
+      "id": 1100,
       "panels": [],
-      "repeat": "cosmos_account"
+      "title": "Activator · database activation",
+      "type": "row"
     },
     {
-      "id": 101,
-      "type": "text",
-      "title": "",
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
       "gridPos": {
         "h": 11,
         "w": 24,
         "x": 0,
         "y": 1
       },
+      "id": 1101,
       "options": {
-        "mode": "markdown",
-        "content": "## 📊 Cosmos DB - Shared Throughput Analysis\n---\n**Come leggere la tabella sottostante:** ogni riga è una serie (metrica per database/collection) e le colonne riassumono l'intervallo selezionato con **Max**, **Mean** e **Last** (ultimo valore). Per i totali nel periodo (RU, richieste) usa la legenda dei grafici seguenti (colonna *sum*).\n\n| Riga (serie) | Cosa indica | Quando preoccuparsi |\n|---|---|---|\n| **Total RU Consumed** | Costo in Request Units per collection | Una collection consuma >80% del totale |\n| **Mongo Requests** | Numero di operazioni MongoDB | Rapporto requests/documenti molto alto (es. polling) |\n| **Document Count** | Numero di documenti nella collection | — |\n| **Data Usage / Index Usage** | Storage dati e indici | Data Usage sproporzionato rispetto al Document Count |\n| **Normalized RU % (Max)** | % di utilizzo del throughput condiviso (0-100%) | >70% = attenzione, >90% = throttling imminente |\n| **Autoscale Max Throughput** | RU massime configurate (per database) | Se Normalized RU è costantemente alto, aumentare questo valore |\n| **Throttled (16500)** | Richieste rifiutate per throughput insufficiente | Qualsiasi valore >0 indica un problema attivo |\n\n⚠️ **Nota:** il throughput è **shared a livello database** — tutte le collection competono per le stesse RU. Se una collection domina il consumo, le altre possono subire throttling."
-      }
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "## 📊 Cosmos DB - Shared Throughput Analysis (database activation)\n---\n**Come leggere questa griglia:**\n\n| Colonna | Cosa indica | Quando preoccuparsi |\n|---|---|---|\n| **Total RU Consumed** | Costo effettivo in Request Units per collection | Una collection consuma >80% del totale |\n| **Mongo Requests** | Numero di operazioni MongoDB | Rapporto requests/documenti molto alto (es. polling) |\n| **Document Count** | Numero di documenti nella collection | - |\n| **Data Usage / Index Usage** | Storage dati e indici | Data Usage sproporzionato rispetto al Document Count |\n| **Normalized RU %** (riquadro a destra) | % di utilizzo del throughput condiviso (0-100%) | >70% = attenzione, >90% = throttling imminente |\n| **Autoscale Max Throughput** (riquadro a destra) | RU massime configurate (a livello database) | Se Normalized RU è costantemente alto, aumentare questo valore |\n| **Throttled (429/16500)** (riquadro a destra) | Richieste rifiutate per throughput insufficiente | Qualsiasi valore >0 indica un problema attivo |\n\n⚠️ **Nota:** Il throughput è **shared a livello database** (tutte le collection competono per le stesse RU. Se una collection domina il consumo, le altre possono subire throttling.)",
+        "mode": "markdown"
+      },
+      "pluginVersion": "12.4.8",
+      "title": "",
+      "type": "text"
     },
     {
-      "id": 102,
-      "type": "table",
-      "title": "Cosmos DB - Shared Throughput Analysis",
       "datasource": {
         "type": "grafana-azure-monitor-datasource",
         "uid": "azure-monitor-oob"
       },
-      "gridPos": {
-        "h": 12,
-        "w": 24,
-        "x": 0,
-        "y": 12
-      },
-      "targets": [
-        {
-          "refId": "A",
-          "datasource": {
-            "type": "grafana-azure-monitor-datasource",
-            "uid": "azure-monitor-oob"
-          },
-          "queryType": "Azure Monitor",
-          "subscription": "$subscription",
-          "azureMonitor": {
-            "resources": [
-              {
-                "subscription": "$subscription",
-                "resourceGroup": "$CosmosRg",
-                "metricNamespace": "microsoft.documentdb/databaseaccounts",
-                "resourceName": "$cosmos_account"
-              }
-            ],
-            "metricNamespace": "microsoft.documentdb/databaseaccounts",
-            "metricName": "TotalRequestUnits",
-            "aggregation": "Total",
-            "timeGrain": "auto",
-            "allowedTimeGrainsMs": [],
-            "dimensionFilters": [
-              {
-                "dimension": "DatabaseName",
-                "operator": "eq",
-                "filters": []
-              },
-              {
-                "dimension": "CollectionName",
-                "operator": "eq",
-                "filters": []
-              }
-            ],
-            "top": "20",
-            "alias": "Total RU Consumed | {{ databasename }} / {{ collectionname }}"
-          }
-        },
-        {
-          "refId": "B",
-          "datasource": {
-            "type": "grafana-azure-monitor-datasource",
-            "uid": "azure-monitor-oob"
-          },
-          "queryType": "Azure Monitor",
-          "subscription": "$subscription",
-          "azureMonitor": {
-            "resources": [
-              {
-                "subscription": "$subscription",
-                "resourceGroup": "$CosmosRg",
-                "metricNamespace": "microsoft.documentdb/databaseaccounts",
-                "resourceName": "$cosmos_account"
-              }
-            ],
-            "metricNamespace": "microsoft.documentdb/databaseaccounts",
-            "metricName": "MongoRequests",
-            "aggregation": "Count",
-            "timeGrain": "auto",
-            "allowedTimeGrainsMs": [],
-            "dimensionFilters": [
-              {
-                "dimension": "DatabaseName",
-                "operator": "eq",
-                "filters": []
-              },
-              {
-                "dimension": "CollectionName",
-                "operator": "eq",
-                "filters": []
-              }
-            ],
-            "top": "20",
-            "alias": "Mongo Requests | {{ databasename }} / {{ collectionname }}"
-          }
-        },
-        {
-          "refId": "C",
-          "datasource": {
-            "type": "grafana-azure-monitor-datasource",
-            "uid": "azure-monitor-oob"
-          },
-          "queryType": "Azure Monitor",
-          "subscription": "$subscription",
-          "azureMonitor": {
-            "resources": [
-              {
-                "subscription": "$subscription",
-                "resourceGroup": "$CosmosRg",
-                "metricNamespace": "microsoft.documentdb/databaseaccounts",
-                "resourceName": "$cosmos_account"
-              }
-            ],
-            "metricNamespace": "microsoft.documentdb/databaseaccounts",
-            "metricName": "DocumentCountV2",
-            "aggregation": "Maximum",
-            "timeGrain": "auto",
-            "allowedTimeGrainsMs": [
-              300000,
-              900000,
-              1800000,
-              3600000,
-              21600000,
-              43200000,
-              86400000
-            ],
-            "dimensionFilters": [
-              {
-                "dimension": "DatabaseName",
-                "operator": "eq",
-                "filters": []
-              },
-              {
-                "dimension": "CollectionName",
-                "operator": "eq",
-                "filters": []
-              }
-            ],
-            "top": "20",
-            "alias": "Document Count | {{ databasename }} / {{ collectionname }}"
-          }
-        },
-        {
-          "refId": "D",
-          "datasource": {
-            "type": "grafana-azure-monitor-datasource",
-            "uid": "azure-monitor-oob"
-          },
-          "queryType": "Azure Monitor",
-          "subscription": "$subscription",
-          "azureMonitor": {
-            "resources": [
-              {
-                "subscription": "$subscription",
-                "resourceGroup": "$CosmosRg",
-                "metricNamespace": "microsoft.documentdb/databaseaccounts",
-                "resourceName": "$cosmos_account"
-              }
-            ],
-            "metricNamespace": "microsoft.documentdb/databaseaccounts",
-            "metricName": "DataUsage",
-            "aggregation": "Maximum",
-            "timeGrain": "auto",
-            "allowedTimeGrainsMs": [
-              300000,
-              900000,
-              1800000,
-              3600000,
-              21600000,
-              43200000,
-              86400000
-            ],
-            "dimensionFilters": [
-              {
-                "dimension": "DatabaseName",
-                "operator": "eq",
-                "filters": []
-              },
-              {
-                "dimension": "CollectionName",
-                "operator": "eq",
-                "filters": []
-              }
-            ],
-            "top": "20",
-            "alias": "Data Usage | {{ databasename }} / {{ collectionname }}"
-          }
-        },
-        {
-          "refId": "E",
-          "datasource": {
-            "type": "grafana-azure-monitor-datasource",
-            "uid": "azure-monitor-oob"
-          },
-          "queryType": "Azure Monitor",
-          "subscription": "$subscription",
-          "azureMonitor": {
-            "resources": [
-              {
-                "subscription": "$subscription",
-                "resourceGroup": "$CosmosRg",
-                "metricNamespace": "microsoft.documentdb/databaseaccounts",
-                "resourceName": "$cosmos_account"
-              }
-            ],
-            "metricNamespace": "microsoft.documentdb/databaseaccounts",
-            "metricName": "IndexUsage",
-            "aggregation": "Maximum",
-            "timeGrain": "auto",
-            "allowedTimeGrainsMs": [
-              300000,
-              900000,
-              1800000,
-              3600000,
-              21600000,
-              43200000,
-              86400000
-            ],
-            "dimensionFilters": [
-              {
-                "dimension": "DatabaseName",
-                "operator": "eq",
-                "filters": []
-              },
-              {
-                "dimension": "CollectionName",
-                "operator": "eq",
-                "filters": []
-              }
-            ],
-            "top": "20",
-            "alias": "Index Usage | {{ databasename }} / {{ collectionname }}"
-          }
-        },
-        {
-          "refId": "F",
-          "datasource": {
-            "type": "grafana-azure-monitor-datasource",
-            "uid": "azure-monitor-oob"
-          },
-          "queryType": "Azure Monitor",
-          "subscription": "$subscription",
-          "azureMonitor": {
-            "resources": [
-              {
-                "subscription": "$subscription",
-                "resourceGroup": "$CosmosRg",
-                "metricNamespace": "microsoft.documentdb/databaseaccounts",
-                "resourceName": "$cosmos_account"
-              }
-            ],
-            "metricNamespace": "microsoft.documentdb/databaseaccounts",
-            "metricName": "NormalizedRUConsumption",
-            "aggregation": "Maximum",
-            "timeGrain": "auto",
-            "allowedTimeGrainsMs": [],
-            "dimensionFilters": [
-              {
-                "dimension": "DatabaseName",
-                "operator": "eq",
-                "filters": []
-              },
-              {
-                "dimension": "CollectionName",
-                "operator": "eq",
-                "filters": []
-              }
-            ],
-            "top": "20",
-            "alias": "Normalized RU % (Max) | {{ databasename }} / {{ collectionname }}"
-          }
-        },
-        {
-          "refId": "G",
-          "datasource": {
-            "type": "grafana-azure-monitor-datasource",
-            "uid": "azure-monitor-oob"
-          },
-          "queryType": "Azure Monitor",
-          "subscription": "$subscription",
-          "azureMonitor": {
-            "resources": [
-              {
-                "subscription": "$subscription",
-                "resourceGroup": "$CosmosRg",
-                "metricNamespace": "microsoft.documentdb/databaseaccounts",
-                "resourceName": "$cosmos_account"
-              }
-            ],
-            "metricNamespace": "microsoft.documentdb/databaseaccounts",
-            "metricName": "AutoscaleMaxThroughput",
-            "aggregation": "Maximum",
-            "timeGrain": "auto",
-            "allowedTimeGrainsMs": [
-              300000,
-              900000,
-              1800000,
-              3600000,
-              21600000,
-              43200000,
-              86400000
-            ],
-            "dimensionFilters": [
-              {
-                "dimension": "DatabaseName",
-                "operator": "eq",
-                "filters": []
-              }
-            ],
-            "top": "20",
-            "alias": "Autoscale Max Throughput | {{ databasename }}"
-          }
-        },
-        {
-          "refId": "H",
-          "datasource": {
-            "type": "grafana-azure-monitor-datasource",
-            "uid": "azure-monitor-oob"
-          },
-          "queryType": "Azure Monitor",
-          "subscription": "$subscription",
-          "azureMonitor": {
-            "resources": [
-              {
-                "subscription": "$subscription",
-                "resourceGroup": "$CosmosRg",
-                "metricNamespace": "microsoft.documentdb/databaseaccounts",
-                "resourceName": "$cosmos_account"
-              }
-            ],
-            "metricNamespace": "microsoft.documentdb/databaseaccounts",
-            "metricName": "MongoRequests",
-            "aggregation": "Count",
-            "timeGrain": "auto",
-            "allowedTimeGrainsMs": [],
-            "dimensionFilters": [
-              {
-                "dimension": "DatabaseName",
-                "operator": "eq",
-                "filters": []
-              },
-              {
-                "dimension": "CollectionName",
-                "operator": "eq",
-                "filters": []
-              },
-              {
-                "dimension": "ErrorCode",
-                "operator": "eq",
-                "filters": [
-                  "16500"
-                ]
-              }
-            ],
-            "top": "20",
-            "alias": "Throttled (16500) | {{ databasename }} / {{ collectionname }}"
-          }
-        }
-      ],
-      "transformations": [
-        {
-          "id": "reduce",
-          "options": {
-            "mode": "seriesToRows",
-            "reducers": [
-              "max",
-              "mean",
-              "lastNotNull"
-            ],
-            "includeTimeField": false
-          }
-        }
-      ],
+      "description": "Una riga per collection del database activation. Totale nel periodo per RU e richieste, ultimo valore per i documenti, massimo per lo storage. I valori a livello database (autoscale, Normalized RU %, throttling) sono nei riquadri a destra.",
       "fieldConfig": {
         "defaults": {
           "custom": {
@@ -425,98 +85,612 @@
             "cellOptions": {
               "type": "auto"
             },
-            "filterable": true
+            "filterable": false,
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
           },
-          "decimals": 1
+          "decimals": 0,
+          "fieldMinMax": true,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "text",
+                "value": 0
+              }
+            ]
+          }
         },
-        "overrides": []
-      },
-      "options": {
-        "showHeader": true,
-        "cellHeight": "sm",
-        "sortBy": [
+        "overrides": [
           {
-            "displayName": "Field",
-            "desc": false
+            "matcher": {
+              "id": "byName",
+              "options": "Collection"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 260
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "<empty>": {
+                        "index": 0,
+                        "text": "(comandi senza collection)"
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Total RU Consumed (Sum)"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "short"
+              },
+              {
+                "id": "min",
+                "value": 0
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "orange",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "basic",
+                  "type": "gauge",
+                  "valueDisplayMode": "text"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Mongo Requests (Count)"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "short"
+              },
+              {
+                "id": "min",
+                "value": 0
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "basic",
+                  "type": "gauge",
+                  "valueDisplayMode": "text"
+                }
+              },
+              {
+                "id": "noValue",
+                "value": "0"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Document Count"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "short"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "^(Data|Index) Usage \\(Max\\)$"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "bytes"
+              },
+              {
+                "id": "decimals",
+                "value": 1
+              }
+            ]
           }
         ]
-      }
-    },
-    {
-      "id": 103,
-      "type": "timeseries",
-      "title": "🔥 Normalized RU Consumption (max %)",
-      "datasource": {
-        "type": "grafana-azure-monitor-datasource",
-        "uid": "azure-monitor-oob"
       },
       "gridPos": {
-        "h": 8,
-        "w": 12,
+        "h": 9,
+        "w": 20,
         "x": 0,
-        "y": 24
+        "y": 12
       },
+      "id": 1102,
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Total RU Consumed (Sum)"
+          }
+        ]
+      },
+      "pluginVersion": "12.4.8",
       "targets": [
         {
-          "refId": "A",
+          "azureMonitor": {
+            "aggregation": "Total",
+            "alias": "Total RU Consumed",
+            "allowedTimeGrainsMs": [],
+            "dimensionFilters": [
+              {
+                "dimension": "DatabaseName",
+                "filters": [
+                  "activation"
+                ],
+                "operator": "eq"
+              },
+              {
+                "dimension": "CollectionName",
+                "filters": [],
+                "operator": "eq"
+              }
+            ],
+            "metricName": "TotalRequestUnits",
+            "metricNamespace": "microsoft.documentdb/databaseaccounts",
+            "resources": [
+              {
+                "metricNamespace": "microsoft.documentdb/databaseaccounts",
+                "resourceGroup": "$CosmosRg",
+                "resourceName": "$cosmos_account",
+                "subscription": "$subscription"
+              }
+            ],
+            "timeGrain": "auto",
+            "top": "10"
+          },
           "datasource": {
             "type": "grafana-azure-monitor-datasource",
             "uid": "azure-monitor-oob"
           },
           "queryType": "Azure Monitor",
-          "subscription": "$subscription",
+          "refId": "A",
+          "subscription": "$subscription"
+        },
+        {
           "azureMonitor": {
-            "resources": [
-              {
-                "subscription": "$subscription",
-                "resourceGroup": "$CosmosRg",
-                "metricNamespace": "microsoft.documentdb/databaseaccounts",
-                "resourceName": "$cosmos_account"
-              }
-            ],
-            "metricNamespace": "microsoft.documentdb/databaseaccounts",
-            "metricName": "NormalizedRUConsumption",
-            "aggregation": "Maximum",
-            "timeGrain": "auto",
+            "aggregation": "Count",
+            "alias": "Mongo Requests",
             "allowedTimeGrainsMs": [],
             "dimensionFilters": [
               {
                 "dimension": "DatabaseName",
-                "operator": "eq",
-                "filters": []
+                "filters": [
+                  "activation"
+                ],
+                "operator": "eq"
               },
               {
                 "dimension": "CollectionName",
-                "operator": "eq",
-                "filters": []
+                "filters": [],
+                "operator": "eq"
               }
             ],
-            "top": "20",
-            "alias": "{{ databasename }} / {{ collectionname }}"
+            "metricName": "MongoRequests",
+            "metricNamespace": "microsoft.documentdb/databaseaccounts",
+            "resources": [
+              {
+                "metricNamespace": "microsoft.documentdb/databaseaccounts",
+                "resourceGroup": "$CosmosRg",
+                "resourceName": "$cosmos_account",
+                "subscription": "$subscription"
+              }
+            ],
+            "timeGrain": "auto",
+            "top": "10"
+          },
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Monitor",
+          "refId": "B",
+          "subscription": "$subscription"
+        },
+        {
+          "azureMonitor": {
+            "aggregation": "Maximum",
+            "alias": "Document Count",
+            "allowedTimeGrainsMs": [
+              300000,
+              900000,
+              1800000,
+              3600000,
+              21600000,
+              43200000,
+              86400000
+            ],
+            "dimensionFilters": [
+              {
+                "dimension": "DatabaseName",
+                "filters": [
+                  "activation"
+                ],
+                "operator": "eq"
+              },
+              {
+                "dimension": "CollectionName",
+                "filters": [],
+                "operator": "eq"
+              }
+            ],
+            "metricName": "DocumentCountV2",
+            "metricNamespace": "microsoft.documentdb/databaseaccounts",
+            "resources": [
+              {
+                "metricNamespace": "microsoft.documentdb/databaseaccounts",
+                "resourceGroup": "$CosmosRg",
+                "resourceName": "$cosmos_account",
+                "subscription": "$subscription"
+              }
+            ],
+            "timeGrain": "auto",
+            "top": "10"
+          },
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Monitor",
+          "refId": "C",
+          "subscription": "$subscription"
+        },
+        {
+          "azureMonitor": {
+            "aggregation": "Maximum",
+            "alias": "Data Usage",
+            "allowedTimeGrainsMs": [
+              300000,
+              900000,
+              1800000,
+              3600000,
+              21600000,
+              43200000,
+              86400000
+            ],
+            "dimensionFilters": [
+              {
+                "dimension": "DatabaseName",
+                "filters": [
+                  "activation"
+                ],
+                "operator": "eq"
+              },
+              {
+                "dimension": "CollectionName",
+                "filters": [],
+                "operator": "eq"
+              }
+            ],
+            "metricName": "DataUsage",
+            "metricNamespace": "microsoft.documentdb/databaseaccounts",
+            "resources": [
+              {
+                "metricNamespace": "microsoft.documentdb/databaseaccounts",
+                "resourceGroup": "$CosmosRg",
+                "resourceName": "$cosmos_account",
+                "subscription": "$subscription"
+              }
+            ],
+            "timeGrain": "auto",
+            "top": "10"
+          },
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Monitor",
+          "refId": "D",
+          "subscription": "$subscription"
+        },
+        {
+          "azureMonitor": {
+            "aggregation": "Maximum",
+            "alias": "Index Usage",
+            "allowedTimeGrainsMs": [
+              300000,
+              900000,
+              1800000,
+              3600000,
+              21600000,
+              43200000,
+              86400000
+            ],
+            "dimensionFilters": [
+              {
+                "dimension": "DatabaseName",
+                "filters": [
+                  "activation"
+                ],
+                "operator": "eq"
+              },
+              {
+                "dimension": "CollectionName",
+                "filters": [],
+                "operator": "eq"
+              }
+            ],
+            "metricName": "IndexUsage",
+            "metricNamespace": "microsoft.documentdb/databaseaccounts",
+            "resources": [
+              {
+                "metricNamespace": "microsoft.documentdb/databaseaccounts",
+                "resourceGroup": "$CosmosRg",
+                "resourceName": "$cosmos_account",
+                "subscription": "$subscription"
+              }
+            ],
+            "timeGrain": "auto",
+            "top": "10"
+          },
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Monitor",
+          "refId": "E",
+          "subscription": "$subscription"
+        }
+      ],
+      "title": "Utilizzo per collection",
+      "transformations": [
+        {
+          "filter": {
+            "id": "byRefId",
+            "options": "/^(?:A|B)$/"
+          },
+          "id": "reduce",
+          "options": {
+            "includeTimeField": false,
+            "labelsToFields": true,
+            "mode": "seriesToRows",
+            "reducers": [
+              "sum"
+            ]
+          }
+        },
+        {
+          "filter": {
+            "id": "byRefId",
+            "options": "/^(?:D|E)$/"
+          },
+          "id": "reduce",
+          "options": {
+            "includeTimeField": false,
+            "labelsToFields": true,
+            "mode": "seriesToRows",
+            "reducers": [
+              "max"
+            ]
+          }
+        },
+        {
+          "filter": {
+            "id": "byRefId",
+            "options": "/^(?:C)$/"
+          },
+          "id": "reduce",
+          "options": {
+            "includeTimeField": false,
+            "labelsToFields": true,
+            "mode": "seriesToRows",
+            "reducers": [
+              "lastNotNull"
+            ]
+          }
+        },
+        {
+          "id": "merge",
+          "options": {}
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Valore",
+            "mode": "reduceRow",
+            "reduce": {
+              "include": [
+                "Total",
+                "Max",
+                "Last *"
+              ],
+              "reducer": "lastNotNull"
+            },
+            "replaceFields": false
+          }
+        },
+        {
+          "id": "groupingToMatrix",
+          "options": {
+            "columnField": "Field",
+            "emptyValue": "null",
+            "rowField": "collectionname",
+            "valueField": "Valore"
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {
+              "(deprecated) Data Usage": 4,
+              "(deprecated) Index Usage": 5,
+              "Document Count": 3,
+              "Mongo Requests": 2,
+              "Total Request Units": 1,
+              "collectionname\\Field": 0
+            },
+            "renameByName": {
+              "(deprecated) Data Usage": "Data Usage (Max)",
+              "(deprecated) Index Usage": "Index Usage (Max)",
+              "Document Count": "Document Count",
+              "Mongo Requests": "Mongo Requests (Count)",
+              "Total Request Units": "Total RU Consumed (Sum)",
+              "collectionname\\Field": "Collection"
+            }
           }
         }
       ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "description": "RU/s massime configurate oggi in autoscale per il database activation. Se il valore è cambiato nel periodo, lo storico è nel tooltip del pannello (Inspect > Data).",
       "fieldConfig": {
         "defaults": {
-          "custom": {
-            "drawStyle": "line",
-            "lineWidth": 2,
-            "fillOpacity": 10,
-            "showPoints": "never",
-            "spanNulls": false,
-            "thresholdsStyle": {
-              "mode": "dashed"
-            }
+          "color": {
+            "fixedColor": "blue",
+            "mode": "fixed"
           },
-          "min": 0,
-          "unit": "percent",
-          "max": 100,
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 20,
+        "y": 12
+      },
+      "id": 1115,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.4.8",
+      "targets": [
+        {
+          "azureMonitor": {
+            "aggregation": "Maximum",
+            "alias": "Autoscale Max Throughput",
+            "allowedTimeGrainsMs": [
+              300000,
+              900000,
+              1800000,
+              3600000,
+              21600000,
+              43200000,
+              86400000
+            ],
+            "dimensionFilters": [
+              {
+                "dimension": "DatabaseName",
+                "filters": [
+                  "activation"
+                ],
+                "operator": "eq"
+              }
+            ],
+            "metricName": "AutoscaleMaxThroughput",
+            "metricNamespace": "microsoft.documentdb/databaseaccounts",
+            "resources": [
+              {
+                "metricNamespace": "microsoft.documentdb/databaseaccounts",
+                "resourceGroup": "$CosmosRg",
+                "resourceName": "$cosmos_account",
+                "subscription": "$subscription"
+              }
+            ],
+            "timeGrain": "auto",
+            "top": "10"
+          },
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Monitor",
+          "refId": "A",
+          "subscription": "$subscription"
+        }
+      ],
+      "title": "Autoscale Max attuale (RU/s)",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "description": "Utilizzo massimo nel periodo del throughput condiviso del database activation. >70% attenzione, >90% throttling imminente.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 1,
+          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
               },
               {
                 "color": "orange",
@@ -527,1075 +701,2282 @@
                 "value": 90
               }
             ]
-          }
+          },
+          "unit": "percent"
         },
         "overrides": []
       },
-      "options": {
-        "legend": {
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true,
-          "calcs": [
-            "max",
-            "mean",
-            "sum"
-          ]
-        },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "desc"
-        }
-      },
-      "description": "Throughput condiviso a livello database: >70% attenzione, >90% throttling imminente."
-    },
-    {
-      "id": 104,
-      "type": "timeseries",
-      "title": "Total RU consumate",
-      "datasource": {
-        "type": "grafana-azure-monitor-datasource",
-        "uid": "azure-monitor-oob"
-      },
       "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 24
+        "h": 3,
+        "w": 4,
+        "x": 20,
+        "y": 15
       },
+      "id": 1116,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "max"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.4.8",
       "targets": [
         {
-          "refId": "A",
+          "azureMonitor": {
+            "aggregation": "Maximum",
+            "alias": "Normalized RU % (database)",
+            "allowedTimeGrainsMs": [],
+            "dimensionFilters": [
+              {
+                "dimension": "DatabaseName",
+                "filters": [
+                  "activation"
+                ],
+                "operator": "eq"
+              }
+            ],
+            "metricName": "NormalizedRUConsumption",
+            "metricNamespace": "microsoft.documentdb/databaseaccounts",
+            "resources": [
+              {
+                "metricNamespace": "microsoft.documentdb/databaseaccounts",
+                "resourceGroup": "$CosmosRg",
+                "resourceName": "$cosmos_account",
+                "subscription": "$subscription"
+              }
+            ],
+            "timeGrain": "auto",
+            "top": "10"
+          },
           "datasource": {
             "type": "grafana-azure-monitor-datasource",
             "uid": "azure-monitor-oob"
           },
           "queryType": "Azure Monitor",
-          "subscription": "$subscription",
-          "azureMonitor": {
-            "resources": [
-              {
-                "subscription": "$subscription",
-                "resourceGroup": "$CosmosRg",
-                "metricNamespace": "microsoft.documentdb/databaseaccounts",
-                "resourceName": "$cosmos_account"
-              }
-            ],
-            "metricNamespace": "microsoft.documentdb/databaseaccounts",
-            "metricName": "TotalRequestUnits",
-            "aggregation": "Total",
-            "timeGrain": "auto",
-            "allowedTimeGrainsMs": [],
-            "dimensionFilters": [
-              {
-                "dimension": "DatabaseName",
-                "operator": "eq",
-                "filters": []
-              },
-              {
-                "dimension": "CollectionName",
-                "operator": "eq",
-                "filters": []
-              }
-            ],
-            "top": "20",
-            "alias": "{{ databasename }} / {{ collectionname }}"
-          }
+          "refId": "A",
+          "subscription": "$subscription"
         }
       ],
-      "fieldConfig": {
-        "defaults": {
-          "custom": {
-            "drawStyle": "line",
-            "lineWidth": 2,
-            "fillOpacity": 10,
-            "showPoints": "never",
-            "spanNulls": false
-          },
-          "min": 0
-        },
-        "overrides": []
-      },
-      "options": {
-        "legend": {
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true,
-          "calcs": [
-            "max",
-            "mean",
-            "sum"
-          ]
-        },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "desc"
-        }
-      }
+      "title": "Normalized RU % (Max)",
+      "type": "stat"
     },
     {
-      "id": 105,
-      "type": "timeseries",
-      "title": "🚦 Richieste throttled (ErrorCode 16500)",
       "datasource": {
         "type": "grafana-azure-monitor-datasource",
         "uid": "azure-monitor-oob"
       },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 32
+      "description": "Richieste rifiutate per throughput insufficiente nel periodo. Qualsiasi valore >0 indica un problema attivo.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
       },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 20,
+        "y": 18
+      },
+      "id": 1117,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.4.8",
       "targets": [
         {
-          "refId": "A",
-          "datasource": {
-            "type": "grafana-azure-monitor-datasource",
-            "uid": "azure-monitor-oob"
-          },
-          "queryType": "Azure Monitor",
-          "subscription": "$subscription",
           "azureMonitor": {
-            "resources": [
-              {
-                "subscription": "$subscription",
-                "resourceGroup": "$CosmosRg",
-                "metricNamespace": "microsoft.documentdb/databaseaccounts",
-                "resourceName": "$cosmos_account"
-              }
-            ],
-            "metricNamespace": "microsoft.documentdb/databaseaccounts",
-            "metricName": "MongoRequests",
             "aggregation": "Count",
-            "timeGrain": "auto",
+            "alias": "Throttled (429/16500)",
             "allowedTimeGrainsMs": [],
             "dimensionFilters": [
               {
                 "dimension": "DatabaseName",
-                "operator": "eq",
-                "filters": []
-              },
-              {
-                "dimension": "CollectionName",
-                "operator": "eq",
-                "filters": []
+                "filters": [
+                  "activation"
+                ],
+                "operator": "eq"
               },
               {
                 "dimension": "ErrorCode",
-                "operator": "eq",
                 "filters": [
                   "16500"
-                ]
+                ],
+                "operator": "eq"
               }
             ],
-            "top": "20",
-            "alias": "{{ databasename }} / {{ collectionname }}"
-          }
-        }
-      ],
-      "fieldConfig": {
-        "defaults": {
-          "custom": {
-            "drawStyle": "line",
-            "lineWidth": 2,
-            "fillOpacity": 10,
-            "showPoints": "never",
-            "spanNulls": false
+            "metricName": "MongoRequests",
+            "metricNamespace": "microsoft.documentdb/databaseaccounts",
+            "resources": [
+              {
+                "metricNamespace": "microsoft.documentdb/databaseaccounts",
+                "resourceGroup": "$CosmosRg",
+                "resourceName": "$cosmos_account",
+                "subscription": "$subscription"
+              }
+            ],
+            "timeGrain": "auto",
+            "top": "10"
           },
-          "min": 0
-        },
-        "overrides": []
-      },
-      "options": {
-        "legend": {
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true,
-          "calcs": [
-            "max",
-            "mean",
-            "sum"
-          ]
-        },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "desc"
-        }
-      },
-      "description": "Qualsiasi valore >0 indica throttling attivo."
-    },
-    {
-      "id": 106,
-      "type": "timeseries",
-      "title": "RU per collection e tipo di operazione",
-      "datasource": {
-        "type": "grafana-azure-monitor-datasource",
-        "uid": "azure-monitor-oob"
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 32
-      },
-      "targets": [
-        {
-          "refId": "A",
           "datasource": {
             "type": "grafana-azure-monitor-datasource",
             "uid": "azure-monitor-oob"
           },
           "queryType": "Azure Monitor",
-          "subscription": "$subscription",
-          "azureMonitor": {
-            "resources": [
-              {
-                "subscription": "$subscription",
-                "resourceGroup": "$CosmosRg",
-                "metricNamespace": "microsoft.documentdb/databaseaccounts",
-                "resourceName": "$cosmos_account"
-              }
-            ],
-            "metricNamespace": "microsoft.documentdb/databaseaccounts",
-            "metricName": "TotalRequestUnits",
-            "aggregation": "Total",
-            "timeGrain": "auto",
-            "allowedTimeGrainsMs": [],
-            "dimensionFilters": [
-              {
-                "dimension": "DatabaseName",
-                "operator": "eq",
-                "filters": []
-              },
-              {
-                "dimension": "CollectionName",
-                "operator": "eq",
-                "filters": []
-              },
-              {
-                "dimension": "OperationType",
-                "operator": "eq",
-                "filters": []
-              }
-            ],
-            "top": "20",
-            "alias": "{{ databasename }} / {{ collectionname }} / {{ operationtype }}"
-          }
+          "refId": "A",
+          "subscription": "$subscription"
         }
       ],
-      "fieldConfig": {
-        "defaults": {
-          "custom": {
-            "drawStyle": "line",
-            "lineWidth": 2,
-            "fillOpacity": 10,
-            "showPoints": "never",
-            "spanNulls": false
-          },
-          "min": 0
-        },
-        "overrides": []
-      },
-      "options": {
-        "legend": {
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true,
-          "calcs": [
-            "max",
-            "mean",
-            "sum"
-          ]
-        },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "desc"
-        }
-      }
+      "title": "Throttled (429/16500)",
+      "type": "stat"
     },
     {
-      "id": 107,
-      "type": "timeseries",
-      "title": "Richieste per collection e comando",
       "datasource": {
         "type": "grafana-azure-monitor-datasource",
         "uid": "azure-monitor-oob"
+      },
+      "description": "Throughput condiviso a livello database: >70% attenzione, >90% throttling imminente. Granularità 1 ora, come nel workbook.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "dashed"
+            }
+          },
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "orange",
+                "value": 70
+              },
+              {
+                "color": "red",
+                "value": 90
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
       },
       "gridPos": {
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 40
+        "y": 21
       },
-      "targets": [
-        {
-          "refId": "A",
-          "datasource": {
-            "type": "grafana-azure-monitor-datasource",
-            "uid": "azure-monitor-oob"
-          },
-          "queryType": "Azure Monitor",
-          "subscription": "$subscription",
-          "azureMonitor": {
-            "resources": [
-              {
-                "subscription": "$subscription",
-                "resourceGroup": "$CosmosRg",
-                "metricNamespace": "microsoft.documentdb/databaseaccounts",
-                "resourceName": "$cosmos_account"
-              }
-            ],
-            "metricNamespace": "microsoft.documentdb/databaseaccounts",
-            "metricName": "MongoRequests",
-            "aggregation": "Count",
-            "timeGrain": "auto",
-            "allowedTimeGrainsMs": [],
-            "dimensionFilters": [
-              {
-                "dimension": "DatabaseName",
-                "operator": "eq",
-                "filters": []
-              },
-              {
-                "dimension": "CollectionName",
-                "operator": "eq",
-                "filters": []
-              },
-              {
-                "dimension": "CommandName",
-                "operator": "eq",
-                "filters": []
-              }
-            ],
-            "top": "20",
-            "alias": "{{ databasename }} / {{ collectionname }} / {{ commandname }}"
-          }
-        }
-      ],
-      "fieldConfig": {
-        "defaults": {
-          "custom": {
-            "drawStyle": "line",
-            "lineWidth": 2,
-            "fillOpacity": 10,
-            "showPoints": "never",
-            "spanNulls": false
-          },
-          "min": 0
-        },
-        "overrides": []
-      },
+      "id": 1103,
       "options": {
         "legend": {
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true,
           "calcs": [
             "max",
-            "mean",
-            "sum"
-          ]
+            "mean"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "multi",
           "sort": "desc"
         }
-      }
-    },
-    {
-      "id": 108,
-      "type": "timeseries",
-      "title": "❌ Richieste fallite per collection e error code",
-      "datasource": {
-        "type": "grafana-azure-monitor-datasource",
-        "uid": "azure-monitor-oob"
       },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 40
-      },
+      "pluginVersion": "12.4.8",
       "targets": [
         {
-          "refId": "A",
-          "datasource": {
-            "type": "grafana-azure-monitor-datasource",
-            "uid": "azure-monitor-oob"
-          },
-          "queryType": "Azure Monitor",
-          "subscription": "$subscription",
           "azureMonitor": {
-            "resources": [
-              {
-                "subscription": "$subscription",
-                "resourceGroup": "$CosmosRg",
-                "metricNamespace": "microsoft.documentdb/databaseaccounts",
-                "resourceName": "$cosmos_account"
-              }
-            ],
-            "metricNamespace": "microsoft.documentdb/databaseaccounts",
-            "metricName": "MongoRequests",
-            "aggregation": "Count",
-            "timeGrain": "auto",
+            "aggregation": "Maximum",
+            "alias": "database activation (throughput condiviso)",
             "allowedTimeGrainsMs": [],
             "dimensionFilters": [
               {
                 "dimension": "DatabaseName",
-                "operator": "eq",
-                "filters": []
-              },
-              {
-                "dimension": "CollectionName",
-                "operator": "eq",
-                "filters": []
-              },
-              {
-                "dimension": "ErrorCode",
-                "operator": "ne",
                 "filters": [
-                  "0"
+                  "activation"
+                ],
+                "operator": "eq"
+              }
+            ],
+            "metricName": "NormalizedRUConsumption",
+            "metricNamespace": "microsoft.documentdb/databaseaccounts",
+            "resources": [
+              {
+                "metricNamespace": "microsoft.documentdb/databaseaccounts",
+                "resourceGroup": "$CosmosRg",
+                "resourceName": "$cosmos_account",
+                "subscription": "$subscription"
+              }
+            ],
+            "timeGrain": "PT1H",
+            "top": "20"
+          },
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Monitor",
+          "refId": "A",
+          "subscription": "$subscription"
+        }
+      ],
+      "title": "🔥 Normalized RU Consumption, max % (database activation)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "description": "Una riga per partizione fisica. Una partizione fisica arriva al massimo a 50 GB: oltre il 70% del limite Cosmos la dividerà a breve. Partizioni di dimensione molto diversa indicano una shard key distribuita male. Con il throughput condiviso le partizioni appartengono al database, non a una singola collection.",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": false,
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "text",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Collection"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "<empty>": {
+                        "index": 0,
+                        "text": "tutte (throughput condiviso)"
+                      }
+                    },
+                    "type": "value"
+                  }
                 ]
+              },
+              {
+                "id": "custom.width",
+                "value": 220
               }
-            ],
-            "top": "20",
-            "alias": "{{ databasename }} / {{ collectionname }} / {{ errorcode }}"
-          }
-        }
-      ],
-      "fieldConfig": {
-        "defaults": {
-          "custom": {
-            "drawStyle": "line",
-            "lineWidth": 2,
-            "fillOpacity": 10,
-            "showPoints": "never",
-            "spanNulls": false
+            ]
           },
-          "min": 0
-        },
-        "overrides": []
-      },
-      "options": {
-        "legend": {
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true,
-          "calcs": [
-            "max",
-            "mean",
-            "sum"
-          ]
-        },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "desc"
-        }
-      }
-    },
-    {
-      "id": 109,
-      "type": "timeseries",
-      "title": "Data usage",
-      "datasource": {
-        "type": "grafana-azure-monitor-datasource",
-        "uid": "azure-monitor-oob"
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Dimensione"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "bytes"
+              },
+              {
+                "id": "decimals",
+                "value": 1
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Uso del limite 50 GB"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percentunit"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "min",
+                "value": 0
+              },
+              {
+                "id": "max",
+                "value": 1
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "thresholds"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": 0
+                    },
+                    {
+                      "color": "orange",
+                      "value": 0.7
+                    },
+                    {
+                      "color": "red",
+                      "value": 0.9
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "basic",
+                  "type": "gauge",
+                  "valueDisplayMode": "text"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Partizione"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 330
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 8,
-        "w": 8,
-        "x": 0,
-        "y": 48
+        "w": 12,
+        "x": 12,
+        "y": 21
       },
+      "id": 1119,
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Dimensione"
+          }
+        ]
+      },
+      "pluginVersion": "12.4.8",
       "targets": [
         {
-          "refId": "A",
+          "azureMonitor": {
+            "aggregation": "Maximum",
+            "alias": "Dimensione",
+            "allowedTimeGrainsMs": [],
+            "dimensionFilters": [
+              {
+                "dimension": "DatabaseName",
+                "filters": [
+                  "activation"
+                ],
+                "operator": "eq"
+              },
+              {
+                "dimension": "CollectionName",
+                "filters": [],
+                "operator": "eq"
+              },
+              {
+                "dimension": "PhysicalPartitionId",
+                "filters": [],
+                "operator": "eq"
+              }
+            ],
+            "metricName": "PhysicalPartitionSizeInfo",
+            "metricNamespace": "microsoft.documentdb/databaseaccounts",
+            "resources": [
+              {
+                "metricNamespace": "microsoft.documentdb/databaseaccounts",
+                "resourceGroup": "$CosmosRg",
+                "resourceName": "$cosmos_account",
+                "subscription": "$subscription"
+              }
+            ],
+            "timeGrain": "auto",
+            "top": "50"
+          },
           "datasource": {
             "type": "grafana-azure-monitor-datasource",
             "uid": "azure-monitor-oob"
           },
           "queryType": "Azure Monitor",
-          "subscription": "$subscription",
-          "azureMonitor": {
-            "resources": [
-              {
-                "subscription": "$subscription",
-                "resourceGroup": "$CosmosRg",
-                "metricNamespace": "microsoft.documentdb/databaseaccounts",
-                "resourceName": "$cosmos_account"
-              }
-            ],
-            "metricNamespace": "microsoft.documentdb/databaseaccounts",
-            "metricName": "DataUsage",
-            "aggregation": "Maximum",
-            "timeGrain": "auto",
-            "allowedTimeGrainsMs": [
-              300000,
-              900000,
-              1800000,
-              3600000,
-              21600000,
-              43200000,
-              86400000
-            ],
-            "dimensionFilters": [
-              {
-                "dimension": "DatabaseName",
-                "operator": "eq",
-                "filters": []
-              },
-              {
-                "dimension": "CollectionName",
-                "operator": "eq",
-                "filters": []
-              }
-            ],
-            "top": "20",
-            "alias": "{{ databasename }} / {{ collectionname }}"
+          "refId": "A",
+          "subscription": "$subscription"
+        }
+      ],
+      "title": "Partizioni fisiche: dimensione (database activation)",
+      "transformations": [
+        {
+          "id": "reduce",
+          "options": {
+            "includeTimeField": false,
+            "labelsToFields": true,
+            "mode": "seriesToRows",
+            "reducers": [
+              "lastNotNull"
+            ]
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Uso del limite 50 GB",
+            "binary": {
+              "left": "Last *",
+              "operator": "/",
+              "right": "53687091200"
+            },
+            "mode": "binary",
+            "replaceFields": false
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Difference": true,
+              "Field": true,
+              "databasename": true,
+              "resourceName": true
+            },
+            "indexByName": {
+              "Last *": 2,
+              "Uso del limite 50 GB": 3,
+              "collectionname": 0,
+              "physicalpartitionid": 1
+            },
+            "renameByName": {
+              "Last *": "Dimensione",
+              "collectionname": "Collection",
+              "physicalpartitionid": "Partizione"
+            }
           }
         }
       ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "description": "Utilizzo massimo del throughput per partizione fisica. Una partizione costantemente molto più alta delle altre indica una shard key sbilanciata (partizione calda). Valori vicini al 100% su una sola partizione non sono un problema se il throttling (429/16500) resta a zero.",
       "fieldConfig": {
         "defaults": {
-          "custom": {
-            "drawStyle": "line",
-            "lineWidth": 2,
-            "fillOpacity": 10,
-            "showPoints": "never",
-            "spanNulls": false
+          "color": {
+            "mode": "palette-classic"
           },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "dashed"
+            }
+          },
+          "mappings": [],
+          "max": 100,
           "min": 0,
-          "unit": "bytes"
-        },
-        "overrides": []
-      },
-      "options": {
-        "legend": {
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true,
-          "calcs": [
-            "max",
-            "lastNotNull"
-          ]
-        },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "desc"
-        }
-      },
-      "description": "Granularità minima 5 minuti."
-    },
-    {
-      "id": 110,
-      "type": "timeseries",
-      "title": "Index usage",
-      "datasource": {
-        "type": "grafana-azure-monitor-datasource",
-        "uid": "azure-monitor-oob"
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 8,
-        "x": 8,
-        "y": 48
-      },
-      "targets": [
-        {
-          "refId": "A",
-          "datasource": {
-            "type": "grafana-azure-monitor-datasource",
-            "uid": "azure-monitor-oob"
-          },
-          "queryType": "Azure Monitor",
-          "subscription": "$subscription",
-          "azureMonitor": {
-            "resources": [
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
               {
-                "subscription": "$subscription",
-                "resourceGroup": "$CosmosRg",
-                "metricNamespace": "microsoft.documentdb/databaseaccounts",
-                "resourceName": "$cosmos_account"
-              }
-            ],
-            "metricNamespace": "microsoft.documentdb/databaseaccounts",
-            "metricName": "IndexUsage",
-            "aggregation": "Maximum",
-            "timeGrain": "auto",
-            "allowedTimeGrainsMs": [
-              300000,
-              900000,
-              1800000,
-              3600000,
-              21600000,
-              43200000,
-              86400000
-            ],
-            "dimensionFilters": [
-              {
-                "dimension": "DatabaseName",
-                "operator": "eq",
-                "filters": []
+                "color": "green",
+                "value": 0
               },
               {
-                "dimension": "CollectionName",
-                "operator": "eq",
-                "filters": []
-              }
-            ],
-            "top": "20",
-            "alias": "{{ databasename }} / {{ collectionname }}"
-          }
-        }
-      ],
-      "fieldConfig": {
-        "defaults": {
-          "custom": {
-            "drawStyle": "line",
-            "lineWidth": 2,
-            "fillOpacity": 10,
-            "showPoints": "never",
-            "spanNulls": false
-          },
-          "min": 0,
-          "unit": "bytes"
-        },
-        "overrides": []
-      },
-      "options": {
-        "legend": {
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true,
-          "calcs": [
-            "max",
-            "lastNotNull"
-          ]
-        },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "desc"
-        }
-      },
-      "description": "Granularità minima 5 minuti."
-    },
-    {
-      "id": 111,
-      "type": "timeseries",
-      "title": "Numero documenti",
-      "datasource": {
-        "type": "grafana-azure-monitor-datasource",
-        "uid": "azure-monitor-oob"
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 8,
-        "x": 16,
-        "y": 48
-      },
-      "targets": [
-        {
-          "refId": "A",
-          "datasource": {
-            "type": "grafana-azure-monitor-datasource",
-            "uid": "azure-monitor-oob"
-          },
-          "queryType": "Azure Monitor",
-          "subscription": "$subscription",
-          "azureMonitor": {
-            "resources": [
-              {
-                "subscription": "$subscription",
-                "resourceGroup": "$CosmosRg",
-                "metricNamespace": "microsoft.documentdb/databaseaccounts",
-                "resourceName": "$cosmos_account"
-              }
-            ],
-            "metricNamespace": "microsoft.documentdb/databaseaccounts",
-            "metricName": "DocumentCountV2",
-            "aggregation": "Maximum",
-            "timeGrain": "auto",
-            "allowedTimeGrainsMs": [
-              300000,
-              900000,
-              1800000,
-              3600000,
-              21600000,
-              43200000,
-              86400000
-            ],
-            "dimensionFilters": [
-              {
-                "dimension": "DatabaseName",
-                "operator": "eq",
-                "filters": []
+                "color": "orange",
+                "value": 70
               },
               {
-                "dimension": "CollectionName",
-                "operator": "eq",
-                "filters": []
+                "color": "red",
+                "value": 90
               }
-            ],
-            "top": "20",
-            "alias": "{{ databasename }} / {{ collectionname }}"
-          }
-        }
-      ],
-      "fieldConfig": {
-        "defaults": {
-          "custom": {
-            "drawStyle": "line",
-            "lineWidth": 2,
-            "fillOpacity": 10,
-            "showPoints": "never",
-            "spanNulls": false
+            ]
           },
-          "min": 0
+          "unit": "percent"
         },
         "overrides": []
-      },
-      "options": {
-        "legend": {
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true,
-          "calcs": [
-            "max",
-            "lastNotNull"
-          ]
-        },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "desc"
-        }
-      }
-    },
-    {
-      "id": 112,
-      "type": "timeseries",
-      "title": "Service Availability - Min & Avg % (account)",
-      "datasource": {
-        "type": "grafana-azure-monitor-datasource",
-        "uid": "azure-monitor-oob"
       },
       "gridPos": {
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 56
+        "y": 29
       },
-      "targets": [
-        {
-          "refId": "A",
-          "datasource": {
-            "type": "grafana-azure-monitor-datasource",
-            "uid": "azure-monitor-oob"
-          },
-          "queryType": "Azure Monitor",
-          "subscription": "$subscription",
-          "azureMonitor": {
-            "resources": [
-              {
-                "subscription": "$subscription",
-                "resourceGroup": "$CosmosRg",
-                "metricNamespace": "microsoft.documentdb/databaseaccounts",
-                "resourceName": "$cosmos_account"
-              }
-            ],
-            "metricNamespace": "microsoft.documentdb/databaseaccounts",
-            "metricName": "ServiceAvailability",
-            "aggregation": "Average",
-            "timeGrain": "PT1H",
-            "allowedTimeGrainsMs": [],
-            "dimensionFilters": [],
-            "top": "20",
-            "alias": "Availability (Avg %)"
-          }
-        },
-        {
-          "refId": "B",
-          "datasource": {
-            "type": "grafana-azure-monitor-datasource",
-            "uid": "azure-monitor-oob"
-          },
-          "queryType": "Azure Monitor",
-          "subscription": "$subscription",
-          "azureMonitor": {
-            "resources": [
-              {
-                "subscription": "$subscription",
-                "resourceGroup": "$CosmosRg",
-                "metricNamespace": "microsoft.documentdb/databaseaccounts",
-                "resourceName": "$cosmos_account"
-              }
-            ],
-            "metricNamespace": "microsoft.documentdb/databaseaccounts",
-            "metricName": "ServiceAvailability",
-            "aggregation": "Minimum",
-            "timeGrain": "PT1H",
-            "allowedTimeGrainsMs": [],
-            "dimensionFilters": [],
-            "top": "20",
-            "alias": "Availability (Min %)"
-          }
-        }
-      ],
-      "fieldConfig": {
-        "defaults": {
-          "custom": {
-            "drawStyle": "line",
-            "lineWidth": 2,
-            "fillOpacity": 10,
-            "showPoints": "never",
-            "spanNulls": false
-          },
-          "min": 0,
-          "unit": "percent",
-          "max": 100
-        },
-        "overrides": []
-      },
+      "id": 1118,
       "options": {
         "legend": {
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true,
-          "calcs": [
-            "min",
-            "mean"
-          ]
-        },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "desc"
-        }
-      },
-      "description": "Metrica disponibile solo con granularità di 1 ora."
-    },
-    {
-      "id": 113,
-      "type": "timeseries",
-      "title": "Latenza server-side Gateway per database - Avg & Max (ms)",
-      "datasource": {
-        "type": "grafana-azure-monitor-datasource",
-        "uid": "azure-monitor-oob"
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 64
-      },
-      "targets": [
-        {
-          "refId": "A",
-          "datasource": {
-            "type": "grafana-azure-monitor-datasource",
-            "uid": "azure-monitor-oob"
-          },
-          "queryType": "Azure Monitor",
-          "subscription": "$subscription",
-          "azureMonitor": {
-            "resources": [
-              {
-                "subscription": "$subscription",
-                "resourceGroup": "$CosmosRg",
-                "metricNamespace": "microsoft.documentdb/databaseaccounts",
-                "resourceName": "$cosmos_account"
-              }
-            ],
-            "metricNamespace": "microsoft.documentdb/databaseaccounts",
-            "metricName": "ServerSideLatencyGateway",
-            "aggregation": "Average",
-            "timeGrain": "auto",
-            "allowedTimeGrainsMs": [],
-            "dimensionFilters": [
-              {
-                "dimension": "DatabaseName",
-                "operator": "eq",
-                "filters": []
-              },
-              {
-                "dimension": "PublicAPIType",
-                "operator": "eq",
-                "filters": [
-                  "mongoDB"
-                ]
-              }
-            ],
-            "top": "20",
-            "alias": "Avg | {{ databasename }}"
-          }
-        },
-        {
-          "refId": "B",
-          "datasource": {
-            "type": "grafana-azure-monitor-datasource",
-            "uid": "azure-monitor-oob"
-          },
-          "queryType": "Azure Monitor",
-          "subscription": "$subscription",
-          "azureMonitor": {
-            "resources": [
-              {
-                "subscription": "$subscription",
-                "resourceGroup": "$CosmosRg",
-                "metricNamespace": "microsoft.documentdb/databaseaccounts",
-                "resourceName": "$cosmos_account"
-              }
-            ],
-            "metricNamespace": "microsoft.documentdb/databaseaccounts",
-            "metricName": "ServerSideLatencyGateway",
-            "aggregation": "Maximum",
-            "timeGrain": "auto",
-            "allowedTimeGrainsMs": [],
-            "dimensionFilters": [
-              {
-                "dimension": "DatabaseName",
-                "operator": "eq",
-                "filters": []
-              },
-              {
-                "dimension": "PublicAPIType",
-                "operator": "eq",
-                "filters": [
-                  "mongoDB"
-                ]
-              }
-            ],
-            "top": "20",
-            "alias": "Max | {{ databasename }}"
-          }
-        }
-      ],
-      "fieldConfig": {
-        "defaults": {
-          "custom": {
-            "drawStyle": "line",
-            "lineWidth": 2,
-            "fillOpacity": 10,
-            "showPoints": "never",
-            "spanNulls": false
-          },
-          "min": 0,
-          "unit": "ms"
-        },
-        "overrides": []
-      },
-      "options": {
-        "legend": {
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true,
           "calcs": [
             "max",
             "mean"
-          ]
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "sortBy": "Max",
+          "sortDesc": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "multi",
           "sort": "desc"
         }
-      }
-    },
-    {
-      "id": 114,
-      "type": "timeseries",
-      "title": "Latenza media per collection e operazione (ms)",
-      "datasource": {
-        "type": "grafana-azure-monitor-datasource",
-        "uid": "azure-monitor-oob"
       },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 64
-      },
+      "pluginVersion": "12.4.8",
       "targets": [
         {
-          "refId": "A",
+          "azureMonitor": {
+            "aggregation": "Maximum",
+            "alias": "Partizione {{ partitionkeyrangeid }}",
+            "allowedTimeGrainsMs": [],
+            "dimensionFilters": [
+              {
+                "dimension": "DatabaseName",
+                "filters": [
+                  "activation"
+                ],
+                "operator": "eq"
+              },
+              {
+                "dimension": "PartitionKeyRangeId",
+                "filters": [],
+                "operator": "eq"
+              }
+            ],
+            "metricName": "NormalizedRUConsumption",
+            "metricNamespace": "microsoft.documentdb/databaseaccounts",
+            "resources": [
+              {
+                "metricNamespace": "microsoft.documentdb/databaseaccounts",
+                "resourceGroup": "$CosmosRg",
+                "resourceName": "$cosmos_account",
+                "subscription": "$subscription"
+              }
+            ],
+            "timeGrain": "auto",
+            "top": "50"
+          },
           "datasource": {
             "type": "grafana-azure-monitor-datasource",
             "uid": "azure-monitor-oob"
           },
           "queryType": "Azure Monitor",
-          "subscription": "$subscription",
-          "azureMonitor": {
-            "resources": [
+          "refId": "A",
+          "subscription": "$subscription"
+        }
+      ],
+      "title": "🔥 Normalized RU % per partizione fisica (database activation)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
               {
-                "subscription": "$subscription",
-                "resourceGroup": "$CosmosRg",
-                "metricNamespace": "microsoft.documentdb/databaseaccounts",
-                "resourceName": "$cosmos_account"
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
               }
-            ],
-            "metricNamespace": "microsoft.documentdb/databaseaccounts",
-            "metricName": "ServerSideLatencyGateway",
-            "aggregation": "Average",
-            "timeGrain": "auto",
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 37
+      },
+      "id": 1104,
+      "options": {
+        "legend": {
+          "calcs": [
+            "max",
+            "mean",
+            "sum"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "sortBy": "Total",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "12.4.8",
+      "targets": [
+        {
+          "azureMonitor": {
+            "aggregation": "Total",
+            "alias": "{{ collectionname }}",
             "allowedTimeGrainsMs": [],
             "dimensionFilters": [
               {
                 "dimension": "DatabaseName",
-                "operator": "eq",
-                "filters": []
+                "filters": [
+                  "activation"
+                ],
+                "operator": "eq"
               },
               {
                 "dimension": "CollectionName",
-                "operator": "eq",
-                "filters": []
+                "filters": [],
+                "operator": "eq"
+              }
+            ],
+            "metricName": "TotalRequestUnits",
+            "metricNamespace": "microsoft.documentdb/databaseaccounts",
+            "resources": [
+              {
+                "metricNamespace": "microsoft.documentdb/databaseaccounts",
+                "resourceGroup": "$CosmosRg",
+                "resourceName": "$cosmos_account",
+                "subscription": "$subscription"
+              }
+            ],
+            "timeGrain": "auto",
+            "top": "20"
+          },
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Monitor",
+          "refId": "A",
+          "subscription": "$subscription"
+        }
+      ],
+      "title": "Total RU consumate",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 45
+      },
+      "id": 1106,
+      "options": {
+        "legend": {
+          "calcs": [
+            "max",
+            "mean",
+            "sum"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "sortBy": "Total",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "12.4.8",
+      "targets": [
+        {
+          "azureMonitor": {
+            "aggregation": "Total",
+            "alias": "{{ collectionname }} / {{ operationtype }}",
+            "allowedTimeGrainsMs": [],
+            "dimensionFilters": [
+              {
+                "dimension": "DatabaseName",
+                "filters": [
+                  "activation"
+                ],
+                "operator": "eq"
+              },
+              {
+                "dimension": "CollectionName",
+                "filters": [],
+                "operator": "eq"
               },
               {
                 "dimension": "OperationType",
-                "operator": "eq",
-                "filters": []
-              },
-              {
-                "dimension": "PublicAPIType",
-                "operator": "eq",
-                "filters": [
-                  "mongoDB"
-                ]
+                "filters": [],
+                "operator": "eq"
               }
             ],
-            "top": "20",
-            "alias": "{{ databasename }} / {{ collectionname }} / {{ operationtype }}"
-          }
+            "metricName": "TotalRequestUnits",
+            "metricNamespace": "microsoft.documentdb/databaseaccounts",
+            "resources": [
+              {
+                "metricNamespace": "microsoft.documentdb/databaseaccounts",
+                "resourceGroup": "$CosmosRg",
+                "resourceName": "$cosmos_account",
+                "subscription": "$subscription"
+              }
+            ],
+            "timeGrain": "auto",
+            "top": "20"
+          },
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Monitor",
+          "refId": "A",
+          "subscription": "$subscription"
         }
       ],
+      "title": "RU per collection e tipo di operazione",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "description": "Qualsiasi valore >0 indica throttling attivo.",
       "fieldConfig": {
         "defaults": {
-          "custom": {
-            "drawStyle": "line",
-            "lineWidth": 2,
-            "fillOpacity": 10,
-            "showPoints": "never",
-            "spanNulls": false
+          "color": {
+            "mode": "palette-classic"
           },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
           "min": 0,
+          "noValue": "Nessuna richiesta throttled nel periodo",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 53
+      },
+      "id": 1105,
+      "options": {
+        "legend": {
+          "calcs": [
+            "max",
+            "mean",
+            "sum"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "sortBy": "Total",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "12.4.8",
+      "targets": [
+        {
+          "azureMonitor": {
+            "aggregation": "Count",
+            "alias": "{{ collectionname }}",
+            "allowedTimeGrainsMs": [],
+            "dimensionFilters": [
+              {
+                "dimension": "DatabaseName",
+                "filters": [
+                  "activation"
+                ],
+                "operator": "eq"
+              },
+              {
+                "dimension": "CollectionName",
+                "filters": [],
+                "operator": "eq"
+              },
+              {
+                "dimension": "ErrorCode",
+                "filters": [
+                  "16500"
+                ],
+                "operator": "eq"
+              }
+            ],
+            "metricName": "MongoRequests",
+            "metricNamespace": "microsoft.documentdb/databaseaccounts",
+            "resources": [
+              {
+                "metricNamespace": "microsoft.documentdb/databaseaccounts",
+                "resourceGroup": "$CosmosRg",
+                "resourceName": "$cosmos_account",
+                "subscription": "$subscription"
+              }
+            ],
+            "timeGrain": "auto",
+            "top": "20"
+          },
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Monitor",
+          "refId": "A",
+          "subscription": "$subscription"
+        }
+      ],
+      "title": "🚦 Richieste throttled (ErrorCode 16500)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 61
+      },
+      "id": 1107,
+      "options": {
+        "legend": {
+          "calcs": [
+            "max",
+            "mean",
+            "sum"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "sortBy": "Total",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "12.4.8",
+      "targets": [
+        {
+          "azureMonitor": {
+            "aggregation": "Count",
+            "alias": "{{ collectionname }} / {{ commandname }}",
+            "allowedTimeGrainsMs": [],
+            "dimensionFilters": [
+              {
+                "dimension": "DatabaseName",
+                "filters": [
+                  "activation"
+                ],
+                "operator": "eq"
+              },
+              {
+                "dimension": "CollectionName",
+                "filters": [],
+                "operator": "eq"
+              },
+              {
+                "dimension": "CommandName",
+                "filters": [],
+                "operator": "eq"
+              }
+            ],
+            "metricName": "MongoRequests",
+            "metricNamespace": "microsoft.documentdb/databaseaccounts",
+            "resources": [
+              {
+                "metricNamespace": "microsoft.documentdb/databaseaccounts",
+                "resourceGroup": "$CosmosRg",
+                "resourceName": "$cosmos_account",
+                "subscription": "$subscription"
+              }
+            ],
+            "timeGrain": "auto",
+            "top": "20"
+          },
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Monitor",
+          "refId": "A",
+          "subscription": "$subscription"
+        }
+      ],
+      "title": "Richieste per collection e comando",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "min": 0,
+          "noValue": "Nessuna richiesta fallita nel periodo",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 69
+      },
+      "id": 1108,
+      "options": {
+        "legend": {
+          "calcs": [
+            "max",
+            "mean",
+            "sum"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "sortBy": "Total",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "12.4.8",
+      "targets": [
+        {
+          "azureMonitor": {
+            "aggregation": "Count",
+            "alias": "{{ collectionname }} / {{ errorcode }}",
+            "allowedTimeGrainsMs": [],
+            "dimensionFilters": [
+              {
+                "dimension": "DatabaseName",
+                "filters": [
+                  "activation"
+                ],
+                "operator": "eq"
+              },
+              {
+                "dimension": "CollectionName",
+                "filters": [],
+                "operator": "eq"
+              },
+              {
+                "dimension": "ErrorCode",
+                "filters": [
+                  "0"
+                ],
+                "operator": "ne"
+              }
+            ],
+            "metricName": "MongoRequests",
+            "metricNamespace": "microsoft.documentdb/databaseaccounts",
+            "resources": [
+              {
+                "metricNamespace": "microsoft.documentdb/databaseaccounts",
+                "resourceGroup": "$CosmosRg",
+                "resourceName": "$cosmos_account",
+                "subscription": "$subscription"
+              }
+            ],
+            "timeGrain": "auto",
+            "top": "20"
+          },
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Monitor",
+          "refId": "A",
+          "subscription": "$subscription"
+        }
+      ],
+      "title": "❌ Richieste fallite per collection e error code",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "description": "Granularità minima 5 minuti.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 77
+      },
+      "id": 1109,
+      "options": {
+        "legend": {
+          "calcs": [
+            "max",
+            "lastNotNull"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "sortBy": "Max",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "12.4.8",
+      "targets": [
+        {
+          "azureMonitor": {
+            "aggregation": "Maximum",
+            "alias": "{{ collectionname }}",
+            "allowedTimeGrainsMs": [
+              300000,
+              900000,
+              1800000,
+              3600000,
+              21600000,
+              43200000,
+              86400000
+            ],
+            "dimensionFilters": [
+              {
+                "dimension": "DatabaseName",
+                "filters": [
+                  "activation"
+                ],
+                "operator": "eq"
+              },
+              {
+                "dimension": "CollectionName",
+                "filters": [],
+                "operator": "eq"
+              }
+            ],
+            "metricName": "DataUsage",
+            "metricNamespace": "microsoft.documentdb/databaseaccounts",
+            "resources": [
+              {
+                "metricNamespace": "microsoft.documentdb/databaseaccounts",
+                "resourceGroup": "$CosmosRg",
+                "resourceName": "$cosmos_account",
+                "subscription": "$subscription"
+              }
+            ],
+            "timeGrain": "auto",
+            "top": "20"
+          },
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Monitor",
+          "refId": "A",
+          "subscription": "$subscription"
+        }
+      ],
+      "title": "Data usage",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "description": "Granularità minima 5 minuti.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 85
+      },
+      "id": 1110,
+      "options": {
+        "legend": {
+          "calcs": [
+            "max",
+            "lastNotNull"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "sortBy": "Max",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "12.4.8",
+      "targets": [
+        {
+          "azureMonitor": {
+            "aggregation": "Maximum",
+            "alias": "{{ collectionname }}",
+            "allowedTimeGrainsMs": [
+              300000,
+              900000,
+              1800000,
+              3600000,
+              21600000,
+              43200000,
+              86400000
+            ],
+            "dimensionFilters": [
+              {
+                "dimension": "DatabaseName",
+                "filters": [
+                  "activation"
+                ],
+                "operator": "eq"
+              },
+              {
+                "dimension": "CollectionName",
+                "filters": [],
+                "operator": "eq"
+              }
+            ],
+            "metricName": "IndexUsage",
+            "metricNamespace": "microsoft.documentdb/databaseaccounts",
+            "resources": [
+              {
+                "metricNamespace": "microsoft.documentdb/databaseaccounts",
+                "resourceGroup": "$CosmosRg",
+                "resourceName": "$cosmos_account",
+                "subscription": "$subscription"
+              }
+            ],
+            "timeGrain": "auto",
+            "top": "20"
+          },
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Monitor",
+          "refId": "A",
+          "subscription": "$subscription"
+        }
+      ],
+      "title": "Index usage",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 93
+      },
+      "id": 1111,
+      "options": {
+        "legend": {
+          "calcs": [
+            "max",
+            "lastNotNull"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "sortBy": "Max",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "12.4.8",
+      "targets": [
+        {
+          "azureMonitor": {
+            "aggregation": "Maximum",
+            "alias": "{{ collectionname }}",
+            "allowedTimeGrainsMs": [
+              300000,
+              900000,
+              1800000,
+              3600000,
+              21600000,
+              43200000,
+              86400000
+            ],
+            "dimensionFilters": [
+              {
+                "dimension": "DatabaseName",
+                "filters": [
+                  "activation"
+                ],
+                "operator": "eq"
+              },
+              {
+                "dimension": "CollectionName",
+                "filters": [],
+                "operator": "eq"
+              }
+            ],
+            "metricName": "DocumentCountV2",
+            "metricNamespace": "microsoft.documentdb/databaseaccounts",
+            "resources": [
+              {
+                "metricNamespace": "microsoft.documentdb/databaseaccounts",
+                "resourceGroup": "$CosmosRg",
+                "resourceName": "$cosmos_account",
+                "subscription": "$subscription"
+              }
+            ],
+            "timeGrain": "auto",
+            "top": "20"
+          },
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Monitor",
+          "refId": "A",
+          "subscription": "$subscription"
+        }
+      ],
+      "title": "Numero documenti",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "description": "Minimo nel periodo delle disponibilità orarie dell'account (media e minimo). Azure la calcola solo per le ore con richieste, per questo il grafico aveva dei buchi.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 2,
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "noValue": "Nessun dato nel periodo",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": 0
+              },
+              {
+                "color": "orange",
+                "value": 99.9
+              },
+              {
+                "color": "green",
+                "value": 99.99
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 24,
+        "x": 0,
+        "y": 101
+      },
+      "id": 1112,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "vertical",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "min"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value_and_name",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.4.8",
+      "targets": [
+        {
+          "azureMonitor": {
+            "aggregation": "Average",
+            "alias": "Availability (Avg %)",
+            "allowedTimeGrainsMs": [],
+            "dimensionFilters": [],
+            "metricName": "ServiceAvailability",
+            "metricNamespace": "microsoft.documentdb/databaseaccounts",
+            "resources": [
+              {
+                "metricNamespace": "microsoft.documentdb/databaseaccounts",
+                "resourceGroup": "$CosmosRg",
+                "resourceName": "$cosmos_account",
+                "subscription": "$subscription"
+              }
+            ],
+            "timeGrain": "PT1H",
+            "top": "20"
+          },
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Monitor",
+          "refId": "A",
+          "subscription": "$subscription"
+        },
+        {
+          "azureMonitor": {
+            "aggregation": "Minimum",
+            "alias": "Availability (Min %)",
+            "allowedTimeGrainsMs": [],
+            "dimensionFilters": [],
+            "metricName": "ServiceAvailability",
+            "metricNamespace": "microsoft.documentdb/databaseaccounts",
+            "resources": [
+              {
+                "metricNamespace": "microsoft.documentdb/databaseaccounts",
+                "resourceGroup": "$CosmosRg",
+                "resourceName": "$cosmos_account",
+                "subscription": "$subscription"
+              }
+            ],
+            "timeGrain": "PT1H",
+            "top": "20"
+          },
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Monitor",
+          "refId": "B",
+          "subscription": "$subscription"
+        }
+      ],
+      "title": "Service Availability - Min & Avg % (account)",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "always",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
           "unit": "ms"
         },
         "overrides": []
       },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 105
+      },
+      "id": 1113,
       "options": {
         "legend": {
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true,
           "calcs": [
             "max",
             "mean"
-          ]
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "multi",
           "sort": "desc"
         }
-      }
+      },
+      "pluginVersion": "12.4.8",
+      "targets": [
+        {
+          "azureMonitor": {
+            "aggregation": "Average",
+            "alias": "Avg",
+            "allowedTimeGrainsMs": [],
+            "dimensionFilters": [
+              {
+                "dimension": "DatabaseName",
+                "filters": [
+                  "activation"
+                ],
+                "operator": "eq"
+              },
+              {
+                "dimension": "PublicAPIType",
+                "filters": [
+                  "mongoDB"
+                ],
+                "operator": "eq"
+              }
+            ],
+            "metricName": "ServerSideLatencyGateway",
+            "metricNamespace": "microsoft.documentdb/databaseaccounts",
+            "resources": [
+              {
+                "metricNamespace": "microsoft.documentdb/databaseaccounts",
+                "resourceGroup": "$CosmosRg",
+                "resourceName": "$cosmos_account",
+                "subscription": "$subscription"
+              }
+            ],
+            "timeGrain": "auto",
+            "top": "20"
+          },
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Monitor",
+          "refId": "A",
+          "subscription": "$subscription"
+        },
+        {
+          "azureMonitor": {
+            "aggregation": "Maximum",
+            "alias": "Max",
+            "allowedTimeGrainsMs": [],
+            "dimensionFilters": [
+              {
+                "dimension": "DatabaseName",
+                "filters": [
+                  "activation"
+                ],
+                "operator": "eq"
+              },
+              {
+                "dimension": "PublicAPIType",
+                "filters": [
+                  "mongoDB"
+                ],
+                "operator": "eq"
+              }
+            ],
+            "metricName": "ServerSideLatencyGateway",
+            "metricNamespace": "microsoft.documentdb/databaseaccounts",
+            "resources": [
+              {
+                "metricNamespace": "microsoft.documentdb/databaseaccounts",
+                "resourceGroup": "$CosmosRg",
+                "resourceName": "$cosmos_account",
+                "subscription": "$subscription"
+              }
+            ],
+            "timeGrain": "auto",
+            "top": "20"
+          },
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Monitor",
+          "refId": "B",
+          "subscription": "$subscription"
+        }
+      ],
+      "title": "Latenza server-side Gateway - Avg & Max (ms)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "always",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "ms"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 113
+      },
+      "id": 1114,
+      "options": {
+        "legend": {
+          "calcs": [
+            "max",
+            "mean"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "sortBy": "Max",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "12.4.8",
+      "targets": [
+        {
+          "azureMonitor": {
+            "aggregation": "Average",
+            "alias": "{{ collectionname }} / {{ operationtype }}",
+            "allowedTimeGrainsMs": [],
+            "dimensionFilters": [
+              {
+                "dimension": "DatabaseName",
+                "filters": [
+                  "activation"
+                ],
+                "operator": "eq"
+              },
+              {
+                "dimension": "CollectionName",
+                "filters": [],
+                "operator": "eq"
+              },
+              {
+                "dimension": "OperationType",
+                "filters": [],
+                "operator": "eq"
+              },
+              {
+                "dimension": "PublicAPIType",
+                "filters": [
+                  "mongoDB"
+                ],
+                "operator": "eq"
+              }
+            ],
+            "metricName": "ServerSideLatencyGateway",
+            "metricNamespace": "microsoft.documentdb/databaseaccounts",
+            "resources": [
+              {
+                "metricNamespace": "microsoft.documentdb/databaseaccounts",
+                "resourceGroup": "$CosmosRg",
+                "resourceName": "$cosmos_account",
+                "subscription": "$subscription"
+              }
+            ],
+            "timeGrain": "auto",
+            "top": "20"
+          },
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Monitor",
+          "refId": "A",
+          "subscription": "$subscription"
+        }
+      ],
+      "title": "Latenza media per collection e operazione (ms)",
+      "type": "timeseries"
     }
   ],
+  "preload": false,
   "refresh": "",
   "schemaVersion": 42,
   "tags": [
@@ -1659,19 +3040,17 @@
       },
       {
         "current": {
-          "text": [
-            "All"
-          ],
-          "value": [
-            "$__all"
-          ]
+          "text": "",
+          "value": ""
         },
         "datasource": {
           "type": "grafana-azure-monitor-datasource",
           "uid": "azure-monitor-oob"
         },
         "definition": "",
-        "hide": 0,
+        "hide": 2,
+        "includeAll": false,
+        "label": "Account Cosmos",
         "name": "cosmos_account",
         "options": [],
         "query": {
@@ -1688,22 +3067,19 @@
         "refresh": 1,
         "regex": "/^cstar-[dup]-itn-srtp-cosmos-account$/",
         "regexApplyTo": "value",
-        "type": "query",
-        "label": "Account Cosmos",
-        "multi": true,
-        "includeAll": true,
-        "sort": 1
+        "sort": 1,
+        "type": "query"
       }
     ]
   },
   "time": {
-    "from": "now-6h",
+    "from": "now-7d",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "browser",
   "title": "Cosmos SRTP",
   "uid": "cosmos-srtp",
-  "version": 1,
+  "version": 15,
   "weekStart": ""
 }
