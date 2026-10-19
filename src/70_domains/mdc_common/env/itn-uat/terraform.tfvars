@@ -26,13 +26,22 @@ law_daily_quota_gb    = 15
 audit_export_enabled  = false
 
 aks_nodepool = {
+  enabled           = false
   vm_sku_name       = "Standard_D4ads_v5_active"
   autoscale_enabled = true
   node_count_min    = 1
   node_count_max    = 2
 }
 
+aks_foobar_nodepool = {
+  enabled           = true
+  vm_sku_name       = "Standard_D4ads"
+  autoscale_enabled = true
+  node_count_min    = 1
+  node_count_max    = 2
+}
+
 cosmos_mongodb_common_configuration = {
-  max_throughput    = 1000
+  max_throughput    = 10000
   autoscale_enabled = true
 }

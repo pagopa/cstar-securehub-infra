@@ -128,3 +128,11 @@ export_initiatives = [
     kv_secret_email   = "idpay-export-email-mimit"
   }
 ]
+
+blue_green_node_pool_enabled = false
+aks_foobar_idpay_node_pool_configuration = {
+  enabled        = true,
+  tier           = "Standard_D8ads"
+  node_count_min = 2,
+  node_count_max = 3
+}

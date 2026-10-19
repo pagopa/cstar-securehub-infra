@@ -170,13 +170,6 @@ variable "nginx_helm" {
   type = object({
     version = string,
     controller = object({
-      image = object({
-        registry     = string,
-        image        = string,
-        tag          = string,
-        digest       = string,
-        digestchroot = string,
-      }),
       resources = object({
         requests = object({
           memory : string
@@ -210,4 +203,19 @@ variable "skip_metric_validation" {
 variable "keda_helm_chart_version" {
   type        = string
   description = "keda helm chart version"
+}
+
+
+variable "blue_green_node_pool_enabled" {
+  type    = bool
+  default = true
+}
+
+variable "aks_foobar_user_node_pool_configuration" {
+  type = object({
+    enabled        = optional(bool, false),
+    tier           = string,
+    node_count_min = number,
+    node_count_max = number,
+  })
 }
