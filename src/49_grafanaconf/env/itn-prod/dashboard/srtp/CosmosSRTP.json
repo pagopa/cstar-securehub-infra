@@ -19,28 +19,37 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
-  "links": [
-    {
-      "asDropdown": true,
-      "icon": "external link",
-      "includeVars": false,
-      "keepTime": true,
-      "tags": [
-        "srtp"
-      ],
-      "targetBlank": false,
-      "title": "SRTP",
-      "type": "dashboards"
-    }
-  ],
+  "links": [],
   "panels": [
+    {
+      "gridPos": {
+        "h": 2,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "### [Activator](/d/srtp-operational-excellence?from=${__from}&to=${__to}) &nbsp;&nbsp;|&nbsp;&nbsp; [Sender](/d/srtp-opex-sender?from=${__from}&to=${__to}) &nbsp;&nbsp;|&nbsp;&nbsp; **▸ Cosmos SRTP**",
+        "mode": "markdown"
+      },
+      "pluginVersion": "12.4.8",
+      "title": "",
+      "transparent": true,
+      "type": "text"
+    },
     {
       "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 0
+        "y": 2
       },
       "id": 1100,
       "panels": [],
@@ -56,7 +65,7 @@
         "h": 11,
         "w": 24,
         "x": 0,
-        "y": 1
+        "y": 3
       },
       "id": 1101,
       "options": {
@@ -77,7 +86,6 @@
         "type": "grafana-azure-monitor-datasource",
         "uid": "azure-monitor-oob"
       },
-      "description": "Una riga per collection del database activation. Totale nel periodo per RU e richieste, ultimo valore per i documenti, massimo per lo storage. I valori a livello database (autoscale, Normalized RU %, throttling) sono nei riquadri a destra.",
       "fieldConfig": {
         "defaults": {
           "custom": {
@@ -92,17 +100,17 @@
             "inspect": false
           },
           "decimals": 0,
-          "fieldMinMax": true,
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
                 "color": "text",
-                "value": 0
+                "value": null
               }
             ]
-          }
+          },
+          "fieldMinMax": true
         },
         "overrides": [
           {
@@ -119,13 +127,13 @@
                 "id": "mappings",
                 "value": [
                   {
+                    "type": "value",
                     "options": {
                       "<empty>": {
-                        "index": 0,
-                        "text": "(comandi senza collection)"
+                        "text": "(comandi senza collection)",
+                        "index": 0
                       }
-                    },
-                    "type": "value"
+                    }
                   }
                 ]
               }
@@ -148,15 +156,15 @@
               {
                 "id": "color",
                 "value": {
-                  "fixedColor": "orange",
-                  "mode": "fixed"
+                  "mode": "fixed",
+                  "fixedColor": "orange"
                 }
               },
               {
                 "id": "custom.cellOptions",
                 "value": {
-                  "mode": "basic",
                   "type": "gauge",
+                  "mode": "basic",
                   "valueDisplayMode": "text"
                 }
               }
@@ -179,15 +187,15 @@
               {
                 "id": "color",
                 "value": {
-                  "fixedColor": "blue",
-                  "mode": "fixed"
+                  "mode": "fixed",
+                  "fixedColor": "blue"
                 }
               },
               {
                 "id": "custom.cellOptions",
                 "value": {
-                  "mode": "basic",
                   "type": "gauge",
+                  "mode": "basic",
                   "valueDisplayMode": "text"
                 }
               },
@@ -231,7 +239,7 @@
         "h": 9,
         "w": 20,
         "x": 0,
-        "y": 12
+        "y": 14
       },
       "id": 1102,
       "options": {
@@ -474,48 +482,48 @@
       "title": "Utilizzo per collection",
       "transformations": [
         {
+          "id": "reduce",
           "filter": {
             "id": "byRefId",
             "options": "/^(?:A|B)$/"
           },
-          "id": "reduce",
           "options": {
-            "includeTimeField": false,
-            "labelsToFields": true,
             "mode": "seriesToRows",
             "reducers": [
               "sum"
-            ]
+            ],
+            "includeTimeField": false,
+            "labelsToFields": true
           }
         },
         {
+          "id": "reduce",
           "filter": {
             "id": "byRefId",
             "options": "/^(?:D|E)$/"
           },
-          "id": "reduce",
           "options": {
-            "includeTimeField": false,
-            "labelsToFields": true,
             "mode": "seriesToRows",
             "reducers": [
               "max"
-            ]
+            ],
+            "includeTimeField": false,
+            "labelsToFields": true
           }
         },
         {
+          "id": "reduce",
           "filter": {
             "id": "byRefId",
             "options": "/^(?:C)$/"
           },
-          "id": "reduce",
           "options": {
-            "includeTimeField": false,
-            "labelsToFields": true,
             "mode": "seriesToRows",
             "reducers": [
               "lastNotNull"
-            ]
+            ],
+            "includeTimeField": false,
+            "labelsToFields": true
           }
         },
         {
@@ -525,26 +533,26 @@
         {
           "id": "calculateField",
           "options": {
-            "alias": "Valore",
             "mode": "reduceRow",
             "reduce": {
+              "reducer": "lastNotNull",
               "include": [
                 "Total",
                 "Max",
                 "Last *"
-              ],
-              "reducer": "lastNotNull"
+              ]
             },
+            "alias": "Valore",
             "replaceFields": false
           }
         },
         {
           "id": "groupingToMatrix",
           "options": {
-            "columnField": "Field",
-            "emptyValue": "null",
             "rowField": "collectionname",
-            "valueField": "Valore"
+            "columnField": "Field",
+            "valueField": "Valore",
+            "emptyValue": "null"
           }
         },
         {
@@ -552,25 +560,26 @@
           "options": {
             "excludeByName": {},
             "indexByName": {
-              "(deprecated) Data Usage": 4,
-              "(deprecated) Index Usage": 5,
-              "Document Count": 3,
-              "Mongo Requests": 2,
+              "collectionname\\Field": 0,
               "Total Request Units": 1,
-              "collectionname\\Field": 0
+              "Mongo Requests": 2,
+              "Document Count": 3,
+              "(deprecated) Data Usage": 4,
+              "(deprecated) Index Usage": 5
             },
             "renameByName": {
-              "(deprecated) Data Usage": "Data Usage (Max)",
-              "(deprecated) Index Usage": "Index Usage (Max)",
-              "Document Count": "Document Count",
-              "Mongo Requests": "Mongo Requests (Count)",
+              "collectionname\\Field": "Collection",
               "Total Request Units": "Total RU Consumed (Sum)",
-              "collectionname\\Field": "Collection"
+              "Mongo Requests": "Mongo Requests (Count)",
+              "Document Count": "Document Count",
+              "(deprecated) Data Usage": "Data Usage (Max)",
+              "(deprecated) Index Usage": "Index Usage (Max)"
             }
           }
         }
       ],
-      "type": "table"
+      "type": "table",
+      "description": "Una riga per collection del database activation. Totale nel periodo per RU e richieste, ultimo valore per i documenti, massimo per lo storage. I valori a livello database (autoscale, Normalized RU %, throttling) sono nei riquadri a destra."
     },
     {
       "datasource": {
@@ -585,17 +594,17 @@
             "mode": "fixed"
           },
           "decimals": 0,
+          "unit": "short",
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
                 "color": "blue",
-                "value": 0
+                "value": null
               }
             ]
-          },
-          "unit": "short"
+          }
         },
         "overrides": []
       },
@@ -603,7 +612,7 @@
         "h": 3,
         "w": 4,
         "x": 20,
-        "y": 12
+        "y": 14
       },
       "id": 1115,
       "options": {
@@ -611,7 +620,6 @@
         "graphMode": "none",
         "justifyMode": "center",
         "orientation": "auto",
-        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -684,13 +692,14 @@
             "mode": "thresholds"
           },
           "decimals": 1,
+          "unit": "percent",
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
                 "color": "green",
-                "value": 0
+                "value": null
               },
               {
                 "color": "orange",
@@ -701,8 +710,7 @@
                 "value": 90
               }
             ]
-          },
-          "unit": "percent"
+          }
         },
         "overrides": []
       },
@@ -710,7 +718,7 @@
         "h": 3,
         "w": 4,
         "x": 20,
-        "y": 15
+        "y": 17
       },
       "id": 1116,
       "options": {
@@ -718,7 +726,6 @@
         "graphMode": "none",
         "justifyMode": "center",
         "orientation": "auto",
-        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "max"
@@ -783,14 +790,14 @@
             "mode": "thresholds"
           },
           "decimals": 0,
+          "unit": "short",
           "mappings": [],
-          "noValue": "0",
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
                 "color": "green",
-                "value": 0
+                "value": null
               },
               {
                 "color": "red",
@@ -798,7 +805,7 @@
               }
             ]
           },
-          "unit": "short"
+          "noValue": "0"
         },
         "overrides": []
       },
@@ -806,7 +813,7 @@
         "h": 3,
         "w": 4,
         "x": 20,
-        "y": 18
+        "y": 20
       },
       "id": 1117,
       "options": {
@@ -814,7 +821,6 @@
         "graphMode": "none",
         "justifyMode": "center",
         "orientation": "auto",
-        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "sum"
@@ -947,7 +953,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 21
+        "y": 23
       },
       "id": 1103,
       "options": {
@@ -1032,7 +1038,7 @@
             "steps": [
               {
                 "color": "text",
-                "value": 0
+                "value": null
               }
             ]
           }
@@ -1048,13 +1054,13 @@
                 "id": "mappings",
                 "value": [
                   {
+                    "type": "value",
                     "options": {
                       "<empty>": {
-                        "index": 0,
-                        "text": "tutte (throughput condiviso)"
+                        "text": "tutte (throughput condiviso)",
+                        "index": 0
                       }
-                    },
-                    "type": "value"
+                    }
                   }
                 ]
               },
@@ -1115,7 +1121,7 @@
                   "steps": [
                     {
                       "color": "green",
-                      "value": 0
+                      "value": null
                     },
                     {
                       "color": "orange",
@@ -1131,8 +1137,8 @@
               {
                 "id": "custom.cellOptions",
                 "value": {
-                  "mode": "basic",
                   "type": "gauge",
+                  "mode": "basic",
                   "valueDisplayMode": "text"
                 }
               }
@@ -1156,7 +1162,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 21
+        "y": 23
       },
       "id": 1119,
       "options": {
@@ -1222,24 +1228,24 @@
         {
           "id": "reduce",
           "options": {
-            "includeTimeField": false,
-            "labelsToFields": true,
             "mode": "seriesToRows",
             "reducers": [
               "lastNotNull"
-            ]
+            ],
+            "includeTimeField": false,
+            "labelsToFields": true
           }
         },
         {
           "id": "calculateField",
           "options": {
-            "alias": "Uso del limite 50 GB",
+            "mode": "binary",
             "binary": {
               "left": "Last *",
               "operator": "/",
               "right": "53687091200"
             },
-            "mode": "binary",
+            "alias": "Uso del limite 50 GB",
             "replaceFields": false
           }
         },
@@ -1247,21 +1253,21 @@
           "id": "organize",
           "options": {
             "excludeByName": {
-              "Difference": true,
               "Field": true,
               "databasename": true,
-              "resourceName": true
+              "resourceName": true,
+              "Difference": true
             },
             "indexByName": {
-              "Last *": 2,
-              "Uso del limite 50 GB": 3,
               "collectionname": 0,
-              "physicalpartitionid": 1
+              "physicalpartitionid": 1,
+              "Last *": 2,
+              "Uso del limite 50 GB": 3
             },
             "renameByName": {
-              "Last *": "Dimensione",
               "collectionname": "Collection",
-              "physicalpartitionid": "Partizione"
+              "physicalpartitionid": "Partizione",
+              "Last *": "Dimensione"
             }
           }
         }
@@ -1341,7 +1347,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 29
+        "y": 31
       },
       "id": 1118,
       "options": {
@@ -1474,7 +1480,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 37
+        "y": 39
       },
       "id": 1104,
       "options": {
@@ -1549,58 +1555,14 @@
       },
       "fieldConfig": {
         "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
           "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 10,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
             "lineWidth": 2,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
             "showPoints": "never",
-            "showValues": false,
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
+            "spanNulls": false
           },
-          "mappings": [],
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
+          "min": 0
         },
         "overrides": []
       },
@@ -1608,7 +1570,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 45
+        "y": 47
       },
       "id": 1106,
       "options": {
@@ -1625,12 +1587,10 @@
           "sortDesc": true
         },
         "tooltip": {
-          "hideZeros": false,
           "mode": "multi",
           "sort": "desc"
         }
       },
-      "pluginVersion": "12.4.8",
       "targets": [
         {
           "azureMonitor": {
@@ -1689,59 +1649,15 @@
       "description": "Qualsiasi valore >0 indica throttling attivo.",
       "fieldConfig": {
         "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
           "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 10,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
             "lineWidth": 2,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
             "showPoints": "never",
-            "showValues": false,
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
+            "spanNulls": false
           },
-          "mappings": [],
           "min": 0,
-          "noValue": "Nessuna richiesta throttled nel periodo",
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
+          "noValue": "Nessuna richiesta throttled nel periodo"
         },
         "overrides": []
       },
@@ -1749,7 +1665,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 53
+        "y": 55
       },
       "id": 1105,
       "options": {
@@ -1766,12 +1682,10 @@
           "sortDesc": true
         },
         "tooltip": {
-          "hideZeros": false,
           "mode": "multi",
           "sort": "desc"
         }
       },
-      "pluginVersion": "12.4.8",
       "targets": [
         {
           "azureMonitor": {
@@ -1831,58 +1745,14 @@
       },
       "fieldConfig": {
         "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
           "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 10,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
             "lineWidth": 2,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
             "showPoints": "never",
-            "showValues": false,
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
+            "spanNulls": false
           },
-          "mappings": [],
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
+          "min": 0
         },
         "overrides": []
       },
@@ -1890,7 +1760,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 61
+        "y": 63
       },
       "id": 1107,
       "options": {
@@ -1907,12 +1777,10 @@
           "sortDesc": true
         },
         "tooltip": {
-          "hideZeros": false,
           "mode": "multi",
           "sort": "desc"
         }
       },
-      "pluginVersion": "12.4.8",
       "targets": [
         {
           "azureMonitor": {
@@ -1970,59 +1838,15 @@
       },
       "fieldConfig": {
         "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
           "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 10,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
             "lineWidth": 2,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
             "showPoints": "never",
-            "showValues": false,
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
+            "spanNulls": false
           },
-          "mappings": [],
           "min": 0,
-          "noValue": "Nessuna richiesta fallita nel periodo",
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
+          "noValue": "Nessuna richiesta fallita nel periodo"
         },
         "overrides": []
       },
@@ -2030,7 +1854,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 69
+        "y": 71
       },
       "id": 1108,
       "options": {
@@ -2047,12 +1871,10 @@
           "sortDesc": true
         },
         "tooltip": {
-          "hideZeros": false,
           "mode": "multi",
           "sort": "desc"
         }
       },
-      "pluginVersion": "12.4.8",
       "targets": [
         {
           "azureMonitor": {
@@ -2113,58 +1935,14 @@
       "description": "Granularità minima 5 minuti.",
       "fieldConfig": {
         "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
           "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 10,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
             "lineWidth": 2,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
             "showPoints": "never",
-            "showValues": false,
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
+            "spanNulls": false
           },
-          "mappings": [],
           "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
           "unit": "bytes"
         },
         "overrides": []
@@ -2173,7 +1951,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 77
+        "y": 79
       },
       "id": 1109,
       "options": {
@@ -2189,12 +1967,10 @@
           "sortDesc": true
         },
         "tooltip": {
-          "hideZeros": false,
           "mode": "multi",
           "sort": "desc"
         }
       },
-      "pluginVersion": "12.4.8",
       "targets": [
         {
           "azureMonitor": {
@@ -2256,58 +2032,14 @@
       "description": "Granularità minima 5 minuti.",
       "fieldConfig": {
         "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
           "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 10,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
             "lineWidth": 2,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
             "showPoints": "never",
-            "showValues": false,
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
+            "spanNulls": false
           },
-          "mappings": [],
           "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
           "unit": "bytes"
         },
         "overrides": []
@@ -2316,7 +2048,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 85
+        "y": 87
       },
       "id": 1110,
       "options": {
@@ -2332,12 +2064,10 @@
           "sortDesc": true
         },
         "tooltip": {
-          "hideZeros": false,
           "mode": "multi",
           "sort": "desc"
         }
       },
-      "pluginVersion": "12.4.8",
       "targets": [
         {
           "azureMonitor": {
@@ -2398,58 +2128,14 @@
       },
       "fieldConfig": {
         "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
           "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 10,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
             "lineWidth": 2,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
             "showPoints": "never",
-            "showValues": false,
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
+            "spanNulls": false
           },
-          "mappings": [],
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
+          "min": 0
         },
         "overrides": []
       },
@@ -2457,7 +2143,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 93
+        "y": 95
       },
       "id": 1111,
       "options": {
@@ -2473,12 +2159,10 @@
           "sortDesc": true
         },
         "tooltip": {
-          "hideZeros": false,
           "mode": "multi",
           "sort": "desc"
         }
       },
-      "pluginVersion": "12.4.8",
       "targets": [
         {
           "azureMonitor": {
@@ -2544,16 +2228,17 @@
             "mode": "thresholds"
           },
           "decimals": 2,
-          "mappings": [],
-          "max": 100,
+          "unit": "percent",
           "min": 0,
+          "max": 100,
+          "mappings": [],
           "noValue": "Nessun dato nel periodo",
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
                 "color": "red",
-                "value": 0
+                "value": null
               },
               {
                 "color": "orange",
@@ -2564,8 +2249,7 @@
                 "value": 99.99
               }
             ]
-          },
-          "unit": "percent"
+          }
         },
         "overrides": []
       },
@@ -2573,7 +2257,7 @@
         "h": 4,
         "w": 24,
         "x": 0,
-        "y": 101
+        "y": 103
       },
       "id": 1112,
       "options": {
@@ -2581,7 +2265,6 @@
         "graphMode": "none",
         "justifyMode": "center",
         "orientation": "vertical",
-        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "min"
@@ -2593,7 +2276,6 @@
         "textMode": "value_and_name",
         "wideLayout": true
       },
-      "pluginVersion": "12.4.8",
       "targets": [
         {
           "azureMonitor": {
@@ -2660,58 +2342,15 @@
       },
       "fieldConfig": {
         "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
           "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 10,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
             "lineWidth": 2,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
             "showPoints": "always",
-            "showValues": false,
             "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
+            "pointSize": 5
           },
-          "mappings": [],
           "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
           "unit": "ms"
         },
         "overrides": []
@@ -2720,7 +2359,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 105
+        "y": 107
       },
       "id": 1113,
       "options": {
@@ -2734,12 +2373,10 @@
           "showLegend": true
         },
         "tooltip": {
-          "hideZeros": false,
           "mode": "multi",
           "sort": "desc"
         }
       },
-      "pluginVersion": "12.4.8",
       "targets": [
         {
           "azureMonitor": {
@@ -2836,58 +2473,15 @@
       },
       "fieldConfig": {
         "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
           "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 10,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
             "lineWidth": 2,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
             "showPoints": "always",
-            "showValues": false,
             "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
+            "pointSize": 5
           },
-          "mappings": [],
           "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
           "unit": "ms"
         },
         "overrides": []
@@ -2896,7 +2490,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 113
+        "y": 115
       },
       "id": 1114,
       "options": {
@@ -2912,12 +2506,10 @@
           "sortDesc": true
         },
         "tooltip": {
-          "hideZeros": false,
           "mode": "multi",
           "sort": "desc"
         }
       },
-      "pluginVersion": "12.4.8",
       "targets": [
         {
           "azureMonitor": {
@@ -3048,9 +2640,9 @@
           "uid": "azure-monitor-oob"
         },
         "definition": "",
-        "hide": 2,
         "includeAll": false,
         "label": "Account Cosmos",
+        "multi": false,
         "name": "cosmos_account",
         "options": [],
         "query": {
@@ -3068,18 +2660,18 @@
         "regex": "/^cstar-[dup]-itn-srtp-cosmos-account$/",
         "regexApplyTo": "value",
         "sort": 1,
-        "type": "query"
+        "type": "query",
+        "hide": 2
       }
     ]
   },
   "time": {
-    "from": "now-7d",
+    "from": "now-24h",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "browser",
-  "title": "Cosmos SRTP",
+  "title": "SRTP Operational Excellence · Cosmos",
   "uid": "cosmos-srtp",
-  "version": 15,
   "weekStart": ""
 }
