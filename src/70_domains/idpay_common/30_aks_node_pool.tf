@@ -77,10 +77,11 @@ module "foo_bar_idpay_node_pool" {
   double_node_pool = {
     enabled = true
     node_pool_foo = {
-      active = true
+      active = var.env_short == "d" ? true : false
     }
     node_pool_bar = {
-      active = false
+      active           = var.env_short == "d" ? false : true
+      version_override = var.env_short == "d" ? null : "1.35.8"
     }
   }
 
