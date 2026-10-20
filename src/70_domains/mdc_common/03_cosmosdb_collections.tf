@@ -89,8 +89,8 @@ locals {
     {
       name = "payment_attempt"
       indexes = [{
-          keys   = ["_id"]
-          unique = true
+        keys   = ["_id"]
+        unique = true
         },
         {
           keys   = ["tppId", "originId", "fiscalCode"]
