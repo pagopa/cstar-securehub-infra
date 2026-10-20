@@ -172,3 +172,18 @@ variable "adx_table_hot_cache_period_days" {
   description = "Hot cache period override for specific ADX tables (in days). If null, falls back to DB default."
   default     = null
 }
+
+
+variable "blue_green_node_pool_enabled" {
+  type    = bool
+  default = true
+}
+
+variable "aks_foobar_srtp_node_pool_configuration" {
+  type = object({
+    enabled        = optional(bool, false),
+    tier           = string,
+    node_count_min = number,
+    node_count_max = number,
+  })
+}

@@ -47,11 +47,11 @@ let actuals = materialize(
         window_start = targetDateLabel,
         total_failures = coalesce(totalFailures, tolong(0)),
         total_successes = coalesce(totalSuccesses, tolong(0))
-    | project window_start, category, count = count_, total_failures, total_successes
+    | project window_start, category, total = count_, total_failures, total_successes
     | extend is_dummy = 0, pipeline_run_id = pipelineRunId
 );
-let default_row = print window_start = targetDateLabel, category = "None", count = tolong(0), total_failures = tolong(0), total_successes = tolong(0), is_dummy = 1, pipeline_run_id = pipelineRunId;
+let default_row = print window_start = targetDateLabel, category = "None", total = tolong(0), total_failures = tolong(0), total_successes = tolong(0), is_dummy = 1, pipeline_run_id = pipelineRunId;
 union actuals, default_row
 | where toscalar(actuals | count) == 0 or is_dummy == 0
-| order by count desc
-| project window_start, category, count, total_failures, total_successes, pipeline_run_id
+| order by total desc
+| project window_start, category, total, total_failures, total_successes, pipeline_run_id

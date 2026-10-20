@@ -21,7 +21,7 @@ aks_sku_tier                   = "Standard"
 aks_private_cluster_is_enabled = true
 aks_alerts_enabled             = false
 
-aks_kubernetes_version = "1.34.2"
+aks_kubernetes_version = "1.35.8"
 
 # Standard is recommended tier
 # D – General purpose compute
@@ -92,4 +92,13 @@ reloader_helm = {
   chart_version = "v1.3.0"
   image_name    = "stakater/reloader"
   image_tag     = "v1.4.0@sha256:40e379c2b20350235aca2f0a43cc6f8a89397cef6869cb3a95db03390684390a"
+}
+
+blue_green_node_pool_enabled = false
+
+aks_foobar_user_node_pool_configuration = {
+  enabled        = true,
+  tier           = "Standard_D4ads"
+  node_count_min = 1,
+  node_count_max = 3,
 }
