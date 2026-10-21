@@ -1,5 +1,0 @@
-prefix         = "cstar"
-env            = "prod"
-env_short      = "p"
-location_short = "itn"
-domain         = "mcshared"

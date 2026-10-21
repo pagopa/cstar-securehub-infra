@@ -11,6 +11,12 @@ module "secrets" {
     "ar-backoffice-client-id",
     "ar-backoffice-client-secret",
     "ar-backoffice-admin-client-id",
-    "ar-backoffice-admin-client-secret"
+    "ar-backoffice-admin-client-secret",
+    var.env_short == "u" ? "mdc-bo-int-admin-username" : null,
+    var.env_short == "u" ? "mdc-bo-int-admin-password" : null,
+    var.env_short == "u" ? "mdc-bo-int-write-username" : null,
+    var.env_short == "u" ? "mdc-bo-int-write-password" : null,
+    var.env_short == "u" ? "mdc-bo-int-read-username" : null,
+    var.env_short == "u" ? "mdc-bo-int-read-password" : null
   ])
 }

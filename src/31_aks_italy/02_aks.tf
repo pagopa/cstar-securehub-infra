@@ -7,7 +7,6 @@ resource "azurerm_resource_group" "aks_rg" {
 
 module "aks" {
   source = "./.terraform/modules/__v4__/kubernetes_cluster"
-  # source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//kubernetes_cluster?ref=aks-ignore-workload-autoscale"
 
   name                       = local.aks_name
   location                   = var.location
@@ -96,6 +95,11 @@ module "aks" {
   automatic_channel_upgrade = null
   maintenance_windows_node_os = {
     enabled = true
+  }
+
+  ama_log_collection_settings = {
+    enable_log_collection_cm = true
+    enable_stdout_logs       = true
   }
 
   tags = local.tags

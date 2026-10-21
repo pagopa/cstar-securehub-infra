@@ -30,8 +30,12 @@ terraform {
       source  = "keycloak/keycloak"
       version = "~> 5.0"
     }
+    postgresql = {
+      source  = "cyrilgdn/postgresql"
+      version = "~> 1.26.0"
+    }
     azapi = {
-      source  = "Azure/azapi"
+      source  = "azure/azapi"
       version = "~> 2.6"
     }
   }
@@ -55,6 +59,29 @@ provider "helm" {
   kubernetes {
     config_path = "${var.k8s_kube_config_path_prefix}/config-${local.aks_name}"
   }
+}
+
+provider "postgresql" {
+  # IDPay PostgreSQL is disabled in PROD; keep the provider unused there.
+  host      = try(module.idpay_pgflex[0].fqdn, "localhost")
+  port      = 5432
+  database  = "idpay-database"
+  username  = try(azurerm_key_vault_secret.idpay_postgres_admin_user[0].value, "disabled")
+  password  = try(azurerm_key_vault_secret.idpay_postgres_admin_password[0].value, "disabled")
+  sslmode   = "require"
+  superuser = false
+}
+
+provider "postgresql" {
+  alias = "payment"
+
+  host      = try(module.idpay_pgflex[0].fqdn, "localhost")
+  port      = 5432
+  database  = "idpay-database"
+  username  = try(azurerm_key_vault_secret.idpay_postgres_service_user["payment"].value, "disabled")
+  password  = try(azurerm_key_vault_secret.idpay_postgres_service_password["payment"].value, "disabled")
+  sslmode   = "require"
+  superuser = false
 }
 
 provider "argocd" {
@@ -84,6 +111,6 @@ provider "keycloak" {
 }
 
 module "__v4__" {
-  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v10.24.2
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=d68ef3b9c833eeaa49d41c95532bc231d15be8f6"
+  # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v10.43.0
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=7e5635fc04118ced0abbf7089611b4178d447322"
 }

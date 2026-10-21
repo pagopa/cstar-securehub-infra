@@ -1,3 +1,30 @@
+
+locals {
+  production_property_validation_initiatives = {
+    (var.bonus_elettrodomestici_initiative_id) = "PRODUCT_GTIN"
+    (var.bonus_decoder_initiative_id)          = "PRODUCT_GTIN"
+  }
+
+  test_property_validation_initiative_ids = toset(compact([
+    var.bonus_test_decoder_open_initiative_id,
+    var.bonus_test_decoder_close_initiative_id,
+    var.bonus_test_elettrodomestici_open_initiative_id,
+    var.bonus_test_elettrodomestici_close_initiative_id,
+  ]))
+
+  test_property_validation_initiatives = {
+    for initiative_id in local.test_property_validation_initiative_ids :
+    initiative_id => "PRODUCT_GTIN"
+  }
+
+  property_validation_initiatives = merge(
+    local.production_property_validation_initiatives,
+    contains(["dev", "uat"], var.env)
+    ? local.test_property_validation_initiatives
+    : {}
+  )
+}
+
 resource "kubernetes_config_map" "idpay-common" {
   metadata {
     name      = "idpay-common"
@@ -8,7 +35,6 @@ resource "kubernetes_config_map" "idpay-common" {
     TZ = "Europe/Rome",
   }
 }
-
 
 resource "kubernetes_config_map" "idpay-payment-initiatives-property-validation" {
   metadata {
@@ -21,10 +47,7 @@ resource "kubernetes_config_map" "idpay-payment-initiatives-property-validation"
       app = {
         bar-code = {
           "additional-properties-validation" = {
-            initiatives = {
-              (var.bonus_elettrodomestici_initiative_id) = "PRODUCT_GTIN",
-              (var.bonus_decoder_initiative_id)          = "PRODUCT_GTIN"
-            }
+            initiatives = local.property_validation_initiatives
           }
         }
       }

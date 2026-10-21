@@ -33,3 +33,9 @@ data "azurerm_api_management" "apim" {
   name                = local.apim_name
   resource_group_name = local.apim_rg_name
 }
+
+data "azuread_group" "ad_groups_rbac" {
+  for_each = local.ad_groups_rbac
+
+  display_name = each.value.display_name
+}

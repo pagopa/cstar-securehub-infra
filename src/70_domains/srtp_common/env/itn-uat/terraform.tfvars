@@ -25,17 +25,16 @@ cosmos_payee_db_autoscale_max_throughput = 1000
 cosmos_otp_ttl = 3600
 
 # AKS
-aks_nodepool_blue = {
+aks_nodepool_green = {
   vm_sku_name    = "Standard_D4ads_v5_active"
   node_count_min = 1
   node_count_max = 2
 }
 
-aks_nodepool_green = {
-  vm_sku_name       = "Standard_D4ads_v5_passive"
-  autoscale_enabled = false
-  node_count_min    = 0
-  node_count_max    = 0
+aks_nodepool_blue = {
+  vm_sku_name    = "Standard_D4ads_v5_passive"
+  node_count_min = 1
+  node_count_max = 2
 }
 
 ### Redis Cache
@@ -44,3 +43,11 @@ redis_idh_resource_tier = "basic"
 ### ADX
 adx_db_soft_delete_period_days = 15
 adx_db_hot_cache_period_days   = 5
+
+blue_green_node_pool_enabled = true
+aks_foobar_srtp_node_pool_configuration = {
+  enabled        = true,
+  tier           = "Standard_D4ads"
+  node_count_min = 1,
+  node_count_max = 2,
+}

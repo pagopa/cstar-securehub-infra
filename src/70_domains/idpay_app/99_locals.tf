@@ -129,6 +129,8 @@ locals {
   gh_runners_cae_name = "${var.prefix}-${var.env_short}-${var.location_short}-platform-github-cae"
   gh_runners_cae_rg   = "${var.prefix}-${var.env_short}-${var.location_short}-platform-compute-rg"
 
+  gh_runner_timeout_in_seconds = 3600
+
   #
   # Name of the secret that contains the GitHub token.
   #

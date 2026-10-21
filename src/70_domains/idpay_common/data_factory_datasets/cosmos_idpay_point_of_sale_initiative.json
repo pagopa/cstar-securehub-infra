@@ -1,0 +1,19 @@
+{
+    "name": "cosmos_idpay_point_of_sale_initiative",
+    "properties": {
+        "linkedServiceName": {
+            "referenceName": "idpay-CosmosDB-idpay-pagamenti-ls",
+            "type": "LinkedServiceReference"
+        },
+        "annotations": [
+            "Point of Sale Initiative",
+            "IdPay",
+            "Multi-Initiative"
+        ],
+        "type": "CosmosDbMongoDbApiCollection",
+        "typeProperties": {
+            "collection": "point_of_sales_initiative"
+        }
+    },
+    "type": "Microsoft.DataFactory/factories/datasets"
+}
