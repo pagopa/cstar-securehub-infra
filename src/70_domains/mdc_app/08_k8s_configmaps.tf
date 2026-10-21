@@ -29,9 +29,9 @@ resource "kubernetes_config_map" "emd_eventhub" {
     emd_notify_error_topic              = "emd-notify-error"
 
     emd-courtesy-message-requested-consumer-group = "emd-courtesy-message-requested-consumer-group"
-    emd-courtesy-message-requested-topic = "emd-courtesy-message-requested"
-    emd-notification-failed-consumer-group     = "emd-notification-failed-consumer-group"
-    emd-notification-failed-topic     = "emd-notification-failed"
+    emd-courtesy-message-requested-topic          = "emd-courtesy-message-requested"
+    emd-notification-failed-consumer-group        = "emd-notification-failed-consumer-group"
+    emd-notification-failed-topic                 = "emd-notification-failed"
   }
 
 }
