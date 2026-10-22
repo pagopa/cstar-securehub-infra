@@ -2221,7 +2221,7 @@
         "type": "grafana-azure-monitor-datasource",
         "uid": "azure-monitor-oob"
       },
-      "description": "Minimo nel periodo delle disponibilità orarie dell'account (media e minimo). Azure la calcola solo per le ore con richieste, per questo il grafico aveva dei buchi.",
+      "description": "Minimo nel periodo delle disponibilità medie orarie dell'account. La metrica è interrogata con aggregazione Average (l'unica supportata) a granularità PT1H e il minimo è calcolato da Grafana. Azure la calcola solo per le ore con richieste.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -2280,7 +2280,7 @@
         {
           "azureMonitor": {
             "aggregation": "Average",
-            "alias": "Availability (Avg %)",
+            "alias": "Disponibilità minima oraria (%)",
             "allowedTimeGrainsMs": [],
             "dimensionFilters": [],
             "metricName": "ServiceAvailability",
@@ -2303,36 +2303,9 @@
           "queryType": "Azure Monitor",
           "refId": "A",
           "subscription": "$subscription"
-        },
-        {
-          "azureMonitor": {
-            "aggregation": "Minimum",
-            "alias": "Availability (Min %)",
-            "allowedTimeGrainsMs": [],
-            "dimensionFilters": [],
-            "metricName": "ServiceAvailability",
-            "metricNamespace": "microsoft.documentdb/databaseaccounts",
-            "resources": [
-              {
-                "metricNamespace": "microsoft.documentdb/databaseaccounts",
-                "resourceGroup": "$CosmosRg",
-                "resourceName": "$cosmos_account",
-                "subscription": "$subscription"
-              }
-            ],
-            "timeGrain": "PT1H",
-            "top": "20"
-          },
-          "datasource": {
-            "type": "grafana-azure-monitor-datasource",
-            "uid": "azure-monitor-oob"
-          },
-          "queryType": "Azure Monitor",
-          "refId": "B",
-          "subscription": "$subscription"
         }
       ],
-      "title": "Service Availability - Min & Avg % (account)",
+      "title": "Service Availability - Min % (minimo delle medie orarie, account)",
       "type": "stat"
     },
     {
