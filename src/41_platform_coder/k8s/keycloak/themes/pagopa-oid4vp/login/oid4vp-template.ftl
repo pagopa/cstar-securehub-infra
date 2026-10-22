@@ -46,7 +46,7 @@
             <div class="oid4vp-card__header">
                 <h1 class="oid4vp-card__title" id="kc-page-title"><#nested "header"></h1>
                 <p class="oid4vp-card__description">
-                    Usa la funzionalit&agrave; di <strong>{IO, l&rsquo;app dei servizi pubblici}</strong><br>
+                    Usa la funzionalit&agrave; del <strong>Wallet</strong><br>
                     o la <strong>fotocamera</strong> del tuo smartphone
                 </p>
             </div>
