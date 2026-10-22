@@ -198,7 +198,7 @@
           "azureLogAnalytics": {
             "dashboardTime": false,
             "mode": "raw",
-            "query": "AppTraces\r\n| where $__timeFilter(TimeGenerated)\r\n| where Message contains \"[EMD][PAYMENT][SAVE-RETRIEVAL] Saved retrieval\"\r\n| extend \r\n    retrievalId = extract(@\"Saved retrieval:\\s*([^ ]+)\", 1, Message),\r\n    pspDenomination = extract(@\"pspDenomination:\\s*([^,]+)\", 1, Message),\r\n    entityId = extract(@\"entityId:\\s*([^, ]+)\", 1, Message),\r\n    tppId = extract(@\"tppId:\\s*([^, ]+)\", 1, Message),\r\n    agent = extract(@\"agent:\\s*([^, ]+)\", 1, Message),\r\n    deepLink = extract(@\"deepLink:\\s*([^ ]+)\", 1, Message),\r\n    originId = extract(@\"originId:\\s*([^, ]+)\", 1, Message),\r\n    payment = extract(@\"isPaymentEnabled:\\s*([^, ]+)\", 1, Message),\r\n    createdAt = extract(@\"createdAt:\\s*(.+)$\", 1, Message)\r\n| extend zw = unicode_codepoints_to_string(8203)\r\n| extend deepLink = replace_regex(deepLink, @\"([/?&=])\", \"\\\\1\\u200b\")\r\n| where ('$originId' == '' or originId == '$originId')\r\n| where ('$entityId' == '' or entityId == '$entityId')\r\n| project TimeGenerated, createdAt, retrievalId, pspDenomination, entityId, tppId, originId, deepLink, payment, agent\r\n| order by TimeGenerated desc",
+            "query": "AppTraces\r\n| where $__timeFilter(TimeGenerated)\r\n| where Message contains \"[EMD][PAYMENT][SAVE-RETRIEVAL] Saved retrieval\"\r\n| extend \r\n    retrievalId = extract(@\"Saved retrieval:\\s*([^ ]+)\", 1, Message),\r\n    pspDenomination = extract(@\"pspDenomination:\\s*([^,]+)\", 1, Message),\r\n    entityId = extract(@\"entityId:\\s*([^, ]+)\", 1, Message),\r\n    tppId = extract(@\"tppId:\\s*([^, ]+)\", 1, Message),\r\n    agent = extract(@\"agent:\\s*([^, ]+)\", 1, Message),\r\n    deepLink = extract(@\"deepLink:\\s*([^ ]+)\", 1, Message),\r\n    originId = extract(@\"originId:\\s*([^, ]+)\", 1, Message),\r\n    payment = extract(@\"isPaymentEnabled:\\s*([^, ]+)\", 1, Message),\r\n    createdAt = extract(@\"createdAt:\\s*(.+)$\", 1, Message)\r\n| extend zw = unicode_codepoints_to_string(8203)\r\n| extend deepLink = replace_regex(deepLink, @\"([/?&=])\", \"\\\\1\\u200b\")\r\n| where ('$originId' == '' or originId == '$originId')\r\n| where ('$tppId' == '' or tppId == '$tppId')\r\n| project TimeGenerated, createdAt, retrievalId, pspDenomination, entityId, tppId, originId, deepLink, payment, agent\r\n| order by TimeGenerated desc",
             "resources": [
               "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d"
             ],
@@ -445,6 +445,23 @@
         ],
         "query": "",
         "type": "textbox"
+      },
+      {
+        "current": {
+          "text": "62c33e91-0584-4038-9e66-9d1ff8114368-1744118376085",
+          "value": "62c33e91-0584-4038-9e66-9d1ff8114368-1744118376085"
+        },
+        "label": "Tpp ID",
+        "name": "tppId",
+        "options": [
+          {
+            "selected": true,
+            "text": "62c33e91-0584-4038-9e66-9d1ff8114368-1744118376085",
+            "value": "62c33e91-0584-4038-9e66-9d1ff8114368-1744118376085"
+          }
+        ],
+        "query": "62c33e91-0584-4038-9e66-9d1ff8114368-1744118376085",
+        "type": "textbox"
       }
     ]
   },
@@ -456,6 +473,6 @@
   "timezone": "utc",
   "title": "MDC - On-call",
   "uid": "mafcnfj",
-  "version": 43,
+  "version": 46,
   "weekStart": ""
 }
