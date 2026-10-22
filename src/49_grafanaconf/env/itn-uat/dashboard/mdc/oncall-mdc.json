@@ -1,0 +1,243 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": true,
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false,
+            "wrapHeaderText": true,
+            "wrapText": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "SeverityLevel"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 130
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "AppRoleName"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 191
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "TimeGenerated"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 192
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "OperationId"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 299
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Message"
+            },
+            "properties": [
+              {
+                "id": "custom.wrapText",
+                "value": true
+              },
+              {
+                "id": "custom.inspect",
+                "value": true
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "options": {
+        "cellHeight": "sm",
+        "enablePagination": false,
+        "maxRowHeight": 120,
+        "showHeader": true
+      },
+      "pluginVersion": "12.4.8",
+      "targets": [
+        {
+          "azureLogAnalytics": {
+            "dashboardTime": false,
+            "mode": "raw",
+            "query": "let targetMessageId = \"${messageId}\";\r\nlet targetEntityId = \"${entityId}\";\r\nlet targetOpId = toscalar(\r\n    AppTraces\r\n    | where $__timeFilter(TimeGenerated)\r\n    | where Message has \"[MESSAGE-CORE][SEND] Received message:\" and Message has targetMessageId\r\n    | project OperationId\r\n    | take 1\r\n);\r\nAppTraces\r\n| where $__timeFilter(TimeGenerated)\r\n| where OperationId == targetOpId\r\n     or (Message has \"[MESSAGE-CORE-CONSUMER-SERVICE]\" and Message has targetMessageId)\r\n     or (Message has \"[MESSAGE-SERVICE][SEND-NOTIFICATIONS]\" and Message has targetMessageId)\r\n     or (Message has \"[MESSAGE-SERVICE][HANDLE-ERROR]\" and Message has targetMessageId)\r\n     or (Message has \"[MESSAGE-SERVICE][ENQUEUE-WITH-RETRY]\" and Message has targetMessageId)\r\n     or (Message has \"[MESSAGE-SERVICE]\" and Message has targetMessageId)// and Message contains targetEntityId)\r\n     or (Message has \"[MESSAGE-CORE-PRODUCER]\" and Message has targetMessageId)\r\n     or (Message has \"[MESSAGE-CORE-PRODUCER-SERVICE]\" and Message has targetMessageId)\r\n     or (Message has \"[NOTIFY-SERVICE]\" and Message has targetMessageId)// and Message contains targetEntityId)\r\n     or (Message has \"[NOTIFY-ERROR-PRODUCER-SERVICE]\" and Message has targetMessageId)// and Message contains targetEntityId)\r\n| project TimeGenerated, Message, AppRoleName, SeverityLevel, OperationId\r\n| order by TimeGenerated asc",
+            "resources": [
+              "$workspace"
+            ],
+            "resultFormat": "logs"
+          },
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "refId": "A"
+        }
+      ],
+      "title": "Log Messaggi",
+      "type": "table"
+    }
+  ],
+  "preload": false,
+  "schemaVersion": 42,
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "text": "",
+          "value": ""
+        },
+        "label": "entityId",
+        "name": "entityId",
+        "options": [
+          {
+            "selected": true,
+            "text": "",
+            "value": ""
+          }
+        ],
+        "query": "",
+        "type": "textbox"
+      },
+      {
+        "current": {
+          "text": "",
+          "value": ""
+        },
+        "label": "messageId",
+        "name": "messageId",
+        "options": [
+          {
+            "selected": true,
+            "text": "",
+            "value": ""
+          }
+        ],
+        "query": "",
+        "type": "textbox"
+      },
+      {
+        "current": {
+          "text": "",
+          "value": ""
+        },
+        "datasource": {
+          "type": "grafana-azure-monitor-datasource",
+          "uid": "azure-monitor-oob"
+        },
+        "definition": "",
+        "hide": 2,
+        "label": "workspace",
+        "name": "workspace",
+        "options": [],
+        "query": {
+          "azureLogAnalytics": {
+            "mode": "raw",
+            "query": "resources\r\n| where type == \"microsoft.operationalinsights/workspaces\"\r\n| where name contains \"law\"\r\n| project id",
+            "resources": []
+          },
+          "azureResourceGraph": {
+            "query": "resources\r\n| where type == \"microsoft.operationalinsights/workspaces\"\r\n| where name contains \"mdc-law\"\r\n| project id"
+          },
+          "queryType": "Azure Resource Graph",
+          "refId": "A"
+        },
+        "refresh": 1,
+        "regex": "",
+        "regexApplyTo": "value",
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-90d",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "utc",
+  "title": "MDC - On-call",
+  "uid": "mafcnfj",
+  "version": 26,
+  "weekStart": ""
+}

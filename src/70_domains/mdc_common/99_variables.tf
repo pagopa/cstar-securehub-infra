@@ -130,6 +130,18 @@ variable "audit_storage_account_tier" {
 
 variable "aks_nodepool" {
   type = object({
+    enabled           = optional(bool, true)
+    vm_sku_name       = string
+    autoscale_enabled = optional(bool, true)
+    node_count_min    = number
+    node_count_max    = number
+  })
+  description = "Parameters for node pool"
+}
+
+variable "aks_foobar_nodepool" {
+  type = object({
+    enabled           = optional(bool, false)
     vm_sku_name       = string
     autoscale_enabled = optional(bool, true)
     node_count_min    = number
