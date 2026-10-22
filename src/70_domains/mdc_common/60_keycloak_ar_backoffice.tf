@@ -154,6 +154,30 @@ resource "keycloak_openid_user_attribute_protocol_mapper" "ar_backoffice_client_
   add_to_userinfo     = true
 }
 
+resource "keycloak_openid_user_attribute_protocol_mapper" "ar_backoffice_portal_first_name_mapper" {
+  realm_id  = local.keycloak_realm_id
+  client_id = keycloak_openid_client.ar_backoffice_portal_client.id
+  name             = "first-name-mapper"
+  user_attribute   = "firstName"
+  claim_name       = "given_name"
+  claim_value_type = "String"
+  add_to_access_token = true
+  add_to_id_token     = true
+  add_to_userinfo     = true
+}
+
+resource "keycloak_openid_user_attribute_protocol_mapper" "ar_backoffice_portal_last_name_mapper" {
+  realm_id  = local.keycloak_realm_id
+  client_id = keycloak_openid_client.ar_backoffice_portal_client.id
+  name             = "last-name-mapper"
+  user_attribute   = "lastName"
+  claim_name       = "family_name"
+  claim_value_type = "String"
+  add_to_access_token = true
+  add_to_id_token     = true
+  add_to_userinfo     = true
+}
+
 resource "keycloak_openid_client_default_scopes" "ar_backoffice_client_default_scopes" {
   realm_id  = local.keycloak_realm_id
   client_id = keycloak_openid_client.ar_backoffice_client.id
