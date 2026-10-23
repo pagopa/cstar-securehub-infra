@@ -1,0 +1,127 @@
+{
+  "name": "idpay_postgres_reports_copy",
+  "properties": {
+    "activities": [
+      {
+        "name": "Clear reports table",
+        "type": "AzureDataExplorerCommand",
+        "dependsOn": [],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "userProperties": [],
+        "typeProperties": {
+          "command": ".clear table reports data",
+          "commandTimeout": "00:20:00"
+        },
+        "linkedServiceName": {
+          "referenceName": "idpay-Kusto-idpay-ls",
+          "type": "LinkedServiceReference"
+        }
+      },
+      {
+        "name": "Copy reports table from Postgres",
+        "type": "Copy",
+        "dependsOn": [
+          {
+            "activity": "Clear reports table",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "userProperties": [],
+        "typeProperties": {
+          "source": {
+            "type": "PostgreSqlSource",
+            "batchSize": 100
+          },
+          "sink": {
+            "type": "AzureDataExplorerSink"
+          },
+          "enableStaging": false,
+          "translator": {
+            "type": "TabularTranslator",
+            "mappings": [
+              {
+                "source": { "name": "id" },
+                "sink": { "name": "_id", "type": "String" }
+              },
+              {
+                "source": { "name": "initiative_id" },
+                "sink": { "name": "initiativeId", "type": "String" }
+              },
+              {
+                "source": { "name": "report_status" },
+                "sink": { "name": "reportStatus", "type": "String" }
+              },
+              {
+                "source": { "name": "start_period" },
+                "sink": { "name": "startPeriod", "type": "DateTime" }
+              },
+              {
+                "source": { "name": "end_period" },
+                "sink": { "name": "endPeriod", "type": "DateTime" }
+              },
+              {
+                "source": { "name": "merchant_id" },
+                "sink": { "name": "merchantId", "type": "String" }
+              },
+              {
+                "source": { "name": "business_name" },
+                "sink": { "name": "businessName", "type": "String" }
+              },
+              {
+                "source": { "name": "request_date" },
+                "sink": { "name": "requestDate", "type": "DateTime" }
+              },
+              {
+                "source": { "name": "elaboration_date" },
+                "sink": { "name": "elaborationDate", "type": "DateTime" }
+              },
+              {
+                "source": { "name": "operator_level" },
+                "sink": { "name": "operatorLevel", "type": "String" }
+              },
+              {
+                "source": { "name": "file_name" },
+                "sink": { "name": "fileName", "type": "String" }
+              },
+              {
+                "source": { "name": "report_type" },
+                "sink": { "name": "reportType", "type": "String" }
+              }
+            ],
+            "mapComplexValuesToString": true
+          }
+        },
+        "inputs": [
+          {
+            "referenceName": "postgres_idpay_reports",
+            "type": "DatasetReference"
+          }
+        ],
+        "outputs": [
+          {
+            "referenceName": "data_explorer_idpay_reports",
+            "type": "DatasetReference"
+          }
+        ]
+      }
+    ],
+    "annotations": [],
+    "lastPublishTime": "2026-10-21T00:00:00Z"
+  },
+  "type": "Microsoft.DataFactory/factories/pipelines"
+}
