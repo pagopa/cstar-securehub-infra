@@ -31,6 +31,13 @@ locals {
     data_factory_api_base_url = var.data_factory_api_base_url,
     kv_url                    = data.azurerm_key_vault.domain_kv.vault_uri
   }))
+
+  # path to the merchant batch csv pipeline
+  pipeline_merchant_batch_csv_file = "${path.module}/data_factory_pipelines/templated/idpay_merchant_batch_csv.json"
+  pipeline_merchant_batch_csv_json = jsondecode(templatefile(local.pipeline_merchant_batch_csv_file, {
+    data_factory_api_base_url = var.data_factory_api_base_url,
+    kv_url                    = data.azurerm_key_vault.domain_kv.vault_uri
+  }))
 }
 
 resource "azurerm_data_factory_pipeline" "pipelines" {
@@ -103,6 +110,23 @@ resource "azurerm_data_factory_pipeline" "idpay_reward_batch_csv" {
   )
   activities_json = jsonencode(local.pipeline_reward_batch_csv_json.properties.activities)
   depends_on      = [azurerm_data_factory_custom_dataset.datasets]
+}
+
+resource "azurerm_data_factory_pipeline" "idpay_merchant_batch_csv" {
+  name            = local.pipeline_merchant_batch_csv_json.name
+  data_factory_id = data.azurerm_data_factory.data_factory.id
+
+  description = try(local.pipeline_merchant_batch_csv_json.properties.description, null)
+  concurrency = try(local.pipeline_merchant_batch_csv_json.properties.concurrency, null)
+  annotations = try(local.pipeline_merchant_batch_csv_json.properties.annotations, [])
+  parameters = try(
+    {
+      for k, v in local.pipeline_merchant_batch_csv_json.properties.parameters :
+      k => try(v.defaultValue, "")
+    },
+    {}
+  )
+  activities_json = jsonencode(local.pipeline_merchant_batch_csv_json.properties.activities)
 }
 
 resource "azapi_resource" "idpay_producers_import" {
