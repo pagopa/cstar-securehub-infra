@@ -448,19 +448,20 @@
       },
       {
         "current": {
-          "text": "62c33e91-0584-4038-9e66-9d1ff8114368-1744118376085",
-          "value": "62c33e91-0584-4038-9e66-9d1ff8114368-1744118376085"
+          "text": "",
+          "value": ""
         },
+        "hide": 2,
         "label": "Tpp ID",
         "name": "tppId",
         "options": [
           {
             "selected": true,
-            "text": "62c33e91-0584-4038-9e66-9d1ff8114368-1744118376085",
-            "value": "62c33e91-0584-4038-9e66-9d1ff8114368-1744118376085"
+            "text": "",
+            "value": ""
           }
         ],
-        "query": "62c33e91-0584-4038-9e66-9d1ff8114368-1744118376085",
+        "query": "",
         "type": "textbox"
       }
     ]
@@ -473,6 +474,6 @@
   "timezone": "utc",
   "title": "MDC - On-call",
   "uid": "mafcnfj",
-  "version": 46,
+  "version": 47,
   "weekStart": ""
 }
