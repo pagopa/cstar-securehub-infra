@@ -12,6 +12,7 @@ locals {
 
   pipelines_U = [
     "idpay_initiative_counters_copy",
+    "idpay_postgres_reports_copy",
     "idpay_postgres_reward_batches_copy",
     "idpay_postgres_reward_transactions_copy",
     "idpay_timeline_copy",
