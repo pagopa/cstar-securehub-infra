@@ -113,26 +113,6 @@ locals {
     })
   })))
 
-  keycloak_rollout_checksum = nonsensitive(sha256(jsonencode({
-    pagopa_theme = {
-      text   = local.text_files
-      binary = local.binary_files
-    }
-    mdc_theme = {
-      text   = local.mdc_text_files
-      binary = local.mdc_binary_files
-    }
-    provider_jar = filebase64(local.keycloak_provider_jar_path)
-    server_config = {
-      KC_HEALTH_ENABLED    = "true"
-      KC_METRICS_ENABLED   = "true"
-      KC_DB_URL_PROPERTIES = "?sslmode=require"
-    }
-    terraform_client_config = templatefile("${path.module}/k8s/keycloak/terraform_client.json.tpl", {
-      keycloak_terraform_client_secret = azurerm_key_vault_secret.terraform_client_secret_for_keycloak.value
-    })
-  })))
-
 }
 
 #------------------------------------------------------------------------------
