@@ -365,6 +365,7 @@
           "text": "",
           "value": ""
         },
+        "hide": 2,
         "label": "entityId",
         "name": "entityId",
         "options": [
@@ -382,6 +383,7 @@
           "text": "",
           "value": ""
         },
+        "hide": 2,
         "label": "messageId",
         "name": "messageId",
         "options": [
@@ -474,6 +476,6 @@
   "timezone": "utc",
   "title": "MDC - On-call",
   "uid": "mafcnfj",
-  "version": 47,
+  "version": 52,
   "weekStart": ""
 }
