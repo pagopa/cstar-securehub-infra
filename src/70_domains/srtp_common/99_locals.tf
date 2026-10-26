@@ -167,7 +167,7 @@ locals {
         }
       }
     }
-    payee = {
+    registry = {
       # Database-level throughput: RU are shared across all collections
       db_autoscale_max_throughput = var.cosmos_payee_db_autoscale_max_throughput
       collections = {
@@ -179,6 +179,21 @@ locals {
             {
               keys   = ["_id"]
               unique = true
+            }
+          ]
+        }
+        service_providers = {
+          autoscale_max_throughput          = null
+          cosmos_collections_max_throughput = null
+          default_ttl_seconds               = -1
+          indexes = [
+            {
+              keys   = ["_id"]
+              unique = true
+            },
+            {
+              keys   = ["service_providers.id"]
+              unique = false
             }
           ]
         }
