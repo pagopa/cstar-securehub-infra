@@ -27,7 +27,7 @@ module "storage_idpay_refund" {
     allowed_headers    = ["*"]
     exposed_headers    = ["*"]
     allowed_methods    = ["GET", "OPTIONS"]
-    allowed_origins    = ["https://welfare.${data.azurerm_dns_zone.public_cstar.name}"]
+    allowed_origins    = ["https://welfare.${data.azurerm_dns_zone.public_cstar.name}", "https://${local.public_dns_zone_pari}",]
     max_age_in_seconds = 200
   }
 
