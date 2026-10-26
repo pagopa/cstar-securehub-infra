@@ -94,15 +94,11 @@
                 ],
                 "outputs": [
                     {
-                        "referenceName": "blob_report_transactions",
+                        "referenceName": "blob_report_merchant_batch",
                         "type": "DatasetReference",
                         "parameters": {
                             "initiativeId": {
                                 "value": "@pipeline().parameters.initiativeId",
-                                "type": "Expression"
-                            },
-                            "merchantId": {
-                                "value": "@pipeline().parameters.merchantId",
                                 "type": "Expression"
                             },
                             "reportName": {
