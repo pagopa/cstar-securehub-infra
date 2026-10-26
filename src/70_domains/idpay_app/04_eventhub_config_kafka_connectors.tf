@@ -18,7 +18,6 @@ resource "azurerm_key_vault_secret" "event_hub_root_key_idpay_00" {
 
 
 resource "null_resource" "transaction_connector" {
-  count = var.env != "prod" ? 1 : 0
 
   triggers = {
     checksum = filesha256("configs/kafka-connectors/transaction_connector.json")
