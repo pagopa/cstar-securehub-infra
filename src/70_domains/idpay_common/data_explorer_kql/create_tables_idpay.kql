@@ -204,11 +204,17 @@
     errorMessage:string
 )
 
+// Retain static configuration for 1,000 years instead of the database default.
+.alter table initiative_export_configuration policy retention
+@'{"SoftDeletePeriod": "365000.00:00:00", "Recoverability": "Enabled"}'
 .create table initiative_export_configuration (
     initiativeId:string,
     exportConfiguration:dynamic
 )
 
+// Retain static configuration for 1,000 years instead of the database default.
+.alter table category_translation policy retention
+@'{"SoftDeletePeriod": "365000.00:00:00", "Recoverability": "Enabled"}'
 .create table category_translation (
     initiativeId:string,
     categoryCode:string,
