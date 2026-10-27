@@ -14,11 +14,6 @@ dns_zone_prefix          = "dev.cstar"
 dns_zone_internal_prefix = "internal.dev.cstar"
 external_domain          = "pagopa.it"
 
-cosmos_mongo_db_idpay_params = {
-  throughput     = null
-  max_throughput = null
-}
-
 ### Service bus
 service_bus_namespace = {
   sku = "Standard"
@@ -126,3 +121,12 @@ export_initiatives = [
     kv_secret_email   = "idpay-export-email-mimit"
   }
 ]
+
+
+blue_green_node_pool_enabled = false
+aks_foobar_idpay_node_pool_configuration = {
+  enabled        = true,
+  tier           = "Standard_B8ms"
+  node_count_min = 1,
+  node_count_max = 3
+}

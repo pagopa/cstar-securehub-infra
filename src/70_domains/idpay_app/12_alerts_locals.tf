@@ -15,10 +15,10 @@ locals {
   }
 
   # =============================================================
-  # Alerts API EIE
+  # Alerts API RDB
   # =============================================================
 
-  alerts_eie = {
+  alerts_rdb = {
 
     # Portal Consent – post (5xx, 401, 429 errors over 5 minutes)
     portal_consent_save_5m_rules = {
@@ -1463,7 +1463,7 @@ locals {
 
   # 🧱 Collection of alert groups
   alerts_groups = [
-    local.alerts_eie,
+    local.alerts_rdb,
     local.alerts_bonus_elettrodomestici,
     local.alerts_external_dependencies,
     local.alerts_ese,

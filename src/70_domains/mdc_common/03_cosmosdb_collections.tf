@@ -67,6 +67,10 @@ locals {
           keys   = ["messageRegistrationDate"]
           unique = false
         },
+        {
+          keys   = ["messageRegistrationDate", "_id"]
+          unique = false
+        },
       ]
 
     },
@@ -102,6 +106,18 @@ locals {
         },
         {
           keys   = ["fiscalCode"]
+          unique = false
+        },
+        {
+          keys   = ["tppId", "originId"]
+          unique = false
+        },
+        {
+          keys   = ["tppId", "_id"]
+          unique = false
+        },
+        {
+          keys   = ["originId", "_id"]
           unique = false
         }
       ]
