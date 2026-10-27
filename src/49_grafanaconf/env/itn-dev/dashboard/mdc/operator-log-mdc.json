@@ -164,8 +164,8 @@
     "list": [
       {
         "current": {
-          "text": "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/cstar-d-itn-mdc-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-d-itn-mdc-law",
-          "value": "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/cstar-d-itn-mdc-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-d-itn-mdc-law"
+          "text": "",
+          "value": ""
         },
         "datasource": {
           "type": "grafana-azure-monitor-datasource",
