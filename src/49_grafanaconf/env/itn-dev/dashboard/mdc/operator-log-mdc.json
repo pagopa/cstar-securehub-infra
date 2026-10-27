@@ -178,17 +178,15 @@
         "options": [],
         "query": {
           "azureLogAnalytics": {
-            "query": "",
+            "mode": "raw",
+            "query": "resources\r\n| where type == \"microsoft.operationalinsights/workspaces\"\r\n| where name contains \"law\"\r\n| project id",
             "resources": []
           },
           "azureResourceGraph": {
             "query": "resources\r\n| where type == \"microsoft.operationalinsights/workspaces\"\r\n| where name contains \"mdc-law\"\r\n| project id"
           },
           "queryType": "Azure Resource Graph",
-          "refId": "A",
-          "subscriptions": [
-            "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
-          ]
+          "refId": "A"
         },
         "refresh": 1,
         "regex": "",
