@@ -3,11 +3,32 @@
     "properties": {
         "activities": [
             {
+                "name": "Clear data_vault staging table",
+                "type": "AzureDataExplorerCommand",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "command": ".clear table data_vault_staging data",
+                    "commandTimeout": "00:20:00"
+                },
+                "linkedServiceName": {
+                    "referenceName": "idpay-Kusto-idpay-ls",
+                    "type": "LinkedServiceReference"
+                }
+            },
+            {
                 "name": "Copy data_vault collection",
                 "type": "Copy",
                 "dependsOn": [
                     {
-                        "activity": "Clear data_vault table",
+                        "activity": "Clear data_vault staging table",
                         "dependencyConditions": [
                             "Succeeded"
                         ]
@@ -24,7 +45,11 @@
                 "typeProperties": {
                     "source": {
                         "type": "CosmosDbMongoDbApiSource",
-                        "batchSize": 100
+                        "batchSize": 100,
+                        "filter": {
+                            "value": "@concat('{ \"createdAt\": { \"$gte\": { \"$date\": \"', if(empty(pipeline().parameters.fromDate), formatDateTime(addDays(startOfDay(utcNow()), -1), 'yyyy-MM-ddTHH:mm:ss.fffZ'), pipeline().parameters.fromDate), '\" }, \"$lt\": { \"$date\": \"', if(empty(pipeline().parameters.toDate), formatDateTime(startOfDay(utcNow()), 'yyyy-MM-ddTHH:mm:ss.fffZ'), pipeline().parameters.toDate), '\" } } }')",
+                            "type": "Expression"
+                        }
                     },
                     "sink": {
                         "type": "AzureDataExplorerSink"
@@ -59,6 +84,15 @@
                                     "name": "page",
                                     "type": "Long"
                                 }
+                            },
+                            {
+                                "source": {
+                                    "path": "createdAt.$date"
+                                },
+                                "sink": {
+                                    "name": "createdAtString",
+                                    "type": "String"
+                                }
                             }
                         ]
                     }
@@ -71,15 +105,22 @@
                 ],
                 "outputs": [
                     {
-                        "referenceName": "data_explorer_idpay_data_vault",
+                        "referenceName": "data_explorer_idpay_data_vault_staging",
                         "type": "DatasetReference"
                     }
                 ]
             },
             {
-                "name": "Clear data_vault table",
+                "name": "Append new data_vault fiscal codes",
                 "type": "AzureDataExplorerCommand",
-                "dependsOn": [],
+                "dependsOn": [
+                    {
+                        "activity": "Copy data_vault collection",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
                 "policy": {
                     "timeout": "0.12:00:00",
                     "retry": 0,
@@ -89,7 +130,35 @@
                 },
                 "userProperties": [],
                 "typeProperties": {
-                    "command": ".clear table data_vault data",
+                    "command": ".set-or-append data_vault <|\ndata_vault_staging\n| join kind=leftanti (data_vault | project _id) on _id\n| extend createdAt = unixtime_milliseconds_todatetime(tolong(createdAtString))\n| extend loadDate = now(), updateDate = now()\n| project _id, data, page, loadDate, updateDate, createdAt",
+                    "commandTimeout": "00:20:00"
+                },
+                "linkedServiceName": {
+                    "referenceName": "idpay-Kusto-idpay-ls",
+                    "type": "LinkedServiceReference"
+                }
+            },
+            {
+                "name": "Clear data_vault staging table at end",
+                "type": "AzureDataExplorerCommand",
+                "dependsOn": [
+                    {
+                        "activity": "Append new data_vault fiscal codes",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "command": ".clear table data_vault_staging data",
                     "commandTimeout": "00:20:00"
                 },
                 "linkedServiceName": {
@@ -98,6 +167,14 @@
                 }
             }
         ],
+        "parameters": {
+            "fromDate": {
+                "type": "String"
+            },
+            "toDate": {
+                "type": "String"
+            }
+        },
         "annotations": [],
         "lastPublishTime": "2025-10-23T13:15:41Z"
     },
