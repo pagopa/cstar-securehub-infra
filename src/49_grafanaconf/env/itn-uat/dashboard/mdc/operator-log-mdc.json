@@ -67,7 +67,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 220
+                "value": 168
               }
             ]
           },
@@ -79,7 +79,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 154
+                "value": 103
               }
             ]
           },
@@ -91,19 +91,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 204
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "User"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 94
+                "value": 251
               }
             ]
           },
@@ -115,7 +103,19 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 136
+                "value": 96
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "User"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 240
               }
             ]
           }
@@ -131,12 +131,7 @@
       "options": {
         "cellHeight": "sm",
         "showHeader": true,
-        "sortBy": [
-          {
-            "desc": false,
-            "displayName": "User"
-          }
-        ]
+        "sortBy": []
       },
       "pluginVersion": "12.4.8",
       "targets": [
@@ -144,9 +139,9 @@
           "azureLogAnalytics": {
             "dashboardTime": false,
             "mode": "raw",
-            "query": "AppTraces\r\n| where $__timeFilter(TimeGenerated)\r\n| where AppRoleName == \"emdarbackofficebff\"\r\n| where Message has \"[AR-BFF]\"\r\n| extend \r\n    RawOp = extract(@\"\\[AR-BFF\\]\\[([A-Z0-9_]+)\\]\", 1, Message),\r\n    UserEmail = extract(@\"\\[User:([^\\]]+)\\]\", 1, Message),\r\n    SeverityName = case(\r\n        SeverityLevel == 0, \"Verbose\",\r\n        SeverityLevel == 1, \"Info\",\r\n        SeverityLevel == 2, \"Warning\",\r\n        SeverityLevel == 3, \"Error\",\r\n        SeverityLevel == 4, \"Critical\",\r\n        tostring(SeverityLevel)\r\n    )\r\n| extend \r\n    OperationGroup = case(\r\n        RawOp startswith \"MESSAGE\",         \"Messaggi\",\r\n        RawOp startswith \"CITIZEN\",         \"Cittadini\",\r\n        RawOp startswith \"PAYMENT_ATTEMPT\", \"Pagamenti\",\r\n        RawOp startswith \"TPP\",             \"TPP\",\r\n        RawOp startswith \"KC\",              \"Keycloak\",\r\n        RawOp startswith \"GET_PAGOPA_CREDENTIALS\", \"Keycloak\", \r\n        RawOp startswith \"VERIFY_CLAIMS\", \"Keycloak\", \r\n        RawOp startswith \"VALIDATE_SC_TOKEN\", \"Keycloak\",\r\n        RawOp startswith \"GET_KC_USER\", \"Keycloak\", \r\n        RawOp startswith \"DELETE_CLIENT\", \"Keycloak\", \r\n        RawOp startswith \"EXCHANGE_TOKEN\", \"Keycloak\", \r\n        RawOp startswith \"LINK_IDENTITY\", \"Keycloak\",\r\n        RawOp startswith \"UPSERT_USER\", \"Keycloak\",\r\n        RawOp startswith \"SELFCARE\",        \"Selfcare\",\r\n        \"Altro\"\r\n    ),\r\n    UserDisplay = iif(isnotempty(UserEmail), UserEmail, \"N/A\")\r\n| where ('$OperationGroup' == 'All' or OperationGroup == '$OperationGroup')\r\n| where ('$User' == 'All' or UserDisplay == '$User')\r\n| where ('$Severity' == 'All' or SeverityName == '$Severity')\r\n| project \r\n    TimeGenerated, \r\n    Severity = SeverityName,\r\n    Group = OperationGroup, \r\n    Operation = RawOp, \r\n    User = UserDisplay, \r\n    Message\r\n| sort by TimeGenerated desc",
+            "query": "AppTraces\r\n| where $__timeFilter(TimeGenerated)\r\n| where AppRoleName == \"emdarbackofficebff\"\r\n| where Message has \"[AR-BFF]\"\r\n| extend \r\n    RawOp = extract(@\"\\[AR-BFF\\]\\[([A-Z0-9_]+)\\]\", 1, Message),\r\n    UserEmail = extract(@\"\\[User:([^\\]]+)\\]\", 1, Message),\r\n    SeverityName = case(\r\n                   SeverityLevel == 0,\r\n                   \"Verbose\",\r\n                   SeverityLevel == 1,\r\n                   \"Info\",\r\n                   SeverityLevel == 2,\r\n                   \"Warning\",\r\n                   SeverityLevel == 3,\r\n                   \"Error\",\r\n                   SeverityLevel == 4,\r\n                   \"Critical\",\r\n                   tostring(SeverityLevel)\r\n               )\r\n| extend \r\n    OperationGroup = case(\r\n                     RawOp startswith \"MESSAGE\",\r\n                     \"Messaggi\",\r\n                     RawOp startswith \"CITIZEN\",\r\n                     \"Cittadini\",\r\n                     RawOp startswith \"PAYMENT_ATTEMPT\",\r\n                     \"Pagamenti\",\r\n                     RawOp startswith \"TPP\",\r\n                     \"TPP\",\r\n                     RawOp startswith \"KC\",\r\n                     \"Keycloak\",\r\n                     RawOp startswith \"GET_PAGOPA_CREDENTIALS\",\r\n                     \"Keycloak\", \r\n                     RawOp startswith \"VERIFY_CLAIMS\",\r\n                     \"Keycloak\", \r\n                     RawOp startswith \"VALIDATE_SC_TOKEN\",\r\n                     \"Keycloak\",\r\n                     RawOp startswith \"GET_KC_USER\",\r\n                     \"Keycloak\", \r\n                     RawOp startswith \"DELETE_CLIENT\",\r\n                     \"Keycloak\", \r\n                     RawOp startswith \"EXCHANGE_TOKEN\",\r\n                     \"Keycloak\", \r\n                     RawOp startswith \"LINK_IDENTITY\",\r\n                     \"Keycloak\",\r\n                     RawOp startswith \"UPSERT_USER\",\r\n                     \"Keycloak\",\r\n                     RawOp startswith \"SELFCARE\",\r\n                     \"Selfcare\",\r\n                     \"Altro\"\r\n                 ),\r\n    UserDisplay = iif(isnotempty(UserEmail), UserEmail, \"N/A\")\r\n| where Message !contains \"SEARCH\"\r\n| where ('$OperationGroup' == 'All' or OperationGroup == '$OperationGroup')\r\n| where ('$Severity' == 'All' or SeverityName == '$Severity')\r\n| where isempty('${User}') or UserDisplay startswith '${User}'\r\n| where isempty('${messageId}') or Message has '${messageId}'\r\n| where isempty('${originId}') or Message has '${originId}'\r\n| where isempty('${tppId}') or Message has '${tppId}'\r\n| project \r\n    TimeGenerated, \r\n    Severity = SeverityName,\r\n    Group = OperationGroup, \r\n    Operation = RawOp, \r\n    User = UserDisplay, \r\n    Message\r\n| sort by TimeGenerated desc",
             "resources": [
-              "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+              "$workspace"
             ],
             "resultFormat": "logs"
           },
@@ -167,6 +162,57 @@
   "tags": [],
   "templating": {
     "list": [
+      {
+        "current": {
+          "text": "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/cstar-d-itn-mdc-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-d-itn-mdc-law",
+          "value": "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/cstar-d-itn-mdc-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-d-itn-mdc-law"
+        },
+        "datasource": {
+          "type": "grafana-azure-monitor-datasource",
+          "uid": "azure-monitor-oob"
+        },
+        "definition": "",
+        "hide": 2,
+        "label": "workspace",
+        "name": "workspace",
+        "options": [],
+        "query": {
+          "azureLogAnalytics": {
+            "query": "",
+            "resources": []
+          },
+          "azureResourceGraph": {
+            "query": "resources\r\n| where type == \"microsoft.operationalinsights/workspaces\"\r\n| where name contains \"mdc-law\"\r\n| project id"
+          },
+          "queryType": "Azure Resource Graph",
+          "refId": "A",
+          "subscriptions": [
+            "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+          ]
+        },
+        "refresh": 1,
+        "regex": "",
+        "regexApplyTo": "value",
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "",
+          "value": ""
+        },
+        "hide": 2,
+        "label": "ID Message",
+        "name": "messageId",
+        "options": [
+          {
+            "selected": true,
+            "text": "",
+            "value": ""
+          }
+        ],
+        "query": "",
+        "type": "textbox"
+      },
       {
         "current": {
           "text": "",
@@ -191,8 +237,8 @@
           "value": ""
         },
         "hide": 2,
-        "label": "Entity ID",
-        "name": "entityId",
+        "label": "TPP ID",
+        "name": "tppId",
         "options": [
           {
             "selected": true,
@@ -205,105 +251,55 @@
       },
       {
         "current": {
-          "text": "TPP",
-          "value": "TPP"
+          "text": "All",
+          "value": "All"
         },
-        "datasource": {
-          "type": "grafana-azure-monitor-datasource",
-          "uid": "azure-monitor-oob"
-        },
-        "definition": "",
-        "description": "",
         "label": "Operation Group",
         "name": "OperationGroup",
         "options": [],
-        "query": {
-          "azureLogAnalytics": {
-            "mode": "raw",
-            "query": "AppTraces \r\n| where Message has \"[AR-BFF]\" \r\n| extend Op = extract(@\"\\[AR-BFF\\]\\[([A-Z0-9_]+)\\]\", 1, Message)\r\n| extend Group = case(\r\n    Op startswith \"MESSAGE\", \"Messaggi\",\r\n    Op startswith \"CITIZEN\", \"Cittadini\",\r\n    Op startswith \"PAYMENT_ATTEMPT\", \"Pagamenti\",\r\n    Op startswith \"TPP\", \"TPP\",\r\n    Op startswith \"KC\", \"Keycloak\",\r\n    Op startswith \"SELFCARE\", \"Selfcare\",\r\n    \"Altro\")\r\n| distinct Group",
-            "resources": [
-              "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d"
-            ]
-          },
-          "queryType": "Azure Log Analytics",
-          "refId": "A",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
-        },
-        "refresh": 1,
-        "regex": "",
-        "regexApplyTo": "value",
-        "type": "query"
+        "query": "All,Messaggi,Cittadini,Pagamenti,TPP,Keycloak,Selfcare",
+        "type": "custom",
+        "valuesFormat": "csv"
       },
       {
         "current": {
-          "text": "N/A",
-          "value": "N/A"
+          "text": "All",
+          "value": "All"
         },
-        "datasource": {
-          "type": "grafana-azure-monitor-datasource",
-          "uid": "azure-monitor-oob"
-        },
-        "definition": "",
-        "name": "User",
-        "options": [],
-        "query": {
-          "azureLogAnalytics": {
-            "mode": "raw",
-            "query": "AppTraces \r\n| where Message has \"[AR-BFF]\" \r\n| extend UserEmail = extract(@\"\\[User:([^\\]]+)\\]\", 1, Message)\r\n| summarize by UserEmail\r\n| project User = iif(isnotempty(UserEmail), UserEmail, \"N/A\")",
-            "resources": [
-              "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d"
-            ]
-          },
-          "queryType": "Azure Log Analytics",
-          "refId": "A",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
-        },
-        "refresh": 1,
-        "regex": "",
-        "regexApplyTo": "value",
-        "type": "query"
-      },
-      {
-        "current": {
-          "text": "Info",
-          "value": "Info"
-        },
-        "datasource": {
-          "type": "grafana-azure-monitor-datasource",
-          "uid": "azure-monitor-oob"
-        },
-        "definition": "",
-        "description": "",
         "label": "Severity",
         "name": "Severity",
         "options": [],
-        "query": {
-          "azureLogAnalytics": {
-            "mode": "raw",
-            "query": "AppTraces\r\n| summarize by SeverityLevel\r\n| project SeverityName = case(\r\n    SeverityLevel == 0, \"Verbose\",\r\n    SeverityLevel == 1, \"Info\",\r\n    SeverityLevel == 2, \"Warning\",\r\n    SeverityLevel == 3, \"Error\",\r\n    tostring(SeverityLevel)\r\n)\r\n| order by SeverityName asc",
-            "resources": [
-              "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d"
-            ]
-          },
-          "queryType": "Azure Log Analytics",
-          "refId": "A",
-          "subscription": "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+        "query": "All, Verbose,Info,Warning,Error",
+        "type": "custom",
+        "valuesFormat": "csv"
+      },
+      {
+        "current": {
+          "text": "",
+          "value": ""
         },
-        "refresh": 1,
-        "regex": "",
-        "regexApplyTo": "value",
-        "type": "query"
+        "hide": 2,
+        "name": "User",
+        "options": [
+          {
+            "selected": true,
+            "text": "",
+            "value": ""
+          }
+        ],
+        "query": "",
+        "type": "textbox"
       }
     ]
   },
   "time": {
-    "from": "now-6M",
+    "from": "now-90d",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "browser",
   "title": "MDC - Log Operator",
   "uid": "faf8sbp",
-  "version": 43,
+  "version": 48,
   "weekStart": ""
 }
