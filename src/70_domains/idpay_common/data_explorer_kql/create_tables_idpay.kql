@@ -621,3 +621,17 @@
     createdAt:datetime,
     createdAtString:string
 )
+.create-merge table reports (
+    _id:string,
+    initiativeId:string,
+    reportStatus:string,
+    startPeriod:datetime,
+    endPeriod:datetime,
+    merchantId:string,
+    businessName:string,
+    requestDate:datetime,
+    elaborationDate:datetime,
+    operatorLevel:string,
+    fileName:string,
+    reportType:string
+)
