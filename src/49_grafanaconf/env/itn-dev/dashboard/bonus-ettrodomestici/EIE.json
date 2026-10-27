@@ -82,7 +82,7 @@
             "type": "grafana-azure-data-explorer-datasource",
             "uid": "${ds}"
           },
-          "query": "products\r\n| summarize Totale = count() by organizationName\r\n| order by organizationName asc\r\n",
+          "query": "products\r\n| where initiativeId == \"68dd003ccce8c534d1da22bc\"\r\n| summarize Totale = count() by organizationName\r\n| order by organizationName asc\r\n",
           "rawMode": true,
           "refId": "A",
           "resultFormat": "table"
@@ -195,7 +195,7 @@
             }
           },
           "pluginVersion": "6.2.0",
-          "query": "products\r\n| where status == \"APPROVED\"\r\n| summarize Totale = count() by organizationName\r\n| order by organizationName asc\r\n",
+          "query": "products\r\n| where status == \"APPROVED\" and initiativeId == \"68dd003ccce8c534d1da22bc\"\r\n| summarize Totale = count() by organizationName\r\n| order by organizationName asc\r\n",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -294,7 +294,7 @@
             }
           },
           "pluginVersion": "6.2.0",
-          "query": "products\r\n| where status == \"SUPERVISED\"\r\n| summarize Totale = count() by organizationName\r\n| order by organizationName asc\r\n",
+          "query": "products\r\n| where status == \"SUPERVISED\" and initiativeId == \"68dd003ccce8c534d1da22bc\"\r\n| summarize Totale = count() by organizationName\r\n| order by organizationName asc\r\n",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -393,7 +393,7 @@
             }
           },
           "pluginVersion": "6.2.0",
-          "query": "products\r\n| where status == \"UPLOADED\"\r\n| summarize Totale = count() by organizationName\r\n| order by organizationName asc\r\n",
+          "query": "products\r\n| where status == \"UPLOADED\" and initiativeId == \"68dd003ccce8c534d1da22bc\"\r\n| summarize Totale = count() by organizationName\r\n| order by organizationName asc\r\n",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -492,7 +492,7 @@
             }
           },
           "pluginVersion": "6.2.0",
-          "query": "products\r\n| where status == \"REJECTED\"\r\n| summarize Totale = count() by organizationName\r\n| order by organizationName asc\r\n",
+          "query": "products\r\n| where status == \"REJECTED\" and initiativeId == \"68dd003ccce8c534d1da22bc\"\r\n| summarize Totale = count() by organizationName\r\n| order by organizationName asc\r\n",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -591,7 +591,7 @@
             }
           },
           "pluginVersion": "6.2.0",
-          "query": "products\r\n| where status == \"WAIT_APPROVED\"\r\n| summarize Totale = count() by organizationName\r\n| order by organizationName asc\r\n",
+          "query": "products\r\n| where status == \"WAIT_APPROVED\" and initiativeId == \"68dd003ccce8c534d1da22bc\"\r\n| summarize Totale = count() by organizationName\r\n| order by organizationName asc\r\n",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -729,7 +729,7 @@
             }
           },
           "pluginVersion": "6.2.0",
-          "query": "products\r\n| summarize Totale = count() by status\r\n| order by status desc",
+          "query": "products\r\n| where initiativeId == \"68dd003ccce8c534d1da22bc\"\r\n| summarize Totale = count() by status\r\n| order by status desc",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -869,7 +869,7 @@
             }
           },
           "pluginVersion": "6.2.0",
-          "query": "products\r\n| summarize Totale = count() by category\r\n| order by category ",
+          "query": "products\r\n| where initiativeId == \"68dd003ccce8c534d1da22bc\"\r\n| summarize Totale = count() by category\r\n| order by category ",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -1011,7 +1011,7 @@
             }
           },
           "pluginVersion": "6.2.0",
-          "query": "products\r\n| where status == 'APPROVED'\r\n| summarize Totale = count() by category\r\n| order by category ",
+          "query": "products\r\n| where status == 'APPROVED' and initiativeId == \"68dd003ccce8c534d1da22bc\"\r\n| summarize Totale = count() by category\r\n| order by category ",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -1151,7 +1151,7 @@
             }
           },
           "pluginVersion": "6.2.0",
-          "query": "products\r\n| where status == 'REJECTED'\r\n| summarize Totale = count() by category\r\n| order by category ",
+          "query": "products\r\n| where status == 'REJECTED' and initiativeId == \"68dd003ccce8c534d1da22bc\"\r\n| summarize Totale = count() by category\r\n| order by category ",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -1291,7 +1291,7 @@
             }
           },
           "pluginVersion": "6.2.0",
-          "query": "products\r\n| where status  == 'SUPERVISED'\r\n| summarize Totale = count() by category\r\n| order by category ",
+          "query": "products\r\n| where status  == 'SUPERVISED' and initiativeId == \"68dd003ccce8c534d1da22bc\"\r\n| summarize Totale = count() by category\r\n| order by category ",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -1431,7 +1431,7 @@
             }
           },
           "pluginVersion": "6.2.0",
-          "query": "products\r\n| where status  == 'UPLOADED'\r\n| summarize Totale = count() by category\r\n| order by category ",
+          "query": "products\r\n| where status  == 'UPLOADED' and initiativeId == \"68dd003ccce8c534d1da22bc\"\r\n| summarize Totale = count() by category\r\n| order by category ",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -1571,7 +1571,7 @@
             }
           },
           "pluginVersion": "6.2.0",
-          "query": "products\r\n| where status  == 'WAIT_APPROVED'\r\n| summarize Totale = count() by category\r\n| order by category ",
+          "query": "products\r\n| where status  == 'WAIT_APPROVED' and initiativeId == \"68dd003ccce8c534d1da22bc\"\r\n| summarize Totale = count() by category\r\n| order by category ",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,

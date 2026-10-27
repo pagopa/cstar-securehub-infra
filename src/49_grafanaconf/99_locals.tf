@@ -14,8 +14,6 @@ locals {
   law_name_core        = "${local.product}-law"
   law_name_core_rg     = "${local.product}-monitor-rg"
 
-  law_name_mcshared    = "${local.product_nodomain}-mcshared-law"
-  law_name_mcshared_rg = "${local.product_nodomain}-mcshared-monitoring-rg"
 
   grafana_name = "cstar-${var.env_short}-itn-grafana"
 
@@ -27,6 +25,8 @@ locals {
 
   kv_core_name                = "${local.product_nodomain}-core-kv"
   kv_core_resource_group_name = "${local.product_nodomain}-core-sec-rg"
+
+  alert_folders = { idpay_alert_folder = "IDPay App Alerts" }
 
   # Configuration for different team products and their AKS clusters
   # Contains settings for each team's environment including:
@@ -50,14 +50,6 @@ locals {
         aks_name             = "${var.prefix}-${var.env_short}-${var.location_short}-${var.env}-aks"
       },
     }
-    mil = {
-      groups = lookup(var.team_groups, "mil", {})
-      aks = {
-        location_short       = "weu",
-        monitor_workspace_id = data.azurerm_log_analytics_workspace.law_core.id,
-        aks_name             = "${var.prefix}-${var.env_short}-weu-${var.env}01-aks"
-      }
-    },
     mdc = {
       groups = lookup(var.team_groups, "mdc", {})
       aks = {
@@ -66,27 +58,12 @@ locals {
         aks_name             = "${var.prefix}-${var.env_short}-${var.location_short}-${var.env}-aks"
       }
     },
-    rtd = {
-      groups = lookup(var.team_groups, "rtd", {})
-      aks = {
-        location_short       = "weu",
-        monitor_workspace_id = data.azurerm_log_analytics_workspace.law_core.id,
-        aks_name             = "${var.prefix}-${var.env_short}-weu-${var.env}01-aks"
-      }
-    },
     srtp = {
       groups = lookup(var.team_groups, "srtp", {})
       aks = {
         location_short       = "itn",
         monitor_workspace_id = data.azurerm_log_analytics_workspace.law_core_itn.id,
         aks_name             = "${var.prefix}-${var.env_short}-${var.location_short}-${var.env}-aks"
-      }
-    },
-    mcshared = {
-      groups = lookup(var.team_groups, "mcshared", {})
-      aca = {
-        location_short       = "itn",
-        monitor_workspace_id = data.azurerm_log_analytics_workspace.law_mcshared.id,
       }
     }
   }

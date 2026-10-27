@@ -22,6 +22,11 @@ data "azurerm_log_analytics_workspace" "log_analytics_workspace" {
   resource_group_name = local.monitoring_rg
 }
 
+data "azurerm_log_analytics_workspace" "core_log_analytics_workspace" {
+  name                = "${var.prefix}-${var.env_short}-law"
+  resource_group_name = "${var.prefix}-${var.env_short}-monitor-rg"
+}
+
 #
 # RG
 #

@@ -103,6 +103,7 @@ variable "keycloak_configuration" {
     image_registry_config_cli                   = string
     image_repository_config_cli                 = string
     image_tag_config_cli                        = string
+    image_digest_config_cli                     = optional(string, "")
   })
 }
 
@@ -130,6 +131,18 @@ variable "listmonk_configuration" {
 
 variable "aks_user_node_pool_keycloak" {
   type = object({
+    enabled           = optional(bool, true)
+    idh_resource_tier = string
+    node_count_min    = number
+    node_count_max    = number
+    os_disk_size_gb   = optional(number, null)
+    os_disk_type      = optional(string, null)
+  })
+}
+
+variable "aks_user_foobar_node_pool_keycloak" {
+  type = object({
+    enabled           = optional(bool, true)
     idh_resource_tier = string
     node_count_min    = number
     node_count_max    = number

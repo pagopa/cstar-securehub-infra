@@ -43,7 +43,6 @@ resource "azurerm_application_insights" "application_insights" {
 
 }
 
-
 ### 🔍 Logger APIM
 resource "azurerm_api_management_logger" "apim_logger" {
   name                = "${local.project}-apim-logger"

@@ -67,10 +67,55 @@ locals {
     }
   }
 
+  # Alert active only on UAT (subset of alerts_mdc)
+  alerts_uat = {
+    api_5xx_errors = local.alerts_mdc.api_5xx_errors
+  }
 
   # Merge base config + alert-specific data.
   final_alerts = {
-    for key, alert in local.alerts_mdc :
+    for key, alert in(
+      var.env_short == "p" ? local.alerts_mdc :
+      var.env_short == "u" ? local.alerts_uat :
+      {}
+    ) :
     key => merge(local.base_alert_config, alert)
   }
+
+  # ----------------------------------------------------------------------------
+  # GITHUB RUNNERS
+  # ----------------------------------------------------------------------------
+
+  #
+  # List of GitHub repositories which need self-hosted runners.
+  #
+  github_repositories_with_self_hosted_runners = [
+    {
+      name : "emd-testing",
+      short_name : "emd-testing"
+    },
+    {
+      name : "emd-message-core",
+      short_name : "message-core"
+    },
+    {
+      name : "emd-notifier-sender",
+      short_name : "notifier-sender"
+    },
+    {
+      name : "emd-tpp",
+      short_name : "tpp"
+    }
+  ]
+
+  #
+  # Data of Container Apps Environment for GitHub Runners.
+  #
+  gh_runners_cae_name = "${var.prefix}-${var.env_short}-${var.location_short}-platform-github-cae"
+  gh_runners_cae_rg   = "${var.prefix}-${var.env_short}-${var.location_short}-platform-compute-rg"
+
+  #
+  # Name of the secret that contains the GitHub token.
+  #
+  gh_token_secret = "emd-bot-github-rw-TOKEN"
 }

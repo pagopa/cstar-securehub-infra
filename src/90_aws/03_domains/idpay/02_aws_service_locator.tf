@@ -1,8 +1,7 @@
-resource "awscc_location_api_key" "this" {
-  key_name    = "${local.product}-${var.domain}-api-key"
+resource "awscc_location_api_key" "api_key" {
+  key_name    = "${local.product}-${var.domain}-v2-api-key"
   description = "This API key is used for the idpay bonus elettrodomestici project"
-  no_expiry   = false
-  expire_time = formatdate("YYYY-MM-DD'T'HH:mm:ss'Z'", timeadd(timestamp(), "8760h")) # 1 year
+  no_expiry   = true
   restrictions = {
     allow_actions = [
       "geo-maps:GetTile",

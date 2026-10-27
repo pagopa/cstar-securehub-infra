@@ -33,6 +33,15 @@ locals {
       ]
     },
     {
+      name = "initiatives_config"
+      indexes = [
+        {
+          keys   = ["_id"]
+          unique = true
+        }
+      ]
+    },
+    {
       name = "producers_initiative"
       indexes = [
         {
@@ -85,6 +94,14 @@ locals {
           unique = false
         },
         {
+          keys   = ["productCode"]
+          unique = false
+        },
+        {
+          keys   = ["gtinCode"]
+          unique = false
+        },
+        {
           keys   = ["fullProductName"]
           unique = false
         },
@@ -117,18 +134,19 @@ resource "azurerm_cosmosdb_mongo_database" "rdb" {
   resource_group_name = data.azurerm_resource_group.idpay_data_rg.name
   account_name        = module.cosmos_db_account.name
 
-  throughput = var.cosmos_mongo_db_idpay_params.throughput
+  throughput = null
 
   dynamic "autoscale_settings" {
-    for_each = var.cosmos_mongo_db_idpay_params.max_throughput != null ? [""] : []
+    for_each = var.env == "dev" ? [] : [1]
     content {
-      max_throughput = var.cosmos_mongo_db_idpay_params.max_throughput
+      max_throughput = 1000
     }
   }
 
   lifecycle {
     ignore_changes = [
-      autoscale_settings
+      autoscale_settings,
+      throughput
     ]
   }
 }
@@ -149,6 +167,10 @@ resource "azurerm_cosmosdb_mongo_collection" "mongodb_collections_rdb" {
   account_name  = module.cosmos_db_account.name
   database_name = azurerm_cosmosdb_mongo_database.rdb.name
 
+  # Inherit database throughput in provisioned environments; DEV keeps serverless settings.
+  # Existing dedicated collections require the coordinated dump/recreate/import procedure.
+  throughput = null
+
   dynamic "index" {
     for_each = each.value.indexes
     iterator = index
@@ -156,20 +178,6 @@ resource "azurerm_cosmosdb_mongo_collection" "mongodb_collections_rdb" {
       keys   = index.value.keys
       unique = index.value.unique
     }
-  }
-
-  dynamic "autoscale_settings" {
-    for_each = var.cosmos_mongo_db_idpay_params.max_throughput == null ? [] : ["dummy"]
-    content {
-      max_throughput = var.cosmos_mongo_db_idpay_params.max_throughput
-    }
-  }
-
-  lifecycle {
-    ignore_changes = [
-      # ignore changes to autoscale_settings due to this operation is done manually
-      autoscale_settings,
-    ]
   }
 
   timeouts {

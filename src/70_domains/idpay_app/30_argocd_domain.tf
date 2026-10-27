@@ -60,6 +60,7 @@ locals {
         name          = "mcshared-datavault"
         target_branch = "main"
         env           = ["dev", "uat", "prod"]
+        autosync      = true
       }
     }
     "mid" = {
@@ -81,23 +82,23 @@ locals {
       "idpay-ranking" = {
         name          = "idpay-ranking"
         target_branch = "main"
-        env           = ["dev", "uat", "prod"]
+        env           = []
       },
       "idpay-recovery-error-topic" = {
         name          = "idpay-recovery-error-topic"
         target_branch = "main"
         env           = ["dev", "uat", "prod"]
       },
-      "idpay-reward-notification" = {
-        name          = "idpay-reward-notification"
-        target_branch = "main"
-        env           = ["dev", "uat", "prod"]
-      },
-      "idpay-reward-user-id-splitter" = {
-        name          = "idpay-reward-user-id-splitter"
-        target_branch = "main"
-        env           = ["dev", "uat", "prod"]
-      },
+      # "idpay-reward-notification" = {
+      #   name          = "idpay-reward-notification"
+      #   target_branch = "main"
+      #   env           = ["dev", "uat", "prod"]
+      # },
+      # "idpay-reward-user-id-splitter" = {
+      #   name          = "idpay-reward-user-id-splitter"
+      #   target_branch = "main"
+      #   env           = ["dev", "uat", "prod"]
+      # },
       "idpay-timeline" = {
         name          = "idpay-timeline"
         target_branch = "main"
@@ -105,11 +106,11 @@ locals {
       }
     }
     "ext" = {
-      "idpay-iban" = {
-        name          = "idpay-iban"
-        target_branch = "main"
-        env           = ["dev", "uat", "prod"]
-      },
+      # "idpay-iban" = {
+      #   name          = "idpay-iban"
+      #   target_branch = "main"
+      #   env           = ["dev", "uat", "prod"]
+      # },
       "idpay-notification-email" = {
         name          = "idpay-notification-email"
         target_branch = "main"
@@ -185,12 +186,15 @@ resource "argocd_application" "domain_argocd_applications" {
 
     sync_policy {
       # sync_options = []
-      #
-      # automated {
-      #   allow_empty = false
-      #   prune       = false
-      #   self_heal   = false
-      # }
+      dynamic "automated" {
+        for_each = try(each.value.autosync, false) ? [1] : []
+
+        content {
+          allow_empty = false
+          prune       = false
+          self_heal   = false
+        }
+      }
       #
       # retry {
       #   limit = "5"

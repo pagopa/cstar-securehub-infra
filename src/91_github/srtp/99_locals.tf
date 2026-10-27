@@ -39,6 +39,18 @@ locals {
       ]
       repository_variables = []
     }
+    rtp-sender-v2 = {
+      env_variables        = [],
+      env_secret_variables = []
+      repository_secrets = [
+        {
+          SLACK_WEBHOOK_URL = data.azurerm_key_vault_secret.slack_webhook.value
+          GIT_PAT           = try(data.azurerm_key_vault_secret.git_pat[0].value, "")
+          SONAR_TOKEN       = try(data.azurerm_key_vault_secret.sonar_token[0].value, "")
+        }
+      ]
+      repository_variables = []
+    }
     rtp-consumer = {
       env_variables        = [],
       env_secret_variables = []
@@ -64,12 +76,23 @@ locals {
       repository_variables = []
     }
     rtp-platform-qa = {
+      env                  = ["${var.location_short}-dev", "${var.location_short}-uat"],
+      env_variables        = [],
+      env_secret_variables = []
+      repository_secrets = [
+        {
+          SLACK_WEBHOOK_URL = data.azurerm_key_vault_secret.slack_webhook.value
+        }
+      ]
+      repository_variables = []
+    }
+    rtp-internal = {
       env = ["${var.location_short}-dev", "${var.location_short}-uat"],
       env_variables = [
         {
           AZURE_RESOURCE_GROUP   = local.aks_resource_group_name
           AZURE_AKS_CLUSTER_NAME = local.aks_name
-          DEPLOYMENT_NAME        = "rtp-platform-qa"
+          DEPLOYMENT_NAME        = "rtp-producer"
           NAMESPACE              = var.domain
         }
       ],
@@ -80,11 +103,7 @@ locals {
           AZURE_TENANT_ID       = data.azurerm_client_config.current.tenant_id
         }
       ]
-      repository_secrets = [
-        {
-          SLACK_WEBHOOK_URL = data.azurerm_key_vault_secret.slack_webhook.value
-        }
-      ]
+      repository_secrets   = []
       repository_variables = []
     }
   }

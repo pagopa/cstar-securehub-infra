@@ -1,0 +1,8 @@
+{
+  "name": "mdc_retrieval_source",
+  "properties": {
+    "type": "RestResource",
+    "linkedServiceName": { "referenceName": "mdc-LogAnalytics-mdc-ls", "type": "LinkedServiceReference" },
+    "typeProperties": { "relativeUrl": "query" }
+  }
+}

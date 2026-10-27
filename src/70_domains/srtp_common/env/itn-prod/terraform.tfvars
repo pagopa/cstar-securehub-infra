@@ -47,3 +47,17 @@ additional_geo_locations = [{
 
 ### Redis Cache
 redis_idh_resource_tier = "standard_C1_v6"
+
+### ADX
+adx_db_soft_delete_period_days    = 15
+adx_db_hot_cache_period_days      = 5
+adx_table_soft_delete_period_days = 3650
+adx_table_hot_cache_period_days   = 30
+
+blue_green_node_pool_enabled = true
+aks_foobar_srtp_node_pool_configuration = {
+  enabled        = false,
+  tier           = "Standard_D4ads"
+  node_count_min = 3,
+  node_count_max = 4,
+}

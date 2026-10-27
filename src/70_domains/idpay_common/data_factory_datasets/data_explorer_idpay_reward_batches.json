@@ -1,0 +1,15 @@
+{
+  "name": "data_explorer_idpay_reward_batches",
+  "properties": {
+    "linkedServiceName": {
+      "referenceName": "idpay-Kusto-idpay-ls",
+      "type": "LinkedServiceReference"
+    },
+    "annotations": [],
+    "type": "AzureDataExplorerTable",
+    "typeProperties": {
+      "table": "reward_batches"
+    }
+  },
+  "type": "Microsoft.DataFactory/factories/datasets"
+}

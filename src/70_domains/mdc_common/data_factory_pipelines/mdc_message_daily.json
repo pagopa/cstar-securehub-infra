@@ -1,0 +1,40 @@
+{
+  "name": "mdc_message_daily",
+  "properties": {
+    "activities": [
+      {
+        "name": "Delete previous day data",
+        "type": "AzureDataExplorerCommand",
+        "typeProperties": {
+          "command": ".delete table MessageSnapshot records <| MessageSnapshot | where window_start >= startofday(ago(1d)) and window_start < startofday(now())",
+          "commandTimeout": "00:10:00"
+        },
+        "linkedServiceName": { "referenceName": "mdc-Kusto-mdc-ls", "type": "LinkedServiceReference" }
+      },
+      {
+        "name": "Copy message",
+        "type": "Copy",
+        "dependsOn": [{ "activity": "Delete previous day data", "dependencyConditions": ["Succeeded"] }],
+        "inputs": [{ "referenceName": "mdc_message_source", "type": "DatasetReference" }],
+        "outputs": [{ "referenceName": "mdc_message_snapshot", "type": "DatasetReference" }],
+        "typeProperties": {
+          "source": {
+            "type": "CosmosDbMongoDbApiSource",
+            "filter": "{ 'messageRegistrationDate': { '$gte': '@{formatDateTime(addDays(utcNow(), -1), 'yyyy-MM-ddT00:00:00Z')}', '$lt': '@{formatDateTime(utcNow(), 'yyyy-MM-ddT00:00:00Z')}' } }"
+          },
+          "sink": { "type": "AzureDataExplorerSink", "flushImmediately": true },
+          "translator": {
+            "type": "TabularTranslator",
+            "mappings": [
+              { "source": { "path": "messageRegistrationDate" }, "sink": { "name": "window_start", "type": "DateTime" } },
+              { "source": { "path": "entityId" }, "sink": { "name": "entity_id", "type": "String" } },
+              { "source": { "path": "originId" }, "sink": { "name": "origin_id", "type": "String" } },
+              { "source": { "path": "messageState" }, "sink": { "name": "message_state", "type": "String" } },
+              { "source": { "path": "associatedPayment" }, "sink": { "name": "associated_payment", "type": "Boolean" } }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

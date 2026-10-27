@@ -40,6 +40,27 @@ resource "azurerm_private_dns_zone_virtual_network_link" "file_private_endpoint_
   virtual_network_id    = each.value.id
 }
 
+#--------------------------------------------------------------------------------
+# Storage Account - Web
+#--------------------------------------------------------------------------------
+
+resource "azurerm_private_dns_zone" "web_storage" {
+  name                = "privatelink.web.core.windows.net"
+  resource_group_name = azurerm_resource_group.rg_network.name
+  tags                = module.tag_config.tags
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "web_storage" {
+  for_each = { for i in local.vnets_all : i.name => i }
+
+  name                  = "${each.key}-web-storage-link"
+  resource_group_name   = azurerm_resource_group.rg_network.name
+  private_dns_zone_name = azurerm_private_dns_zone.web_storage.name
+  virtual_network_id    = each.value.id
+  registration_enabled  = false
+
+}
+
 # ------------------------------------------------------------------------------
 # Container apps private DNS zone
 # ------------------------------------------------------------------------------
@@ -95,5 +116,24 @@ resource "azurerm_private_dns_zone_virtual_network_link" "managed_redis_private_
   name                  = "${each.key}-private-dns-zone-link"
   resource_group_name   = azurerm_resource_group.rg_network.name
   private_dns_zone_name = azurerm_private_dns_zone.managed_redis.name
+  virtual_network_id    = each.value.id
+}
+
+# ------------------------------------------------------------------------------
+# Private DB DNS Zone
+# ------------------------------------------------------------------------------
+resource "azurerm_private_dns_zone" "private_pgflex_dns_zone" {
+  name                = "${var.env_short}.internal.postgresql.cstar.pagopa.it"
+  resource_group_name = azurerm_resource_group.rg_network.name
+
+  tags = module.tag_config.tags
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "private_pgflex_to_secure_hub_vnets" {
+  for_each = { for i in local.vnets_all : i.name => i }
+
+  name                  = "${each.key}-private-dns-zone-link"
+  resource_group_name   = azurerm_resource_group.rg_network.name
+  private_dns_zone_name = azurerm_private_dns_zone.private_pgflex_dns_zone.name
   virtual_network_id    = each.value.id
 }

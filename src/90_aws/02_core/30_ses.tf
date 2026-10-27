@@ -1,7 +1,8 @@
-module "ses" {
-  source = "git::https://github.com/pagopa/terraform-aws-ses.git?ref=d9006a0e756b8ae963abc29624e57bc21001c345" # v1.3.1
+module "aws_ses" {
+  source   = "git::https://github.com/pagopa/terraform-aws-ses.git?ref=d9006a0e756b8ae963abc29624e57bc21001c345" # v1.3.1
+  for_each = local.ses_domains
 
-  domain         = local.ses_domain
+  domain         = each.key
   user_name      = null
   ses_group_name = null
 
@@ -18,11 +19,13 @@ module "ses" {
   }
 }
 
-resource "aws_ses_domain_mail_from" "noreply" {
-  domain           = local.ses_domain
-  mail_from_domain = "${local.ses_username}.${local.ses_domain}"
+resource "aws_ses_domain_mail_from" "aws_noreply" {
+  for_each = local.ses_domains
+
+  domain           = each.key
+  mail_from_domain = "${local.ses_username}.${each.key}"
 
   depends_on = [
-    module.ses
+    module.aws_ses
   ]
 }

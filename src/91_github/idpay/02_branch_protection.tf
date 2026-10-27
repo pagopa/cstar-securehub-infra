@@ -1,13 +1,26 @@
+# ------------------------------------------------------------------------------
+# Default branch: main
+#
+# APPLIED ONLY WHEN TERRAFORM IS APPLIED IN PROD ENVIRONMENT.
+# ------------------------------------------------------------------------------
 resource "github_branch_default" "default" {
-  for_each = toset(keys(local.repository))
+  for_each = var.env == "prod" ? toset(keys(local.repository)) : []
 
   repository = each.key
   branch     = "main"
 }
 
-# iterate over the repositories and create branch protection rules for the develop branch
+# ------------------------------------------------------------------------------
+# Apply this ruleset only for repositories that have develop branch protected.
+#
+# APPLIED ONLY WHEN TERRAFORM IS APPLIED IN PROD ENVIRONMENT.
+# ------------------------------------------------------------------------------
 resource "github_repository_ruleset" "develop" {
-  for_each = local.repository
+  for_each = {
+    for k, v in local.repositories_with_develop_ruleset :
+    k => v
+    if var.env == "prod"
+  }
 
   name        = "develop"
   repository  = each.key
@@ -24,8 +37,7 @@ resource "github_repository_ruleset" "develop" {
   }
 
   bypass_actors {
-    # repository admin
-    actor_id    = 13205158
+    actor_id    = data.github_team.admin.id
     actor_type  = "Team"
     bypass_mode = "always"
   }
@@ -66,9 +78,18 @@ resource "github_repository_ruleset" "develop" {
   }
 }
 
-# iterate over the repositories and create branch protection rules for the develop branch
+# ------------------------------------------------------------------------------
+# Apply this ruleset only for repositories that have uat or main branch
+# protected.
+#
+# APPLIED ONLY WHEN TERRAFORM IS APPLIED IN PROD ENVIRONMENT.
+# ------------------------------------------------------------------------------
 resource "github_repository_ruleset" "uat_and_main" {
-  for_each = local.repository
+  for_each = {
+    for k, v in local.repositories_with_uat_and_main_ruleset :
+    k => v
+    if var.env == "prod"
+  }
 
   name        = "uat_and_main"
   repository  = each.key
@@ -77,27 +98,23 @@ resource "github_repository_ruleset" "uat_and_main" {
 
   conditions {
     ref_name {
-      include = [
-        "refs/heads/uat",
-        "refs/heads/main"
-      ]
+      include = each.value.include_refs
       exclude = []
     }
   }
 
   bypass_actors {
-    # repository admin
-    actor_id    = 13205158
+    actor_id    = data.github_team.admin.id
     actor_type  = "Team"
     bypass_mode = "always"
   }
 
   rules {
     creation                = true
-    update                  = true
+    update                  = each.value.restrict_updates
     deletion                = true
     non_fast_forward        = true
-    required_linear_history = true
+    required_linear_history = each.value.required_linear_history
 
     pull_request {
       require_code_owner_review         = true
@@ -105,15 +122,28 @@ resource "github_repository_ruleset" "uat_and_main" {
       dismiss_stale_reviews_on_push     = true
       required_review_thread_resolution = true
       require_last_push_approval        = false
-      allowed_merge_methods             = ["merge"]
+      allowed_merge_methods             = each.value.allowed_merge_methods
     }
 
     required_status_checks {
       strict_required_status_checks_policy = true
       do_not_enforce_on_create             = false
-      required_check {
-        context        = "SonarCloud Code Analysis"
-        integration_id = 12526
+      dynamic "required_check" {
+        for_each = each.value.required_status_checks
+
+        content {
+          context        = required_check.value.context
+          integration_id = required_check.value.integration_id
+        }
+      }
+    }
+
+    dynamic "merge_queue" {
+      for_each = contains(keys(local.repositories_with_merge_queue), each.key) ? [1] : []
+
+      content {
+        merge_method                   = upper(each.value.allowed_merge_methods[0])
+        check_response_timeout_minutes = 120
       }
     }
 

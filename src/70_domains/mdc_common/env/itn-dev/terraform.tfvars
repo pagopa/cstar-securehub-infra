@@ -10,16 +10,32 @@ external_domain          = "pagopa.it"
 dns_zone_internal_prefix = "internal.dev.cstar"
 dns_zone_public_name     = "dev.cstar.pagopa.it"
 
+# 🤖 Robots
+robots_indexed_paths = []
+
+# CDN
+backoffice_cdn_storage_replication_type = "LRS"
+
 #Monitoring
 law_sku               = "PerGB2018"
 law_retention_in_days = 30
 law_daily_quota_gb    = 5
+audit_export_enabled  = false
 
 # Redis
 redis_idh_tier = "basic"
 
 aks_nodepool = {
+  enabled           = false
   vm_sku_name       = "Standard_B4ms_active"
+  autoscale_enabled = true
+  node_count_min    = 1
+  node_count_max    = 2
+}
+
+aks_foobar_nodepool = {
+  enabled           = true
+  vm_sku_name       = "Standard_B4ms"
   autoscale_enabled = true
   node_count_min    = 1
   node_count_max    = 2

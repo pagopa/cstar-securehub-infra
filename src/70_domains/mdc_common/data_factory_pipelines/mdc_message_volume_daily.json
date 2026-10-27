@@ -1,0 +1,63 @@
+{
+  "name": "mdc_message_volume_daily",
+  "properties": {
+    "activities": [
+      {
+        "name": "Delete previous day data",
+        "type": "AzureDataExplorerCommand",
+        "typeProperties": {
+          "command": ".delete table MessageVolumeSnapshot records <| MessageVolumeSnapshot | where window_start >= startofday(ago(1d)) and window_start < startofday(now())",
+          "commandTimeout": "00:10:00"
+        },
+        "linkedServiceName": {
+          "referenceName": "mdc-Kusto-mdc-ls",
+          "type": "LinkedServiceReference"
+        }
+      },
+      {
+        "name": "Copy message volume",
+        "type": "Copy",
+        "dependsOn": [
+          {
+            "activity": "Delete previous day data",
+            "dependencyConditions": [ "Succeeded" ]
+          }
+        ],
+        "inputs": [
+          { "referenceName": "mdc_message_volume_source", "type": "DatasetReference" }
+        ],
+        "outputs": [
+          { "referenceName": "mdc_message_volume_snapshot", "type": "DatasetReference" }
+        ],
+        "typeProperties": {
+          "source": {
+            "type": "RestSource",
+            "requestMethod": "POST",
+            "requestBody": "{\"query\": \"let start = startofday(ago(1d)); let end = startofday(now()); let actuals = AppTraces | where TimeGenerated >= start and TimeGenerated < end | where Message has '[MESSAGE-CORE][SEND]' | where Message has 'enqueued successfully for recipient' or Message has 'Fiscal code check failed' | extend status = case(Message has 'enqueued successfully for recipient', 'sent', Message has 'Fiscal code check failed', 'discarded', 'unknown') | extend associated_payment = tobool(extract(@'associatedPayment: (\\\\w+)', 1, Message)) | summarize message_total_count = count(), message_sent_count = countif(status == 'sent'), message_discarded_count = countif(status == 'discarded'), sent_with_payment = countif(status == 'sent' and associated_payment == true), sent_without_payment = countif(status == 'sent' and associated_payment == false), discarded_with_payment = countif(status == 'discarded' and associated_payment == true), discarded_without_payment = countif(status == 'discarded' and associated_payment == false) by window_start = bin(TimeGenerated, 15m); range window_start from start to (end - 15m) step 15m | join kind=leftouter actuals on window_start | project window_start = tostring(window_start), message_total_count = coalesce(message_total_count, 0), message_sent_count = coalesce(message_sent_count, 0), message_discarded_count = coalesce(message_discarded_count, 0), sent_with_payment = coalesce(sent_with_payment, 0), sent_without_payment = coalesce(sent_without_payment, 0), discarded_with_payment = coalesce(discarded_with_payment, 0), discarded_without_payment = coalesce(discarded_without_payment, 0) | order by window_start asc\"}",
+            "additionalHeaders": {
+              "Content-Type": "application/json"
+            }
+          },
+          "sink": {
+            "type": "AzureDataExplorerSink",
+            "flushImmediately": true
+          },
+          "translator": {
+            "type": "TabularTranslator",
+            "mappings": [
+              { "source": { "path": "$[0]" }, "sink": { "name": "window_start", "type": "String" } },
+              { "source": { "path": "$[1]" }, "sink": { "name": "message_total_count", "type": "Int64" } },
+              { "source": { "path": "$[2]" }, "sink": { "name": "message_sent_count", "type": "Int64" } },
+              { "source": { "path": "$[3]" }, "sink": { "name": "message_discarded_count", "type": "Int64" } },
+              { "source": { "path": "$[4]" }, "sink": { "name": "sent_with_payment", "type": "Int64" } },
+              { "source": { "path": "$[5]" }, "sink": { "name": "sent_without_payment", "type": "Int64" } },
+              { "source": { "path": "$[6]" }, "sink": { "name": "discarded_with_payment", "type": "Int64" } },
+              { "source": { "path": "$[7]" }, "sink": { "name": "discarded_without_payment", "type": "Int64" } }
+            ],
+            "collectionReference": "$.tables[0].rows"
+          }
+        }
+      }
+    ]
+  }
+}

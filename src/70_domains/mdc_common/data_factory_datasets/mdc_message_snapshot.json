@@ -1,0 +1,14 @@
+{
+    "name": "mdc_message_snapshot",
+    "properties": {
+      "type": "AzureDataExplorerTable",
+      "linkedServiceName": {
+          "referenceName": "mdc-Kusto-mdc-ls",
+          "type": "LinkedServiceReference"
+        },
+        "typeProperties": {
+            "table": "MessageSnapshot"
+        }
+    },
+    "type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,20 @@
+let pipelineRunId = '@{pipeline().RunId}';
+let rawDate = @'@{replace(coalesce(pipeline().parameters.target_date, ''), '''', '''''')}';
+let isoDate = iff(strlen(rawDate) == 10 and substring(rawDate, 2, 1) == '-', strcat(substring(rawDate, 6, 4), '-', substring(rawDate, 3, 2), '-', substring(rawDate, 0, 2)), rawDate);
+let targetDateLabel = iff(isempty(rawDate), startofday(datetime_utc_to_local(now(), 'Europe/Rome'), -1), todatetime(isoDate));
+let startOfYesterday = datetime_local_to_utc(targetDateLabel, 'Europe/Rome');
+let actuals = materialize(
+    cluster('https://ade.loganalytics.io__LAW_ID__').database('__LAW_NAME__').AppTraces
+    | where TimeGenerated >= startOfYesterday and TimeGenerated < startOfYesterday + 1d
+    | where AppRoleName == "rtp-consumer"
+    | where Message startswith "Payload: GpdMessage"
+    | extend Operation = extract(@"operation=([^,\s\]]+)", 1, Message), Status = extract(@"status=([^,\s\]]+)", 1, Message)
+    | where toupper(Status) == "VALID"
+    | summarize total_valid_notices = count() by window_start = targetDateLabel, operation = iff(isempty(Operation), "UNKNOWN", Operation)
+    | extend is_dummy = 0, pipeline_run_id = pipelineRunId
+);
+let default_row = print window_start = targetDateLabel, operation = "UNKNOWN", total_valid_notices = tolong(0), is_dummy = 1, pipeline_run_id = pipelineRunId;
+union actuals, default_row
+| where toscalar(actuals | count) == 0 or is_dummy == 0
+| order by total_valid_notices desc
+| project window_start, operation, total_valid_notices, pipeline_run_id

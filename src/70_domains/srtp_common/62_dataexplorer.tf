@@ -12,7 +12,11 @@ resource "azurerm_kusto_database" "db" {
 
 resource "null_resource" "trigger_create_tables_srtp" {
   triggers = {
-    file_hash = filesha256("${path.module}/data_explorer_kql/create_tables_srtp.kql")
+    file_hash = sha256(templatefile("${path.module}/data_explorer_kql/create_tables_srtp.kql.tftpl", {
+      soft_delete_period        = "${coalesce(var.adx_table_soft_delete_period_days, var.adx_db_soft_delete_period_days)}.00:00:00"
+      hot_cache_period_timespan = "${coalesce(var.adx_table_hot_cache_period_days, var.adx_db_hot_cache_period_days)}.00:00:00"
+      hot_cache_period          = "${coalesce(var.adx_table_hot_cache_period_days, var.adx_db_hot_cache_period_days)}d"
+    }))
   }
 }
 
@@ -23,7 +27,11 @@ resource "azapi_resource" "create_tables_srtp" {
 
   body = {
     properties = {
-      scriptContent    = file("${path.module}/data_explorer_kql/create_tables_srtp.kql")
+      scriptContent = templatefile("${path.module}/data_explorer_kql/create_tables_srtp.kql.tftpl", {
+        soft_delete_period        = "${coalesce(var.adx_table_soft_delete_period_days, var.adx_db_soft_delete_period_days)}.00:00:00"
+        hot_cache_period_timespan = "${coalesce(var.adx_table_hot_cache_period_days, var.adx_db_hot_cache_period_days)}.00:00:00"
+        hot_cache_period          = "${coalesce(var.adx_table_hot_cache_period_days, var.adx_db_hot_cache_period_days)}d"
+      })
       continueOnErrors = false
     }
   }
@@ -37,17 +45,15 @@ resource "azapi_resource" "create_tables_srtp" {
   }
 }
 
-resource "azurerm_data_factory_linked_service_kusto" "kusto" {
-  for_each = local.kusto_database
-
-  name                 = "${var.domain}-Kusto-${each.key}-ls"
-  data_factory_id      = data.azurerm_data_factory.data_factory.id
-  kusto_endpoint       = data.azurerm_kusto_cluster.kusto_cluster.uri
-  kusto_database_name  = azurerm_kusto_database.db[each.key].name
-  use_managed_identity = true
-
+resource "azurerm_data_factory_linked_service_kusto" "kusto_srtp" {
+  name                     = "${var.domain}-Kusto-${var.domain}-ls"
+  data_factory_id          = data.azurerm_data_factory.data_factory.id
+  kusto_endpoint           = data.azurerm_kusto_cluster.kusto_cluster.uri
+  kusto_database_name      = azurerm_kusto_database.db[var.domain].name
+  use_managed_identity     = true
   integration_runtime_name = "AutoResolveIntegrationRuntime"
 }
+
 
 resource "azurerm_kusto_database_principal_assignment" "rtp_sender_adx_viewer" {
   name                = "rtp-role-viewer"

@@ -33,6 +33,10 @@ locals {
         {
           keys   = ["entityId"]
           unique = true
+        },
+        {
+          keys   = ["businessName"]
+          unique = false
         }
       ]
 
@@ -58,7 +62,15 @@ locals {
         {
           keys   = ["originId"]
           unique = false
-        }
+        },
+        {
+          keys   = ["messageRegistrationDate"]
+          unique = false
+        },
+        {
+          keys   = ["messageRegistrationDate", "_id"]
+          unique = false
+        },
       ]
 
     },
@@ -94,6 +106,18 @@ locals {
         },
         {
           keys   = ["fiscalCode"]
+          unique = false
+        },
+        {
+          keys   = ["tppId", "originId"]
+          unique = false
+        },
+        {
+          keys   = ["tppId", "_id"]
+          unique = false
+        },
+        {
+          keys   = ["originId", "_id"]
           unique = false
         }
       ]

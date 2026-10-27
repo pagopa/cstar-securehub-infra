@@ -2,9 +2,10 @@ module "cdn_frontdoor" {
   source = "./.terraform/modules/__v4__/cdn_frontdoor"
   count  = var.enable_cdn ? 1 : 0
 
-  cdn_prefix_name     = "${local.project}-fe"
-  resource_group_name = local.data_rg_name
-  location            = var.location
+  cdn_prefix_name           = "${local.project}-fe"
+  resource_group_name       = local.data_rg_name
+  location                  = var.location
+  enable_diagnostic_setting = contains(["d", "u"], var.env_short) ? false : true
 
   custom_domains = [
     {

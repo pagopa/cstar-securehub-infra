@@ -3,7 +3,7 @@
   "properties": {
     "activities": [
       {
-        "name": "Lookup1",
+        "name": "producersLookUp",
         "type": "Lookup",
         "dependsOn": [],
         "policy": {
@@ -38,7 +38,7 @@
         "type": "WebActivity",
         "dependsOn": [
           {
-            "activity": "Lookup1",
+            "activity": "producersMapping",
             "dependencyConditions": [
               "Succeeded"
             ]
@@ -72,7 +72,7 @@
         }
       },
       {
-        "name": "Web1",
+        "name": "producersImport",
         "type": "WebActivity",
         "dependsOn": [
           {
@@ -93,6 +93,7 @@
         "typeProperties": {
           "method": "POST",
           "headers": {
+            "Content-Type": "application/json",
             "Ocp-Apim-Subscription-Key": {
               "value": "@activity('Get_SubKey').output.value",
               "type": "Expression"
@@ -107,14 +108,54 @@
             "type": "IntegrationRuntimeReference"
           },
           "body": {
-            "value": "@string(activity('Lookup1').output.value)",
+            "value": "@concat('{\"producers\":',string(variables('producers')),'}')",
             "type": "Expression"
           }
         }
+      },
+      {
+        "name": "producersMapping",
+        "type": "ForEach",
+        "dependsOn": [
+          {
+            "activity": "producersLookUp",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "userProperties": [],
+        "typeProperties": {
+          "isSequential": true,
+          "items": {
+            "value": "@activity('producersLookUp').output.value",
+            "type": "Expression"
+          },
+          "activities": [
+            {
+              "name": "producer",
+              "type": "AppendVariable",
+              "dependsOn": [],
+              "userProperties": [],
+              "typeProperties": {
+                "variableName": "producers",
+                "value": {
+                  "value": "@json(concat('{','\"producerId\":\"',trim(string(item().producerId)),'\",','\"initiativeId\":\"',trim(string(item().initiativeId)),'\",','\"producerName\":\"',replace(replace(trim(string(item().producerName)),'\\','\\\\'),'\"','\\\"'),'\",','\"producerEmail\":\"',trim(string(item().producerEmail)),'\"','}'))",
+                  "type": "Expression"
+                }
+              }
+            }
+          ]
+        }
       }
     ],
-    "annotations": [],
-    "lastPublishTime": "2026-05-06T10:17:14Z"
+    "variables": {
+      "producers": {
+        "type": "Array",
+        "defaultValue": []
+      }
+    },
+    "annotations": []
   },
   "type": "Microsoft.DataFactory/factories/pipelines"
 }

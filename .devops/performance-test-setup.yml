@@ -67,6 +67,9 @@ variables:
     ${{ if eq(parameters.ACTION, 'teardown') }}:
       value: "Developer"
 
+  - name: apimCapacity
+    value: 1
+
   - name: appgwMinCapacity
     ${{ if eq(parameters.ACTION, 'setup') }}:
       value: 2
@@ -87,7 +90,7 @@ resources:
     - repository: terraform
       type: github
       name: pagopa/azure-pipeline-templates
-      ref: refs/tags/v6.17.4
+      ref: refs/tags/v6.18.1
       endpoint: "azure-devops-github-ro"
 
 name: "${{parameters.ACTION}} ${{ parameters.ENV }} for ${{ parameters.REASON }} -  $(Date:yyyyMMdd).$(Rev:r)"
@@ -117,7 +120,11 @@ stages:
               scriptLocation: 'inlineScript'
               failOnStandardError: true
               inlineScript: |
-                az apim update --resource-group ${{ variables.apimRg }} --name ${{ variables.apimName }} --sku-name "${{ variables.apimSku }}"
+                if [ "${{ variables.apimSku }}" = "Developer" ]; then
+                  az apim update --resource-group ${{ variables.apimRg }} --name ${{ variables.apimName }} --sku-name "${{ variables.apimSku }}"
+                else
+                  az apim update --resource-group ${{ variables.apimRg }} --name ${{ variables.apimName }} --sku-name "${{ variables.apimSku }}" --sku-capacity "${{ variables.apimCapacity }}"
+                fi
           - task: AzureCLI@2
             displayName: 'Update APPGW'
             inputs:

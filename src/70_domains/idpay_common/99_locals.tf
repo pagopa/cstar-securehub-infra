@@ -3,7 +3,6 @@ locals {
   product_no_domain = "${var.prefix}-${var.env_short}-${var.location_short}"
   project           = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
   project_core      = "${var.prefix}-${var.env_short}-${var.location_short}-core"
-  project_weu       = "${var.prefix}-${var.env_short}-${var.location_short_weu}-${var.domain}"
   project_entra     = "${var.prefix}-${var.env_short}-${var.domain}"
 
   # Default Domain Resource Group
@@ -50,6 +49,11 @@ locals {
     ]
   }
 
+  ########################################
+  # PARI DNS Public zone
+  ########################################
+
+  public_dns_zone_pari = "${var.env_short != "p" ? "${var.env}." : ""}pari.${var.external_domain}"
   #
   # 🔑 KeyVault
   #
@@ -152,4 +156,14 @@ locals {
       }
     ]
   ])
+  multi_initiatives = var.env_short == "p" ? ["bonusdecoder"] : ["bonusdecoder", "bonuselettrodomestici"]
+  multi_fe_spa      = ["utente", "registro-beni", "lista-punti-vendita"]
+
+  multi_initiatives_regex = join("|", local.multi_initiatives)
+  multi_fe_regex          = join("|", local.multi_fe_spa)
+
+  #
+  # PostgreSQL
+  #
+  idpay_postgresql_database_name = "idpay-database"
 }

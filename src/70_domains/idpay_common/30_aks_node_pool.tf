@@ -1,5 +1,17 @@
+moved {
+  from = module.aks_idpay_node_pool_blue
+  to   = module.aks_idpay_node_pool_blue[0]
+}
+
+moved {
+  from = module.aks_idpay_node_pool_green
+  to   = module.aks_idpay_node_pool_green[0]
+}
+
 module "aks_idpay_node_pool_blue" {
   source = "./.terraform/modules/__v4__/IDH/aks_node_pool"
+  count  = var.blue_green_node_pool_enabled ? 1 : 0
+
 
   product_name = var.prefix
   env          = var.env
@@ -23,6 +35,7 @@ module "aks_idpay_node_pool_blue" {
 
 module "aks_idpay_node_pool_green" {
   source = "./.terraform/modules/__v4__/IDH/aks_node_pool"
+  count  = var.blue_green_node_pool_enabled ? 1 : 0
 
   product_name = var.prefix
   env          = var.env
@@ -41,4 +54,39 @@ module "aks_idpay_node_pool_green" {
   node_tags             = { node_tag : "green", phase : "green" }
   kubernetes_cluster_id = data.azurerm_kubernetes_cluster.aks.id
   vnet_subnet_id        = module.aks_overlay_snet.id
+}
+
+
+
+module "foo_bar_idpay_node_pool" {
+  source = "./.terraform/modules/__v4__/IDH/aks_node_pool"
+  count  = var.aks_foobar_idpay_node_pool_configuration.enabled ? 1 : 0
+
+  product_name      = var.prefix
+  env               = var.env
+  idh_resource_tier = var.aks_foobar_idpay_node_pool_configuration.tier
+
+  name                  = "idpay"
+  kubernetes_cluster_id = data.azurerm_kubernetes_cluster.aks.id
+  vnet_subnet_id        = module.aks_overlay_snet.id
+
+  node_count_min    = var.aks_foobar_idpay_node_pool_configuration.node_count_min
+  node_count_max    = var.aks_foobar_idpay_node_pool_configuration.node_count_max
+  autoscale_enabled = true
+
+  double_node_pool = {
+    enabled = true
+    node_pool_foo = {
+      active = var.env_short == "d" ? true : false
+    }
+    node_pool_bar = {
+      active           = var.env_short == "d" ? false : true
+      version_override = var.env_short == "d" ? null : "1.35.8"
+    }
+  }
+
+  node_labels = { node_type : "user", domain : var.domain }
+  node_tags   = {}
+  node_taints = ["${var.domain}Only=true:NoSchedule"]
+  tags        = module.tag_config.tags
 }

@@ -33,6 +33,32 @@ resource "azurerm_data_factory_linked_custom_service" "bonus_blob_storage_linked
   }
 }
 
+data "azurerm_storage_account" "cdn_multi_initiative_storage_account" {
+  count = var.enabled_cdn_multi_initiative ? 1 : 0
+
+  name                = module.cdn_multi_initiative[0].storage_account_name
+  resource_group_name = local.data_rg
+}
+
+resource "azurerm_data_factory_linked_custom_service" "multi_initiative_blob_storage_linked_service" {
+  count = var.enabled_cdn_multi_initiative ? 1 : 0
+
+  name            = "${var.domain}-multi-initiative-blob-storage-ls"
+  data_factory_id = data.azurerm_data_factory.data_factory.id
+  type            = "AzureBlobStorage"
+  description     = "Multi-Initiative CDN Blob Storage linked service for IdPay exports"
+  type_properties_json = jsonencode({
+    connectionString = data.azurerm_storage_account.cdn_multi_initiative_storage_account[0].primary_connection_string
+  })
+
+  integration_runtime {
+    name = "AutoResolveIntegrationRuntime"
+  }
+
+  depends_on = [module.cdn_multi_initiative]
+}
+
+
 resource "azurerm_data_factory_linked_custom_service" "idpay_blob_storage_trx_report_linked_service" {
 
   name            = "${var.domain}-report-trx-blob-storage-ls"
@@ -149,6 +175,7 @@ resource "azapi_resource_action" "approve_pe" {
     }
   }
 }
+
 # ADF MI -> can read kv secrets
 resource "azurerm_role_assignment" "adf_can_read_kv_secrets" {
   scope                = data.azurerm_key_vault.domain_kv.id
@@ -161,7 +188,7 @@ resource "azurerm_key_vault_access_policy" "kv_policy_adf" {
   key_vault_id       = data.azurerm_key_vault.domain_kv.id
   tenant_id          = data.azurerm_client_config.current.tenant_id
   object_id          = data.azurerm_data_factory.data_factory.identity[0].principal_id
-  secret_permissions = ["Get"]
+  secret_permissions = ["Get", "List"]
 }
 
 #ADF secrets
@@ -197,4 +224,25 @@ resource "azurerm_role_assignment" "role_datafactory_contributor" {
   scope                = data.azurerm_resource_group.platform_data.id
   role_definition_name = "Data Factory Contributor"
   principal_id         = module.workload_identity_configuration_v2.workload_identity_principal_id
+}
+
+
+module "adf_linked_service" {
+  source = "./.terraform/modules/__v4__/adf_linked_service"
+
+  data_factory_id           = data.azurerm_data_factory.data_factory.id
+  data_factory_principal_id = data.azurerm_data_factory.data_factory.identity[0].principal_id
+  env_short                 = var.env_short
+  adf_linked_service_postgresql = var.idpay_pgflex_params.enabled ? {
+    "idpay-db" = {
+      key_vault_id            = data.azurerm_key_vault.domain_kv.id
+      host                    = trimsuffix(module.idpay_pgflex[0].private_fqdn, ".") # to remove trailing dot
+      port                    = "5432"
+      database_name           = local.idpay_postgresql_database_name
+      username                = azurerm_key_vault_secret.idpay_postgres_admin_user[0].value
+      password_secret_name    = azurerm_key_vault_secret.idpay_postgres_admin_password[0].name
+      create_kv_access_policy = false
+    }
+  } : {}
+
 }

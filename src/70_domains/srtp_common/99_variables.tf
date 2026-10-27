@@ -150,3 +150,40 @@ variable "redis_idh_resource_tier" {
   type        = string
   description = "The SKU of the Redis Cache to deploy"
 }
+
+variable "adx_db_soft_delete_period_days" {
+  type        = number
+  description = "Default soft delete period for ADX database (in days)"
+}
+
+variable "adx_db_hot_cache_period_days" {
+  type        = number
+  description = "Default hot cache period for ADX database (in days)"
+}
+
+variable "adx_table_soft_delete_period_days" {
+  type        = number
+  description = "Soft delete period override for specific ADX tables (in days). If null, falls back to DB default."
+  default     = null
+}
+
+variable "adx_table_hot_cache_period_days" {
+  type        = number
+  description = "Hot cache period override for specific ADX tables (in days). If null, falls back to DB default."
+  default     = null
+}
+
+
+variable "blue_green_node_pool_enabled" {
+  type    = bool
+  default = true
+}
+
+variable "aks_foobar_srtp_node_pool_configuration" {
+  type = object({
+    enabled        = optional(bool, false),
+    tier           = string,
+    node_count_min = number,
+    node_count_max = number,
+  })
+}

@@ -21,25 +21,26 @@ keycloak_pgflex_params = {
   pgres_flex_pgbouncer_enabled           = false
   pgres_flex_diagnostic_settings_enabled = false
   auto_grow_enabled                      = false
-  storage_tier                           = "P30"
+  storage_tier                           = "P10"
 }
 
 keycloak_configuration = {
-  image_registry                              = "public.ecr.aws"
-  image_repository                            = "bitnami/keycloak"
-  image_tag                                   = "26.6.1-debian-12-r0"
+  image_registry                              = "quay.io"
+  image_repository                            = "keycloak/keycloak"
+  image_tag                                   = "26.6.1"
   chart_version                               = "24.7.7"
   replica_count_min                           = 1
   replica_count_max                           = 2
-  cpu_request                                 = "500m"
+  cpu_request                                 = "250m"
   cpu_limit                                   = "1"
-  memory_request                              = "1Gi"
-  memory_limit                                = "2Gi"
+  memory_request                              = "1.5Gi"
+  memory_limit                                = "2.5Gi"
   http_client_connection_ttl_millis           = 180000
   http_client_connection_max_idle_time_millis = 180000
-  image_registry_config_cli                   = "public.ecr.aws"
-  image_repository_config_cli                 = "bitnami/keycloak-config-cli"
-  image_tag_config_cli                        = "6.4.0"
+  image_registry_config_cli                   = "docker.io"
+  image_repository_config_cli                 = "adorsys/keycloak-config-cli"
+  image_tag_config_cli                        = "6.4.0-26.1.0"
+  image_digest_config_cli                     = "sha256:6795d2cbf9ed7c96e9d19c39781d383d12df36b5cbe81f0024bca4fa4d392681"
 }
 
 listmonk_configuration = {
@@ -51,9 +52,20 @@ listmonk_configuration = {
 }
 
 aks_user_node_pool_keycloak = {
-  idh_resource_tier = "Standard_D4ads_v5_active"
+  enabled           = false
+  idh_resource_tier = "Standard_D2ads_v5_active"
   node_count_min    = 1
-  node_count_max    = 1
+  node_count_max    = 3
+  os_disk_size_gb   = 300
+  os_disk_type      = "Managed"
+}
+
+
+aks_user_foobar_node_pool_keycloak = {
+  enabled           = true
+  idh_resource_tier = "Standard_D2ads"
+  node_count_min    = 1
+  node_count_max    = 2
   os_disk_size_gb   = 300
   os_disk_type      = "Managed"
 }

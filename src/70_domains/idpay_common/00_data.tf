@@ -17,6 +17,10 @@ data "azurerm_resource_group" "idpay_monitoring_rg" {
   name = "${local.project}-monitoring-rg"
 }
 
+data "azurerm_resource_group" "network_rg" {
+  name = "${local.project_core}-network-rg"
+}
+
 #----------------------------------------------------------------
 # 🌐 Network
 #----------------------------------------------------------------
@@ -40,6 +44,7 @@ data "azurerm_dns_zone" "bonus_elettrodomestici_apex" {
   name                = each.value
   resource_group_name = "${local.project_core}-network-rg"
 }
+
 
 #
 # Private DNS Zones
@@ -77,6 +82,11 @@ data "azurerm_private_dns_zone" "service_bus" {
   count = var.service_bus_namespace.sku == "Premium" ? 1 : 0
 
   name                = "privatelink.servicebus.windows.net"
+  resource_group_name = local.vnet_legacy_core_rg
+}
+
+data "azurerm_private_dns_zone" "postgres_flexible_privatelink" {
+  name                = "privatelink.postgres.database.azure.com"
   resource_group_name = local.vnet_legacy_core_rg
 }
 
@@ -171,6 +181,26 @@ data "azurerm_key_vault_secret" "ses_smtp_host" {
 
 data "azurerm_key_vault_secret" "ses_from_address" {
   name         = "aws-ses-mail-from"
+  key_vault_id = data.azurerm_key_vault.domain_kv.id
+}
+#PARI SES
+data "azurerm_key_vault_secret" "pari_ses_smtp_username" {
+  name         = "aws-pari-ses-mail-smtp-username"
+  key_vault_id = data.azurerm_key_vault.domain_kv.id
+}
+
+data "azurerm_key_vault_secret" "pari_ses_smtp_password" {
+  name         = "aws-pari-ses-mail-smtp-password"
+  key_vault_id = data.azurerm_key_vault.domain_kv.id
+}
+
+data "azurerm_key_vault_secret" "pari_ses_smtp_host" {
+  name         = "aws-pari-ses-mail-host"
+  key_vault_id = data.azurerm_key_vault.domain_kv.id
+}
+
+data "azurerm_key_vault_secret" "pari_ses_from_address" {
+  name         = "aws-pari-ses-mail-from"
   key_vault_id = data.azurerm_key_vault.domain_kv.id
 }
 

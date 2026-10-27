@@ -1,0 +1,14 @@
+{
+    "name": "mdc_tpp_snapshot",
+    "properties": {
+      "type": "AzureDataExplorerTable",
+      "linkedServiceName": {
+          "referenceName": "mdc-Kusto-mdc-ls",
+          "type": "LinkedServiceReference"
+        },
+        "typeProperties": {
+            "table": "TppDataSnapshot"
+        }
+    },
+    "type": "Microsoft.DataFactory/factories/datasets"
+}

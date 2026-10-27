@@ -7,7 +7,11 @@ locals {
 
   text_files = {
     for f in local.files :
-    local.flattened_key[f] => file("${local.theme_dir}/${f}")
+    local.flattened_key[f] => replace(
+      replace(file("${local.theme_dir}/${f}"), "themeVersion", substr(filesha256("${local.theme_dir}/login/resources/css/login.css"), 0, 12)),
+      "__BASE_URL__",
+      local.pari_base_url
+    )
     if !endswith(f, "/") && !contains(local.binary_exts, lower(substr(f, length(f) - 4, 5)))
   }
 
@@ -21,7 +25,7 @@ locals {
   fixed_volume_mounts = [
     {
       name      = "agent"
-      mountPath = "/opt/bitnami/keycloak/agent"
+      mountPath = "/opt/keycloak/agent"
     }
   ]
 
@@ -29,15 +33,44 @@ locals {
   theme_volume_mounts = [
     for f in local.files : {
       name      = "pagopa-theme"
-      mountPath = "/opt/bitnami/keycloak/themes/pagopa/${f}"
+      mountPath = "/opt/keycloak/themes/pagopa/${f}"
       subPath   = local.flattened_key[f]
       readOnly  = true
     }
     if !endswith(f, "/")
   ]
 
+  # --- Tema dedicato "mdc-internal-portal" (login con Microsoft Entra) ---
+  # Montato tramite un configmap separato per non toccare il tema "pagopa"
+  # esistente ed evitare il limite di 1 MiB per configmap.
+  mdc_theme_dir     = "${path.module}/k8s/keycloak/themes/mdc-internal-portal"
+  mdc_files         = fileset(local.mdc_theme_dir, "**")
+  mdc_flattened_key = { for f in local.mdc_files : f => replace(f, "/", "__") }
+
+  mdc_text_files = {
+    for f in local.mdc_files :
+    local.mdc_flattened_key[f] => file("${local.mdc_theme_dir}/${f}")
+    if !endswith(f, "/") && !contains(local.binary_exts, lower(substr(f, length(f) - 4, 5)))
+  }
+
+  mdc_binary_files = {
+    for f in local.mdc_files :
+    local.mdc_flattened_key[f] => filebase64("${local.mdc_theme_dir}/${f}")
+    if !endswith(f, "/") && contains(local.binary_exts, lower(substr(f, length(f) - 4, 5)))
+  }
+
+  mdc_theme_volume_mounts = [
+    for f in local.mdc_files : {
+      name      = "mdc-portal-theme"
+      mountPath = "/opt/keycloak/themes/mdc-internal-portal/${f}"
+      subPath   = local.mdc_flattened_key[f]
+      readOnly  = true
+    }
+    if !endswith(f, "/")
+  ]
+
   # Merge volume mount
-  keycloak_extra_volume_mounts = concat(local.fixed_volume_mounts, local.theme_volume_mounts, [local.provider_volume_mount])
+  keycloak_extra_volume_mounts = concat(local.fixed_volume_mounts, local.theme_volume_mounts, local.mdc_theme_volume_mounts, [local.provider_volume_mount])
 
   # ConfigMap for JAR provider
   keycloak_provider_jar_path = "${path.module}/k8s/keycloak/providers/keycloak-idp-strip-tinit-1.0.0.jar"
@@ -50,13 +83,33 @@ locals {
       name = kubernetes_config_map.keycloak_providers.metadata[0].name
     }
   }
-  # Mount for single JAR with subPath in /opt/bitnami/keycloak/providers
+  # Mount for single JAR with subPath in /opt/keycloak/providers
   provider_volume_mount = {
     name      = "keycloak-providers"
-    mountPath = "/opt/bitnami/keycloak/providers/${local.keycloak_provider_file}"
+    mountPath = "/opt/keycloak/providers/${local.keycloak_provider_file}"
     subPath   = local.keycloak_provider_file
     readOnly  = true
   }
+
+  keycloak_rollout_checksum = nonsensitive(sha256(jsonencode({
+    pagopa_theme = {
+      text   = local.text_files
+      binary = local.binary_files
+    }
+    mdc_theme = {
+      text   = local.mdc_text_files
+      binary = local.mdc_binary_files
+    }
+    provider_jar = filebase64(local.keycloak_provider_jar_path)
+    server_config = {
+      KC_HEALTH_ENABLED    = "true"
+      KC_METRICS_ENABLED   = "true"
+      KC_DB_URL_PROPERTIES = "?sslmode=require"
+    }
+    terraform_client_config = templatefile("${path.module}/k8s/keycloak/terraform_client.json.tpl", {
+      keycloak_terraform_client_secret = azurerm_key_vault_secret.terraform_client_secret_for_keycloak.value
+    })
+  })))
 
 }
 
@@ -138,7 +191,7 @@ resource "kubernetes_config_map" "keycloak_config" {
   data = {
     KC_HEALTH_ENABLED    = "true"
     KC_METRICS_ENABLED   = "true"
-    KC_DB_URL_PROPERTIES = "sslmode=require"
+    KC_DB_URL_PROPERTIES = "?sslmode=require"
   }
 }
 
@@ -166,6 +219,17 @@ resource "kubernetes_config_map" "keycloak_pagopa_theme" {
   binary_data = local.binary_files
 }
 
+# ConfigMap del tema dedicato "mdc-internal-portal"
+resource "kubernetes_config_map" "keycloak_mdc_portal_theme" {
+  metadata {
+    name      = "keycloak-mdc-portal-theme"
+    namespace = local.keycloak_namespace
+  }
+
+  data        = local.mdc_text_files
+  binary_data = local.mdc_binary_files
+}
+
 resource "kubernetes_config_map" "keycloak_providers" {
   metadata {
     name      = local.keycloak_provider_cm_name
@@ -180,10 +244,10 @@ resource "kubernetes_config_map" "keycloak_providers" {
 resource "helm_release" "keycloak" {
   name      = "keycloak"
   namespace = kubernetes_namespace.keycloak.metadata[0].name
+  # Keep the Bitnami chart while using the upstream Keycloak image.
   #https://github.com/bitnami/charts/tree/main/bitnami/keycloak
   repository = "oci://registry-1.docker.io/bitnamicharts"
   #https://artifacthub.io/packages/helm/bitnami/keycloak/
-  #https://gallery.ecr.aws/bitnami/keycloak
   chart   = "keycloak"
   version = var.keycloak_configuration.chart_version
 
@@ -195,6 +259,8 @@ resource "helm_release" "keycloak" {
       image_registry_config_cli                       = var.keycloak_configuration.image_registry_config_cli
       image_repository_config_cli                     = var.keycloak_configuration.image_repository_config_cli
       image_tag_config_cli                            = var.keycloak_configuration.image_tag_config_cli
+      image_digest_config_cli                         = var.keycloak_configuration.image_digest_config_cli
+      keycloak_config_cli_command                     = endswith(var.keycloak_configuration.image_repository_config_cli, "adorsys/keycloak-config-cli") ? jsonencode(["java", "-jar", "/app/keycloak-config-cli.jar"]) : "[]"
       postgres_db_host                                = module.keycloak_pgflex.fqdn
       postgres_db_port                                = "5432"
       postgres_db_username                            = module.keycloak_pgflex.administrator_login
@@ -209,17 +275,22 @@ resource "helm_release" "keycloak" {
       cpu_limit                                       = var.keycloak_configuration.cpu_limit
       memory_request                                  = var.keycloak_configuration.memory_request
       memory_limit                                    = var.keycloak_configuration.memory_limit
-      force_deploy_version                            = "v2"
       keycloak_extra_volume_mounts                    = yamlencode(local.keycloak_extra_volume_mounts)
       keycloak_http_client_connection_ttl_millis      = var.keycloak_configuration.http_client_connection_ttl_millis
       keycloak_http_client_connection_max_idle_millis = var.keycloak_configuration.http_client_connection_max_idle_time_millis
       appinsights_connection_string                   = data.azurerm_application_insights.app_insights_core.connection_string
+      keycloak_namespace                              = local.keycloak_namespace
+      keycloak_rollout_checksum                       = local.keycloak_rollout_checksum
     })
   ]
   depends_on = [
     kubernetes_secret.keycloak_admin,
     kubernetes_secret.keycloak_db,
     kubernetes_config_map.keycloak_config,
+    kubernetes_config_map.keycloak-terraform-client-config,
+    kubernetes_config_map.keycloak_pagopa_theme,
+    kubernetes_config_map.keycloak_mdc_portal_theme,
+    kubernetes_config_map.keycloak_providers,
     kubernetes_namespace.keycloak
   ]
 }
