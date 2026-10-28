@@ -47,7 +47,7 @@ locals {
   ingress_private_load_balancer_ip = "10.10.1.250"
 
   repositories = concat(
-    ["rtp-sender", "rtp-activator", "rtp-consumer", "rtp-payees"],
+    ["rtp-sender", "rtp-activator", "rtp-consumer", "rtp-registry"],
     var.env_short != "p" ? ["rtp-sender-v2"] : []
   )
 
