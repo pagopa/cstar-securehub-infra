@@ -15,12 +15,6 @@ dns_zone_internal_prefix = "internal.cstar"
 
 external_domain = "pagopa.it"
 
-### Cosmos DB
-cosmos_mongo_db_idpay_params = {
-  throughput     = null
-  max_throughput = 1000
-}
-
 ### Service bus
 service_bus_namespace = {
   sku                          = "Premium"
