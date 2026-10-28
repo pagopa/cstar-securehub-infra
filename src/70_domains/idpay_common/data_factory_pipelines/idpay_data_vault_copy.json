@@ -84,15 +84,6 @@
                                     "name": "page",
                                     "type": "Long"
                                 }
-                            },
-                            {
-                                "source": {
-                                    "path": "createdAt.$date"
-                                },
-                                "sink": {
-                                    "name": "createdAtString",
-                                    "type": "String"
-                                }
                             }
                         ]
                     }
@@ -130,7 +121,7 @@
                 },
                 "userProperties": [],
                 "typeProperties": {
-                    "command": ".set-or-append data_vault <|\ndata_vault_staging\n| join kind=leftanti (data_vault | project _id) on _id\n| extend createdAt = unixtime_milliseconds_todatetime(tolong(createdAtString))\n| extend loadDate = now(), updateDate = now()\n| project _id, data, page, loadDate, updateDate, createdAt",
+                    "command": ".set-or-append data_vault <|\ndata_vault_staging\n| join kind=leftanti (data_vault | project _id) on _id\n| extend loadDate = now()\n| project _id, data, page, loadDate",
                     "commandTimeout": "00:20:00"
                 },
                 "linkedServiceName": {

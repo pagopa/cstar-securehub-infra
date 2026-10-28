@@ -615,21 +615,18 @@
     _id:string,
     data:string,
     page:long,
-    loadDate:datetime,
-    updateDate:datetime,
-    createdAt:datetime
+    loadDate:datetime
 )
 
 // Staging table for the incremental (time-window) load of data_vault.
-// Receives the raw Cosmos delta (records whose createdAt falls in the
-// requested window) before it is appended to data_vault. createdAt arrives
-// from the Mongo API as epoch milliseconds under `.$date`, so it is landed as
-// a string and converted to datetime during the append step.
+// Receives the raw Cosmos delta (records whose source createdAt falls in the
+// requested window) before it is appended to data_vault. createdAt is used only
+// as a source-side filter and is NOT stored in ADX, so staging mirrors the ADX
+// business columns only.
 .create table data_vault_staging (
     _id:string,
     data:string,
-    page:long,
-    createdAtString:string
+    page:long
 )
 
 .create-merge table reported_user (

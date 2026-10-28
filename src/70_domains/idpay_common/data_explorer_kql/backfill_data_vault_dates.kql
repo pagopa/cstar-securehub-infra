@@ -1,50 +1,38 @@
 // =============================================================================
-// BND-2185 - Backfill of dates on the Data Vault fiscal-code satellite
+// BND-2186 - Backfill of loadDate on the Data Vault fiscal-code satellite
 // =============================================================================
 //
 // Context (agreed solution - "SOLUZIONE 1", parametric time window)
 //   The incremental pipeline `idpay_data_vault_copy` extracts from Cosmos only
-//   the records whose technical field `createdAt` falls in a UTC half-open
-//   window [fromDate, toDate) and appends the new fiscal codes to `data_vault`
-//   (join kind=leftanti on `_id`). Pre-existing rows are never rewritten.
+//   the records whose technical source field `createdAt` falls in a UTC
+//   half-open window [fromDate, toDate) and appends the new fiscal codes to
+//   `data_vault` (join kind=leftanti on `_id`), stamping loadDate = now().
+//   `createdAt` is used ONLY as a source-side filter: it is NOT copied into ADX,
+//   so there is nothing to refill for it. `updateDate` has been dropped (records
+//   are immutable and never updated).
 //
-// Two one-off preconditions before switching the pipeline to window mode:
-//   1. INITIAL FULL LOAD of the current Cosmos `data_vault` content into ADX
-//      (the ADX table is currently empty). This can be done by running the
-//      pipeline once with a wide window, e.g.
-//        fromDate = "1970-01-01T00:00:00Z", toDate = <today 00:00 UTC>
-//      only AFTER `createdAt` has been populated upstream (mcshared-datavault);
-//      otherwise perform a dedicated full copy.
-//   2. This BACKFILL, to stamp `loadDate`, `updateDate` and `createdAt` on the
-//      rows loaded by the initial full load that still have NULL dates (e.g.
-//      historical documents created before `createdAt` existed upstream).
-//
-// Why it is required
-//   After `.create-merge` adds the nullable `loadDate`/`updateDate`/`createdAt`
-//   columns, the rows loaded by the initial full load keep NULL dates. The
-//   window-based pipeline never rewrites them, so without this backfill they
-//   would stay NULL forever. This stamps them once with a stable, explicit
-//   migration timestamp.
+// When is this needed?
+//   Only as a SAFETY NET for the one-off INITIAL FULL LOAD of the historical
+//   content, IF that load is performed with a raw copy that bypasses the append
+//   step (which otherwise sets loadDate = now()). In that case historical rows
+//   land with loadDate = NULL and this script stamps them once.
+//   If the initial full load goes through the normal append path, loadDate is
+//   already set and this script is a no-op.
 //
 // Execution
-//   Run MANUALLY, exactly once, against the `idpay` database, AFTER the schema
-//   change (create_tables_idpay.kql) is applied and the initial full load is
-//   done, and BEFORE enabling the daily window-based run. Idempotent: rows that
-//   already have the dates are left untouched (coalesce).
+//   Run MANUALLY, at most once, against the `idpay` database, AFTER the initial
+//   full load and BEFORE enabling the daily window-based run. Idempotent: rows
+//   that already have loadDate are left untouched (coalesce).
 //
 // Notes
 //   - Adjust `backfill_ts` to the agreed historical/migration timestamp.
-//   - `createdAt` is set to `backfill_ts` only when unknown (historical rows);
-//     rows loaded with a real source `createdAt` keep it.
 //   - The fiscal code lives in column `data` (PII): it is never projected to
-//     logs here, only `_id`, `page` and the technical columns are rewritten.
+//     logs here, only `_id`, `page` and `loadDate` are rewritten.
 // =============================================================================
 
 .set-or-replace data_vault <|
 let backfill_ts = datetime(2026-10-23T00:00:00Z);
 data_vault
 | extend loadDate = coalesce(loadDate, backfill_ts)
-| extend updateDate = coalesce(updateDate, loadDate, backfill_ts)
-| extend createdAt = coalesce(createdAt, backfill_ts)
-| project _id, data, page, loadDate, updateDate, createdAt
+| project _id, data, page, loadDate
 
