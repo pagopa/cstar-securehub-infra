@@ -200,7 +200,7 @@
             "mode": "raw",
             "query": "AppTraces\r\n| where $__timeFilter(TimeGenerated)\r\n| where Message contains \"[EMD][PAYMENT][SAVE-RETRIEVAL] Saved retrieval\"\r\n| extend \r\n    retrievalId = extract(@\"Saved retrieval:\\s*([^ ]+)\", 1, Message),\r\n    pspDenomination = extract(@\"pspDenomination:\\s*([^,]+)\", 1, Message),\r\n    entityId = extract(@\"entityId:\\s*([^, ]+)\", 1, Message),\r\n    tppId = extract(@\"tppId:\\s*([^, ]+)\", 1, Message),\r\n    agent = extract(@\"agent:\\s*([^, ]+)\", 1, Message),\r\n    deepLink = extract(@\"deepLink:\\s*([^ ]+)\", 1, Message),\r\n    originId = extract(@\"originId:\\s*([^, ]+)\", 1, Message),\r\n    payment = extract(@\"isPaymentEnabled:\\s*([^, ]+)\", 1, Message),\r\n    createdAt = extract(@\"createdAt:\\s*(.+)$\", 1, Message)\r\n| extend zw = unicode_codepoints_to_string(8203)\r\n| extend deepLink = replace_regex(deepLink, @\"([/?&=])\", \"\\\\1\\u200b\")\r\n| where ('$originId' == '' or originId == '$originId')\r\n| where ('$tppId' == '' or tppId == '$tppId')\r\n| project TimeGenerated, createdAt, retrievalId, pspDenomination, entityId, tppId, originId, deepLink, payment, agent\r\n| order by TimeGenerated desc",
             "resources": [
-              "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d"
+              "$workspace"
             ],
             "resultFormat": "logs"
           },
@@ -365,6 +365,7 @@
           "text": "",
           "value": ""
         },
+        "hide": 2,
         "label": "entityId",
         "name": "entityId",
         "options": [
@@ -382,6 +383,7 @@
           "text": "",
           "value": ""
         },
+        "hide": 2,
         "label": "messageId",
         "name": "messageId",
         "options": [
@@ -396,8 +398,8 @@
       },
       {
         "current": {
-          "text": "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/cstar-d-itn-mdc-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-d-itn-mdc-law",
-          "value": "/subscriptions/4d177dd6-5c7d-40ab-8019-0c1be380a25d/resourceGroups/cstar-d-itn-mdc-monitoring-rg/providers/Microsoft.OperationalInsights/workspaces/cstar-d-itn-mdc-law"
+          "text": "",
+          "value": ""
         },
         "datasource": {
           "type": "grafana-azure-monitor-datasource",
@@ -418,10 +420,7 @@
             "query": "resources\r\n| where type == \"microsoft.operationalinsights/workspaces\"\r\n| where name contains \"mdc-law\"\r\n| project id"
           },
           "queryType": "Azure Resource Graph",
-          "refId": "A",
-          "subscriptions": [
-            "4d177dd6-5c7d-40ab-8019-0c1be380a25d"
-          ]
+          "refId": "A"
         },
         "refresh": 1,
         "regex": "",
@@ -467,13 +466,13 @@
     ]
   },
   "time": {
-    "from": "now-1y",
+    "from": "now-90d",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "utc",
   "title": "MDC - On-call",
   "uid": "mafcnfj",
-  "version": 47,
+  "version": 52,
   "weekStart": ""
 }
