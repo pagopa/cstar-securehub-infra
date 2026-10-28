@@ -35,7 +35,7 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "### [Activator](/d/srtp-operational-excellence?from=${__from}&to=${__to}) &nbsp;&nbsp;|&nbsp;&nbsp; [Sender](/d/srtp-opex-sender?from=${__from}&to=${__to}) &nbsp;&nbsp;|&nbsp;&nbsp; **▸ Cosmos SRTP**",
+        "content": "### [Activator](/d/srtp-operational-excellence?from=${__from}&to=${__to}) &nbsp;&nbsp;|&nbsp;&nbsp; [Sender](/d/srtp-opex-sender?from=${__from}&to=${__to}) &nbsp;&nbsp;|&nbsp;&nbsp; [Cosmos Activator](/d/cosmos-activator?from=${__from}&to=${__to}) &nbsp;&nbsp;|&nbsp;&nbsp; **▸ Cosmos Sender**",
         "mode": "markdown"
       },
       "pluginVersion": "12.4.8",
@@ -51,9 +51,9 @@
         "x": 0,
         "y": 2
       },
-      "id": 1100,
+      "id": 1200,
       "panels": [],
-      "title": "Activator · database activation",
+      "title": "Sender · database rtp",
       "type": "row"
     },
     {
@@ -67,14 +67,14 @@
         "x": 0,
         "y": 3
       },
-      "id": 1101,
+      "id": 1201,
       "options": {
         "code": {
           "language": "plaintext",
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "## 📊 Cosmos DB - Shared Throughput Analysis (database activation)\n---\n**Come leggere questa griglia:**\n\n| Colonna | Cosa indica | Quando preoccuparsi |\n|---|---|---|\n| **Total RU Consumed** | Costo effettivo in Request Units per collection | Una collection consuma >80% del totale |\n| **Mongo Requests** | Numero di operazioni MongoDB | Rapporto requests/documenti molto alto (es. polling) |\n| **Document Count** | Numero di documenti nella collection | - |\n| **Data Usage / Index Usage** | Storage dati e indici | Data Usage sproporzionato rispetto al Document Count |\n| **Normalized RU %** (riquadro a destra) | % di utilizzo del throughput condiviso (0-100%) | >70% = attenzione, >90% = throttling imminente |\n| **Autoscale Max Throughput** (riquadro a destra) | RU massime configurate (a livello database) | Se Normalized RU è costantemente alto, aumentare questo valore |\n| **Throttled (429/16500)** (riquadro a destra) | Richieste rifiutate per throughput insufficiente | Qualsiasi valore >0 indica un problema attivo |\n\n⚠️ **Nota:** Il throughput è **shared a livello database** (tutte le collection competono per le stesse RU. Se una collection domina il consumo, le altre possono subire throttling.)",
+        "content": "## 📊 Cosmos DB - Shared Throughput Analysis (database rtp)\n---\n**Come leggere questa griglia:**\n\n| Colonna | Cosa indica | Quando preoccuparsi |\n|---|---|---|\n| **Total RU Consumed** | Costo effettivo in Request Units per collection | Una collection consuma >80% del totale |\n| **Mongo Requests** | Numero di operazioni MongoDB | Rapporto requests/documenti molto alto (es. polling) |\n| **Document Count** | Numero di documenti nella collection | - |\n| **Data Usage / Index Usage** | Storage dati e indici | Data Usage sproporzionato rispetto al Document Count |\n| **Normalized RU %** (riquadro a destra) | % di utilizzo del throughput condiviso (0-100%) | >70% = attenzione, >90% = throttling imminente |\n| **Autoscale Max Throughput** (riquadro a destra) | RU massime configurate (a livello database) | Se Normalized RU è costantemente alto, aumentare questo valore |\n| **Throttled (429/16500)** (riquadro a destra) | Richieste rifiutate per throughput insufficiente | Qualsiasi valore >0 indica un problema attivo |\n\n⚠️ **Nota:** Il throughput è **shared a livello database** (tutte le collection competono per le stesse RU. Se una collection domina il consumo, le altre possono subire throttling.)",
         "mode": "markdown"
       },
       "pluginVersion": "12.4.8",
@@ -241,7 +241,7 @@
         "x": 0,
         "y": 14
       },
-      "id": 1102,
+      "id": 1202,
       "options": {
         "cellHeight": "sm",
         "showHeader": true,
@@ -263,7 +263,7 @@
               {
                 "dimension": "DatabaseName",
                 "filters": [
-                  "activation"
+                  "rtp"
                 ],
                 "operator": "eq"
               },
@@ -303,7 +303,7 @@
               {
                 "dimension": "DatabaseName",
                 "filters": [
-                  "activation"
+                  "rtp"
                 ],
                 "operator": "eq"
               },
@@ -351,7 +351,7 @@
               {
                 "dimension": "DatabaseName",
                 "filters": [
-                  "activation"
+                  "rtp"
                 ],
                 "operator": "eq"
               },
@@ -399,7 +399,7 @@
               {
                 "dimension": "DatabaseName",
                 "filters": [
-                  "activation"
+                  "rtp"
                 ],
                 "operator": "eq"
               },
@@ -447,7 +447,7 @@
               {
                 "dimension": "DatabaseName",
                 "filters": [
-                  "activation"
+                  "rtp"
                 ],
                 "operator": "eq"
               },
@@ -579,14 +579,14 @@
         }
       ],
       "type": "table",
-      "description": "Una riga per collection del database activation. Totale nel periodo per RU e richieste, ultimo valore per i documenti, massimo per lo storage. I valori a livello database (autoscale, Normalized RU %, throttling) sono nei riquadri a destra."
+      "description": "Una riga per collection del database rtp. Totale nel periodo per RU e richieste, ultimo valore per i documenti, massimo per lo storage. I valori a livello database (autoscale, Normalized RU %, throttling) sono nei riquadri a destra."
     },
     {
       "datasource": {
         "type": "grafana-azure-monitor-datasource",
         "uid": "azure-monitor-oob"
       },
-      "description": "RU/s massime configurate oggi in autoscale per il database activation. Se il valore è cambiato nel periodo, lo storico è nel tooltip del pannello (Inspect > Data).",
+      "description": "RU/s massime configurate oggi in autoscale per il database rtp. Se il valore è cambiato nel periodo, lo storico è nel tooltip del pannello (Inspect > Data).",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -614,7 +614,7 @@
         "x": 20,
         "y": 14
       },
-      "id": 1115,
+      "id": 1215,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -650,7 +650,7 @@
               {
                 "dimension": "DatabaseName",
                 "filters": [
-                  "activation"
+                  "rtp"
                 ],
                 "operator": "eq"
               }
@@ -685,7 +685,7 @@
         "type": "grafana-azure-monitor-datasource",
         "uid": "azure-monitor-oob"
       },
-      "description": "Utilizzo massimo nel periodo del throughput condiviso del database activation. >70% attenzione, >90% throttling imminente.",
+      "description": "Utilizzo massimo nel periodo del throughput condiviso del database rtp. >70% attenzione, >90% throttling imminente.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -720,7 +720,7 @@
         "x": 20,
         "y": 17
       },
-      "id": 1116,
+      "id": 1216,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -748,7 +748,7 @@
               {
                 "dimension": "DatabaseName",
                 "filters": [
-                  "activation"
+                  "rtp"
                 ],
                 "operator": "eq"
               }
@@ -815,7 +815,7 @@
         "x": 20,
         "y": 20
       },
-      "id": 1117,
+      "id": 1217,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -843,7 +843,7 @@
               {
                 "dimension": "DatabaseName",
                 "filters": [
-                  "activation"
+                  "rtp"
                 ],
                 "operator": "eq"
               },
@@ -955,7 +955,7 @@
         "x": 0,
         "y": 23
       },
-      "id": 1103,
+      "id": 1203,
       "options": {
         "legend": {
           "calcs": [
@@ -977,13 +977,13 @@
         {
           "azureMonitor": {
             "aggregation": "Maximum",
-            "alias": "database activation (throughput condiviso)",
+            "alias": "database rtp (throughput condiviso)",
             "allowedTimeGrainsMs": [],
             "dimensionFilters": [
               {
                 "dimension": "DatabaseName",
                 "filters": [
-                  "activation"
+                  "rtp"
                 ],
                 "operator": "eq"
               }
@@ -1010,7 +1010,7 @@
           "subscription": "$subscription"
         }
       ],
-      "title": "🔥 Normalized RU Consumption, max % (database activation)",
+      "title": "🔥 Normalized RU Consumption, max % (database rtp)",
       "type": "timeseries"
     },
     {
@@ -1164,7 +1164,7 @@
         "x": 12,
         "y": 23
       },
-      "id": 1119,
+      "id": 1219,
       "options": {
         "cellHeight": "sm",
         "showHeader": true,
@@ -1186,7 +1186,7 @@
               {
                 "dimension": "DatabaseName",
                 "filters": [
-                  "activation"
+                  "rtp"
                 ],
                 "operator": "eq"
               },
@@ -1223,7 +1223,7 @@
           "subscription": "$subscription"
         }
       ],
-      "title": "Partizioni fisiche: dimensione (database activation)",
+      "title": "Partizioni fisiche: dimensione (database rtp)",
       "transformations": [
         {
           "id": "reduce",
@@ -1349,7 +1349,7 @@
         "x": 0,
         "y": 31
       },
-      "id": 1118,
+      "id": 1218,
       "options": {
         "legend": {
           "calcs": [
@@ -1379,7 +1379,7 @@
               {
                 "dimension": "DatabaseName",
                 "filters": [
-                  "activation"
+                  "rtp"
                 ],
                 "operator": "eq"
               },
@@ -1411,7 +1411,7 @@
           "subscription": "$subscription"
         }
       ],
-      "title": "🔥 Normalized RU % per partizione fisica (database activation)",
+      "title": "🔥 Normalized RU % per partizione fisica (database rtp)",
       "type": "timeseries"
     },
     {
@@ -1482,7 +1482,7 @@
         "x": 0,
         "y": 39
       },
-      "id": 1104,
+      "id": 1204,
       "options": {
         "legend": {
           "calcs": [
@@ -1513,7 +1513,7 @@
               {
                 "dimension": "DatabaseName",
                 "filters": [
-                  "activation"
+                  "rtp"
                 ],
                 "operator": "eq"
               },
@@ -1572,7 +1572,7 @@
         "x": 0,
         "y": 47
       },
-      "id": 1106,
+      "id": 1206,
       "options": {
         "legend": {
           "calcs": [
@@ -1601,7 +1601,7 @@
               {
                 "dimension": "DatabaseName",
                 "filters": [
-                  "activation"
+                  "rtp"
                 ],
                 "operator": "eq"
               },
@@ -1667,7 +1667,7 @@
         "x": 0,
         "y": 55
       },
-      "id": 1105,
+      "id": 1205,
       "options": {
         "legend": {
           "calcs": [
@@ -1696,7 +1696,7 @@
               {
                 "dimension": "DatabaseName",
                 "filters": [
-                  "activation"
+                  "rtp"
                 ],
                 "operator": "eq"
               },
@@ -1762,7 +1762,7 @@
         "x": 0,
         "y": 63
       },
-      "id": 1107,
+      "id": 1207,
       "options": {
         "legend": {
           "calcs": [
@@ -1791,7 +1791,7 @@
               {
                 "dimension": "DatabaseName",
                 "filters": [
-                  "activation"
+                  "rtp"
                 ],
                 "operator": "eq"
               },
@@ -1856,7 +1856,7 @@
         "x": 0,
         "y": 71
       },
-      "id": 1108,
+      "id": 1208,
       "options": {
         "legend": {
           "calcs": [
@@ -1885,7 +1885,7 @@
               {
                 "dimension": "DatabaseName",
                 "filters": [
-                  "activation"
+                  "rtp"
                 ],
                 "operator": "eq"
               },
@@ -1953,7 +1953,7 @@
         "x": 0,
         "y": 79
       },
-      "id": 1109,
+      "id": 1209,
       "options": {
         "legend": {
           "calcs": [
@@ -1989,7 +1989,7 @@
               {
                 "dimension": "DatabaseName",
                 "filters": [
-                  "activation"
+                  "rtp"
                 ],
                 "operator": "eq"
               },
@@ -2050,7 +2050,7 @@
         "x": 0,
         "y": 87
       },
-      "id": 1110,
+      "id": 1210,
       "options": {
         "legend": {
           "calcs": [
@@ -2086,7 +2086,7 @@
               {
                 "dimension": "DatabaseName",
                 "filters": [
-                  "activation"
+                  "rtp"
                 ],
                 "operator": "eq"
               },
@@ -2145,7 +2145,7 @@
         "x": 0,
         "y": 95
       },
-      "id": 1111,
+      "id": 1211,
       "options": {
         "legend": {
           "calcs": [
@@ -2181,7 +2181,7 @@
               {
                 "dimension": "DatabaseName",
                 "filters": [
-                  "activation"
+                  "rtp"
                 ],
                 "operator": "eq"
               },
@@ -2221,7 +2221,7 @@
         "type": "grafana-azure-monitor-datasource",
         "uid": "azure-monitor-oob"
       },
-      "description": "Minimo nel periodo delle disponibilità medie orarie dell'account. La metrica è interrogata con aggregazione Average (l'unica supportata) a granularità PT1H e il minimo è calcolato da Grafana. Azure la calcola solo per le ore con richieste.",
+      "description": "Minimo nel periodo delle disponibilità orarie dell'account (media e minimo). Azure la calcola solo per le ore con richieste, per questo il grafico aveva dei buchi.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -2259,7 +2259,7 @@
         "x": 0,
         "y": 103
       },
-      "id": 1112,
+      "id": 1212,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -2280,7 +2280,7 @@
         {
           "azureMonitor": {
             "aggregation": "Average",
-            "alias": "Disponibilità minima oraria (%)",
+            "alias": "Availability (Avg %)",
             "allowedTimeGrainsMs": [],
             "dimensionFilters": [],
             "metricName": "ServiceAvailability",
@@ -2303,9 +2303,36 @@
           "queryType": "Azure Monitor",
           "refId": "A",
           "subscription": "$subscription"
+        },
+        {
+          "azureMonitor": {
+            "aggregation": "Minimum",
+            "alias": "Availability (Min %)",
+            "allowedTimeGrainsMs": [],
+            "dimensionFilters": [],
+            "metricName": "ServiceAvailability",
+            "metricNamespace": "microsoft.documentdb/databaseaccounts",
+            "resources": [
+              {
+                "metricNamespace": "microsoft.documentdb/databaseaccounts",
+                "resourceGroup": "$CosmosRg",
+                "resourceName": "$cosmos_account",
+                "subscription": "$subscription"
+              }
+            ],
+            "timeGrain": "PT1H",
+            "top": "20"
+          },
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Monitor",
+          "refId": "B",
+          "subscription": "$subscription"
         }
       ],
-      "title": "Service Availability - Min % (minimo delle medie orarie, account)",
+      "title": "Service Availability - Min & Avg % (account)",
       "type": "stat"
     },
     {
@@ -2334,7 +2361,7 @@
         "x": 0,
         "y": 107
       },
-      "id": 1113,
+      "id": 1213,
       "options": {
         "legend": {
           "calcs": [
@@ -2360,7 +2387,7 @@
               {
                 "dimension": "DatabaseName",
                 "filters": [
-                  "activation"
+                  "rtp"
                 ],
                 "operator": "eq"
               },
@@ -2402,7 +2429,7 @@
               {
                 "dimension": "DatabaseName",
                 "filters": [
-                  "activation"
+                  "rtp"
                 ],
                 "operator": "eq"
               },
@@ -2465,7 +2492,7 @@
         "x": 0,
         "y": 115
       },
-      "id": 1114,
+      "id": 1214,
       "options": {
         "legend": {
           "calcs": [
@@ -2493,7 +2520,7 @@
               {
                 "dimension": "DatabaseName",
                 "filters": [
-                  "activation"
+                  "rtp"
                 ],
                 "operator": "eq"
               },
@@ -2552,8 +2579,8 @@
     "list": [
       {
         "current": {
-          "text": "",
-          "value": ""
+          "text": "UAT-CSTAR",
+          "value": "f9f0ed60-4b4b-49a6-97cb-8c8a0f9e2435"
         },
         "datasource": {
           "type": "grafana-azure-monitor-datasource",
@@ -2578,8 +2605,8 @@
       },
       {
         "current": {
-          "text": "",
-          "value": ""
+          "text": "cstar-u-itn-srtp-data-rg",
+          "value": "cstar-u-itn-srtp-data-rg"
         },
         "datasource": {
           "type": "grafana-azure-monitor-datasource",
@@ -2605,8 +2632,8 @@
       },
       {
         "current": {
-          "text": "",
-          "value": ""
+          "text": "cstar-u-itn-srtp-cosmos-account",
+          "value": "cstar-u-itn-srtp-cosmos-account"
         },
         "datasource": {
           "type": "grafana-azure-monitor-datasource",
@@ -2644,7 +2671,7 @@
   },
   "timepicker": {},
   "timezone": "browser",
-  "title": "SRTP Operational Excellence · Cosmos",
-  "uid": "cosmos-srtp",
+  "title": "Cosmos Sender",
+  "uid": "cosmos-sender",
   "weekStart": ""
 }

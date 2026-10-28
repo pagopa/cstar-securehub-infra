@@ -39,7 +39,7 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "### **▸ Activator** &nbsp;&nbsp;|&nbsp;&nbsp; [Sender](/d/srtp-opex-sender?from=${__from}&to=${__to}) &nbsp;&nbsp;|&nbsp;&nbsp; [Cosmos SRTP](/d/cosmos-srtp?from=${__from}&to=${__to})",
+        "content": "### **▸ Activator** &nbsp;&nbsp;|&nbsp;&nbsp; [Sender](/d/srtp-opex-sender?from=${__from}&to=${__to}) &nbsp;&nbsp;|&nbsp;&nbsp; [Cosmos Activator](/d/cosmos-activator?from=${__from}&to=${__to}) &nbsp;&nbsp;|&nbsp;&nbsp; [Cosmos Sender](/d/cosmos-sender?from=${__from}&to=${__to})",
         "mode": "markdown"
       },
       "pluginVersion": "12.4.8",
