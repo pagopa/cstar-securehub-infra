@@ -75,13 +75,6 @@ variable "dns_zone_internal_prefix" {
   description = "The dns subdomain."
 }
 
-variable "cosmos_mongo_db_idpay_params" {
-  type = object({
-    throughput     = number
-    max_throughput = number
-  })
-}
-
 variable "additional_geo_locations" {
   type = list(object({
     location          = string
