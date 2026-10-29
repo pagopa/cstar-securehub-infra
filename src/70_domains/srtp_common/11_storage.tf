@@ -61,6 +61,10 @@ module "share_storage_account" {
   resource_group_name = local.data_rg_name
   tags                = module.tag_config.tags
 
+  # Static Website (exposes SelfCare OIDC discovery document to APIM)
+  index_document     = "index.html"
+  error_404_document = "error_404.html"
+
   # IDH Resources
   idh_resource_tier = var.env_short != "p" ? "basic_public" : "backup7_public"
 
@@ -86,4 +90,20 @@ resource "azurerm_storage_share" "rtp_jks_file_share" {
   storage_account_id = module.share_storage_account.id
   name               = "${local.project}-jks-file-share"
   quota              = 1
+}
+
+resource "azurerm_storage_blob" "selfcare_oidc_configuration" {
+  name                   = "selfcare/openid-configuration.json"
+  storage_account_name   = module.share_storage_account.name
+  storage_container_name = "$web"
+  type                   = "Block"
+  content_type           = "application/json"
+  access_tier            = "Hot"
+
+  source_content = jsonencode({
+    jwks_uri = "${local.selfcare_issuer}/.well-known/jwks.json"
+    issuer   = local.selfcare_issuer
+  })
+
+  depends_on = [module.share_storage_account]
 }

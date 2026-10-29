@@ -45,6 +45,7 @@ locals {
   dns_zone_name                    = "${var.env != "prod" ? "${var.env}." : ""}${var.prefix}.pagopa.it"
   dns_zone_internal                = "internal.${local.dns_zone_name}"
   ingress_private_load_balancer_ip = "10.10.1.250"
+  selfcare_issuer                  = "https://${var.env != "prod" ? "${var.env}." : ""}selfcare.pagopa.it"
 
   repositories = concat(
     ["rtp-sender", "rtp-activator", "rtp-consumer", "rtp-registry"],
