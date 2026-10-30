@@ -191,10 +191,6 @@ locals {
             {
               keys   = ["_id"]
               unique = true
-            },
-            {
-              keys   = ["service_providers.id"]
-              unique = false
             }
           ]
         }
