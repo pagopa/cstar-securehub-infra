@@ -67,7 +67,7 @@
                                 },
                                 "sink": {
                                     "name": "initiativeBudgetCents",
-                                    "type": "Long"
+                                    "type": "String"
                                 }
                             },
                             {
@@ -76,7 +76,7 @@
                                 },
                                 "sink": {
                                     "name": "onboarded",
-                                    "type": "Long"
+                                    "type": "String"
                                 }
                             },
                             {
@@ -85,7 +85,7 @@
                                 },
                                 "sink": {
                                     "name": "spentInitiativeBudgetCents",
-                                    "type": "Long"
+                                    "type": "String"
                                 }
                             },
                             {
@@ -94,7 +94,7 @@
                                 },
                                 "sink": {
                                     "name": "reservedInitiativeBudgetCents",
-                                    "type": "Long"
+                                    "type": "String"
                                 }
                             },
                             {
@@ -103,7 +103,7 @@
                                 },
                                 "sink": {
                                     "name": "residualInitiativeBudgetCents",
-                                    "type": "Long"
+                                    "type": "String"
                                 }
                             },
                             {
@@ -130,7 +130,7 @@
                                 },
                                 "sink": {
                                     "name": "sequenceNumber",
-                                    "type": "Long"
+                                    "type": "String"
                                 }
                             },
                             {
@@ -148,7 +148,7 @@
                                 },
                                 "sink": {
                                     "name": "preallocatedAmountCents",
-                                    "type": "Long"
+                                    "type": "String"
                                 }
                             },
                             {
@@ -218,7 +218,7 @@
                 },
                 "userProperties": [],
                 "typeProperties": {
-                    "command": ".set-or-replace initiative_counters<|\ninitiative_counters\n| extend \n    createdAt= unixtime_milliseconds_todatetime(tolong(createdAtDateString)),\n    enqueuedTime= unixtime_milliseconds_todatetime(tolong(enqueuedTimeDateString)),\n updateDate= unixtime_milliseconds_todatetime(tolong(updateDateString))\n",
+                    "command": ".set-or-replace initiative_counters<-|\ninitiative_counters\n| extend\n    initiativeBudgetCents = tolong(coalesce(tostring(initiativeBudgetCents), \"0\")),\n    onboarded = tolong(coalesce(tostring(onboarded), \"0\")),\n    spentInitiativeBudgetCents = tolong(coalesce(tostring(spentInitiativeBudgetCents), \"0\")),\n    reservedInitiativeBudgetCents = tolong(coalesce(tostring(reservedInitiativeBudgetCents), \"0\")),\n    residualInitiativeBudgetCents = tolong(coalesce(tostring(residualInitiativeBudgetCents), \"0\")),\n    sequenceNumber = tolong(coalesce(tostring(sequenceNumber), \"0\")),\n    preallocatedAmountCents = tolong(coalesce(tostring(preallocatedAmountCents), \"0\")),\n    createdAt = unixtime_milliseconds_todatetime(tolong(createdAtDateString)),\n    enqueuedTime = unixtime_milliseconds_todatetime(tolong(enqueuedTimeDateString)),\n    updateDate = unixtime_milliseconds_todatetime(tolong(updateDateString))\n| project-away createdAtDateString, enqueuedTimeDateString, updateDateString",
                     "commandTimeout": "00:20:00"
                 },
                 "linkedServiceName": {
