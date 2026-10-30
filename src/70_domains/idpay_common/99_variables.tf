@@ -75,13 +75,6 @@ variable "dns_zone_internal_prefix" {
   description = "The dns subdomain."
 }
 
-variable "cosmos_mongo_db_idpay_params" {
-  type = object({
-    throughput     = number
-    max_throughput = number
-  })
-}
-
 variable "additional_geo_locations" {
   type = list(object({
     location          = string
@@ -301,8 +294,9 @@ variable "idpay_pgflex_params" {
     pgres_flex_diagnostic_settings_enabled = bool
     auto_grow_enabled                      = bool
     storage_tier                           = optional(string, null)
+    outbox_publication_enabled             = optional(bool, false)
   })
-  description = "Parameters to provision the IDPay PostgreSQL Flexible Server (and related supporting resources)."
+  description = "Parameters to provision IDPay PostgreSQL. Enable the outbox publication only after Flyway creates the transaction_outbox table."
 }
 
 variable "enabled_cdn_multi_initiative" {
@@ -321,4 +315,18 @@ variable "export_initiatives" {
     kv_secret_email   = string
   }))
   default = []
+}
+
+variable "blue_green_node_pool_enabled" {
+  type    = bool
+  default = true
+}
+
+variable "aks_foobar_idpay_node_pool_configuration" {
+  type = object({
+    enabled        = optional(bool, false),
+    tier           = string,
+    node_count_min = number,
+    node_count_max = number,
+  })
 }

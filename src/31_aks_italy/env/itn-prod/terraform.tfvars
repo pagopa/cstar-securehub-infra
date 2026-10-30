@@ -46,7 +46,7 @@ aks_system_node_pool = {
 #----------------------------------------------------------------
 aks_nodepool_blue = {
   vm_sku_name       = "Standard_D4ads_v5_passive"
-  autoscale_enabled = false
+  autoscale_enabled = true
   node_count_min    = 0
   node_count_max    = 0
 }
@@ -70,13 +70,6 @@ ingress_load_balancer_ip  = "10.10.1.250"
 nginx_helm = {
   version = "4.14.2"
   controller = {
-    image = {
-      registry     = "k8s.gcr.io"
-      image        = "ingress-nginx/controller"
-      tag          = "v1.12.8"
-      digest       = "sha256:8f8343060688fb2a85752b7345a988d0d3c890d774e18e80b9e8730756e5b530"
-      digestchroot = "sha256:07c743429b823dfba7c2e5d399351ef0e43816abab48343ca7c01d00fd6517e3"
-    },
     resources = {
       requests = {
         memory = "300Mi"
@@ -100,4 +93,14 @@ reloader_helm = {
   chart_version = "v1.3.0"
   image_name    = "stakater/reloader"
   image_tag     = "v1.4.0@sha256:40e379c2b20350235aca2f0a43cc6f8a89397cef6869cb3a95db03390684390a"
+}
+
+
+blue_green_node_pool_enabled = true
+
+aks_foobar_user_node_pool_configuration = {
+  enabled        = false,
+  tier           = "Standard_D4ads"
+  node_count_min = 3,
+  node_count_max = 4,
 }

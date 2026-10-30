@@ -1,0 +1,17 @@
+{
+  "name": "postgres_idpay_reward_transactions",
+  "properties": {
+    "linkedServiceName": {
+      "referenceName": "idpay-db-postgres-${env_short}-ls",
+      "type": "LinkedServiceReference"
+    },
+    "annotations": [],
+    "type": "AzurePostgreSqlTable",
+    "schema": [],
+    "typeProperties": {
+      "schema": "idpay-rimborsi",
+      "table": "reward_transactions"
+    }
+  },
+  "type": "Microsoft.DataFactory/factories/datasets"
+}

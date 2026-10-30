@@ -50,28 +50,12 @@ locals {
         aks_name             = "${var.prefix}-${var.env_short}-${var.location_short}-${var.env}-aks"
       },
     }
-    mil = {
-      groups = lookup(var.team_groups, "mil", {})
-      aks = {
-        location_short       = "weu",
-        monitor_workspace_id = data.azurerm_log_analytics_workspace.law_core.id,
-        aks_name             = "${var.prefix}-${var.env_short}-weu-${var.env}01-aks"
-      }
-    },
     mdc = {
       groups = lookup(var.team_groups, "mdc", {})
       aks = {
         location_short       = "itn",
         monitor_workspace_id = data.azurerm_log_analytics_workspace.law_core_itn.id,
         aks_name             = "${var.prefix}-${var.env_short}-${var.location_short}-${var.env}-aks"
-      }
-    },
-    rtd = {
-      groups = lookup(var.team_groups, "rtd", {})
-      aks = {
-        location_short       = "weu",
-        monitor_workspace_id = data.azurerm_log_analytics_workspace.law_core.id,
-        aks_name             = "${var.prefix}-${var.env_short}-weu-${var.env}01-aks"
       }
     },
     srtp = {

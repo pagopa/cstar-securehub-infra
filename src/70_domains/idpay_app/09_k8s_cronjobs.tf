@@ -32,6 +32,16 @@ resource "kubernetes_cron_job_v1" "cancel_pending_transactions" {
             container {
               name  = "cancel-pending-transactions"
               image = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
+              resources {
+                requests = {
+                  cpu    = "10m"
+                  memory = "16Mi"
+                }
+                limits = {
+                  cpu    = "250m"
+                  memory = "64Mi"
+                }
+              }
               args = concat(
                 local.idpay_batch_curl_args,
                 [
@@ -80,8 +90,18 @@ resource "kubernetes_cron_job_v1" "transaction_reaper" {
           }
           spec {
             container {
-              name    = "delete-lapsed-transaction-elettrodomestici"
-              image   = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
+              name  = "delete-lapsed-transaction-elettrodomestici"
+              image = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
+              resources {
+                requests = {
+                  cpu    = "10m"
+                  memory = "16Mi"
+                }
+                limits = {
+                  cpu    = "250m"
+                  memory = "64Mi"
+                }
+              }
               command = ["/bin/sh", "-c"]
               args = concat(
                 ["curl \"$@\"", "curl"],
@@ -96,8 +116,18 @@ resource "kubernetes_cron_job_v1" "transaction_reaper" {
               for_each = contains(["d", "u"], var.env_short) ? [1] : []
 
               content {
-                name    = "delete-lapsed-transaction-decoder"
-                image   = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
+                name  = "delete-lapsed-transaction-decoder"
+                image = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
+                resources {
+                  requests = {
+                    cpu    = "10m"
+                    memory = "16Mi"
+                  }
+                  limits = {
+                    cpu    = "250m"
+                    memory = "64Mi"
+                  }
+                }
                 command = ["/bin/sh", "-c"]
                 args = concat(
                   ["curl \"$@\"", "curl"],
@@ -149,8 +179,18 @@ resource "kubernetes_cron_job_v1" "cancel_expired_vouchers" {
           }
           spec {
             container {
-              name    = "cancel-expired-vouchers-elettrodomestici"
-              image   = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
+              name  = "cancel-expired-vouchers-elettrodomestici"
+              image = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
+              resources {
+                requests = {
+                  cpu    = "10m"
+                  memory = "16Mi"
+                }
+                limits = {
+                  cpu    = "250m"
+                  memory = "64Mi"
+                }
+              }
               command = ["/bin/sh", "-c"]
               args = concat(
                 ["curl \"$@\"", "curl"],
@@ -165,8 +205,18 @@ resource "kubernetes_cron_job_v1" "cancel_expired_vouchers" {
               for_each = contains(["d", "u"], var.env_short) ? [1] : []
 
               content {
-                name    = "cancel-expired-vouchers-decoder"
-                image   = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
+                name  = "cancel-expired-vouchers-decoder"
+                image = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
+                resources {
+                  requests = {
+                    cpu    = "10m"
+                    memory = "16Mi"
+                  }
+                  limits = {
+                    cpu    = "250m"
+                    memory = "64Mi"
+                  }
+                }
                 command = ["/bin/sh", "-c"]
                 args = concat(
                   ["curl \"$@\"", "curl"],
@@ -218,34 +268,32 @@ resource "kubernetes_cron_job_v1" "reminder_voucher_expiration" {
           }
           spec {
             container {
-              name    = "reminder-voucher-expiration-elettrodomestici"
-              image   = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
+              name  = "reminder-voucher-expiration"
+              image = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
+              resources {
+                requests = {
+                  cpu    = "10m"
+                  memory = "16Mi"
+                }
+                limits = {
+                  cpu    = "250m"
+                  memory = "64Mi"
+                }
+              }
               command = ["/bin/sh", "-c"]
               args = concat(
                 ["curl \"$@\"", "curl"],
                 local.idpay_batch_curl_args,
                 [
                   "-X", "POST",
-                  "${local.idpay_wallet_service_url}/idpay/wallet/batch/run/${var.bonus_elettrodomestici_initiative_id}",
+                  "-H", "Content-Type: application/json",
+                  "-d", jsonencode({ initiativeIds = concat(
+                    [var.bonus_elettrodomestici_initiative_id],
+                    contains(["d", "u"], var.env_short) ? [var.bonus_decoder_initiative_id] : []
+                  ) }),
+                  "${local.idpay_wallet_service_url}/idpay/wallet/batch/run",
                 ]
               )
-            }
-            dynamic "container" {
-              for_each = contains(["d", "u"], var.env_short) ? [1] : []
-
-              content {
-                name    = "reminder-voucher-expiration-decoder"
-                image   = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
-                command = ["/bin/sh", "-c"]
-                args = concat(
-                  ["curl \"$@\"", "curl"],
-                  local.idpay_batch_curl_args,
-                  [
-                    "-X", "POST",
-                    "${local.idpay_wallet_service_url}/idpay/wallet/batch/run/${var.bonus_decoder_initiative_id}",
-                  ]
-                )
-              }
             }
             restart_policy = "OnFailure"
           }
@@ -290,8 +338,18 @@ resource "kubernetes_cron_job_v1" "evaluate_sent_reward_batch" {
           }
           spec {
             container {
-              name    = "evaluate-sent-reward-batch-elettrodomestici"
-              image   = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
+              name  = "evaluate-sent-reward-batch-elettrodomestici"
+              image = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
+              resources {
+                requests = {
+                  cpu    = "10m"
+                  memory = "16Mi"
+                }
+                limits = {
+                  cpu    = "250m"
+                  memory = "64Mi"
+                }
+              }
               command = ["/bin/sh", "-c"]
               args = concat(
                 ["curl \"$@\"", "curl"],
@@ -308,8 +366,18 @@ resource "kubernetes_cron_job_v1" "evaluate_sent_reward_batch" {
               for_each = contains(["d", "u"], var.env_short) ? [1] : []
 
               content {
-                name    = "evaluate-sent-reward-batch-decoder"
-                image   = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
+                name  = "evaluate-sent-reward-batch-decoder"
+                image = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
+                resources {
+                  requests = {
+                    cpu    = "10m"
+                    memory = "16Mi"
+                  }
+                  limits = {
+                    cpu    = "250m"
+                    memory = "64Mi"
+                  }
+                }
                 command = ["/bin/sh", "-c"]
                 args = concat(
                   ["curl \"$@\"", "curl"],
@@ -366,8 +434,18 @@ resource "kubernetes_cron_job_v1" "evaluate_approve_reward_batch" {
           }
           spec {
             container {
-              name    = "evaluate-approve-reward-batch-elettrodomestici"
-              image   = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
+              name  = "evaluate-approve-reward-batch-elettrodomestici"
+              image = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
+              resources {
+                requests = {
+                  cpu    = "10m"
+                  memory = "16Mi"
+                }
+                limits = {
+                  cpu    = "250m"
+                  memory = "64Mi"
+                }
+              }
               command = ["/bin/sh", "-c"]
               args = concat(
                 ["curl \"$@\"", "curl"],
@@ -384,8 +462,18 @@ resource "kubernetes_cron_job_v1" "evaluate_approve_reward_batch" {
               for_each = contains(["d", "u"], var.env_short) ? [1] : []
 
               content {
-                name    = "evaluate-approve-reward-batch-decoder"
-                image   = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
+                name  = "evaluate-approve-reward-batch-decoder"
+                image = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
+                resources {
+                  requests = {
+                    cpu    = "10m"
+                    memory = "16Mi"
+                  }
+                  limits = {
+                    cpu    = "250m"
+                    memory = "64Mi"
+                  }
+                }
                 command = ["/bin/sh", "-c"]
                 args = concat(
                   ["curl \"$@\"", "curl"],
@@ -406,64 +494,6 @@ resource "kubernetes_cron_job_v1" "evaluate_approve_reward_batch" {
     }
   }
 }
-
-resource "kubernetes_cron_job_v1" "delete_invoiced_transactions" {
-  metadata {
-    name      = "delete-invoiced-transactions"
-    namespace = var.domain
-    labels = {
-      app = "idpay-app"
-    }
-  }
-
-  spec {
-    schedule           = "0 2 * * *"
-    timezone           = "Europe/Rome"
-    concurrency_policy = "Forbid"
-
-    #Active only in PROD
-    suspend = var.env_short != "p"
-
-    job_template {
-      metadata {
-        name = "delete-invoiced-transactions-job"
-        labels = {
-          app = "idpay-app"
-        }
-      }
-
-      spec {
-        active_deadline_seconds = local.idpay_batch_job_deadline_seconds
-
-        template {
-          metadata {
-            labels = {
-              app = "idpay-app"
-            }
-          }
-
-          spec {
-            container {
-              name  = "delete-invoiced-transactions"
-              image = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
-
-              args = concat(
-                local.idpay_batch_curl_args,
-                [
-                  "-X", "DELETE",
-                  "${local.idpay_payment_service_url}/idpay/payment/deleteInvoicedTransaction",
-                ]
-              )
-            }
-
-            restart_policy = "OnFailure"
-          }
-        }
-      }
-    }
-  }
-}
-
 
 resource "kubernetes_cron_job_v1" "cancel_empty_reward_batches" {
   metadata {
@@ -502,6 +532,16 @@ resource "kubernetes_cron_job_v1" "cancel_empty_reward_batches" {
             container {
               name  = "cancel-empty-reward-batches"
               image = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
+              resources {
+                requests = {
+                  cpu    = "10m"
+                  memory = "16Mi"
+                }
+                limits = {
+                  cpu    = "250m"
+                  memory = "64Mi"
+                }
+              }
 
               args = concat(
                 local.idpay_transactions_curl_args,
@@ -555,8 +595,18 @@ resource "kubernetes_cron_job_v1" "delivery_reward_batch" {
           }
           spec {
             container {
-              name    = "delivery-reward-batch-elettrodomestici"
-              image   = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
+              name  = "delivery-reward-batch-elettrodomestici"
+              image = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
+              resources {
+                requests = {
+                  cpu    = "10m"
+                  memory = "16Mi"
+                }
+                limits = {
+                  cpu    = "250m"
+                  memory = "64Mi"
+                }
+              }
               command = ["/bin/sh", "-c"]
               args = concat(
                 ["curl \"$@\"", "curl"],
@@ -573,8 +623,18 @@ resource "kubernetes_cron_job_v1" "delivery_reward_batch" {
               for_each = contains(["d", "u"], var.env_short) ? [1] : []
 
               content {
-                name    = "delivery-reward-batch-decoder"
-                image   = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
+                name  = "delivery-reward-batch-decoder"
+                image = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
+                resources {
+                  requests = {
+                    cpu    = "10m"
+                    memory = "16Mi"
+                  }
+                  limits = {
+                    cpu    = "250m"
+                    memory = "64Mi"
+                  }
+                }
                 command = ["/bin/sh", "-c"]
                 args = concat(
                   ["curl \"$@\"", "curl"],
@@ -632,8 +692,18 @@ resource "kubernetes_cron_job_v1" "delivery_check_outcome_reward_batch" {
           }
           spec {
             container {
-              name    = "delivery-check-outcome-reward-batch-elettrodomestici"
-              image   = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
+              name  = "delivery-check-outcome-reward-batch-elettrodomestici"
+              image = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
+              resources {
+                requests = {
+                  cpu    = "10m"
+                  memory = "16Mi"
+                }
+                limits = {
+                  cpu    = "250m"
+                  memory = "64Mi"
+                }
+              }
               command = ["/bin/sh", "-c"]
               args = concat(
                 ["curl \"$@\"", "curl"],
@@ -650,8 +720,18 @@ resource "kubernetes_cron_job_v1" "delivery_check_outcome_reward_batch" {
               for_each = contains(["d", "u"], var.env_short) ? [1] : []
 
               content {
-                name    = "delivery-check-outcome-reward-batch-decoder"
-                image   = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
+                name  = "delivery-check-outcome-reward-batch-decoder"
+                image = "curlimages/curl:8.1.2@sha256:fcf8b68aa7af25898d21b47096ceb05678665ae182052283bd0d7128149db55f"
+                resources {
+                  requests = {
+                    cpu    = "10m"
+                    memory = "16Mi"
+                  }
+                  limits = {
+                    cpu    = "250m"
+                    memory = "64Mi"
+                  }
+                }
                 command = ["/bin/sh", "-c"]
                 args = concat(
                   ["curl \"$@\"", "curl"],
