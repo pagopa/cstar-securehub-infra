@@ -1,0 +1,39 @@
+{
+    "name": "blob_report_merchant_batch",
+    "properties": {
+        "linkedServiceName": {
+            "referenceName": "idpay-report-trx-blob-storage-ls",
+            "type": "LinkedServiceReference"
+        },
+        "parameters": {
+            "initiativeId": {
+                "type": "String"
+            },
+            "reportName": {
+                "type": "String"
+            }
+        },
+        "annotations": [],
+        "type": "DelimitedText",
+        "typeProperties": {
+            "location": {
+                "type": "AzureBlobStorageLocation",
+                "fileName": {
+                    "value": "@dataset().reportName",
+                    "type": "Expression"
+                },
+                "folderPath": {
+                    "value": "@concat('initiative/',dataset().initiativeId, '/batch')",
+                    "type": "Expression"
+                },
+                "container": "report-merchant-batch"
+            },
+            "columnDelimiter": ";",
+            "escapeChar": "\\",
+            "firstRowAsHeader": true,
+            "quoteChar": "\""
+        },
+        "schema": []
+    },
+    "type": "Microsoft.DataFactory/factories/datasets"
+}
