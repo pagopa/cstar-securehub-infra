@@ -37,6 +37,11 @@ locals {
   keycloak_ingress_hostname  = "keycloak.${var.location_short}.${var.dns_zone_internal_prefix}.${var.prefix}.${var.external_domain}"
   keycloak_external_hostname = "https://${var.mcshared_dns_zone_prefix}.${var.prefix}.${var.external_domain}/auth-itn"
   pari_base_url              = "https://${var.env == "prod" ? "" : "${var.env}."}pari.pagopa.it/esercente"
+
+  # Listmonk
+  listmonk_db_name          = "listmonk"
+  listmonk_ingress_hostname = "idpay.${var.location_short}.${var.dns_zone_internal_prefix}.${var.prefix}.${var.external_domain}"
+
   #
   # AKS
   #

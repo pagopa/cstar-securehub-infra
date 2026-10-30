@@ -43,6 +43,14 @@ keycloak_configuration = {
   image_digest_config_cli                     = "sha256:6795d2cbf9ed7c96e9d19c39781d383d12df36b5cbe81f0024bca4fa4d392681"
 }
 
+listmonk_configuration = {
+  chart_version     = "5.0.3-3"
+  image_repository  = "listmonk/listmonk"
+  image_tag         = "v6.1.0"
+  replica_count     = 1
+  postgres_ssl_mode = "require"
+}
+
 aks_user_node_pool_keycloak = {
   idh_resource_tier = "Standard_D4ads_v5_active"
   node_count_min    = 2
