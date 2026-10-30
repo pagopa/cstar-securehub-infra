@@ -198,6 +198,22 @@ locals {
             }
           ]
         }
+        notification_webhook = {
+          autoscale_max_throughput          = null
+          cosmos_collections_max_throughput = null
+          default_ttl_seconds               = -1
+          indexes = [
+            {
+              keys   = ["_id"]
+              unique = true
+            },
+            {
+              keys   = ["notificationId"]
+              unique = true
+            }
+          ]
+        }
+
       }
     }
   }
