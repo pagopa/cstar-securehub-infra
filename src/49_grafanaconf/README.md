@@ -1,4 +1,18 @@
 <!-- markdownlint-disable -->
+## Targeted custom dashboard plans and applies
+
+To plan or apply only the custom dashboards in one folder, pass the action,
+environment, and dashboard folder:
+
+```sh
+./dashboard_folder.sh plan itn-dev bonus-decoder
+./dashboard_folder.sh apply itn-dev bonus-decoder
+```
+
+The helper targets dashboard and folder instances found under that folder, along
+with their dependencies. A targeted plan or apply does not replace a full plan;
+review a regular plan before applying changes.
+
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 
