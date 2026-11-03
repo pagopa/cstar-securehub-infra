@@ -1,4 +1,4 @@
-﻿{
+{
   "annotations": {
     "list": [
       {
@@ -187,7 +187,7 @@
             }
           },
           "pluginVersion": "6.2.0",
-          "query": "onboarding_citizen\n| summarize count()",
+          "query": "onboarding_citizen\n| where initiativeId == \"69e0fa95e21efa516c7b8dec\"\n| summarize count()",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -367,7 +367,7 @@
             }
           },
           "pluginVersion": "6.2.0",
-          "query": "\r\nlet lastTx = transaction\r\n| summarize arg_max(trxDate, rewardCountersInitiativeBudgetCents, rewardCountersTotalRewardCents) by userId;\r\nlet lastWallet = wallet\r\n| where status == \"REFUNDABLE\"\r\n| summarize arg_max(updateDate, amountCents) by userId\r\n| join kind=leftouter lastTx on userId\r\n| project userId, \r\n          voucherUsed = iff(amountCents == 0, true, false),\r\n          voucherAmountUsed = iff(amountCents != 0, amountCents, rewardCountersTotalRewardCents);\r\nlastWallet\r\n| summarize\r\n    TotalUsers = count(),\r\n    VoucherUsedCount = countif(voucherUsed == true),\r\n    VoucherNotUsedCount = countif(voucherUsed == false),\r\n    TotalAmountSpent = sumif(voucherAmountUsed, voucherUsed == true) / 100",
+          "query": "\r\nlet lastTx = transaction\r\n| where initiativeId == \"69e0fa95e21efa516c7b8dec\"\r\n| summarize arg_max(trxDate, rewardCountersInitiativeBudgetCents, rewardCountersTotalRewardCents) by userId;\r\nlet lastWallet = wallet\r\n| where initiativeId == \"69e0fa95e21efa516c7b8dec\"\r\n| where status == \"REFUNDABLE\"\r\n| summarize arg_max(updateDate, amountCents) by userId\r\n| join kind=leftouter lastTx on userId\r\n| project userId, \r\n          voucherUsed = iff(amountCents == 0, true, false),\r\n          voucherAmountUsed = iff(amountCents != 0, amountCents, rewardCountersTotalRewardCents);\r\nlastWallet\r\n| summarize\r\n    TotalUsers = count(),\r\n    VoucherUsedCount = countif(voucherUsed == true),\r\n    VoucherNotUsedCount = countif(voucherUsed == false),\r\n    TotalAmountSpent = sumif(voucherAmountUsed, voucherUsed == true) / 100",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -610,7 +610,7 @@
             }
           },
           "pluginVersion": "6.2.0",
-          "query": "transaction\r\n| join kind=inner (point_of_sales) on $left.pointOfSaleId == $right._id\r\n| summarize trxCount = count() by region, status\r\n| evaluate pivot(status, sum(trxCount), region)\r\n| order by region asc\r\n| limit 10",
+          "query": "transaction\r\n| where initiativeId == \"69e0fa95e21efa516c7b8dec\"\r\n| join kind=inner (point_of_sales) on $left.pointOfSaleId == $right._id\r\n| summarize trxCount = count() by region, status\r\n| evaluate pivot(status, sum(trxCount), region)\r\n| order by region asc\r\n| limit 10",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -725,7 +725,7 @@
             }
           },
           "pluginVersion": "6.2.0",
-          "query": "\r\n['timeline']\r\n| summarize count() by operationType\r\n",
+          "query": "\r\n['timeline']\r\n| where initiativeId == \"69e0fa95e21efa516c7b8dec\"\r\n| summarize count() by operationType\r\n",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -878,7 +878,7 @@
             }
           },
           "pluginVersion": "6.2.0",
-          "query": "transaction\r\n| summarize trxCount = count() by bin(trxDate, $granularita), status\r\n| evaluate pivot(status, sum(trxCount), trxDate)\r\n| order by trxDate asc",
+          "query": "transaction\r\n| where initiativeId == \"69e0fa95e21efa516c7b8dec\"\r\n| summarize trxCount = count() by bin(trxDate, $granularita), status\r\n| evaluate pivot(status, sum(trxCount), trxDate)\r\n| order by trxDate asc",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -992,7 +992,7 @@
             }
           },
           "pluginVersion": "6.2.0",
-          "query": "\r\n['timeline']\r\n| where operationType == \"ONBOARDING\"\r\n| summarize count() by bin(operationDate, $granularita)\r\n| render timechart\r\n",
+          "query": "\r\n['timeline']\r\n| where initiativeId == \"69e0fa95e21efa516c7b8dec\"\r\n| where operationType == \"ONBOARDING\"\r\n| summarize count() by bin(operationDate, $granularita)\r\n| render timechart\r\n",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -1106,7 +1106,7 @@
             }
           },
           "pluginVersion": "6.2.0",
-          "query": "\r\n['timeline']\r\n| where operationType == \"TRANSACTION\"\r\n| summarize count() by bin(operationDate, $granularita)\r\n| render timechart\r\n",
+          "query": "\r\n['timeline']\r\n| where initiativeId == \"69e0fa95e21efa516c7b8dec\"\r\n| where operationType == \"TRANSACTION\"\r\n| summarize count() by bin(operationDate, $granularita)\r\n| render timechart\r\n",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -1220,7 +1220,7 @@
             }
           },
           "pluginVersion": "6.2.0",
-          "query": "\r\n['timeline']\r\n| where operationType == \"UNSUBSCRIBED\"\r\n| summarize count() by bin(operationDate, $granularita)\r\n| render timechart\r\n",
+          "query": "\r\n['timeline']\r\n| where initiativeId == \"69e0fa95e21efa516c7b8dec\"\r\n| where operationType == \"UNSUBSCRIBED\"\r\n| summarize count() by bin(operationDate, $granularita)\r\n| render timechart\r\n",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -1346,7 +1346,7 @@
             }
           },
           "pluginVersion": "6.2.0",
-          "query": "transaction\n| where amountCents > 0\n| summarize TransazioniPerFascia = count() by ImportoFascia = bin(amountCents / 100, 10)\n| order by ImportoFascia asc",
+          "query": "transaction\n| where initiativeId == \"69e0fa95e21efa516c7b8dec\"\n| where amountCents > 0\n| summarize TransazioniPerFascia = count() by ImportoFascia = bin(amountCents / 100, 10)\n| order by ImportoFascia asc",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -1934,7 +1934,7 @@
             }
           },
           "pluginVersion": "6.2.0",
-          "query": "let StartTime = unixtime_milliseconds_todatetime(tolong($__from));\nlet EndTime = unixtime_milliseconds_todatetime(tolong($__to));\nlet Interval = $granularita;\n['transaction']\n| where isnotempty(trxChargeDate)\n| where trxChargeDate between (StartTime .. EndTime)\n| make-series \n    TransazioniTotali = count(),\n    Autorizzate = countif(status == \"AUTHORIZED\"), \n    Catturate = countif(status == \"CAPTURED\"),\n    Fatturate = countif(status == \"INVOICED\"),\n    Annullate = countif(status == \"CANCELLED\"),\n    Stornate = countif(status == \"REFUNDED\")\n    on trxChargeDate from StartTime to EndTime step Interval\n| mv-expand trxChargeDate, TransazioniTotali, Autorizzate, Catturate, Fatturate, Annullate, Stornate\n| extend updateDate = todatetime(trxChargeDate),\n    TransazioniTotali = tolong(TransazioniTotali),\n    Autorizzate = tolong(Autorizzate),\n    Catturate = tolong(Catturate),\n    Fatturate = tolong(Fatturate),\n    Annullate = tolong(Annullate),\n    Stornate = tolong(Stornate)\n| render timechart\n",
+          "query": "let StartTime = unixtime_milliseconds_todatetime(tolong($__from));\nlet EndTime = unixtime_milliseconds_todatetime(tolong($__to));\nlet Interval = $granularita;\n['transaction']\n| where initiativeId == \"69e0fa95e21efa516c7b8dec\"\n| where isnotempty(trxChargeDate)\n| where trxChargeDate between (StartTime .. EndTime)\n| make-series \n    TransazioniTotali = count(),\n    Autorizzate = countif(status == \"AUTHORIZED\"), \n    Catturate = countif(status == \"CAPTURED\"),\n    Fatturate = countif(status == \"INVOICED\"),\n    Annullate = countif(status == \"CANCELLED\"),\n    Stornate = countif(status == \"REFUNDED\")\n    on trxChargeDate from StartTime to EndTime step Interval\n| mv-expand trxChargeDate, TransazioniTotali, Autorizzate, Catturate, Fatturate, Annullate, Stornate\n| extend updateDate = todatetime(trxChargeDate),\n    TransazioniTotali = tolong(TransazioniTotali),\n    Autorizzate = tolong(Autorizzate),\n    Catturate = tolong(Catturate),\n    Fatturate = tolong(Fatturate),\n    Annullate = tolong(Annullate),\n    Stornate = tolong(Stornate)\n| render timechart\n",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
