@@ -30,8 +30,8 @@ locals {
         }
       },
       {
-        "rtp-payees" = {
-          name          = "rtp-payees"
+        "rtp-registry" = {
+          name          = "rtp-registry"
           target_branch = "main"
           env           = ["dev", "uat", "prod"]
         }

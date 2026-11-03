@@ -45,9 +45,10 @@ locals {
   dns_zone_name                    = "${var.env != "prod" ? "${var.env}." : ""}${var.prefix}.pagopa.it"
   dns_zone_internal                = "internal.${local.dns_zone_name}"
   ingress_private_load_balancer_ip = "10.10.1.250"
+  selfcare_issuer                  = "https://${var.env != "prod" ? "${var.env}." : ""}selfcare.pagopa.it"
 
   repositories = concat(
-    ["rtp-sender", "rtp-activator", "rtp-consumer", "rtp-payees"],
+    ["rtp-sender", "rtp-activator", "rtp-consumer", "rtp-registry"],
     var.env_short != "p" ? ["rtp-sender-v2"] : []
   )
 
@@ -167,7 +168,7 @@ locals {
         }
       }
     }
-    payee = {
+    registry = {
       # Database-level throughput: RU are shared across all collections
       db_autoscale_max_throughput = var.cosmos_payee_db_autoscale_max_throughput
       collections = {
@@ -182,6 +183,33 @@ locals {
             }
           ]
         }
+        service_providers = {
+          autoscale_max_throughput          = null
+          cosmos_collections_max_throughput = null
+          default_ttl_seconds               = -1
+          indexes = [
+            {
+              keys   = ["_id"]
+              unique = true
+            }
+          ]
+        }
+        notification_webhook = {
+          autoscale_max_throughput          = null
+          cosmos_collections_max_throughput = null
+          default_ttl_seconds               = -1
+          indexes = [
+            {
+              keys   = ["_id"]
+              unique = true
+            },
+            {
+              keys   = ["notificationId"]
+              unique = true
+            }
+          ]
+        }
+
       }
     }
   }
