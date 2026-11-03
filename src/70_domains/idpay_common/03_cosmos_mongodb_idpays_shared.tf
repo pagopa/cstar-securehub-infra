@@ -36,6 +36,10 @@ locals {
         { keys = ["_id"], unique = true },
         { keys = ["page", "_id"], unique = true },
         { keys = ["page", "data"], unique = true },
+        # Supports the incremental (createdAt time-window) extraction performed by
+        # the idpay_data_vault_copy pipeline. Without it the createdAt range filter
+        # would force a full scan on this sharded collection.
+        { keys = ["createdAt"], unique = false },
       ]
     },
     {
