@@ -22,6 +22,10 @@
   "links": [],
   "panels": [
     {
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
       "gridPos": {
         "h": 2,
         "w": 24,
@@ -38,7 +42,7 @@
         "content": "### [Activator](/d/srtp-operational-excellence?from=${__from}&to=${__to}) &nbsp;&nbsp;|&nbsp;&nbsp; **▸ Sender** &nbsp;&nbsp;|&nbsp;&nbsp; [Cosmos Activator](/d/cosmos-activator?from=${__from}&to=${__to}) &nbsp;&nbsp;|&nbsp;&nbsp; [Cosmos Sender](/d/cosmos-sender?from=${__from}&to=${__to})",
         "mode": "markdown"
       },
-      "pluginVersion": "12.4.8",
+      "pluginVersion": "12.4.13",
       "title": "",
       "transparent": true,
       "type": "text"
@@ -61,6 +65,27 @@
         "type": "grafana-azure-monitor-datasource",
         "uid": "azure-monitor-oob"
       },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "green",
+            "mode": "fixed"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
       "gridPos": {
         "h": 4,
         "w": 5,
@@ -68,7 +93,24 @@
         "y": 3
       },
       "id": 2101,
-      "pluginVersion": "12.4.8",
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.4.13",
       "targets": [
         {
           "azureLogAnalytics": {
@@ -91,12 +133,17 @@
         }
       ],
       "title": "✅ Messaggi ingeriti con successo",
-      "type": "stat",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "fixed",
-            "fixedColor": "green"
+            "mode": "thresholds"
           },
           "decimals": 0,
           "mappings": [],
@@ -106,18 +153,30 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 1
               }
             ]
           }
         },
         "overrides": []
       },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 5,
+        "y": 3
+      },
+      "id": 2102,
       "options": {
         "colorMode": "background",
         "graphMode": "none",
         "justifyMode": "center",
         "orientation": "auto",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -128,21 +187,8 @@
         "showPercentChange": false,
         "textMode": "value",
         "wideLayout": true
-      }
-    },
-    {
-      "datasource": {
-        "type": "grafana-azure-monitor-datasource",
-        "uid": "azure-monitor-oob"
       },
-      "gridPos": {
-        "h": 4,
-        "w": 5,
-        "x": 5,
-        "y": 3
-      },
-      "id": 2102,
-      "pluginVersion": "12.4.8",
+      "pluginVersion": "12.4.13",
       "targets": [
         {
           "azureLogAnalytics": {
@@ -165,11 +211,18 @@
         }
       ],
       "title": "❌ Messaggi scartati dal Consumer",
-      "type": "stat",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "fixedColor": "green",
+            "mode": "fixed"
           },
           "decimals": 0,
           "mappings": [],
@@ -179,22 +232,26 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 1
+                "value": 0
               }
             ]
           }
         },
         "overrides": []
       },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 10,
+        "y": 3
+      },
+      "id": 2103,
       "options": {
         "colorMode": "background",
         "graphMode": "none",
         "justifyMode": "center",
         "orientation": "auto",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -205,21 +262,8 @@
         "showPercentChange": false,
         "textMode": "value",
         "wideLayout": true
-      }
-    },
-    {
-      "datasource": {
-        "type": "grafana-azure-monitor-datasource",
-        "uid": "azure-monitor-oob"
       },
-      "gridPos": {
-        "h": 4,
-        "w": 5,
-        "x": 10,
-        "y": 3
-      },
-      "id": 2103,
-      "pluginVersion": "12.4.8",
+      "pluginVersion": "12.4.13",
       "targets": [
         {
           "azureLogAnalytics": {
@@ -242,12 +286,17 @@
         }
       ],
       "title": "✅ Messaggi unici ingeriti con successo",
-      "type": "stat",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "fixed",
-            "fixedColor": "green"
+            "mode": "thresholds"
           },
           "decimals": 0,
           "mappings": [],
@@ -257,18 +306,30 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 1
               }
             ]
           }
         },
         "overrides": []
       },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 15,
+        "y": 3
+      },
+      "id": 2104,
       "options": {
         "colorMode": "background",
         "graphMode": "none",
         "justifyMode": "center",
         "orientation": "auto",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -279,21 +340,8 @@
         "showPercentChange": false,
         "textMode": "value",
         "wideLayout": true
-      }
-    },
-    {
-      "datasource": {
-        "type": "grafana-azure-monitor-datasource",
-        "uid": "azure-monitor-oob"
       },
-      "gridPos": {
-        "h": 4,
-        "w": 5,
-        "x": 15,
-        "y": 3
-      },
-      "id": 2104,
-      "pluginVersion": "12.4.8",
+      "pluginVersion": "12.4.13",
       "targets": [
         {
           "azureLogAnalytics": {
@@ -316,7 +364,13 @@
         }
       ],
       "title": "❌ Messaggi unici scartati dal Consumer",
-      "type": "stat",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -330,7 +384,7 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
               },
               {
                 "color": "red",
@@ -341,11 +395,19 @@
         },
         "overrides": []
       },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 20,
+        "y": 3
+      },
+      "id": 2105,
       "options": {
         "colorMode": "background",
         "graphMode": "none",
         "justifyMode": "center",
         "orientation": "auto",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -356,21 +418,8 @@
         "showPercentChange": false,
         "textMode": "value",
         "wideLayout": true
-      }
-    },
-    {
-      "datasource": {
-        "type": "grafana-azure-monitor-datasource",
-        "uid": "azure-monitor-oob"
       },
-      "gridPos": {
-        "h": 4,
-        "w": 4,
-        "x": 20,
-        "y": 3
-      },
-      "id": 2105,
-      "pluginVersion": "12.4.8",
+      "pluginVersion": "12.4.13",
       "targets": [
         {
           "azureLogAnalytics": {
@@ -393,84 +442,13 @@
         }
       ],
       "title": "❌ Messaggi nella DLQ",
-      "type": "stat",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "decimals": 0,
-          "mappings": [],
-          "noValue": "0",
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 1
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "options": {
-        "colorMode": "background",
-        "graphMode": "none",
-        "justifyMode": "center",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "textMode": "value",
-        "wideLayout": true
-      }
+      "type": "stat"
     },
     {
       "datasource": {
         "type": "grafana-azure-monitor-datasource",
         "uid": "azure-monitor-oob"
       },
-      "gridPos": {
-        "h": 8,
-        "w": 24,
-        "x": 0,
-        "y": 7
-      },
-      "id": 2106,
-      "pluginVersion": "12.4.8",
-      "targets": [
-        {
-          "azureLogAnalytics": {
-            "dashboardTime": true,
-            "mode": "raw",
-            "query": "AppTraces\n| where AppRoleName == 'rtp-consumer'\n| where $__timeFilter(TimeGenerated)\n| where Message startswith \"Message processed successfully\" or Message startswith \"Error processing message.\"\n| extend messageId = tostring(Properties.message_id)\n| where isnotempty(messageId)\n| make-series\n    Successi = dcountif(messageId, Message startswith \"Message processed successfully\") default = 0,\n    Scartati = dcountif(messageId, Message startswith \"Error processing message.\" and not (Message contains \"rtp/gpd/message\")) default = 0\n  on TimeGenerated from bin($__timeFrom(), $sender_bin_size) to $__timeTo() step $sender_bin_size\n| mv-expand TimeGenerated to typeof(datetime), Successi to typeof(long), Scartati to typeof(long)\n| project TimeGenerated, Successi, Scartati\n| order by TimeGenerated asc",
-            "resources": [
-              "/subscriptions/$subscription/resourceGroups/$SrtpMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$SrtpLaw"
-            ],
-            "resultFormat": "time_series",
-            "timeColumn": "TimeGenerated"
-          },
-          "datasource": {
-            "type": "grafana-azure-monitor-datasource",
-            "uid": "azure-monitor-oob"
-          },
-          "queryType": "Azure Log Analytics",
-          "refId": "A",
-          "subscription": "$subscription"
-        }
-      ],
-      "title": "Andamento ingestione Consumer - Successi vs Scartati nel tempo",
-      "type": "timeseries",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -518,7 +496,7 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
               }
             ]
           }
@@ -533,8 +511,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "green"
+                  "fixedColor": "green",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -548,14 +526,21 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "red"
+                  "fixedColor": "red",
+                  "mode": "fixed"
                 }
               }
             ]
           }
         ]
       },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 7
+      },
+      "id": 2106,
       "options": {
         "legend": {
           "calcs": [
@@ -572,12 +557,62 @@
           "mode": "multi",
           "sort": "desc"
         }
-      }
+      },
+      "pluginVersion": "12.4.13",
+      "targets": [
+        {
+          "azureLogAnalytics": {
+            "dashboardTime": true,
+            "mode": "raw",
+            "query": "AppTraces\n| where AppRoleName == 'rtp-consumer'\n| where $__timeFilter(TimeGenerated)\n| where Message startswith \"Message processed successfully\" or Message startswith \"Error processing message.\"\n| extend messageId = tostring(Properties.message_id)\n| where isnotempty(messageId)\n| make-series\n    Successi = dcountif(messageId, Message startswith \"Message processed successfully\") default = 0,\n    Scartati = dcountif(messageId, Message startswith \"Error processing message.\" and not (Message contains \"rtp/gpd/message\")) default = 0\n  on TimeGenerated from bin($__timeFrom(), $sender_bin_size) to $__timeTo() step $sender_bin_size\n| mv-expand TimeGenerated to typeof(datetime), Successi to typeof(long), Scartati to typeof(long)\n| project TimeGenerated, Successi, Scartati\n| order by TimeGenerated asc",
+            "resources": [
+              "/subscriptions/$subscription/resourceGroups/$SrtpMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$SrtpLaw"
+            ],
+            "resultFormat": "time_series",
+            "timeColumn": "TimeGenerated"
+          },
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "refId": "A",
+          "subscription": "$subscription"
+        }
+      ],
+      "title": "Andamento ingestione Consumer - Successi vs Scartati nel tempo",
+      "type": "timeseries"
     },
     {
       "datasource": {
         "type": "grafana-azure-monitor-datasource",
         "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "left",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": true,
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "text",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
       },
       "gridPos": {
         "h": 8,
@@ -586,7 +621,11 @@
         "y": 15
       },
       "id": 2107,
-      "pluginVersion": "12.4.8",
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true
+      },
+      "pluginVersion": "12.4.13",
       "targets": [
         {
           "azureLogAnalytics": {
@@ -609,7 +648,13 @@
         }
       ],
       "title": "🔁 MessageId ricevuti più volte dall'EVH (duplicati di consegna)",
-      "type": "table",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {
@@ -629,22 +674,12 @@
             "steps": [
               {
                 "color": "text",
-                "value": null
+                "value": 0
               }
             ]
           }
         },
         "overrides": []
-      },
-      "options": {
-        "cellHeight": "sm",
-        "showHeader": true
-      }
-    },
-    {
-      "datasource": {
-        "type": "grafana-azure-monitor-datasource",
-        "uid": "azure-monitor-oob"
       },
       "gridPos": {
         "h": 6,
@@ -653,7 +688,11 @@
         "y": 23
       },
       "id": 2108,
-      "pluginVersion": "12.4.8",
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true
+      },
+      "pluginVersion": "12.4.13",
       "targets": [
         {
           "azureLogAnalytics": {
@@ -676,7 +715,13 @@
         }
       ],
       "title": "✅ Messaggi processati con successo per Operazione (CREATE / UPDATE / DELETE)",
-      "type": "table",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {
@@ -696,22 +741,12 @@
             "steps": [
               {
                 "color": "text",
-                "value": null
+                "value": 0
               }
             ]
           }
         },
         "overrides": []
-      },
-      "options": {
-        "cellHeight": "sm",
-        "showHeader": true
-      }
-    },
-    {
-      "datasource": {
-        "type": "grafana-azure-monitor-datasource",
-        "uid": "azure-monitor-oob"
       },
       "gridPos": {
         "h": 6,
@@ -720,7 +755,11 @@
         "y": 23
       },
       "id": 2109,
-      "pluginVersion": "12.4.8",
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true
+      },
+      "pluginVersion": "12.4.13",
       "targets": [
         {
           "azureLogAnalytics": {
@@ -743,7 +782,13 @@
         }
       ],
       "title": "❌ Messaggi falliti per Operazione (CREATE / UPDATE / DELETE)",
-      "type": "table",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {
@@ -763,22 +808,12 @@
             "steps": [
               {
                 "color": "text",
-                "value": null
+                "value": 0
               }
             ]
           }
         },
         "overrides": []
-      },
-      "options": {
-        "cellHeight": "sm",
-        "showHeader": true
-      }
-    },
-    {
-      "datasource": {
-        "type": "grafana-azure-monitor-datasource",
-        "uid": "azure-monitor-oob"
       },
       "gridPos": {
         "h": 8,
@@ -787,7 +822,11 @@
         "y": 29
       },
       "id": 2110,
-      "pluginVersion": "12.4.8",
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true
+      },
+      "pluginVersion": "12.4.13",
       "targets": [
         {
           "azureLogAnalytics": {
@@ -810,7 +849,13 @@
         }
       ],
       "title": "✅ Ultimi 50 CREATE processati con successo",
-      "type": "table",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {
@@ -830,22 +875,12 @@
             "steps": [
               {
                 "color": "text",
-                "value": null
+                "value": 0
               }
             ]
           }
         },
         "overrides": []
-      },
-      "options": {
-        "cellHeight": "sm",
-        "showHeader": true
-      }
-    },
-    {
-      "datasource": {
-        "type": "grafana-azure-monitor-datasource",
-        "uid": "azure-monitor-oob"
       },
       "gridPos": {
         "h": 8,
@@ -854,7 +889,11 @@
         "y": 29
       },
       "id": 2111,
-      "pluginVersion": "12.4.8",
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true
+      },
+      "pluginVersion": "12.4.13",
       "targets": [
         {
           "azureLogAnalytics": {
@@ -877,7 +916,13 @@
         }
       ],
       "title": "❌ Ultimi 50 CREATE falliti",
-      "type": "table",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {
@@ -897,22 +942,12 @@
             "steps": [
               {
                 "color": "text",
-                "value": null
+                "value": 0
               }
             ]
           }
         },
         "overrides": []
-      },
-      "options": {
-        "cellHeight": "sm",
-        "showHeader": true
-      }
-    },
-    {
-      "datasource": {
-        "type": "grafana-azure-monitor-datasource",
-        "uid": "azure-monitor-oob"
       },
       "gridPos": {
         "h": 8,
@@ -921,7 +956,11 @@
         "y": 37
       },
       "id": 2112,
-      "pluginVersion": "12.4.8",
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true
+      },
+      "pluginVersion": "12.4.13",
       "targets": [
         {
           "azureLogAnalytics": {
@@ -944,7 +983,13 @@
         }
       ],
       "title": "✅ Ultimi 50 UPDATE processati con successo",
-      "type": "table",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {
@@ -964,22 +1009,12 @@
             "steps": [
               {
                 "color": "text",
-                "value": null
+                "value": 0
               }
             ]
           }
         },
         "overrides": []
-      },
-      "options": {
-        "cellHeight": "sm",
-        "showHeader": true
-      }
-    },
-    {
-      "datasource": {
-        "type": "grafana-azure-monitor-datasource",
-        "uid": "azure-monitor-oob"
       },
       "gridPos": {
         "h": 8,
@@ -988,7 +1023,11 @@
         "y": 37
       },
       "id": 2113,
-      "pluginVersion": "12.4.8",
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true
+      },
+      "pluginVersion": "12.4.13",
       "targets": [
         {
           "azureLogAnalytics": {
@@ -1011,7 +1050,13 @@
         }
       ],
       "title": "❌ Ultimi 50 UPDATE falliti",
-      "type": "table",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {
@@ -1031,22 +1076,12 @@
             "steps": [
               {
                 "color": "text",
-                "value": null
+                "value": 0
               }
             ]
           }
         },
         "overrides": []
-      },
-      "options": {
-        "cellHeight": "sm",
-        "showHeader": true
-      }
-    },
-    {
-      "datasource": {
-        "type": "grafana-azure-monitor-datasource",
-        "uid": "azure-monitor-oob"
       },
       "gridPos": {
         "h": 8,
@@ -1055,7 +1090,11 @@
         "y": 45
       },
       "id": 2114,
-      "pluginVersion": "12.4.8",
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true
+      },
+      "pluginVersion": "12.4.13",
       "targets": [
         {
           "azureLogAnalytics": {
@@ -1078,7 +1117,13 @@
         }
       ],
       "title": "✅ Ultimi 50 DELETE processati con successo",
-      "type": "table",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {
@@ -1098,22 +1143,12 @@
             "steps": [
               {
                 "color": "text",
-                "value": null
+                "value": 0
               }
             ]
           }
         },
         "overrides": []
-      },
-      "options": {
-        "cellHeight": "sm",
-        "showHeader": true
-      }
-    },
-    {
-      "datasource": {
-        "type": "grafana-azure-monitor-datasource",
-        "uid": "azure-monitor-oob"
       },
       "gridPos": {
         "h": 8,
@@ -1122,7 +1157,11 @@
         "y": 45
       },
       "id": 2115,
-      "pluginVersion": "12.4.8",
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true
+      },
+      "pluginVersion": "12.4.13",
       "targets": [
         {
           "azureLogAnalytics": {
@@ -1145,7 +1184,13 @@
         }
       ],
       "title": "❌ Ultimi 50 DELETE falliti",
-      "type": "table",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {
@@ -1165,22 +1210,12 @@
             "steps": [
               {
                 "color": "text",
-                "value": null
+                "value": 0
               }
             ]
           }
         },
         "overrides": []
-      },
-      "options": {
-        "cellHeight": "sm",
-        "showHeader": true
-      }
-    },
-    {
-      "datasource": {
-        "type": "grafana-azure-monitor-datasource",
-        "uid": "azure-monitor-oob"
       },
       "gridPos": {
         "h": 7,
@@ -1189,7 +1224,11 @@
         "y": 53
       },
       "id": 2116,
-      "pluginVersion": "12.4.8",
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true
+      },
+      "pluginVersion": "12.4.13",
       "targets": [
         {
           "azureLogAnalytics": {
@@ -1212,74 +1251,13 @@
         }
       ],
       "title": "Eccezioni Java rtp-consumer (AppExceptions)",
-      "type": "table",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {
-            "align": "left",
-            "cellOptions": {
-              "type": "auto"
-            },
-            "filterable": true,
-            "footer": {
-              "reducers": []
-            },
-            "inspect": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "text",
-                "value": null
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "options": {
-        "cellHeight": "sm",
-        "showHeader": true
-      }
+      "type": "table"
     },
     {
       "datasource": {
         "type": "grafana-azure-monitor-datasource",
         "uid": "azure-monitor-oob"
       },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 60
-      },
-      "id": 2117,
-      "pluginVersion": "12.4.8",
-      "targets": [
-        {
-          "azureLogAnalytics": {
-            "dashboardTime": true,
-            "mode": "raw",
-            "query": "let statusLegend = datatable(statusCode: string, description: string)\n[\n    \"200\", \"OK - Successo\",\n    \"400\", \"Bad Request\",\n    \"401\", \"Unauthorized\",\n    \"403\", \"Forbidden\",\n    \"409\", \"Conflict - Idempotenza\",\n    \"422\", \"Unprocessable - Business error\",\n    \"499\", \"Client closed\",\n    \"503\", \"Service Unavailable\",\n    \"504\", \"Gateway Timeout\"\n];\nAzureDiagnostics\n| where $__timeFilter(TimeGenerated)\n| where requestUri_s contains 'rtp/gpd/message'\n| where httpMethod_s == \"POST\"\n| summarize count() by statusCode = tostring(toint(httpStatus_d))\n| join kind=leftouter statusLegend on statusCode\n| project label = strcat(statusCode, \" - \", coalesce(description, \"Altro\")), count_\n| evaluate pivot(label, sum(count_))",
-            "resources": [
-              "/subscriptions/$subscription/resourceGroups/$CoreMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$CoreLaw"
-            ],
-            "resultFormat": "table",
-            "timeColumn": "TimeGenerated"
-          },
-          "datasource": {
-            "type": "grafana-azure-monitor-datasource",
-            "uid": "azure-monitor-oob"
-          },
-          "queryType": "Azure Log Analytics",
-          "refId": "A",
-          "subscription": "$subscription"
-        }
-      ],
-      "title": "Panoramica dei messaggi ricevuti sul sender con status code (APIM)",
-      "type": "piechart",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1304,8 +1282,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "green"
+                  "fixedColor": "green",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -1319,8 +1297,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "green"
+                  "fixedColor": "green",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -1334,8 +1312,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "light-green"
+                  "fixedColor": "light-green",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -1349,8 +1327,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "green"
+                  "fixedColor": "green",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -1364,8 +1342,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "light-red"
+                  "fixedColor": "light-red",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -1379,8 +1357,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "purple"
+                  "fixedColor": "purple",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -1394,8 +1372,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "dark-purple"
+                  "fixedColor": "dark-purple",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -1409,8 +1387,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "yellow"
+                  "fixedColor": "yellow",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -1424,8 +1402,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "light-yellow"
+                  "fixedColor": "light-yellow",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -1439,8 +1417,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "orange"
+                  "fixedColor": "orange",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -1454,8 +1432,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "light-blue"
+                  "fixedColor": "light-blue",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -1469,8 +1447,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "dark-yellow"
+                  "fixedColor": "dark-yellow",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -1484,8 +1462,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "dark-orange"
+                  "fixedColor": "dark-orange",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -1499,8 +1477,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "super-light-orange"
+                  "fixedColor": "super-light-orange",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -1514,8 +1492,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "red"
+                  "fixedColor": "red",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -1529,8 +1507,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "dark-red"
+                  "fixedColor": "dark-red",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -1544,8 +1522,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "dark-red"
+                  "fixedColor": "dark-red",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -1559,14 +1537,21 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "dark-red"
+                  "fixedColor": "dark-red",
+                  "mode": "fixed"
                 }
               }
             ]
           }
         ]
       },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 60
+      },
+      "id": 2117,
       "options": {
         "displayLabels": [
           "percent"
@@ -1594,12 +1579,60 @@
           "mode": "single",
           "sort": "none"
         }
-      }
+      },
+      "pluginVersion": "12.4.13",
+      "targets": [
+        {
+          "azureLogAnalytics": {
+            "dashboardTime": true,
+            "mode": "raw",
+            "query": "let statusLegend = datatable(statusCode: string, description: string)\n[\n    \"200\", \"OK - Successo\",\n    \"400\", \"Bad Request\",\n    \"401\", \"Unauthorized\",\n    \"403\", \"Forbidden\",\n    \"409\", \"Conflict - Idempotenza\",\n    \"422\", \"Unprocessable - Business error\",\n    \"499\", \"Client closed\",\n    \"503\", \"Service Unavailable\",\n    \"504\", \"Gateway Timeout\"\n];\nAzureDiagnostics\n| where $__timeFilter(TimeGenerated)\n| where requestUri_s contains 'rtp/gpd/message'\n| where httpMethod_s == \"POST\"\n| summarize count() by statusCode = tostring(toint(httpStatus_d))\n| join kind=leftouter statusLegend on statusCode\n| project label = strcat(statusCode, \" - \", coalesce(description, \"Altro\")), count_\n| evaluate pivot(label, sum(count_))",
+            "resources": [
+              "/subscriptions/$subscription/resourceGroups/$CoreMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$CoreLaw"
+            ],
+            "resultFormat": "table",
+            "timeColumn": "TimeGenerated"
+          },
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "refId": "A",
+          "subscription": "$subscription"
+        }
+      ],
+      "title": "Panoramica dei messaggi ricevuti sul sender con status code (APIM)",
+      "type": "piechart"
     },
     {
       "datasource": {
         "type": "grafana-azure-monitor-datasource",
         "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "overrides": []
       },
       "gridPos": {
         "h": 8,
@@ -1608,7 +1641,24 @@
         "y": 60
       },
       "id": 2118,
-      "pluginVersion": "12.4.8",
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.4.13",
       "targets": [
         {
           "azureLogAnalytics": {
@@ -1631,11 +1681,18 @@
         }
       ],
       "title": "❌ Messaggi falliti da Consumer a Sender",
-      "type": "stat",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "fixedColor": "green",
+            "mode": "fixed"
           },
           "decimals": 0,
           "mappings": [],
@@ -1645,22 +1702,26 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 1
+                "value": 0
               }
             ]
           }
         },
         "overrides": []
       },
+      "gridPos": {
+        "h": 8,
+        "w": 4,
+        "x": 16,
+        "y": 60
+      },
+      "id": 2119,
       "options": {
         "colorMode": "background",
         "graphMode": "none",
         "justifyMode": "center",
         "orientation": "auto",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -1671,21 +1732,8 @@
         "showPercentChange": false,
         "textMode": "value",
         "wideLayout": true
-      }
-    },
-    {
-      "datasource": {
-        "type": "grafana-azure-monitor-datasource",
-        "uid": "azure-monitor-oob"
       },
-      "gridPos": {
-        "h": 8,
-        "w": 4,
-        "x": 16,
-        "y": 60
-      },
-      "id": 2119,
-      "pluginVersion": "12.4.8",
+      "pluginVersion": "12.4.13",
       "targets": [
         {
           "azureLogAnalytics": {
@@ -1708,12 +1756,17 @@
         }
       ],
       "title": "✅ Messaggi inoltrati con successo al Sender",
-      "type": "stat",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "fixed",
-            "fixedColor": "green"
+            "mode": "thresholds"
           },
           "decimals": 0,
           "mappings": [],
@@ -1723,18 +1776,30 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 1
               }
             ]
           }
         },
         "overrides": []
       },
+      "gridPos": {
+        "h": 8,
+        "w": 4,
+        "x": 20,
+        "y": 60
+      },
+      "id": 2120,
       "options": {
         "colorMode": "background",
         "graphMode": "none",
         "justifyMode": "center",
         "orientation": "auto",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -1745,21 +1810,8 @@
         "showPercentChange": false,
         "textMode": "value",
         "wideLayout": true
-      }
-    },
-    {
-      "datasource": {
-        "type": "grafana-azure-monitor-datasource",
-        "uid": "azure-monitor-oob"
       },
-      "gridPos": {
-        "h": 8,
-        "w": 4,
-        "x": 20,
-        "y": 60
-      },
-      "id": 2120,
-      "pluginVersion": "12.4.8",
+      "pluginVersion": "12.4.13",
       "targets": [
         {
           "azureLogAnalytics": {
@@ -1782,52 +1834,38 @@
         }
       ],
       "title": "❌ Retry esauriti Consumer → Sender",
-      "type": "stat",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "decimals": 0,
-          "mappings": [],
-          "noValue": "0",
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 1
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "options": {
-        "colorMode": "background",
-        "graphMode": "none",
-        "justifyMode": "center",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "textMode": "value",
-        "wideLayout": true
-      }
+      "type": "stat"
     },
     {
       "datasource": {
         "type": "grafana-azure-monitor-datasource",
         "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "left",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": true,
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "text",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
       },
       "gridPos": {
         "h": 8,
@@ -1836,7 +1874,11 @@
         "y": 68
       },
       "id": 2121,
-      "pluginVersion": "12.4.8",
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true
+      },
+      "pluginVersion": "12.4.13",
       "targets": [
         {
           "azureLogAnalytics": {
@@ -1859,37 +1901,7 @@
         }
       ],
       "title": "❌ Retry esauriti Consumer → Sender: dettaglio",
-      "type": "table",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {
-            "align": "left",
-            "cellOptions": {
-              "type": "auto"
-            },
-            "filterable": true,
-            "footer": {
-              "reducers": []
-            },
-            "inspect": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "text",
-                "value": null
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "options": {
-        "cellHeight": "sm",
-        "showHeader": true
-      }
+      "type": "table"
     },
     {
       "collapsed": false,
@@ -1909,6 +1921,27 @@
         "type": "grafana-azure-monitor-datasource",
         "uid": "azure-monitor-oob"
       },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "green",
+            "mode": "fixed"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
       "gridPos": {
         "h": 4,
         "w": 12,
@@ -1916,7 +1949,24 @@
         "y": 77
       },
       "id": 2201,
-      "pluginVersion": "12.4.8",
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.4.13",
       "targets": [
         {
           "azureLogAnalytics": {
@@ -1939,12 +1989,17 @@
         }
       ],
       "title": "✅ Invii totali con successo (APIM + CODA)",
-      "type": "stat",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "fixed",
-            "fixedColor": "green"
+            "mode": "thresholds"
           },
           "decimals": 0,
           "mappings": [],
@@ -1954,18 +2009,30 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 1
               }
             ]
           }
         },
         "overrides": []
       },
+      "gridPos": {
+        "h": 4,
+        "w": 12,
+        "x": 12,
+        "y": 77
+      },
+      "id": 2202,
       "options": {
         "colorMode": "background",
         "graphMode": "none",
         "justifyMode": "center",
         "orientation": "auto",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -1976,21 +2043,8 @@
         "showPercentChange": false,
         "textMode": "value",
         "wideLayout": true
-      }
-    },
-    {
-      "datasource": {
-        "type": "grafana-azure-monitor-datasource",
-        "uid": "azure-monitor-oob"
       },
-      "gridPos": {
-        "h": 4,
-        "w": 12,
-        "x": 12,
-        "y": 77
-      },
-      "id": 2202,
-      "pluginVersion": "12.4.8",
+      "pluginVersion": "12.4.13",
       "targets": [
         {
           "azureLogAnalytics": {
@@ -2013,52 +2067,54 @@
         }
       ],
       "title": "❌ Errore nell'invio del RTP",
-      "type": "stat",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "decimals": 0,
-          "mappings": [],
-          "noValue": "0",
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 1
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "options": {
-        "colorMode": "background",
-        "graphMode": "none",
-        "justifyMode": "center",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "textMode": "value",
-        "wideLayout": true
-      }
+      "type": "stat"
     },
     {
       "datasource": {
         "type": "grafana-azure-monitor-datasource",
         "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "green",
+            "mode": "fixed"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 0,
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
       },
       "gridPos": {
         "h": 8,
@@ -2067,7 +2123,30 @@
         "y": 81
       },
       "id": 2203,
-      "pluginVersion": "12.4.8",
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.9,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "orientation": "vertical",
+        "showValue": "auto",
+        "stacking": "none",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        },
+        "xField": "Debtor Service Provider",
+        "xTickLabelRotation": -30,
+        "xTickLabelSpacing": 0
+      },
+      "pluginVersion": "12.4.13",
       "targets": [
         {
           "azureLogAnalytics": {
@@ -2090,109 +2169,13 @@
         }
       ],
       "title": "✅ Invii con successo per Service Provider del debitore",
-      "type": "barchart",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "fixed",
-            "fixedColor": "green"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "fillOpacity": 80,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineWidth": 1,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "decimals": 0,
-          "mappings": [],
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "options": {
-        "barRadius": 0,
-        "barWidth": 0.9,
-        "fullHighlight": false,
-        "groupWidth": 0.7,
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": false
-        },
-        "orientation": "vertical",
-        "showValue": "auto",
-        "stacking": "none",
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "multi",
-          "sort": "desc"
-        },
-        "xField": "Debtor Service Provider",
-        "xTickLabelRotation": -30,
-        "xTickLabelSpacing": 0
-      }
+      "type": "barchart"
     },
     {
       "datasource": {
         "type": "grafana-azure-monitor-datasource",
         "uid": "azure-monitor-oob"
       },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 81
-      },
-      "id": 2204,
-      "pluginVersion": "12.4.8",
-      "targets": [
-        {
-          "azureLogAnalytics": {
-            "dashboardTime": true,
-            "mode": "raw",
-            "query": "let fallimenti = AppTraces\n| where AppRoleName == 'rtp-sender'\n| where $__timeFilter(TimeGenerated)\n| where SeverityLevel == 3\n| where Message startswith \"Error sending Rtp to be sent:\"\n| extend _err = trim(\" \", replace_string(Message, \"Error sending Rtp to be sent:\", \"\"))\n| extend Categoria = case(\n    _err contains \"payer is not activated\",                \"⚠️ Payer non attivato\",\n    _err contains \"rejected\" or _err contains \"Reject\",   \"❌ Rejection SEPA\",\n    _err contains \"imeout\",                               \"❌ Timeout\",\n    _err contains \"Connection\" or _err contains \"refused\", \"❌ Errore di rete\",\n    _err contains \"MongoWrite\" or _err contains \"Mongo\"\n        or _err contains \"TooManyRequest\",                \"❌ Errore DB Mongo\",\n    _err contains \"PayeeNotFound\"\n        or _err contains \"ServiceProviderNotFound\",       \"❌ Payee/SP non trovato\",\n    _err contains \"InvalidTransition\"\n        or _err contains \"InvalidStatus\",                 \"❌ Transizione invalida\",\n    \"❌ Altro / non classificato\"\n)\n| summarize Conteggio = count() by Categoria;\nlet successi = AppTraces\n| where AppRoleName == 'rtp-sender'\n| where $__timeFilter(TimeGenerated)\n| where SeverityLevel == 1\n| where Message startswith \"Rtp sent successfully with id:\"\n| summarize Conteggio = count()\n| extend Categoria = \"✅ Successo\";\nlet dettaglio = union fallimenti, successi;\ndettaglio\n| project Categoria, Conteggio\n| evaluate pivot(Categoria, sum(Conteggio))",
-            "resources": [
-              "/subscriptions/$subscription/resourceGroups/$SrtpMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$SrtpLaw"
-            ],
-            "resultFormat": "table",
-            "timeColumn": "TimeGenerated"
-          },
-          "datasource": {
-            "type": "grafana-azure-monitor-datasource",
-            "uid": "azure-monitor-oob"
-          },
-          "queryType": "Azure Log Analytics",
-          "refId": "A",
-          "subscription": "$subscription"
-        }
-      ],
-      "title": "Monitoraggio di invii falliti o non processati per tipologia",
-      "type": "piechart",
       "description": "Successi e fallimenti per tipologia di errore.",
       "fieldConfig": {
         "defaults": {
@@ -2211,36 +2194,184 @@
         "overrides": [
           {
             "matcher": {
-              "id": "byRegexp",
-              "options": "^✅.*"
+              "id": "byName",
+              "options": "Successo"
             },
             "properties": [
               {
+                "id": "displayName",
+                "value": "✅ Successo"
+              },
+              {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "green"
+                  "fixedColor": "green",
+                  "mode": "fixed"
                 }
               }
             ]
           },
           {
             "matcher": {
-              "id": "byRegexp",
-              "options": "^⚠️.*"
+              "id": "byName",
+              "options": "Payer non attivato"
             },
             "properties": [
               {
+                "id": "displayName",
+                "value": "⚠️ Payer non attivato"
+              },
+              {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "orange"
+                  "fixedColor": "orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Rejection SEPA"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "❌ Rejection SEPA"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Timeout"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "❌ Timeout"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "purple",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Errore di rete"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "❌ Errore di rete"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Errore DB Mongo"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "❌ Errore DB Mongo"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Payee/SP non trovato"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "❌ Payee/SP non trovato"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Transizione invalida"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "❌ Transizione invalida"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "light-red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Altro / non classificato"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "❌ Altro / non classificato"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "red",
+                  "mode": "fixed"
                 }
               }
             ]
           }
         ]
       },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 81
+      },
+      "id": 2204,
       "options": {
         "displayLabels": [
           "percent"
@@ -2268,12 +2399,91 @@
           "mode": "single",
           "sort": "none"
         }
-      }
+      },
+      "pluginVersion": "12.4.13",
+      "targets": [
+        {
+          "azureLogAnalytics": {
+            "dashboardTime": true,
+            "mode": "raw",
+            "query": "let fallimenti = AppTraces\n| where AppRoleName == 'rtp-sender'\n| where $__timeFilter(TimeGenerated)\n| where SeverityLevel == 3\n| where Message startswith \"Error sending Rtp to be sent:\"\n| extend _err = trim(\" \", replace_string(Message, \"Error sending Rtp to be sent:\", \"\"))\n| extend Categoria = case(\n    _err contains \"payer is not activated\",                \"⚠️ Payer non attivato\",\n    _err contains \"rejected\" or _err contains \"Reject\",   \"❌ Rejection SEPA\",\n    _err contains \"imeout\",                               \"❌ Timeout\",\n    _err contains \"Connection\" or _err contains \"refused\", \"❌ Errore di rete\",\n    _err contains \"MongoWrite\" or _err contains \"Mongo\"\n        or _err contains \"TooManyRequest\",                \"❌ Errore DB Mongo\",\n    _err contains \"PayeeNotFound\"\n        or _err contains \"ServiceProviderNotFound\",       \"❌ Payee/SP non trovato\",\n    _err contains \"InvalidTransition\"\n        or _err contains \"InvalidStatus\",                 \"❌ Transizione invalida\",\n    \"❌ Altro / non classificato\"\n)\n| summarize Conteggio = count() by Categoria;\nlet successi = AppTraces\n| where AppRoleName == 'rtp-sender'\n| where $__timeFilter(TimeGenerated)\n| where SeverityLevel == 1\n| where Message startswith \"Rtp sent successfully with id:\"\n| summarize Conteggio = count()\n| extend Categoria = \"✅ Successo\";\nlet dettaglio = union fallimenti, successi;\ndettaglio\n| project Categoria = trim_start(@\"[^A-Za-z]+\", Categoria), Conteggio\n| evaluate pivot(Categoria, sum(Conteggio))",
+            "resources": [
+              "/subscriptions/$subscription/resourceGroups/$SrtpMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$SrtpLaw"
+            ],
+            "resultFormat": "table",
+            "timeColumn": "TimeGenerated"
+          },
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "refId": "A",
+          "subscription": "$subscription"
+        }
+      ],
+      "title": "Monitoraggio di invii falliti o non processati per tipologia",
+      "type": "piechart"
     },
     {
       "datasource": {
         "type": "grafana-azure-monitor-datasource",
         "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 0,
+          "displayName": "${__field.labels.Series}",
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
       },
       "gridPos": {
         "h": 9,
@@ -2282,7 +2492,24 @@
         "y": 89
       },
       "id": 2205,
-      "pluginVersion": "12.4.8",
+      "options": {
+        "legend": {
+          "calcs": [
+            "sum"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "sortBy": "Total",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "12.4.13",
       "targets": [
         {
           "azureLogAnalytics": {
@@ -2305,84 +2532,38 @@
         }
       ],
       "title": "Invii RTP nel tempo (Successi vs Fallimenti) nel tempo",
-      "type": "timeseries",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 10,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 2,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "showValues": false,
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "decimals": 0,
-          "mappings": [],
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          },
-          "displayName": "${__field.labels.Series}"
-        },
-        "overrides": []
-      },
-      "options": {
-        "legend": {
-          "calcs": [
-            "sum"
-          ],
-          "displayMode": "table",
-          "placement": "right",
-          "showLegend": true,
-          "sortBy": "Total",
-          "sortDesc": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "multi",
-          "sort": "desc"
-        }
-      }
+      "type": "timeseries"
     },
     {
       "datasource": {
         "type": "grafana-azure-monitor-datasource",
         "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "left",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": true,
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "text",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
       },
       "gridPos": {
         "h": 8,
@@ -2391,7 +2572,11 @@
         "y": 98
       },
       "id": 2206,
-      "pluginVersion": "12.4.8",
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true
+      },
+      "pluginVersion": "12.4.13",
       "targets": [
         {
           "azureLogAnalytics": {
@@ -2414,7 +2599,13 @@
         }
       ],
       "title": "✅ Ultimi 100 invii con successo (APIM + CODA)",
-      "type": "table",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {
@@ -2434,22 +2625,12 @@
             "steps": [
               {
                 "color": "text",
-                "value": null
+                "value": 0
               }
             ]
           }
         },
         "overrides": []
-      },
-      "options": {
-        "cellHeight": "sm",
-        "showHeader": true
-      }
-    },
-    {
-      "datasource": {
-        "type": "grafana-azure-monitor-datasource",
-        "uid": "azure-monitor-oob"
       },
       "gridPos": {
         "h": 8,
@@ -2458,7 +2639,11 @@
         "y": 106
       },
       "id": 2207,
-      "pluginVersion": "12.4.8",
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true
+      },
+      "pluginVersion": "12.4.13",
       "targets": [
         {
           "azureLogAnalytics": {
@@ -2481,7 +2666,13 @@
         }
       ],
       "title": "❌ Catch-all errori invio",
-      "type": "table",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {
@@ -2501,22 +2692,12 @@
             "steps": [
               {
                 "color": "text",
-                "value": null
+                "value": 0
               }
             ]
           }
         },
         "overrides": []
-      },
-      "options": {
-        "cellHeight": "sm",
-        "showHeader": true
-      }
-    },
-    {
-      "datasource": {
-        "type": "grafana-azure-monitor-datasource",
-        "uid": "azure-monitor-oob"
       },
       "gridPos": {
         "h": 8,
@@ -2525,7 +2706,11 @@
         "y": 114
       },
       "id": 2208,
-      "pluginVersion": "12.4.8",
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true
+      },
+      "pluginVersion": "12.4.13",
       "targets": [
         {
           "azureLogAnalytics": {
@@ -2548,7 +2733,13 @@
         }
       ],
       "title": "❌ REJECTION esplicita EPC",
-      "type": "table",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {
@@ -2568,22 +2759,12 @@
             "steps": [
               {
                 "color": "text",
-                "value": null
+                "value": 0
               }
             ]
           }
         },
         "overrides": []
-      },
-      "options": {
-        "cellHeight": "sm",
-        "showHeader": true
-      }
-    },
-    {
-      "datasource": {
-        "type": "grafana-azure-monitor-datasource",
-        "uid": "azure-monitor-oob"
       },
       "gridPos": {
         "h": 8,
@@ -2592,7 +2773,11 @@
         "y": 122
       },
       "id": 2209,
-      "pluginVersion": "12.4.8",
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true
+      },
+      "pluginVersion": "12.4.13",
       "targets": [
         {
           "azureLogAnalytics": {
@@ -2615,7 +2800,13 @@
         }
       ],
       "title": "❌ Errore Handler post retry",
-      "type": "table",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {
@@ -2635,22 +2826,12 @@
             "steps": [
               {
                 "color": "text",
-                "value": null
+                "value": 0
               }
             ]
           }
         },
         "overrides": []
-      },
-      "options": {
-        "cellHeight": "sm",
-        "showHeader": true
-      }
-    },
-    {
-      "datasource": {
-        "type": "grafana-azure-monitor-datasource",
-        "uid": "azure-monitor-oob"
       },
       "gridPos": {
         "h": 8,
@@ -2659,7 +2840,11 @@
         "y": 130
       },
       "id": 2210,
-      "pluginVersion": "12.4.8",
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true
+      },
+      "pluginVersion": "12.4.13",
       "targets": [
         {
           "azureLogAnalytics": {
@@ -2682,7 +2867,13 @@
         }
       ],
       "title": "❌ Errore nel salvataggio a DB del RTP",
-      "type": "table",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {
@@ -2702,22 +2893,12 @@
             "steps": [
               {
                 "color": "text",
-                "value": null
+                "value": 0
               }
             ]
           }
         },
         "overrides": []
-      },
-      "options": {
-        "cellHeight": "sm",
-        "showHeader": true
-      }
-    },
-    {
-      "datasource": {
-        "type": "grafana-azure-monitor-datasource",
-        "uid": "azure-monitor-oob"
       },
       "gridPos": {
         "h": 8,
@@ -2726,7 +2907,11 @@
         "y": 138
       },
       "id": 2211,
-      "pluginVersion": "12.4.8",
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true
+      },
+      "pluginVersion": "12.4.13",
       "targets": [
         {
           "azureLogAnalytics": {
@@ -2749,7 +2934,13 @@
         }
       ],
       "title": "❌ RTP rifiutati dal Service Provider",
-      "type": "table",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {
@@ -2769,22 +2960,12 @@
             "steps": [
               {
                 "color": "text",
-                "value": null
+                "value": 0
               }
             ]
           }
         },
         "overrides": []
-      },
-      "options": {
-        "cellHeight": "sm",
-        "showHeader": true
-      }
-    },
-    {
-      "datasource": {
-        "type": "grafana-azure-monitor-datasource",
-        "uid": "azure-monitor-oob"
       },
       "gridPos": {
         "h": 8,
@@ -2793,7 +2974,11 @@
         "y": 146
       },
       "id": 2212,
-      "pluginVersion": "12.4.8",
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true
+      },
+      "pluginVersion": "12.4.13",
       "targets": [
         {
           "azureLogAnalytics": {
@@ -2816,7 +3001,13 @@
         }
       ],
       "title": "❌ Errori inattesi per Service Provider",
-      "type": "table",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {
@@ -2836,22 +3027,12 @@
             "steps": [
               {
                 "color": "text",
-                "value": null
+                "value": 0
               }
             ]
           }
         },
         "overrides": []
-      },
-      "options": {
-        "cellHeight": "sm",
-        "showHeader": true
-      }
-    },
-    {
-      "datasource": {
-        "type": "grafana-azure-monitor-datasource",
-        "uid": "azure-monitor-oob"
       },
       "gridPos": {
         "h": 8,
@@ -2860,7 +3041,11 @@
         "y": 146
       },
       "id": 2213,
-      "pluginVersion": "12.4.8",
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true
+      },
+      "pluginVersion": "12.4.13",
       "targets": [
         {
           "azureLogAnalytics": {
@@ -2883,7 +3068,13 @@
         }
       ],
       "title": "Retry per invii SRTP",
-      "type": "table",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {
@@ -2903,22 +3094,12 @@
             "steps": [
               {
                 "color": "text",
-                "value": null
+                "value": 0
               }
             ]
           }
         },
         "overrides": []
-      },
-      "options": {
-        "cellHeight": "sm",
-        "showHeader": true
-      }
-    },
-    {
-      "datasource": {
-        "type": "grafana-azure-monitor-datasource",
-        "uid": "azure-monitor-oob"
       },
       "gridPos": {
         "h": 8,
@@ -2927,7 +3108,11 @@
         "y": 154
       },
       "id": 2214,
-      "pluginVersion": "12.4.8",
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true
+      },
+      "pluginVersion": "12.4.13",
       "targets": [
         {
           "azureLogAnalytics": {
@@ -2950,7 +3135,13 @@
         }
       ],
       "title": "❌ Errori inattesi nell'invio",
-      "type": "table",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {
@@ -2970,22 +3161,12 @@
             "steps": [
               {
                 "color": "text",
-                "value": null
+                "value": 0
               }
             ]
           }
         },
         "overrides": []
-      },
-      "options": {
-        "cellHeight": "sm",
-        "showHeader": true
-      }
-    },
-    {
-      "datasource": {
-        "type": "grafana-azure-monitor-datasource",
-        "uid": "azure-monitor-oob"
       },
       "gridPos": {
         "h": 8,
@@ -2994,7 +3175,11 @@
         "y": 162
       },
       "id": 2215,
-      "pluginVersion": "12.4.8",
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true
+      },
+      "pluginVersion": "12.4.13",
       "targets": [
         {
           "azureLogAnalytics": {
@@ -3017,7 +3202,13 @@
         }
       ],
       "title": "❌ Errori nel recupero della lista enti dal microservizio",
-      "type": "table",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {
@@ -3037,22 +3228,12 @@
             "steps": [
               {
                 "color": "text",
-                "value": null
+                "value": 0
               }
             ]
           }
         },
         "overrides": []
-      },
-      "options": {
-        "cellHeight": "sm",
-        "showHeader": true
-      }
-    },
-    {
-      "datasource": {
-        "type": "grafana-azure-monitor-datasource",
-        "uid": "azure-monitor-oob"
       },
       "gridPos": {
         "h": 7,
@@ -3061,7 +3242,11 @@
         "y": 170
       },
       "id": 2216,
-      "pluginVersion": "12.4.8",
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true
+      },
+      "pluginVersion": "12.4.13",
       "targets": [
         {
           "azureLogAnalytics": {
@@ -3084,7 +3269,13 @@
         }
       ],
       "title": "Eccezioni Java rtp-sender (AppExceptions)",
-      "type": "table",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {
@@ -3104,22 +3295,12 @@
             "steps": [
               {
                 "color": "text",
-                "value": null
+                "value": 0
               }
             ]
           }
         },
         "overrides": []
-      },
-      "options": {
-        "cellHeight": "sm",
-        "showHeader": true
-      }
-    },
-    {
-      "datasource": {
-        "type": "grafana-azure-monitor-datasource",
-        "uid": "azure-monitor-oob"
       },
       "gridPos": {
         "h": 4,
@@ -3128,7 +3309,11 @@
         "y": 177
       },
       "id": 2217,
-      "pluginVersion": "12.4.8",
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true
+      },
+      "pluginVersion": "12.4.13",
       "targets": [
         {
           "azureLogAnalytics": {
@@ -3151,7 +3336,13 @@
         }
       ],
       "title": "RTP pagati tramite altro canale",
-      "type": "table",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {
@@ -3171,22 +3362,12 @@
             "steps": [
               {
                 "color": "text",
-                "value": null
+                "value": 0
               }
             ]
           }
         },
         "overrides": []
-      },
-      "options": {
-        "cellHeight": "sm",
-        "showHeader": true
-      }
-    },
-    {
-      "datasource": {
-        "type": "grafana-azure-monitor-datasource",
-        "uid": "azure-monitor-oob"
       },
       "gridPos": {
         "h": 8,
@@ -3195,7 +3376,11 @@
         "y": 181
       },
       "id": 2218,
-      "pluginVersion": "12.4.8",
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true
+      },
+      "pluginVersion": "12.4.13",
       "targets": [
         {
           "azureLogAnalytics": {
@@ -3218,7 +3403,13 @@
         }
       ],
       "title": "✅ Successo nel recupero del payee name per payee ID",
-      "type": "table",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {
@@ -3238,22 +3429,12 @@
             "steps": [
               {
                 "color": "text",
-                "value": null
+                "value": 0
               }
             ]
           }
         },
         "overrides": []
-      },
-      "options": {
-        "cellHeight": "sm",
-        "showHeader": true
-      }
-    },
-    {
-      "datasource": {
-        "type": "grafana-azure-monitor-datasource",
-        "uid": "azure-monitor-oob"
       },
       "gridPos": {
         "h": 8,
@@ -3262,7 +3443,11 @@
         "y": 181
       },
       "id": 2219,
-      "pluginVersion": "12.4.8",
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true
+      },
+      "pluginVersion": "12.4.13",
       "targets": [
         {
           "azureLogAnalytics": {
@@ -3285,7 +3470,13 @@
         }
       ],
       "title": "❌ Errore nel recupero del payee ID dal payee registry",
-      "type": "table",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {
@@ -3305,22 +3496,12 @@
             "steps": [
               {
                 "color": "text",
-                "value": null
+                "value": 0
               }
             ]
           }
         },
         "overrides": []
-      },
-      "options": {
-        "cellHeight": "sm",
-        "showHeader": true
-      }
-    },
-    {
-      "datasource": {
-        "type": "grafana-azure-monitor-datasource",
-        "uid": "azure-monitor-oob"
       },
       "gridPos": {
         "h": 8,
@@ -3329,7 +3510,11 @@
         "y": 189
       },
       "id": 2220,
-      "pluginVersion": "12.4.8",
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true
+      },
+      "pluginVersion": "12.4.13",
       "targets": [
         {
           "azureLogAnalytics": {
@@ -3352,7 +3537,13 @@
         }
       ],
       "title": "✅ Invii con successo per Ente Creditore",
-      "type": "table",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {
@@ -3372,22 +3563,12 @@
             "steps": [
               {
                 "color": "text",
-                "value": null
+                "value": 0
               }
             ]
           }
         },
         "overrides": []
-      },
-      "options": {
-        "cellHeight": "sm",
-        "showHeader": true
-      }
-    },
-    {
-      "datasource": {
-        "type": "grafana-azure-monitor-datasource",
-        "uid": "azure-monitor-oob"
       },
       "gridPos": {
         "h": 8,
@@ -3396,7 +3577,11 @@
         "y": 189
       },
       "id": 2221,
-      "pluginVersion": "12.4.8",
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true
+      },
+      "pluginVersion": "12.4.13",
       "targets": [
         {
           "azureLogAnalytics": {
@@ -3419,7 +3604,13 @@
         }
       ],
       "title": "❌ Invii falliti per Ente Creditore",
-      "type": "table",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {
@@ -3439,22 +3630,12 @@
             "steps": [
               {
                 "color": "text",
-                "value": null
+                "value": 0
               }
             ]
           }
         },
         "overrides": []
-      },
-      "options": {
-        "cellHeight": "sm",
-        "showHeader": true
-      }
-    },
-    {
-      "datasource": {
-        "type": "grafana-azure-monitor-datasource",
-        "uid": "azure-monitor-oob"
       },
       "gridPos": {
         "h": 8,
@@ -3463,7 +3644,11 @@
         "y": 197
       },
       "id": 2222,
-      "pluginVersion": "12.4.8",
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true
+      },
+      "pluginVersion": "12.4.13",
       "targets": [
         {
           "azureLogAnalytics": {
@@ -3486,37 +3671,7 @@
         }
       ],
       "title": "❌ Messaggi scartati per Out-of-order Timestamp",
-      "type": "table",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {
-            "align": "left",
-            "cellOptions": {
-              "type": "auto"
-            },
-            "filterable": true,
-            "footer": {
-              "reducers": []
-            },
-            "inspect": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "text",
-                "value": null
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "options": {
-        "cellHeight": "sm",
-        "showHeader": true
-      }
+      "type": "table"
     },
     {
       "collapsed": false,
@@ -3536,6 +3691,27 @@
         "type": "grafana-azure-monitor-datasource",
         "uid": "azure-monitor-oob"
       },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "green",
+            "mode": "fixed"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
       "gridPos": {
         "h": 4,
         "w": 8,
@@ -3543,7 +3719,24 @@
         "y": 206
       },
       "id": 2301,
-      "pluginVersion": "12.4.8",
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.4.13",
       "targets": [
         {
           "azureLogAnalytics": {
@@ -3566,12 +3759,17 @@
         }
       ],
       "title": "✅ Cancellazioni totali con successo",
-      "type": "stat",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "fixed",
-            "fixedColor": "green"
+            "mode": "thresholds"
           },
           "decimals": 0,
           "mappings": [],
@@ -3581,18 +3779,30 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 1
               }
             ]
           }
         },
         "overrides": []
       },
+      "gridPos": {
+        "h": 4,
+        "w": 8,
+        "x": 8,
+        "y": 206
+      },
+      "id": 2302,
       "options": {
         "colorMode": "background",
         "graphMode": "none",
         "justifyMode": "center",
         "orientation": "auto",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -3603,21 +3813,8 @@
         "showPercentChange": false,
         "textMode": "value",
         "wideLayout": true
-      }
-    },
-    {
-      "datasource": {
-        "type": "grafana-azure-monitor-datasource",
-        "uid": "azure-monitor-oob"
       },
-      "gridPos": {
-        "h": 4,
-        "w": 8,
-        "x": 8,
-        "y": 206
-      },
-      "id": 2302,
-      "pluginVersion": "12.4.8",
+      "pluginVersion": "12.4.13",
       "targets": [
         {
           "azureLogAnalytics": {
@@ -3640,7 +3837,13 @@
         }
       ],
       "title": "❌ Cancellazioni totali fallite",
-      "type": "stat",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -3654,7 +3857,7 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
               },
               {
                 "color": "red",
@@ -3665,11 +3868,19 @@
         },
         "overrides": []
       },
+      "gridPos": {
+        "h": 4,
+        "w": 8,
+        "x": 16,
+        "y": 206
+      },
+      "id": 2303,
       "options": {
         "colorMode": "background",
         "graphMode": "none",
         "justifyMode": "center",
         "orientation": "auto",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -3680,21 +3891,8 @@
         "showPercentChange": false,
         "textMode": "value",
         "wideLayout": true
-      }
-    },
-    {
-      "datasource": {
-        "type": "grafana-azure-monitor-datasource",
-        "uid": "azure-monitor-oob"
       },
-      "gridPos": {
-        "h": 4,
-        "w": 8,
-        "x": 16,
-        "y": 206
-      },
-      "id": 2303,
-      "pluginVersion": "12.4.8",
+      "pluginVersion": "12.4.13",
       "targets": [
         {
           "azureLogAnalytics": {
@@ -3717,89 +3915,18 @@
         }
       ],
       "title": "❌ Retry esauriti (cancellazioni SRTP)",
-      "type": "stat",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "decimals": 0,
-          "mappings": [],
-          "noValue": "0",
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 1
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "options": {
-        "colorMode": "background",
-        "graphMode": "none",
-        "justifyMode": "center",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "textMode": "value",
-        "wideLayout": true
-      }
+      "type": "stat"
     },
     {
       "datasource": {
         "type": "grafana-azure-monitor-datasource",
         "uid": "azure-monitor-oob"
       },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 210
-      },
-      "id": 2304,
-      "pluginVersion": "12.4.8",
-      "targets": [
-        {
-          "azureLogAnalytics": {
-            "dashboardTime": true,
-            "mode": "raw",
-            "query": "AppTraces\n| where $__timeFilter(TimeGenerated)\n| where AppRoleName == \"rtp-sender\"\n| where Message startswith \"RTP cancellation succeeded\"\n| extend DebtorSP = extract(@\"service_provider:\\s*(\\S+)\", 1, Message)\n| where isnotempty(DebtorSP)\n| summarize [\"Cancellazioni con successo\"] = count() by [\"Debtor Service Provider\"] = DebtorSP\n| sort by [\"Cancellazioni con successo\"] desc",
-            "resources": [
-              "/subscriptions/$subscription/resourceGroups/$SrtpMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$SrtpLaw"
-            ],
-            "resultFormat": "table",
-            "timeColumn": "TimeGenerated"
-          },
-          "datasource": {
-            "type": "grafana-azure-monitor-datasource",
-            "uid": "azure-monitor-oob"
-          },
-          "queryType": "Azure Log Analytics",
-          "refId": "A",
-          "subscription": "$subscription"
-        }
-      ],
-      "title": "✅ Cancellazioni con successo per Service Provider del debitore",
-      "type": "barchart",
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "fixed",
-            "fixedColor": "green"
+            "fixedColor": "green",
+            "mode": "fixed"
           },
           "custom": {
             "axisBorderShow": false,
@@ -3830,13 +3957,20 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
               }
             ]
           }
         },
         "overrides": []
       },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 210
+      },
+      "id": 2304,
       "options": {
         "barRadius": 0,
         "barWidth": 0.9,
@@ -3859,27 +3993,14 @@
         "xField": "Debtor Service Provider",
         "xTickLabelRotation": -30,
         "xTickLabelSpacing": 0
-      }
-    },
-    {
-      "datasource": {
-        "type": "grafana-azure-monitor-datasource",
-        "uid": "azure-monitor-oob"
       },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 210
-      },
-      "id": 2305,
-      "pluginVersion": "12.4.8",
+      "pluginVersion": "12.4.13",
       "targets": [
         {
           "azureLogAnalytics": {
             "dashboardTime": true,
             "mode": "raw",
-            "query": "let fallimenti = AppTraces\n| where AppRoleName == 'rtp-sender'\n| where $__timeFilter(TimeGenerated)\n| where Message startswith \"Error cancel RTP:\"\n| extend _err = trim(\" \", extract(@\"Error cancel RTP:\\s*(.+?)\\. service_provider:\", 1, Message))\n| extend Categoria = case(\n    _err contains \"rejected\" or _err contains \"Reject\",    \"❌ Rejection SEPA\",\n    _err contains \"imeout\",                                \"❌ Timeout\",\n    _err contains \"Connection\" or _err contains \"refused\", \"❌ Errore di rete\",\n    _err contains \"Mongo\" or _err contains \"TooManyRequest\", \"❌ Errore DB Mongo\",\n    _err contains \"NotFound\" or _err contains \"not found\",  \"❌ RTP non trovato\",\n    _err contains \"InvalidTransition\" or _err contains \"InvalidStatus\", \"❌ Transizione invalida\",\n    \"❌ Altro / non classificato\"\n)\n| summarize Conteggio = count() by Categoria\n| extend Tipo = \"Fallimento\";\nlet successi = AppTraces\n| where AppRoleName == 'rtp-sender'\n| where $__timeFilter(TimeGenerated)\n| where Message startswith \"RTP cancellation succeeded\"\n| summarize Conteggio = count()\n| extend Categoria = \"✅ Successo\", Tipo = \"Successo\";\nlet dettaglio = union fallimenti, successi;\ndettaglio\n| project Categoria, Conteggio\n| evaluate pivot(Categoria, sum(Conteggio))",
+            "query": "AppTraces\n| where $__timeFilter(TimeGenerated)\n| where AppRoleName == \"rtp-sender\"\n| where Message startswith \"RTP cancellation succeeded\"\n| extend DebtorSP = extract(@\"service_provider:\\s*(\\S+)\", 1, Message)\n| where isnotempty(DebtorSP)\n| summarize [\"Cancellazioni con successo\"] = count() by [\"Debtor Service Provider\"] = DebtorSP\n| sort by [\"Cancellazioni con successo\"] desc",
             "resources": [
               "/subscriptions/$subscription/resourceGroups/$SrtpMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$SrtpLaw"
             ],
@@ -3895,8 +4016,14 @@
           "subscription": "$subscription"
         }
       ],
-      "title": "Monitoraggio globale delle Cancellazioni per tipologia",
-      "type": "piechart",
+      "title": "✅ Cancellazioni con successo per Service Provider del debitore",
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
       "description": "Ripartizione per tipologia. I totali di successi e fallimenti sono nei riquadri in alto, non nella torta, per non contarli due volte.",
       "fieldConfig": {
         "defaults": {
@@ -3915,36 +4042,165 @@
         "overrides": [
           {
             "matcher": {
-              "id": "byRegexp",
-              "options": "^✅.*"
+              "id": "byName",
+              "options": "Successo"
             },
             "properties": [
               {
+                "id": "displayName",
+                "value": "✅ Successo"
+              },
+              {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "green"
+                  "fixedColor": "green",
+                  "mode": "fixed"
                 }
               }
             ]
           },
           {
             "matcher": {
-              "id": "byRegexp",
-              "options": "^⚠️.*"
+              "id": "byName",
+              "options": "Rejection SEPA"
             },
             "properties": [
               {
+                "id": "displayName",
+                "value": "❌ Rejection SEPA"
+              },
+              {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "orange"
+                  "fixedColor": "dark-red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Timeout"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "❌ Timeout"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "purple",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Errore di rete"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "❌ Errore di rete"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Errore DB Mongo"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "❌ Errore DB Mongo"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "RTP non trovato"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "❌ RTP non trovato"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Transizione invalida"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "❌ Transizione invalida"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "light-red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Altro / non classificato"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "❌ Altro / non classificato"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "red",
+                  "mode": "fixed"
                 }
               }
             ]
           }
         ]
       },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 210
+      },
+      "id": 2305,
       "options": {
         "displayLabels": [
           "percent"
@@ -3972,31 +4228,18 @@
           "mode": "single",
           "sort": "none"
         }
-      }
-    },
-    {
-      "datasource": {
-        "type": "grafana-azure-monitor-datasource",
-        "uid": "azure-monitor-oob"
       },
-      "gridPos": {
-        "h": 9,
-        "w": 24,
-        "x": 0,
-        "y": 218
-      },
-      "id": 2306,
-      "pluginVersion": "12.4.8",
+      "pluginVersion": "12.4.13",
       "targets": [
         {
           "azureLogAnalytics": {
             "dashboardTime": true,
             "mode": "raw",
-            "query": "let successes = AppTraces\n| where $__timeFilter(TimeGenerated)\n| where AppRoleName == \"rtp-sender\"\n| where Message startswith \"RTP cancellation succeeded\"\n| extend DebtorSP = extract(@\"service_provider:\\s*(\\S+)\", 1, Message)\n| summarize TimeGenerated = min(TimeGenerated) by OperationId, DebtorSP;\nlet errors = AppTraces\n| where $__timeFilter(TimeGenerated)\n| where AppRoleName == \"rtp-sender\"\n| where Message startswith \"Error cancel RTP:\"\n| extend DebtorSP = extract(@\"service_provider:\\s*(\\S+)\", 1, Message)\n| summarize TimeGenerated = min(TimeGenerated) by OperationId, DebtorSP;\nunion\n    (successes | extend Series = strcat(\"✅ \", DebtorSP)),\n    (errors    | extend Series = strcat(\"❌ \", DebtorSP))\n| make-series Count = count() default = 0 on TimeGenerated from bin($__timeFrom(), $sender_bin_size) to $__timeTo() step $sender_bin_size by Series\n| mv-expand TimeGenerated to typeof(datetime), Count to typeof(long)\n| order by TimeGenerated asc",
+            "query": "let fallimenti = AppTraces\n| where AppRoleName == 'rtp-sender'\n| where $__timeFilter(TimeGenerated)\n| where Message startswith \"Error cancel RTP:\"\n| extend _err = trim(\" \", extract(@\"Error cancel RTP:\\s*(.+?)\\. service_provider:\", 1, Message))\n| extend Categoria = case(\n    _err contains \"rejected\" or _err contains \"Reject\",    \"❌ Rejection SEPA\",\n    _err contains \"imeout\",                                \"❌ Timeout\",\n    _err contains \"Connection\" or _err contains \"refused\", \"❌ Errore di rete\",\n    _err contains \"Mongo\" or _err contains \"TooManyRequest\", \"❌ Errore DB Mongo\",\n    _err contains \"NotFound\" or _err contains \"not found\",  \"❌ RTP non trovato\",\n    _err contains \"InvalidTransition\" or _err contains \"InvalidStatus\", \"❌ Transizione invalida\",\n    \"❌ Altro / non classificato\"\n)\n| summarize Conteggio = count() by Categoria\n| extend Tipo = \"Fallimento\";\nlet successi = AppTraces\n| where AppRoleName == 'rtp-sender'\n| where $__timeFilter(TimeGenerated)\n| where Message startswith \"RTP cancellation succeeded\"\n| summarize Conteggio = count()\n| extend Categoria = \"✅ Successo\", Tipo = \"Successo\";\nlet dettaglio = union fallimenti, successi;\ndettaglio\n| project Categoria = trim_start(@\"[^A-Za-z]+\", Categoria), Conteggio\n| evaluate pivot(Categoria, sum(Conteggio))",
             "resources": [
               "/subscriptions/$subscription/resourceGroups/$SrtpMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$SrtpLaw"
             ],
-            "resultFormat": "time_series",
+            "resultFormat": "table",
             "timeColumn": "TimeGenerated"
           },
           "datasource": {
@@ -4008,8 +4251,14 @@
           "subscription": "$subscription"
         }
       ],
-      "title": "Cancellazioni nel tempo (Successi vs Fallimenti) nel tempo",
-      "type": "timeseries",
+      "title": "Monitoraggio globale delle Cancellazioni per tipologia",
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -4050,6 +4299,7 @@
             }
           },
           "decimals": 0,
+          "displayName": "${__field.labels.Series}",
           "mappings": [],
           "min": 0,
           "thresholds": {
@@ -4057,14 +4307,20 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
               }
             ]
-          },
-          "displayName": "${__field.labels.Series}"
+          }
         },
         "overrides": []
       },
+      "gridPos": {
+        "h": 9,
+        "w": 24,
+        "x": 0,
+        "y": 218
+      },
+      "id": 2306,
       "options": {
         "legend": {
           "calcs": [
@@ -4081,12 +4337,62 @@
           "mode": "multi",
           "sort": "desc"
         }
-      }
+      },
+      "pluginVersion": "12.4.13",
+      "targets": [
+        {
+          "azureLogAnalytics": {
+            "dashboardTime": true,
+            "mode": "raw",
+            "query": "let successes = AppTraces\n| where $__timeFilter(TimeGenerated)\n| where AppRoleName == \"rtp-sender\"\n| where Message startswith \"RTP cancellation succeeded\"\n| extend DebtorSP = extract(@\"service_provider:\\s*(\\S+)\", 1, Message)\n| summarize TimeGenerated = min(TimeGenerated) by OperationId, DebtorSP;\nlet errors = AppTraces\n| where $__timeFilter(TimeGenerated)\n| where AppRoleName == \"rtp-sender\"\n| where Message startswith \"Error cancel RTP:\"\n| extend DebtorSP = extract(@\"service_provider:\\s*(\\S+)\", 1, Message)\n| summarize TimeGenerated = min(TimeGenerated) by OperationId, DebtorSP;\nunion\n    (successes | extend Series = strcat(\"✅ \", DebtorSP)),\n    (errors    | extend Series = strcat(\"❌ \", DebtorSP))\n| make-series Count = count() default = 0 on TimeGenerated from bin($__timeFrom(), $sender_bin_size) to $__timeTo() step $sender_bin_size by Series\n| mv-expand TimeGenerated to typeof(datetime), Count to typeof(long)\n| order by TimeGenerated asc",
+            "resources": [
+              "/subscriptions/$subscription/resourceGroups/$SrtpMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$SrtpLaw"
+            ],
+            "resultFormat": "time_series",
+            "timeColumn": "TimeGenerated"
+          },
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "refId": "A",
+          "subscription": "$subscription"
+        }
+      ],
+      "title": "Cancellazioni nel tempo (Successi vs Fallimenti) nel tempo",
+      "type": "timeseries"
     },
     {
       "datasource": {
         "type": "grafana-azure-monitor-datasource",
         "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "left",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": true,
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "text",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
       },
       "gridPos": {
         "h": 8,
@@ -4095,7 +4401,11 @@
         "y": 227
       },
       "id": 2307,
-      "pluginVersion": "12.4.8",
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true
+      },
+      "pluginVersion": "12.4.13",
       "targets": [
         {
           "azureLogAnalytics": {
@@ -4118,7 +4428,13 @@
         }
       ],
       "title": "❌ REJECTION EPC anomala durante cancellazione (RJCT imprevisto)",
-      "type": "table",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {
@@ -4138,22 +4454,12 @@
             "steps": [
               {
                 "color": "text",
-                "value": null
+                "value": 0
               }
             ]
           }
         },
         "overrides": []
-      },
-      "options": {
-        "cellHeight": "sm",
-        "showHeader": true
-      }
-    },
-    {
-      "datasource": {
-        "type": "grafana-azure-monitor-datasource",
-        "uid": "azure-monitor-oob"
       },
       "gridPos": {
         "h": 8,
@@ -4162,7 +4468,11 @@
         "y": 235
       },
       "id": 2308,
-      "pluginVersion": "12.4.8",
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true
+      },
+      "pluginVersion": "12.4.13",
       "targets": [
         {
           "azureLogAnalytics": {
@@ -4185,7 +4495,13 @@
         }
       ],
       "title": "❌ Catch-all errori cancellazione per tipologia",
-      "type": "table",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {
@@ -4205,22 +4521,12 @@
             "steps": [
               {
                 "color": "text",
-                "value": null
+                "value": 0
               }
             ]
           }
         },
         "overrides": []
-      },
-      "options": {
-        "cellHeight": "sm",
-        "showHeader": true
-      }
-    },
-    {
-      "datasource": {
-        "type": "grafana-azure-monitor-datasource",
-        "uid": "azure-monitor-oob"
       },
       "gridPos": {
         "h": 8,
@@ -4229,7 +4535,11 @@
         "y": 243
       },
       "id": 2309,
-      "pluginVersion": "12.4.8",
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true
+      },
+      "pluginVersion": "12.4.13",
       "targets": [
         {
           "azureLogAnalytics": {
@@ -4252,7 +4562,13 @@
         }
       ],
       "title": "❌ Errori inattesi per Service Provider (cancellazioni)",
-      "type": "table",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {
@@ -4272,22 +4588,12 @@
             "steps": [
               {
                 "color": "text",
-                "value": null
+                "value": 0
               }
             ]
           }
         },
         "overrides": []
-      },
-      "options": {
-        "cellHeight": "sm",
-        "showHeader": true
-      }
-    },
-    {
-      "datasource": {
-        "type": "grafana-azure-monitor-datasource",
-        "uid": "azure-monitor-oob"
       },
       "gridPos": {
         "h": 8,
@@ -4296,7 +4602,11 @@
         "y": 243
       },
       "id": 2310,
-      "pluginVersion": "12.4.8",
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true
+      },
+      "pluginVersion": "12.4.13",
       "targets": [
         {
           "azureLogAnalytics": {
@@ -4319,7 +4629,13 @@
         }
       ],
       "title": "Retry per cancellazioni SRTP: per Service Provider",
-      "type": "table",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {
@@ -4339,22 +4655,12 @@
             "steps": [
               {
                 "color": "text",
-                "value": null
+                "value": 0
               }
             ]
           }
         },
         "overrides": []
-      },
-      "options": {
-        "cellHeight": "sm",
-        "showHeader": true
-      }
-    },
-    {
-      "datasource": {
-        "type": "grafana-azure-monitor-datasource",
-        "uid": "azure-monitor-oob"
       },
       "gridPos": {
         "h": 8,
@@ -4363,7 +4669,11 @@
         "y": 251
       },
       "id": 2311,
-      "pluginVersion": "12.4.8",
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true
+      },
+      "pluginVersion": "12.4.13",
       "targets": [
         {
           "azureLogAnalytics": {
@@ -4386,42 +4696,33 @@
         }
       ],
       "title": "❌ Errori inattesi nella cancellazione: dettaglio",
-      "type": "table",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {
-            "align": "left",
-            "cellOptions": {
-              "type": "auto"
-            },
-            "filterable": true,
-            "footer": {
-              "reducers": []
-            },
-            "inspect": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "text",
-                "value": null
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "options": {
-        "cellHeight": "sm",
-        "showHeader": true
-      }
+      "type": "table"
     },
     {
       "datasource": {
         "type": "grafana-azure-monitor-datasource",
         "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "green",
+            "mode": "fixed"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
       },
       "gridPos": {
         "h": 4,
@@ -4430,7 +4731,24 @@
         "y": 259
       },
       "id": 2312,
-      "pluginVersion": "12.4.8",
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.4.13",
       "targets": [
         {
           "azureLogAnalytics": {
@@ -4453,12 +4771,17 @@
         }
       ],
       "title": "✅ Cancellazioni draft con successo (GPD UPDATE_DRAFT)",
-      "type": "stat",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "fixed",
-            "fixedColor": "green"
+            "mode": "thresholds"
           },
           "decimals": 0,
           "mappings": [],
@@ -4468,18 +4791,30 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 1
               }
             ]
           }
         },
         "overrides": []
       },
+      "gridPos": {
+        "h": 4,
+        "w": 12,
+        "x": 12,
+        "y": 259
+      },
+      "id": 2313,
       "options": {
         "colorMode": "background",
         "graphMode": "none",
         "justifyMode": "center",
         "orientation": "auto",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -4490,21 +4825,8 @@
         "showPercentChange": false,
         "textMode": "value",
         "wideLayout": true
-      }
-    },
-    {
-      "datasource": {
-        "type": "grafana-azure-monitor-datasource",
-        "uid": "azure-monitor-oob"
       },
-      "gridPos": {
-        "h": 4,
-        "w": 12,
-        "x": 12,
-        "y": 259
-      },
-      "id": 2313,
-      "pluginVersion": "12.4.8",
+      "pluginVersion": "12.4.13",
       "targets": [
         {
           "azureLogAnalytics": {
@@ -4527,52 +4849,38 @@
         }
       ],
       "title": "❌ Errori cancellazioni draft (GPD UPDATE_DRAFT)",
-      "type": "stat",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "decimals": 0,
-          "mappings": [],
-          "noValue": "0",
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 1
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "options": {
-        "colorMode": "background",
-        "graphMode": "none",
-        "justifyMode": "center",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "textMode": "value",
-        "wideLayout": true
-      }
+      "type": "stat"
     },
     {
       "datasource": {
         "type": "grafana-azure-monitor-datasource",
         "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "left",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": true,
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "text",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
       },
       "gridPos": {
         "h": 8,
@@ -4581,7 +4889,11 @@
         "y": 263
       },
       "id": 2314,
-      "pluginVersion": "12.4.8",
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true
+      },
+      "pluginVersion": "12.4.13",
       "targets": [
         {
           "azureLogAnalytics": {
@@ -4604,42 +4916,33 @@
         }
       ],
       "title": "❌ Errori cancellazioni draft: dettaglio",
-      "type": "table",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {
-            "align": "left",
-            "cellOptions": {
-              "type": "auto"
-            },
-            "filterable": true,
-            "footer": {
-              "reducers": []
-            },
-            "inspect": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "text",
-                "value": null
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "options": {
-        "cellHeight": "sm",
-        "showHeader": true
-      }
+      "type": "table"
     },
     {
       "datasource": {
         "type": "grafana-azure-monitor-datasource",
         "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "green",
+            "mode": "fixed"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
       },
       "gridPos": {
         "h": 4,
@@ -4648,7 +4951,24 @@
         "y": 271
       },
       "id": 2315,
-      "pluginVersion": "12.4.8",
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.4.13",
       "targets": [
         {
           "azureLogAnalytics": {
@@ -4671,12 +4991,17 @@
         }
       ],
       "title": "✅ Callback CNCL: CANCEL confermati",
-      "type": "stat",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "fixed",
-            "fixedColor": "green"
+            "mode": "thresholds"
           },
           "decimals": 0,
           "mappings": [],
@@ -4686,18 +5011,30 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 1
               }
             ]
           }
         },
         "overrides": []
       },
+      "gridPos": {
+        "h": 4,
+        "w": 12,
+        "x": 12,
+        "y": 271
+      },
+      "id": 2316,
       "options": {
         "colorMode": "background",
         "graphMode": "none",
         "justifyMode": "center",
         "orientation": "auto",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -4708,21 +5045,8 @@
         "showPercentChange": false,
         "textMode": "value",
         "wideLayout": true
-      }
-    },
-    {
-      "datasource": {
-        "type": "grafana-azure-monitor-datasource",
-        "uid": "azure-monitor-oob"
       },
-      "gridPos": {
-        "h": 4,
-        "w": 12,
-        "x": 12,
-        "y": 271
-      },
-      "id": 2316,
-      "pluginVersion": "12.4.8",
+      "pluginVersion": "12.4.13",
       "targets": [
         {
           "azureLogAnalytics": {
@@ -4745,52 +5069,38 @@
         }
       ],
       "title": "❌ Callback RJCR: CANCEL rifiutati",
-      "type": "stat",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "decimals": 0,
-          "mappings": [],
-          "noValue": "0",
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 1
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "options": {
-        "colorMode": "background",
-        "graphMode": "none",
-        "justifyMode": "center",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "textMode": "value",
-        "wideLayout": true
-      }
+      "type": "stat"
     },
     {
       "datasource": {
         "type": "grafana-azure-monitor-datasource",
         "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "left",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": true,
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "text",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
       },
       "gridPos": {
         "h": 8,
@@ -4799,7 +5109,11 @@
         "y": 275
       },
       "id": 2317,
-      "pluginVersion": "12.4.8",
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true
+      },
+      "pluginVersion": "12.4.13",
       "targets": [
         {
           "azureLogAnalytics": {
@@ -4822,7 +5136,13 @@
         }
       ],
       "title": "❌ Callback cancellazioni: errori parsing",
-      "type": "table",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {
@@ -4842,22 +5162,12 @@
             "steps": [
               {
                 "color": "text",
-                "value": null
+                "value": 0
               }
             ]
           }
         },
         "overrides": []
-      },
-      "options": {
-        "cellHeight": "sm",
-        "showHeader": true
-      }
-    },
-    {
-      "datasource": {
-        "type": "grafana-azure-monitor-datasource",
-        "uid": "azure-monitor-oob"
       },
       "gridPos": {
         "h": 8,
@@ -4866,7 +5176,11 @@
         "y": 283
       },
       "id": 2318,
-      "pluginVersion": "12.4.8",
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true
+      },
+      "pluginVersion": "12.4.13",
       "targets": [
         {
           "azureLogAnalytics": {
@@ -4889,37 +5203,7 @@
         }
       ],
       "title": "Eccezioni Java rtp-sender: flusso cancellazione",
-      "type": "table",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {
-            "align": "left",
-            "cellOptions": {
-              "type": "auto"
-            },
-            "filterable": true,
-            "footer": {
-              "reducers": []
-            },
-            "inspect": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "text",
-                "value": null
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "options": {
-        "cellHeight": "sm",
-        "showHeader": true
-      }
+      "type": "table"
     },
     {
       "collapsed": false,
@@ -4939,6 +5223,365 @@
         "type": "grafana-azure-monitor-datasource",
         "uid": "azure-monitor-oob"
       },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": []
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "200"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "200 - OK"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "201"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "201 - Created"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "202"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "202 - Accepted"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "light-green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "204"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "204 - No Content"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "400"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "400 - Bad Request"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "light-red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "401"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "401 - Unauthorized"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "purple",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "403"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "403 - Forbidden"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-purple",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "404"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "404 - Not Found"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "405"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "405 - Method Not Allowed"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "light-yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "409"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "409 - Conflict"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "415"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "415 - Unsupported Media Type"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "light-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "422"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "422 - Unprocessable Entity"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "429"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "429 - Too Many Requests"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "499"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "499 - Client Closed Request"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "super-light-orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "500"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "500 - Server Error"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "502"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "502 - Bad Gateway"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "503"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "503 - Service Unavailable"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "504"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "504 - Gateway Timeout"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
       "gridPos": {
         "h": 8,
         "w": 12,
@@ -4946,7 +5589,35 @@
         "y": 292
       },
       "id": 2401,
-      "pluginVersion": "12.4.8",
+      "options": {
+        "displayLabels": [
+          "percent"
+        ],
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "values": [
+            "value",
+            "percent"
+          ]
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "sort": "desc",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.4.13",
       "targets": [
         {
           "azureLogAnalytics": {
@@ -4969,7 +5640,13 @@
         }
       ],
       "title": "Callback Send e relativi status code",
-      "type": "piechart",
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -4998,8 +5675,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "green"
+                  "fixedColor": "green",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -5017,8 +5694,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "green"
+                  "fixedColor": "green",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -5036,8 +5713,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "light-green"
+                  "fixedColor": "light-green",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -5055,8 +5732,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "green"
+                  "fixedColor": "green",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -5074,8 +5751,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "light-red"
+                  "fixedColor": "light-red",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -5093,8 +5770,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "purple"
+                  "fixedColor": "purple",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -5112,8 +5789,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "dark-purple"
+                  "fixedColor": "dark-purple",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -5131,8 +5808,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "yellow"
+                  "fixedColor": "yellow",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -5150,8 +5827,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "light-yellow"
+                  "fixedColor": "light-yellow",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -5169,8 +5846,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "orange"
+                  "fixedColor": "orange",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -5188,8 +5865,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "light-blue"
+                  "fixedColor": "light-blue",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -5207,8 +5884,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "dark-yellow"
+                  "fixedColor": "dark-yellow",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -5226,8 +5903,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "dark-orange"
+                  "fixedColor": "dark-orange",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -5245,8 +5922,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "super-light-orange"
+                  "fixedColor": "super-light-orange",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -5264,8 +5941,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "red"
+                  "fixedColor": "red",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -5283,8 +5960,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "dark-red"
+                  "fixedColor": "dark-red",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -5302,8 +5979,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "dark-red"
+                  "fixedColor": "dark-red",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -5321,14 +5998,21 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "dark-red"
+                  "fixedColor": "dark-red",
+                  "mode": "fixed"
                 }
               }
             ]
           }
         ]
       },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 292
+      },
+      "id": 2402,
       "options": {
         "displayLabels": [
           "percent"
@@ -5356,21 +6040,8 @@
           "mode": "single",
           "sort": "none"
         }
-      }
-    },
-    {
-      "datasource": {
-        "type": "grafana-azure-monitor-datasource",
-        "uid": "azure-monitor-oob"
       },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 292
-      },
-      "id": 2402,
-      "pluginVersion": "12.4.8",
+      "pluginVersion": "12.4.13",
       "targets": [
         {
           "azureLogAnalytics": {
@@ -5393,7 +6064,13 @@
         }
       ],
       "title": "Callback Cancel e relativi status code",
-      "type": "piechart",
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -5422,8 +6099,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "green"
+                  "fixedColor": "green",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -5441,8 +6118,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "green"
+                  "fixedColor": "green",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -5460,8 +6137,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "light-green"
+                  "fixedColor": "light-green",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -5479,8 +6156,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "green"
+                  "fixedColor": "green",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -5498,8 +6175,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "light-red"
+                  "fixedColor": "light-red",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -5517,8 +6194,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "purple"
+                  "fixedColor": "purple",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -5536,8 +6213,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "dark-purple"
+                  "fixedColor": "dark-purple",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -5555,8 +6232,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "yellow"
+                  "fixedColor": "yellow",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -5574,8 +6251,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "light-yellow"
+                  "fixedColor": "light-yellow",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -5593,8 +6270,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "orange"
+                  "fixedColor": "orange",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -5612,8 +6289,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "light-blue"
+                  "fixedColor": "light-blue",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -5631,8 +6308,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "dark-yellow"
+                  "fixedColor": "dark-yellow",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -5650,8 +6327,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "dark-orange"
+                  "fixedColor": "dark-orange",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -5669,8 +6346,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "super-light-orange"
+                  "fixedColor": "super-light-orange",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -5688,8 +6365,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "red"
+                  "fixedColor": "red",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -5707,8 +6384,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "dark-red"
+                  "fixedColor": "dark-red",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -5726,8 +6403,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "dark-red"
+                  "fixedColor": "dark-red",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -5745,14 +6422,21 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "dark-red"
+                  "fixedColor": "dark-red",
+                  "mode": "fixed"
                 }
               }
             ]
           }
         ]
       },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 300
+      },
+      "id": 2403,
       "options": {
         "displayLabels": [
           "percent"
@@ -5780,21 +6464,8 @@
           "mode": "single",
           "sort": "none"
         }
-      }
-    },
-    {
-      "datasource": {
-        "type": "grafana-azure-monitor-datasource",
-        "uid": "azure-monitor-oob"
       },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 300
-      },
-      "id": 2403,
-      "pluginVersion": "12.4.8",
+      "pluginVersion": "12.4.13",
       "targets": [
         {
           "azureLogAnalytics": {
@@ -5817,7 +6488,13 @@
         }
       ],
       "title": "Errori HTTP callback status Send",
-      "type": "piechart",
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -5846,8 +6523,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "green"
+                  "fixedColor": "green",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -5865,8 +6542,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "green"
+                  "fixedColor": "green",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -5884,8 +6561,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "light-green"
+                  "fixedColor": "light-green",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -5903,8 +6580,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "green"
+                  "fixedColor": "green",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -5922,8 +6599,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "light-red"
+                  "fixedColor": "light-red",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -5941,8 +6618,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "purple"
+                  "fixedColor": "purple",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -5960,8 +6637,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "dark-purple"
+                  "fixedColor": "dark-purple",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -5979,8 +6656,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "yellow"
+                  "fixedColor": "yellow",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -5998,8 +6675,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "light-yellow"
+                  "fixedColor": "light-yellow",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -6017,8 +6694,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "orange"
+                  "fixedColor": "orange",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -6036,8 +6713,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "light-blue"
+                  "fixedColor": "light-blue",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -6055,8 +6732,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "dark-yellow"
+                  "fixedColor": "dark-yellow",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -6074,8 +6751,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "dark-orange"
+                  "fixedColor": "dark-orange",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -6093,8 +6770,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "super-light-orange"
+                  "fixedColor": "super-light-orange",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -6112,8 +6789,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "red"
+                  "fixedColor": "red",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -6131,8 +6808,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "dark-red"
+                  "fixedColor": "dark-red",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -6150,8 +6827,8 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "dark-red"
+                  "fixedColor": "dark-red",
+                  "mode": "fixed"
                 }
               }
             ]
@@ -6169,14 +6846,21 @@
               {
                 "id": "color",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "dark-red"
+                  "fixedColor": "dark-red",
+                  "mode": "fixed"
                 }
               }
             ]
           }
         ]
       },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 300
+      },
+      "id": 2404,
       "options": {
         "displayLabels": [
           "percent"
@@ -6204,21 +6888,8 @@
           "mode": "single",
           "sort": "none"
         }
-      }
-    },
-    {
-      "datasource": {
-        "type": "grafana-azure-monitor-datasource",
-        "uid": "azure-monitor-oob"
       },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 300
-      },
-      "id": 2404,
-      "pluginVersion": "12.4.8",
+      "pluginVersion": "12.4.13",
       "targets": [
         {
           "azureLogAnalytics": {
@@ -6241,436 +6912,18 @@
         }
       ],
       "title": "Errori HTTP callback status Cancel",
-      "type": "piechart",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            }
-          },
-          "mappings": []
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "200"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "200 - OK"
-              },
-              {
-                "id": "color",
-                "value": {
-                  "mode": "fixed",
-                  "fixedColor": "green"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "201"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "201 - Created"
-              },
-              {
-                "id": "color",
-                "value": {
-                  "mode": "fixed",
-                  "fixedColor": "green"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "202"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "202 - Accepted"
-              },
-              {
-                "id": "color",
-                "value": {
-                  "mode": "fixed",
-                  "fixedColor": "light-green"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "204"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "204 - No Content"
-              },
-              {
-                "id": "color",
-                "value": {
-                  "mode": "fixed",
-                  "fixedColor": "green"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "400"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "400 - Bad Request"
-              },
-              {
-                "id": "color",
-                "value": {
-                  "mode": "fixed",
-                  "fixedColor": "light-red"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "401"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "401 - Unauthorized"
-              },
-              {
-                "id": "color",
-                "value": {
-                  "mode": "fixed",
-                  "fixedColor": "purple"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "403"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "403 - Forbidden"
-              },
-              {
-                "id": "color",
-                "value": {
-                  "mode": "fixed",
-                  "fixedColor": "dark-purple"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "404"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "404 - Not Found"
-              },
-              {
-                "id": "color",
-                "value": {
-                  "mode": "fixed",
-                  "fixedColor": "yellow"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "405"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "405 - Method Not Allowed"
-              },
-              {
-                "id": "color",
-                "value": {
-                  "mode": "fixed",
-                  "fixedColor": "light-yellow"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "409"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "409 - Conflict"
-              },
-              {
-                "id": "color",
-                "value": {
-                  "mode": "fixed",
-                  "fixedColor": "orange"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "415"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "415 - Unsupported Media Type"
-              },
-              {
-                "id": "color",
-                "value": {
-                  "mode": "fixed",
-                  "fixedColor": "light-blue"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "422"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "422 - Unprocessable Entity"
-              },
-              {
-                "id": "color",
-                "value": {
-                  "mode": "fixed",
-                  "fixedColor": "dark-yellow"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "429"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "429 - Too Many Requests"
-              },
-              {
-                "id": "color",
-                "value": {
-                  "mode": "fixed",
-                  "fixedColor": "dark-orange"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "499"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "499 - Client Closed Request"
-              },
-              {
-                "id": "color",
-                "value": {
-                  "mode": "fixed",
-                  "fixedColor": "super-light-orange"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "500"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "500 - Server Error"
-              },
-              {
-                "id": "color",
-                "value": {
-                  "mode": "fixed",
-                  "fixedColor": "red"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "502"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "502 - Bad Gateway"
-              },
-              {
-                "id": "color",
-                "value": {
-                  "mode": "fixed",
-                  "fixedColor": "dark-red"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "503"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "503 - Service Unavailable"
-              },
-              {
-                "id": "color",
-                "value": {
-                  "mode": "fixed",
-                  "fixedColor": "dark-red"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "504"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "504 - Gateway Timeout"
-              },
-              {
-                "id": "color",
-                "value": {
-                  "mode": "fixed",
-                  "fixedColor": "dark-red"
-                }
-              }
-            ]
-          }
-        ]
-      },
-      "options": {
-        "displayLabels": [
-          "percent"
-        ],
-        "legend": {
-          "displayMode": "table",
-          "placement": "right",
-          "showLegend": true,
-          "values": [
-            "value",
-            "percent"
-          ]
-        },
-        "pieType": "pie",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "sort": "desc",
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
-        }
-      }
+      "type": "piechart"
     },
     {
       "datasource": {
         "type": "grafana-azure-monitor-datasource",
         "uid": "azure-monitor-oob"
       },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 308
-      },
-      "id": 2405,
-      "pluginVersion": "12.4.8",
-      "targets": [
-        {
-          "azureLogAnalytics": {
-            "dashboardTime": true,
-            "mode": "raw",
-            "query": "AppTraces\n| where $__timeFilter(TimeGenerated)\n| where AppRoleName == \"rtp-sender\"\n| where Message contains \"Send callback processed successfully\"\n| extend props = parse_json(Properties)\n| extend certificate_serial_number = tolower(tostring(props.certificate_serial_number))\n| extend tsp_id =\n    case(\n        certificate_serial_number == tolower(\"6A7672BD13DAEEBEA96A2E1D\"), \"08992631005\",\n        certificate_serial_number == tolower(\"57491023a5f86649d08c873c\"), \"PPAYITR1XXX\",\n        certificate_serial_number == tolower(\"99999999999999999999999999999999\"), \"FAKESP01\",\n        certificate_serial_number == tolower(\"0d2e7840f6bd10f83b0a0fdefe63084e\"), \"ICRAITRRXXX\",\n        certificate_serial_number == tolower(\"0526412432649C97549B74C18143F264CC42\"), \"09591661005\",\n        certificate_serial_number == tolower(\"3f820e1702687b7fa32de266c234422c\"), \"HYEEIT22XXX\",\n        certificate_serial_number == tolower(\"51972BDC627D4B3C6D5F48D15E722154\"), \"MOCKSP04\",\n        certificate_serial_number\n    )\n| summarize callbackCount = count() by tsp_id",
-            "resources": [
-              "/subscriptions/$subscription/resourceGroups/$SrtpMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$SrtpLaw"
-            ],
-            "resultFormat": "table",
-            "timeColumn": "TimeGenerated"
-          },
-          "datasource": {
-            "type": "grafana-azure-monitor-datasource",
-            "uid": "azure-monitor-oob"
-          },
-          "queryType": "Azure Log Analytics",
-          "refId": "A",
-          "subscription": "$subscription"
-        }
-      ],
-      "title": "✅ Callback per Service Provider con successo",
-      "type": "barchart",
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "fixed",
-            "fixedColor": "green"
+            "fixedColor": "green",
+            "mode": "fixed"
           },
           "custom": {
             "axisBorderShow": false,
@@ -6701,13 +6954,20 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
               }
             ]
           }
         },
         "overrides": []
       },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 308
+      },
+      "id": 2405,
       "options": {
         "barRadius": 0,
         "barWidth": 0.9,
@@ -6730,27 +6990,14 @@
         "xField": "tsp_id",
         "xTickLabelRotation": -30,
         "xTickLabelSpacing": 0
-      }
-    },
-    {
-      "datasource": {
-        "type": "grafana-azure-monitor-datasource",
-        "uid": "azure-monitor-oob"
       },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 308
-      },
-      "id": 2406,
-      "pluginVersion": "12.4.8",
+      "pluginVersion": "12.4.13",
       "targets": [
         {
           "azureLogAnalytics": {
             "dashboardTime": true,
             "mode": "raw",
-            "query": "AppTraces\n| where AppRoleName == 'rtp-sender'\n| where $__timeFilter(TimeGenerated)\n| where Message startswith \"Processing transaction status:\"\n| extend\n    tx_status = extract(@\"Processing transaction status: (\\w+)\", 1, Message)\n| summarize\n    [\"Callback\"] = count()\n    by [\"Transaction Status\"] = tx_status\n| sort by [\"Callback\"] desc",
+            "query": "AppTraces\n| where $__timeFilter(TimeGenerated)\n| where AppRoleName == \"rtp-sender\"\n| where Message contains \"Send callback processed successfully\"\n| extend props = parse_json(Properties)\n| extend certificate_serial_number = tolower(tostring(props.certificate_serial_number))\n| extend tsp_id =\n    case(\n        certificate_serial_number == tolower(\"6A7672BD13DAEEBEA96A2E1D\"), \"08992631005\",\n        certificate_serial_number == tolower(\"57491023a5f86649d08c873c\"), \"PPAYITR1XXX\",\n        certificate_serial_number == tolower(\"99999999999999999999999999999999\"), \"FAKESP01\",\n        certificate_serial_number == tolower(\"0d2e7840f6bd10f83b0a0fdefe63084e\"), \"ICRAITRRXXX\",\n        certificate_serial_number == tolower(\"0526412432649C97549B74C18143F264CC42\"), \"09591661005\",\n        certificate_serial_number == tolower(\"3f820e1702687b7fa32de266c234422c\"), \"HYEEIT22XXX\",\n        certificate_serial_number == tolower(\"51972BDC627D4B3C6D5F48D15E722154\"), \"MOCKSP04\",\n        certificate_serial_number\n    )\n| summarize callbackCount = count() by tsp_id",
             "resources": [
               "/subscriptions/$subscription/resourceGroups/$SrtpMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$SrtpLaw"
             ],
@@ -6766,13 +7013,19 @@
           "subscription": "$subscription"
         }
       ],
-      "title": "Breakdown status callback ricevute (ACCP / RJCT / ACWC / ...)",
-      "type": "barchart",
+      "title": "✅ Callback per Service Provider con successo",
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "fixed",
-            "fixedColor": "blue"
+            "fixedColor": "blue",
+            "mode": "fixed"
           },
           "custom": {
             "axisBorderShow": false,
@@ -6803,13 +7056,20 @@
             "steps": [
               {
                 "color": "blue",
-                "value": null
+                "value": 0
               }
             ]
           }
         },
         "overrides": []
       },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 308
+      },
+      "id": 2406,
       "options": {
         "barRadius": 0,
         "barWidth": 0.9,
@@ -6832,12 +7092,62 @@
         "xField": "Transaction Status",
         "xTickLabelRotation": -30,
         "xTickLabelSpacing": 0
-      }
+      },
+      "pluginVersion": "12.4.13",
+      "targets": [
+        {
+          "azureLogAnalytics": {
+            "dashboardTime": true,
+            "mode": "raw",
+            "query": "AppTraces\n| where AppRoleName == 'rtp-sender'\n| where $__timeFilter(TimeGenerated)\n| where Message startswith \"Processing transaction status:\"\n| extend\n    tx_status = extract(@\"Processing transaction status: (\\w+)\", 1, Message)\n| summarize\n    [\"Callback\"] = count()\n    by [\"Transaction Status\"] = tx_status\n| sort by [\"Callback\"] desc",
+            "resources": [
+              "/subscriptions/$subscription/resourceGroups/$SrtpMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$SrtpLaw"
+            ],
+            "resultFormat": "table",
+            "timeColumn": "TimeGenerated"
+          },
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "refId": "A",
+          "subscription": "$subscription"
+        }
+      ],
+      "title": "Breakdown status callback ricevute (ACCP / RJCT / ACWC / ...)",
+      "type": "barchart"
     },
     {
       "datasource": {
         "type": "grafana-azure-monitor-datasource",
         "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "left",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": true,
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "text",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
       },
       "gridPos": {
         "h": 6,
@@ -6846,7 +7156,11 @@
         "y": 316
       },
       "id": 2407,
-      "pluginVersion": "12.4.8",
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true
+      },
+      "pluginVersion": "12.4.13",
       "targets": [
         {
           "azureLogAnalytics": {
@@ -6869,7 +7183,13 @@
         }
       ],
       "title": "Numero di mismatch del seriale del certificato",
-      "type": "table",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {
@@ -6889,22 +7209,12 @@
             "steps": [
               {
                 "color": "text",
-                "value": null
+                "value": 0
               }
             ]
           }
         },
         "overrides": []
-      },
-      "options": {
-        "cellHeight": "sm",
-        "showHeader": true
-      }
-    },
-    {
-      "datasource": {
-        "type": "grafana-azure-monitor-datasource",
-        "uid": "azure-monitor-oob"
       },
       "gridPos": {
         "h": 8,
@@ -6913,7 +7223,11 @@
         "y": 322
       },
       "id": 2408,
-      "pluginVersion": "12.4.8",
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true
+      },
+      "pluginVersion": "12.4.13",
       "targets": [
         {
           "azureLogAnalytics": {
@@ -6936,37 +7250,7 @@
         }
       ],
       "title": "Elenco dei mismatch dei certificati",
-      "type": "table",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {
-            "align": "left",
-            "cellOptions": {
-              "type": "auto"
-            },
-            "filterable": true,
-            "footer": {
-              "reducers": []
-            },
-            "inspect": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "text",
-                "value": null
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "options": {
-        "cellHeight": "sm",
-        "showHeader": true
-      }
+      "type": "table"
     },
     {
       "collapsed": false,
@@ -6986,6 +7270,33 @@
         "type": "grafana-azure-monitor-datasource",
         "uid": "azure-monitor-oob"
       },
+      "description": "Richieste agli endpoint di health di rtp-sender (AppRequests sul workspace SRTP).",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "left",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": true,
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "text",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
       "gridPos": {
         "h": 8,
         "w": 24,
@@ -6993,7 +7304,11 @@
         "y": 331
       },
       "id": 2501,
-      "pluginVersion": "12.4.8",
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true
+      },
+      "pluginVersion": "12.4.13",
       "targets": [
         {
           "azureLogAnalytics": {
@@ -7016,38 +7331,7 @@
         }
       ],
       "title": "Comportamento probe readiness, liveness, startup. (Tutte sono esposte sullo stesso endpoint)",
-      "type": "table",
-      "description": "Richieste agli endpoint di health di rtp-sender (AppRequests sul workspace SRTP).",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {
-            "align": "left",
-            "cellOptions": {
-              "type": "auto"
-            },
-            "filterable": true,
-            "footer": {
-              "reducers": []
-            },
-            "inspect": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "text",
-                "value": null
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "options": {
-        "cellHeight": "sm",
-        "showHeader": true
-      }
+      "type": "table"
     }
   ],
   "preload": false,
@@ -7061,8 +7345,8 @@
     "list": [
       {
         "current": {
-          "text": "UAT-CSTAR",
-          "value": "f9f0ed60-4b4b-49a6-97cb-8c8a0f9e2435"
+          "text": "",
+          "value": ""
         },
         "datasource": {
           "type": "grafana-azure-monitor-datasource",
@@ -7087,8 +7371,8 @@
       },
       {
         "current": {
-          "text": "cstar-u-itn-srtp-monitoring-rg",
-          "value": "cstar-u-itn-srtp-monitoring-rg"
+          "text": "",
+          "value": ""
         },
         "datasource": {
           "type": "grafana-azure-monitor-datasource",
@@ -7114,8 +7398,8 @@
       },
       {
         "current": {
-          "text": "cstar-u-itn-srtp-law",
-          "value": "cstar-u-itn-srtp-law"
+          "text": "",
+          "value": ""
         },
         "datasource": {
           "type": "grafana-azure-monitor-datasource",
@@ -7143,8 +7427,8 @@
       },
       {
         "current": {
-          "text": "cstar-u-monitor-rg",
-          "value": "cstar-u-monitor-rg"
+          "text": "",
+          "value": ""
         },
         "datasource": {
           "type": "grafana-azure-monitor-datasource",
@@ -7170,8 +7454,8 @@
       },
       {
         "current": {
-          "text": "cstar-u-law",
-          "value": "cstar-u-law"
+          "text": "",
+          "value": ""
         },
         "datasource": {
           "type": "grafana-azure-monitor-datasource",
