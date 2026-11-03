@@ -1,0 +1,260 @@
+{
+    "name": "idpay_merchant_batch_csv",
+    "properties": {
+        "description": "Generate all batches for a merchant in a requested time range and save it to Blob Storage",
+        "activities": [
+            {
+                "name": "Set_Processing",
+                "type": "WebActivity",
+                "dependsOn": [
+                    {
+                        "activity": "Get_SubKey",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "00:10:00",
+                    "retry": 2,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "method": "PATCH",
+                    "headers": {
+                        "Ocp-Apim-Subscription-Key": {
+                            "value": "@activity('Get_SubKey').output.value",
+                            "type": "Expression"
+                        }
+                    },
+                    "url": {
+                        "value": "@concat(\n  '${data_factory_api_base_url}/initiatives/',\n  pipeline().parameters.initiativeId,\n  '/reports/',\n  pipeline().parameters.reportId\n)",
+                        "type": "Expression"
+                    },
+                    "connectVia": {
+                        "referenceName": "AutoResolveIntegrationRuntime",
+                        "type": "IntegrationRuntimeReference"
+                    },
+                    "body": {
+                        "reportStatus": "IN_PROGRESS"
+                    }
+                }
+            },
+            {
+                "name": "GenerateCsvToBlob",
+                "description": "Run Kusto query on reward batches and save the result as CSV to Blob",
+                "type": "Copy",
+                "dependsOn": [
+                    {
+                        "activity": "Set_Processing",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "02:00:00",
+                    "retry": 2,
+                    "retryIntervalInSeconds": 60,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "source": {
+                        "type": "AzureDataExplorerSource",
+                        "query": {
+                            "value": "let merchantIdParam = trim(\" \", tostring('@{pipeline().parameters.merchantId}'));\n\nlet rb = reward_batches\n| where initiativeId == '@{pipeline().parameters.initiativeId}'\n| where status != 'CREATED'\n| where creationDate >= todatetime('@{pipeline().parameters.startDate}')\n    and creationDate <= todatetime('@{pipeline().parameters.endDate}')\n| where isempty(merchantIdParam) or merchantId == merchantIdParam\n| project\n    rb_id = _id,\n    rb_businessname = businessName,\n    rb_name = name,\n    rb_status = status,\n    rb_merchantId = merchantId,\n    rb_initiativeId = initiativeId,\n    rb_creationDate = creationDate,\n    rb_merchantSendDate = merchantSendDate,\n    rb_approvalDate = approvalDate,\n    rb_initialAmountCentsAtSend = initialAmountCentsAtSend,\n    rb_deliveryAmountCents = deliveryAmountCents,\n    rb_suspendedAmountCentsAtApproving = suspendedAmountCentsAtApproving,\n    rb_assigneeLevel = assigneeLevel;\n\nrb\n| project\n    ['Insegna'] = tostring(rb_businessname),\n    ['Lotto'] = tostring(rb_name),\n    ['Data richiesta rimborso'] = format_datetime(rb_merchantSendDate, 'dd/MM/yyyy HH:mm'),\n    ['Rimboroso richiesto'] = toreal(coalesce(rb_initialAmountCentsAtSend, 0)) / 100.0,\n    ['Rimboroso approvato'] = toreal(coalesce(rb_deliveryAmountCents, 0)) / 100.0,\n    ['Rimboroso sospeso'] = toreal(coalesce(rb_suspendedAmountCentsAtApproving, 0)) / 100.0,\n    ['In carico a'] = tostring(rb_assigneeLevel),\n    ['Stato'] = case(\n        rb_status == 'CREATED', 'Da inviare',\n        rb_status == 'SENT', 'Inviato',\n        rb_status == 'EVALUATING', 'Preso in carico',\n        rb_status == 'APPROVING', 'In approvazione',\n        rb_status == 'APPROVED', 'Approvato',\n        rb_status == 'PENDING_REFUND', 'In rimborso',\n        rb_status == 'REFUNDED', 'Rimborsato',\n        rb_status == 'NOT_REFUNDED', 'Non rimborsato',\n        ''\n    )\n| order by ['Lotto'] asc",
+                            "type": "Expression"
+                        },
+                        "queryTimeout": "01:00:00",
+                        "noTruncation": true
+                    },
+                    "sink": {
+                        "type": "DelimitedTextSink",
+                        "storeSettings": {
+                            "type": "AzureBlobStorageWriteSettings"
+                        },
+                        "formatSettings": {
+                            "type": "DelimitedTextWriteSettings",
+                            "quoteAllText": true,
+                            "fileExtension": ".csv"
+                        }
+                    },
+                    "enableStaging": false
+                },
+                "inputs": [
+                    {
+                        "referenceName": "data_explorer_idpay_transaction",
+                        "type": "DatasetReference"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "referenceName": "blob_report_merchant_batch",
+                        "type": "DatasetReference",
+                        "parameters": {
+                            "initiativeId": {
+                                "value": "@pipeline().parameters.initiativeId",
+                                "type": "Expression"
+                            },
+                            "reportName": {
+                                "value": "@pipeline().parameters.reportName",
+                                "type": "Expression"
+                            }
+                        }
+                    }
+                ]
+            },
+            {
+                "name": "Set_Done",
+                "type": "WebActivity",
+                "dependsOn": [
+                    {
+                        "activity": "GenerateCsvToBlob",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    },
+                    {
+                        "activity": "Get_SubKey",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "00:10:00",
+                    "retry": 2,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "method": "PATCH",
+                    "headers": {
+                        "Ocp-Apim-Subscription-Key": {
+                            "value": "@activity('Get_SubKey').output.value",
+                            "type": "Expression"
+                        }
+                    },
+                    "url": {
+                        "value": "@concat(\n  '${data_factory_api_base_url}/initiatives/',\n  pipeline().parameters.initiativeId,\n  '/reports/',\n  pipeline().parameters.reportId\n)",
+                        "type": "Expression"
+                    },
+                    "connectVia": {
+                        "referenceName": "AutoResolveIntegrationRuntime",
+                        "type": "IntegrationRuntimeReference"
+                    },
+                    "body": {
+                        "reportStatus": "GENERATED"
+                    }
+                }
+            },
+            {
+                "name": "Set_Failed",
+                "type": "WebActivity",
+                "dependsOn": [
+                    {
+                        "activity": "GenerateCsvToBlob",
+                        "dependencyConditions": [
+                            "Failed"
+                        ]
+                    },
+                    {
+                        "activity": "Get_SubKey",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "00:10:00",
+                    "retry": 1,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "method": "PATCH",
+                    "headers": {
+                        "Ocp-Apim-Subscription-Key": {
+                            "value": "@activity('Get_SubKey').output.value",
+                            "type": "Expression"
+                        }
+                    },
+                    "url": {
+                        "value": "@concat(\n  '${data_factory_api_base_url}/initiatives/',\n  pipeline().parameters.initiativeId,\n  '/reports/',\n  pipeline().parameters.reportId\n)",
+                        "type": "Expression"
+                    },
+                    "connectVia": {
+                        "referenceName": "AutoResolveIntegrationRuntime",
+                        "type": "IntegrationRuntimeReference"
+                    },
+                    "body": {
+                        "reportStatus": "FAILED"
+                    }
+                }
+            },
+            {
+                "name": "Get_SubKey",
+                "type": "WebActivity",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 3,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": true,
+                    "secureInput": true
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "method": "GET",
+                    "headers": {
+                        "Content-Type": "application/json"
+                    },
+                    "url": {
+                        "value": "${kv_url}secrets/idpay-df-subscription-key?api-version=7.3",
+                        "type": "Expression"
+                    },
+                    "connectVia": {
+                        "referenceName": "AutoResolveIntegrationRuntime",
+                        "type": "IntegrationRuntimeReference"
+                    },
+                    "authentication": {
+                        "type": "MSI",
+                        "resource": "https://vault.azure.net"
+                    }
+                }
+            }
+        ],
+        "concurrency": 5,
+        "parameters": {
+            "endDate": {
+                "type": "String"
+            },
+            "initiativeId": {
+                "type": "String"
+            },
+            "merchantId": {
+                "type": "String"
+            },
+            "reportId": {
+                "type": "String"
+            },
+            "reportName": {
+                "type": "String"
+            },
+            "startDate": {
+                "type": "String"
+            }
+        },
+        "annotations": []
+    },
+    "type": "Microsoft.DataFactory/factories/pipelines"
+}
