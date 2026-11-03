@@ -74,4 +74,6 @@ if [[ "${#dashboard_targets[@]}" -eq 0 ]]; then
   exit 1
 fi
 
-exec ./terraform.sh "$action" "$environment" "${folder_targets[@]}" "${dashboard_targets[@]}"
+printf 'Terraform command (not executed):\n'
+printf '%q' ./terraform.sh "$action" "$environment" "${folder_targets[@]}" "${dashboard_targets[@]}"
+printf '\n'
