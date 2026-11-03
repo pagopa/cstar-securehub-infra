@@ -106,7 +106,7 @@
             }
           },
           "pluginVersion": "6.2.0",
-          "query": "initiative_counters\r\n| where initiativeId != \"68dd003ccce8c534d1da22bc\"\r\n| project \r\n    BudgetTotale = initiativeBudgetCents / 100,\r\n    Speso = spentInitiativeBudgetCents / 100,\r\n    Riservato = reservedInitiativeBudgetCents / 100,\r\n    Residuo = residualInitiativeBudgetCents / 100",
+          "query": "initiative_counters\r\n| where tostring(_id) == strcat('{\"$oid\":\"', '68dd003ccce8c534d1da22bc', '\"}')\r\n| project \r\n    BudgetTotale = initiativeBudgetCents / 100,\r\n    Speso = spentInitiativeBudgetCents / 100,\r\n    Riservato = reservedInitiativeBudgetCents / 100,\r\n    Residuo = residualInitiativeBudgetCents / 100",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -1432,7 +1432,7 @@
             }
           },
           "pluginVersion": "6.2.0",
-          "query": "initiative_counters\n| where initiativeId != \"$initiativeId\"\n| extend \n    Speso = spentInitiativeBudgetCents,\n    Riservato = reservedInitiativeBudgetCents\n| extend \n    // Calcoliamo la percentuale di completamento reale\n    Efficienza = (todouble(Speso) / (Speso + Riservato)) * 100\n| project Efficienza",
+          "query": "initiative_counters\n| where tostring(_id) == strcat('{\"$oid\":\"', '$initiativeId', '\"}')\n| extend \n    Speso = spentInitiativeBudgetCents,\n    Riservato = reservedInitiativeBudgetCents\n| extend \n    // Calcoliamo la percentuale di completamento reale\n    Efficienza = (todouble(Speso) / (Speso + Riservato)) * 100\n| project Efficienza",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
@@ -2187,7 +2187,7 @@
             }
           },
           "pluginVersion": "6.2.0",
-          "query": "initiative_counters\n| where initiativeId != \"68dd003ccce8c534d1da22bc\"\n| extend \n    BudgetTotale = initiativeBudgetCents / 100.0,\n    Speso = spentInitiativeBudgetCents / 100.0,\n    Riservato = reservedInitiativeBudgetCents / 100.0,\n    Residuo = residualInitiativeBudgetCents / 100.0\n| extend \n    // Calcoliamo quanto è \"pieno\" il bucket\n    Perc_Speso = ((Speso) / BudgetTotale) * 100,\n    // Creiamo uno stato logico per la Dashboard\n    Stato_Budget = case(\n        Residuo < 1000, \"SATURO\", \n        Residuo < 1000000, \"IN ESAURIMENTO\", \n        \"DISPONIBILE\"\n    )\n| project BudgetTotale, Speso, Riservato, Residuo, Perc_Speso, Stato_Budget",
+          "query": "initiative_counters\n| where tostring(_id) == strcat('{\"$oid\":\"', '68dd003ccce8c534d1da22bc', '\"}')\n| extend \n    BudgetTotale = initiativeBudgetCents / 100.0,\n    Speso = spentInitiativeBudgetCents / 100.0,\n    Riservato = reservedInitiativeBudgetCents / 100.0,\n    Residuo = residualInitiativeBudgetCents / 100.0\n| extend \n    // Calcoliamo quanto è \"pieno\" il bucket\n    Perc_Speso = ((Speso) / BudgetTotale) * 100,\n    // Creiamo uno stato logico per la Dashboard\n    Stato_Budget = case(\n        Residuo < 1000, \"SATURO\", \n        Residuo < 1000000, \"IN ESAURIMENTO\", \n        \"DISPONIBILE\"\n    )\n| project BudgetTotale, Speso, Riservato, Residuo, Perc_Speso, Stato_Budget",
           "querySource": "raw",
           "queryType": "KQL",
           "rawMode": true,
