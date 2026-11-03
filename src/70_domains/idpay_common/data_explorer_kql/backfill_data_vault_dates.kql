@@ -35,4 +35,3 @@ let backfill_ts = datetime(2026-10-23T00:00:00Z);
 data_vault
 | extend loadDate = coalesce(loadDate, backfill_ts)
 | project _id, data, page, loadDate
-
