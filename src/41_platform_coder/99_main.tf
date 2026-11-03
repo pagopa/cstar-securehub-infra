@@ -1,5 +1,5 @@
 terraform {
-  required_version = ">=1.10.0"
+  required_version = ">=1.11.0"
 
   required_providers {
     azuread = {
@@ -25,6 +25,10 @@ terraform {
     keycloak = {
       source  = "keycloak/keycloak"
       version = "~> 5.0"
+    }
+    postgresql = {
+      source  = "cyrilgdn/postgresql"
+      version = "~> 1.26.0"
     }
   }
 
@@ -58,6 +62,16 @@ provider "keycloak" {
   client_secret = data.azurerm_key_vault_secret.terraform_client_secret_for_keycloak.value
   url           = "https://${data.azurerm_key_vault_secret.keycloak_url.value}"
   realm         = "master"
+}
+
+provider "postgresql" {
+  host      = module.keycloak_pgflex.fqdn
+  port      = 5432
+  database  = azurerm_postgresql_flexible_server_database.listmonk_db.name
+  username  = azurerm_key_vault_secret.keycloak_db_admin_user.value
+  password  = azurerm_key_vault_secret.keycloak_db_admin_password.value
+  sslmode   = "require"
+  superuser = false
 }
 
 module "__v4__" {

@@ -109,23 +109,47 @@ variable "keycloak_configuration" {
 
 variable "listmonk_configuration" {
   type = object({
-    chart_version     = string
-    image_repository  = string
-    image_tag         = string
-    replica_count     = number
-    postgres_ssl_mode = string
+    chart_version            = string
+    image_repository         = string
+    image_tag                = string
+    replica_count            = number
+    postgres_ssl_mode        = string
+    bootstrap_postgres_image = optional(string, "postgres:17-alpine")
   })
 
   validation {
     condition = contains([
-      "allow",
-      "disable",
-      "prefer",
       "require",
       "verify-ca",
       "verify-full"
     ], var.listmonk_configuration.postgres_ssl_mode)
-    error_message = "listmonk_configuration.postgres_ssl_mode must be one of: allow, disable, prefer, require, verify-ca, verify-full."
+    error_message = "Listmonk must use TLS: postgres_ssl_mode must be require, verify-ca, or verify-full."
+  }
+
+  validation {
+    condition     = var.listmonk_configuration.replica_count == 1
+    error_message = "Listmonk must run a single active replica to avoid concurrent campaign processing."
+  }
+}
+
+variable "listmonk_sso" {
+  description = "Native Microsoft Entra OIDC. Enable after registering the app and storing its client secret in the core Key Vault."
+  type = object({
+    enabled              = bool
+    client_id            = string
+    client_secret_name   = string
+    auto_create_users    = optional(bool, false)
+    default_user_role_id = optional(number)
+  })
+
+  validation {
+    condition     = !var.listmonk_sso.enabled || (can(regex("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$", var.listmonk_sso.client_id)) && trimspace(var.listmonk_sso.client_secret_name) != "")
+    error_message = "Enabling Listmonk SSO requires an Entra application client ID and a core Key Vault client-secret name."
+  }
+
+  validation {
+    condition     = !var.listmonk_sso.auto_create_users || try(var.listmonk_sso.default_user_role_id >= 1 && floor(var.listmonk_sso.default_user_role_id) == var.listmonk_sso.default_user_role_id, false)
+    error_message = "Auto-creating OIDC users requires an explicit, existing Listmonk user role ID."
   }
 }
 

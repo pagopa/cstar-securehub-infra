@@ -40,7 +40,7 @@ locals {
 
   # Listmonk
   listmonk_db_name          = "listmonk"
-  listmonk_ingress_hostname = "idpay.${var.location_short}.${var.dns_zone_internal_prefix}.${var.prefix}.${var.external_domain}"
+  listmonk_ingress_hostname = "listmonk.${var.location_short}.${var.dns_zone_internal_prefix}.${var.prefix}.${var.external_domain}"
 
   #
   # AKS
