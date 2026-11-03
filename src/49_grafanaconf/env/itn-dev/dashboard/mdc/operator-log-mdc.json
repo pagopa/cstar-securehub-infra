@@ -1,0 +1,303 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "footer": {
+              "reducers": []
+            },
+            "hideFrom": {
+              "viz": false
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "TimeGenerated"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 168
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Group"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 103
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Operation"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 251
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Severity"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 96
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "User"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 240
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 14,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 2,
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "12.4.8",
+      "targets": [
+        {
+          "azureLogAnalytics": {
+            "dashboardTime": false,
+            "mode": "raw",
+            "query": "AppTraces\r\n| where $__timeFilter(TimeGenerated)\r\n| where AppRoleName == \"emdarbackofficebff\"\r\n| where Message has \"[AR-BFF]\"\r\n| extend \r\n    RawOp = extract(@\"\\[AR-BFF\\]\\[([A-Z0-9_]+)\\]\", 1, Message),\r\n    UserEmail = extract(@\"\\[User:([^\\]]+)\\]\", 1, Message),\r\n    SeverityName = case(\r\n                   SeverityLevel == 0,\r\n                   \"Verbose\",\r\n                   SeverityLevel == 1,\r\n                   \"Info\",\r\n                   SeverityLevel == 2,\r\n                   \"Warning\",\r\n                   SeverityLevel == 3,\r\n                   \"Error\",\r\n                   SeverityLevel == 4,\r\n                   \"Critical\",\r\n                   tostring(SeverityLevel)\r\n               )\r\n| extend \r\n    OperationGroup = case(\r\n                     RawOp startswith \"MESSAGE\",\r\n                     \"Messaggi\",\r\n                     RawOp startswith \"CITIZEN\",\r\n                     \"Cittadini\",\r\n                     RawOp startswith \"PAYMENT_ATTEMPT\",\r\n                     \"Pagamenti\",\r\n                     RawOp startswith \"TPP\",\r\n                     \"TPP\",\r\n                     RawOp startswith \"KC\",\r\n                     \"Keycloak\",\r\n                     RawOp startswith \"GET_PAGOPA_CREDENTIALS\",\r\n                     \"Keycloak\", \r\n                     RawOp startswith \"VERIFY_CLAIMS\",\r\n                     \"Keycloak\", \r\n                     RawOp startswith \"VALIDATE_SC_TOKEN\",\r\n                     \"Keycloak\",\r\n                     RawOp startswith \"GET_KC_USER\",\r\n                     \"Keycloak\", \r\n                     RawOp startswith \"DELETE_CLIENT\",\r\n                     \"Keycloak\", \r\n                     RawOp startswith \"EXCHANGE_TOKEN\",\r\n                     \"Keycloak\", \r\n                     RawOp startswith \"LINK_IDENTITY\",\r\n                     \"Keycloak\",\r\n                     RawOp startswith \"UPSERT_USER\",\r\n                     \"Keycloak\",\r\n                     RawOp startswith \"SELFCARE\",\r\n                     \"Selfcare\",\r\n                     \"Altro\"\r\n                 ),\r\n    UserDisplay = iif(isnotempty(UserEmail), UserEmail, \"N/A\")\r\n| where Message !contains \"SEARCH\"\r\n| where ('$OperationGroup' == 'All' or OperationGroup == '$OperationGroup')\r\n| where ('$Severity' == 'All' or SeverityName == '$Severity')\r\n| where isempty('${User}') or UserDisplay startswith '${User}'\r\n| where isempty('${messageId}') or Message has '${messageId}'\r\n| where isempty('${originId}') or Message has '${originId}'\r\n| where isempty('${tppId}') or Message has '${tppId}'\r\n| project \r\n    TimeGenerated, \r\n    Severity = SeverityName,\r\n    Group = OperationGroup, \r\n    Operation = RawOp, \r\n    User = UserDisplay, \r\n    Message\r\n| sort by TimeGenerated desc",
+            "resources": [
+              "$workspace"
+            ],
+            "resultFormat": "logs"
+          },
+          "azureMonitor": {
+            "allowedTimeGrainsMs": [],
+            "timeGrain": "auto"
+          },
+          "queryType": "Azure Log Analytics",
+          "refId": "A"
+        }
+      ],
+      "title": "BFF Logs",
+      "type": "table"
+    }
+  ],
+  "preload": false,
+  "schemaVersion": 42,
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "text": "",
+          "value": ""
+        },
+        "datasource": {
+          "type": "grafana-azure-monitor-datasource",
+          "uid": "azure-monitor-oob"
+        },
+        "definition": "",
+        "hide": 2,
+        "label": "workspace",
+        "name": "workspace",
+        "options": [],
+        "query": {
+          "azureLogAnalytics": {
+            "mode": "raw",
+            "query": "resources\r\n| where type == \"microsoft.operationalinsights/workspaces\"\r\n| where name contains \"law\"\r\n| project id",
+            "resources": []
+          },
+          "azureResourceGraph": {
+            "query": "resources\r\n| where type == \"microsoft.operationalinsights/workspaces\"\r\n| where name contains \"mdc-law\"\r\n| project id"
+          },
+          "queryType": "Azure Resource Graph",
+          "refId": "A"
+        },
+        "refresh": 1,
+        "regex": "",
+        "regexApplyTo": "value",
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "",
+          "value": ""
+        },
+        "hide": 2,
+        "label": "ID Message",
+        "name": "messageId",
+        "options": [
+          {
+            "selected": true,
+            "text": "",
+            "value": ""
+          }
+        ],
+        "query": "",
+        "type": "textbox"
+      },
+      {
+        "current": {
+          "text": "",
+          "value": ""
+        },
+        "hide": 2,
+        "label": "Origin ID",
+        "name": "originId",
+        "options": [
+          {
+            "selected": true,
+            "text": "",
+            "value": ""
+          }
+        ],
+        "query": "",
+        "type": "textbox"
+      },
+      {
+        "current": {
+          "text": "",
+          "value": ""
+        },
+        "hide": 2,
+        "label": "TPP ID",
+        "name": "tppId",
+        "options": [
+          {
+            "selected": true,
+            "text": "",
+            "value": ""
+          }
+        ],
+        "query": "",
+        "type": "textbox"
+      },
+      {
+        "current": {
+          "text": "All",
+          "value": "All"
+        },
+        "label": "Operation Group",
+        "name": "OperationGroup",
+        "options": [],
+        "query": "All,Messaggi,Cittadini,Pagamenti,TPP,Keycloak,Selfcare",
+        "type": "custom",
+        "valuesFormat": "csv"
+      },
+      {
+        "current": {
+          "text": "All",
+          "value": "All"
+        },
+        "label": "Severity",
+        "name": "Severity",
+        "options": [],
+        "query": "All, Verbose,Info,Warning,Error",
+        "type": "custom",
+        "valuesFormat": "csv"
+      },
+      {
+        "current": {
+          "text": "",
+          "value": ""
+        },
+        "hide": 2,
+        "name": "User",
+        "options": [
+          {
+            "selected": true,
+            "text": "",
+            "value": ""
+          }
+        ],
+        "query": "",
+        "type": "textbox"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-90d",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "MDC - Log Operator",
+  "uid": "faf8sbp",
+  "version": 48,
+  "weekStart": ""
+}
