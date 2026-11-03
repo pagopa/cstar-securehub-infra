@@ -14,11 +14,6 @@ dns_zone_prefix          = "uat.cstar"
 dns_zone_internal_prefix = "internal.uat.cstar"
 external_domain          = "pagopa.it"
 
-cosmos_mongo_db_idpay_params = {
-  throughput     = null
-  max_throughput = 1000
-}
-
 #
 # Service bus
 #

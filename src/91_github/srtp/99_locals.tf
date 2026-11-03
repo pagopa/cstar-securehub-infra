@@ -63,7 +63,7 @@ locals {
       ]
       repository_variables = []
     }
-    rtp-payees = {
+    rtp-registry = {
       env_variables        = [],
       env_secret_variables = []
       repository_secrets = [

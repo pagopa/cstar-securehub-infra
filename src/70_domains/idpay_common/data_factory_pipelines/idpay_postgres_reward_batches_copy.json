@@ -135,12 +135,8 @@
                 "sink": { "name": "refundOutcomeTimestamp", "type": "DateTime" }
               },
               {
-                "source": { "name": "report_path" },
-                "sink": { "name": "reportPath", "type": "String" }
-              },
-              {
-                "source": { "name": "filename" },
-                "sink": { "name": "filename", "type": "String" }
+                "source": { "name": "report_id" },
+                "sink": { "name": "reportId", "type": "String" }
               },
               {
                 "source": { "name": "assignee_level" },
