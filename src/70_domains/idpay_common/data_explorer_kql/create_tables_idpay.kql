@@ -610,7 +610,26 @@
     latestAppliedPaymentImpactRevision:long
 )
 
+// Retain fiscal-code tokens for 1,000 years instead of the database default
+// (soft_delete_period = P7D). With the incremental (append/merge) load the
+// table is no longer rebuilt from scratch every day, so the default 7-day
+// soft-delete would otherwise purge fiscal codes no longer present in the
+// source snapshot. Recoverability stays enabled.
+.alter table data_vault policy retention
+@'{"SoftDeletePeriod": "365000.00:00:00", "Recoverability": "Enabled"}'
 .create-merge table data_vault (
+    _id:string,
+    data:string,
+    page:long,
+    loadDate:datetime
+)
+
+// Staging table for the incremental (time-window) load of data_vault.
+// Receives the raw Cosmos delta (records whose source createdAt falls in the
+// requested window) before it is appended to data_vault. createdAt is used only
+// as a source-side filter and is NOT stored in ADX, so staging mirrors the ADX
+// business columns only.
+.create table data_vault_staging (
     _id:string,
     data:string,
     page:long
