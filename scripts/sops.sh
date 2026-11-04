@@ -42,6 +42,8 @@
 # ./sops.sh f mykv itn-dev
 #    -> encrypt an external json file (path is requested at runtime) into the default sops file using a specified key vault and environment
 #
+# ./sops.sh sf mykv itn-dev
+#    -> set a secret value in the encrypted file to the text content of a file
 
 # Extract parameters: action, kvname, env
 action=$1
@@ -78,6 +80,10 @@ if [ -z "$action" ]; then
 ./sops.sh f <kvname> <env>
     example: ./sops.sh f mykv itn-dev
     example: ./sops.sh file-encrypt mykv itn-dev
+
+./sops.sh sf <kvname> <env>
+    example: ./sops.sh sf mykv itn-dev
+    example: ./sops.sh set-value-from-file mykv itn-dev
 
 EOF
 )
@@ -129,7 +135,7 @@ echo "[INFO] Key URL: $kv_key_url"
 
 echo "🔨 Key URL loaded correctly"
 
-if echo "d decrypt a add s search n new e edit f file-encrypt di decryptignore" | grep -w "$action" > /dev/null; then
+if echo "d decrypt a add s search n new e edit f file-encrypt di decryptignore sf set-value-from-file" | grep -w "$action" > /dev/null; then
   case $action in
     "d"|"decrypt")
       sops --decrypt --azure-kv "$kv_key_url" "$encrypted_file_path"
@@ -176,6 +182,12 @@ if echo "d decrypt a add s search n new e edit f file-encrypt di decryptignore" 
     "f"|"file-encrypt")
       read -r -p 'file: ' file
       sops --encrypt --azure-kv "$kv_key_url" "./secrets/$kvname/$env/$file" > "$encrypted_file_path"
+      ;;
+    "sf"|"set-value-from-file")
+      read -r -p 'key: ' key
+      read -r -p 'file: ' file
+      value=$(jq -Rs . "$file") || { echo "❌ Error: cannot read file $file" >&2; exit 1; }
+      echo "$value" | sops --in-place set --value-stdin "$encrypted_file_path" '["'$key'"]'
       ;;
   esac
 else
