@@ -187,7 +187,7 @@ if echo "d decrypt a add s search n new e edit f file-encrypt di decryptignore s
       read -r -p 'key: ' key
       read -r -p 'file: ' file
       value=$(jq -Rs . "$file") || { echo "❌ Error: cannot read file $file" >&2; exit 1; }
-      echo "$value" | sops --in-place set --value-stdin "$encrypted_file_path" '["'$key'"]'
+      echo "$value" | sops --in-place set --value-stdin "$encrypted_file_path" '["'"$key"'"]'
       ;;
   esac
 else
