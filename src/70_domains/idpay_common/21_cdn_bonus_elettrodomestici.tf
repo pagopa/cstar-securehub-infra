@@ -372,4 +372,3 @@ module "cdn_idpay_bonuselettrodomestici" {
 
   tags = module.tag_config.tags
 }
-
