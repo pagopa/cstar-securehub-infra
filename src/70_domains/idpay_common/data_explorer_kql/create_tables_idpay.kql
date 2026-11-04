@@ -557,7 +557,8 @@
     assigneeLevel:string,
     refundValutaDate:datetime,
     refundErrorMessage:string,
-    deliveryOutcome:dynamic
+    deliveryOutcome:dynamic,
+    reportId:string
 )
 
 .create-merge table reward_transactions (
