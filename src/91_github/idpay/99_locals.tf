@@ -6,7 +6,8 @@ locals {
     "idpay-asset-register-backend" = {
       repository_secrets = [
         {
-          SONAR_TOKEN = data.azurerm_key_vault_secret.sonar_token.value
+          SONAR_TOKEN                 = data.azurerm_key_vault_secret.sonar_token.value
+          SLACK_REVIEW_ALERTS_WEBHOOK = data.azurerm_key_vault_secret.slack_review_alerts_webhook.value
         }
       ]
       repository_variables = [
@@ -20,7 +21,8 @@ locals {
     "idpay-payment-instrument" = {
       repository_secrets = [
         {
-          SONAR_TOKEN = data.azurerm_key_vault_secret.sonar_token.value
+          SONAR_TOKEN                 = data.azurerm_key_vault_secret.sonar_token.value
+          SLACK_REVIEW_ALERTS_WEBHOOK = data.azurerm_key_vault_secret.slack_review_alerts_webhook.value
         }
       ]
       repository_variables = [
@@ -34,7 +36,8 @@ locals {
     "idpay-portal-merchants-frontend" = {
       repository_secrets = [
         {
-          SONAR_TOKEN = data.azurerm_key_vault_secret.sonar_token.value
+          SONAR_TOKEN                 = data.azurerm_key_vault_secret.sonar_token.value
+          SLACK_REVIEW_ALERTS_WEBHOOK = data.azurerm_key_vault_secret.slack_review_alerts_webhook.value
         }
       ]
       repository_variables = [
@@ -48,7 +51,8 @@ locals {
     "idpay-recovery-error-topic" = {
       repository_secrets = [
         {
-          SONAR_TOKEN = data.azurerm_key_vault_secret.sonar_token.value
+          SONAR_TOKEN                 = data.azurerm_key_vault_secret.sonar_token.value
+          SLACK_REVIEW_ALERTS_WEBHOOK = data.azurerm_key_vault_secret.slack_review_alerts_webhook.value
         }
       ]
       repository_variables = [
@@ -62,7 +66,8 @@ locals {
     "idpay-reward-calculator" = {
       repository_secrets = [
         {
-          SONAR_TOKEN = data.azurerm_key_vault_secret.sonar_token.value
+          SONAR_TOKEN                 = data.azurerm_key_vault_secret.sonar_token.value
+          SLACK_REVIEW_ALERTS_WEBHOOK = data.azurerm_key_vault_secret.slack_review_alerts_webhook.value
         }
       ]
       repository_variables = [
@@ -76,7 +81,8 @@ locals {
     "idpay-merchant" = {
       repository_secrets = [
         {
-          SONAR_TOKEN = data.azurerm_key_vault_secret.sonar_token.value
+          SONAR_TOKEN                 = data.azurerm_key_vault_secret.sonar_token.value
+          SLACK_REVIEW_ALERTS_WEBHOOK = data.azurerm_key_vault_secret.slack_review_alerts_webhook.value
         }
       ]
       repository_variables = [
@@ -90,7 +96,8 @@ locals {
     "idpay-transactions" = {
       repository_secrets = [
         {
-          SONAR_TOKEN = data.azurerm_key_vault_secret.sonar_token.value
+          SONAR_TOKEN                 = data.azurerm_key_vault_secret.sonar_token.value
+          SLACK_REVIEW_ALERTS_WEBHOOK = data.azurerm_key_vault_secret.slack_review_alerts_webhook.value
         }
       ]
       repository_variables = [
@@ -104,7 +111,8 @@ locals {
     "idpay-initiative-statistics" = {
       repository_secrets = [
         {
-          SONAR_TOKEN = data.azurerm_key_vault_secret.sonar_token.value
+          SONAR_TOKEN                 = data.azurerm_key_vault_secret.sonar_token.value
+          SLACK_REVIEW_ALERTS_WEBHOOK = data.azurerm_key_vault_secret.slack_review_alerts_webhook.value
         }
       ]
       repository_variables = [
@@ -118,7 +126,8 @@ locals {
     "idpay-onboarding-workflow" = {
       repository_secrets = [
         {
-          SONAR_TOKEN = data.azurerm_key_vault_secret.sonar_token.value
+          SONAR_TOKEN                 = data.azurerm_key_vault_secret.sonar_token.value
+          SLACK_REVIEW_ALERTS_WEBHOOK = data.azurerm_key_vault_secret.slack_review_alerts_webhook.value
         }
       ]
       repository_variables = [
@@ -132,7 +141,8 @@ locals {
     "idpay-admissibility-assessor" = {
       repository_secrets = [
         {
-          SONAR_TOKEN = data.azurerm_key_vault_secret.sonar_token.value
+          SONAR_TOKEN                 = data.azurerm_key_vault_secret.sonar_token.value
+          SLACK_REVIEW_ALERTS_WEBHOOK = data.azurerm_key_vault_secret.slack_review_alerts_webhook.value
         }
       ]
       repository_variables = [
@@ -146,7 +156,8 @@ locals {
     "idpay-wallet" = {
       repository_secrets = [
         {
-          SONAR_TOKEN = data.azurerm_key_vault_secret.sonar_token.value
+          SONAR_TOKEN                 = data.azurerm_key_vault_secret.sonar_token.value
+          SLACK_REVIEW_ALERTS_WEBHOOK = data.azurerm_key_vault_secret.slack_review_alerts_webhook.value
         }
       ]
       repository_variables = [
@@ -160,7 +171,8 @@ locals {
     "idpay-timeline" = {
       repository_secrets = [
         {
-          SONAR_TOKEN = data.azurerm_key_vault_secret.sonar_token.value
+          SONAR_TOKEN                 = data.azurerm_key_vault_secret.sonar_token.value
+          SLACK_REVIEW_ALERTS_WEBHOOK = data.azurerm_key_vault_secret.slack_review_alerts_webhook.value
         }
       ]
       repository_variables = [
@@ -174,7 +186,8 @@ locals {
     "idpay-portal-welfare-backend-initiative" = {
       repository_secrets = [
         {
-          SONAR_TOKEN = data.azurerm_key_vault_secret.sonar_token.value
+          SONAR_TOKEN                 = data.azurerm_key_vault_secret.sonar_token.value
+          SLACK_REVIEW_ALERTS_WEBHOOK = data.azurerm_key_vault_secret.slack_review_alerts_webhook.value
         }
       ]
       repository_variables = [
@@ -188,7 +201,8 @@ locals {
     "idpay-notification-email" = {
       repository_secrets = [
         {
-          SONAR_TOKEN = data.azurerm_key_vault_secret.sonar_token.value
+          SONAR_TOKEN                 = data.azurerm_key_vault_secret.sonar_token.value
+          SLACK_REVIEW_ALERTS_WEBHOOK = data.azurerm_key_vault_secret.slack_review_alerts_webhook.value
         }
       ]
       repository_variables = [
@@ -202,7 +216,8 @@ locals {
     "idpay-notification-manager" = {
       repository_secrets = [
         {
-          SONAR_TOKEN = data.azurerm_key_vault_secret.sonar_token.value
+          SONAR_TOKEN                 = data.azurerm_key_vault_secret.sonar_token.value
+          SLACK_REVIEW_ALERTS_WEBHOOK = data.azurerm_key_vault_secret.slack_review_alerts_webhook.value
         }
       ]
       repository_variables = [
@@ -216,7 +231,8 @@ locals {
     "idpay-kafka-connect" = {
       repository_secrets = [
         {
-          SONAR_TOKEN = data.azurerm_key_vault_secret.sonar_token.value
+          SONAR_TOKEN                 = data.azurerm_key_vault_secret.sonar_token.value
+          SLACK_REVIEW_ALERTS_WEBHOOK = data.azurerm_key_vault_secret.slack_review_alerts_webhook.value
         }
       ]
       repository_variables = [
@@ -244,7 +260,8 @@ locals {
     "idpay-portal-users-frontend" = {
       repository_secrets = [
         {
-          SONAR_TOKEN = data.azurerm_key_vault_secret.sonar_token.value
+          SONAR_TOKEN                 = data.azurerm_key_vault_secret.sonar_token.value
+          SLACK_REVIEW_ALERTS_WEBHOOK = data.azurerm_key_vault_secret.slack_review_alerts_webhook.value
         }
       ]
       repository_variables = [
@@ -258,7 +275,8 @@ locals {
     "idpay-payment" = {
       repository_secrets = [
         {
-          SONAR_TOKEN = data.azurerm_key_vault_secret.sonar_token.value
+          SONAR_TOKEN                 = data.azurerm_key_vault_secret.sonar_token.value
+          SLACK_REVIEW_ALERTS_WEBHOOK = data.azurerm_key_vault_secret.slack_review_alerts_webhook.value
         }
       ]
       repository_variables = [
@@ -272,7 +290,8 @@ locals {
     "idpay-portal-merchants-operator-frontend" = {
       repository_secrets = [
         {
-          SONAR_TOKEN = data.azurerm_key_vault_secret.sonar_token.value
+          SONAR_TOKEN                 = data.azurerm_key_vault_secret.sonar_token.value
+          SLACK_REVIEW_ALERTS_WEBHOOK = data.azurerm_key_vault_secret.slack_review_alerts_webhook.value
         }
       ]
       repository_variables = [
@@ -286,7 +305,8 @@ locals {
     "idpay-portal-welfare-frontend" = {
       repository_secrets = [
         {
-          SONAR_TOKEN = data.azurerm_key_vault_secret.sonar_token.value
+          SONAR_TOKEN                 = data.azurerm_key_vault_secret.sonar_token.value
+          SLACK_REVIEW_ALERTS_WEBHOOK = data.azurerm_key_vault_secret.slack_review_alerts_webhook.value
         }
       ]
       repository_variables = [
@@ -300,7 +320,8 @@ locals {
     "idpay-asset-register-frontend" = {
       repository_secrets = [
         {
-          SONAR_TOKEN = data.azurerm_key_vault_secret.sonar_token.value
+          SONAR_TOKEN                 = data.azurerm_key_vault_secret.sonar_token.value
+          SLACK_REVIEW_ALERTS_WEBHOOK = data.azurerm_key_vault_secret.slack_review_alerts_webhook.value
         }
       ]
       repository_variables = [
@@ -314,7 +335,8 @@ locals {
     "idpay-product-catalog-portal" = {
       repository_secrets = [
         {
-          SONAR_TOKEN = data.azurerm_key_vault_secret.sonar_token.value
+          SONAR_TOKEN                 = data.azurerm_key_vault_secret.sonar_token.value
+          SLACK_REVIEW_ALERTS_WEBHOOK = data.azurerm_key_vault_secret.slack_review_alerts_webhook.value
         }
       ]
       repository_variables = [
@@ -328,7 +350,8 @@ locals {
     "idpay-merchants-catalog-portal" = {
       repository_secrets = [
         {
-          SONAR_TOKEN = data.azurerm_key_vault_secret.sonar_token.value
+          SONAR_TOKEN                 = data.azurerm_key_vault_secret.sonar_token.value
+          SLACK_REVIEW_ALERTS_WEBHOOK = data.azurerm_key_vault_secret.slack_review_alerts_webhook.value
         }
       ]
       repository_variables = [
@@ -342,7 +365,8 @@ locals {
     "idpay-portal-welfare-backend-role-permission" = {
       repository_secrets = [
         {
-          SONAR_TOKEN = data.azurerm_key_vault_secret.sonar_token.value
+          SONAR_TOKEN                 = data.azurerm_key_vault_secret.sonar_token.value
+          SLACK_REVIEW_ALERTS_WEBHOOK = data.azurerm_key_vault_secret.slack_review_alerts_webhook.value
         }
       ]
       repository_variables = [
@@ -356,7 +380,8 @@ locals {
     "idpay-ranker" = {
       repository_secrets = [
         {
-          SONAR_TOKEN = data.azurerm_key_vault_secret.sonar_token.value
+          SONAR_TOKEN                 = data.azurerm_key_vault_secret.sonar_token.value
+          SLACK_REVIEW_ALERTS_WEBHOOK = data.azurerm_key_vault_secret.slack_review_alerts_webhook.value
         }
       ]
       repository_variables = [
@@ -413,8 +438,9 @@ locals {
       protected_branches = ["main"]
       repository_secrets = [
         {
-          GIT_PAT     = data.azurerm_key_vault_secret.gh_token.value
-          SONAR_TOKEN = data.azurerm_key_vault_secret.sonar_token.value
+          GIT_PAT                     = data.azurerm_key_vault_secret.gh_token.value
+          SONAR_TOKEN                 = data.azurerm_key_vault_secret.sonar_token.value
+          SLACK_REVIEW_ALERTS_WEBHOOK = data.azurerm_key_vault_secret.slack_review_alerts_webhook.value
         }
       ]
       repository_variables = [
