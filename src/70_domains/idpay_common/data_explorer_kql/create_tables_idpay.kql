@@ -20,6 +20,9 @@
     productName:string,
     fullProductName:string,
     organizationName:string,
+    scart:bool,
+    connectivity:string,
+    technicalSheetUrl:string,
     _class:string
 )
 
@@ -45,6 +48,9 @@
     productName:string,
     fullProductName:string,
     organizationName:string,
+    scart:bool,
+    connectivity:string,
+    technicalSheetUrl:string,
     _class:string
 )
 
