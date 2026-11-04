@@ -22,10 +22,16 @@ resource "kubernetes_config_map" "emd_eventhub" {
     kafka_sasl_mechanism    = "PLAIN"
     kafka_security_protocol = "SASL_SSL"
 
+    # --- Topic LEGACY a 1 partizione: mantenuti finché si drena la coda vecchia ---
     emd-courtesy-message-consumer-group = "emd-courtesy-message-consumer-group"
     emd_courtesy_message_topic          = "emd-courtesy-message"
     emd-notify-error-consumer-group     = "emd-notify-error-consumer-group"
     emd_notify_error_topic              = "emd-notify-error"
+
+    emd-courtesy-message-requested-consumer-group = "emd-courtesy-message-requested-consumer-group"
+    emd-courtesy-message-requested-topic          = "emd-courtesy-message-requested"
+    emd-notification-failed-consumer-group        = "emd-notification-failed-consumer-group"
+    emd-notification-failed-topic                 = "emd-notification-failed"
   }
 
 }
