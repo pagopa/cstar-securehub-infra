@@ -1,3 +1,48 @@
+# Reuse only the non-credential SES configuration already consumed by Keycloak.
+# Do not read Keycloak SMTP credentials or AWS remote state into this module.
+data "azurerm_key_vault" "listmonk_ses_configuration" {
+  count = var.listmonk_smtp.enabled ? 1 : 0
+
+  name                = "${local.product_nodomain}-idpay-kv"
+  resource_group_name = "${local.product_nodomain}-idpay-security-rg"
+}
+
+data "azurerm_key_vault_secret" "listmonk_ses_host" {
+  count = var.listmonk_smtp.enabled ? 1 : 0
+
+  name         = "aws-pari-ses-mail-host"
+  key_vault_id = data.azurerm_key_vault.listmonk_ses_configuration[0].id
+}
+
+data "azurerm_key_vault_secret" "listmonk_ses_from" {
+  count = var.listmonk_smtp.enabled ? 1 : 0
+
+  name         = "aws-pari-ses-mail-from"
+  key_vault_id = data.azurerm_key_vault.listmonk_ses_configuration[0].id
+}
+
+locals {
+  # Exact Listmonk 6.2.0 settings format. Credentials are added only by psql at runtime.
+  listmonk_smtp_servers = var.listmonk_smtp.enabled ? [{
+    # The settings API uses this ID to retain the stored password on UI saves.
+    uuid            = uuidv5("url", "https://${local.listmonk_ingress_hostname}/smtp/aws-ses")
+    enabled         = true
+    host            = data.azurerm_key_vault_secret.listmonk_ses_host[0].value
+    port            = 465
+    auth_protocol   = "login"
+    tls_type        = "TLS"
+    tls_skip_verify = false
+    max_conns       = 1
+    idle_timeout    = "15s"
+    wait_timeout    = "5s"
+    max_msg_retries = 2
+    msg_retry_delay = "1s"
+    hello_hostname  = ""
+    email_headers   = []
+    from_addresses  = [data.azurerm_key_vault_secret.listmonk_ses_from[0].value]
+  }] : []
+}
+
 data "azurerm_key_vault_secret" "listmonk_oidc_client_secret" {
   count = var.listmonk_sso.enabled ? 1 : 0
 
@@ -26,7 +71,10 @@ resource "kubernetes_secret" "listmonk_bootstrap" {
   }
 
   data = {
-    LISTMONK_ADMIN_USER     = "admin"
+    LISTMONK_SMTP_ENABLED   = tostring(var.listmonk_smtp.enabled)
+    LISTMONK_SMTP_CONFIG    = jsonencode(local.listmonk_smtp_servers)
+    LISTMONK_FROM_EMAIL     = var.listmonk_smtp.enabled ? data.azurerm_key_vault_secret.listmonk_ses_from[0].value : ""
+    LISTMONK_MESSAGE_RATE   = tostring(var.listmonk_smtp.message_rate)
     LISTMONK_ADMIN_PASSWORD = azurerm_key_vault_secret.listmonk_admin_password.value
     LISTMONK_OIDC_CONFIG = jsonencode({
       enabled              = var.listmonk_sso.enabled
@@ -53,200 +101,11 @@ resource "kubernetes_config_map" "listmonk_bootstrap" {
 }
 
 locals {
+  # Other configuration changes already update the Pod spec and trigger a rollout.
   listmonk_bootstrap_checksum = nonsensitive(sha256(jsonencode({
-    image          = "${var.listmonk_configuration.image_repository}:${var.listmonk_configuration.image_tag}"
-    settings       = kubernetes_config_map.listmonk_bootstrap.data
-    bootstrap      = kubernetes_secret.listmonk_bootstrap.data
-    database       = kubernetes_secret.listmonk_db.data
-    host           = module.keycloak_pgflex.fqdn
-    ssl_mode       = var.listmonk_configuration.postgres_ssl_mode
-    root_url       = "https://${local.listmonk_ingress_hostname}"
-    postgres_image = var.listmonk_configuration.bootstrap_postgres_image
+    settings                 = kubernetes_config_map.listmonk_bootstrap.data
+    bootstrap                = kubernetes_secret.listmonk_bootstrap.data
+    database                 = kubernetes_secret.listmonk_db.data
+    smtp_credential_revision = var.listmonk_smtp.credential_revision
   })))
-}
-
-# Listmonk loads OIDC settings from its database, overriding file/env settings.
-resource "kubernetes_job_v1" "listmonk_bootstrap" {
-  metadata {
-    name      = "listmonk-bootstrap-${substr(local.listmonk_bootstrap_checksum, 0, 12)}"
-    namespace = local.listmonk_namespace
-  }
-
-  spec {
-    backoff_limit           = 1
-    active_deadline_seconds = 600
-
-    template {
-      metadata {
-        labels = {
-          app = "listmonk-bootstrap"
-        }
-      }
-
-      spec {
-        restart_policy                  = "Never"
-        automount_service_account_token = false
-
-        node_selector = {
-          domain = "keycloak"
-        }
-
-        toleration {
-          key      = "keycloakOnly"
-          operator = "Equal"
-          value    = "true"
-          effect   = "NoSchedule"
-        }
-
-        security_context {
-          run_as_non_root = true
-          run_as_user     = 65534
-          run_as_group    = 65534
-          fs_group        = 65534
-          seccomp_profile {
-            type = "RuntimeDefault"
-          }
-        }
-
-        init_container {
-          name    = "install"
-          image   = "${var.listmonk_configuration.image_repository}:${var.listmonk_configuration.image_tag}"
-          command = ["sh", "-ec", "./listmonk --config='' --install --idempotent --yes && ./listmonk --config='' --upgrade --yes"]
-
-          dynamic "env" {
-            for_each = {
-              LISTMONK_db__host     = module.keycloak_pgflex.fqdn
-              LISTMONK_db__port     = "5432"
-              LISTMONK_db__database = azurerm_postgresql_flexible_server_database.listmonk_db.name
-              LISTMONK_db__ssl_mode = var.listmonk_configuration.postgres_ssl_mode
-            }
-            content {
-              name  = env.key
-              value = env.value
-            }
-          }
-
-          dynamic "env" {
-            for_each = {
-              LISTMONK_db__user     = "db_user"
-              LISTMONK_db__password = "db_password"
-            }
-            content {
-              name = env.key
-              value_from {
-                secret_key_ref {
-                  name = kubernetes_secret.listmonk_db.metadata[0].name
-                  key  = env.value
-                }
-              }
-            }
-          }
-
-          env_from {
-            secret_ref {
-              name = kubernetes_secret.listmonk_bootstrap.metadata[0].name
-            }
-          }
-
-          security_context {
-            allow_privilege_escalation = false
-            read_only_root_filesystem  = true
-            capabilities {
-              drop = ["ALL"]
-            }
-          }
-
-          volume_mount {
-            name       = "tmp"
-            mount_path = "/tmp"
-          }
-        }
-
-        container {
-          name    = "settings"
-          image   = var.listmonk_configuration.bootstrap_postgres_image
-          command = ["psql", "-X", "--set=ON_ERROR_STOP=1", "--file=/bootstrap/settings.sql"]
-
-          dynamic "env" {
-            for_each = {
-              PGHOST            = module.keycloak_pgflex.fqdn
-              PGPORT            = "5432"
-              PGDATABASE        = azurerm_postgresql_flexible_server_database.listmonk_db.name
-              PGSSLMODE         = var.listmonk_configuration.postgres_ssl_mode
-              LISTMONK_ROOT_URL = "https://${local.listmonk_ingress_hostname}"
-            }
-            content {
-              name  = env.key
-              value = env.value
-            }
-          }
-
-          dynamic "env" {
-            for_each = {
-              PGUSER     = "db_user"
-              PGPASSWORD = "db_password"
-            }
-            content {
-              name = env.key
-              value_from {
-                secret_key_ref {
-                  name = kubernetes_secret.listmonk_db.metadata[0].name
-                  key  = env.value
-                }
-              }
-            }
-          }
-
-          env {
-            name = "LISTMONK_OIDC_CONFIG"
-            value_from {
-              secret_key_ref {
-                name = kubernetes_secret.listmonk_bootstrap.metadata[0].name
-                key  = "LISTMONK_OIDC_CONFIG"
-              }
-            }
-          }
-
-          volume_mount {
-            name       = "bootstrap"
-            mount_path = "/bootstrap"
-            read_only  = true
-          }
-
-          security_context {
-            allow_privilege_escalation = false
-            read_only_root_filesystem  = true
-            capabilities {
-              drop = ["ALL"]
-            }
-          }
-        }
-
-        volume {
-          name = "tmp"
-          empty_dir {}
-        }
-
-        volume {
-          name = "bootstrap"
-          config_map {
-            name = kubernetes_config_map.listmonk_bootstrap.metadata[0].name
-          }
-        }
-      }
-    }
-  }
-
-  wait_for_completion = true
-
-  timeouts {
-    create = "12m"
-    update = "12m"
-  }
-
-  depends_on = [
-    postgresql_grant.listmonk_database,
-    postgresql_grant.listmonk_schema,
-    postgresql_extension.listmonk_pgcrypto
-  ]
 }

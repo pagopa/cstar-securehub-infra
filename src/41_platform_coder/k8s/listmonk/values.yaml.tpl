@@ -10,7 +10,22 @@ listmonk:
     existingSecret: "listmonk-bootstrap"
     existingSecretPasswordKey: "LISTMONK_ADMIN_PASSWORD"
 
+bootstrap:
+  configMapName: listmonk-bootstrap
+  secretName: listmonk-bootstrap
+  rootURL: "https://${listmonk_ingress_hostname}"
+  smtp:
+    enabled: ${smtp_enabled}
+    credentialsSecretName: ${smtp_credentials_secret}
+
 setup:
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: "1"
+      memory: 256Mi
   waitImage: "${bootstrap_postgres_image}"
 
 postgresql:
@@ -46,8 +61,9 @@ podAnnotations:
   checksum/bootstrap: "${bootstrap_checksum}"
 
 storage:
-  enabled: true
   size: 5Gi
+  annotations:
+    argocd.argoproj.io/sync-options: Prune=false,Delete=false
 
 nodeSelector:
   domain: keycloak

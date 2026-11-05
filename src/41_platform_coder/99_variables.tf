@@ -109,7 +109,6 @@ variable "keycloak_configuration" {
 
 variable "listmonk_configuration" {
   type = object({
-    chart_version            = string
     image_repository         = string
     image_tag                = string
     replica_count            = number
@@ -173,4 +172,40 @@ variable "aks_user_foobar_node_pool_keycloak" {
     os_disk_size_gb   = optional(number, null)
     os_disk_type      = optional(string, null)
   })
+}
+
+variable "listmonk_git_revision" {
+  type        = string
+  description = "Git revision containing the local chart. Use an approved immutable commit SHA for stable releases."
+  default     = "poc-listmonk"
+
+  validation {
+    condition     = trimspace(var.listmonk_git_revision) != ""
+    error_message = "A Git revision containing the Listmonk chart is required."
+  }
+}
+
+variable "listmonk_smtp" {
+  description = "Existing PARI SES service. Dedicated SMTP credentials must already exist in a listmonk namespace Secret; never pass their values to Terraform."
+  type = object({
+    enabled                 = optional(bool, false)
+    credentials_secret_name = optional(string)
+    credential_revision     = optional(string, "")
+    message_rate            = optional(number, 1)
+  })
+  default = {}
+
+  validation {
+    condition = !var.listmonk_smtp.enabled || (
+      can(regex("^[a-z0-9]([-a-z0-9]*[a-z0-9])?$", var.listmonk_smtp.credentials_secret_name)) &&
+      try(length(var.listmonk_smtp.credentials_secret_name) <= 63, false) &&
+      trimspace(var.listmonk_smtp.credential_revision) != ""
+    )
+    error_message = "Enabling SES requires the real dedicated Kubernetes Secret name and a non-secret credential revision for controlled rollouts."
+  }
+
+  validation {
+    condition     = var.listmonk_smtp.message_rate >= 1 && floor(var.listmonk_smtp.message_rate) == var.listmonk_smtp.message_rate
+    error_message = "SES message_rate must be a positive integer approved against the shared regional quota."
+  }
 }

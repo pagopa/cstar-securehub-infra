@@ -18,40 +18,39 @@ resource "kubernetes_secret" "listmonk_db" {
   }
 }
 
-resource "helm_release" "listmonk" {
-  name       = "listmonk"
-  repository = "https://repo.helmforge.dev"
-  chart      = "listmonk"
-  version    = var.listmonk_configuration.chart_version
-  namespace  = local.listmonk_namespace
-
-  postrender {
-    binary_path = "/bin/bash"
-    args        = ["${path.module}/k8s/listmonk/post-render.sh"]
+# Ownership handoff: forget the Helm release without uninstalling its resources.
+# Review the migration runbook before applying; never run helm uninstall.
+removed {
+  from = helm_release.listmonk
+  lifecycle {
+    destroy = false
   }
+}
 
-  values = [
-    templatefile("${path.module}/k8s/listmonk/values.yaml.tpl", {
-      image_repository          = var.listmonk_configuration.image_repository
-      image_tag                 = var.listmonk_configuration.image_tag
-      replica_count             = var.listmonk_configuration.replica_count
-      listmonk_ingress_hostname = local.listmonk_ingress_hostname
-      ingress_tls_secret_name   = replace(local.listmonk_ingress_hostname, ".", "-")
-      postgres_db_name          = azurerm_postgresql_flexible_server_database.listmonk_db.name
-      postgres_db_host          = module.keycloak_pgflex.fqdn
-      postgres_db_port          = 5432
-      postgres_db_username      = postgresql_role.listmonk.name
-      postgres_ssl_mode         = var.listmonk_configuration.postgres_ssl_mode
-      bootstrap_checksum        = local.listmonk_bootstrap_checksum
-      bootstrap_postgres_image  = var.listmonk_configuration.bootstrap_postgres_image
-    })
-  ]
+removed {
+  from = kubernetes_job_v1.listmonk_bootstrap
+  lifecycle {
+    destroy = false
+  }
+}
 
-  depends_on = [
-    kubernetes_job_v1.listmonk_bootstrap,
-    module.listmonk_cert_mounter,
-    azurerm_private_dns_a_record.listmonk
-  ]
+locals {
+  listmonk_helm_values = templatefile("${path.module}/k8s/listmonk/values.yaml.tpl", {
+    image_repository          = var.listmonk_configuration.image_repository
+    image_tag                 = var.listmonk_configuration.image_tag
+    replica_count             = var.listmonk_configuration.replica_count
+    listmonk_ingress_hostname = local.listmonk_ingress_hostname
+    ingress_tls_secret_name   = replace(local.listmonk_ingress_hostname, ".", "-")
+    postgres_db_name          = azurerm_postgresql_flexible_server_database.listmonk_db.name
+    postgres_db_host          = module.keycloak_pgflex.fqdn
+    postgres_db_port          = 5432
+    postgres_db_username      = postgresql_role.listmonk.name
+    postgres_ssl_mode         = var.listmonk_configuration.postgres_ssl_mode
+    bootstrap_checksum        = local.listmonk_bootstrap_checksum
+    bootstrap_postgres_image  = var.listmonk_configuration.bootstrap_postgres_image
+    smtp_enabled              = var.listmonk_smtp.enabled
+    smtp_credentials_secret   = jsonencode(var.listmonk_smtp.credentials_secret_name == null ? "" : var.listmonk_smtp.credentials_secret_name)
+  })
 }
 
 resource "azurerm_private_dns_a_record" "listmonk" {

@@ -43,7 +43,6 @@ keycloak_configuration = {
 }
 
 listmonk_configuration = {
-  chart_version     = "1.2.3"
   image_repository  = "listmonk/listmonk"
   image_tag         = "v6.2.0"
   replica_count     = 1
