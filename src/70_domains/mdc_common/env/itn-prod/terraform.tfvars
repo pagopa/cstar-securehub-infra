@@ -28,6 +28,7 @@ audit_storage_account_replication_type = "ZRS"
 audit_storage_account_tier             = "basic_audit_cool"
 
 aks_nodepool = {
+  enabled           = false
   vm_sku_name       = "Standard_D8ads_v5_active"
   autoscale_enabled = true
   node_count_min    = 2

@@ -132,7 +132,7 @@ export_initiatives = [
   }
 ]
 
-blue_green_node_pool_enabled = true
+blue_green_node_pool_enabled = false
 
 aks_foobar_idpay_node_pool_configuration = {
   enabled        = true,

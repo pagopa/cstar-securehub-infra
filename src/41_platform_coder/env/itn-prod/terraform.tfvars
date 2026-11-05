@@ -44,6 +44,7 @@ keycloak_configuration = {
 }
 
 aks_user_node_pool_keycloak = {
+  enabled           = false
   idh_resource_tier = "Standard_D4ads_v5_active"
   node_count_min    = 2
   node_count_max    = 3

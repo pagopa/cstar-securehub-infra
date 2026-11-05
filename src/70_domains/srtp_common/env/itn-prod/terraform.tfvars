@@ -54,7 +54,7 @@ adx_db_hot_cache_period_days      = 5
 adx_table_soft_delete_period_days = 3650
 adx_table_hot_cache_period_days   = 30
 
-blue_green_node_pool_enabled = true
+blue_green_node_pool_enabled = false
 
 aks_foobar_srtp_node_pool_configuration = {
   enabled        = true,
