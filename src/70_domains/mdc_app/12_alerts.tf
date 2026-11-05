@@ -1,7 +1,7 @@
 # Action Groups
 # Creates one Action Group per alert, sending to the JSM Azure integration
 resource "azurerm_monitor_action_group" "jsm" {
-  for_each = contains(["p", "u"], var.env_short) ? local.final_alerts : {}
+  count = contains(["p", "u"], var.env_short) ? 1 : 0
 
   name                = "${local.project}-jsm-ag-${var.env_short}"
   resource_group_name = local.monitor_rg
