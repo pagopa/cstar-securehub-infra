@@ -35,7 +35,7 @@ aks_nodepool = {
 }
 
 aks_foobar_nodepool = {
-  enabled           = false
+  enabled           = true
   vm_sku_name       = "Standard_D8ads"
   autoscale_enabled = true
   node_count_min    = 2

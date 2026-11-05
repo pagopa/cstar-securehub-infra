@@ -60,8 +60,8 @@ module "aks_user_foobar_node_pool_keycloak" {
       active = var.env_short == "d" ? true : false
     }
     node_pool_bar = {
-      active           = var.env_short == "d" ? false : true
-      version_override = var.env_short == "d" ? null : "1.35.8"
+      active = var.env_short == "d" ? false : true
+      #version_override = var.env_short == "d" ? null : "1.35.8"
     }
   }
 

@@ -80,8 +80,8 @@ module "foo_bar_idpay_node_pool" {
       active = var.env_short == "d" ? true : false
     }
     node_pool_bar = {
-      active           = var.env_short == "d" ? false : true
-      version_override = var.env_short == "d" ? null : "1.35.8"
+      active = var.env_short == "d" ? false : true
+      #version_override = var.env_short == "p" ? "1.34.3" : null
     }
   }
 

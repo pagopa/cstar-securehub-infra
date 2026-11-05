@@ -20,7 +20,7 @@ default_zones = [1]
 aks_sku_tier                   = "Standard"
 aks_private_cluster_is_enabled = true
 aks_alerts_enabled             = false
-aks_kubernetes_version         = "1.34.3"
+aks_kubernetes_version         = "1.35.9"
 
 # Standard is recommended tier Standard_D2ads_v5
 # D – General purpose compute
@@ -99,7 +99,7 @@ reloader_helm = {
 blue_green_node_pool_enabled = true
 
 aks_foobar_user_node_pool_configuration = {
-  enabled        = false,
+  enabled        = true,
   tier           = "Standard_D4ads"
   node_count_min = 3,
   node_count_max = 4,

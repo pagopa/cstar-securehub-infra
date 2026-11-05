@@ -60,8 +60,8 @@ module "aks_foobar_node_pool" {
       active = var.env_short == "d"
     }
     node_pool_bar = {
-      active           = var.env_short != "d"
-      version_override = var.env_short != "d" ? "1.35.8" : null
+      active = var.env_short != "d"
+      #version_override = var.env_short != "d" ? "1.35.8" : null
     }
   }
 
