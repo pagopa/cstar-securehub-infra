@@ -471,7 +471,7 @@ locals {
       indexes = [
         { keys = ["_id"], unique = true },
         { keys = ["initiativeName"], unique = false },
-        { keys = ["initiativeSeries"], unique = false }
+        { keys = ["general.initiativeSeries"], unique = false }
       ]
     },
     {
