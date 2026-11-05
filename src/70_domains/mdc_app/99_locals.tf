@@ -37,8 +37,13 @@ locals {
   argocd_internal_url = "argocd.${var.location_short}.${var.dns_zone_internal_prefix}.${var.external_domain}"
 
   # 🔔 Alerts
-  jsm_azure_api_key = module.secrets.values["jsm-azure-api-key"].value
-  jsm_webhook_uri   = "https://api.atlassian.com/jsm/ops/integration/v1/json/azure?apiKey=${local.jsm_azure_api_key}"
+  alert_secret_names = contains(["p", "u"], var.env_short) ? ["jsm-azure-api-key"] : []
+
+  jsm_webhook_uri = one([
+    for k, v in module.secrets.values :
+    "https://api.atlassian.com/jsm/ops/integration/v1/json/azure?apiKey=${v.value}"
+    if k == "jsm-azure-api-key"
+  ])
 
   # Base configuration shared across all alerts.
   # Modify here to change global behavior.

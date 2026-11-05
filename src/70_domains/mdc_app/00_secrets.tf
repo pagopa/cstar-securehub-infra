@@ -4,7 +4,5 @@ module "secrets" {
   key_vault_name = local.kv_domain_name
   resource_group = local.kv_domain_rg_name
 
-  secrets = compact([
-    "jsm-azure-api-key",
-  ])
+  secrets = local.alert_secret_names
 }
