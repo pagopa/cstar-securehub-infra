@@ -157,6 +157,10 @@
               {
                 "source": { "name": "delivery_outcome" },
                 "sink": { "name": "deliveryOutcome", "type": "String" }
+              },
+              {
+                "source": { "name": "report_id" },
+                "sink": { "name": "reportId", "type": "String" }
               }
             ],
             "mapComplexValuesToString": true
