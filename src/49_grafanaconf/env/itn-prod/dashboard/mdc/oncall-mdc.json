@@ -253,7 +253,7 @@
         "x": 0,
         "y": 8
       },
-      "id": 3,
+      "id": 1,
       "options": {
         "afterRender": "",
         "content": "<div style=\"padding:4px;\">\n  <div style=\"display:flex;flex-wrap:wrap;gap:24px;\">\n\n    <!-- SINISTRA: wrapper (si allunga quanto il log quando affiancato) -->\n    <div style=\"flex:0 1 360px;min-width:0;max-width:100%;\">\n\n      <!-- timeline sticky -->\n      <div\n        style=\"position:sticky;top:0;max-height:calc(100vh - 170px);overflow-y:auto;padding-right:8px;scrollbar-width:thin;scrollbar-color:rgba(128,128,128,.45) transparent;\">\n        <div style=\"display:flex;justify-content:space-between;align-items:baseline;margin-bottom:16px;\">\n          <span style=\"font-size:16px;font-weight:600;\">Tracking</span>\n        </div>\n\n        {{#each data}}{{#if IsTimeline}}\n        <div style=\"display:flex;gap:14px;\">\n          <div style=\"display:flex;flex-direction:column;align-items:center;width:16px;flex-shrink:0;\">\n            <span style=\"display:block;width:14px;height:14px;border-radius:50%;background:{{Color}};box-shadow:0 0 0 3px {{Color}}40;margin-top:3px;\"></span>\n            <span style=\"display:block;flex:1;width:2px;background:rgba(128,128,128,.35);margin-top:4px;\"></span>\n          </div>\n          <div style=\"padding-bottom:22px;\">\n            <div style=\"font-family:monospace;font-size:12px;opacity:.65;\">{{Time}}</div>\n            <div style=\"font-weight:600;margin:2px 0;\">{{Label}}</div>\n            <div style=\"font-size:13px;opacity:.75;\">{{Detail}}</div>\n          </div>\n        </div>\n        {{/if}}{{/each}}\n      </div>\n\n    </div>\n\n    <!-- DESTRA: log -->\n    <div style=\"flex:1 1 400px;min-width:0;\">\n      <div style=\"margin-bottom:16px;\">\n        <span style=\"font-size:16px;font-weight:600;\">Log</span>\n      </div>\n\n      {{#each data}}{{#if IsLog}}\n      <div\n        style=\"font-family:monospace;font-size:12px;line-height:1.4;padding:5px 0;border-bottom:1px solid rgba(128,128,128,.15);\">\n        <span style=\"opacity:.6;\">{{Time}}</span>\n        <span style=\"margin:0 8px;font-weight:600;color:{{LogColor}};\">{{LogSeverity}}</span>\n        <span style=\"opacity:.6;\">{{AppRoleName}}</span>\n        {{#if OperationId}}\n        <span style=\"margin-left:8px;opacity:.6;user-select:all;\" title=\"Operation Id\">OperationId: {{OperationId}}</span>\n        {{/if}}\n        <div style=\"margin-top:2px;word-break:break-word;\">{{Message}}</div>\n      </div>\n      {{/if}}{{/each}}\n    </div>\n\n  </div>\n</div>",
@@ -412,6 +412,6 @@
   "timezone": "utc",
   "title": "MDC - On-call",
   "uid": "mafcnfj",
-  "version": 91,
+  "version": 92,
   "weekStart": ""
 }
