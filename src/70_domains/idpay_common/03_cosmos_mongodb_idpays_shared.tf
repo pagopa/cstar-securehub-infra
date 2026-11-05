@@ -470,7 +470,8 @@ locals {
       default_ttl_seconds = null
       indexes = [
         { keys = ["_id"], unique = true },
-        { keys = ["initiativeName"], unique = false }
+        { keys = ["initiativeName"], unique = false },
+        { keys = ["initiativeSeries"], unique = false }
       ]
     },
     {
