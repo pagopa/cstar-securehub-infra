@@ -191,6 +191,14 @@ locals {
             {
               keys   = ["_id"]
               unique = true
+            },
+            {
+              keys   = ["tspId"]
+              unique = true
+            },
+            {
+              keys   = ["sps.id"]
+              unique = false
             }
           ]
         }
@@ -201,10 +209,6 @@ locals {
           indexes = [
             {
               keys   = ["_id"]
-              unique = true
-            },
-            {
-              keys   = ["notificationId"]
               unique = true
             }
           ]
