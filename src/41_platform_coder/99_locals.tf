@@ -25,6 +25,9 @@ locals {
   kv_core_name                = "${local.product_nodomain}-core-kv"
   kv_core_resource_group_name = "${local.product_nodomain}-core-sec-rg"
 
+  kv_idpay_name                = "${local.product_nodomain}-idpay-kv"
+  kv_idpay_resource_group_name = "${local.product_nodomain}-idpay-security-rg"
+
   ### Monitoring
   monitoring_rg_name = "${local.project}-monitoring-rg"
   law_name           = "${local.project}-monitoring-law"
