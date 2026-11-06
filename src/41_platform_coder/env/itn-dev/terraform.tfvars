@@ -43,23 +43,11 @@ keycloak_configuration = {
 }
 
 listmonk_configuration = {
+  chart_version     = "1.2.3"
   image_repository  = "listmonk/listmonk"
   image_tag         = "v6.2.0"
   replica_count     = 1
   postgres_ssl_mode = "require"
-}
-
-listmonk_sso = {
-  enabled            = false # TODO: enable after configuring the Entra application.
-  client_id          = ""    # TODO: Listmonk Entra application client ID.
-  client_secret_name = "listmonk-azure-app-secret-value"
-}
-
-aks_user_node_pool_keycloak = {
-  enabled           = false
-  idh_resource_tier = "Standard_B4ms_active"
-  node_count_min    = 1
-  node_count_max    = 1
 }
 
 aks_user_foobar_node_pool_keycloak = {

@@ -10,14 +10,6 @@ listmonk:
     existingSecret: "listmonk-bootstrap"
     existingSecretPasswordKey: "LISTMONK_ADMIN_PASSWORD"
 
-bootstrap:
-  configMapName: listmonk-bootstrap
-  secretName: listmonk-bootstrap
-  rootURL: "https://${listmonk_ingress_hostname}"
-  smtp:
-    enabled: ${smtp_enabled}
-    credentialsSecretName: ${smtp_credentials_secret}
-
 setup:
   resources:
     requests:
@@ -56,9 +48,6 @@ ingress:
     - hosts:
         - "${listmonk_ingress_hostname}"
       secretName: "${ingress_tls_secret_name}"
-
-podAnnotations:
-  checksum/bootstrap: "${bootstrap_checksum}"
 
 storage:
   size: 5Gi

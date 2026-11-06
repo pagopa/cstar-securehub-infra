@@ -1,6 +1,6 @@
 locals {
   listmonk_argocd_hostname = "argocd.${var.location_short}.${var.dns_zone_internal_prefix}.${var.prefix}.${var.external_domain}"
-  listmonk_git_repository  = "https://github.com/pagopa/cstar-securehub-infra"
+  listmonk_helm_repository = "https://repo.helmforge.dev"
 }
 
 # Same control plane and credential source as src/40_platform.
@@ -28,7 +28,7 @@ resource "argocd_project" "listmonk" {
   spec {
     description       = "Listmonk platform workload; infrastructure and secrets remain Terraform-owned"
     source_namespaces = ["argocd"]
-    source_repos      = [local.listmonk_git_repository]
+    source_repos      = [local.listmonk_helm_repository]
 
     destination {
       server    = "https://kubernetes.default.svc"
@@ -87,9 +87,9 @@ resource "argocd_application" "listmonk" {
     }
 
     source {
-      repo_url        = local.listmonk_git_repository
-      target_revision = var.listmonk_git_revision
-      path            = "src/41_platform_coder/k8s/listmonk/chart"
+      repo_url        = local.listmonk_helm_repository
+      target_revision = var.listmonk_configuration.chart_version
+      chart           = "listmonk"
       helm {
         release_name     = "listmonk"
         values           = local.listmonk_helm_values
@@ -98,7 +98,7 @@ resource "argocd_application" "listmonk" {
       }
     }
 
-    # Manual sync: migrations and Recreate cause downtime and need a backup window.
+    # Manual sync: review schema upgrades and the upstream rolling strategy first.
     sync_policy {
       sync_options = ["FailOnSharedResource=true"]
     }
@@ -110,7 +110,6 @@ resource "argocd_application" "listmonk" {
     postgresql_extension.listmonk_pgcrypto,
     kubernetes_secret.listmonk_db,
     kubernetes_secret.listmonk_bootstrap,
-    kubernetes_config_map.listmonk_bootstrap,
     module.listmonk_cert_mounter,
     azurerm_private_dns_a_record.listmonk,
   ]

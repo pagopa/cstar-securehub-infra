@@ -73,4 +73,7 @@ module "listmonk_cert_mounter" {
       }]
     }
   })
+
+  # The service-account output alone does not depend on KV access or federation.
+  depends_on = [module.workload_identity_configuration_platform_coder_listmonk]
 }

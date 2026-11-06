@@ -89,4 +89,7 @@ resource "postgresql_extension" "listmonk_pgcrypto" {
   name     = "pgcrypto"
   database = azurerm_postgresql_flexible_server_database.listmonk_db.name
   schema   = "public"
+
+  # The server must finish updating azure.extensions before CREATE EXTENSION.
+  depends_on = [module.keycloak_pgflex]
 }

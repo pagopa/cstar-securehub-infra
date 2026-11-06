@@ -18,22 +18,6 @@ resource "kubernetes_secret" "listmonk_db" {
   }
 }
 
-# Ownership handoff: forget the Helm release without uninstalling its resources.
-# Review the migration runbook before applying; never run helm uninstall.
-removed {
-  from = helm_release.listmonk
-  lifecycle {
-    destroy = false
-  }
-}
-
-removed {
-  from = kubernetes_job_v1.listmonk_bootstrap
-  lifecycle {
-    destroy = false
-  }
-}
-
 locals {
   listmonk_helm_values = templatefile("${path.module}/k8s/listmonk/values.yaml.tpl", {
     image_repository          = var.listmonk_configuration.image_repository
@@ -46,10 +30,7 @@ locals {
     postgres_db_port          = 5432
     postgres_db_username      = postgresql_role.listmonk.name
     postgres_ssl_mode         = var.listmonk_configuration.postgres_ssl_mode
-    bootstrap_checksum        = local.listmonk_bootstrap_checksum
     bootstrap_postgres_image  = var.listmonk_configuration.bootstrap_postgres_image
-    smtp_enabled              = var.listmonk_smtp.enabled
-    smtp_credentials_secret   = jsonencode(var.listmonk_smtp.credentials_secret_name == null ? "" : var.listmonk_smtp.credentials_secret_name)
   })
 }
 

@@ -2,19 +2,19 @@
 
 ## Listmonk
 
-The code prepares Listmonk for DEV, UAT and PROD; deployment has not been verified on AKS.
-Terraform owns the namespace, external PostgreSQL database/role, secrets, DNS and certificate mounter.
-Argo CD owns the workload through a dedicated Application/Project and manual sync.
+Greenfield installation on AKS, namespace `listmonk`. Terraform prepares the dedicated
+PostgreSQL database/role, core Key Vault credentials, internal DNS/TLS.
+Argo CD installs HelmForge `1.2.3` with the official Listmonk `v6.2.0` image and manual sync.
+The upstream `db-init` installs/upgrades the schema and creates the admin only on first install.
+There is no local chart, settings SQL, SSO or SMTP provisioning.
 
-The local chart is a minimal HelmForge 1.2.3 derivative (four resources), with Listmonk `v6.2.0`, one replica, a 5 GiB uploads PVC and `Recreate` rollouts.
-Startup follows `wait-for-postgresql → db-init → settings → server`; no post-renderer, duplicate Job or Argo plugin is required.
+The console uses the existing private NGINX Ingress. Public API/OpenAPI and policies belong to
+`cstar-securehub-infra-api-spec/src/mcshared`; the shared gateway belongs to `cstar-infrastructure/src/core`.
+Set the public root URL once through the private admin UI after installation.
+Credentials also reside in Terraform state: restrict access to the backend and saved plans.
 
-- **SSO:** native Entra OIDC, disabled until the real app/client secret and Listmonk user roles are ready.
-- **SMTP:** existing PARI AWS SES service, TLS/465, with a dedicated external credentials Secret; disabled until provisioning and log handling are verified.
-- **Secrets:** SMTP credentials stay out of this Terraform state; existing DB/OIDC credentials are still state-backed. Listmonk also stores OIDC/SMTP settings in its database.
-
-See [deployment analysis and runbook](../../docs/LISTMONK_AKS_DEPLOYMENT_ANALYSIS.md) for decisions, acceptance criteria, PostgreSQL PUBLIC privileges and authorized deployment/rollback steps.
-Before migrating, check older PoCs (including resources in namespace `idpay`), back up DB/media and verify object ownership. Import unmanaged resources instead of recreating them. Never uninstall the Helm release during the Argo ownership handoff.
+See [deployment analysis and validation](../../docs/LISTMONK_AKS_DEPLOYMENT_ANALYSIS.md)
+for acceptance criteria, the changes across the four repositories and pending live checks.
 
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
@@ -73,6 +73,7 @@ Before migrating, check older PoCs (including resources in namespace `idpay`), b
 | [azurerm_key_vault_secret.keycloak_db_admin_user](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.keycloak_url](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.listmonk_admin_password](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.listmonk_admin_username](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.listmonk_db_password](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.listmonk_db_user](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.listmonk_url](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
@@ -95,7 +96,6 @@ Before migrating, check older PoCs (including resources in namespace `idpay`), b
 | [kubernetes_config_map.keycloak_mdc_portal_theme](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/config_map) | resource |
 | [kubernetes_config_map.keycloak_pagopa_theme](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/config_map) | resource |
 | [kubernetes_config_map.keycloak_providers](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/config_map) | resource |
-| [kubernetes_config_map.listmonk_bootstrap](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/config_map) | resource |
 | [kubernetes_namespace.keycloak](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/namespace) | resource |
 | [kubernetes_namespace.listmonk](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/namespace) | resource |
 | [kubernetes_secret.keycloak_admin](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/secret) | resource |
@@ -122,13 +122,9 @@ Before migrating, check older PoCs (including resources in namespace `idpay`), b
 | [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) | data source |
 | [azurerm_key_vault.key_vault_core](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault) | data source |
 | [azurerm_key_vault.listmonk_cicd](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault) | data source |
-| [azurerm_key_vault.listmonk_ses_configuration](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault) | data source |
 | [azurerm_key_vault_secret.keycloak_url](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.listmonk_argocd_password](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.listmonk_argocd_username](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
-| [azurerm_key_vault_secret.listmonk_oidc_client_secret](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
-| [azurerm_key_vault_secret.listmonk_ses_from](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
-| [azurerm_key_vault_secret.listmonk_ses_host](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.terraform_client_secret_for_keycloak](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_kubernetes_cluster.aks](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/kubernetes_cluster) | data source |
 | [azurerm_log_analytics_workspace.logs_workspace](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/log_analytics_workspace) | data source |
@@ -147,24 +143,19 @@ Before migrating, check older PoCs (including resources in namespace `idpay`), b
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_aks_user_foobar_node_pool_keycloak"></a> [aks\_user\_foobar\_node\_pool\_keycloak](#input\_aks\_user\_foobar\_node\_pool\_keycloak) | n/a | <pre>object({<br/>    enabled           = optional(bool, true)<br/>    idh_resource_tier = string<br/>    node_count_min    = number<br/>    node_count_max    = number<br/>    os_disk_size_gb   = optional(number, null)<br/>    os_disk_type      = optional(string, null)<br/>  })</pre> | n/a | yes |
-| <a name="input_aks_user_node_pool_keycloak"></a> [aks\_user\_node\_pool\_keycloak](#input\_aks\_user\_node\_pool\_keycloak) | n/a | <pre>object({<br/>    enabled           = optional(bool, true)<br/>    idh_resource_tier = string<br/>    node_count_min    = number<br/>    node_count_max    = number<br/>    os_disk_size_gb   = optional(number, null)<br/>    os_disk_type      = optional(string, null)<br/>  })</pre> | n/a | yes |
 | <a name="input_dns_zone_internal_prefix"></a> [dns\_zone\_internal\_prefix](#input\_dns\_zone\_internal\_prefix) | The dns subdomain. | `string` | `""` | no |
 | <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | n/a | yes |
 | <a name="input_env"></a> [env](#input\_env) | Environment | `string` | n/a | yes |
 | <a name="input_env_short"></a> [env\_short](#input\_env\_short) | n/a | `string` | n/a | yes |
 | <a name="input_external_domain"></a> [external\_domain](#input\_external\_domain) | Domain for delegation | `string` | n/a | yes |
+| <a name="input_k8s_kube_config_path_prefix"></a> [k8s\_kube\_config\_path\_prefix](#input\_k8s\_kube\_config\_path\_prefix) | Kubernetes | `string` | `"~/.kube"` | no |
 | <a name="input_keycloak_configuration"></a> [keycloak\_configuration](#input\_keycloak\_configuration) | n/a | <pre>object({<br/>    image_repository                            = string<br/>    image_tag                                   = string<br/>    image_registry                              = string<br/>    chart_version                               = string<br/>    replica_count_min                           = number<br/>    replica_count_max                           = number<br/>    cpu_request                                 = string<br/>    cpu_limit                                   = string<br/>    memory_request                              = string<br/>    memory_limit                                = string<br/>    http_client_connection_ttl_millis           = number<br/>    http_client_connection_max_idle_time_millis = number<br/>    image_registry_config_cli                   = string<br/>    image_repository_config_cli                 = string<br/>    image_tag_config_cli                        = string<br/>    image_digest_config_cli                     = optional(string, "")<br/>  })</pre> | n/a | yes |
 | <a name="input_keycloak_pgflex_params"></a> [keycloak\_pgflex\_params](#input\_keycloak\_pgflex\_params) | Postgres Flexible | <pre>object({<br/>    enabled                                = bool<br/>    zone                                   = number<br/>    idh_resource_tier                      = string<br/>    geo_replication_enabled                = bool<br/>    pgres_flex_pgbouncer_enabled           = bool<br/>    pgres_flex_diagnostic_settings_enabled = bool<br/>    auto_grow_enabled                      = bool<br/>    storage_tier                           = optional(string, null)<br/>  })</pre> | n/a | yes |
-| <a name="input_listmonk_configuration"></a> [listmonk\_configuration](#input\_listmonk\_configuration) | n/a | <pre>object({<br/>    image_repository         = string<br/>    image_tag                = string<br/>    replica_count            = number<br/>    postgres_ssl_mode        = string<br/>    bootstrap_postgres_image = optional(string, "postgres:17-alpine")<br/>  })</pre> | n/a | yes |
-| <a name="input_listmonk_sso"></a> [listmonk\_sso](#input\_listmonk\_sso) | Native Microsoft Entra OIDC. Enable after registering the app and storing its client secret in the core Key Vault. | <pre>object({<br/>    enabled              = bool<br/>    client_id            = string<br/>    client_secret_name   = string<br/>    auto_create_users    = optional(bool, false)<br/>    default_user_role_id = optional(number)<br/>  })</pre> | n/a | yes |
+| <a name="input_listmonk_configuration"></a> [listmonk\_configuration](#input\_listmonk\_configuration) | n/a | <pre>object({<br/>    chart_version            = string<br/>    image_repository         = string<br/>    image_tag                = string<br/>    replica_count            = number<br/>    postgres_ssl_mode        = string<br/>    bootstrap_postgres_image = optional(string, "postgres:17-alpine")<br/>  })</pre> | n/a | yes |
 | <a name="input_location"></a> [location](#input\_location) | n/a | `string` | n/a | yes |
 | <a name="input_location_short"></a> [location\_short](#input\_location\_short) | Location short like eg: neu, weu.. | `string` | n/a | yes |
-| <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | n/a | yes |
-| <a name="input_dns_zone_internal_prefix"></a> [dns\_zone\_internal\_prefix](#input\_dns\_zone\_internal\_prefix) | The dns subdomain. | `string` | `""` | no |
-| <a name="input_k8s_kube_config_path_prefix"></a> [k8s\_kube\_config\_path\_prefix](#input\_k8s\_kube\_config\_path\_prefix) | Kubernetes | `string` | `"~/.kube"` | no |
-| <a name="input_listmonk_git_revision"></a> [listmonk\_git\_revision](#input\_listmonk\_git\_revision) | Git revision containing the local chart. Use an approved immutable commit SHA for stable releases. | `string` | `"poc-listmonk"` | no |
-| <a name="input_listmonk_smtp"></a> [listmonk\_smtp](#input\_listmonk\_smtp) | Existing PARI SES service. Dedicated SMTP credentials must already exist in a listmonk namespace Secret; never pass their values to Terraform. | <pre>object({<br/>    enabled                 = optional(bool, false)<br/>    credentials_secret_name = optional(string)<br/>    credential_revision     = optional(string, "")<br/>    message_rate            = optional(number, 1)<br/>  })</pre> | `{}` | no |
 | <a name="input_mcshared_dns_zone_prefix"></a> [mcshared\_dns\_zone\_prefix](#input\_mcshared\_dns\_zone\_prefix) | The dns subdomain for mcshared | `string` | `null` | no |
+| <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | n/a | yes |
 
 ## Outputs
 
