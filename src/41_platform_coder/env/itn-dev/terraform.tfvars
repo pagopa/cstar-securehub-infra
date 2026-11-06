@@ -63,7 +63,6 @@ aks_user_node_pool_keycloak = {
 }
 
 aks_user_foobar_node_pool_keycloak = {
-  enabled           = true
   idh_resource_tier = "Standard_B4ms"
   node_count_min    = 1
   node_count_max    = 1
