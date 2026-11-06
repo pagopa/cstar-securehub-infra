@@ -181,7 +181,7 @@
         ]
       },
       "gridPos": {
-        "h": 7,
+        "h": 8,
         "w": 24,
         "x": 0,
         "y": 0
@@ -192,7 +192,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "12.4.8",
+      "pluginVersion": "12.4.13",
       "targets": [
         {
           "azureLogAnalytics": {
@@ -235,16 +235,6 @@
       },
       "fieldConfig": {
         "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "custom": {
-            "align": "auto",
-            "filterable": true,
-            "wrapHeaderText": false,
-            "wrapText": true
-          },
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -255,104 +245,53 @@
             ]
           }
         },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "SeverityLevel"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 127
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "AppRoleName"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 140
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "TimeGenerated"
-            },
-            "properties": []
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "OperationId"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 298
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Message"
-            },
-            "properties": []
-          }
-        ]
+        "overrides": []
       },
       "gridPos": {
-        "h": 12,
+        "h": 7,
         "w": 24,
         "x": 0,
-        "y": 7
+        "y": 8
       },
       "id": 1,
       "options": {
-        "cellHeight": "sm",
-        "displayedFields": [
-          "TimeGenerated",
-          "Message",
-          "AppRoleName",
-          "OperationId",
-          "SeverityLevel"
-        ],
-        "fieldSelectorWidth": 20,
-        "maxRowHeight": 120,
-        "showControls": true,
-        "showCopyLogLink": false,
-        "showHeader": true,
-        "showInspectLogLine": true
+        "afterRender": "",
+        "content": "<div style=\"padding:4px;\">\n  <div style=\"display:flex;flex-wrap:wrap;gap:24px;\">\n\n    <!-- SINISTRA: wrapper (si allunga quanto il log quando affiancato) -->\n    <div style=\"flex:0 1 360px;min-width:0;max-width:100%;\">\n\n      <!-- timeline sticky -->\n      <div\n        style=\"position:sticky;top:0;max-height:calc(100vh - 170px);overflow-y:auto;padding-right:8px;scrollbar-width:thin;scrollbar-color:rgba(128,128,128,.45) transparent;\">\n        <div style=\"display:flex;justify-content:space-between;align-items:baseline;margin-bottom:16px;\">\n          <span style=\"font-size:16px;font-weight:600;\">Tracking</span>\n        </div>\n\n        {{#each data}}{{#if IsTimeline}}\n        <div style=\"display:flex;gap:14px;\">\n          <div style=\"display:flex;flex-direction:column;align-items:center;width:16px;flex-shrink:0;\">\n            <span style=\"display:block;width:14px;height:14px;border-radius:50%;background:{{Color}};box-shadow:0 0 0 3px {{Color}}40;margin-top:3px;\"></span>\n            <span style=\"display:block;flex:1;width:2px;background:rgba(128,128,128,.35);margin-top:4px;\"></span>\n          </div>\n          <div style=\"padding-bottom:22px;\">\n            <div style=\"font-family:monospace;font-size:12px;opacity:.65;\">{{Time}}</div>\n            <div style=\"font-weight:600;margin:2px 0;\">{{Label}}</div>\n            <div style=\"font-size:13px;opacity:.75;\">{{Detail}}</div>\n          </div>\n        </div>\n        {{/if}}{{/each}}\n      </div>\n\n    </div>\n\n    <!-- DESTRA: log -->\n    <div style=\"flex:1 1 400px;min-width:0;\">\n      <div style=\"margin-bottom:16px;\">\n        <span style=\"font-size:16px;font-weight:600;\">Log</span>\n      </div>\n\n      {{#each data}}{{#if IsLog}}\n      <div\n        style=\"font-family:monospace;font-size:12px;line-height:1.4;padding:5px 0;border-bottom:1px solid rgba(128,128,128,.15);\">\n        <span style=\"opacity:.6;\">{{Time}}</span>\n        <span style=\"margin:0 8px;font-weight:600;color:{{LogColor}};\">{{LogSeverity}}</span>\n        <span style=\"opacity:.6;\">{{AppRoleName}}</span>\n        {{#if OperationId}}\n        <span style=\"margin-left:8px;opacity:.6;user-select:all;\" title=\"Operation Id\">OperationId: {{OperationId}}</span>\n        {{/if}}\n        <div style=\"margin-top:2px;word-break:break-word;\">{{Message}}</div>\n      </div>\n      {{/if}}{{/each}}\n    </div>\n\n  </div>\n</div>",
+        "contentPartials": [],
+        "defaultContent": "",
+        "editor": {
+          "format": "auto",
+          "language": "html"
+        },
+        "editors": [],
+        "externalStyles": [],
+        "helpers": "",
+        "renderMode": "allRows",
+        "styles": "",
+        "wrap": false
       },
-      "pluginVersion": "12.4.8",
+      "pluginVersion": "6.3.0",
       "targets": [
         {
           "azureLogAnalytics": {
             "dashboardTime": false,
             "mode": "raw",
-            "query": "let targetMessageId = \"${messageId}\";\r\nlet targetEntityId = \"${entityId}\";\r\nlet targetOpId = toscalar(\r\n    AppTraces\r\n    | where $__timeFilter(TimeGenerated)\r\n    | where Message has \"[MESSAGE-CORE][SEND] Received message:\" and Message has targetMessageId\r\n    | project OperationId\r\n    | take 1\r\n);\r\nAppTraces\r\n| where $__timeFilter(TimeGenerated)\r\n| where OperationId == targetOpId\r\n     or (Message has \"[MESSAGE-CORE-CONSUMER-SERVICE]\" and Message has targetMessageId)\r\n     or (Message has \"[MESSAGE-SERVICE][SEND-NOTIFICATIONS]\" and Message has targetMessageId)\r\n     or (Message has \"[MESSAGE-SERVICE][HANDLE-ERROR]\" and Message has targetMessageId)\r\n     or (Message has \"[MESSAGE-SERVICE][ENQUEUE-WITH-RETRY]\" and Message has targetMessageId)\r\n     or (Message has \"[MESSAGE-SERVICE]\" and Message has targetMessageId)// and Message contains targetEntityId)\r\n     or (Message has \"[MESSAGE-CORE-PRODUCER]\" and Message has targetMessageId)\r\n     or (Message has \"[MESSAGE-CORE-PRODUCER-SERVICE]\" and Message has targetMessageId)\r\n     or (Message has \"[NOTIFY-SERVICE]\" and Message has targetMessageId)// and Message contains targetEntityId)\r\n     or (Message has \"[NOTIFY-ERROR-PRODUCER-SERVICE]\" and Message has targetMessageId)// and Message contains targetEntityId)\r\n| project TimeGenerated, Message, AppRoleName, SeverityLevel, OperationId\r\n| order by TimeGenerated asc",
+            "query": "let targetMessageId = \"${messageId}\";\r\nlet targetEntityId = \"${entityId}\";\r\nlet map = datatable(State: string, Label: string, Status: string)\r\n    [\r\n    \"RECEIVED\", \"Ricevimento messaggio da SEND\", \"INFO\",\r\n    \"ADD_KAFKA\", \"Aggiunto a coda invio messaggi\", \"INFO\",\r\n    \"START_PROCESSING\", \"Elaborazione messaggio\", \"INFO\",\r\n    \"RETRY_PROCESSING\", \"Nuovo tentativo di elaborazione programmato\", \"INFO\",\r\n    \"PROCESSING_FAILED\", \"Elaborazione fallita: esauriti i tentativi\", \"FAILURE\",\r\n    \"TRY_SEND_PSP\", \"Tentativo di invio al PSP\", \"INFO\",\r\n    \"TRY_TOKEN_FAILED\", \"Fallita autenticazione PSP\", \"FAILURE\",\r\n    \"SENT_FAILED\", \"Invio messaggio fallito\", \"FAILURE\",\r\n    \"RETRY_EXHAUSTED\", \"Esauriti i tentativi di invio alla PSP\", \"FAILURE\",\r\n    \"SENT_SUCCESS\", \"Messaggio consegnato al PSP\", \"SUCCESS\"\r\n];\r\nlet allLogs = union\r\n    (AppTraces\r\n        | project TimeGenerated, Message, SeverityLevel, AppRoleName, OperationId),\r\n    (AppExceptions\r\n        | extend Message = coalesce(tostring(Properties[\"Logger Message\"]), OuterMessage)\r\n        | project TimeGenerated, Message, SeverityLevel, AppRoleName, OperationId);\r\nlet targetOpId = toscalar(\r\n    AppTraces\r\n    | where $__timeFilter(TimeGenerated)\r\n    | where Message has \"[MESSAGE-CORE][SEND] Received message:\" and Message has targetMessageId\r\n    | project OperationId\r\n    | take 1\r\n    );\r\nlet timelineRows = allLogs\r\n    | where isnotempty(targetMessageId)\r\n    | where $__timeFilter(TimeGenerated)\r\n    | where Message has targetMessageId\r\n    | extend State = case(\r\n                     Message contains \"[MESSAGE-CORE][SEND] Received message\",\r\n                     \"RECEIVED\",\r\n                     Message contains \"[MESSAGE-PRODUCER][ENQUEUE] Enqueuing message with ID\",\r\n                     \"ADD_KAFKA\",\r\n                     Message contains \"[MESSAGE-SERVICE][PROCESS-MESSAGE] Start processing\",\r\n                     \"START_PROCESSING\",\r\n                     Message contains \"[MESSAGE-CORE-PRODUCER-SERVICE][ENQUEUE-MESSAGE]\" and Message contains \"exceeds max retry attempts\",\r\n                     \"PROCESSING_FAILED\",\r\n                     Message contains \"[MESSAGE-CORE-PRODUCER-SERVICE][ENQUEUE-MESSAGE] Enqueuing message ID\",\r\n                     \"RETRY_PROCESSING\",\r\n                     Message contains \"[NOTIFY-ERROR-PRODUCER-SERVICE][ENQUEUE-NOTIFY]\" and Message contains \"exceeds max retry attempts\",\r\n                     \"RETRY_EXHAUSTED\",\r\n                     Message contains \"[NOTIFY-ERROR-PRODUCER-SERVICE][ENQUEUE-NOTIFY] Enqueuing message ID\",\r\n                     \"TRY_SEND_PSP\",\r\n                     Message contains \"[NOTIFY-SERVICE][GET-TOKEN] Error getting token\",\r\n                     \"TRY_TOKEN_FAILED\",\r\n                     Message contains \"[NOTIFY-SERVICE][TO-URL] Failed MsgId\",\r\n                     \"SENT_FAILED\",\r\n                     Message contains \"[NOTIFY-SERVICE][TO-URL]\" and Message contains \"TPP responded\",\r\n                     \"SENT_SUCCESS\",\r\n                     \"\"\r\n                 )\r\n    | where isnotempty(State)\r\n    | lookup kind=leftouter map on State\r\n    | extend\r\n        Attempt = extract(@\"retry attempt:?\\s*(\\d+)\", 1, Message),\r\n        Tpp     = trim_end(@\"[.,]\", extract(@\"(?i)tpp:\\s*(\\S+)\", 1, Message)),\r\n        Reason  = extract(@\"Reason:\\s*(.*)$\", 1, Message)\r\n    | where isempty(targetEntityId) or isempty(Tpp) or Tpp == targetEntityId\r\n    | extend Detail = trim(\r\n                      @\"[\\s·]+\",\r\n                      strcat(\r\n                          iif(isnotempty(Attempt), strcat(\"Tentativo \", Attempt, \" · \"), \"\"),\r\n                          iif(isnotempty(Tpp), strcat(\"TPP \", Tpp, \" · \"), \"\"),\r\n                          Reason\r\n                      )\r\n                  )\r\n    | extend Color = case(Status == \"SUCCESS\", \"#2e9e5b\", Status == \"FAILURE\", \"#d9363e\", \"#1f6fe5\")\r\n    | project\r\n        TimeGenerated,\r\n        Time = format_datetime(TimeGenerated, \"dd/MM/yyyy HH:mm:ss.fff\"),\r\n        State,\r\n        Label,\r\n        Detail,\r\n        Status,\r\n        Color\r\n    | extend IsTimeline = true, IsLog = false;\r\nlet logRows = allLogs\r\n    | where isnotempty(targetMessageId)\r\n    | where $__timeFilter(TimeGenerated)\r\n    | where (isnotempty(targetOpId) and OperationId == targetOpId)\r\n        or (Message has \"[MESSAGE-CORE-CONSUMER-SERVICE]\" and Message has targetMessageId)\r\n        or (Message has \"[MESSAGE-SERVICE]\" and Message has targetMessageId)\r\n        or (Message has \"[MESSAGE-CORE-PRODUCER]\" and Message has targetMessageId)\r\n        or (Message has \"[MESSAGE-CORE-PRODUCER-SERVICE]\" and Message has targetMessageId)\r\n        or (Message has \"[NOTIFY-SERVICE]\" and Message has targetMessageId)\r\n        or (Message has \"[NOTIFY-ERROR-PRODUCER-SERVICE]\" and Message has targetMessageId)\r\n        | top 300 by TimeGenerated desc\r\n    | project\r\n        TimeGenerated,\r\n        Time = format_datetime(TimeGenerated, \"dd/MM/yyyy HH:mm:ss.fff\"),\r\n        LogSeverity = case(SeverityLevel >= 3, \"ERROR\", SeverityLevel == 2, \"WARN\", \"INFO\"),\r\n        LogColor = case(SeverityLevel >= 3, \"#d9363e\", SeverityLevel == 2, \"#e0a100\", \"#8a8f98\"),\r\n        AppRoleName,\r\n        OperationId,\r\n        Message\r\n    | extend IsTimeline = false, IsLog = true;\r\nunion timelineRows, logRows\r\n| sort by TimeGenerated desc",
             "resources": [
               "$workspace"
             ],
             "resultFormat": "logs"
           },
-          "datasource": {
-            "type": "grafana-azure-monitor-datasource",
-            "uid": "azure-monitor-oob"
+          "azureMonitor": {
+            "allowedTimeGrainsMs": [],
+            "timeGrain": "auto"
           },
           "queryType": "Azure Log Analytics",
           "refId": "A"
         }
       ],
-      "title": "Log Messaggi",
-      "type": "logstable"
+      "title": "Dettaglio messaggio",
+      "type": "marcusolsson-dynamictext-panel"
     }
   ],
   "preload": false,
@@ -473,6 +412,6 @@
   "timezone": "utc",
   "title": "MDC - On-call",
   "uid": "mafcnfj",
-  "version": 52,
+  "version": 92,
   "weekStart": ""
 }
