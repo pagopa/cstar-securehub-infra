@@ -59,3 +59,147 @@ variable "functional_testing_secret_name" {
     error_message = "functional_testing_secret_name must be set in dev and uat."
   }
 }
+
+variable "functional_testing_ui_base_url_welfare_enti" {
+  type        = string
+  description = "Base URL for welfare enti UI tests."
+  default     = null
+  validation {
+    condition     = var.env == "prod" || var.functional_testing_ui_base_url_welfare_enti != null
+    error_message = "functional_testing_ui_base_url_welfare_enti must be set in dev and uat."
+  }
+}
+
+variable "functional_testing_ui_base_url_welfare_esercenti" {
+  type        = string
+  description = "Base URL for welfare esercenti UI tests."
+  default     = null
+  validation {
+    condition     = var.env == "prod" || var.functional_testing_ui_base_url_welfare_esercenti != null
+    error_message = "functional_testing_ui_base_url_welfare_esercenti must be set in dev and uat."
+  }
+}
+
+variable "functional_testing_ui_base_url_rdb" {
+  type        = string
+  description = "Base URL for RDB UI tests."
+  default     = null
+  validation {
+    condition     = var.env == "prod" || var.functional_testing_ui_base_url_rdb != null
+    error_message = "functional_testing_ui_base_url_rdb must be set in dev and uat."
+  }
+}
+
+variable "functional_testing_ui_base_url_pari_utente" {
+  type        = string
+  description = "Base URL for PARI utente UI tests."
+  default     = null
+  validation {
+    condition     = var.env == "prod" || var.functional_testing_ui_base_url_pari_utente != null
+    error_message = "functional_testing_ui_base_url_pari_utente must be set in dev and uat."
+  }
+}
+
+variable "functional_testing_ui_login_path_welfare_enti" {
+  type        = string
+  description = "Optional login path override for welfare enti."
+  default     = "/accesso"
+}
+
+variable "functional_testing_ui_login_path_welfare_esercenti" {
+  type        = string
+  description = "Optional login path override for welfare esercenti."
+  default     = "/accesso"
+}
+
+variable "functional_testing_ui_login_path_rdb" {
+  type        = string
+  description = "Optional login path override for RDB."
+  default     = ""
+}
+
+variable "functional_testing_ui_login_path_pari_utente" {
+  type        = string
+  description = "Optional login path override for PARI utente."
+  default     = ""
+}
+
+variable "functional_testing_ui_username_secret_name_welfare_enti" {
+  type        = string
+  description = "Key Vault secret name for welfare enti username."
+  default     = null
+  validation {
+    condition     = var.env == "prod" || var.functional_testing_ui_username_secret_name_welfare_enti != null
+    error_message = "functional_testing_ui_username_secret_name_welfare_enti must be set in dev and uat."
+  }
+}
+
+variable "functional_testing_ui_password_secret_name_welfare_enti" {
+  type        = string
+  description = "Key Vault secret name for welfare enti password."
+  default     = null
+  validation {
+    condition     = var.env == "prod" || var.functional_testing_ui_password_secret_name_welfare_enti != null
+    error_message = "functional_testing_ui_password_secret_name_welfare_enti must be set in dev and uat."
+  }
+}
+
+variable "functional_testing_ui_username_secret_name_welfare_esercenti" {
+  type        = string
+  description = "Key Vault secret name for welfare esercenti username."
+  default     = null
+  validation {
+    condition     = var.env == "prod" || var.functional_testing_ui_username_secret_name_welfare_esercenti != null
+    error_message = "functional_testing_ui_username_secret_name_welfare_esercenti must be set in dev and uat."
+  }
+}
+
+variable "functional_testing_ui_password_secret_name_welfare_esercenti" {
+  type        = string
+  description = "Key Vault secret name for welfare esercenti password."
+  default     = null
+  validation {
+    condition     = var.env == "prod" || var.functional_testing_ui_password_secret_name_welfare_esercenti != null
+    error_message = "functional_testing_ui_password_secret_name_welfare_esercenti must be set in dev and uat."
+  }
+}
+
+variable "functional_testing_ui_username_secret_name_rdb" {
+  type        = string
+  description = "Key Vault secret name for RDB username."
+  default     = null
+  validation {
+    condition     = var.env == "prod" || var.functional_testing_ui_username_secret_name_rdb != null
+    error_message = "functional_testing_ui_username_secret_name_rdb must be set in dev and uat."
+  }
+}
+
+variable "functional_testing_ui_password_secret_name_rdb" {
+  type        = string
+  description = "Key Vault secret name for RDB password."
+  default     = null
+  validation {
+    condition     = var.env == "prod" || var.functional_testing_ui_password_secret_name_rdb != null
+    error_message = "functional_testing_ui_password_secret_name_rdb must be set in dev and uat."
+  }
+}
+
+variable "functional_testing_ui_username_secret_name_pari_utente" {
+  type        = string
+  description = "Key Vault secret name for PARI utente username."
+  default     = null
+  validation {
+    condition     = var.env == "prod" || var.functional_testing_ui_username_secret_name_pari_utente != null
+    error_message = "functional_testing_ui_username_secret_name_pari_utente must be set in dev and uat."
+  }
+}
+
+variable "functional_testing_ui_password_secret_name_pari_utente" {
+  type        = string
+  description = "Key Vault secret name for PARI utente password."
+  default     = null
+  validation {
+    condition     = var.env == "prod" || var.functional_testing_ui_password_secret_name_pari_utente != null
+    error_message = "functional_testing_ui_password_secret_name_pari_utente must be set in dev and uat."
+  }
+}
