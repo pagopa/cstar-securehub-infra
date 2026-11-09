@@ -127,6 +127,37 @@ module "cdn_multi_initiative" {
           ]
         }
 
+        # Redirect only /<bonus>/utente for initiatives not listed in local.multi_initiatives.
+        # Exclude bonusnotfound to prevent redirecting the fallback page to itself.
+        "RedirectUnknownUserBonus" = {
+          order             = 5
+          behavior_on_match = "Stop"
+
+          conditions = [
+            {
+              type         = "url_path"
+              operator     = "RegEx"
+              match_values = ["^/?[^/]+/utente/?$"]
+            },
+            {
+              type         = "url_path"
+              operator     = "RegEx"
+              match_values = ["^/?(${local.multi_initiatives_regex}|bonusnotfound)/utente/?$"]
+              negate       = true
+            }
+          ]
+
+          actions = [{
+            type          = "redirect"
+            redirect_type = "Found"
+            protocol      = "Https"
+            hostname      = ""
+            path          = "/bonusnotfound/utente"
+          }]
+        }
+
+        # Serve index.html for known initiative SPAs and bonusnotfound/utente.
+        # Assets and explicit file requests keep their original paths.
         "RewriteInitiativeSpaRouting" = {
           order             = 10
           behavior_on_match = "Stop"
@@ -135,13 +166,13 @@ module "cdn_multi_initiative" {
             {
               type         = "url_path"
               operator     = "RegEx"
-              match_values = ["^/?(${local.multi_initiatives_regex})/(${local.multi_fe_regex})/assets(/.*)?$"]
+              match_values = ["^/?((${local.multi_initiatives_regex})/(${local.multi_fe_regex})|bonusnotfound/utente)/assets(/.*)?$"]
               negate       = true
             },
             {
               type         = "url_path"
               operator     = "RegEx"
-              match_values = ["^/?(${local.multi_initiatives_regex})/(${local.multi_fe_regex})(/.*)?$"]
+              match_values = ["^/?((${local.multi_initiatives_regex})/(${local.multi_fe_regex})|bonusnotfound/utente)(/.*)?$"]
               negate       = false
             },
             {

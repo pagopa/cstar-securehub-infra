@@ -15,7 +15,7 @@ module "nginx_ingress" {
     name          = "nginx-ingress"
     version       = var.nginx_helm.version
     chart         = "ingress-nginx"
-    recreate_pods = true #https://github.com/helm/helm/issues/6378 -> fixed in k8s 1.22
+    recreate_pods = false #https://github.com/helm/helm/issues/6378 -> fixed in k8s 1.22
     deploy        = true
   }
 

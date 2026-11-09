@@ -1,4 +1,31 @@
 <!-- markdownlint-disable -->
+## Targeted custom dashboard plans and applies
+
+To generate a Terraform command targeting only the custom dashboards in one
+folder, pass the action, environment, and dashboard folder:
+
+```sh
+./dashboard_folder.sh plan itn-dev bonus-decoder
+./dashboard_folder.sh apply itn-dev bonus-decoder
+```
+
+The helper prints the generated command but does not execute it. Review the
+command and its targets in the terminal, then run it manually. It targets
+dashboard and folder instances found under the selected folder, along with
+their dependencies.
+
+Dashboards deleted from the folder (committed or not) compared to a git base
+ref are targeted too, so Terraform plans their destruction; this also works
+when the whole folder has been removed. The base ref defaults to `origin/main`
+and can be passed as the fourth argument:
+
+```sh
+./dashboard_folder.sh plan itn-dev bonus-decoder origin/main
+```
+
+A targeted plan or apply does not replace a full plan;
+review a regular plan before applying changes.
+
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 
