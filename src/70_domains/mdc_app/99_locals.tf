@@ -37,13 +37,17 @@ locals {
   argocd_internal_url = "argocd.${var.location_short}.${var.dns_zone_internal_prefix}.${var.external_domain}"
 
   # 🔔 Alerts
-  alert_secret_names = contains(["p", "u"], var.env_short) ? ["jsm-azure-api-key"] : []
+  alert_secret_names = contains(["p", "u"], var.env_short) ? ["jsm-azure-api-key", "email-mdc-slack"] : []
 
   jsm_webhook_uri = one([
     for k, v in module.secrets.values :
     "https://api.atlassian.com/jsm/ops/integration/v1/json/azure?apiKey=${v.value}"
     if k == "jsm-azure-api-key"
   ])
+
+  alert_email_slack_addresses = [
+    for k, v in module.secrets.values : v.value if k == "email-mdc-slack"
+  ]
 
   # Base configuration shared across all alerts.
   # Modify here to change global behavior.
@@ -60,13 +64,13 @@ locals {
   # To add a new alert: add an entry here + the corresponding .kql file
   alerts_mdc = {
     retry_failures = {
-      name        = "${local.project}-retry-failures-${var.env_short}"
-      description = "Send of message failed after 3 retry."
+      name        = "${var.domain}-send-psp-retry-exhausted-${var.env}"
+      description = "Send of message to PSP failed after 3 retry."
       query       = file("${path.module}/queries-KQL/retry_failures.kql")
     }
     api_5xx_errors = {
-      name        = "${local.project}-5xx-errors-${var.env_short}"
-      description = "Error 5XX on SEND API."
+      name        = "${var.domain}-send-message-errors-5xx-${var.env}"
+      description = "Error 5XX on sendMessage API"
       query       = file("${path.module}/queries-KQL/api_5xx_errors.kql")
     }
   }

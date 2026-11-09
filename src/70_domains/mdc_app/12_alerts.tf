@@ -1,16 +1,26 @@
 # Action Groups
 # Creates one Action Group per alert, sending to the JSM Azure integration
-resource "azurerm_monitor_action_group" "jsm" {
+resource "azurerm_monitor_action_group" "alerts" {
   count = contains(["p", "u"], var.env_short) ? 1 : 0
 
-  name                = "${local.project}-jsm-ag-${var.env_short}"
+  name                = "${local.project}-alerts-ag-${var.env_short}"
   resource_group_name = local.monitor_rg
-  short_name          = "jsm-ag-${var.env_short}"
+  short_name          = "alerts-ag-${var.env_short}"
+  enabled             = true
 
   webhook_receiver {
     name                    = "jsm-azure"
     service_uri             = local.jsm_webhook_uri
     use_common_alert_schema = true
+  }
+
+  dynamic "email_receiver" {
+    for_each = local.alert_email_slack_addresses
+    content {
+      name                    = "email-slack-${var.env_short}"
+      email_address           = email_receiver.value
+      use_common_alert_schema = false
+    }
   }
 
   tags = local.tags
@@ -47,7 +57,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert_v2" "alerts" {
   }
 
   action {
-    action_groups = [azurerm_monitor_action_group.jsm[0].id]
+    action_groups = [azurerm_monitor_action_group.alerts[0].id]
 
     custom_properties = {
       environment = upper(var.env)
