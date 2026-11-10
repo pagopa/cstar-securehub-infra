@@ -1,7 +1,7 @@
 <#import "components.ftl" as components>
 <#if message?has_content>
     <#assign messageParts = message.summary?split("||")>
-    
+
     <#if (messageParts?size > 1)>
         <#assign messageKey = msg(messageParts[0])>
         <#assign messageValue = messageParts[1]>
