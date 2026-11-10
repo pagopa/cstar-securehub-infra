@@ -161,31 +161,6 @@ locals {
         }
       ]
       repository_variables = [
-        {
-          SONARCLOUD_ORG          = "pagopa"
-          SONARCLOUD_PROJECT_KEY  = "pagopa_idpay-wallet"
-          SONARCLOUD_PROJECT_NAME = "idpay-wallet"
-        }
-      ]
-    },
-    "idpay-timeline" = {
-      repository_secrets = [
-        {
-          SONAR_TOKEN                 = data.azurerm_key_vault_secret.sonar_token.value
-          SLACK_REVIEW_ALERTS_WEBHOOK = data.azurerm_key_vault_secret.slack_review_alerts_webhook.value
-        }
-      ]
-      repository_variables = [
-        {
-          SONARCLOUD_ORG          = "pagopa"
-          SONARCLOUD_PROJECT_KEY  = "pagopa_idpay-timeline"
-          SONARCLOUD_PROJECT_NAME = "idpay-timeline"
-        }
-      ]
-    },
-    "idpay-portal-welfare-backend-initiative" = {
-      repository_secrets = [
-        {
           SONAR_TOKEN                 = data.azurerm_key_vault_secret.sonar_token.value
           SLACK_REVIEW_ALERTS_WEBHOOK = data.azurerm_key_vault_secret.slack_review_alerts_webhook.value
         }
@@ -425,28 +400,6 @@ locals {
           AZURE_TENANT_ID       = data.azurerm_client_config.current.tenant_id
           KEYVAULT_NAME         = var.idpay_kv_name
           SECRET_NAME           = var.functional_testing_secret_name
-          UI_USERNAME_WELFARE_ENTI      = data.azurerm_key_vault_secret.functional_testing_ui_username_welfare_enti.value
-          UI_PASSWORD_WELFARE_ENTI      = data.azurerm_key_vault_secret.functional_testing_ui_password_welfare_enti.value
-          UI_USERNAME_WELFARE_ESERCENTI = data.azurerm_key_vault_secret.functional_testing_ui_username_welfare_esercenti.value
-          UI_PASSWORD_WELFARE_ESERCENTI = data.azurerm_key_vault_secret.functional_testing_ui_password_welfare_esercenti.value
-          UI_USERNAME_RDB               = data.azurerm_key_vault_secret.functional_testing_ui_username_rdb.value
-          UI_PASSWORD_RDB               = data.azurerm_key_vault_secret.functional_testing_ui_password_rdb.value
-          UI_USERNAME_PARI_UTENTE       = data.azurerm_key_vault_secret.functional_testing_ui_username_pari_utente.value
-          UI_PASSWORD_PARI_UTENTE       = data.azurerm_key_vault_secret.functional_testing_ui_password_pari_utente.value
-        }
-      }
-      env_variables = {
-        envs = ["dev", "uat"]
-        variables = {
-          UI_BASE_URL_WELFARE_ENTI       = var.functional_testing_ui_base_url_welfare_enti
-          UI_BASE_URL_WELFARE_ESERCENTI  = var.functional_testing_ui_base_url_welfare_esercenti
-          UI_BASE_URL_RDB                = var.functional_testing_ui_base_url_rdb
-          UI_BASE_URL_PARI_UTENTE        = var.functional_testing_ui_base_url_pari_utente
-          UI_LOGIN_PATH                  = var.functional_testing_ui_login_path_welfare_enti
-          UI_LOGIN_PATH_WELFARE_ENTI     = var.functional_testing_ui_login_path_welfare_enti
-          UI_LOGIN_PATH_WELFARE_ESERCENTI = var.functional_testing_ui_login_path_welfare_esercenti
-          UI_LOGIN_PATH_RDB              = var.functional_testing_ui_login_path_rdb
-          UI_LOGIN_PATH_PARI_UTENTE      = var.functional_testing_ui_login_path_pari_utente
         }
       }
     },
