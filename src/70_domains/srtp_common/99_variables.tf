@@ -123,26 +123,6 @@ variable "k8s_kube_config_path_prefix" {
   default = "~/.kube"
 }
 
-variable "aks_nodepool_blue" {
-  type = object({
-    vm_sku_name       = string
-    autoscale_enabled = optional(bool, true)
-    node_count_min    = number
-    node_count_max    = number
-  })
-  description = "Parameters for blue node pool"
-}
-
-variable "aks_nodepool_green" {
-  type = object({
-    vm_sku_name       = string
-    autoscale_enabled = optional(bool, true)
-    node_count_min    = number
-    node_count_max    = number
-  })
-  description = "Parameters for green node pool"
-}
-
 #----------------------------------------------------------------------
 # Redis
 #----------------------------------------------------------------------
@@ -173,15 +153,9 @@ variable "adx_table_hot_cache_period_days" {
   default     = null
 }
 
-
-variable "blue_green_node_pool_enabled" {
-  type    = bool
-  default = true
-}
-
 variable "aks_foobar_srtp_node_pool_configuration" {
   type = object({
-    enabled        = optional(bool, false),
+    enabled        = optional(bool, true),
     tier           = string,
     node_count_min = number,
     node_count_max = number,
