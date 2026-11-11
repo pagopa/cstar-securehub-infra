@@ -407,9 +407,9 @@ locals {
       ]
     },
     "idpay-functional-testing" = {
-      merge_queue          = true
-      trunk_based          = true
-      repository_secrets   = [
+      merge_queue = true
+      trunk_based = true
+      repository_secrets = [
         {
           SLACK_NOTIFICATION_WEBHOOK = data.azurerm_key_vault_secret.slack_webhook_alert.value
         }
