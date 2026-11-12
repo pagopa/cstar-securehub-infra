@@ -42,15 +42,7 @@ keycloak_configuration = {
   image_digest_config_cli                     = "sha256:6795d2cbf9ed7c96e9d19c39781d383d12df36b5cbe81f0024bca4fa4d392681"
 }
 
-aks_user_node_pool_keycloak = {
-  enabled           = false
-  idh_resource_tier = "Standard_B4ms_active"
-  node_count_min    = 1
-  node_count_max    = 1
-}
-
 aks_user_foobar_node_pool_keycloak = {
-  enabled           = true
   idh_resource_tier = "Standard_B4ms"
   node_count_min    = 1
   node_count_max    = 1
