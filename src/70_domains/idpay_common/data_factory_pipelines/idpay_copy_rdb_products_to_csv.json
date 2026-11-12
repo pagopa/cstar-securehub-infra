@@ -79,7 +79,7 @@
           "source": {
             "type": "AzureDataExplorerSource",
             "query": {
-              "value": "@concat('initiative_export_configuration | where initiativeId == \"', pipeline().parameters.initiativeId, '\" | project fieldsCsv = strcat_array(exportConfiguration.fields, \",\")')",
+              "value": "@concat('initiative_export_configuration | where initiativeId == \"', pipeline().parameters.initiativeId, '\" | mv-expand with_itemindex=idx field = exportConfiguration.fields to typeof(string) | extend headerName = iff(isnotempty(tostring(exportConfiguration.headers[field])), tostring(exportConfiguration.headers[field]), field) | extend projectItem = strcat(\"['\", headerName, \"']=\", field) | sort by idx asc | summarize projectExpr = strcat_array(make_list(projectItem), \",\") by initiativeId')",
               "type": "Expression"
             }
           },
@@ -123,7 +123,7 @@
                 "source": {
                   "type": "AzureDataExplorerSource",
                   "query": {
-                    "value": "@concat('let translated = category_translation | where initiativeId == \"', pipeline().parameters.initiativeId, '\" and language == \"it\" | project categoryCode = tostring(categoryCode), categoryDescription = tostring(description); products | where status == \"APPROVED\" and initiativeId == \"', pipeline().parameters.initiativeId, '\" | extend category = tostring(category) | join kind=leftouter translated on $left.category == $right.categoryCode | extend category = iff(isempty(categoryDescription), category, categoryDescription) | project ', activity('Lookup_Initiative_Export_Configuration').output.value[0].fieldsCsv)",
+                    "value": "@concat('let translated = category_translation | where initiativeId == \"', pipeline().parameters.initiativeId, '\" and language == \"it\" | project categoryCode = tostring(categoryCode), categoryDescription = tostring(description); products | where status == \"APPROVED\" and initiativeId == \"', pipeline().parameters.initiativeId, '\" | extend category = tostring(category) | join kind=leftouter translated on $left.category == $right.categoryCode | extend category = iff(isempty(categoryDescription), category, categoryDescription) | project ', activity('Lookup_Initiative_Export_Configuration').output.value[0].projectExpr)",
                     "type": "Expression"
                   }
                 },
