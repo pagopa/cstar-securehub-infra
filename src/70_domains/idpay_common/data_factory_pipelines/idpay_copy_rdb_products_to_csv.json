@@ -208,7 +208,9 @@
           },
           "authentication": {
             "type": "MSI",
-            "resource": "https://storage.azure.com/"
+            "resource": "https://storage.azure.com/",
+            "password": null,
+            "pfx": null
           }
         }
       },
@@ -265,7 +267,9 @@
           },
           "authentication": {
             "type": "MSI",
-            "resource": "https://management.azure.com/"
+            "resource": "https://management.azure.com/",
+            "password": null,
+            "pfx": null
           }
         }
       },
@@ -305,7 +309,9 @@
           },
           "authentication": {
             "type": "MSI",
-            "resource": "https://vault.azure.net"
+            "resource": "https://vault.azure.net",
+            "password": null,
+            "pfx": null
           }
         }
       },
@@ -345,7 +351,9 @@
           },
           "authentication": {
             "type": "MSI",
-            "resource": "https://vault.azure.net"
+            "resource": "https://vault.azure.net",
+            "password": null,
+            "pfx": null
           }
         }
       },

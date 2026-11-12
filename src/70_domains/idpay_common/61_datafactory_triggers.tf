@@ -17,7 +17,6 @@ locals {
     "idpay_postgres_reward_transactions_copy",
     "idpay_timeline_copy",
     "idpay_postgres_transaction_copy",
-    "idpay_transaction_in_progress_copy",
     "idpay_wallet_copy"
   ]
 
