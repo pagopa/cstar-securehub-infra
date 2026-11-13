@@ -160,6 +160,9 @@ ingress:
   enabled: true
   hostname: ${keycloak_ingress_hostname}
   ingressClassName: "nginx"
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "120"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "120"
   tls: true
   extraTls:
     - hosts:
@@ -218,6 +221,13 @@ networkPolicy:
 keycloakConfigCli:
   enabled: true
   existingConfigmap: "keycloak-terraform-client-config"
+  extraEnvVars:
+    # Keep pre-existing IdPs and their mappers that are managed outside config-cli
+    # (for example oneid-keycloak from the idpay_common Terraform stack).
+    - name: IMPORT_MANAGED_IDENTITY_PROVIDER
+      value: "no-delete"
+    - name: IMPORT_MANAGED_IDENTITY_PROVIDER_MAPPER
+      value: "no-delete"
   image:
     registry: ${image_registry_config_cli}
     repository: ${image_repository_config_cli}
