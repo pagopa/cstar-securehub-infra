@@ -22,3 +22,16 @@ module "auto_dashboard" {
 output "grafana_token_validation" {
   value = data.external.validate_grafana_token.result
 }
+
+resource "azapi_update_resource" "grafana_plugins" {
+  type        = "Microsoft.Dashboard/grafana@2024-10-01"
+  resource_id = data.azurerm_dashboard_grafana.grafana_managed.id
+
+  body = {
+    properties = {
+      grafanaPlugins = {
+        "marcusolsson-dynamictext-panel" = {}
+      }
+    }
+  }
+}
