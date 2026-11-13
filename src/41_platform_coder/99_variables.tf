@@ -107,6 +107,31 @@ variable "keycloak_configuration" {
   })
 }
 
+variable "listmonk_configuration" {
+  type = object({
+    chart_version            = string
+    image_repository         = string
+    image_tag                = string
+    replica_count            = number
+    postgres_ssl_mode        = string
+    bootstrap_postgres_image = optional(string, "postgres:17-alpine")
+  })
+
+  validation {
+    condition = contains([
+      "require",
+      "verify-ca",
+      "verify-full"
+    ], var.listmonk_configuration.postgres_ssl_mode)
+    error_message = "Listmonk must use TLS: postgres_ssl_mode must be require, verify-ca, or verify-full."
+  }
+
+  validation {
+    condition     = var.listmonk_configuration.replica_count == 1
+    error_message = "Listmonk is configured for one replica. Review rollout concurrency before enabling campaigns."
+  }
+}
+
 variable "aks_user_foobar_node_pool_keycloak" {
   type = object({
     enabled           = optional(bool, true)
