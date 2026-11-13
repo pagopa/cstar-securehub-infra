@@ -16,7 +16,7 @@ law_daily_quota_gb = 100
 cosmos_activation_db_autoscale_max_throughput = 20000
 
 # RTP database - shared throughput at database level (1000 RU)
-cosmos_rtp_db_autoscale_max_throughput = 10000
+cosmos_rtp_db_autoscale_max_throughput = 15000
 
 # Payee database - shared throughput at database level
 cosmos_payee_db_autoscale_max_throughput = 1000
