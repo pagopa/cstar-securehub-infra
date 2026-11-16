@@ -1,0 +1,41 @@
+{
+  "name": "blob_onboarding_census_pending_csv",
+  "properties": {
+    "description": "Onboarding census retry queue: fiscal codes whose tokenization failed with a retryable error, one folder per attempt (BND-2482)",
+    "linkedServiceName": {
+      "referenceName": "${domain}-onboarding-census-blob-ls",
+      "type": "LinkedServiceReference"
+    },
+    "parameters": {
+      "initiativeId": { "type": "String" },
+      "runId": { "type": "String" },
+      "attempt": { "type": "String" }
+    },
+    "annotations": [
+      "Onboarding Census",
+      "IdPay"
+    ],
+    "type": "DelimitedText",
+    "typeProperties": {
+      "location": {
+        "type": "AzureBlobStorageLocation",
+        "fileName": "pending.csv",
+        "folderPath": {
+          "value": "@concat('pending/', dataset().initiativeId, '/', dataset().runId, '/', dataset().attempt)",
+          "type": "Expression"
+        },
+        "container": "onboarding-census"
+      },
+      "columnDelimiter": ",",
+      "escapeChar": "\\",
+      "firstRowAsHeader": true,
+      "quoteChar": "\"",
+      "encodingName": "UTF-8"
+    },
+    "schema": [
+      { "name": "fiscalCode", "type": "String" }
+    ]
+  },
+  "type": "Microsoft.DataFactory/factories/datasets"
+}
+

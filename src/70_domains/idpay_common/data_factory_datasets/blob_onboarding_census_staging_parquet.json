@@ -19,7 +19,7 @@
       "location": {
         "type": "AzureBlobStorageLocation",
         "folderPath": {
-          "value": "@concat('work/', dataset().initiativeId, '/', dataset().runId)",
+          "value": "@concat('work/', dataset().initiativeId, '/', dataset().runId, '/', dataset().attempt)",
           "type": "Expression"
         },
         "container": "onboarding-census"

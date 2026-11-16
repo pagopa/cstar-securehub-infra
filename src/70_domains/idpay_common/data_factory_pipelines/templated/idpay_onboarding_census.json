@@ -1,7 +1,7 @@
 {
   "name": "idpay_onboarding_census",
   "properties": {
-    "description": "BND-2482 onboarding census: CSV of fiscal codes on Blob -> validate -> tokenize (APIM PUT /tokens) -> upsert onboarding_citizen (ONBOARDING_KO / USER_BONUS_ALREADY_USED) -> report + rejected rows. Blocks the run if real onboardings already exist for the initiative.",
+    "description": "BND-2482 onboarding census: CSV of fiscal codes on Blob -> validate -> tokenize (APIM PUT /tokens) -> upsert onboarding_citizen (ONBOARDING_KO / USER_BONUS_ALREADY_USED) -> report + rejected rows. Retry: failed retryable rows are re-submitted after 30s, max 3 retries, then rejected (RETRY_EXHAUSTED). Blocks the run if real onboardings already exist for the initiative.",
     "concurrency": 1,
     "parameters": {
       "initiativeId": { "type": "String" },
@@ -12,8 +12,10 @@
     "variables": {
       "runDate": { "type": "String", "defaultValue": "" },
       "received": { "type": "String", "defaultValue": "0" },
+      "written": { "type": "String", "defaultValue": "0" },
       "rejected": { "type": "String", "defaultValue": "0" },
-      "written": { "type": "String", "defaultValue": "0" }
+      "attemptNo": { "type": "String", "defaultValue": "0" },
+      "pendingRows": { "type": "String", "defaultValue": "0" }
     },
     "activities": [
       {
@@ -63,7 +65,7 @@
       },
       {
         "name": "CheckRealOnboardings",
-        "description": "Preliminary check: any document of the initiative that is not a census record means real onboardings exist -> the run must be blocked (upsert would overwrite them).",
+        "description": "Preliminary check: any document of the initiative that is not a census record means real onboardings exist -> the run must be blocked (upsert would overwrite them). limit 1 keeps the RU cost low.",
         "type": "Lookup",
         "dependsOn": [],
         "policy": {
@@ -91,7 +93,7 @@
             "referenceName": "cosmos_idpay_onboarding_citizen",
             "type": "DatasetReference"
           },
-          "firstRowOnly": true
+          "firstRowOnly": false
         }
       },
       {
@@ -106,7 +108,7 @@
         "userProperties": [],
         "typeProperties": {
           "expression": {
-            "value": "@contains(activity('CheckRealOnboardings').output, 'firstRow')",
+            "value": "@greater(activity('CheckRealOnboardings').output.count, 0)",
             "type": "Expression"
           },
           "ifTrueActivities": [
@@ -127,27 +129,18 @@
         }
       },
       {
-        "name": "RunCensusDataFlow",
-        "description": "Validate + tokenize + build documents. Parallelism towards the datavault = source partitions in the data flow.",
+        "name": "RunCensusPass0",
+        "description": "Pass 0 (attempt 0): validate + tokenize + build documents for the whole CSV. Retryable failures go to pending/, others to rejected/.",
         "type": "ExecuteDataFlow",
         "dependsOn": [
-          {
-            "activity": "IfRealOnboardingsFound",
-            "dependencyConditions": ["Succeeded"]
-          },
-          {
-            "activity": "Get_SubKey",
-            "dependencyConditions": ["Succeeded"]
-          },
-          {
-            "activity": "SetRunDate",
-            "dependencyConditions": ["Succeeded"]
-          }
+          { "activity": "IfRealOnboardingsFound", "dependencyConditions": ["Succeeded"] },
+          { "activity": "Get_SubKey", "dependencyConditions": ["Succeeded"] },
+          { "activity": "SetRunDate", "dependencyConditions": ["Succeeded"] }
         ],
         "policy": {
           "timeout": "0.06:00:00",
-          "retry": 1,
-          "retryIntervalInSeconds": 120,
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
           "secureOutput": false,
           "secureInput": true
         },
@@ -157,34 +150,31 @@
             "referenceName": "df_onboarding_census",
             "type": "DataFlowReference",
             "parameters": {
-              "initiativeId": {
-                "value": "'@{pipeline().parameters.initiativeId}'",
-                "type": "Expression"
-              },
-              "runDate": {
-                "value": "'@{variables('runDate')}'",
-                "type": "Expression"
-              },
-              "channel": {
-                "value": "'@{pipeline().parameters.channel}'",
-                "type": "Expression"
-              },
-              "subscriptionKey": {
-                "value": "'@{activity('Get_SubKey').output.value}'",
-                "type": "Expression"
-              }
+              "initiativeId": { "value": "'@{pipeline().parameters.initiativeId}'", "type": "Expression" },
+              "runDate": { "value": "'@{variables('runDate')}'", "type": "Expression" },
+              "channel": { "value": "'@{pipeline().parameters.channel}'", "type": "Expression" },
+              "subscriptionKey": { "value": "'@{activity('Get_SubKey').output.value}'", "type": "Expression" },
+              "isFinal": { "value": "@bool(0)", "type": "Expression" }
             },
             "datasetParameters": {
               "sourceCsv": {
+                "folderPath": "input",
                 "fileName": "@pipeline().parameters.fileName"
               },
               "sinkStaging": {
                 "initiativeId": "@pipeline().parameters.initiativeId",
-                "runId": "@pipeline().RunId"
+                "runId": "@pipeline().RunId",
+                "attempt": "0"
               },
               "sinkRejected": {
                 "initiativeId": "@pipeline().parameters.initiativeId",
-                "runId": "@pipeline().RunId"
+                "runId": "@pipeline().RunId",
+                "attempt": "0"
+              },
+              "sinkPending": {
+                "initiativeId": "@pipeline().parameters.initiativeId",
+                "runId": "@pipeline().RunId",
+                "attempt": "0"
               }
             }
           },
@@ -196,14 +186,200 @@
         }
       },
       {
+        "name": "SetReceived",
+        "type": "SetVariable",
+        "dependsOn": [
+          { "activity": "RunCensusPass0", "dependencyConditions": ["Succeeded"] }
+        ],
+        "userProperties": [],
+        "typeProperties": {
+          "variableName": "received",
+          "value": {
+            "value": "@string(activity('RunCensusPass0').output.runStatus.metrics.sinkStaging.sources.sourceCsv.rowsRead)",
+            "type": "Expression"
+          }
+        }
+      },
+      {
+        "name": "SetRejected",
+        "type": "SetVariable",
+        "dependsOn": [
+          { "activity": "SetReceived", "dependencyConditions": ["Succeeded"] }
+        ],
+        "userProperties": [],
+        "typeProperties": {
+          "variableName": "rejected",
+          "value": {
+            "value": "@string(activity('RunCensusPass0').output.runStatus.metrics.sinkRejected.rowsWritten)",
+            "type": "Expression"
+          }
+        }
+      },
+      {
+        "name": "SetPendingRows",
+        "type": "SetVariable",
+        "dependsOn": [
+          { "activity": "SetRejected", "dependencyConditions": ["Succeeded"] }
+        ],
+        "userProperties": [],
+        "typeProperties": {
+          "variableName": "pendingRows",
+          "value": {
+            "value": "@string(activity('RunCensusPass0').output.runStatus.metrics.sinkPending.rowsWritten)",
+            "type": "Expression"
+          }
+        }
+      },
+      {
+        "name": "IfPendingRows",
+        "description": "Retry only if pass 0 left retryable rows in pending/.",
+        "type": "IfCondition",
+        "dependsOn": [
+          { "activity": "SetPendingRows", "dependencyConditions": ["Succeeded"] }
+        ],
+        "userProperties": [],
+        "typeProperties": {
+          "expression": {
+            "value": "@greater(int(variables('pendingRows')), 0)",
+            "type": "Expression"
+          },
+          "ifTrueActivities": [
+            {
+              "name": "RetryLoop",
+              "description": "Up to 3 retries. Each retry waits 30s and re-submits only the rows still pending from the previous attempt. The last attempt (3) rejects the remaining rows with RETRY_EXHAUSTED.",
+              "type": "Until",
+              "dependsOn": [],
+              "userProperties": [],
+              "typeProperties": {
+                "expression": {
+                  "value": "@or(greaterOrEquals(int(variables('attemptNo')), 3), equals(int(variables('pendingRows')), 0))",
+                  "type": "Expression"
+                },
+                "timeout": "0.02:00:00",
+                "activities": [
+                  {
+                    "name": "WaitBeforeRetry",
+                    "type": "Wait",
+                    "dependsOn": [],
+                    "userProperties": [],
+                    "typeProperties": {
+                      "waitTimeInSeconds": 30
+                    }
+                  },
+                  {
+                    "name": "IncrementAttempt",
+                    "type": "SetVariable",
+                    "dependsOn": [
+                      { "activity": "WaitBeforeRetry", "dependencyConditions": ["Succeeded"] }
+                    ],
+                    "userProperties": [],
+                    "typeProperties": {
+                      "variableName": "attemptNo",
+                      "value": {
+                        "value": "@string(add(int(variables('attemptNo')), 1))",
+                        "type": "Expression"
+                      }
+                    }
+                  },
+                  {
+                    "name": "RunCensusRetry",
+                    "type": "ExecuteDataFlow",
+                    "dependsOn": [
+                      { "activity": "IncrementAttempt", "dependencyConditions": ["Succeeded"] }
+                    ],
+                    "policy": {
+                      "timeout": "0.02:00:00",
+                      "retry": 0,
+                      "retryIntervalInSeconds": 30,
+                      "secureOutput": false,
+                      "secureInput": true
+                    },
+                    "userProperties": [],
+                    "typeProperties": {
+                      "dataflow": {
+                        "referenceName": "df_onboarding_census",
+                        "type": "DataFlowReference",
+                        "parameters": {
+                          "initiativeId": { "value": "'@{pipeline().parameters.initiativeId}'", "type": "Expression" },
+                          "runDate": { "value": "'@{variables('runDate')}'", "type": "Expression" },
+                          "channel": { "value": "'@{pipeline().parameters.channel}'", "type": "Expression" },
+                          "subscriptionKey": { "value": "'@{activity('Get_SubKey').output.value}'", "type": "Expression" },
+                          "isFinal": { "value": "@equals(int(variables('attemptNo')), 3)", "type": "Expression" }
+                        },
+                        "datasetParameters": {
+                          "sourceCsv": {
+                            "folderPath": {
+                              "value": "@concat('pending/', pipeline().parameters.initiativeId, '/', pipeline().RunId, '/', string(sub(int(variables('attemptNo')), 1)))",
+                              "type": "Expression"
+                            },
+                            "fileName": "pending.csv"
+                          },
+                          "sinkStaging": {
+                            "initiativeId": "@pipeline().parameters.initiativeId",
+                            "runId": "@pipeline().RunId",
+                            "attempt": "@variables('attemptNo')"
+                          },
+                          "sinkRejected": {
+                            "initiativeId": "@pipeline().parameters.initiativeId",
+                            "runId": "@pipeline().RunId",
+                            "attempt": "@variables('attemptNo')"
+                          },
+                          "sinkPending": {
+                            "initiativeId": "@pipeline().parameters.initiativeId",
+                            "runId": "@pipeline().RunId",
+                            "attempt": "@variables('attemptNo')"
+                          }
+                        }
+                      },
+                      "compute": {
+                        "coreCount": 8,
+                        "computeType": "General"
+                      },
+                      "traceLevel": "Coarse"
+                    }
+                  },
+                  {
+                    "name": "AddRejectedRetry",
+                    "type": "SetVariable",
+                    "dependsOn": [
+                      { "activity": "RunCensusRetry", "dependencyConditions": ["Succeeded"] }
+                    ],
+                    "userProperties": [],
+                    "typeProperties": {
+                      "variableName": "rejected",
+                      "value": {
+                        "value": "@string(add(int(variables('rejected')), int(activity('RunCensusRetry').output.runStatus.metrics.sinkRejected.rowsWritten)))",
+                        "type": "Expression"
+                      }
+                    }
+                  },
+                  {
+                    "name": "SetPendingRowsRetry",
+                    "type": "SetVariable",
+                    "dependsOn": [
+                      { "activity": "AddRejectedRetry", "dependencyConditions": ["Succeeded"] }
+                    ],
+                    "userProperties": [],
+                    "typeProperties": {
+                      "variableName": "pendingRows",
+                      "value": {
+                        "value": "@string(activity('RunCensusRetry').output.runStatus.metrics.sinkPending.rowsWritten)",
+                        "type": "Expression"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
         "name": "UpsertOnboardingCitizen",
-        "description": "Upsert by _id (shard key -> point writes). Limited batch/parallelism to protect the RU of the production onboarding database. Idempotent: safe to retry.",
+        "description": "Upsert by _id (shard key -> point writes) of all staged attempts (recursive read). Limited batch/parallelism to protect the RU of the production onboarding database. Idempotent: safe to retry.",
         "type": "Copy",
         "dependsOn": [
-          {
-            "activity": "RunCensusDataFlow",
-            "dependencyConditions": ["Succeeded"]
-          }
+          { "activity": "IfPendingRows", "dependencyConditions": ["Succeeded"] }
         ],
         "policy": {
           "timeout": "0.06:00:00",
@@ -250,7 +426,8 @@
             "type": "DatasetReference",
             "parameters": {
               "initiativeId": "@pipeline().parameters.initiativeId",
-              "runId": "@pipeline().RunId"
+              "runId": "@pipeline().RunId",
+              "attempt": ""
             }
           }
         ],
@@ -262,55 +439,16 @@
         ]
       },
       {
-        "name": "SetReceived",
-        "type": "SetVariable",
-        "dependsOn": [
-          {
-            "activity": "UpsertOnboardingCitizen",
-            "dependencyConditions": ["Succeeded"]
-          }
-        ],
-        "userProperties": [],
-        "typeProperties": {
-          "variableName": "received",
-          "value": {
-            "value": "@string(coalesce(activity('RunCensusDataFlow').output.runStatus.metrics?.sinkStaging?.sources?.sourceCsv?.rowsRead, activity('RunCensusDataFlow').output.runStatus.metrics?.sinkRejected?.sources?.sourceCsv?.rowsRead, 0))",
-            "type": "Expression"
-          }
-        }
-      },
-      {
-        "name": "SetRejected",
-        "type": "SetVariable",
-        "dependsOn": [
-          {
-            "activity": "UpsertOnboardingCitizen",
-            "dependencyConditions": ["Succeeded"]
-          }
-        ],
-        "userProperties": [],
-        "typeProperties": {
-          "variableName": "rejected",
-          "value": {
-            "value": "@string(coalesce(activity('RunCensusDataFlow').output.runStatus.metrics?.sinkRejected?.rowsWritten, 0))",
-            "type": "Expression"
-          }
-        }
-      },
-      {
         "name": "SetWritten",
         "type": "SetVariable",
         "dependsOn": [
-          {
-            "activity": "UpsertOnboardingCitizen",
-            "dependencyConditions": ["Succeeded"]
-          }
+          { "activity": "UpsertOnboardingCitizen", "dependencyConditions": ["Succeeded"] }
         ],
         "userProperties": [],
         "typeProperties": {
           "variableName": "written",
           "value": {
-            "value": "@string(coalesce(activity('UpsertOnboardingCitizen').output?.rowsCopied, 0))",
+            "value": "@string(activity('UpsertOnboardingCitizen').output.rowsCopied)",
             "type": "Expression"
           }
         }
@@ -320,8 +458,6 @@
         "description": "Writes report/<initiativeId>/<runId>/report.json via Blob REST API with the ADF managed identity.",
         "type": "WebActivity",
         "dependsOn": [
-          { "activity": "SetReceived", "dependencyConditions": ["Succeeded"] },
-          { "activity": "SetRejected", "dependencyConditions": ["Succeeded"] },
           { "activity": "SetWritten", "dependencyConditions": ["Succeeded"] }
         ],
         "policy": {
@@ -348,7 +484,7 @@
             "type": "IntegrationRuntimeReference"
           },
           "body": {
-            "value": "@concat('{\"initiativeId\":\"', pipeline().parameters.initiativeId, '\",\"runId\":\"', pipeline().RunId, '\",\"fileName\":\"', pipeline().parameters.fileName, '\",\"runDate\":\"', variables('runDate'), '\",\"received\":', variables('received'), ',\"written\":', variables('written'), ',\"rejected\":', variables('rejected'), ',\"rejectedFile\":\"rejected/', pipeline().parameters.initiativeId, '/', pipeline().RunId, '/rejected.csv\",\"consistent\":', string(equals(add(int(variables('written')), int(variables('rejected'))), int(variables('received')))), '}')",
+            "value": "@concat('{\"initiativeId\":\"', pipeline().parameters.initiativeId, '\",\"runId\":\"', pipeline().RunId, '\",\"fileName\":\"', pipeline().parameters.fileName, '\",\"runDate\":\"', variables('runDate'), '\",\"received\":', variables('received'), ',\"written\":', variables('written'), ',\"rejected\":', variables('rejected'), ',\"attempts\":', variables('attemptNo'), ',\"rejectedFolder\":\"rejected/', pipeline().parameters.initiativeId, '/', pipeline().RunId, '/\",\"consistent\":', string(equals(add(int(variables('written')), int(variables('rejected'))), int(variables('received')))), '}')",
             "type": "Expression"
           },
           "authentication": {
@@ -359,12 +495,10 @@
       },
       {
         "name": "CleanupStaging",
+        "description": "Deletes the staging work folder of the run (all attempts) after the report is written.",
         "type": "Delete",
         "dependsOn": [
-          {
-            "activity": "WriteReport",
-            "dependencyConditions": ["Succeeded"]
-          }
+          { "activity": "WriteReport", "dependencyConditions": ["Succeeded"] }
         ],
         "policy": {
           "timeout": "0.00:30:00",
@@ -380,15 +514,41 @@
             "type": "DatasetReference",
             "parameters": {
               "initiativeId": "@pipeline().parameters.initiativeId",
-              "runId": "@pipeline().RunId"
+              "runId": "@pipeline().RunId",
+              "attempt": ""
             }
           },
           "enableLogging": false,
-          "storeSettings": {
-            "type": "AzureBlobStorageReadSettings",
-            "recursive": true,
-            "wildcardFileName": "*"
-          }
+          "recursive": true
+        }
+      },
+      {
+        "name": "CleanupPending",
+        "description": "Deletes the retry queue of the run (all attempts) after the report is written.",
+        "type": "Delete",
+        "dependsOn": [
+          { "activity": "WriteReport", "dependencyConditions": ["Succeeded"] }
+        ],
+        "policy": {
+          "timeout": "0.00:30:00",
+          "retry": 2,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "userProperties": [],
+        "typeProperties": {
+          "dataset": {
+            "referenceName": "blob_onboarding_census_pending_csv",
+            "type": "DatasetReference",
+            "parameters": {
+              "initiativeId": "@pipeline().parameters.initiativeId",
+              "runId": "@pipeline().RunId",
+              "attempt": ""
+            }
+          },
+          "enableLogging": false,
+          "recursive": true
         }
       },
       {
@@ -396,10 +556,7 @@
         "description": "Invariant from the DR: written + rejected = received. Fails the run (after report) if it does not hold.",
         "type": "IfCondition",
         "dependsOn": [
-          {
-            "activity": "WriteReport",
-            "dependencyConditions": ["Succeeded"]
-          }
+          { "activity": "WriteReport", "dependencyConditions": ["Succeeded"] }
         ],
         "userProperties": [],
         "typeProperties": {

@@ -144,3 +144,38 @@ resource "azapi_resource" "idpay_producers_import" {
     }
   }
 }
+
+# path to the onboarding census pipeline (BND-2482)
+locals {
+  pipeline_onboarding_census_file = "${path.module}/data_factory_pipelines/templated/idpay_onboarding_census.json"
+  pipeline_onboarding_census_json = jsondecode(templatefile(local.pipeline_onboarding_census_file, {
+    kv_url                          = data.azurerm_key_vault.domain_kv.vault_uri
+    onboarding_census_blob_endpoint = module.storage_idpay_onboarding_census.primary_blob_endpoint
+  }))
+}
+
+resource "azapi_resource" "idpay_onboarding_census" {
+  type      = "Microsoft.DataFactory/factories/pipelines@2018-06-01"
+  name      = local.pipeline_onboarding_census_json.name
+  parent_id = data.azurerm_data_factory.data_factory.id
+
+  body = {
+    properties = {
+      description = local.pipeline_onboarding_census_json.properties.description
+      concurrency = local.pipeline_onboarding_census_json.properties.concurrency
+      activities  = local.pipeline_onboarding_census_json.properties.activities
+      variables   = local.pipeline_onboarding_census_json.properties.variables
+      parameters  = local.pipeline_onboarding_census_json.properties.parameters
+      annotations = local.pipeline_onboarding_census_json.properties.annotations
+    }
+  }
+
+  depends_on = [
+    azurerm_data_factory_custom_dataset.datasets,
+    azurerm_data_factory_data_flow.dataflows,
+    azurerm_data_factory_linked_custom_service.idpay_onboarding_census_blob_ls,
+    azurerm_data_factory_linked_custom_service.idpay_df_apim_rest_ls,
+    azurerm_role_assignment.adf_can_access_onboarding_census_storage
+  ]
+}
+

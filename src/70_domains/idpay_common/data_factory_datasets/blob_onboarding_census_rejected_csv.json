@@ -20,7 +20,7 @@
         "type": "AzureBlobStorageLocation",
         "fileName": "rejected.csv",
         "folderPath": {
-          "value": "@concat('rejected/', dataset().initiativeId, '/', dataset().runId)",
+          "value": "@concat('rejected/', dataset().initiativeId, '/', dataset().runId, '/', dataset().attempt)",
           "type": "Expression"
         },
         "container": "onboarding-census"

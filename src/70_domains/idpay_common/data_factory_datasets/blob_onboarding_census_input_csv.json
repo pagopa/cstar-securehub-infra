@@ -7,7 +7,8 @@
       "type": "LinkedServiceReference"
     },
     "parameters": {
-      "fileName": { "type": "String" }
+      "fileName": { "type": "String" },
+      "folderPath": { "type": "String" }
     },
     "annotations": [
       "Onboarding Census",
@@ -21,7 +22,10 @@
           "value": "@dataset().fileName",
           "type": "Expression"
         },
-        "folderPath": "input",
+        "folderPath": {
+          "value": "@dataset().folderPath",
+          "type": "Expression"
+        },
         "container": "onboarding-census"
       },
       "columnDelimiter": ",",

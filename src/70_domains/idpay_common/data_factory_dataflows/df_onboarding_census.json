@@ -1,7 +1,7 @@
 {
   "name": "df_onboarding_census",
   "properties": {
-    "description": "BND-2482 onboarding census: normalize and validate fiscal codes, tokenize via APIM PUT /tokens (external call), build onboarding_citizen documents (staging parquet) and rejected rows (dead-letter)",
+    "description": "BND-2482 onboarding census: normalize and validate fiscal codes, tokenize via APIM PUT /tokens (external call). Retryable failures (408/429/5xx/connection) go to the pending queue while attempts remain; otherwise rejected rows (dead-letter). Valid rows go to staging parquet.",
     "type": "MappingDataFlow",
     "typeProperties": {
       "sources": [
@@ -27,6 +27,13 @@
             "type": "DatasetReference"
           },
           "name": "sinkRejected"
+        },
+        {
+          "dataset": {
+            "referenceName": "blob_onboarding_census_pending_csv",
+            "type": "DatasetReference"
+          },
+          "name": "sinkPending"
         }
       ],
       "transformations": [
@@ -42,6 +49,9 @@
         },
         { "name": "tokenized" },
         { "name": "failedRows" },
+        { "name": "failedSplit" },
+        { "name": "pendingRows" },
+        { "name": "terminalRows" },
         { "name": "buildDocument" },
         { "name": "onboardingDocument" },
         { "name": "rejectedUnion" },
@@ -52,7 +62,8 @@
         "     initiativeId as string,",
         "     runDate as string,",
         "     channel as string,",
-        "     subscriptionKey as string",
+        "     subscriptionKey as string,",
+        "     isFinal as boolean",
         "}",
         "source(output(",
         "          fiscalCode as string",
@@ -88,7 +99,16 @@
         "     responseFormat: ['type' -> 'json', 'documentForm' -> 'singleDocument']) ~> tokenize",
         "tokenize split(httpStatus == 200 && !isNull(body.token),",
         "     disjoint: false) ~> tokenized@(ok, failed)",
-        "tokenized@failed derive(reason = concat('TOKENIZATION_FAILED_', toString(httpStatus))) ~> failedRows",
+        "tokenized@failed derive(reason = concat('TOKENIZATION_FAILED_', toString(httpStatus)),",
+        "     retryable = isNull(httpStatus) || httpStatus == 408 || httpStatus == 429 || httpStatus >= 500) ~> failedRows",
+        "failedRows split(retryable && !$isFinal,",
+        "     disjoint: true) ~> failedSplit@(pending, terminal)",
+        "failedSplit@pending select(mapColumn(",
+        "          fiscalCode",
+        "     ),",
+        "     skipDuplicateMapInputs: true,",
+        "     skipDuplicateMapOutputs: true) ~> pendingRows",
+        "failedSplit@terminal derive(reason = iif(retryable, 'RETRY_EXHAUSTED', reason)) ~> terminalRows",
         "tokenized@ok derive({_id} = concat(body.token, '_', $initiativeId),",
         "          userId = body.token,",
         "          initiativeId = $initiativeId,",
@@ -111,7 +131,7 @@
         "     ),",
         "     skipDuplicateMapInputs: true,",
         "     skipDuplicateMapOutputs: true) ~> onboardingDocument",
-        "invalidRows, failedRows union(byName: true) ~> rejectedUnion",
+        "invalidRows, terminalRows union(byName: true) ~> rejectedUnion",
         "rejectedUnion select(mapColumn(",
         "          fiscalCode,",
         "          reason",
@@ -129,7 +149,14 @@
         "     truncate: true,",
         "     skipDuplicateMapInputs: true,",
         "     skipDuplicateMapOutputs: true,",
-        "     partitionBy('hash', 1)) ~> sinkRejected"
+        "     partitionBy('hash', 1)) ~> sinkRejected",
+        "pendingRows sink(allowSchemaDrift: false,",
+        "     validateSchema: false,",
+        "     partitionFileNames:['pending.csv'],",
+        "     truncate: true,",
+        "     skipDuplicateMapInputs: true,",
+        "     skipDuplicateMapOutputs: true,",
+        "     partitionBy('hash', 1)) ~> sinkPending"
       ]
     }
   }

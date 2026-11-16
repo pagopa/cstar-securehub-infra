@@ -67,6 +67,8 @@ resource "azurerm_data_factory_data_flow" "dataflows" {
     azurerm_data_factory_linked_custom_service.adf_cosmosdb_linked_service,
     azurerm_data_factory_linked_custom_service.bonus_blob_storage_linked_service,
     azurerm_data_factory_linked_custom_service.idpay_exports_blobfs_ls,
-    azurerm_data_factory_linked_service_kusto.kusto
+    azurerm_data_factory_linked_service_kusto.kusto,
+    azurerm_data_factory_linked_custom_service.idpay_onboarding_census_blob_ls,
+    azurerm_data_factory_linked_custom_service.idpay_df_apim_rest_ls
   ]
 }
