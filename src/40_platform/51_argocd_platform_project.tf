@@ -30,7 +30,8 @@ resource "argocd_project" "platform_project" {
     source_repos      = ["*"]
 
     dynamic "destination" {
-      for_each = toset(local.argocd_project_namespaces)
+      # Listmonk deploys here; its Application remains in the argocd namespace.
+      for_each = toset(concat(local.argocd_project_namespaces, ["listmonk"]))
       content {
         server    = "https://kubernetes.default.svc"
         namespace = destination.value

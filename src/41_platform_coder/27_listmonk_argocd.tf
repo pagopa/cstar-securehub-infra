@@ -19,51 +19,6 @@ data "azurerm_key_vault_secret" "listmonk_argocd_password" {
   key_vault_id = data.azurerm_key_vault.listmonk_cicd.id
 }
 
-resource "argocd_project" "listmonk" {
-  metadata {
-    name      = "listmonk-project"
-    namespace = "argocd"
-  }
-
-  spec {
-    description       = "Listmonk platform workload; infrastructure and secrets remain Terraform-owned"
-    source_namespaces = ["argocd"]
-    source_repos      = [local.listmonk_helm_repository]
-
-    destination {
-      server    = "https://kubernetes.default.svc"
-      namespace = local.listmonk_namespace
-    }
-
-    cluster_resource_blacklist {
-      group = "*"
-      kind  = "*"
-    }
-
-    dynamic "namespace_resource_whitelist" {
-      for_each = {
-        Deployment            = "apps"
-        Service               = ""
-        PersistentVolumeClaim = ""
-        Ingress               = "networking.k8s.io"
-      }
-      content {
-        group = namespace_resource_whitelist.value
-        kind  = namespace_resource_whitelist.key
-      }
-    }
-
-    role {
-      name   = "admin"
-      groups = [data.azuread_group.adgroup_admin.object_id]
-      policies = [
-        "p, proj:listmonk-project:admin, applications, *, listmonk-project/*, allow",
-        "p, proj:listmonk-project:admin, logs, get, listmonk-project/*, allow",
-      ]
-    }
-  }
-}
-
 resource "argocd_application" "listmonk" {
   metadata {
     name      = "listmonk"
@@ -79,7 +34,8 @@ resource "argocd_application" "listmonk" {
   wait = false
 
   spec {
-    project = argocd_project.listmonk.metadata[0].name
+    # Managed by src/40_platform; deploy its destination update first.
+    project = "platform-project"
 
     destination {
       server    = "https://kubernetes.default.svc"

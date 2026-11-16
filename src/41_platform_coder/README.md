@@ -5,6 +5,8 @@
 Greenfield installation on AKS, namespace `listmonk`. Terraform prepares the dedicated
 PostgreSQL database/role, core Key Vault credentials, internal DNS/TLS.
 Argo CD installs HelmForge `1.2.3` with the official Listmonk `v6.2.0` image and manual sync.
+The Application reuses `platform-project`; deploy its destination update in `src/40_platform`
+before the Listmonk stack. The workload runs in the dedicated `listmonk` namespace.
 The upstream `db-init` installs/upgrades the schema and creates the admin only on first install.
 There is no local chart, settings SQL, SSO or SMTP provisioning.
 
@@ -66,7 +68,6 @@ for acceptance criteria, the changes across the four repositories and pending li
 | Name | Type |
 |------|------|
 | [argocd_application.listmonk](https://registry.terraform.io/providers/argoproj-labs/argocd/latest/docs/resources/application) | resource |
-| [argocd_project.listmonk](https://registry.terraform.io/providers/argoproj-labs/argocd/latest/docs/resources/project) | resource |
 | [azurerm_key_vault_secret.keycloak_admin_password](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.keycloak_admin_username](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.keycloak_db_admin_password](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
