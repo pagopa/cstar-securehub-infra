@@ -11,7 +11,7 @@ locals {
 module "workload_identity_platform_coder_listmonk" {
   source = "./.terraform/modules/__v4__/kubernetes_workload_identity_init"
 
-  workload_identity_name_prefix         = "platform-coder-listmonk"
+  workload_identity_name_prefix         = "${var.domain}-coder-listmonk"
   workload_identity_resource_group_name = data.azurerm_kubernetes_cluster.aks.resource_group_name
   workload_identity_location            = var.location
   tags                                  = module.tag_config.tags
@@ -20,17 +20,17 @@ module "workload_identity_platform_coder_listmonk" {
 module "workload_identity_configuration_platform_coder_listmonk" {
   source = "./.terraform/modules/__v4__/kubernetes_workload_identity_configuration"
 
-  workload_identity_name_prefix         = "platform-coder-listmonk"
+  workload_identity_name_prefix         = "${var.domain}-coder-listmonk"
   workload_identity_resource_group_name = data.azurerm_kubernetes_cluster.aks.resource_group_name
   aks_name                              = data.azurerm_kubernetes_cluster.aks.name
   aks_resource_group_name               = data.azurerm_kubernetes_cluster.aks.resource_group_name
   namespace                             = local.listmonk_namespace
 
-  key_vault_id                      = data.azurerm_key_vault.key_vault_core.id
-  key_vault_certificate_permissions = ["Get"]
-  key_vault_key_permissions         = ["Get"]
-  key_vault_secret_permissions      = ["Get"]
-  tags                              = module.tag_config.tags
+  key_vault_id = data.azurerm_key_vault.key_vault_core.id
+  #key_vault_certificate_permissions = ["Get"]
+  #key_vault_key_permissions         = ["Get"]
+  key_vault_secret_permissions = ["Get"]
+  tags                         = module.tag_config.tags
 
   depends_on = [module.workload_identity_platform_coder_listmonk]
 }
