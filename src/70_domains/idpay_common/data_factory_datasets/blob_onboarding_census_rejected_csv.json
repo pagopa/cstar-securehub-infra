@@ -1,0 +1,41 @@
+{
+  "name": "blob_onboarding_census_rejected_csv",
+  "properties": {
+    "description": "Onboarding census dead-letter: rejected rows with reason, one file per run (BND-2482)",
+    "linkedServiceName": {
+      "referenceName": "${domain}-onboarding-census-blob-ls",
+      "type": "LinkedServiceReference"
+    },
+    "parameters": {
+      "initiativeId": { "type": "String" },
+      "runId": { "type": "String" }
+    },
+    "annotations": [
+      "Onboarding Census",
+      "IdPay"
+    ],
+    "type": "DelimitedText",
+    "typeProperties": {
+      "location": {
+        "type": "AzureBlobStorageLocation",
+        "fileName": "rejected.csv",
+        "folderPath": {
+          "value": "@concat('rejected/', dataset().initiativeId, '/', dataset().runId)",
+          "type": "Expression"
+        },
+        "container": "onboarding-census"
+      },
+      "columnDelimiter": ",",
+      "escapeChar": "\\",
+      "firstRowAsHeader": true,
+      "quoteChar": "\"",
+      "encodingName": "UTF-8"
+    },
+    "schema": [
+      { "name": "fiscalCode", "type": "String" },
+      { "name": "reason", "type": "String" }
+    ]
+  },
+  "type": "Microsoft.DataFactory/factories/datasets"
+}
+

@@ -1,0 +1,33 @@
+{
+  "name": "blob_onboarding_census_staging_parquet",
+  "properties": {
+    "description": "Onboarding census staging: tokenized onboarding documents produced by the data flow and upserted into onboarding_citizen. Parquet keeps typed timestamps (BSON Date on Mongo) (BND-2482)",
+    "linkedServiceName": {
+      "referenceName": "${domain}-onboarding-census-blob-ls",
+      "type": "LinkedServiceReference"
+    },
+    "parameters": {
+      "initiativeId": { "type": "String" },
+      "runId": { "type": "String" }
+    },
+    "annotations": [
+      "Onboarding Census",
+      "IdPay"
+    ],
+    "type": "Parquet",
+    "typeProperties": {
+      "location": {
+        "type": "AzureBlobStorageLocation",
+        "folderPath": {
+          "value": "@concat('work/', dataset().initiativeId, '/', dataset().runId)",
+          "type": "Expression"
+        },
+        "container": "onboarding-census"
+      },
+      "compressionCodec": "snappy"
+    },
+    "schema": []
+  },
+  "type": "Microsoft.DataFactory/factories/datasets"
+}
+
