@@ -146,7 +146,7 @@
         },
         "userProperties": [],
         "typeProperties": {
-          "dataflow": {
+          "dataFlow": {
             "referenceName": "df_onboarding_census",
             "type": "DataFlowReference",
             "parameters": {
@@ -296,7 +296,7 @@
                     },
                     "userProperties": [],
                     "typeProperties": {
-                      "dataflow": {
+                      "dataFlow": {
                         "referenceName": "df_onboarding_census",
                         "type": "DataFlowReference",
                         "parameters": {
