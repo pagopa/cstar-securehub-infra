@@ -66,8 +66,8 @@
       },
       {
         "name": "CheckRealOnboardings",
-        "description": "Preliminary check: any document of the initiative that is not a census record means real onboardings exist -> the run must be blocked (upsert would overwrite them). limit 1 keeps the RU cost low.",
-        "type": "Lookup",
+        "description": "Preliminary check: any document of the initiative that is not a census record means real onboardings exist -> the run must be blocked (upsert would overwrite them). Implemented as a Copy (the Lookup activity cannot reach Cosmos Mongo from the managed VNet in this environment): limit 1 + projection of _id keep the RU cost low; only the rowsRead of the Copy is used.",
+        "type": "Copy",
         "dependsOn": [],
         "policy": {
           "timeout": "0.00:30:00",
@@ -90,12 +90,35 @@
             },
             "batchSize": 1
           },
-          "dataset": {
+          "sink": {
+            "type": "JsonSink",
+            "storeSettings": {
+              "type": "AzureBlobStorageWriteSettings"
+            },
+            "formatSettings": {
+              "type": "JsonWriteSettings"
+            }
+          },
+          "enableStaging": false,
+          "parallelCopies": 1,
+          "dataIntegrationUnits": 2
+        },
+        "inputs": [
+          {
             "referenceName": "cosmos_idpay_onboarding_citizen",
             "type": "DatasetReference"
-          },
-          "firstRowOnly": false
-        }
+          }
+        ],
+        "outputs": [
+          {
+            "referenceName": "blob_onboarding_census_check_json",
+            "type": "DatasetReference",
+            "parameters": {
+              "initiativeId": "@pipeline().parameters.initiativeId",
+              "runId": "@pipeline().RunId"
+            }
+          }
+        ]
       },
       {
         "name": "IfRealOnboardingsFound",
@@ -109,7 +132,7 @@
         "userProperties": [],
         "typeProperties": {
           "expression": {
-            "value": "@greater(activity('CheckRealOnboardings').output.count, 0)",
+            "value": "@greater(coalesce(activity('CheckRealOnboardings').output?.rowsRead, 0), 0)",
             "type": "Expression"
           },
           "ifTrueActivities": [
