@@ -1,0 +1,57 @@
+{
+  "schedule-default": {
+    "partition_key": "Schedule",
+    "entity": [
+      {
+        "name": "[cstar-dev] Check application gateway",
+        "cron": "0 0 */1 * * *",
+        "runbook": "azure/application_gateway_info.sh",
+        "run_args": "cstar-d-app-gw-maz cstar-d-vnet-rg",
+        "worker_pool": "generic",
+        "enabled": true,
+        "oncall": false,
+        "team": "infra"
+      },
+      {
+        "name": "[finops] Cost spike 7 days",
+        "cron": "0 0 10 * * 1",
+        "runbook": "finops/azure_cost_threshold.py",
+        "run_args": "--days 7 -r 30 --top-types 30 --slack-team-id TQSBH3ZS4 --slack-bot-id B0C0X97T4UA --keyvault-name cstar-d-itn-cloudo-kv --keyvault-slack-token finops-slack-token",
+        "worker_pool": "generic",
+        "enabled": true,
+        "oncall": false,
+        "team": "infra"
+      },
+      {
+        "name": "[finops] Cost spike 30 days",
+        "cron": "0 0 09 1/14 * *",
+        "runbook": "finops/azure_cost_threshold.py",
+        "run_args": "--days 30 -r 30 --top-types 30 --slack-team-id TQSBH3ZS4 --slack-bot-id B0C0X97T4UA --keyvault-name cstar-d-itn-cloudo-kv --keyvault-slack-token finops-slack-token",
+        "worker_pool": "generic",
+        "enabled": true,
+        "oncall": false,
+        "team": "infra"
+      },
+      {
+        "name": "[carbon] Monthly emissions report",
+        "cron": "0 0 7 20 * *",
+        "runbook": "carbon/fetch_carbon_report.py",
+        "run_args": "--storage-account pagopaditncarbonfe",
+        "worker_pool": "generic",
+        "enabled": false,
+        "oncall": false,
+        "team": "infra"
+      },
+      {
+        "name": "[acr] Purge old images",
+        "cron": "0 15 16 15 * *",
+        "runbook": "azure/acr_purge.py",
+        "run_args": "--registry pagopadcommonacr,pagopaditncoreacr,pagopaditncoreacrbck,pagopadweucoreacrbck --keep 2 --ago-days 1 --workers 5 --execute",
+        "worker_pool": "generic",
+        "enabled": false,
+        "oncall": false,
+        "team": "infra"
+      }
+    ]
+  }
+}
