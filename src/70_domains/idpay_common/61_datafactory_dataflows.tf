@@ -49,7 +49,14 @@ resource "azurerm_data_factory_data_flow" "dataflows" {
   dynamic "transformation" {
     for_each = try(local.dataflow_transformations[each.key], [])
     content {
-      name = transformation.value
+      name = transformation.value.name
+
+      dynamic "linked_service" {
+        for_each = transformation.value.linked_service != null ? [transformation.value.linked_service] : []
+        content {
+          name = linked_service.value
+        }
+      }
     }
   }
 
