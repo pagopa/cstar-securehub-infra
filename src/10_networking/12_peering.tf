@@ -20,6 +20,11 @@ locals {
       id                  = module.vnet_spoke_security.id
       resource_group_name = azurerm_resource_group.rg_network.name
     }
+    tools = {
+      name                = module.vnet_spoke_tools.name
+      id                  = module.vnet_spoke_tools.id
+      resource_group_name = azurerm_resource_group.rg_network.name
+    }
   }
   # Collect vnet spoke
   all_vnets_peering_to_hub = {
