@@ -43,6 +43,12 @@ keycloak_configuration = {
 }
 
 listmonk_configuration = {
+  enabled = true
+  rbac_domains = {
+    idpay = true
+    srtp  = false
+    mdc   = false
+  }
   chart_version     = "1.2.3"
   image_repository  = "listmonk/listmonk"
   image_tag         = "v6.2.0"

@@ -1,4 +1,5 @@
 resource "azurerm_postgresql_flexible_server_database" "listmonk_db" {
+  count     = local.listmonk_enabled ? 1 : 0
   name      = local.listmonk_db_name
   server_id = module.keycloak_pgflex.id
   charset   = "UTF8"
@@ -6,6 +7,7 @@ resource "azurerm_postgresql_flexible_server_database" "listmonk_db" {
 }
 
 resource "random_password" "listmonk_db" {
+  count            = local.listmonk_enabled ? 1 : 0
   length           = 32
   special          = true
   override_special = "-"
@@ -16,6 +18,7 @@ resource "random_password" "listmonk_db" {
 }
 
 resource "azurerm_key_vault_secret" "listmonk_db_user" {
+  count        = local.listmonk_enabled ? 1 : 0
   name         = "listmonk-db-user"
   value        = "listmonk"
   key_vault_id = data.azurerm_key_vault.key_vault_core.id
@@ -25,8 +28,9 @@ resource "azurerm_key_vault_secret" "listmonk_db_user" {
 }
 
 resource "azurerm_key_vault_secret" "listmonk_db_password" {
+  count        = local.listmonk_enabled ? 1 : 0
   name         = "listmonk-db-password"
-  value        = random_password.listmonk_db.result
+  value        = random_password.listmonk_db[0].result
   key_vault_id = data.azurerm_key_vault.key_vault_core.id
   content_type = "text/plain"
 
@@ -34,10 +38,11 @@ resource "azurerm_key_vault_secret" "listmonk_db_password" {
 }
 
 resource "postgresql_role" "listmonk" {
-  name                = azurerm_key_vault_secret.listmonk_db_user.value
+  count               = local.listmonk_enabled ? 1 : 0
+  name                = azurerm_key_vault_secret.listmonk_db_user[0].value
   login               = true
-  password_wo         = azurerm_key_vault_secret.listmonk_db_password.value
-  password_wo_version = azurerm_key_vault_secret.listmonk_db_password.version
+  password_wo         = azurerm_key_vault_secret.listmonk_db_password[0].value
+  password_wo_version = azurerm_key_vault_secret.listmonk_db_password[0].version
 
   superuser                 = false
   create_database           = false
@@ -51,14 +56,16 @@ resource "postgresql_role" "listmonk" {
 
 # Restrict PUBLIC only in the new database; existing databases are not modified.
 resource "postgresql_grant" "listmonk_public_database" {
-  database    = azurerm_postgresql_flexible_server_database.listmonk_db.name
+  count       = local.listmonk_enabled ? 1 : 0
+  database    = azurerm_postgresql_flexible_server_database.listmonk_db[0].name
   role        = "public"
   object_type = "database"
   privileges  = []
 }
 
 resource "postgresql_grant" "listmonk_public_schema" {
-  database    = azurerm_postgresql_flexible_server_database.listmonk_db.name
+  count       = local.listmonk_enabled ? 1 : 0
+  database    = azurerm_postgresql_flexible_server_database.listmonk_db[0].name
   role        = "public"
   schema      = "public"
   object_type = "schema"
@@ -66,8 +73,9 @@ resource "postgresql_grant" "listmonk_public_schema" {
 }
 
 resource "postgresql_grant" "listmonk_database" {
-  database    = azurerm_postgresql_flexible_server_database.listmonk_db.name
-  role        = postgresql_role.listmonk.name
+  count       = local.listmonk_enabled ? 1 : 0
+  database    = azurerm_postgresql_flexible_server_database.listmonk_db[0].name
+  role        = postgresql_role.listmonk[0].name
   object_type = "database"
   privileges  = ["CONNECT", "TEMPORARY"]
 
@@ -75,8 +83,9 @@ resource "postgresql_grant" "listmonk_database" {
 }
 
 resource "postgresql_grant" "listmonk_schema" {
-  database    = azurerm_postgresql_flexible_server_database.listmonk_db.name
-  role        = postgresql_role.listmonk.name
+  count       = local.listmonk_enabled ? 1 : 0
+  database    = azurerm_postgresql_flexible_server_database.listmonk_db[0].name
+  role        = postgresql_role.listmonk[0].name
   schema      = "public"
   object_type = "schema"
   privileges  = ["USAGE", "CREATE"]
@@ -86,8 +95,9 @@ resource "postgresql_grant" "listmonk_schema" {
 
 # Install as the server administrator, not as the application role.
 resource "postgresql_extension" "listmonk_pgcrypto" {
+  count    = local.listmonk_enabled ? 1 : 0
   name     = "pgcrypto"
-  database = azurerm_postgresql_flexible_server_database.listmonk_db.name
+  database = azurerm_postgresql_flexible_server_database.listmonk_db[0].name
   schema   = "public"
 
   # The server must finish updating azure.extensions before CREATE EXTENSION.

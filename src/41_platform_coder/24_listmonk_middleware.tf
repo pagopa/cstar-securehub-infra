@@ -1,14 +1,31 @@
-resource "kubernetes_namespace" "listmonk" {
-  metadata {
-    name = "listmonk"
-  }
+locals {
+  listmonk_enabled   = var.listmonk_configuration.enabled
+  listmonk_namespace = local.listmonk_enabled ? module.listmonk_namespace[0].namespace_name : null
+  listmonk_ad_group_names = toset(flatten([
+    for domain, enabled in var.listmonk_configuration.rbac_domains : [
+      for role in(var.env == "prod" ? ["admin", "oncall"] : ["admin", "developers", "externals"]) :
+      "${local.product}-${domain}-adgroup-${role}"
+    ] if local.listmonk_enabled && enabled
+  ]))
 }
 
-locals {
-  listmonk_namespace = kubernetes_namespace.listmonk.metadata[0].name
+data "azuread_group" "listmonk" {
+  for_each = local.listmonk_ad_group_names
+
+  display_name = each.value
+}
+
+# Same namespace/edit bindings module used by the domain common stacks.
+module "listmonk_namespace" {
+  source = "./.terraform/modules/__v4__/kubernetes_namespace_role_binding"
+  count  = local.listmonk_enabled ? 1 : 0
+
+  name         = "listmonk"
+  ad_group_ids = [for group in data.azuread_group.listmonk : group.object_id]
 }
 
 module "workload_identity_platform_coder_listmonk" {
+  count  = local.listmonk_enabled ? 1 : 0
   source = "./.terraform/modules/__v4__/kubernetes_workload_identity_init"
 
   workload_identity_name_prefix         = "${var.domain}-coder-listmonk"
@@ -18,6 +35,7 @@ module "workload_identity_platform_coder_listmonk" {
 }
 
 module "workload_identity_configuration_platform_coder_listmonk" {
+  count  = local.listmonk_enabled ? 1 : 0
   source = "./.terraform/modules/__v4__/kubernetes_workload_identity_configuration"
 
   workload_identity_name_prefix         = "${var.domain}-coder-listmonk"
@@ -36,6 +54,7 @@ module "workload_identity_configuration_platform_coder_listmonk" {
 }
 
 module "listmonk_cert_mounter" {
+  count  = local.listmonk_enabled ? 1 : 0
   source = "./.terraform/modules/__v4__/cert_mounter"
 
   namespace        = local.listmonk_namespace
@@ -43,8 +62,8 @@ module "listmonk_cert_mounter" {
   kv_name          = data.azurerm_key_vault.key_vault_core.name
   tenant_id        = data.azurerm_subscription.current.tenant_id
 
-  workload_identity_service_account_name = module.workload_identity_configuration_platform_coder_listmonk.workload_identity_service_account_name
-  workload_identity_client_id            = module.workload_identity_configuration_platform_coder_listmonk.workload_identity_client_id
+  workload_identity_service_account_name = module.workload_identity_configuration_platform_coder_listmonk[0].workload_identity_service_account_name
+  workload_identity_client_id            = module.workload_identity_configuration_platform_coder_listmonk[0].workload_identity_client_id
 
   affinity = jsonencode({
     nodeAffinity = {

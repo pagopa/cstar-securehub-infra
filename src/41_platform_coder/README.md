@@ -10,6 +10,15 @@ before the Listmonk stack. The workload runs in the dedicated `listmonk` namespa
 The upstream `db-init` installs/upgrades the schema and creates the admin only on first install.
 There is no local chart, settings SQL, SSO or SMTP provisioning.
 
+`listmonk_configuration.enabled` controls all Listmonk resources in this stack.
+`listmonk_configuration.rbac_domains` selects namespace access for `idpay`, `srtp` and `mdc`.
+The current tfvars enable Listmonk and IDPAY access, with SRTP/MDC access disabled.
+The shared namespace module grants Kubernetes `edit` to each enabled domain's existing
+admin/developers/externals groups in DEV/UAT, or admin/oncall groups in PROD.
+These flags control access to one shared instance; they do not configure Listmonk users or SSO.
+Disabling an already deployed instance plans resource removal, including its database and namespace.
+Review the plan and data retention before applying that change.
+
 The console uses the existing private NGINX Ingress. Public API/OpenAPI and policies belong to
 `cstar-securehub-infra-api-spec/src/mcshared`; the shared gateway belongs to `cstar-infrastructure/src/core`.
 Set the public root URL once through the private admin UI after installation.
@@ -57,6 +66,7 @@ for acceptance criteria, the changes across the four repositories and pending li
 | <a name="module_core_secrets"></a> [core\_secrets](#module\_core\_secrets) | ./.terraform/modules/__v4__/key_vault_secrets_query | n/a |
 | <a name="module_keycloak_pgflex"></a> [keycloak\_pgflex](#module\_keycloak\_pgflex) | ./.terraform/modules/__v4__/IDH/postgres_flexible_server | n/a |
 | <a name="module_listmonk_cert_mounter"></a> [listmonk\_cert\_mounter](#module\_listmonk\_cert\_mounter) | ./.terraform/modules/__v4__/cert_mounter | n/a |
+| <a name="module_listmonk_namespace"></a> [listmonk\_namespace](#module\_listmonk\_namespace) | ./.terraform/modules/__v4__/kubernetes_namespace_role_binding | n/a |
 | <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../tag_config | n/a |
 | <a name="module_workload_identity_configuration_platform_coder_keycloak"></a> [workload\_identity\_configuration\_platform\_coder\_keycloak](#module\_workload\_identity\_configuration\_platform\_coder\_keycloak) | ./.terraform/modules/__v4__/kubernetes_workload_identity_configuration | n/a |
 | <a name="module_workload_identity_configuration_platform_coder_listmonk"></a> [workload\_identity\_configuration\_platform\_coder\_listmonk](#module\_workload\_identity\_configuration\_platform\_coder\_listmonk) | ./.terraform/modules/__v4__/kubernetes_workload_identity_configuration | n/a |
@@ -98,7 +108,6 @@ for acceptance criteria, the changes across the four repositories and pending li
 | [kubernetes_config_map.keycloak_pagopa_theme](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/config_map) | resource |
 | [kubernetes_config_map.keycloak_providers](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/config_map) | resource |
 | [kubernetes_namespace.keycloak](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/namespace) | resource |
-| [kubernetes_namespace.listmonk](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/namespace) | resource |
 | [kubernetes_secret.keycloak_admin](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/secret) | resource |
 | [kubernetes_secret.keycloak_db](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/secret) | resource |
 | [kubernetes_secret.listmonk_bootstrap](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/secret) | resource |
@@ -119,6 +128,7 @@ for acceptance criteria, the changes across the four repositories and pending li
 | [azuread_group.adgroup_developers](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_externals](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_security](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
+| [azuread_group.listmonk](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 | [azurerm_application_insights.app_insights_core](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/application_insights) | data source |
 | [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) | data source |
 | [azurerm_key_vault.key_vault_core](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault) | data source |
@@ -152,7 +162,7 @@ for acceptance criteria, the changes across the four repositories and pending li
 | <a name="input_k8s_kube_config_path_prefix"></a> [k8s\_kube\_config\_path\_prefix](#input\_k8s\_kube\_config\_path\_prefix) | Kubernetes | `string` | `"~/.kube"` | no |
 | <a name="input_keycloak_configuration"></a> [keycloak\_configuration](#input\_keycloak\_configuration) | n/a | <pre>object({<br/>    image_repository                            = string<br/>    image_tag                                   = string<br/>    image_registry                              = string<br/>    chart_version                               = string<br/>    replica_count_min                           = number<br/>    replica_count_max                           = number<br/>    cpu_request                                 = string<br/>    cpu_limit                                   = string<br/>    memory_request                              = string<br/>    memory_limit                                = string<br/>    http_client_connection_ttl_millis           = number<br/>    http_client_connection_max_idle_time_millis = number<br/>    image_registry_config_cli                   = string<br/>    image_repository_config_cli                 = string<br/>    image_tag_config_cli                        = string<br/>    image_digest_config_cli                     = optional(string, "")<br/>  })</pre> | n/a | yes |
 | <a name="input_keycloak_pgflex_params"></a> [keycloak\_pgflex\_params](#input\_keycloak\_pgflex\_params) | Postgres Flexible | <pre>object({<br/>    enabled                                = bool<br/>    zone                                   = number<br/>    idh_resource_tier                      = string<br/>    geo_replication_enabled                = bool<br/>    pgres_flex_pgbouncer_enabled           = bool<br/>    pgres_flex_diagnostic_settings_enabled = bool<br/>    auto_grow_enabled                      = bool<br/>    storage_tier                           = optional(string, null)<br/>  })</pre> | n/a | yes |
-| <a name="input_listmonk_configuration"></a> [listmonk\_configuration](#input\_listmonk\_configuration) | n/a | <pre>object({<br/>    chart_version            = string<br/>    image_repository         = string<br/>    image_tag                = string<br/>    replica_count            = number<br/>    postgres_ssl_mode        = string<br/>    bootstrap_postgres_image = optional(string, "postgres:17-alpine")<br/>  })</pre> | n/a | yes |
+| <a name="input_listmonk_configuration"></a> [listmonk\_configuration](#input\_listmonk\_configuration) | n/a | <pre>object({<br/>    enabled = optional(bool, true)<br/>    rbac_domains = optional(object({<br/>      idpay = optional(bool, true)<br/>      srtp  = optional(bool, false)<br/>      mdc   = optional(bool, false)<br/>    }), {})<br/>    chart_version            = string<br/>    image_repository         = string<br/>    image_tag                = string<br/>    replica_count            = number<br/>    postgres_ssl_mode        = string<br/>    bootstrap_postgres_image = optional(string, "postgres:17-alpine")<br/>  })</pre> | n/a | yes |
 | <a name="input_location"></a> [location](#input\_location) | n/a | `string` | n/a | yes |
 | <a name="input_location_short"></a> [location\_short](#input\_location\_short) | Location short like eg: neu, weu.. | `string` | n/a | yes |
 | <a name="input_mcshared_dns_zone_prefix"></a> [mcshared\_dns\_zone\_prefix](#input\_mcshared\_dns\_zone\_prefix) | The dns subdomain for mcshared | `string` | `null` | no |

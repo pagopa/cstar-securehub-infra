@@ -71,7 +71,7 @@ provider "keycloak" {
 provider "postgresql" {
   host      = module.keycloak_pgflex.fqdn
   port      = 5432
-  database  = azurerm_postgresql_flexible_server_database.listmonk_db.name
+  database  = local.listmonk_enabled ? azurerm_postgresql_flexible_server_database.listmonk_db[0].name : "postgres"
   username  = azurerm_key_vault_secret.keycloak_db_admin_user.value
   password  = azurerm_key_vault_secret.keycloak_db_admin_password.value
   sslmode   = "require"
@@ -85,6 +85,6 @@ module "__v4__" {
 
 provider "argocd" {
   server_addr = local.listmonk_argocd_hostname
-  username    = data.azurerm_key_vault_secret.listmonk_argocd_username.value
-  password    = data.azurerm_key_vault_secret.listmonk_argocd_password.value
+  username    = local.listmonk_enabled ? data.azurerm_key_vault_secret.listmonk_argocd_username[0].value : null
+  password    = local.listmonk_enabled ? data.azurerm_key_vault_secret.listmonk_argocd_password[0].value : null
 }

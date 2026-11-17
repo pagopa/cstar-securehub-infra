@@ -109,6 +109,12 @@ variable "keycloak_configuration" {
 
 variable "listmonk_configuration" {
   type = object({
+    enabled = optional(bool, true)
+    rbac_domains = optional(object({
+      idpay = optional(bool, true)
+      srtp  = optional(bool, false)
+      mdc   = optional(bool, false)
+    }), {})
     chart_version            = string
     image_repository         = string
     image_tag                = string
