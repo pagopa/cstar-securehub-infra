@@ -5634,13 +5634,18 @@
           "text": "1h",
           "value": "1h"
         },
-        "includeAll": false,
-        "label": "Sender · Bin size (grafici nel tempo)",
+        "hide": 0,
+        "label": "Sender · Bin size (es. 30s, 5m, 1h)",
         "name": "sender_bin_size",
-        "options": [],
-        "query": "5m : 5m,15m : 15m,1h : 1h,1d : 1d,7d : 7d",
-        "type": "custom",
-        "valuesFormat": "csv"
+        "options": [
+          {
+            "selected": true,
+            "text": "1h",
+            "value": "1h"
+          }
+        ],
+        "query": "1h",
+        "type": "textbox"
       }
     ]
   },
