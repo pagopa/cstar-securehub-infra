@@ -286,8 +286,10 @@ resource "azurerm_data_factory_linked_custom_service" "idpay_df_apim_rest_ls" {
   type            = "RestService"
   description     = "APIM idpay-itn/df REST endpoint for Data Flow external calls"
 
+  # Trailing slash required: the data flow "external call" appends the relative entity ('tokens') to this base URL.
+  # Without it the last path segment (/df) is dropped and the call returns 404.
   type_properties_json = jsonencode({
-    url                               = var.data_factory_api_base_url
+    url                               = "${trimsuffix(var.data_factory_api_base_url, "/")}/"
     enableServerCertificateValidation = true
     authenticationType                = "Anonymous"
   })
