@@ -84,7 +84,7 @@ module "__v4__" {
 }
 
 provider "argocd" {
-  server_addr = local.listmonk_argocd_hostname
-  username    = local.listmonk_enabled ? data.azurerm_key_vault_secret.listmonk_argocd_username[0].value : null
-  password    = local.listmonk_enabled ? data.azurerm_key_vault_secret.listmonk_argocd_password[0].value : null
+  server_addr = local.argocd_internal_url
+  username    = data.azurerm_key_vault_secret.argocd_admin_username.value
+  password    = data.azurerm_key_vault_secret.argocd_admin_password.value
 }

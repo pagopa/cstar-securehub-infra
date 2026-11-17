@@ -25,6 +25,9 @@ locals {
   kv_core_name                = "${local.product_nodomain}-core-kv"
   kv_core_resource_group_name = "${local.product_nodomain}-core-sec-rg"
 
+  # Argo CD
+  argocd_internal_url = "argocd.${var.location_short}.${var.dns_zone_internal_prefix}.${var.prefix}.${var.external_domain}"
+
   ### Monitoring
   monitoring_rg_name = "${local.project}-monitoring-rg"
   law_name           = "${local.project}-monitoring-law"

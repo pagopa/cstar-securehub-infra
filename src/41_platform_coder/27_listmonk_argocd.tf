@@ -1,25 +1,5 @@
 locals {
-  listmonk_argocd_hostname = "argocd.${var.location_short}.${var.dns_zone_internal_prefix}.${var.prefix}.${var.external_domain}"
   listmonk_helm_repository = "https://repo.helmforge.dev"
-}
-
-# Same control plane and credential source as src/40_platform.
-data "azurerm_key_vault" "listmonk_cicd" {
-  count               = local.listmonk_enabled ? 1 : 0
-  name                = "${local.product_nodomain}-cicd-kv"
-  resource_group_name = "${local.product_nodomain}-core-sec-rg"
-}
-
-data "azurerm_key_vault_secret" "listmonk_argocd_username" {
-  count        = local.listmonk_enabled ? 1 : 0
-  name         = "argocd-admin-username"
-  key_vault_id = data.azurerm_key_vault.listmonk_cicd[0].id
-}
-
-data "azurerm_key_vault_secret" "listmonk_argocd_password" {
-  count        = local.listmonk_enabled ? 1 : 0
-  name         = "argocd-admin-password"
-  key_vault_id = data.azurerm_key_vault.listmonk_cicd[0].id
 }
 
 resource "argocd_application" "listmonk" {
