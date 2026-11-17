@@ -152,6 +152,30 @@ locals {
     kv_url                          = data.azurerm_key_vault.domain_kv.vault_uri
     onboarding_census_blob_endpoint = module.storage_idpay_onboarding_census.primary_blob_endpoint
   }))
+
+  # child pipeline with the retry loop: ADF does not allow an Until inside an IfCondition
+  pipeline_onboarding_census_retry_json = jsondecode(file("${path.module}/data_factory_pipelines/templated/idpay_onboarding_census_retry.json"))
+}
+
+resource "azapi_resource" "idpay_onboarding_census_retry" {
+  type      = "Microsoft.DataFactory/factories/pipelines@2018-06-01"
+  name      = local.pipeline_onboarding_census_retry_json.name
+  parent_id = data.azurerm_data_factory.data_factory.id
+
+  body = {
+    properties = {
+      description = local.pipeline_onboarding_census_retry_json.properties.description
+      activities  = local.pipeline_onboarding_census_retry_json.properties.activities
+      variables   = local.pipeline_onboarding_census_retry_json.properties.variables
+      parameters  = local.pipeline_onboarding_census_retry_json.properties.parameters
+      annotations = local.pipeline_onboarding_census_retry_json.properties.annotations
+    }
+  }
+
+  depends_on = [
+    azurerm_data_factory_custom_dataset.datasets,
+    azurerm_data_factory_data_flow.dataflows
+  ]
 }
 
 resource "azapi_resource" "idpay_onboarding_census" {
@@ -171,6 +195,7 @@ resource "azapi_resource" "idpay_onboarding_census" {
   }
 
   depends_on = [
+    azapi_resource.idpay_onboarding_census_retry,
     azurerm_data_factory_custom_dataset.datasets,
     azurerm_data_factory_data_flow.dataflows,
     azurerm_data_factory_linked_custom_service.idpay_onboarding_census_blob_ls,
