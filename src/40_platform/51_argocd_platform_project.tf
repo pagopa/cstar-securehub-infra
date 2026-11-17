@@ -6,9 +6,17 @@ locals {
     data.azuread_group.adgroup_admin.object_id,
   ]
 
-  argocd_groups_developer = [
-    data.azuread_group.adgroup_developers.object_id,
-  ]
+  argocd_groups_developer = flatten([
+    for i in local.domains : [
+      data.azuread_group.adgroup_domain_admin[i].object_id,
+      data.azuread_group.adgroup_domain_developers[i].object_id,
+      data.azuread_group.adgroup_domain_project_managers[i].object_id,
+    ]
+  ])
+
+  argocd_groups_external = var.env != "prod" ? [
+    for i in local.domains : data.azuread_group.adgroup_domain_externals[i].object_id
+  ] : []
 }
 
 #-------------------------------------------------------------------------
@@ -88,7 +96,7 @@ resource "argocd_project" "platform_project" {
 
     role {
       name   = "external"
-      groups = []
+      groups = local.argocd_groups_external
       policies = [
         "p, proj:${local.argocd_project_name}:external, applications, get, ${local.argocd_project_name}/*, allow",
         "p, proj:${local.argocd_project_name}:external, logs, get, ${local.argocd_project_name}/*, allow",
