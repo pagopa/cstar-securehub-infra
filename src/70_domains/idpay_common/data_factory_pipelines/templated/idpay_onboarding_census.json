@@ -14,6 +14,7 @@
       "received": { "type": "String", "defaultValue": "0" },
       "written": { "type": "String", "defaultValue": "0" },
       "rejected": { "type": "String", "defaultValue": "0" },
+      "rejectedTmp": { "type": "String", "defaultValue": "0" },
       "attemptNo": { "type": "String", "defaultValue": "0" },
       "pendingRows": { "type": "String", "defaultValue": "0" }
     },
@@ -187,6 +188,7 @@
       },
       {
         "name": "SetReceived",
+        "description": "All sinks share the same source: read rowsRead from whichever sink reports metrics (a sink that wrote no rows may be missing).",
         "type": "SetVariable",
         "dependsOn": [
           { "activity": "RunCensusPass0", "dependencyConditions": ["Succeeded"] }
@@ -195,7 +197,7 @@
         "typeProperties": {
           "variableName": "received",
           "value": {
-            "value": "@string(activity('RunCensusPass0').output.runStatus.metrics.sinkStaging.sources.sourceCsv.rowsRead)",
+            "value": "@string(coalesce(activity('RunCensusPass0').output.runStatus.metrics?.sinkStaging?.sources?.sourceCsv?.rowsRead, activity('RunCensusPass0').output.runStatus.metrics?.sinkRejected?.sources?.sourceCsv?.rowsRead, activity('RunCensusPass0').output.runStatus.metrics?.sinkPending?.sources?.sourceCsv?.rowsRead, 0))",
             "type": "Expression"
           }
         }
@@ -210,7 +212,7 @@
         "typeProperties": {
           "variableName": "rejected",
           "value": {
-            "value": "@string(activity('RunCensusPass0').output.runStatus.metrics.sinkRejected.rowsWritten)",
+            "value": "@string(coalesce(activity('RunCensusPass0').output.runStatus.metrics?.sinkRejected?.rowsWritten, 0))",
             "type": "Expression"
           }
         }
@@ -225,7 +227,7 @@
         "typeProperties": {
           "variableName": "pendingRows",
           "value": {
-            "value": "@string(activity('RunCensusPass0').output.runStatus.metrics.sinkPending.rowsWritten)",
+            "value": "@string(coalesce(activity('RunCensusPass0').output.runStatus.metrics?.sinkPending?.rowsWritten, 0))",
             "type": "Expression"
           }
         }
@@ -270,16 +272,32 @@
               }
             },
             {
-              "name": "AddRejectedRetry",
+              "name": "ComputeRejected",
+              "description": "ADF does not allow a SetVariable to reference its own variable: the sum goes through rejectedTmp.",
               "type": "SetVariable",
               "dependsOn": [
                 { "activity": "RunRetryPipeline", "dependencyConditions": ["Succeeded"] }
               ],
               "userProperties": [],
               "typeProperties": {
-                "variableName": "rejected",
+                "variableName": "rejectedTmp",
                 "value": {
                   "value": "@string(add(int(variables('rejected')), int(activity('RunRetryPipeline').output.pipelineReturnValue.rejected)))",
+                  "type": "Expression"
+                }
+              }
+            },
+            {
+              "name": "AddRejectedRetry",
+              "type": "SetVariable",
+              "dependsOn": [
+                { "activity": "ComputeRejected", "dependencyConditions": ["Succeeded"] }
+              ],
+              "userProperties": [],
+              "typeProperties": {
+                "variableName": "rejected",
+                "value": {
+                  "value": "@variables('rejectedTmp')",
                   "type": "Expression"
                 }
               }
@@ -298,87 +316,164 @@
                   "type": "Expression"
                 }
               }
+            },
+            {
+              "name": "CleanupPending",
+              "description": "Deletes the retry queue of the run (all attempt subfolders). Runs only here because pending/ exists only when pass 0 left retryable rows. The wildcard overrides the fixed fileName of the dataset.",
+              "type": "Delete",
+              "dependsOn": [
+                { "activity": "SetAttempts", "dependencyConditions": ["Succeeded"] }
+              ],
+              "policy": {
+                "timeout": "0.00:30:00",
+                "retry": 2,
+                "retryIntervalInSeconds": 30,
+                "secureOutput": false,
+                "secureInput": false
+              },
+              "userProperties": [],
+              "typeProperties": {
+                "dataset": {
+                  "referenceName": "blob_onboarding_census_pending_csv",
+                  "type": "DatasetReference",
+                  "parameters": {
+                    "initiativeId": "@pipeline().parameters.initiativeId",
+                    "runId": "@pipeline().RunId",
+                    "attempt": ""
+                  }
+                },
+                "storeSettings": {
+                  "type": "AzureBlobStorageReadSettings",
+                  "recursive": true,
+                  "wildcardFileName": "*"
+                },
+                "enableLogging": false
+              }
             }
           ]
         }
       },
       {
-        "name": "UpsertOnboardingCitizen",
-        "description": "Upsert by _id (shard key -> point writes) of all staged attempts (recursive read). Limited batch/parallelism to protect the RU of the production onboarding database. Idempotent: safe to retry.",
-        "type": "Copy",
+        "name": "IfStagedRows",
+        "description": "Upsert only if at least one row was staged (received - rejected > 0): with no staged rows the work/ folder does not exist and the Copy would fail.",
+        "type": "IfCondition",
         "dependsOn": [
           { "activity": "IfPendingRows", "dependencyConditions": ["Succeeded"] }
         ],
-        "policy": {
-          "timeout": "0.06:00:00",
-          "retry": 2,
-          "retryIntervalInSeconds": 120,
-          "secureOutput": false,
-          "secureInput": false
-        },
         "userProperties": [],
         "typeProperties": {
-          "source": {
-            "type": "ParquetSource",
-            "storeSettings": {
-              "type": "AzureBlobStorageReadSettings",
-              "recursive": true,
-              "wildcardFileName": "*.parquet",
-              "enablePartitionDiscovery": false
-            },
-            "formatSettings": {
-              "type": "ParquetReadSettings"
-            }
-          },
-          "sink": {
-            "type": "CosmosDbMongoDbApiSink",
-            "writeBehavior": "upsert",
-            "writeBatchSize": 500,
-            "writeBatchTimeout": "00:30:00"
-          },
-          "enableStaging": false,
-          "parallelCopies": 4,
-          "dataIntegrationUnits": 4,
-          "translator": {
-            "type": "TabularTranslator",
-            "typeConversion": true,
-            "typeConversionSettings": {
-              "allowDataTruncation": false,
-              "treatBooleanAsNumber": false
-            }
-          }
-        },
-        "inputs": [
-          {
-            "referenceName": "blob_onboarding_census_staging_parquet",
-            "type": "DatasetReference",
-            "parameters": {
-              "initiativeId": "@pipeline().parameters.initiativeId",
-              "runId": "@pipeline().RunId",
-              "attempt": ""
-            }
-          }
-        ],
-        "outputs": [
-          {
-            "referenceName": "cosmos_idpay_onboarding_citizen",
-            "type": "DatasetReference"
-          }
-        ]
-      },
-      {
-        "name": "SetWritten",
-        "type": "SetVariable",
-        "dependsOn": [
-          { "activity": "UpsertOnboardingCitizen", "dependencyConditions": ["Succeeded"] }
-        ],
-        "userProperties": [],
-        "typeProperties": {
-          "variableName": "written",
-          "value": {
-            "value": "@string(activity('UpsertOnboardingCitizen').output.rowsCopied)",
+          "expression": {
+            "value": "@greater(sub(int(variables('received')), int(variables('rejected'))), 0)",
             "type": "Expression"
-          }
+          },
+          "ifTrueActivities": [
+            {
+              "name": "UpsertOnboardingCitizen",
+              "description": "Upsert by _id (shard key -> point writes) of all staged attempts (recursive read). Limited batch/parallelism to protect the RU of the production onboarding database. Idempotent: safe to retry.",
+              "type": "Copy",
+              "dependsOn": [],
+              "policy": {
+                "timeout": "0.06:00:00",
+                "retry": 2,
+                "retryIntervalInSeconds": 120,
+                "secureOutput": false,
+                "secureInput": false
+              },
+              "userProperties": [],
+              "typeProperties": {
+                "source": {
+                  "type": "ParquetSource",
+                  "storeSettings": {
+                    "type": "AzureBlobStorageReadSettings",
+                    "recursive": true,
+                    "wildcardFileName": "*.parquet",
+                    "enablePartitionDiscovery": false
+                  },
+                  "formatSettings": {
+                    "type": "ParquetReadSettings"
+                  }
+                },
+                "sink": {
+                  "type": "CosmosDbMongoDbApiSink",
+                  "writeBehavior": "upsert",
+                  "writeBatchSize": 500,
+                  "writeBatchTimeout": "00:30:00"
+                },
+                "enableStaging": false,
+                "parallelCopies": 4,
+                "dataIntegrationUnits": 4,
+                "translator": {
+                  "type": "TabularTranslator",
+                  "typeConversion": true,
+                  "typeConversionSettings": {
+                    "allowDataTruncation": false,
+                    "treatBooleanAsNumber": false
+                  }
+                }
+              },
+              "inputs": [
+                {
+                  "referenceName": "blob_onboarding_census_staging_parquet",
+                  "type": "DatasetReference",
+                  "parameters": {
+                    "initiativeId": "@pipeline().parameters.initiativeId",
+                    "runId": "@pipeline().RunId",
+                    "attempt": ""
+                  }
+                }
+              ],
+              "outputs": [
+                {
+                  "referenceName": "cosmos_idpay_onboarding_citizen",
+                  "type": "DatasetReference"
+                }
+              ]
+            },
+            {
+              "name": "SetWritten",
+              "type": "SetVariable",
+              "dependsOn": [
+                { "activity": "UpsertOnboardingCitizen", "dependencyConditions": ["Succeeded"] }
+              ],
+              "userProperties": [],
+              "typeProperties": {
+                "variableName": "written",
+                "value": {
+                  "value": "@string(activity('UpsertOnboardingCitizen').output.rowsCopied)",
+                  "type": "Expression"
+                }
+              }
+            },
+            {
+              "name": "CleanupStaging",
+              "description": "Deletes the staging work folder of the run (all attempts) once the upsert succeeded.",
+              "type": "Delete",
+              "dependsOn": [
+                { "activity": "SetWritten", "dependencyConditions": ["Succeeded"] }
+              ],
+              "policy": {
+                "timeout": "0.00:30:00",
+                "retry": 2,
+                "retryIntervalInSeconds": 30,
+                "secureOutput": false,
+                "secureInput": false
+              },
+              "userProperties": [],
+              "typeProperties": {
+                "dataset": {
+                  "referenceName": "blob_onboarding_census_staging_parquet",
+                  "type": "DatasetReference",
+                  "parameters": {
+                    "initiativeId": "@pipeline().parameters.initiativeId",
+                    "runId": "@pipeline().RunId",
+                    "attempt": ""
+                  }
+                },
+                "enableLogging": false,
+                "recursive": true
+              }
+            }
+          ]
         }
       },
       {
@@ -386,7 +481,7 @@
         "description": "Writes report/<initiativeId>/<runId>/report.json via Blob REST API with the ADF managed identity.",
         "type": "WebActivity",
         "dependsOn": [
-          { "activity": "SetWritten", "dependencyConditions": ["Succeeded"] }
+          { "activity": "IfStagedRows", "dependencyConditions": ["Succeeded"] }
         ],
         "policy": {
           "timeout": "0.00:05:00",
@@ -419,64 +514,6 @@
             "type": "MSI",
             "resource": "https://storage.azure.com/"
           }
-        }
-      },
-      {
-        "name": "CleanupStaging",
-        "description": "Deletes the staging work folder of the run (all attempts) after the report is written.",
-        "type": "Delete",
-        "dependsOn": [
-          { "activity": "WriteReport", "dependencyConditions": ["Succeeded"] }
-        ],
-        "policy": {
-          "timeout": "0.00:30:00",
-          "retry": 2,
-          "retryIntervalInSeconds": 30,
-          "secureOutput": false,
-          "secureInput": false
-        },
-        "userProperties": [],
-        "typeProperties": {
-          "dataset": {
-            "referenceName": "blob_onboarding_census_staging_parquet",
-            "type": "DatasetReference",
-            "parameters": {
-              "initiativeId": "@pipeline().parameters.initiativeId",
-              "runId": "@pipeline().RunId",
-              "attempt": ""
-            }
-          },
-          "enableLogging": false,
-          "recursive": true
-        }
-      },
-      {
-        "name": "CleanupPending",
-        "description": "Deletes the retry queue of the run (all attempts) after the report is written.",
-        "type": "Delete",
-        "dependsOn": [
-          { "activity": "WriteReport", "dependencyConditions": ["Succeeded"] }
-        ],
-        "policy": {
-          "timeout": "0.00:30:00",
-          "retry": 2,
-          "retryIntervalInSeconds": 30,
-          "secureOutput": false,
-          "secureInput": false
-        },
-        "userProperties": [],
-        "typeProperties": {
-          "dataset": {
-            "referenceName": "blob_onboarding_census_pending_csv",
-            "type": "DatasetReference",
-            "parameters": {
-              "initiativeId": "@pipeline().parameters.initiativeId",
-              "runId": "@pipeline().RunId",
-              "attempt": ""
-            }
-          },
-          "enableLogging": false,
-          "recursive": true
         }
       },
       {
