@@ -35,7 +35,7 @@ locals {
   # vnet core hub is not included in the peering map because already setup
   all_peerings_from_computer = {
     for k, v in local.secure_hub_vnets :
-    k => v if k == "security" || k == "data"
+    k => v if k == "security" || k == "data" || k == "tools"
   }
 }
 
