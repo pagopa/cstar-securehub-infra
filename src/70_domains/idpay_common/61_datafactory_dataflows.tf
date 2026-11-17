@@ -25,9 +25,15 @@ locals {
     ], [])
   }
 
+  # transformations keep their (optional) linked service: needed by the "external call" transformation (baseUrl comes from the REST linked service)
   dataflow_transformations = {
     for k, v in local.dataflow_templates :
-    k => try([for t in v.properties.typeProperties.transformations : t.name], [])
+    k => try([
+      for t in v.properties.typeProperties.transformations : {
+        name           = t.name
+        linked_service = try(t.linkedService.referenceName, null)
+      }
+    ], [])
   }
 }
 
