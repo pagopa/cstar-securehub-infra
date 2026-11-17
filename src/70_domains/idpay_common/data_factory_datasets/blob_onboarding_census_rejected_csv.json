@@ -8,7 +8,8 @@
     },
     "parameters": {
       "initiativeId": { "type": "String" },
-      "runId": { "type": "String" }
+      "runId": { "type": "String" },
+      "attempt": { "type": "String" }
     },
     "annotations": [
       "Onboarding Census",
