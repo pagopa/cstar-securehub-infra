@@ -27,8 +27,7 @@ module "cloudo" {
   vpn_subnet_id                  = data.azurerm_subnet.vpn_subnet.id
   private_endpoint_dns_zone_name = data.azurerm_private_dns_zone.private_endpoint_dns_zone.name
 
-  # cloudo_google_sso_integration_client_id = data.azurerm_key_vault_secret.google_client_id.value
-  cloudo_google_sso_integration_client_id = ""
+  cloudo_google_sso_integration_client_id = data.azurerm_key_vault_secret.google_client_id.value
 
   github_repo_info = {
     repo_name    = "pagopa/pagopa-infra-core"
@@ -36,7 +35,7 @@ module "cloudo" {
     runbook_path = "src/cloudo/cloudo-core/runbooks"
   }
 
-#   github_repo_info = {
+  #   github_repo_info = {
   #   repo_name    = "pagopa/cstar-securehub-infra"
   #   repo_branch  = "main"
   #   runbook_path = "src/45_cloudo/cloudo-core/runbooks"
