@@ -19,7 +19,20 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
-  "links": [],
+  "links": [
+    {
+      "title": "Ultimi 3 giorni",
+      "type": "link",
+      "icon": "clock",
+      "tooltip": "Imposta il time range a now-3d → now",
+      "url": "/d/srtp-opex-consumer?from=now-3d&to=now",
+      "includeVars": true,
+      "keepTime": false,
+      "targetBlank": false,
+      "asDropdown": false,
+      "tags": []
+    }
+  ],
   "panels": [
     {
       "fieldConfig": {
@@ -564,7 +577,7 @@
           "azureLogAnalytics": {
             "dashboardTime": true,
             "mode": "raw",
-            "query": "let _bin = max_of(coalesce(totimespan(\"$sender_bin_size\"), 1h), bin(($__timeTo() - $__timeFrom()) / 20000, 1s));\nAppTraces\n| where AppRoleName == 'rtp-consumer'\n| where $__timeFilter(TimeGenerated)\n| where Message startswith \"Message processed successfully\" or Message startswith \"Error processing message.\"\n| extend messageId = tostring(Properties.message_id)\n| where isnotempty(messageId)\n| make-series\n    Successi = dcountif(messageId, Message startswith \"Message processed successfully\") default = 0,\n    Scartati = dcountif(messageId, Message startswith \"Error processing message.\" and not (Message contains \"rtp/gpd/message\")) default = 0\n  on TimeGenerated from bin($__timeFrom(), _bin) to $__timeTo() step _bin\n| mv-expand TimeGenerated to typeof(datetime), Successi to typeof(long), Scartati to typeof(long)\n| project TimeGenerated, Successi, Scartati\n| order by TimeGenerated asc",
+            "query": "let _bin = max_of(coalesce(totimespan(\"$sender_bin_size\"), 1h), bin(($__timeTo() - $__timeFrom()) / 19999, 1s) + 1s);\nAppTraces\n| where AppRoleName == 'rtp-consumer'\n| where $__timeFilter(TimeGenerated)\n| where Message startswith \"Message processed successfully\" or Message startswith \"Error processing message.\"\n| extend messageId = tostring(Properties.message_id)\n| where isnotempty(messageId)\n| make-series\n    Successi = dcountif(messageId, Message startswith \"Message processed successfully\") default = 0,\n    Scartati = dcountif(messageId, Message startswith \"Error processing message.\" and not (Message contains \"rtp/gpd/message\")) default = 0\n  on TimeGenerated from bin($__timeFrom(), _bin) to $__timeTo() step _bin\n| mv-expand TimeGenerated to typeof(datetime), Successi to typeof(long), Scartati to typeof(long)\n| project TimeGenerated, Successi, Scartati\n| order by TimeGenerated asc",
             "resources": [
               "/subscriptions/$subscription/resourceGroups/$SrtpMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$SrtpLaw"
             ],
@@ -673,7 +686,7 @@
           "azureLogAnalytics": {
             "dashboardTime": true,
             "mode": "raw",
-            "query": "let _bin = max_of(coalesce(totimespan(\"$sender_bin_size\"), 1h), bin(($__timeTo() - $__timeFrom()) / 20000, 1s));\nAppTraces\n| where AppRoleName == 'rtp-consumer'\n| where $__timeFilter(TimeGenerated)\n| where Message startswith \"New GPD message received\"\n| make-series Ingeriti = count() default = 0 on TimeGenerated from bin($__timeFrom(), _bin) to $__timeTo() step _bin\n| mv-expand TimeGenerated to typeof(datetime), Ingeriti to typeof(long)\n| project TimeGenerated, Ingeriti\n| order by TimeGenerated asc",
+            "query": "let _bin = max_of(coalesce(totimespan(\"$sender_bin_size\"), 1h), bin(($__timeTo() - $__timeFrom()) / 19999, 1s) + 1s);\nAppTraces\n| where AppRoleName == 'rtp-consumer'\n| where $__timeFilter(TimeGenerated)\n| where Message startswith \"New GPD message received\"\n| make-series Ingeriti = count() default = 0 on TimeGenerated from bin($__timeFrom(), _bin) to $__timeTo() step _bin\n| mv-expand TimeGenerated to typeof(datetime), Ingeriti to typeof(long)\n| project TimeGenerated, Ingeriti\n| order by TimeGenerated asc",
             "resources": [
               "/subscriptions/$subscription/resourceGroups/$SrtpMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$SrtpLaw"
             ],
@@ -1916,75 +1929,7 @@
     "from": "now-7d",
     "to": "now"
   },
-  "timepicker": {
-    "quick_ranges": [
-      {
-        "display": "Last 5 minutes",
-        "from": "now-5m",
-        "to": "now"
-      },
-      {
-        "display": "Last 15 minutes",
-        "from": "now-15m",
-        "to": "now"
-      },
-      {
-        "display": "Last 30 minutes",
-        "from": "now-30m",
-        "to": "now"
-      },
-      {
-        "display": "Last 1 hour",
-        "from": "now-1h",
-        "to": "now"
-      },
-      {
-        "display": "Last 3 hours",
-        "from": "now-3h",
-        "to": "now"
-      },
-      {
-        "display": "Last 6 hours",
-        "from": "now-6h",
-        "to": "now"
-      },
-      {
-        "display": "Last 12 hours",
-        "from": "now-12h",
-        "to": "now"
-      },
-      {
-        "display": "Last 24 hours",
-        "from": "now-24h",
-        "to": "now"
-      },
-      {
-        "display": "Last 2 days",
-        "from": "now-2d",
-        "to": "now"
-      },
-      {
-        "display": "Last 3 days",
-        "from": "now-3d",
-        "to": "now"
-      },
-      {
-        "display": "Last 7 days",
-        "from": "now-7d",
-        "to": "now"
-      },
-      {
-        "display": "Last 30 days",
-        "from": "now-30d",
-        "to": "now"
-      },
-      {
-        "display": "Last 90 days",
-        "from": "now-90d",
-        "to": "now"
-      }
-    ]
-  },
+  "timepicker": {},
   "timezone": "browser",
   "title": "SRTP Operational Excellence · Consumer",
   "uid": "srtp-opex-consumer",

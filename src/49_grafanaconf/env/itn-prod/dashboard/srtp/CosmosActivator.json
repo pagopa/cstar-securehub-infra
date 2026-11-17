@@ -19,7 +19,20 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
-  "links": [],
+  "links": [
+    {
+      "title": "Ultimi 3 giorni",
+      "type": "link",
+      "icon": "clock",
+      "tooltip": "Imposta il time range a now-3d → now",
+      "url": "/d/cosmos-activator?from=now-3d&to=now",
+      "includeVars": true,
+      "keepTime": false,
+      "targetBlank": false,
+      "asDropdown": false,
+      "tags": []
+    }
+  ],
   "panels": [
     {
       "gridPos": {
@@ -2642,75 +2655,7 @@
     "from": "now-24h",
     "to": "now"
   },
-  "timepicker": {
-    "quick_ranges": [
-      {
-        "display": "Last 5 minutes",
-        "from": "now-5m",
-        "to": "now"
-      },
-      {
-        "display": "Last 15 minutes",
-        "from": "now-15m",
-        "to": "now"
-      },
-      {
-        "display": "Last 30 minutes",
-        "from": "now-30m",
-        "to": "now"
-      },
-      {
-        "display": "Last 1 hour",
-        "from": "now-1h",
-        "to": "now"
-      },
-      {
-        "display": "Last 3 hours",
-        "from": "now-3h",
-        "to": "now"
-      },
-      {
-        "display": "Last 6 hours",
-        "from": "now-6h",
-        "to": "now"
-      },
-      {
-        "display": "Last 12 hours",
-        "from": "now-12h",
-        "to": "now"
-      },
-      {
-        "display": "Last 24 hours",
-        "from": "now-24h",
-        "to": "now"
-      },
-      {
-        "display": "Last 2 days",
-        "from": "now-2d",
-        "to": "now"
-      },
-      {
-        "display": "Last 3 days",
-        "from": "now-3d",
-        "to": "now"
-      },
-      {
-        "display": "Last 7 days",
-        "from": "now-7d",
-        "to": "now"
-      },
-      {
-        "display": "Last 30 days",
-        "from": "now-30d",
-        "to": "now"
-      },
-      {
-        "display": "Last 90 days",
-        "from": "now-90d",
-        "to": "now"
-      }
-    ]
-  },
+  "timepicker": {},
   "timezone": "browser",
   "title": "Cosmos Activator",
   "uid": "cosmos-activator",

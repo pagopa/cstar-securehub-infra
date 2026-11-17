@@ -19,7 +19,20 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
-  "links": [],
+  "links": [
+    {
+      "title": "Ultimi 3 giorni",
+      "type": "link",
+      "icon": "clock",
+      "tooltip": "Imposta il time range a now-3d → now",
+      "url": "/d/srtp-operational-excellence?from=now-3d&to=now",
+      "includeVars": true,
+      "keepTime": false,
+      "targetBlank": false,
+      "asDropdown": false,
+      "tags": []
+    }
+  ],
   "panels": [
     {
       "fieldConfig": {
@@ -851,7 +864,7 @@
           "azureLogAnalytics": {
             "dashboardTime": true,
             "mode": "raw",
-            "query": "let _bin = max_of(coalesce(totimespan(\"$activator_bin_size\"), 1h), bin(($__timeTo() - $__timeFrom()) / 20000, 1s));\nlet validOps = \n    AppDependencies\n    | where $__timeFilter(TimeGenerated)\n    | where Name startswith \"POST\" and Name contains \"/rtpactivator/activations\"\n    | distinct OperationId;\n\nlet deps =\n    AppDependencies\n    | where Name startswith \"POST\" and Name contains \"/rtpactivator/activations\"\n    | extend JWT_Subject = tostring(Properties[\"Request-X-JWT-Subject\"])\n    | summarize JWT_Subject = any(JWT_Subject) by OperationId;\n\nAppRequests\n| where $__timeFilter(TimeGenerated)\n| where AppRoleName == \"rtp-activator\"\n| where Name startswith \"POST\" and Name contains \"activations\"\n| join kind=inner validOps on OperationId\n| where ResultCode != \"409\"\n| project OperationId, TimeGenerated, ResultCode\n| join kind=leftouter deps on OperationId\n| extend JWT_Subject = iif(isempty(JWT_Subject), \"UNKNOWN\", JWT_Subject)\n| where $__contains(JWT_Subject, $activator_subject)\n| extend Esito = iif(ResultCode == \"201\", \"✅ Successo\", \"❌ Fallimento\")\n| extend Serie = strcat(JWT_Subject, \" - \", Esito)\n| make-series Conteggio = count() default = 0 on TimeGenerated from bin($__timeFrom(), _bin) to $__timeTo() step _bin by Serie\n| mv-expand TimeGenerated to typeof(datetime), Conteggio to typeof(long)\n| order by TimeGenerated asc",
+            "query": "let _bin = max_of(coalesce(totimespan(\"$activator_bin_size\"), 1h), bin(($__timeTo() - $__timeFrom()) / 19999, 1s) + 1s);\nlet validOps = \n    AppDependencies\n    | where $__timeFilter(TimeGenerated)\n    | where Name startswith \"POST\" and Name contains \"/rtpactivator/activations\"\n    | distinct OperationId;\n\nlet deps =\n    AppDependencies\n    | where Name startswith \"POST\" and Name contains \"/rtpactivator/activations\"\n    | extend JWT_Subject = tostring(Properties[\"Request-X-JWT-Subject\"])\n    | summarize JWT_Subject = any(JWT_Subject) by OperationId;\n\nAppRequests\n| where $__timeFilter(TimeGenerated)\n| where AppRoleName == \"rtp-activator\"\n| where Name startswith \"POST\" and Name contains \"activations\"\n| join kind=inner validOps on OperationId\n| where ResultCode != \"409\"\n| project OperationId, TimeGenerated, ResultCode\n| join kind=leftouter deps on OperationId\n| extend JWT_Subject = iif(isempty(JWT_Subject), \"UNKNOWN\", JWT_Subject)\n| where $__contains(JWT_Subject, $activator_subject)\n| extend Esito = iif(ResultCode == \"201\", \"✅ Successo\", \"❌ Fallimento\")\n| extend Serie = strcat(JWT_Subject, \" - \", Esito)\n| make-series Conteggio = count() default = 0 on TimeGenerated from bin($__timeFrom(), _bin) to $__timeTo() step _bin by Serie\n| mv-expand TimeGenerated to typeof(datetime), Conteggio to typeof(long)\n| order by TimeGenerated asc",
             "resources": [
               "/subscriptions/$subscription/resourceGroups/$SrtpMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$SrtpLaw",
               "/subscriptions/$subscription/resourceGroups/$CoreMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$CoreLaw"
@@ -2293,7 +2306,7 @@
           "azureLogAnalytics": {
             "dashboardTime": true,
             "mode": "raw",
-            "query": "let _bin = max_of(coalesce(totimespan(\"$activator_bin_size\"), 1h), bin(($__timeTo() - $__timeFrom()) / 20000, 1s));\nlet validOps = \n    AppDependencies\n    | where $__timeFilter(TimeGenerated)\n    | where Name has \"POST /rtpactivator/activations\" and Name has \"takeover\"\n    | distinct OperationId;\n\nlet deps =\n    AppDependencies\n    | where Name has \"takeover\"\n    | extend JWT_Subject = tostring(Properties[\"Request-X-JWT-Subject\"])\n    | summarize JWT_Subject = any(JWT_Subject) by OperationId;\n\nAppRequests\n| where $__timeFilter(TimeGenerated)\n| where AppRoleName == \"rtp-activator\"\n| where Name startswith \"POST\" and Name contains \"takeover\"\n| join kind=inner validOps on OperationId\n| project OperationId, TimeGenerated, ResultCode\n| join kind=leftouter deps on OperationId\n| extend JWT_Subject = iif(isempty(JWT_Subject), \"UNKNOWN\", JWT_Subject)\n| where $__contains(JWT_Subject, $activator_subject)\n| extend Esito = iif(ResultCode == \"201\", \"✅ Successo\", \"❌ Fallimento\")\n| extend Serie = strcat(JWT_Subject, \" - \", Esito)\n| make-series Conteggio = count() default = 0 on TimeGenerated from bin($__timeFrom(), _bin) to $__timeTo() step _bin by Serie\n| mv-expand TimeGenerated to typeof(datetime), Conteggio to typeof(long)\n| order by TimeGenerated asc",
+            "query": "let _bin = max_of(coalesce(totimespan(\"$activator_bin_size\"), 1h), bin(($__timeTo() - $__timeFrom()) / 19999, 1s) + 1s);\nlet validOps = \n    AppDependencies\n    | where $__timeFilter(TimeGenerated)\n    | where Name has \"POST /rtpactivator/activations\" and Name has \"takeover\"\n    | distinct OperationId;\n\nlet deps =\n    AppDependencies\n    | where Name has \"takeover\"\n    | extend JWT_Subject = tostring(Properties[\"Request-X-JWT-Subject\"])\n    | summarize JWT_Subject = any(JWT_Subject) by OperationId;\n\nAppRequests\n| where $__timeFilter(TimeGenerated)\n| where AppRoleName == \"rtp-activator\"\n| where Name startswith \"POST\" and Name contains \"takeover\"\n| join kind=inner validOps on OperationId\n| project OperationId, TimeGenerated, ResultCode\n| join kind=leftouter deps on OperationId\n| extend JWT_Subject = iif(isempty(JWT_Subject), \"UNKNOWN\", JWT_Subject)\n| where $__contains(JWT_Subject, $activator_subject)\n| extend Esito = iif(ResultCode == \"201\", \"✅ Successo\", \"❌ Fallimento\")\n| extend Serie = strcat(JWT_Subject, \" - \", Esito)\n| make-series Conteggio = count() default = 0 on TimeGenerated from bin($__timeFrom(), _bin) to $__timeTo() step _bin by Serie\n| mv-expand TimeGenerated to typeof(datetime), Conteggio to typeof(long)\n| order by TimeGenerated asc",
             "resources": [
               "/subscriptions/$subscription/resourceGroups/$SrtpMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$SrtpLaw",
               "/subscriptions/$subscription/resourceGroups/$CoreMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$CoreLaw"
@@ -3478,7 +3491,7 @@
           "azureLogAnalytics": {
             "dashboardTime": true,
             "mode": "raw",
-            "query": "let _bin = max_of(coalesce(totimespan(\"$activator_bin_size\"), 1h), bin(($__timeTo() - $__timeFrom()) / 20000, 1s));\nlet validOps = \n    AppDependencies\n    | where $__timeFilter(TimeGenerated)\n    | where Name has \"DELETE /rtpactivator/activations/\"\n    | distinct OperationId;\n\nlet deps =\n    AppDependencies\n    | where Name has \"DELETE /rtpactivator/activations/\"\n    | extend JWT_Subject = tostring(Properties[\"Request-X-JWT-Subject\"])\n    | summarize JWT_Subject = any(JWT_Subject) by OperationId;\n\nAppRequests\n| where $__timeFilter(TimeGenerated)\n| where AppRoleName == \"rtp-activator\"\n| where Name has \"DELETE\" and Name contains \"activations\"\n| join kind=inner validOps on OperationId\n| project OperationId, TimeGenerated, ResultCode\n| join kind=leftouter deps on OperationId\n| extend JWT_Subject = iif(isempty(JWT_Subject), \"UNKNOWN\", JWT_Subject)\n| where $__contains(JWT_Subject, $activator_subject)\n| extend Esito = iif(ResultCode == \"204\", \"✅ Successo\", \"❌ Fallimento\")\n| extend Serie = strcat(JWT_Subject, \" - \", Esito)\n| make-series Conteggio = count() default = 0 on TimeGenerated from bin($__timeFrom(), _bin) to $__timeTo() step _bin by Serie\n| mv-expand TimeGenerated to typeof(datetime), Conteggio to typeof(long)\n| order by TimeGenerated asc",
+            "query": "let _bin = max_of(coalesce(totimespan(\"$activator_bin_size\"), 1h), bin(($__timeTo() - $__timeFrom()) / 19999, 1s) + 1s);\nlet validOps = \n    AppDependencies\n    | where $__timeFilter(TimeGenerated)\n    | where Name has \"DELETE /rtpactivator/activations/\"\n    | distinct OperationId;\n\nlet deps =\n    AppDependencies\n    | where Name has \"DELETE /rtpactivator/activations/\"\n    | extend JWT_Subject = tostring(Properties[\"Request-X-JWT-Subject\"])\n    | summarize JWT_Subject = any(JWT_Subject) by OperationId;\n\nAppRequests\n| where $__timeFilter(TimeGenerated)\n| where AppRoleName == \"rtp-activator\"\n| where Name has \"DELETE\" and Name contains \"activations\"\n| join kind=inner validOps on OperationId\n| project OperationId, TimeGenerated, ResultCode\n| join kind=leftouter deps on OperationId\n| extend JWT_Subject = iif(isempty(JWT_Subject), \"UNKNOWN\", JWT_Subject)\n| where $__contains(JWT_Subject, $activator_subject)\n| extend Esito = iif(ResultCode == \"204\", \"✅ Successo\", \"❌ Fallimento\")\n| extend Serie = strcat(JWT_Subject, \" - \", Esito)\n| make-series Conteggio = count() default = 0 on TimeGenerated from bin($__timeFrom(), _bin) to $__timeTo() step _bin by Serie\n| mv-expand TimeGenerated to typeof(datetime), Conteggio to typeof(long)\n| order by TimeGenerated asc",
             "resources": [
               "/subscriptions/$subscription/resourceGroups/$SrtpMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$SrtpLaw",
               "/subscriptions/$subscription/resourceGroups/$CoreMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$CoreLaw"
@@ -4112,7 +4125,7 @@
           "azureLogAnalytics": {
             "dashboardTime": true,
             "mode": "raw",
-            "query": "let _bin = max_of(coalesce(totimespan(\"$activator_bin_size\"), 1h), bin(($__timeTo() - $__timeFrom()) / 20000, 1s));\nAppDependencies\n| where $__timeFilter(TimeGenerated)\n| where AppRoleName == 'rtp-activator'\n| where Target == 'mongodb | activation'\n| extend Esito = iff(Success == true, '✅ Successo', '⚠️ Duplicato')\n| make-series Conteggio = count() default = 0 on TimeGenerated from bin($__timeFrom(), _bin) to $__timeTo() step _bin by Esito\n| mv-expand TimeGenerated to typeof(datetime), Conteggio to typeof(long)\n| order by TimeGenerated asc",
+            "query": "let _bin = max_of(coalesce(totimespan(\"$activator_bin_size\"), 1h), bin(($__timeTo() - $__timeFrom()) / 19999, 1s) + 1s);\nAppDependencies\n| where $__timeFilter(TimeGenerated)\n| where AppRoleName == 'rtp-activator'\n| where Target == 'mongodb | activation'\n| extend Esito = iff(Success == true, '✅ Successo', '⚠️ Duplicato')\n| make-series Conteggio = count() default = 0 on TimeGenerated from bin($__timeFrom(), _bin) to $__timeTo() step _bin by Esito\n| mv-expand TimeGenerated to typeof(datetime), Conteggio to typeof(long)\n| order by TimeGenerated asc",
             "resources": [
               "/subscriptions/$subscription/resourceGroups/$SrtpMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$SrtpLaw"
             ],
@@ -4337,75 +4350,7 @@
     "from": "now-7d",
     "to": "now"
   },
-  "timepicker": {
-    "quick_ranges": [
-      {
-        "display": "Last 5 minutes",
-        "from": "now-5m",
-        "to": "now"
-      },
-      {
-        "display": "Last 15 minutes",
-        "from": "now-15m",
-        "to": "now"
-      },
-      {
-        "display": "Last 30 minutes",
-        "from": "now-30m",
-        "to": "now"
-      },
-      {
-        "display": "Last 1 hour",
-        "from": "now-1h",
-        "to": "now"
-      },
-      {
-        "display": "Last 3 hours",
-        "from": "now-3h",
-        "to": "now"
-      },
-      {
-        "display": "Last 6 hours",
-        "from": "now-6h",
-        "to": "now"
-      },
-      {
-        "display": "Last 12 hours",
-        "from": "now-12h",
-        "to": "now"
-      },
-      {
-        "display": "Last 24 hours",
-        "from": "now-24h",
-        "to": "now"
-      },
-      {
-        "display": "Last 2 days",
-        "from": "now-2d",
-        "to": "now"
-      },
-      {
-        "display": "Last 3 days",
-        "from": "now-3d",
-        "to": "now"
-      },
-      {
-        "display": "Last 7 days",
-        "from": "now-7d",
-        "to": "now"
-      },
-      {
-        "display": "Last 30 days",
-        "from": "now-30d",
-        "to": "now"
-      },
-      {
-        "display": "Last 90 days",
-        "from": "now-90d",
-        "to": "now"
-      }
-    ]
-  },
+  "timepicker": {},
   "timezone": "browser",
   "title": "SRTP Operational Excellence · Activator",
   "uid": "srtp-operational-excellence",

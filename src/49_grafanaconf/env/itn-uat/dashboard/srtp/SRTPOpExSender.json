@@ -19,7 +19,20 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
-  "links": [],
+  "links": [
+    {
+      "title": "Ultimi 3 giorni",
+      "type": "link",
+      "icon": "clock",
+      "tooltip": "Imposta il time range a now-3d → now",
+      "url": "/d/srtp-opex-sender?from=now-3d&to=now",
+      "includeVars": true,
+      "keepTime": false,
+      "targetBlank": false,
+      "asDropdown": false,
+      "tags": []
+    }
+  ],
   "panels": [
     {
       "fieldConfig": {
@@ -656,7 +669,7 @@
               "azureLogAnalytics": {
                 "dashboardTime": true,
                 "mode": "raw",
-                "query": "let _bin = max_of(coalesce(totimespan(\"$sender_bin_size\"), 1h), bin(($__timeTo() - $__timeFrom()) / 20000, 1s));\nlet ops = AppTraces\n| where $__timeFilter(TimeGenerated)\n| where AppRoleName == \"rtp-sender\"\n| where Message startswith \"Operation: \"\n| extend Operation = extract(@\"Operation: (\\w+)\", 1, Message)\n| summarize Operation = any(Operation) by OperationId;\nlet successes = AppTraces\n| where $__timeFilter(TimeGenerated)\n| where AppRoleName == \"rtp-sender\"\n| where Message == \"Successfully processed message.\"\n| summarize TimeGenerated = min(TimeGenerated) by OperationId;\nlet errors = AppTraces\n| where $__timeFilter(TimeGenerated)\n| where AppRoleName == \"rtp-sender\"\n| where Message startswith \"Error processing message.\"\n| where Message !contains \"PayerNotActivatedException\"\n| where Message !contains \"InvalidTransitionException\"\n| where Message !contains \"RtpNotFoundException\"\n| summarize TimeGenerated = min(TimeGenerated) by OperationId;\nunion\n    (successes | join kind=inner ops on OperationId | extend Series = strcat(\"✅ \", Operation)),\n    (errors    | join kind=inner ops on OperationId | extend Series = strcat(\"❌ \", Operation))\n| make-series Count = count() default = 0 on TimeGenerated from bin($__timeFrom(), _bin) to $__timeTo() step _bin by Series\n| mv-expand TimeGenerated to typeof(datetime), Count to typeof(long)\n| order by TimeGenerated asc",
+                "query": "let _bin = max_of(coalesce(totimespan(\"$sender_bin_size\"), 1h), bin(($__timeTo() - $__timeFrom()) / 19999, 1s) + 1s);\nlet ops = AppTraces\n| where $__timeFilter(TimeGenerated)\n| where AppRoleName == \"rtp-sender\"\n| where Message startswith \"Operation: \"\n| extend Operation = extract(@\"Operation: (\\w+)\", 1, Message)\n| summarize Operation = any(Operation) by OperationId;\nlet successes = AppTraces\n| where $__timeFilter(TimeGenerated)\n| where AppRoleName == \"rtp-sender\"\n| where Message == \"Successfully processed message.\"\n| summarize TimeGenerated = min(TimeGenerated) by OperationId;\nlet errors = AppTraces\n| where $__timeFilter(TimeGenerated)\n| where AppRoleName == \"rtp-sender\"\n| where Message startswith \"Error processing message.\"\n| where Message !contains \"PayerNotActivatedException\"\n| where Message !contains \"InvalidTransitionException\"\n| where Message !contains \"RtpNotFoundException\"\n| summarize TimeGenerated = min(TimeGenerated) by OperationId;\nunion\n    (successes | join kind=inner ops on OperationId | extend Series = strcat(\"✅ \", Operation)),\n    (errors    | join kind=inner ops on OperationId | extend Series = strcat(\"❌ \", Operation))\n| make-series Count = count() default = 0 on TimeGenerated from bin($__timeFrom(), _bin) to $__timeTo() step _bin by Series\n| mv-expand TimeGenerated to typeof(datetime), Count to typeof(long)\n| order by TimeGenerated asc",
                 "resources": [
                   "/subscriptions/$subscription/resourceGroups/$SrtpMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$SrtpLaw"
                 ],
@@ -2486,7 +2499,7 @@
               "azureLogAnalytics": {
                 "dashboardTime": true,
                 "mode": "raw",
-                "query": "let _bin = max_of(coalesce(totimespan(\"$sender_bin_size\"), 1h), bin(($__timeTo() - $__timeFrom()) / 20000, 1s));\nlet successes = AppTraces\n| where $__timeFilter(TimeGenerated)\n| where AppRoleName == \"rtp-sender\"\n| where Message startswith \"RTP cancellation succeeded\"\n| extend DebtorSP = extract(@\"service_provider:\\s*(\\S+)\", 1, Message)\n| summarize TimeGenerated = min(TimeGenerated) by OperationId, DebtorSP;\nlet errors = AppTraces\n| where $__timeFilter(TimeGenerated)\n| where AppRoleName == \"rtp-sender\"\n| where Message startswith \"Error cancel RTP:\"\n| extend DebtorSP = extract(@\"service_provider:\\s*(\\S+)\", 1, Message)\n| summarize TimeGenerated = min(TimeGenerated) by OperationId, DebtorSP;\nunion\n    (successes | extend Series = strcat(\"✅ \", DebtorSP)),\n    (errors    | extend Series = strcat(\"❌ \", DebtorSP))\n| make-series Count = count() default = 0 on TimeGenerated from bin($__timeFrom(), _bin) to $__timeTo() step _bin by Series\n| mv-expand TimeGenerated to typeof(datetime), Count to typeof(long)\n| order by TimeGenerated asc",
+                "query": "let _bin = max_of(coalesce(totimespan(\"$sender_bin_size\"), 1h), bin(($__timeTo() - $__timeFrom()) / 19999, 1s) + 1s);\nlet successes = AppTraces\n| where $__timeFilter(TimeGenerated)\n| where AppRoleName == \"rtp-sender\"\n| where Message startswith \"RTP cancellation succeeded\"\n| extend DebtorSP = extract(@\"service_provider:\\s*(\\S+)\", 1, Message)\n| summarize TimeGenerated = min(TimeGenerated) by OperationId, DebtorSP;\nlet errors = AppTraces\n| where $__timeFilter(TimeGenerated)\n| where AppRoleName == \"rtp-sender\"\n| where Message startswith \"Error cancel RTP:\"\n| extend DebtorSP = extract(@\"service_provider:\\s*(\\S+)\", 1, Message)\n| summarize TimeGenerated = min(TimeGenerated) by OperationId, DebtorSP;\nunion\n    (successes | extend Series = strcat(\"✅ \", DebtorSP)),\n    (errors    | extend Series = strcat(\"❌ \", DebtorSP))\n| make-series Count = count() default = 0 on TimeGenerated from bin($__timeFrom(), _bin) to $__timeTo() step _bin by Series\n| mv-expand TimeGenerated to typeof(datetime), Count to typeof(long)\n| order by TimeGenerated asc",
                 "resources": [
                   "/subscriptions/$subscription/resourceGroups/$SrtpMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$SrtpLaw"
                 ],
@@ -5653,75 +5666,7 @@
     "from": "now-7d",
     "to": "now"
   },
-  "timepicker": {
-    "quick_ranges": [
-      {
-        "display": "Last 5 minutes",
-        "from": "now-5m",
-        "to": "now"
-      },
-      {
-        "display": "Last 15 minutes",
-        "from": "now-15m",
-        "to": "now"
-      },
-      {
-        "display": "Last 30 minutes",
-        "from": "now-30m",
-        "to": "now"
-      },
-      {
-        "display": "Last 1 hour",
-        "from": "now-1h",
-        "to": "now"
-      },
-      {
-        "display": "Last 3 hours",
-        "from": "now-3h",
-        "to": "now"
-      },
-      {
-        "display": "Last 6 hours",
-        "from": "now-6h",
-        "to": "now"
-      },
-      {
-        "display": "Last 12 hours",
-        "from": "now-12h",
-        "to": "now"
-      },
-      {
-        "display": "Last 24 hours",
-        "from": "now-24h",
-        "to": "now"
-      },
-      {
-        "display": "Last 2 days",
-        "from": "now-2d",
-        "to": "now"
-      },
-      {
-        "display": "Last 3 days",
-        "from": "now-3d",
-        "to": "now"
-      },
-      {
-        "display": "Last 7 days",
-        "from": "now-7d",
-        "to": "now"
-      },
-      {
-        "display": "Last 30 days",
-        "from": "now-30d",
-        "to": "now"
-      },
-      {
-        "display": "Last 90 days",
-        "from": "now-90d",
-        "to": "now"
-      }
-    ]
-  },
+  "timepicker": {},
   "timezone": "browser",
   "title": "SRTP Operational Excellence · Sender",
   "uid": "srtp-opex-sender",
