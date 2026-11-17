@@ -22,6 +22,11 @@ Review the plan and data retention before applying that change.
 The Argo CD provider uses stack-wide endpoint and CICD Key Vault credentials,
 independently of the Listmonk enablement flag. KV access remains a stack prerequisite.
 
+DEV/UAT also install namespace-scoped Reloader (`2.2.20`) when Listmonk is enabled.
+It automatically watches referenced Secrets/ConfigMaps, using the annotation reload strategy.
+The Listmonk Application waits for its installation; PROD has no added Reloader release.
+Reloading does not rotate database credentials or reset the admin password stored in Listmonk.
+
 The console uses the existing private NGINX Ingress. Public API/OpenAPI and policies belong to
 `cstar-securehub-infra-api-spec/src/mcshared`; the shared gateway belongs to `cstar-infrastructure/src/core`.
 Set the public root URL once through the private admin UI after installation.
@@ -99,6 +104,7 @@ for acceptance criteria, the changes across the four repositories and pending li
 | [azurerm_subnet_nat_gateway_association.nat_gateway_association](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet_nat_gateway_association) | resource |
 | [helm_release.keycloak](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
 | [helm_release.reloader](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
+| [helm_release.reloader_listmonk](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
 | [keycloak_custom_identity_provider_mapper.azure_admin_mapper_master](https://registry.terraform.io/providers/keycloak/keycloak/latest/docs/resources/custom_identity_provider_mapper) | resource |
 | [keycloak_custom_identity_provider_mapper.azure_email](https://registry.terraform.io/providers/keycloak/keycloak/latest/docs/resources/custom_identity_provider_mapper) | resource |
 | [keycloak_custom_identity_provider_mapper.azure_first_name](https://registry.terraform.io/providers/keycloak/keycloak/latest/docs/resources/custom_identity_provider_mapper) | resource |

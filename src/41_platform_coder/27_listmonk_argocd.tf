@@ -51,6 +51,7 @@ resource "argocd_application" "listmonk" {
     kubernetes_secret.listmonk_db,
     kubernetes_secret.listmonk_bootstrap,
     module.listmonk_cert_mounter,
+    helm_release.reloader_listmonk,
     azurerm_private_dns_a_record.listmonk,
   ]
 }

@@ -24,6 +24,32 @@ module "listmonk_namespace" {
   ad_group_ids = [for group in data.azuread_group.listmonk : group.object_id]
 }
 
+# Listmonk's chart has no Deployment annotations; watch its namespace automatically.
+resource "helm_release" "reloader_listmonk" {
+  count = local.listmonk_enabled && contains(["dev", "uat"], var.env) ? 1 : 0
+
+  name       = "reloader"
+  repository = "https://stakater.github.io/stakater-charts"
+  chart      = "reloader"
+  version    = "2.2.20"
+  namespace  = local.listmonk_namespace
+
+  set {
+    name  = "reloader.watchGlobally"
+    value = "false"
+  }
+
+  set {
+    name  = "reloader.autoReloadAll"
+    value = "true"
+  }
+
+  set {
+    name  = "reloader.reloadStrategy"
+    value = "annotations"
+  }
+}
+
 module "workload_identity_platform_coder_listmonk" {
   count  = local.listmonk_enabled ? 1 : 0
   source = "./.terraform/modules/__v4__/kubernetes_workload_identity_init"
