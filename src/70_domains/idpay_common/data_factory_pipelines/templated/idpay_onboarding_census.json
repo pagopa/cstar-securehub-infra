@@ -424,15 +424,7 @@
                 },
                 "enableStaging": false,
                 "parallelCopies": 4,
-                "dataIntegrationUnits": 4,
-                "translator": {
-                  "type": "TabularTranslator",
-                  "typeConversion": true,
-                  "typeConversionSettings": {
-                    "allowDataTruncation": false,
-                    "treatBooleanAsNumber": false
-                  }
-                }
+                "dataIntegrationUnits": 4
               },
               "inputs": [
                 {
