@@ -392,7 +392,7 @@
           "ifTrueActivities": [
             {
               "name": "UpsertOnboardingCitizen",
-              "description": "Upsert by _id (shard key -> point writes) of all staged attempts (recursive read). Limited batch/parallelism to protect the RU of the production onboarding database. Idempotent: safe to retry.",
+              "description": "Upsert by _id (shard key -> point writes) of all staged attempts (recursive read). Staging is JSON lines with Extended JSON dates ({$date}): the Mongo sink imports documents as-is, so dates land as BSON Date without type conversion. Limited batch/parallelism to protect the RU of the production onboarding database. Idempotent: safe to retry.",
               "type": "Copy",
               "dependsOn": [],
               "policy": {
@@ -405,15 +405,15 @@
               "userProperties": [],
               "typeProperties": {
                 "source": {
-                  "type": "ParquetSource",
+                  "type": "JsonSource",
                   "storeSettings": {
                     "type": "AzureBlobStorageReadSettings",
                     "recursive": true,
-                    "wildcardFileName": "*.parquet",
+                    "wildcardFileName": "*",
                     "enablePartitionDiscovery": false
                   },
                   "formatSettings": {
-                    "type": "ParquetReadSettings"
+                    "type": "JsonReadSettings"
                   }
                 },
                 "sink": {
@@ -428,7 +428,7 @@
               },
               "inputs": [
                 {
-                  "referenceName": "blob_onboarding_census_staging_parquet",
+                  "referenceName": "blob_onboarding_census_staging_json",
                   "type": "DatasetReference",
                   "parameters": {
                     "initiativeId": "@pipeline().parameters.initiativeId",
@@ -476,7 +476,7 @@
               "userProperties": [],
               "typeProperties": {
                 "dataset": {
-                  "referenceName": "blob_onboarding_census_staging_parquet",
+                  "referenceName": "blob_onboarding_census_staging_json",
                   "type": "DatasetReference",
                   "parameters": {
                     "initiativeId": "@pipeline().parameters.initiativeId",

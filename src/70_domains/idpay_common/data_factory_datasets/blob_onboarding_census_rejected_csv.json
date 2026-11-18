@@ -1,7 +1,7 @@
 {
   "name": "blob_onboarding_census_rejected_csv",
   "properties": {
-    "description": "Onboarding census dead-letter: rejected rows with reason, one file per run (BND-2482)",
+    "description": "Onboarding census dead-letter: rejected rows with reason, one folder per run/attempt with the part files written in parallel by the data flow (BND-2482)",
     "linkedServiceName": {
       "referenceName": "${domain}-onboarding-census-blob-ls",
       "type": "LinkedServiceReference"
@@ -19,7 +19,6 @@
     "typeProperties": {
       "location": {
         "type": "AzureBlobStorageLocation",
-        "fileName": "rejected.csv",
         "folderPath": {
           "value": "@concat('rejected/', dataset().initiativeId, '/', dataset().runId, '/', dataset().attempt)",
           "type": "Expression"

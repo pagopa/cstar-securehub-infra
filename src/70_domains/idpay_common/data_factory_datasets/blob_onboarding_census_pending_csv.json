@@ -1,7 +1,7 @@
 {
   "name": "blob_onboarding_census_pending_csv",
   "properties": {
-    "description": "Onboarding census retry queue: fiscal codes whose tokenization failed with a retryable error, one folder per attempt (BND-2482)",
+    "description": "Onboarding census retry queue: fiscal codes whose tokenization failed with a retryable error, one folder per attempt with the part files written in parallel by the data flow (BND-2482)",
     "linkedServiceName": {
       "referenceName": "${domain}-onboarding-census-blob-ls",
       "type": "LinkedServiceReference"
@@ -19,7 +19,6 @@
     "typeProperties": {
       "location": {
         "type": "AzureBlobStorageLocation",
-        "fileName": "pending.csv",
         "folderPath": {
           "value": "@concat('pending/', dataset().initiativeId, '/', dataset().runId, '/', dataset().attempt)",
           "type": "Expression"

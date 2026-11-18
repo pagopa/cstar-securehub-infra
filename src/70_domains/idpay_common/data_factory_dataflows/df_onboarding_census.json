@@ -1,7 +1,7 @@
 {
   "name": "df_onboarding_census",
   "properties": {
-    "description": "BND-2482 onboarding census: normalize and validate fiscal codes, tokenize via APIM PUT /tokens (external call). Retryable failures (408/429/5xx/connection) go to the pending queue while attempts remain; otherwise rejected rows (dead-letter). Valid rows go to staging parquet.",
+    "description": "BND-2482 onboarding census: normalize and validate fiscal codes, tokenize via APIM PUT /tokens (external call). Retryable failures (408/429/5xx/connection) go to the pending queue while attempts remain; otherwise rejected rows (dead-letter). Valid rows go to staging JSON with Extended JSON dates ({$date}) so the Copy writes BSON Date. Rejected/pending sinks are multi-file (parallel write, reliable rowsWritten metrics).",
     "type": "MappingDataFlow",
     "typeProperties": {
       "sources": [
@@ -16,7 +16,7 @@
       "sinks": [
         {
           "dataset": {
-            "referenceName": "blob_onboarding_census_staging_parquet",
+            "referenceName": "blob_onboarding_census_staging_json",
             "type": "DatasetReference"
           },
           "name": "sinkStaging"
@@ -116,9 +116,9 @@
         "          status = 'ONBOARDING_KO',",
         "          detailKO = 'USER_BONUS_ALREADY_USED',",
         "          channel = $channel,",
-        "          creationDate = toTimestamp($runDate, \"yyyy-MM-dd'T'HH:mm:ss\", 'UTC'),",
-        "          onboardingKODate = toTimestamp($runDate, \"yyyy-MM-dd'T'HH:mm:ss\", 'UTC'),",
-        "          updateDate = toTimestamp($runDate, \"yyyy-MM-dd'T'HH:mm:ss\", 'UTC')) ~> buildDocument",
+        "          creationDate = @({$date} = toString(toTimestamp($runDate, \"yyyy-MM-dd'T'HH:mm:ss\", 'UTC'), \"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'\")),",
+        "          onboardingKODate = @({$date} = toString(toTimestamp($runDate, \"yyyy-MM-dd'T'HH:mm:ss\", 'UTC'), \"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'\")),",
+        "          updateDate = @({$date} = toString(toTimestamp($runDate, \"yyyy-MM-dd'T'HH:mm:ss\", 'UTC'), \"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'\"))) ~> buildDocument",
         "buildDocument select(mapColumn(",
         "          {_id},",
         "          userId,",
@@ -146,18 +146,14 @@
         "     skipDuplicateMapOutputs: true) ~> sinkStaging",
         "rejectedRows sink(allowSchemaDrift: true,",
         "     validateSchema: false,",
-        "     partitionFileNames:['rejected.csv'],",
         "     truncate: true,",
         "     skipDuplicateMapInputs: true,",
-        "     skipDuplicateMapOutputs: true,",
-        "     partitionBy('hash', 1)) ~> sinkRejected",
+        "     skipDuplicateMapOutputs: true) ~> sinkRejected",
         "pendingRows sink(allowSchemaDrift: true,",
         "     validateSchema: false,",
-        "     partitionFileNames:['pending.csv'],",
         "     truncate: true,",
         "     skipDuplicateMapInputs: true,",
-        "     skipDuplicateMapOutputs: true,",
-        "     partitionBy('hash', 1)) ~> sinkPending"
+        "     skipDuplicateMapOutputs: true) ~> sinkPending"
       ]
     }
   }

@@ -1,7 +1,7 @@
 {
-  "name": "blob_onboarding_census_staging_parquet",
+  "name": "blob_onboarding_census_staging_json",
   "properties": {
-    "description": "Onboarding census staging: tokenized onboarding documents produced by the data flow and upserted into onboarding_citizen. Parquet keeps typed timestamps (BSON Date on Mongo) (BND-2482)",
+    "description": "Onboarding census staging: tokenized onboarding documents produced by the data flow and upserted into onboarding_citizen. JSON lines with MongoDB Extended JSON dates ({\"$date\": ...}) so the Copy writes real BSON Date values (BND-2482)",
     "linkedServiceName": {
       "referenceName": "${domain}-onboarding-census-blob-ls",
       "type": "LinkedServiceReference"
@@ -15,7 +15,7 @@
       "Onboarding Census",
       "IdPay"
     ],
-    "type": "Parquet",
+    "type": "Json",
     "typeProperties": {
       "location": {
         "type": "AzureBlobStorageLocation",
@@ -25,10 +25,11 @@
         },
         "container": "onboarding-census"
       },
-      "compressionCodec": "snappy"
-    },
-    "schema": []
+      "encodingName": "UTF-8"
+    }
   },
   "type": "Microsoft.DataFactory/factories/datasets"
 }
+
+
 

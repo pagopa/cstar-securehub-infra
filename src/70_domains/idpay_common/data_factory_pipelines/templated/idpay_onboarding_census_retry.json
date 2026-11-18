@@ -117,7 +117,7 @@
                         "value": "@concat('pending/', pipeline().parameters.initiativeId, '/', pipeline().parameters.parentRunId, '/', string(sub(int(variables('attemptNo')), 1)))",
                         "type": "Expression"
                       },
-                      "fileName": "pending.csv"
+                      "fileName": ""
                     },
                     "sinkStaging": {
                       "initiativeId": "@pipeline().parameters.initiativeId",
