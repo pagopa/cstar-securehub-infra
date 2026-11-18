@@ -44,8 +44,7 @@
         "userProperties": [],
         "typeProperties": {
           "source": {
-            "type": "PostgreSqlSource",
-            "batchSize": 100
+            "type": "PostgreSqlSource"
           },
           "sink": {
             "type": "AzureDataExplorerSink"

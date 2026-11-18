@@ -191,20 +191,24 @@ locals {
             {
               keys   = ["_id"]
               unique = true
+            },
+            {
+              keys   = ["tspId"]
+              unique = true
+            },
+            {
+              keys   = ["sps.id"]
+              unique = false
             }
           ]
         }
         notification_webhook = {
           autoscale_max_throughput          = null
           cosmos_collections_max_throughput = null
-          default_ttl_seconds               = -1
+          default_ttl_seconds               = var.env == "uat" ? 60 : -1
           indexes = [
             {
               keys   = ["_id"]
-              unique = true
-            },
-            {
-              keys   = ["notificationId"]
               unique = true
             }
           ]

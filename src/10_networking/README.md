@@ -36,6 +36,7 @@
 | <a name="module_vnet_spoke_compute_peerings"></a> [vnet\_spoke\_compute\_peerings](#module\_vnet\_spoke\_compute\_peerings) | ./.terraform/modules/__v4__/virtual_network_peering | n/a |
 | <a name="module_vnet_spoke_data"></a> [vnet\_spoke\_data](#module\_vnet\_spoke\_data) | ./.terraform/modules/__v4__/virtual_network | n/a |
 | <a name="module_vnet_spoke_security"></a> [vnet\_spoke\_security](#module\_vnet\_spoke\_security) | ./.terraform/modules/__v4__/virtual_network | n/a |
+| <a name="module_vnet_spoke_tools"></a> [vnet\_spoke\_tools](#module\_vnet\_spoke\_tools) | ./.terraform/modules/__v4__/virtual_network | n/a |
 | <a name="module_vpn"></a> [vpn](#module\_vpn) | ./.terraform/modules/__v4__/vpn_gateway | n/a |
 | <a name="module_vpn_snet"></a> [vpn\_snet](#module\_vpn\_snet) | ./.terraform/modules/__v4__/subnet | n/a |
 
@@ -50,6 +51,7 @@
 | [azurerm_dns_zone.public](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/dns_zone) | resource |
 | [azurerm_nat_gateway.compute_nat_gateway](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/nat_gateway) | resource |
 | [azurerm_nat_gateway_public_ip_association.compute_nat_gateway_pip_association](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/nat_gateway_public_ip_association) | resource |
+| [azurerm_private_dns_zone.azure_web_site](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_zone) | resource |
 | [azurerm_private_dns_zone.container_app](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_zone) | resource |
 | [azurerm_private_dns_zone.file](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_zone) | resource |
 | [azurerm_private_dns_zone.kusto](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_zone) | resource |
@@ -57,6 +59,7 @@
 | [azurerm_private_dns_zone.private_pgflex_dns_zone](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_zone) | resource |
 | [azurerm_private_dns_zone.prometheus_dns_zone](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_zone) | resource |
 | [azurerm_private_dns_zone.web_storage](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_zone) | resource |
+| [azurerm_private_dns_zone_virtual_network_link.azure_web_site_private_endpoint_to_secure_hub_vnets](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_zone_virtual_network_link) | resource |
 | [azurerm_private_dns_zone_virtual_network_link.container_app_private_endpoint_to_secure_hub_vnets](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_zone_virtual_network_link) | resource |
 | [azurerm_private_dns_zone_virtual_network_link.file_private_endpoint_to_secure_hub_vnets](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_zone_virtual_network_link) | resource |
 | [azurerm_private_dns_zone_virtual_network_link.kusto_private_endpoint_to_secure_hub_vnets](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_zone_virtual_network_link) | resource |
@@ -87,6 +90,7 @@
 | <a name="input_cidr_spoke_data_vnet"></a> [cidr\_spoke\_data\_vnet](#input\_cidr\_spoke\_data\_vnet) | Address prefixes vnet data | `list(string)` | n/a | yes |
 | <a name="input_cidr_spoke_platform_core_vnet"></a> [cidr\_spoke\_platform\_core\_vnet](#input\_cidr\_spoke\_platform\_core\_vnet) | Address prefixes vnet platform core | `list(string)` | n/a | yes |
 | <a name="input_cidr_spoke_security_vnet"></a> [cidr\_spoke\_security\_vnet](#input\_cidr\_spoke\_security\_vnet) | Address prefixes vnet security | `list(string)` | n/a | yes |
+| <a name="input_cidr_spoke_tools_vnet"></a> [cidr\_spoke\_tools\_vnet](#input\_cidr\_spoke\_tools\_vnet) | Address prefixes vnet tools | `list(string)` | n/a | yes |
 | <a name="input_cidr_subnet_azdoa"></a> [cidr\_subnet\_azdoa](#input\_cidr\_subnet\_azdoa) | Azure DevOps agent network address space. | `list(string)` | n/a | yes |
 | <a name="input_cidr_subnet_data_monitor_workspace"></a> [cidr\_subnet\_data\_monitor\_workspace](#input\_cidr\_subnet\_data\_monitor\_workspace) | Address prefixes vnet data monitor workspace | `list(string)` | n/a | yes |
 | <a name="input_cidr_subnet_dnsforwarder_lb"></a> [cidr\_subnet\_dnsforwarder\_lb](#input\_cidr\_subnet\_dnsforwarder\_lb) | DNS Forwarder network address space for LB. | `list(string)` | n/a | yes |

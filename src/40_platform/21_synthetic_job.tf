@@ -30,6 +30,11 @@ module "synthetic_monitoring_jobs" {
     availability_prefix          = "synthetic"
   }
 
+  docker_settings = {
+    image_tag = "v1.11.2@sha256:a0d9821489aef256345d558915319d5aa911dd7e648a1f4c826c001eaf9a80fe"
+  }
+
+
   storage_account_settings = {
     private_endpoint_enabled  = true
     table_private_dns_zone_id = data.azurerm_private_dns_zone.storage_account_table.id

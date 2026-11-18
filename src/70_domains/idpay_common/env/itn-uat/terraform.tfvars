@@ -61,23 +61,6 @@ single_page_applications_portal_merchants_operator_roots_dirs = [
   "portale-esercenti"
 ]
 
-#----------------------------------------------------------------
-# AKS
-#----------------------------------------------------------------
-aks_nodepool_blue = {
-  vm_sku_name       = "Standard_D8ads_v5_passive"
-  autoscale_enabled = false
-  node_count_min    = 0
-  node_count_max    = 0
-}
-
-aks_nodepool_green = {
-  vm_sku_name       = "Standard_D8ads_v5_active"
-  autoscale_enabled = true
-  node_count_min    = 2
-  node_count_max    = 3
-}
-
 #Monitoring
 law_sku               = "PerGB2018"
 law_retention_in_days = 30
@@ -124,9 +107,7 @@ export_initiatives = [
   }
 ]
 
-blue_green_node_pool_enabled = false
 aks_foobar_idpay_node_pool_configuration = {
-  enabled        = true,
   tier           = "Standard_D8ads"
   node_count_min = 2,
   node_count_max = 3

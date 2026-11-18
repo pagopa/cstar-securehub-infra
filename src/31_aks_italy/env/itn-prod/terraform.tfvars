@@ -20,7 +20,7 @@ default_zones = [1]
 aks_sku_tier                   = "Standard"
 aks_private_cluster_is_enabled = true
 aks_alerts_enabled             = false
-aks_kubernetes_version         = "1.34.3"
+aks_kubernetes_version         = "1.35.9"
 
 # Standard is recommended tier Standard_D2ads_v5
 # D – General purpose compute
@@ -44,20 +44,6 @@ aks_system_node_pool = {
 #----------------------------------------------------------------
 # AKS
 #----------------------------------------------------------------
-aks_nodepool_blue = {
-  vm_sku_name       = "Standard_D4ads_v5_passive"
-  autoscale_enabled = true
-  node_count_min    = 0
-  node_count_max    = 0
-}
-
-aks_nodepool_green = {
-  vm_sku_name       = "Standard_D4ads_v5_active"
-  autoscale_enabled = true
-  node_count_min    = 3
-  node_count_max    = 4
-}
-
 aks_cidr_subnet      = ["10.10.1.0/24"] # 10.10.1.0 -> 10.10.1.255
 aks_cidr_subnet_user = ["10.10.2.0/24"] # 10.10.2.0 -> 10.10.2.255
 
@@ -68,7 +54,7 @@ ingress_load_balancer_ip  = "10.10.1.250"
 # ingress-nginx helm charts releases 4.X.X: https://github.com/kubernetes/ingress-nginx/releases?expanded=true&page=1&q=tag%3Ahelm-chart-4
 # Pinned versions from "4.12.8" release: https://github.com/kubernetes/ingress-nginx/releases/tag/helm-chart-4.12.8
 nginx_helm = {
-  version = "4.14.2"
+  version = "4.15.1"
   controller = {
     resources = {
       requests = {
@@ -85,7 +71,7 @@ nginx_helm = {
 # chart releases: https://github.com/kedacore/charts/releases
 # keda image tags: https://github.com/kedacore/keda/pkgs/container/keda/versions
 # keda-metrics-apiserver image tags: https://github.com/kedacore/keda/pkgs/container/keda-metrics-apiserver/versions
-keda_helm_chart_version = "2.17.2"
+keda_helm_chart_version = "2.20.2"
 
 # chart releases: https://github.com/stakater/Reloader/releases
 # image tags: https://hub.docker.com/r/stakater/reloader/tags
@@ -96,10 +82,7 @@ reloader_helm = {
 }
 
 
-blue_green_node_pool_enabled = true
-
 aks_foobar_user_node_pool_configuration = {
-  enabled        = false,
   tier           = "Standard_D4ads"
   node_count_min = 3,
   node_count_max = 4,
