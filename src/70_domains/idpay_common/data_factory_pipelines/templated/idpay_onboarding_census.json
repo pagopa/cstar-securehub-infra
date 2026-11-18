@@ -522,7 +522,7 @@
             "type": "IntegrationRuntimeReference"
           },
           "body": {
-            "value": "@concat('{\"initiativeId\":\"', pipeline().parameters.initiativeId, '\",\"runId\":\"', pipeline().RunId, '\",\"fileName\":\"', pipeline().parameters.fileName, '\",\"runDate\":\"', variables('runDate'), '\",\"received\":', variables('received'), ',\"written\":', variables('written'), ',\"rejected\":', variables('rejected'), ',\"attempts\":', variables('attemptNo'), ',\"rejectedFolder\":\"rejected/', pipeline().parameters.initiativeId, '/', pipeline().RunId, '/\",\"consistent\":', string(equals(add(int(variables('written')), int(variables('rejected'))), int(variables('received')))), '}')",
+            "value": "@concat('{\"initiativeId\":\"', pipeline().parameters.initiativeId, '\",\"runId\":\"', pipeline().RunId, '\",\"fileName\":\"', pipeline().parameters.fileName, '\",\"runDate\":\"', variables('runDate'), '\",\"received\":', variables('received'), ',\"written\":', variables('written'), ',\"rejected\":', variables('rejected'), ',\"attempts\":', variables('attemptNo'), ',\"rejectedFolder\":\"rejected/', pipeline().parameters.initiativeId, '/', pipeline().RunId, '/\",\"consistent\":', if(equals(add(int(variables('written')), int(variables('rejected'))), int(variables('received'))), 'true', 'false'), '}')",
             "type": "Expression"
           },
           "authentication": {
