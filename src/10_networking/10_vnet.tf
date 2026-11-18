@@ -61,3 +61,15 @@ module "vnet_spoke_security" {
 
   tags = module.tag_config.tags
 }
+
+module "vnet_spoke_tools" {
+  source = "./.terraform/modules/__v4__/virtual_network"
+  # source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//virtual_network?ref=vnet-ignore-ddos-protection-plan"
+
+  name                = "${local.project}-spoke-tools-vnet"
+  location            = azurerm_resource_group.rg_network.location
+  resource_group_name = azurerm_resource_group.rg_network.name
+  address_space       = var.cidr_spoke_tools_vnet
+
+  tags = module.tag_config.tags
+}

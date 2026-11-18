@@ -41,6 +41,11 @@ data "azurerm_key_vault_secret" "slack_review_alerts_webhook" {
   name         = "slack-review-alerts-webhook"
 }
 
+data "azurerm_key_vault_secret" "slack_webhook_alert" {
+  key_vault_id = data.azurerm_key_vault.idpay.id
+  name         = "slack-webhook-alert"
+}
+
 data "azurerm_user_assigned_identity" "github_cd_identity" {
   name                = "cstar-${var.env_short}-idpay-01-github-cd-identity"
   resource_group_name = "cstar-${var.env_short}-identity-rg"

@@ -245,6 +245,33 @@
               },
               {
                 "source": {
+                  "path": "$['scart']"
+                },
+                "sink": {
+                  "name": "scart",
+                  "type": "String"
+                }
+              },
+              {
+                "source": {
+                  "path": "$['connectivity']"
+                },
+                "sink": {
+                  "name": "connectivity",
+                  "type": "String"
+                }
+              },
+              {
+                "source": {
+                  "path": "$['technicalSheetUrl']"
+                },
+                "sink": {
+                  "name": "technicalSheetUrl",
+                  "type": "String"
+                }
+              },
+              {
+                "source": {
                   "path": "$['_class']"
                 },
                 "sink": {

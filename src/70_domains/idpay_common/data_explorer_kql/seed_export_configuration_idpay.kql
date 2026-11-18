@@ -2,14 +2,17 @@
 datatable(initiativeId:string, exportConfiguration:dynamic)
 [
   "69e0fa95e21efa516c7b8dec", dynamic({
-    "fields": ["gtinCode", "model", "brand", "productName", "category", "productCode"],
+    "fields": ["gtinCode", "model", "brand", "productName", "category", "productCode", "scart", "connectivity", "technicalSheetUrl"],
     "headers": {
       "gtinCode": "GTIN",
       "model": "Modello",
       "brand": "Marca",
       "productName": "Nome del prodotto",
       "category": "Categoria",
-      "productCode": "Codice prodotto"
+      "productCode": "Codice prodotto",
+      "scart": "Scart",
+      "connectivity": "Connessione IP",
+      "technicalSheetUrl": "Scheda tecnica"
     }
   }),
   "68dd003ccce8c534d1da22bc", dynamic({
