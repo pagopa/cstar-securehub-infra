@@ -1,4 +1,16 @@
 <!-- markdownlint-disable -->
+
+## Keycloak Java4Shell mitigation
+
+The shared Keycloak Helm values append `-XX:-UseBASE64Intrinsics` to
+`JAVA_OPTS_APPEND` as the interim mitigation for
+[CVE-2026-114938](https://www.keycloak.org/2026/11/java4shell-vulnerability-cve-2026-114938).
+Apply the stack separately in DEV, UAT and PROD, ensure every Keycloak pod is
+replaced, and verify that each running JVM reports `UseBASE64Intrinsics = false`
+using `jcmd io.quarkus.bootstrap.runner.QuarkusEntryPoint VM.flags -all`.
+Keep the flag until a vendor-confirmed fixed Java runtime has been deployed and
+verified; the Keycloak version alone does not establish that the runtime is fixed.
+
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 
