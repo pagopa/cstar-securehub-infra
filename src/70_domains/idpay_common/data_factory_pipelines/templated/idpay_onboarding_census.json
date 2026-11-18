@@ -1,0 +1,573 @@
+{
+  "name": "idpay_onboarding_census",
+  "properties": {
+    "description": "BND-2482 onboarding census: CSV of fiscal codes on Blob -> validate -> tokenize (APIM PUT /tokens) -> upsert onboarding_citizen (ONBOARDING_KO / USER_BONUS_ALREADY_USED) -> report + rejected rows. Retry: failed retryable rows are re-submitted after 30s, max 3 retries, then rejected (RETRY_EXHAUSTED). Blocks the run if real onboardings already exist for the initiative.",
+    "concurrency": 1,
+    "parameters": {
+      "initiativeId": { "type": "String" },
+      "fileName": { "type": "String" },
+      "channel": { "type": "String", "defaultValue": "CENSUS" },
+      "runDate": { "type": "String", "defaultValue": "" }
+    },
+    "variables": {
+      "runDate": { "type": "String", "defaultValue": "" },
+      "received": { "type": "String", "defaultValue": "0" },
+      "written": { "type": "String", "defaultValue": "0" },
+      "rejected": { "type": "String", "defaultValue": "0" },
+      "rejectedTmp": { "type": "String", "defaultValue": "0" },
+      "attemptNo": { "type": "String", "defaultValue": "0" },
+      "pendingRows": { "type": "String", "defaultValue": "0" }
+    },
+    "activities": [
+      {
+        "name": "SetRunDate",
+        "description": "Run start date (UTC, yyyy-MM-ddTHH:mm:ss) used for creationDate/onboardingKODate/updateDate. Parameter wins over trigger time.",
+        "type": "SetVariable",
+        "dependsOn": [],
+        "userProperties": [],
+        "typeProperties": {
+          "variableName": "runDate",
+          "value": {
+            "value": "@if(empty(pipeline().parameters.runDate), formatDateTime(pipeline().TriggerTime, 'yyyy-MM-ddTHH:mm:ss'), pipeline().parameters.runDate)",
+            "type": "Expression"
+          }
+        }
+      },
+      {
+        "name": "Get_SubKey",
+        "type": "WebActivity",
+        "dependsOn": [],
+        "policy": {
+          "timeout": "0.00:05:00",
+          "retry": 3,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": true,
+          "secureInput": true
+        },
+        "userProperties": [],
+        "typeProperties": {
+          "method": "GET",
+          "headers": {
+            "Content-Type": "application/json"
+          },
+          "url": {
+            "value": "${kv_url}secrets/idpay-df-subscription-key?api-version=7.3",
+            "type": "Expression"
+          },
+          "connectVia": {
+            "referenceName": "AutoResolveIntegrationRuntime",
+            "type": "IntegrationRuntimeReference"
+          },
+          "authentication": {
+            "type": "MSI",
+            "resource": "https://vault.azure.net"
+          }
+        }
+      },
+      {
+        "name": "CheckRealOnboardings",
+        "description": "Preliminary check: any document of the initiative that is not a census record means real onboardings exist -> the run must be blocked (upsert would overwrite them). Implemented as a Copy (the Lookup activity cannot reach Cosmos Mongo from the managed VNet in this environment): limit 1 + projection of _id keep the RU cost low; only the rowsRead of the Copy is used.",
+        "type": "Copy",
+        "dependsOn": [],
+        "policy": {
+          "timeout": "0.00:30:00",
+          "retry": 2,
+          "retryIntervalInSeconds": 60,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "userProperties": [],
+        "typeProperties": {
+          "source": {
+            "type": "CosmosDbMongoDbApiSource",
+            "filter": {
+              "value": "@concat('{\"initiativeId\": \"', pipeline().parameters.initiativeId, '\", \"detailKO\": {\"$ne\": \"USER_BONUS_ALREADY_USED\"}}')",
+              "type": "Expression"
+            },
+            "cursorMethods": {
+              "project": "{\"_id\": 1}",
+              "limit": 1
+            },
+            "batchSize": 1
+          },
+          "sink": {
+            "type": "JsonSink",
+            "storeSettings": {
+              "type": "AzureBlobStorageWriteSettings"
+            },
+            "formatSettings": {
+              "type": "JsonWriteSettings"
+            }
+          },
+          "enableStaging": false,
+          "parallelCopies": 1,
+          "dataIntegrationUnits": 2
+        },
+        "inputs": [
+          {
+            "referenceName": "cosmos_idpay_onboarding_citizen",
+            "type": "DatasetReference"
+          }
+        ],
+        "outputs": [
+          {
+            "referenceName": "blob_onboarding_census_check_json",
+            "type": "DatasetReference",
+            "parameters": {
+              "initiativeId": "@pipeline().parameters.initiativeId",
+              "runId": "@pipeline().RunId"
+            }
+          }
+        ]
+      },
+      {
+        "name": "IfRealOnboardingsFound",
+        "type": "IfCondition",
+        "dependsOn": [
+          {
+            "activity": "CheckRealOnboardings",
+            "dependencyConditions": ["Succeeded"]
+          }
+        ],
+        "userProperties": [],
+        "typeProperties": {
+          "expression": {
+            "value": "@greater(coalesce(activity('CheckRealOnboardings').output?.rowsRead, 0), 0)",
+            "type": "Expression"
+          },
+          "ifTrueActivities": [
+            {
+              "name": "FailRealOnboardingsFound",
+              "type": "Fail",
+              "dependsOn": [],
+              "userProperties": [],
+              "typeProperties": {
+                "message": {
+                  "value": "@concat('Census blocked: real onboardings already exist for initiative ', pipeline().parameters.initiativeId, '. The census must run before the new edition opens.')",
+                  "type": "Expression"
+                },
+                "errorCode": "CENSUS_REAL_ONBOARDINGS_FOUND"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "RunCensusPass0",
+        "description": "Pass 0 (attempt 0): validate + tokenize + build documents for the whole CSV. Retryable failures go to pending/, others to rejected/.",
+        "type": "ExecuteDataFlow",
+        "dependsOn": [
+          { "activity": "IfRealOnboardingsFound", "dependencyConditions": ["Succeeded"] },
+          { "activity": "Get_SubKey", "dependencyConditions": ["Succeeded"] },
+          { "activity": "SetRunDate", "dependencyConditions": ["Succeeded"] }
+        ],
+        "policy": {
+          "timeout": "0.06:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": true
+        },
+        "userProperties": [],
+        "typeProperties": {
+          "dataFlow": {
+            "referenceName": "df_onboarding_census",
+            "type": "DataFlowReference",
+            "parameters": {
+              "initiativeId": { "value": "'@{pipeline().parameters.initiativeId}'", "type": "Expression" },
+              "runDate": { "value": "'@{variables('runDate')}'", "type": "Expression" },
+              "channel": { "value": "'@{pipeline().parameters.channel}'", "type": "Expression" },
+              "subscriptionKey": { "value": "'@{activity('Get_SubKey').output.value}'", "type": "Expression" },
+              "isFinal": { "value": "@bool(0)", "type": "Expression" }
+            },
+            "datasetParameters": {
+              "sourceCsv": {
+                "folderPath": "input",
+                "fileName": "@pipeline().parameters.fileName"
+              },
+              "sinkStaging": {
+                "initiativeId": "@pipeline().parameters.initiativeId",
+                "runId": "@pipeline().RunId",
+                "attempt": "0"
+              },
+              "sinkRejected": {
+                "initiativeId": "@pipeline().parameters.initiativeId",
+                "runId": "@pipeline().RunId",
+                "attempt": "0"
+              },
+              "sinkPending": {
+                "initiativeId": "@pipeline().parameters.initiativeId",
+                "runId": "@pipeline().RunId",
+                "attempt": "0"
+              }
+            }
+          },
+          "compute": {
+            "coreCount": 8,
+            "computeType": "General"
+          },
+          "traceLevel": "Coarse"
+        }
+      },
+      {
+        "name": "SetReceived",
+        "description": "All sinks share the same source: read rowsRead from whichever sink reports metrics (a sink that wrote no rows may be missing).",
+        "type": "SetVariable",
+        "dependsOn": [
+          { "activity": "RunCensusPass0", "dependencyConditions": ["Succeeded"] }
+        ],
+        "userProperties": [],
+        "typeProperties": {
+          "variableName": "received",
+          "value": {
+            "value": "@string(coalesce(activity('RunCensusPass0').output.runStatus.metrics?.sinkStaging?.sources?.sourceCsv?.rowsRead, activity('RunCensusPass0').output.runStatus.metrics?.sinkRejected?.sources?.sourceCsv?.rowsRead, activity('RunCensusPass0').output.runStatus.metrics?.sinkPending?.sources?.sourceCsv?.rowsRead, 0))",
+            "type": "Expression"
+          }
+        }
+      },
+      {
+        "name": "SetRejected",
+        "type": "SetVariable",
+        "dependsOn": [
+          { "activity": "SetReceived", "dependencyConditions": ["Succeeded"] }
+        ],
+        "userProperties": [],
+        "typeProperties": {
+          "variableName": "rejected",
+          "value": {
+            "value": "@string(coalesce(activity('RunCensusPass0').output.runStatus.metrics?.sinkRejected?.rowsWritten, 0))",
+            "type": "Expression"
+          }
+        }
+      },
+      {
+        "name": "SetPendingRows",
+        "type": "SetVariable",
+        "dependsOn": [
+          { "activity": "SetRejected", "dependencyConditions": ["Succeeded"] }
+        ],
+        "userProperties": [],
+        "typeProperties": {
+          "variableName": "pendingRows",
+          "value": {
+            "value": "@string(coalesce(activity('RunCensusPass0').output.runStatus.metrics?.sinkPending?.rowsWritten, 0))",
+            "type": "Expression"
+          }
+        }
+      },
+      {
+        "name": "IfPendingRows",
+        "description": "Retry only if pass 0 left retryable rows in pending/.",
+        "type": "IfCondition",
+        "dependsOn": [
+          { "activity": "SetPendingRows", "dependencyConditions": ["Succeeded"] }
+        ],
+        "userProperties": [],
+        "typeProperties": {
+          "expression": {
+            "value": "@greater(int(variables('pendingRows')), 0)",
+            "type": "Expression"
+          },
+          "ifTrueActivities": [
+            {
+              "name": "RunRetryPipeline",
+              "description": "Runs the retry loop in the child pipeline (ADF does not allow an Until inside an IfCondition). Waits for completion and reads its return value.",
+              "type": "ExecutePipeline",
+              "dependsOn": [],
+              "userProperties": [],
+              "policy": {
+                "secureInput": true
+              },
+              "typeProperties": {
+                "pipeline": {
+                  "referenceName": "idpay_onboarding_census_retry",
+                  "type": "PipelineReference"
+                },
+                "waitOnCompletion": true,
+                "parameters": {
+                  "initiativeId": { "value": "@pipeline().parameters.initiativeId", "type": "Expression" },
+                  "parentRunId": { "value": "@pipeline().RunId", "type": "Expression" },
+                  "channel": { "value": "@pipeline().parameters.channel", "type": "Expression" },
+                  "runDate": { "value": "@variables('runDate')", "type": "Expression" },
+                  "subscriptionKey": { "value": "@activity('Get_SubKey').output.value", "type": "Expression" },
+                  "pendingRows": { "value": "@variables('pendingRows')", "type": "Expression" }
+                }
+              }
+            },
+            {
+              "name": "ComputeRejected",
+              "description": "ADF does not allow a SetVariable to reference its own variable: the sum goes through rejectedTmp.",
+              "type": "SetVariable",
+              "dependsOn": [
+                { "activity": "RunRetryPipeline", "dependencyConditions": ["Succeeded"] }
+              ],
+              "userProperties": [],
+              "typeProperties": {
+                "variableName": "rejectedTmp",
+                "value": {
+                  "value": "@string(add(int(variables('rejected')), int(activity('RunRetryPipeline').output.pipelineReturnValue.rejected)))",
+                  "type": "Expression"
+                }
+              }
+            },
+            {
+              "name": "AddRejectedRetry",
+              "type": "SetVariable",
+              "dependsOn": [
+                { "activity": "ComputeRejected", "dependencyConditions": ["Succeeded"] }
+              ],
+              "userProperties": [],
+              "typeProperties": {
+                "variableName": "rejected",
+                "value": {
+                  "value": "@variables('rejectedTmp')",
+                  "type": "Expression"
+                }
+              }
+            },
+            {
+              "name": "SetAttempts",
+              "type": "SetVariable",
+              "dependsOn": [
+                { "activity": "AddRejectedRetry", "dependencyConditions": ["Succeeded"] }
+              ],
+              "userProperties": [],
+              "typeProperties": {
+                "variableName": "attemptNo",
+                "value": {
+                  "value": "@string(activity('RunRetryPipeline').output.pipelineReturnValue.attempts)",
+                  "type": "Expression"
+                }
+              }
+            },
+            {
+              "name": "CleanupPending",
+              "description": "Deletes the retry queue of the run (all attempt subfolders). Runs only here because pending/ exists only when pass 0 left retryable rows. The wildcard overrides the fixed fileName of the dataset.",
+              "type": "Delete",
+              "dependsOn": [
+                { "activity": "SetAttempts", "dependencyConditions": ["Succeeded"] }
+              ],
+              "policy": {
+                "timeout": "0.00:30:00",
+                "retry": 2,
+                "retryIntervalInSeconds": 30,
+                "secureOutput": false,
+                "secureInput": false
+              },
+              "userProperties": [],
+              "typeProperties": {
+                "dataset": {
+                  "referenceName": "blob_onboarding_census_pending_csv",
+                  "type": "DatasetReference",
+                  "parameters": {
+                    "initiativeId": "@pipeline().parameters.initiativeId",
+                    "runId": "@pipeline().RunId",
+                    "attempt": ""
+                  }
+                },
+                "storeSettings": {
+                  "type": "AzureBlobStorageReadSettings",
+                  "recursive": true,
+                  "wildcardFileName": "*"
+                },
+                "enableLogging": false
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "IfStagedRows",
+        "description": "Upsert only if at least one row was staged (received - rejected > 0): with no staged rows the work/ folder does not exist and the Copy would fail.",
+        "type": "IfCondition",
+        "dependsOn": [
+          { "activity": "IfPendingRows", "dependencyConditions": ["Succeeded"] }
+        ],
+        "userProperties": [],
+        "typeProperties": {
+          "expression": {
+            "value": "@greater(sub(int(variables('received')), int(variables('rejected'))), 0)",
+            "type": "Expression"
+          },
+          "ifTrueActivities": [
+            {
+              "name": "UpsertOnboardingCitizen",
+              "description": "Upsert by _id (shard key -> point writes) of all staged attempts (recursive read). Staging is JSON lines with Extended JSON dates ({$date}): the Mongo sink imports documents as-is, so dates land as BSON Date without type conversion. Limited batch/parallelism to protect the RU of the production onboarding database. Idempotent: safe to retry.",
+              "type": "Copy",
+              "dependsOn": [],
+              "policy": {
+                "timeout": "0.06:00:00",
+                "retry": 2,
+                "retryIntervalInSeconds": 120,
+                "secureOutput": false,
+                "secureInput": false
+              },
+              "userProperties": [],
+              "typeProperties": {
+                "source": {
+                  "type": "JsonSource",
+                  "storeSettings": {
+                    "type": "AzureBlobStorageReadSettings",
+                    "recursive": true,
+                    "wildcardFileName": "*",
+                    "enablePartitionDiscovery": false
+                  },
+                  "formatSettings": {
+                    "type": "JsonReadSettings"
+                  }
+                },
+                "sink": {
+                  "type": "CosmosDbMongoDbApiSink",
+                  "writeBehavior": "upsert",
+                  "writeBatchSize": 500,
+                  "writeBatchTimeout": "00:30:00"
+                },
+                "enableStaging": false,
+                "parallelCopies": 4,
+                "dataIntegrationUnits": 4
+              },
+              "inputs": [
+                {
+                  "referenceName": "blob_onboarding_census_staging_json",
+                  "type": "DatasetReference",
+                  "parameters": {
+                    "initiativeId": "@pipeline().parameters.initiativeId",
+                    "runId": "@pipeline().RunId",
+                    "attempt": ""
+                  }
+                }
+              ],
+              "outputs": [
+                {
+                  "referenceName": "cosmos_idpay_onboarding_citizen",
+                  "type": "DatasetReference"
+                }
+              ]
+            },
+            {
+              "name": "SetWritten",
+              "type": "SetVariable",
+              "dependsOn": [
+                { "activity": "UpsertOnboardingCitizen", "dependencyConditions": ["Succeeded"] }
+              ],
+              "userProperties": [],
+              "typeProperties": {
+                "variableName": "written",
+                "value": {
+                  "value": "@string(activity('UpsertOnboardingCitizen').output.rowsCopied)",
+                  "type": "Expression"
+                }
+              }
+            },
+            {
+              "name": "CleanupStaging",
+              "description": "Deletes the staging work folder of the run (all attempts) once the upsert succeeded.",
+              "type": "Delete",
+              "dependsOn": [
+                { "activity": "SetWritten", "dependencyConditions": ["Succeeded"] }
+              ],
+              "policy": {
+                "timeout": "0.00:30:00",
+                "retry": 2,
+                "retryIntervalInSeconds": 30,
+                "secureOutput": false,
+                "secureInput": false
+              },
+              "userProperties": [],
+              "typeProperties": {
+                "dataset": {
+                  "referenceName": "blob_onboarding_census_staging_json",
+                  "type": "DatasetReference",
+                  "parameters": {
+                    "initiativeId": "@pipeline().parameters.initiativeId",
+                    "runId": "@pipeline().RunId",
+                    "attempt": ""
+                  }
+                },
+                "enableLogging": false,
+                "recursive": true
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "WriteReport",
+        "description": "Writes report/<initiativeId>/<runId>/report.json via Blob REST API with the ADF managed identity.",
+        "type": "WebActivity",
+        "dependsOn": [
+          { "activity": "IfStagedRows", "dependencyConditions": ["Succeeded"] }
+        ],
+        "policy": {
+          "timeout": "0.00:05:00",
+          "retry": 3,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "userProperties": [],
+        "typeProperties": {
+          "method": "PUT",
+          "headers": {
+            "Content-Type": "application/json",
+            "x-ms-blob-type": "BlockBlob",
+            "x-ms-version": "2021-08-06"
+          },
+          "url": {
+            "value": "@concat('${onboarding_census_blob_endpoint}onboarding-census/report/', pipeline().parameters.initiativeId, '/', pipeline().RunId, '/report.json')",
+            "type": "Expression"
+          },
+          "connectVia": {
+            "referenceName": "AutoResolveIntegrationRuntime",
+            "type": "IntegrationRuntimeReference"
+          },
+          "body": {
+            "value": "@concat('{\"initiativeId\":\"', pipeline().parameters.initiativeId, '\",\"runId\":\"', pipeline().RunId, '\",\"fileName\":\"', pipeline().parameters.fileName, '\",\"runDate\":\"', variables('runDate'), '\",\"received\":', variables('received'), ',\"written\":', variables('written'), ',\"rejected\":', variables('rejected'), ',\"attempts\":', variables('attemptNo'), ',\"rejectedFolder\":\"rejected/', pipeline().parameters.initiativeId, '/', pipeline().RunId, '/\",\"consistent\":', if(equals(add(int(variables('written')), int(variables('rejected'))), int(variables('received'))), 'true', 'false'), '}')",
+            "type": "Expression"
+          },
+          "authentication": {
+            "type": "MSI",
+            "resource": "https://storage.azure.com/"
+          }
+        }
+      },
+      {
+        "name": "IfCountersMismatch",
+        "description": "Invariant from the DR: written + rejected = received. Fails the run (after report) if it does not hold.",
+        "type": "IfCondition",
+        "dependsOn": [
+          { "activity": "WriteReport", "dependencyConditions": ["Succeeded"] }
+        ],
+        "userProperties": [],
+        "typeProperties": {
+          "expression": {
+            "value": "@not(equals(add(int(variables('written')), int(variables('rejected'))), int(variables('received'))))",
+            "type": "Expression"
+          },
+          "ifTrueActivities": [
+            {
+              "name": "FailCountersMismatch",
+              "type": "Fail",
+              "dependsOn": [],
+              "userProperties": [],
+              "typeProperties": {
+                "message": {
+                  "value": "@concat('Census counters mismatch: received=', variables('received'), ' written=', variables('written'), ' rejected=', variables('rejected'))",
+                  "type": "Expression"
+                },
+                "errorCode": "CENSUS_COUNTERS_MISMATCH"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "annotations": [
+      "Onboarding Census",
+      "IdPay",
+      "BND-2482"
+    ]
+  },
+  "type": "Microsoft.DataFactory/factories/pipelines"
+}
+
