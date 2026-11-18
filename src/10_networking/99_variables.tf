@@ -139,6 +139,11 @@ variable "cidr_spoke_security_vnet" {
   description = "Address prefixes vnet security"
 }
 
+variable "cidr_spoke_tools_vnet" {
+  type        = list(string)
+  description = "Address prefixes vnet tools"
+}
+
 #
 # VPN
 #

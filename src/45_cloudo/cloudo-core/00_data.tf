@@ -1,0 +1,63 @@
+
+data "azurerm_key_vault" "key_vault" {
+  name                = "${local.product_ita}-core-kv"
+  resource_group_name = "${local.product_ita}-core-sec-rg"
+}
+
+data "azurerm_key_vault_secret" "github_pat" {
+  name         = "payments-cloud-github-bot-pat"
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+}
+
+data "azurerm_key_vault_secret" "cloudo_slack_token" {
+  name         = "cloudo-slack-token"
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+
+}
+
+data "azurerm_key_vault_secret" "opsgenie_token" {
+  count        = var.env_short == "p" ? 1 : 0
+  name         = "opsgenie-webhook-token"
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+}
+
+data "azurerm_api_management" "apim" {
+  name                = "${local.product}-apim"
+  resource_group_name = "${local.product}-api-rg"
+}
+
+
+data "azurerm_application_insights" "app_insight" {
+  name                = var.application_insisght_name
+  resource_group_name = var.application_insisght_resource_group_name
+}
+
+data "azurerm_kubernetes_cluster" "aks_itn" {
+  name                = "${local.product_ita}-${var.env}-aks"
+  resource_group_name = "${local.product_ita}-core-aks-rg"
+}
+
+data "azurerm_virtual_network" "network_tools_vnet" {
+  name                = "${var.prefix}-${var.env_short}-${var.location_short_ita}-core-spoke-tools-vnet"
+  resource_group_name = "${var.prefix}-${var.env_short}-${var.location_short_ita}-core-network-rg"
+}
+
+# data "azurerm_container_registry" "acr" {
+#   for_each            = local.container_registries
+#   name                = each.value.name
+#   resource_group_name = each.value.resource_group_name
+# }
+
+data "azurerm_resource_group" "network_core_rg" {
+  name = "cstar-${var.env_short}-${var.location_short_ita}-core-network-rg"
+}
+
+data "azurerm_resource_group" "network_rg" {
+  name = "cstar-${var.env_short}-vnet-rg"
+}
+# Private DNS Zone per ciascun cluster AKS privato integrato
+data "azurerm_private_dns_zone" "aks_private_dns_zone" {
+  for_each            = local.aks_private_clusters
+  name                = each.value.private_dns_zone_name
+  resource_group_name = each.value.node_resource_group
+}
