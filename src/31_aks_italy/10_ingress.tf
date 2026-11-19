@@ -83,7 +83,11 @@ module "nginx_ingress" {
       # Setting size to 0 disables checking of client request body size
       name  = "controller.config.proxy-body-size"
       value = var.nginx_helm.controller.config.proxy-body-size
-    }
+    },
+    {
+      name  = "controller.config.use-http2"
+      value = "false" # Must be "false" for CVE-2026-123633 ~ https://www.wiz.io/blog/nginx-http2-rce-vulnerabilities
+    },
   ]
   depends_on = [
     helm_release.keda
