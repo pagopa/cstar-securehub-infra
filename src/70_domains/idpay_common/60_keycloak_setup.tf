@@ -59,7 +59,7 @@ module "keycloak_setup" {
         port              = local.pari_smtp.port
         from              = local.pari_smtp.from_address
         ssl               = local.pari_smtp.ssl
-        from_display_name = local.pari_smtp.from_name
+        from_display_name = "Portale Punto Vendita"
 
         auth = {
           username = local.pari_smtp.username
