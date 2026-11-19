@@ -1,0 +1,43 @@
+{
+  "name": "blob_onboarding_census_input_csv",
+  "properties": {
+    "description": "Onboarding census input: CSV with header 'fiscalCode', one fiscal code per row (BND-2482)",
+    "linkedServiceName": {
+      "referenceName": "${domain}-onboarding-census-blob-ls",
+      "type": "LinkedServiceReference"
+    },
+    "parameters": {
+      "fileName": { "type": "String" },
+      "folderPath": { "type": "String" }
+    },
+    "annotations": [
+      "Onboarding Census",
+      "IdPay"
+    ],
+    "type": "DelimitedText",
+    "typeProperties": {
+      "location": {
+        "type": "AzureBlobStorageLocation",
+        "fileName": {
+          "value": "@dataset().fileName",
+          "type": "Expression"
+        },
+        "folderPath": {
+          "value": "@dataset().folderPath",
+          "type": "Expression"
+        },
+        "container": "onboarding-census"
+      },
+      "columnDelimiter": ",",
+      "escapeChar": "\\",
+      "firstRowAsHeader": true,
+      "quoteChar": "\"",
+      "encodingName": "UTF-8"
+    },
+    "schema": [
+      { "name": "fiscalCode", "type": "String" }
+    ]
+  },
+  "type": "Microsoft.DataFactory/factories/datasets"
+}
+
