@@ -70,3 +70,65 @@ resources:
   limits:
     cpu: "1"
     memory: 512Mi
+%{ if smtp_enabled ~}
+
+extraManifests:
+  - apiVersion: batch/v1
+    kind: Job
+    metadata:
+      name: listmonk-configure-smtp
+      annotations:
+        argocd.argoproj.io/hook: PostSync
+        argocd.argoproj.io/hook-delete-policy: BeforeHookCreation,HookSucceeded
+    spec:
+      backoffLimit: 1
+      activeDeadlineSeconds: 300
+      template:
+        spec:
+          restartPolicy: Never
+          automountServiceAccountToken: false
+          nodeSelector:
+            domain: keycloak
+          tolerations:
+            - key: keycloakOnly
+              operator: Equal
+              value: "true"
+              effect: NoSchedule
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 10001
+            seccompProfile:
+              type: RuntimeDefault
+          containers:
+            - name: configure-smtp
+              image: python:3.13-alpine
+              command: ["python", "-c"]
+              args:
+                - |
+                  ${indent(18, smtp_setup_script)}
+              envFrom:
+                - secretRef:
+                    name: listmonk-smtp
+              env:
+                - name: LISTMONK_URL
+                  value: "https://${listmonk_ingress_hostname}"
+                - name: LISTMONK_ADMIN_USERNAME
+                  value: admin
+                - name: LISTMONK_ADMIN_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: listmonk-bootstrap
+                      key: LISTMONK_ADMIN_PASSWORD
+              resources:
+                requests:
+                  cpu: 50m
+                  memory: 32Mi
+                limits:
+                  cpu: 250m
+                  memory: 128Mi
+              securityContext:
+                allowPrivilegeEscalation: false
+                readOnlyRootFilesystem: true
+                capabilities:
+                  drop: ["ALL"]
+%{ endif ~}
