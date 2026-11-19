@@ -121,6 +121,7 @@ variable "listmonk_configuration" {
     replica_count            = number
     postgres_ssl_mode        = string
     bootstrap_postgres_image = optional(string, "postgres:17-alpine")
+    smtp_enabled             = optional(bool, false)
   })
 
   validation {
@@ -135,6 +136,16 @@ variable "listmonk_configuration" {
   validation {
     condition     = var.listmonk_configuration.replica_count == 1
     error_message = "Listmonk is configured for one replica. Review rollout concurrency before enabling campaigns."
+  }
+
+  validation {
+    condition = !var.listmonk_configuration.smtp_enabled || (
+      var.listmonk_configuration.enabled &&
+      var.listmonk_configuration.rbac_domains.idpay &&
+      !var.listmonk_configuration.rbac_domains.srtp &&
+      !var.listmonk_configuration.rbac_domains.mdc
+    )
+    error_message = "PARI SMTP requires Listmonk to be enabled with IDPay-only domain access to its namespace."
   }
 }
 
