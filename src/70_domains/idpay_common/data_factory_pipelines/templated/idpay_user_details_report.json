@@ -228,7 +228,9 @@
                     },
                     "authentication": {
                         "type": "MSI",
-                        "resource": "https://vault.azure.net"
+                        "resource": "https://vault.azure.net",
+                        "password": null,
+                        "pfx": null
                     }
                 }
             }
