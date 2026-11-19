@@ -42,26 +42,26 @@ for acceptance criteria, the changes across the four repositories and pending li
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >=1.11.0 |
 | <a name="requirement_argocd"></a> [argocd](#requirement\_argocd) | ~> 7.0 |
-| <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | ~> 3 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 4.32.0 |
-| <a name="requirement_helm"></a> [helm](#requirement\_helm) | ~> 2 |
+| <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | ~> 3.0 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 4.32 |
+| <a name="requirement_helm"></a> [helm](#requirement\_helm) | ~> 2.0 |
 | <a name="requirement_keycloak"></a> [keycloak](#requirement\_keycloak) | ~> 5.0 |
 | <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | ~> 2.0 |
 | <a name="requirement_null"></a> [null](#requirement\_null) | ~> 3.0 |
-| <a name="requirement_postgresql"></a> [postgresql](#requirement\_postgresql) | ~> 1.26.0 |
+| <a name="requirement_postgresql"></a> [postgresql](#requirement\_postgresql) | ~> 1.26 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_argocd"></a> [argocd](#provider\_argocd) | 7.17.2 |
-| <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 3.4.0 |
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.32.0 |
+| <a name="provider_argocd"></a> [argocd](#provider\_argocd) | 7.18.0 |
+| <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 3.10.0 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.81.0 |
 | <a name="provider_helm"></a> [helm](#provider\_helm) | 2.17.0 |
-| <a name="provider_keycloak"></a> [keycloak](#provider\_keycloak) | 5.7.0 |
+| <a name="provider_keycloak"></a> [keycloak](#provider\_keycloak) | 5.10.0 |
 | <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | 2.38.0 |
-| <a name="provider_postgresql"></a> [postgresql](#provider\_postgresql) | 1.26.0 |
-| <a name="provider_random"></a> [random](#provider\_random) | 3.7.2 |
+| <a name="provider_postgresql"></a> [postgresql](#provider\_postgresql) | 1.27.0 |
+| <a name="provider_random"></a> [random](#provider\_random) | 3.9.1 |
 
 ## Modules
 

@@ -6,13 +6,23 @@ locals {
     data.azuread_group.adgroup_admin.object_id,
   ]
 
-  argocd_groups_developer = flatten([
-    for i in local.domains : [
-      data.azuread_group.adgroup_domain_admin[i].object_id,
-      data.azuread_group.adgroup_domain_developers[i].object_id,
-      data.azuread_group.adgroup_domain_project_managers[i].object_id,
-    ]
-  ])
+  argocd_groups_developer = concat(
+    [data.azuread_group.adgroup_developers.object_id],
+    flatten([
+      for i in local.domains : concat(
+        [data.azuread_group.adgroup_domain_admin[i].object_id],
+        var.env != "prod" ? [
+          data.azuread_group.adgroup_domain_developers[i].object_id,
+          data.azuread_group.adgroup_domain_project_managers[i].object_id,
+        ] : []
+      )
+    ])
+  )
+
+  argocd_project_source_repos = [
+    "https://repo.helmforge.dev"
+
+  ]
 
   argocd_groups_external = var.env != "prod" ? [
     for i in local.domains : data.azuread_group.adgroup_domain_externals[i].object_id
@@ -35,7 +45,7 @@ resource "argocd_project" "platform_project" {
     description = local.argocd_project_name
 
     source_namespaces = local.argocd_project_namespaces
-    source_repos      = ["*"]
+    source_repos      = local.argocd_project_source_repos
 
     dynamic "destination" {
       # Listmonk deploys here; its Application remains in the argocd namespace.
@@ -46,13 +56,20 @@ resource "argocd_project" "platform_project" {
       }
     }
 
-    cluster_resource_whitelist {
+    # No cluster_resource_whitelist: cluster-scoped resources (ClusterRole, CRD, Namespace, ...) are denied.
+
+    namespace_resource_whitelist {
       group = "*"
       kind  = "*"
     }
 
-    namespace_resource_whitelist {
-      group = "*"
+    namespace_resource_blacklist {
+      group = "argoproj.io"
+      kind  = "*"
+    }
+
+    namespace_resource_blacklist {
+      group = "rbac.authorization.k8s.io"
       kind  = "*"
     }
 
