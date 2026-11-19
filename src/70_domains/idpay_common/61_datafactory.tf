@@ -298,4 +298,3 @@ resource "azurerm_data_factory_linked_custom_service" "idpay_df_apim_rest_ls" {
     name = "AutoResolveIntegrationRuntime"
   }
 }
-

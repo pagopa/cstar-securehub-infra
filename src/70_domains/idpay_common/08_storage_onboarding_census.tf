@@ -74,4 +74,3 @@ resource "azurerm_role_assignment" "adf_can_access_onboarding_census_storage" {
 
   depends_on = [module.storage_idpay_onboarding_census]
 }
-

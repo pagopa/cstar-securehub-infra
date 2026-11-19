@@ -203,4 +203,3 @@ resource "azapi_resource" "idpay_onboarding_census" {
     azurerm_role_assignment.adf_can_access_onboarding_census_storage
   ]
 }
-
