@@ -219,15 +219,18 @@
 )
 
 // Retain static configuration for 1,000 years instead of the database default.
-.alter table category_translation policy retention
+// Generic value-normalization table: covers category descriptions, boolean-to-label
+// conversions (e.g. scart True/False -> Si/No) and placeholder normalization
+// (e.g. capacity N/A -> "-"), keyed by fieldName so new fields don't require new tables.
+.alter table attribute_translation policy retention
 @'{"SoftDeletePeriod": "365000.00:00:00", "Recoverability": "Enabled"}'
-.create table category_translation (
+.create table attribute_translation (
     initiativeId:string,
-    categoryCode:string,
+    fieldName:string,
+    rawValue:string,
     language:string,
-    description:string
+    translatedValue:string
 )
-
 
 .create-merge table transaction (
     _id:string,

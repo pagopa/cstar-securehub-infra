@@ -24,6 +24,10 @@ locals {
       name = module.vnet_spoke_security.name
       id   = module.vnet_spoke_security.id
     }
+    spoke_tools = {
+      name = module.vnet_spoke_tools.name
+      id   = module.vnet_spoke_tools.id
+    }
     vnet_core = {
       name = data.azurerm_virtual_network.vnet_weu_core.name
       id   = data.azurerm_virtual_network.vnet_weu_core.id
