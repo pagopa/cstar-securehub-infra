@@ -123,7 +123,7 @@
                 "source": {
                   "type": "AzureDataExplorerSource",
                   "query": {
-                    "value": "@concat('let translated = category_translation | where initiativeId == \"', pipeline().parameters.initiativeId, '\" and language == \"it\" | project categoryCode = tostring(categoryCode), categoryDescription = tostring(description); products | where status == \"APPROVED\" and initiativeId == \"', pipeline().parameters.initiativeId, '\" | extend category = tostring(category) | join kind=leftouter translated on $left.category == $right.categoryCode | extend category = iff(isempty(categoryDescription), category, categoryDescription) | project ', activity('Lookup_Initiative_Export_Configuration').output.value[0].projectExpr)",
+                    "value": "@concat('let attrT = attribute_translation | where initiativeId == \"', pipeline().parameters.initiativeId, '\" and language == \"it\" | project fieldName = tostring(fieldName), rawValue = tostring(rawValue), translatedValue = tostring(translatedValue); products | where status == \"APPROVED\" and initiativeId == \"', pipeline().parameters.initiativeId, '\" | serialize | extend _bag = pack_all() | extend _rowId = row_number() | mv-expand bagexpansion=array _kv = _bag | extend fieldName = tostring(_kv[0]), rawValue = tostring(_kv[1]) | lookup kind=leftouter attrT on fieldName, rawValue | extend finalValue = iff(isempty(translatedValue), rawValue, translatedValue) | summarize _bag2 = make_bag(bag_pack(fieldName, finalValue)) by _rowId | evaluate bag_unpack(_bag2) | project ', activity('Lookup_Initiative_Export_Configuration').output.value[0].projectExpr)",
                     "type": "Expression"
                   }
                 },
