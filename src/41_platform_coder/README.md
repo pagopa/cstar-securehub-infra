@@ -37,6 +37,11 @@ Credentials also reside in Terraform state: restrict access to the backend and s
 The PostSync Job uses the same PARI SES relay and sender address as Keycloak
 (port 465, implicit TLS with certificate verification). Listmonk uses the sender
 display name `Comunicazioni PARI`; Keycloak keeps `Portale Punto Vendita`.
+
+The IDPay inputs enable Secret publishing in DEV, UAT, and PROD, but the platform
+PostSync Job remains disabled. Applying `idpay_common` with the current namespace
+bindings makes the Secret readable by SRTP and MDC namespace editors.
+
 For each environment:
 
 1. Restrict `listmonk_configuration.rbac_domains` to IDPay only and set
