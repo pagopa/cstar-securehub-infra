@@ -30,16 +30,10 @@ module "cloudo" {
   cloudo_google_sso_integration_client_id = data.azurerm_key_vault_secret.google_client_id.value
 
   github_repo_info = {
-    repo_name    = "pagopa/pagopa-infra-core"
+    repo_name    = "pagopa/cstar-securehub-infra"
     repo_branch  = "main"
-    runbook_path = "src/cloudo/cloudo-core/runbooks"
+    runbook_path = "src/45_cloudo/cloudo-core/runbooks"
   }
-
-  #   github_repo_info = {
-  #   repo_name    = "pagopa/cstar-securehub-infra"
-  #   repo_branch  = "main"
-  #   runbook_path = "src/45_cloudo/cloudo-core/runbooks"
-  # }
 
   aks_integration = {
     itn = {

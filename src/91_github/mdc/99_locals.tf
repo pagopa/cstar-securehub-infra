@@ -93,7 +93,7 @@ locals {
         primary_language     = "TypeScript"
         visibility           = "private"
       }
-      protected_branches = []
+      protected_branches = ["main"]
       repository_secrets = [
         {
           SONAR_TOKEN = try(module.secrets.values["sonar-token"].value, null)
@@ -369,6 +369,7 @@ locals {
           SEND_KEYCLOAK_CLIENT_SECRET    = try(module.secrets.values["send-client-secret"].value, null)
           KEYCLOAK_URL                   = try(module.secrets.values["keycloak-external-mdc-url"].value, null)
           KAFKA_PASSWORD                 = try(module.secrets.values["kafka-password"].value, null)
+          SEND_KEYCLOAK_TOKEN_SCADUTO    = try(module.secrets.values["send-expired-token"].value, null)
         }
       }
       env_variables = {
