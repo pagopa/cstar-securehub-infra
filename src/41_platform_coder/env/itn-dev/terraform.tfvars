@@ -49,11 +49,13 @@ listmonk_configuration = {
     srtp  = true
     mdc   = true
   }
-  chart_version     = "1.2.3"
-  image_repository  = "listmonk/listmonk"
-  image_tag         = "v6.2.0"
-  replica_count     = 1
-  postgres_ssl_mode = "require"
+  chart_version               = "1.2.3"
+  image_repository            = "listmonk/listmonk"
+  image_tag                   = "v6.2.0"
+  replica_count               = 1
+  postgres_ssl_mode           = "require"
+  smtp_enabled                = true
+  smtp_allow_shared_namespace = true
 }
 
 aks_user_foobar_node_pool_keycloak = {
