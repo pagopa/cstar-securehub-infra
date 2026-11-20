@@ -48,7 +48,9 @@ aks_cidr_subnet_user = ["10.10.2.0/24"] # 10.10.2.0 -> 10.10.2.255
 
 ingress_min_replica_count = "1"
 ingress_max_replica_count = "3"
-ingress_load_balancer_ip  = "10.10.1.250"
+
+ingress_load_balancer_ip         = "10.10.1.250"
+haproxy_ingress_load_balancer_ip = "10.10.1.252"
 
 # ingress-nginx helm charts releases 4.X.X: https://github.com/kubernetes/ingress-nginx/releases?expanded=true&page=1&q=tag%3Ahelm-chart-4
 nginx_helm = {
