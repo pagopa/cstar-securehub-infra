@@ -55,15 +55,15 @@ module "keycloak_setup" {
       }
 
       smtp_server = {
-        host              = data.azurerm_key_vault_secret.pari_ses_smtp_host.value
-        port              = local.ses_smtp_port
-        from              = data.azurerm_key_vault_secret.pari_ses_from_address.value
-        ssl               = true
+        host              = local.pari_smtp.host
+        port              = local.pari_smtp.port
+        from              = local.pari_smtp.from_address
+        ssl               = local.pari_smtp.ssl
         from_display_name = "Portale Punto Vendita"
 
         auth = {
-          username = data.azurerm_key_vault_secret.pari_ses_smtp_username.value
-          password = data.azurerm_key_vault_secret.pari_ses_smtp_password.value
+          username = local.pari_smtp.username
+          password = local.pari_smtp.password
         }
       }
     }
