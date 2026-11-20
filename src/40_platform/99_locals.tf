@@ -51,12 +51,8 @@ locals {
   argocd_dns_record_name = "argocd.${var.location_short}"
   argocd_namespace       = "argocd"
   argocd_project_namespaces = [
-    "argocd",
-    "platform-influxdb"
+    "listmonk",
   ]
-
-  ### InfluxDB
-  influxdb_internal_url = "influxdb.${var.location_short}.${var.dns_zone_internal_prefix}.${var.prefix}.${var.external_domain}"
 
   ### tags
   cwd_split       = split("/", path.cwd)

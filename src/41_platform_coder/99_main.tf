@@ -1,14 +1,14 @@
 terraform {
-  required_version = ">=1.10.0"
+  required_version = ">=1.11.0"
 
   required_providers {
     azuread = {
       source  = "hashicorp/azuread"
-      version = "~> 3"
+      version = "~> 3.0"
     }
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~> 4.32.0"
+      version = "~> 4.32"
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
@@ -20,11 +20,19 @@ terraform {
     }
     helm = {
       source  = "hashicorp/helm"
-      version = "~> 2"
+      version = "~> 2.0"
     }
     keycloak = {
       source  = "keycloak/keycloak"
       version = "~> 5.0"
+    }
+    argocd = {
+      source  = "argoproj-labs/argocd"
+      version = "~> 7.0"
+    }
+    postgresql = {
+      source  = "cyrilgdn/postgresql"
+      version = "~> 1.26"
     }
   }
 
@@ -60,7 +68,23 @@ provider "keycloak" {
   realm         = "master"
 }
 
+provider "postgresql" {
+  host      = module.keycloak_pgflex.fqdn
+  port      = 5432
+  database  = "postgres"
+  username  = azurerm_key_vault_secret.keycloak_db_admin_user.value
+  password  = azurerm_key_vault_secret.keycloak_db_admin_password.value
+  sslmode   = "require"
+  superuser = false
+}
+
 module "__v4__" {
   # https://github.com/pagopa/terraform-azurerm-v4/releases/tag/v10.43.0
   source = "git::https://github.com/pagopa/terraform-azurerm-v4.git?ref=7e5635fc04118ced0abbf7089611b4178d447322"
+}
+
+provider "argocd" {
+  server_addr = local.argocd_internal_url
+  username    = data.azurerm_key_vault_secret.argocd_admin_username.value
+  password    = data.azurerm_key_vault_secret.argocd_admin_password.value
 }
