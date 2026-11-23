@@ -1,0 +1,1938 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "links": [
+    {
+      "title": "Ultimi 3 giorni",
+      "type": "link",
+      "icon": "clock",
+      "tooltip": "Imposta il time range a now-3d → now",
+      "url": "/d/srtp-opex-consumer?from=now-3d&to=now",
+      "includeVars": true,
+      "keepTime": false,
+      "targetBlank": false,
+      "asDropdown": false,
+      "tags": []
+    }
+  ],
+  "panels": [
+    {
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "### [Activator](/d/srtp-operational-excellence?from=${__from}&to=${__to}) &nbsp;&nbsp;|&nbsp;&nbsp; [Cosmos Activator](/d/cosmos-activator?from=${__from}&to=${__to}) &nbsp;&nbsp;|&nbsp;&nbsp; **▸ Consumer** &nbsp;&nbsp;|&nbsp;&nbsp; [Sender](/d/srtp-opex-sender?from=${__from}&to=${__to}) &nbsp;&nbsp;|&nbsp;&nbsp; [Cosmos Sender](/d/cosmos-sender?from=${__from}&to=${__to})",
+        "mode": "markdown"
+      },
+      "pluginVersion": "12.4.13",
+      "title": "",
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 2
+      },
+      "id": 2100,
+      "panels": [],
+      "title": "Sender · Consumer",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "green",
+            "mode": "fixed"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 0,
+        "y": 3
+      },
+      "id": 2101,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.4.13",
+      "targets": [
+        {
+          "azureLogAnalytics": {
+            "dashboardTime": true,
+            "mode": "raw",
+            "query": "AppTraces\n| where AppRoleName == 'rtp-consumer'\n| where $__timeFilter(TimeGenerated)\n| where Message startswith \"New GPD message received\"\n| summarize successCount = count()\n| extend totalRequestsString = tostring(successCount)",
+            "resources": [
+              "/subscriptions/$subscription/resourceGroups/$SrtpMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$SrtpLaw"
+            ],
+            "resultFormat": "table",
+            "timeColumn": "TimeGenerated"
+          },
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "refId": "A",
+          "subscription": "$subscription"
+        }
+      ],
+      "title": "✅ Messaggi ingeriti con successo",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 5,
+        "y": 3
+      },
+      "id": 2102,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.4.13",
+      "targets": [
+        {
+          "azureLogAnalytics": {
+            "dashboardTime": true,
+            "mode": "raw",
+            "query": "AppTraces\n| where AppRoleName == 'rtp-consumer'\n| where $__timeFilter(TimeGenerated)\n| where Message startswith \"Error processing message.\"\n| where not (Message contains \"rtp/gpd/message\")\n| summarize errorCount = count()\n| extend totalRequestsString = tostring(errorCount)",
+            "resources": [
+              "/subscriptions/$subscription/resourceGroups/$SrtpMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$SrtpLaw"
+            ],
+            "resultFormat": "table",
+            "timeColumn": "TimeGenerated"
+          },
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "refId": "A",
+          "subscription": "$subscription"
+        }
+      ],
+      "title": "❌ Messaggi scartati dal Consumer",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "green",
+            "mode": "fixed"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 10,
+        "y": 3
+      },
+      "id": 2103,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.4.13",
+      "targets": [
+        {
+          "azureLogAnalytics": {
+            "dashboardTime": true,
+            "mode": "raw",
+            "query": "AppTraces\n| where AppRoleName == 'rtp-consumer'\n| where $__timeFilter(TimeGenerated)\n| where Message startswith \"New GPD message received\"\n| extend messageId = tostring(Properties.message_id)\n| where isnotempty(messageId)\n| summarize uniqueCount = dcount(messageId)\n| extend totalRequestsString = tostring(uniqueCount)",
+            "resources": [
+              "/subscriptions/$subscription/resourceGroups/$SrtpMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$SrtpLaw"
+            ],
+            "resultFormat": "table",
+            "timeColumn": "TimeGenerated"
+          },
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "refId": "A",
+          "subscription": "$subscription"
+        }
+      ],
+      "title": "✅ Messaggi unici ingeriti con successo",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 15,
+        "y": 3
+      },
+      "id": 2104,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.4.13",
+      "targets": [
+        {
+          "azureLogAnalytics": {
+            "dashboardTime": true,
+            "mode": "raw",
+            "query": "AppTraces\n| where AppRoleName == 'rtp-consumer'\n| where $__timeFilter(TimeGenerated)\n| where Message startswith \"Error processing message.\"\n| where not (Message contains \"rtp/gpd/message\")\n| extend messageId = tostring(Properties.message_id)\n| where isnotempty(messageId)\n| summarize uniqueCount = dcount(messageId)\n| extend totalRequestsString = tostring(uniqueCount)",
+            "resources": [
+              "/subscriptions/$subscription/resourceGroups/$SrtpMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$SrtpLaw"
+            ],
+            "resultFormat": "table",
+            "timeColumn": "TimeGenerated"
+          },
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "refId": "A",
+          "subscription": "$subscription"
+        }
+      ],
+      "title": "❌ Messaggi unici scartati dal Consumer",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 20,
+        "y": 3
+      },
+      "id": 2105,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.4.13",
+      "targets": [
+        {
+          "azureLogAnalytics": {
+            "dashboardTime": true,
+            "mode": "raw",
+            "query": "AppTraces\n| where AppRoleName == 'rtp-consumer'\n| where $__timeFilter(TimeGenerated)\n| where Message startswith \"Message stored in Failed Message Store\"\n| where Message contains \"rtp/gpd/message\"\n| summarize dlqCount = count()\n| extend totalRequestsString = tostring(dlqCount)",
+            "resources": [
+              "/subscriptions/$subscription/resourceGroups/$SrtpMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$SrtpLaw"
+            ],
+            "resultFormat": "table",
+            "timeColumn": "TimeGenerated"
+          },
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "refId": "A",
+          "subscription": "$subscription"
+        }
+      ],
+      "title": "❌ Messaggi nella DLQ",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 0,
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Successi"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Scartati"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 7
+      },
+      "id": 2106,
+      "options": {
+        "legend": {
+          "calcs": [
+            "sum"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "sortBy": "Total",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "12.4.13",
+      "targets": [
+        {
+          "azureLogAnalytics": {
+            "dashboardTime": true,
+            "mode": "raw",
+            "query": "let _bin = max_of(coalesce(totimespan(\"$sender_bin_size\"), 1h), bin(($__timeTo() - $__timeFrom()) / 19999, 1s) + 1s);\nAppTraces\n| where AppRoleName == 'rtp-consumer'\n| where $__timeFilter(TimeGenerated)\n| where Message startswith \"Message processed successfully\" or Message startswith \"Error processing message.\"\n| extend messageId = tostring(Properties.message_id)\n| where isnotempty(messageId)\n| make-series\n    Successi = dcountif(messageId, Message startswith \"Message processed successfully\") default = 0,\n    Scartati = dcountif(messageId, Message startswith \"Error processing message.\" and not (Message contains \"rtp/gpd/message\")) default = 0\n  on TimeGenerated from bin($__timeFrom(), _bin) to $__timeTo() step _bin\n| mv-expand TimeGenerated to typeof(datetime), Successi to typeof(long), Scartati to typeof(long)\n| project TimeGenerated, Successi, Scartati\n| order by TimeGenerated asc",
+            "resources": [
+              "/subscriptions/$subscription/resourceGroups/$SrtpMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$SrtpLaw"
+            ],
+            "resultFormat": "time_series",
+            "timeColumn": "TimeGenerated"
+          },
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "refId": "A",
+          "subscription": "$subscription"
+        }
+      ],
+      "title": "Andamento ingestione Consumer - Successi vs Scartati nel tempo",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "blue"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 0,
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 15
+      },
+      "id": 2122,
+      "options": {
+        "legend": {
+          "calcs": [
+            "sum"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "sortBy": "Total",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "12.4.13",
+      "targets": [
+        {
+          "azureLogAnalytics": {
+            "dashboardTime": true,
+            "mode": "raw",
+            "query": "let _bin = max_of(coalesce(totimespan(\"$sender_bin_size\"), 1h), bin(($__timeTo() - $__timeFrom()) / 19999, 1s) + 1s);\nAppTraces\n| where AppRoleName == 'rtp-consumer'\n| where $__timeFilter(TimeGenerated)\n| where Message startswith \"New GPD message received\"\n| make-series Ingeriti = count() default = 0 on TimeGenerated from bin($__timeFrom(), _bin) to $__timeTo() step _bin\n| mv-expand TimeGenerated to typeof(datetime), Ingeriti to typeof(long)\n| project TimeGenerated, Ingeriti\n| order by TimeGenerated asc",
+            "resources": [
+              "/subscriptions/$subscription/resourceGroups/$SrtpMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$SrtpLaw"
+            ],
+            "resultFormat": "time_series",
+            "timeColumn": "TimeGenerated"
+          },
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "refId": "A",
+          "subscription": "$subscription"
+        }
+      ],
+      "title": "Messaggi che il Consumer ha ingerito nel tempo",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "left",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": true,
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "text",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 23
+      },
+      "id": 2107,
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true
+      },
+      "pluginVersion": "12.4.13",
+      "targets": [
+        {
+          "azureLogAnalytics": {
+            "dashboardTime": true,
+            "mode": "raw",
+            "query": "AppTraces\n| where AppRoleName == 'rtp-consumer'\n| where $__timeFilter(TimeGenerated)\n| where Message startswith \"Payload:\"\n| extend\n    msg_id          = extract(@\"id=(\\d+)\", 1, Message),\n    operation       = extract(@\"operation=(\\w+)\", 1, Message),\n    status          = extract(@\"status=([A-Z_]+)\", 1, Message),\n    ec_tax_code     = extract(@\"ec_tax_code=([^,\\]]+)\", 1, Message),\n    debtor_tax_code = extract(@\"debtor_tax_code=([^,\\]]+)\", 1, Message),\n    iuv             = extract(@\"iuv=([^,\\]]+)\", 1, Message)\n| where isnotempty(msg_id)\n| summarize\n    [\"Consegne EVH\"]     = count(),\n    [\"Prima consegna\"]   = min(TimeGenerated),\n    [\"Ultima consegna\"]  = max(TimeGenerated),\n    [\"Operazione\"]       = take_any(operation),\n    [\"Status GPD\"]       = take_any(status),\n    [\"EC Tax Code\"]      = take_any(ec_tax_code),\n    [\"Debtor Tax Code\"]  = take_any(debtor_tax_code),\n    [\"IUV\"]              = take_any(iuv)\n    by msg_id\n| where [\"Consegne EVH\"] > 1\n| extend [\"Debtor Tax Code\"] = strcat(\n    substring([\"Debtor Tax Code\"], 0, 3),\n    substring(\"***********\", 0, strlen([\"Debtor Tax Code\"]) - 5),\n    substring([\"Debtor Tax Code\"], strlen([\"Debtor Tax Code\"]) - 2, 2)\n)\n| project\n    [\"Message ID\"]      = msg_id,\n    [\"Consegne EVH\"]    = [\"Consegne EVH\"],\n    [\"Prima consegna\"]  = [\"Prima consegna\"],\n    [\"Ultima consegna\"] = [\"Ultima consegna\"],\n    [\"Operazione\"]      = [\"Operazione\"],\n    [\"Status GPD\"]      = [\"Status GPD\"],\n    [\"EC Tax Code\"]     = [\"EC Tax Code\"],\n    [\"Debtor Tax Code\"] = [\"Debtor Tax Code\"],\n    [\"IUV\"]             = [\"IUV\"]\n| sort by [\"Consegne EVH\"] desc\n| limit 100",
+            "resources": [
+              "/subscriptions/$subscription/resourceGroups/$SrtpMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$SrtpLaw"
+            ],
+            "resultFormat": "table",
+            "timeColumn": "TimeGenerated"
+          },
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "refId": "A",
+          "subscription": "$subscription"
+        }
+      ],
+      "title": "🔁 MessageId ricevuti più volte dall'EVH (duplicati di consegna)",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "left",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": true,
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "text",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 31
+      },
+      "id": 2109,
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true
+      },
+      "pluginVersion": "12.4.13",
+      "targets": [
+        {
+          "azureLogAnalytics": {
+            "dashboardTime": true,
+            "mode": "raw",
+            "query": "let payloads = AppTraces\n| where AppRoleName == 'rtp-consumer'\n| where $__timeFilter(TimeGenerated)\n| where Message startswith \"Payload:\"\n| extend\n    msg_id = extract(@\"id=(\\d+)\", 1, Message),\n    operation = extract(@\"operation=(\\w+)\", 1, Message)\n| where isnotempty(msg_id) and isnotempty(operation);\nlet outcomes = AppTraces\n| where AppRoleName == 'rtp-consumer'\n| where $__timeFilter(TimeGenerated)\n| where Message startswith \"Message processed successfully\" or Message startswith \"Error processing message.\"\n| where not (Message startswith \"Error processing message.\" and Message contains \"rtp/gpd/message\")\n| extend\n    msg_id = tostring(Properties.message_id),\n    esito = iff(Message startswith \"Message processed successfully\", \"Successo\", \"Errore\");\npayloads\n| join kind=inner outcomes on msg_id\n| where esito == \"Errore\"\n| summarize [\"Messaggi\"] = count() by [\"Operazione\"] = operation\n| sort by [\"Operazione\"] asc",
+            "resources": [
+              "/subscriptions/$subscription/resourceGroups/$SrtpMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$SrtpLaw"
+            ],
+            "resultFormat": "table",
+            "timeColumn": "TimeGenerated"
+          },
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "refId": "A",
+          "subscription": "$subscription"
+        }
+      ],
+      "title": "❌ Messaggi falliti per Operazione (CREATE / UPDATE / DELETE)",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "left",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": true,
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "text",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 31
+      },
+      "id": 2111,
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true
+      },
+      "pluginVersion": "12.4.13",
+      "targets": [
+        {
+          "azureLogAnalytics": {
+            "dashboardTime": true,
+            "mode": "raw",
+            "query": "let payloads = AppTraces\n| where AppRoleName == 'rtp-consumer'\n| where $__timeFilter(TimeGenerated)\n| where Message startswith \"Payload:\"\n| where Message contains \"operation=CREATE\"\n| extend\n    msg_id          = extract(@\"id=(\\d+)\", 1, Message),\n    status          = extract(@\"status=([A-Z_]+)\", 1, Message),\n    ec_tax_code     = extract(@\"ec_tax_code=([^,\\]]+)\", 1, Message),\n    debtor_tax_code = extract(@\"debtor_tax_code=([^,\\]]+)\", 1, Message),\n    iuv             = extract(@\"iuv=([^,\\]]+)\", 1, Message)\n| where isnotempty(msg_id);\nlet outcomes = AppTraces\n| where AppRoleName == 'rtp-consumer'\n| where $__timeFilter(TimeGenerated)\n| where Message startswith \"Message processed successfully\" or Message startswith \"Error processing message.\"\n| extend\n    msg_id = tostring(Properties.message_id),\n    esito  = iff(Message startswith \"Message processed successfully\", \"Successo\", \"Errore\"),\n    error_msg = iff(Message startswith \"Error\", trim(\" \", replace_string(Message, \"Error processing message.\", \"\")), \"\");\npayloads\n| join kind=inner outcomes on msg_id\n| where esito == \"Errore\"\n| where not (error_msg contains \"rtp/gpd/message\")\n| project\n    [\"Data\"]            = TimeGenerated1,\n    [\"Message ID\"]      = msg_id,\n    [\"Status GPD\"]      = status,\n    [\"EC Tax Code\"]     = ec_tax_code,\n    [\"Debtor Tax Code\"] = debtor_tax_code,\n    [\"IUV\"]             = iuv,\n    [\"Errore\"]          = error_msg\n| sort by [\"Data\"] desc\n| limit 50",
+            "resources": [
+              "/subscriptions/$subscription/resourceGroups/$SrtpMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$SrtpLaw"
+            ],
+            "resultFormat": "table",
+            "timeColumn": "TimeGenerated"
+          },
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "refId": "A",
+          "subscription": "$subscription"
+        }
+      ],
+      "title": "❌ Ultimi 50 CREATE falliti",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "left",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": true,
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "text",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 39
+      },
+      "id": 2113,
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true
+      },
+      "pluginVersion": "12.4.13",
+      "targets": [
+        {
+          "azureLogAnalytics": {
+            "dashboardTime": true,
+            "mode": "raw",
+            "query": "let payloads = AppTraces\n| where AppRoleName == 'rtp-consumer'\n| where $__timeFilter(TimeGenerated)\n| where Message startswith \"Payload:\"\n| where Message contains \"operation=UPDATE\"\n| extend\n    msg_id          = extract(@\"id=(\\d+)\", 1, Message),\n    status          = extract(@\"status=([A-Z_]+)\", 1, Message),\n    ec_tax_code     = extract(@\"ec_tax_code=([^,\\]]+)\", 1, Message),\n    debtor_tax_code = extract(@\"debtor_tax_code=([^,\\]]+)\", 1, Message),\n    iuv             = extract(@\"iuv=([^,\\]]+)\", 1, Message)\n| where isnotempty(msg_id);\nlet outcomes = AppTraces\n| where AppRoleName == 'rtp-consumer'\n| where $__timeFilter(TimeGenerated)\n| where Message startswith \"Message processed successfully\" or Message startswith \"Error processing message.\"\n| extend\n    msg_id = tostring(Properties.message_id),\n    esito  = iff(Message startswith \"Message processed successfully\", \"Successo\", \"Errore\"),\n    error_msg = iff(Message startswith \"Error\", trim(\" \", replace_string(Message, \"Error processing message.\", \"\")), \"\");\npayloads\n| join kind=inner outcomes on msg_id\n| where esito == \"Errore\"\n| where not (error_msg contains \"rtp/gpd/message\")\n| project\n    [\"Data\"]            = TimeGenerated1,\n    [\"Message ID\"]      = msg_id,\n    [\"Status GPD\"]      = status,\n    [\"EC Tax Code\"]     = ec_tax_code,\n    [\"Debtor Tax Code\"] = debtor_tax_code,\n    [\"IUV\"]             = iuv,\n    [\"Errore\"]          = error_msg\n| sort by [\"Data\"] desc\n| limit 50",
+            "resources": [
+              "/subscriptions/$subscription/resourceGroups/$SrtpMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$SrtpLaw"
+            ],
+            "resultFormat": "table",
+            "timeColumn": "TimeGenerated"
+          },
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "refId": "A",
+          "subscription": "$subscription"
+        }
+      ],
+      "title": "❌ Ultimi 50 UPDATE falliti",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "left",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": true,
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "text",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 39
+      },
+      "id": 2115,
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true
+      },
+      "pluginVersion": "12.4.13",
+      "targets": [
+        {
+          "azureLogAnalytics": {
+            "dashboardTime": true,
+            "mode": "raw",
+            "query": "let payloads = AppTraces\n| where AppRoleName == 'rtp-consumer'\n| where $__timeFilter(TimeGenerated)\n| where Message startswith \"Payload:\"\n| where Message contains \"operation=DELETE\"\n| extend\n    msg_id          = extract(@\"id=(\\d+)\", 1, Message),\n    status          = extract(@\"status=([A-Z_]+)\", 1, Message),\n    ec_tax_code     = extract(@\"ec_tax_code=([^,\\]]+)\", 1, Message),\n    debtor_tax_code = extract(@\"debtor_tax_code=([^,\\]]+)\", 1, Message),\n    iuv             = extract(@\"iuv=([^,\\]]+)\", 1, Message)\n| where isnotempty(msg_id);\nlet outcomes = AppTraces\n| where AppRoleName == 'rtp-consumer'\n| where $__timeFilter(TimeGenerated)\n| where Message startswith \"Message processed successfully\" or Message startswith \"Error processing message.\"\n| extend\n    msg_id = tostring(Properties.message_id),\n    esito  = iff(Message startswith \"Message processed successfully\", \"Successo\", \"Errore\"),\n    error_msg = iff(Message startswith \"Error\", trim(\" \", replace_string(Message, \"Error processing message.\", \"\")), \"\");\npayloads\n| join kind=inner outcomes on msg_id\n| where esito == \"Errore\"\n| where not (error_msg contains \"rtp/gpd/message\")\n| project\n    [\"Data\"]            = TimeGenerated1,\n    [\"Message ID\"]      = msg_id,\n    [\"Status GPD\"]      = status,\n    [\"EC Tax Code\"]     = ec_tax_code,\n    [\"Debtor Tax Code\"] = debtor_tax_code,\n    [\"IUV\"]             = iuv,\n    [\"Errore\"]          = error_msg\n| sort by [\"Data\"] desc\n| limit 50",
+            "resources": [
+              "/subscriptions/$subscription/resourceGroups/$SrtpMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$SrtpLaw"
+            ],
+            "resultFormat": "table",
+            "timeColumn": "TimeGenerated"
+          },
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "refId": "A",
+          "subscription": "$subscription"
+        }
+      ],
+      "title": "❌ Ultimi 50 DELETE falliti",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "left",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": true,
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "text",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 47
+      },
+      "id": 2116,
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true
+      },
+      "pluginVersion": "12.4.13",
+      "targets": [
+        {
+          "azureLogAnalytics": {
+            "dashboardTime": true,
+            "mode": "raw",
+            "query": "AppExceptions\n| where AppRoleName == 'rtp-consumer'\n| where $__timeFilter(TimeGenerated)\n| summarize\n    [\"Occorrenze\"] = count(),\n    [\"Ultimo messaggio\"] = arg_max(TimeGenerated, OuterMessage, OperationId)\n    by [\"Tipo eccezione\"] = ExceptionType\n| project\n    [\"Tipo eccezione\"],\n    [\"Occorrenze\"],\n    [\"Ultimo messaggio\"] = OuterMessage,\n    [\"Ultimo OperationId\"] = OperationId\n| sort by [\"Occorrenze\"] desc",
+            "resources": [
+              "/subscriptions/$subscription/resourceGroups/$SrtpMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$SrtpLaw"
+            ],
+            "resultFormat": "table",
+            "timeColumn": "TimeGenerated"
+          },
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "refId": "A",
+          "subscription": "$subscription"
+        }
+      ],
+      "title": "Eccezioni Java rtp-consumer (AppExceptions)",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": []
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "^200( |$).*"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "^201( |$).*"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "^202( |$).*"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "light-green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "^204( |$).*"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "^400( |$).*"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "light-red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "^401( |$).*"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "purple",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "^403( |$).*"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-purple",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "^404( |$).*"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "^405( |$).*"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "light-yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "^409( |$).*"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "^415( |$).*"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "light-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "^422( |$).*"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "^429( |$).*"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "^499( |$).*"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "super-light-orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "^500( |$).*"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "^502( |$).*"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "^503( |$).*"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "^504( |$).*"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 54
+      },
+      "id": 2117,
+      "options": {
+        "displayLabels": [
+          "percent"
+        ],
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "values": [
+            "value",
+            "percent"
+          ]
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "sort": "desc",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.4.13",
+      "targets": [
+        {
+          "azureLogAnalytics": {
+            "dashboardTime": true,
+            "mode": "raw",
+            "query": "let statusLegend = datatable(statusCode: string, description: string)\n[\n    \"200\", \"OK - Successo\",\n    \"400\", \"Bad Request\",\n    \"401\", \"Unauthorized\",\n    \"403\", \"Forbidden\",\n    \"409\", \"Conflict - Idempotenza\",\n    \"422\", \"Unprocessable - Business error\",\n    \"499\", \"Client closed\",\n    \"503\", \"Service Unavailable\",\n    \"504\", \"Gateway Timeout\"\n];\nAzureDiagnostics\n| where $__timeFilter(TimeGenerated)\n| where requestUri_s contains 'rtp/gpd/message'\n| where httpMethod_s == \"POST\"\n| summarize count() by statusCode = tostring(toint(httpStatus_d))\n| join kind=leftouter statusLegend on statusCode\n| project label = strcat(statusCode, \" - \", coalesce(description, \"Altro\")), count_\n| evaluate pivot(label, sum(count_))",
+            "resources": [
+              "/subscriptions/$subscription/resourceGroups/$CoreMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$CoreLaw"
+            ],
+            "resultFormat": "table",
+            "timeColumn": "TimeGenerated"
+          },
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "refId": "A",
+          "subscription": "$subscription"
+        }
+      ],
+      "title": "Panoramica dei messaggi ricevuti sul sender con status code (APIM)",
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "orange",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 4,
+        "x": 12,
+        "y": 54
+      },
+      "id": 2118,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.4.13",
+      "targets": [
+        {
+          "azureLogAnalytics": {
+            "dashboardTime": true,
+            "mode": "raw",
+            "query": "AppTraces\n| where AppRoleName == 'rtp-consumer'\n| where $__timeFilter(TimeGenerated)\n| where Message startswith \"Error providing message to rtp-sender\"\n| summarize errorCount = count()\n| extend totalRequestsString = tostring(errorCount)",
+            "resources": [
+              "/subscriptions/$subscription/resourceGroups/$SrtpMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$SrtpLaw"
+            ],
+            "resultFormat": "table",
+            "timeColumn": "TimeGenerated"
+          },
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "refId": "A",
+          "subscription": "$subscription"
+        }
+      ],
+      "title": "⚠️ Messaggi non inoltrati da Consumer a Sender",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "green",
+            "mode": "fixed"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 4,
+        "x": 16,
+        "y": 54
+      },
+      "id": 2119,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.4.13",
+      "targets": [
+        {
+          "azureLogAnalytics": {
+            "dashboardTime": true,
+            "mode": "raw",
+            "query": "AppTraces\n| where AppRoleName == 'rtp-consumer'\n| where $__timeFilter(TimeGenerated)\n| where Message startswith \"Message successfully provided to rtp-sender\"\n| summarize errorCount = count()\n| extend totalRequestsString = tostring(errorCount)",
+            "resources": [
+              "/subscriptions/$subscription/resourceGroups/$SrtpMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$SrtpLaw"
+            ],
+            "resultFormat": "table",
+            "timeColumn": "TimeGenerated"
+          },
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "refId": "A",
+          "subscription": "$subscription"
+        }
+      ],
+      "title": "✅ Messaggi inoltrati con successo al Sender",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 4,
+        "x": 20,
+        "y": 54
+      },
+      "id": 2120,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.4.13",
+      "targets": [
+        {
+          "azureLogAnalytics": {
+            "dashboardTime": true,
+            "mode": "raw",
+            "query": "AppTraces\n| where AppRoleName == 'rtp-consumer'\n| where $__timeFilter(TimeGenerated)\n| where Message startswith \"Retries exhausted after attempts\"\n| extend retry_msg_id = extract(@\"message_id:\\s*(\\d+)\", 1, Message)\n| summarize errorCount = count()\n| extend totalRequestsString = tostring(errorCount)",
+            "resources": [
+              "/subscriptions/$subscription/resourceGroups/$SrtpMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$SrtpLaw"
+            ],
+            "resultFormat": "table",
+            "timeColumn": "TimeGenerated"
+          },
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "refId": "A",
+          "subscription": "$subscription"
+        }
+      ],
+      "title": "❌ Retry esauriti Consumer → Sender",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "left",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": true,
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "text",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 62
+      },
+      "id": 2121,
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true
+      },
+      "pluginVersion": "12.4.13",
+      "targets": [
+        {
+          "azureLogAnalytics": {
+            "dashboardTime": true,
+            "mode": "raw",
+            "query": "let payloads = AppTraces\n| where AppRoleName == 'rtp-consumer'\n| where $__timeFilter(TimeGenerated)\n| where Message startswith \"Payload:\"\n| extend\n    msg_id          = extract(@\"id=(\\d+)\", 1, Message),\n    operation       = extract(@\"operation=(\\w+)\", 1, Message),\n    status          = extract(@\"status=([A-Z_]+)\", 1, Message),\n    ec_tax_code     = extract(@\"ec_tax_code=([^,\\]]+)\", 1, Message),\n    debtor_tax_code = extract(@\"debtor_tax_code=([^,\\]]+)\", 1, Message),\n    iuv             = extract(@\"iuv=([^,\\]]+)\", 1, Message)\n| where isnotempty(msg_id);\nlet retries_exhausted = AppTraces\n| where AppRoleName == 'rtp-consumer'\n| where $__timeFilter(TimeGenerated)\n| where Message startswith \"Retries exhausted after attempts\"\n| extend\n    msg_id   = extract(@\"message_id:\\s*(\\d+)\", 1, Message),\n    attempts = extract(@\"attempts:\\s*(\\d+)\", 1, Message);\nlet errors = AppTraces\n| where AppRoleName == 'rtp-consumer'\n| where $__timeFilter(TimeGenerated)\n| where Message startswith \"Error providing message to rtp-sender\"\n| extend\n    msg_id    = tostring(Properties.message_id),\n    error_msg = extract(@\"message='([^']+)'\", 1, Message);\nretries_exhausted\n| join kind=leftouter payloads on msg_id\n| join kind=leftouter errors on msg_id\n| project\n    [\"Data\"]            = TimeGenerated,\n    [\"Message ID\"]      = msg_id,\n    [\"Tentativi\"]       = attempts,\n    [\"Operazione\"]      = operation,\n    [\"Status GPD\"]      = status,\n    [\"EC Tax Code\"]     = ec_tax_code,\n    [\"Debtor Tax Code\"] = debtor_tax_code,\n    [\"IUV\"]             = iuv,\n    [\"Errore\"]          = error_msg\n| sort by [\"Data\"] desc\n| limit 50",
+            "resources": [
+              "/subscriptions/$subscription/resourceGroups/$SrtpMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$SrtpLaw"
+            ],
+            "resultFormat": "table",
+            "timeColumn": "TimeGenerated"
+          },
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "refId": "A",
+          "subscription": "$subscription"
+        }
+      ],
+      "title": "❌ Retry esauriti Consumer → Sender: dettaglio",
+      "type": "table"
+    }
+  ],
+  "preload": false,
+  "refresh": "",
+  "schemaVersion": 42,
+  "tags": [
+    "srtp",
+    "operational-excellence"
+  ],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "text": "UAT-CSTAR",
+          "value": "f9f0ed60-4b4b-49a6-97cb-8c8a0f9e2435"
+        },
+        "datasource": {
+          "type": "grafana-azure-monitor-datasource",
+          "uid": "azure-monitor-oob"
+        },
+        "definition": "",
+        "hide": 2,
+        "name": "subscription",
+        "options": [],
+        "query": {
+          "azureLogAnalytics": {
+            "query": "",
+            "resources": []
+          },
+          "queryType": "Azure Subscriptions",
+          "refId": "A"
+        },
+        "refresh": 1,
+        "regex": "",
+        "regexApplyTo": "value",
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "cstar-u-itn-srtp-monitoring-rg",
+          "value": "cstar-u-itn-srtp-monitoring-rg"
+        },
+        "datasource": {
+          "type": "grafana-azure-monitor-datasource",
+          "uid": "azure-monitor-oob"
+        },
+        "definition": "",
+        "hide": 2,
+        "name": "SrtpMonitoringRg",
+        "options": [],
+        "query": {
+          "azureLogAnalytics": {
+            "query": "",
+            "resources": []
+          },
+          "queryType": "Azure Resource Groups",
+          "refId": "A",
+          "subscription": "$subscription"
+        },
+        "refresh": 1,
+        "regex": "/^cstar-.+-srtp-monitoring-rg$/",
+        "regexApplyTo": "value",
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "cstar-u-itn-srtp-law",
+          "value": "cstar-u-itn-srtp-law"
+        },
+        "datasource": {
+          "type": "grafana-azure-monitor-datasource",
+          "uid": "azure-monitor-oob"
+        },
+        "definition": "",
+        "hide": 2,
+        "name": "SrtpLaw",
+        "options": [],
+        "query": {
+          "azureLogAnalytics": {
+            "query": "",
+            "resources": []
+          },
+          "namespace": "microsoft.operationalinsights/workspaces",
+          "queryType": "Azure Resource Names",
+          "refId": "A",
+          "resourceGroup": "$SrtpMonitoringRg",
+          "subscription": "$subscription"
+        },
+        "refresh": 1,
+        "regex": "/^cstar-.+-srtp-law$/",
+        "regexApplyTo": "value",
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "cstar-u-monitor-rg",
+          "value": "cstar-u-monitor-rg"
+        },
+        "datasource": {
+          "type": "grafana-azure-monitor-datasource",
+          "uid": "azure-monitor-oob"
+        },
+        "definition": "",
+        "hide": 2,
+        "name": "CoreMonitoringRg",
+        "options": [],
+        "query": {
+          "azureLogAnalytics": {
+            "query": "",
+            "resources": []
+          },
+          "queryType": "Azure Resource Groups",
+          "refId": "A",
+          "subscription": "$subscription"
+        },
+        "refresh": 1,
+        "regex": "/^cstar-.-monitor-rg$/",
+        "regexApplyTo": "value",
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "cstar-u-law",
+          "value": "cstar-u-law"
+        },
+        "datasource": {
+          "type": "grafana-azure-monitor-datasource",
+          "uid": "azure-monitor-oob"
+        },
+        "definition": "",
+        "hide": 2,
+        "name": "CoreLaw",
+        "options": [],
+        "query": {
+          "azureLogAnalytics": {
+            "query": "",
+            "resources": []
+          },
+          "namespace": "microsoft.operationalinsights/workspaces",
+          "queryType": "Azure Resource Names",
+          "refId": "A",
+          "resourceGroup": "$CoreMonitoringRg",
+          "subscription": "$subscription"
+        },
+        "refresh": 1,
+        "regex": "/^cstar-.-law$/",
+        "regexApplyTo": "value",
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "1h",
+          "value": "1h"
+        },
+        "hide": 0,
+        "label": "Sender · Bin size (es. 30s, 5m, 1h)",
+        "name": "sender_bin_size",
+        "options": [
+          {
+            "selected": true,
+            "text": "1h",
+            "value": "1h"
+          }
+        ],
+        "query": "1h",
+        "type": "textbox"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-7d",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "SRTP Operational Excellence · Consumer",
+  "uid": "srtp-opex-consumer",
+  "version": 1,
+  "weekStart": ""
+}

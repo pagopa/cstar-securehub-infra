@@ -62,6 +62,54 @@ Disabling provisioning stops subsequent writes; it does not clear Listmonk's sto
 See [deployment analysis and validation](../../docs/LISTMONK_AKS_DEPLOYMENT_ANALYSIS.md)
 for acceptance criteria, the changes across the four repositories and pending live checks.
 
+
+## Keycloak Java4Shell mitigation
+
+The shared Keycloak Helm values append `-XX:-UseBASE64Intrinsics` to
+`JAVA_OPTS_APPEND` as the interim mitigation for
+[CVE-2026-114938](https://www.keycloak.org/2026/11/java4shell-vulnerability-cve-2026-114938).
+Apply the stack separately in DEV, UAT and PROD, ensure every Keycloak pod is
+replaced, and verify that each running JVM reports `UseBASE64Intrinsics = false`
+using `jcmd io.quarkus.bootstrap.runner.QuarkusEntryPoint VM.flags -all`.
+Keep the flag until a vendor-confirmed fixed Java runtime has been deployed and
+verified; the Keycloak version alone does not establish that the runtime is fixed.
+
+
+## Listmonk
+
+Greenfield installation on AKS, namespace `listmonk`. Terraform prepares the dedicated
+PostgreSQL database/role, core Key Vault credentials, internal DNS/TLS.
+Argo CD installs HelmForge `1.2.3` with the official Listmonk `v6.2.0` image and manual sync.
+The Application reuses `platform-project`; deploy its destination update in `src/40_platform`
+before the Listmonk stack. The workload runs in the dedicated `listmonk` namespace.
+The upstream `db-init` installs/upgrades the schema and creates the admin only on first install.
+There is no local chart, settings SQL, SSO or SMTP provisioning.
+
+`listmonk_configuration.enabled` controls all Listmonk resources in this stack.
+`listmonk_configuration.rbac_domains` selects namespace access for `idpay`, `srtp` and `mdc`.
+The current tfvars enable Listmonk and IDPAY access, with SRTP/MDC access disabled.
+The shared namespace module grants Kubernetes `edit` to each enabled domain's existing
+admin/developers/externals groups in DEV/UAT, or admin/oncall groups in PROD.
+These flags control access to one shared instance; they do not configure Listmonk users or SSO.
+Disabling an already deployed instance plans resource removal, including its database and namespace.
+Review the plan and data retention before applying that change.
+
+The Argo CD provider uses stack-wide endpoint and CICD Key Vault credentials,
+independently of the Listmonk enablement flag. KV access remains a stack prerequisite.
+
+DEV/UAT also install namespace-scoped Reloader (`2.2.20`) when Listmonk is enabled.
+It automatically watches referenced Secrets/ConfigMaps, using the annotation reload strategy.
+The Listmonk Application waits for its installation; PROD has no added Reloader release.
+Reloading does not rotate database credentials or reset the admin password stored in Listmonk.
+
+The console uses the existing private NGINX Ingress. Public API/OpenAPI and policies belong to
+`cstar-securehub-infra-api-spec/src/mcshared`; the shared gateway belongs to `cstar-infrastructure/src/core`.
+Set the public root URL once through the private admin UI after installation.
+Credentials also reside in Terraform state: restrict access to the backend and saved plans.
+
+See [deployment analysis and validation](../../docs/LISTMONK_AKS_DEPLOYMENT_ANALYSIS.md)
+for acceptance criteria, the changes across the four repositories and pending live checks.
+
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 
