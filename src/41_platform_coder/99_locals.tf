@@ -25,6 +25,9 @@ locals {
   kv_core_name                = "${local.product_nodomain}-core-kv"
   kv_core_resource_group_name = "${local.product_nodomain}-core-sec-rg"
 
+  # Argo CD
+  argocd_internal_url = "argocd.${var.location_short}.${var.dns_zone_internal_prefix}.${var.prefix}.${var.external_domain}"
+
   ### Monitoring
   monitoring_rg_name = "${local.project}-monitoring-rg"
   law_name           = "${local.project}-monitoring-law"
@@ -37,6 +40,11 @@ locals {
   keycloak_ingress_hostname  = "keycloak.${var.location_short}.${var.dns_zone_internal_prefix}.${var.prefix}.${var.external_domain}"
   keycloak_external_hostname = "https://${var.mcshared_dns_zone_prefix}.${var.prefix}.${var.external_domain}/auth-itn"
   pari_base_url              = "https://${var.env == "prod" ? "" : "${var.env}."}pari.pagopa.it/esercente"
+
+  # Listmonk
+  listmonk_db_name          = "listmonk"
+  listmonk_ingress_hostname = "listmonk.${var.location_short}.${var.dns_zone_internal_prefix}.${var.prefix}.${var.external_domain}"
+
   #
   # AKS
   #

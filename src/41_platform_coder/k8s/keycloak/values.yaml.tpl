@@ -129,7 +129,7 @@ extraEnvVars:
   - name: KC_SPI_CONNECTIONS_HTTP_CLIENT_DEFAULT_MAX_CONNECTION_IDLE_TIME_MILLIS
     value: "${keycloak_http_client_connection_max_idle_millis}"
   - name: JAVA_OPTS_APPEND
-    value: "-Djgroups.dns.query=keycloak-headless.${keycloak_namespace}.svc.cluster.local -javaagent:/opt/keycloak/agent/applicationinsights-agent.jar"
+    value: "-Djgroups.dns.query=keycloak-headless.${keycloak_namespace}.svc.cluster.local -javaagent:/opt/keycloak/agent/applicationinsights-agent.jar -XX:-UseBASE64Intrinsics"
   - name: KC_DB_POOL_MAX_SIZE
     value: "75"
   - name: KC_DB_POOL_MIN_SIZE
