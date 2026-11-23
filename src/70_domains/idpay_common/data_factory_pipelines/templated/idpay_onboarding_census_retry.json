@@ -1,0 +1,226 @@
+{
+  "name": "idpay_onboarding_census_retry",
+  "properties": {
+    "description": "BND-2482 onboarding census retry loop, invoked by idpay_onboarding_census only when pass 0 left retryable rows in pending/. Kept in a child pipeline because ADF does not allow an Until inside an IfCondition. Up to 3 retries (30s apart) on the rows still pending; the last attempt rejects the remaining rows with RETRY_EXHAUSTED. Returns rejected (rows rejected by the retries) and attempts.",
+    "parameters": {
+      "initiativeId": { "type": "String" },
+      "parentRunId": { "type": "String" },
+      "channel": { "type": "String" },
+      "runDate": { "type": "String" },
+      "subscriptionKey": { "type": "SecureString" },
+      "pendingRows": { "type": "String" }
+    },
+    "variables": {
+      "attemptNo": { "type": "String", "defaultValue": "0" },
+      "nextAttempt": { "type": "String", "defaultValue": "0" },
+      "pendingRows": { "type": "String", "defaultValue": "0" },
+      "rejected": { "type": "String", "defaultValue": "0" },
+      "rejectedTmp": { "type": "String", "defaultValue": "0" }
+    },
+    "activities": [
+      {
+        "name": "InitPendingRows",
+        "type": "SetVariable",
+        "dependsOn": [],
+        "userProperties": [],
+        "typeProperties": {
+          "variableName": "pendingRows",
+          "value": {
+            "value": "@pipeline().parameters.pendingRows",
+            "type": "Expression"
+          }
+        }
+      },
+      {
+        "name": "RetryLoop",
+        "description": "Each retry waits 30s and re-submits only the rows still pending from the previous attempt.",
+        "type": "Until",
+        "dependsOn": [
+          { "activity": "InitPendingRows", "dependencyConditions": ["Succeeded"] }
+        ],
+        "userProperties": [],
+        "typeProperties": {
+          "expression": {
+            "value": "@or(greaterOrEquals(int(variables('attemptNo')), 3), equals(int(variables('pendingRows')), 0))",
+            "type": "Expression"
+          },
+          "timeout": "0.02:00:00",
+          "activities": [
+            {
+              "name": "WaitBeforeRetry",
+              "type": "Wait",
+              "dependsOn": [],
+              "userProperties": [],
+              "typeProperties": {
+                "waitTimeInSeconds": 30
+              }
+            },
+            {
+              "name": "ComputeNextAttempt",
+              "description": "ADF does not allow a SetVariable to reference its own variable: the increment goes through nextAttempt.",
+              "type": "SetVariable",
+              "dependsOn": [
+                { "activity": "WaitBeforeRetry", "dependencyConditions": ["Succeeded"] }
+              ],
+              "userProperties": [],
+              "typeProperties": {
+                "variableName": "nextAttempt",
+                "value": {
+                  "value": "@string(add(int(variables('attemptNo')), 1))",
+                  "type": "Expression"
+                }
+              }
+            },
+            {
+              "name": "IncrementAttempt",
+              "type": "SetVariable",
+              "dependsOn": [
+                { "activity": "ComputeNextAttempt", "dependencyConditions": ["Succeeded"] }
+              ],
+              "userProperties": [],
+              "typeProperties": {
+                "variableName": "attemptNo",
+                "value": {
+                  "value": "@variables('nextAttempt')",
+                  "type": "Expression"
+                }
+              }
+            },
+            {
+              "name": "RunCensusRetry",
+              "type": "ExecuteDataFlow",
+              "dependsOn": [
+                { "activity": "IncrementAttempt", "dependencyConditions": ["Succeeded"] }
+              ],
+              "policy": {
+                "timeout": "0.02:00:00",
+                "retry": 0,
+                "retryIntervalInSeconds": 30,
+                "secureOutput": false,
+                "secureInput": true
+              },
+              "userProperties": [],
+              "typeProperties": {
+                "dataFlow": {
+                  "referenceName": "df_onboarding_census",
+                  "type": "DataFlowReference",
+                  "parameters": {
+                    "initiativeId": { "value": "'@{pipeline().parameters.initiativeId}'", "type": "Expression" },
+                    "runDate": { "value": "'@{pipeline().parameters.runDate}'", "type": "Expression" },
+                    "channel": { "value": "'@{pipeline().parameters.channel}'", "type": "Expression" },
+                    "subscriptionKey": { "value": "'@{pipeline().parameters.subscriptionKey}'", "type": "Expression" },
+                    "isFinal": { "value": "@equals(int(variables('attemptNo')), 3)", "type": "Expression" }
+                  },
+                  "datasetParameters": {
+                    "sourceCsv": {
+                      "folderPath": {
+                        "value": "@concat('pending/', pipeline().parameters.initiativeId, '/', pipeline().parameters.parentRunId, '/', string(sub(int(variables('attemptNo')), 1)))",
+                        "type": "Expression"
+                      },
+                      "fileName": ""
+                    },
+                    "sinkStaging": {
+                      "initiativeId": "@pipeline().parameters.initiativeId",
+                      "runId": "@pipeline().parameters.parentRunId",
+                      "attempt": "@variables('attemptNo')"
+                    },
+                    "sinkRejected": {
+                      "initiativeId": "@pipeline().parameters.initiativeId",
+                      "runId": "@pipeline().parameters.parentRunId",
+                      "attempt": "@variables('attemptNo')"
+                    },
+                    "sinkPending": {
+                      "initiativeId": "@pipeline().parameters.initiativeId",
+                      "runId": "@pipeline().parameters.parentRunId",
+                      "attempt": "@variables('attemptNo')"
+                    }
+                  }
+                },
+                "compute": {
+                  "coreCount": 8,
+                  "computeType": "General"
+                },
+                "traceLevel": "Coarse"
+              }
+            },
+            {
+              "name": "ComputeRejected",
+              "description": "Self-reference is not allowed: sum goes through rejectedTmp. Metrics of a sink that wrote no rows may be missing: null-safe access with default 0.",
+              "type": "SetVariable",
+              "dependsOn": [
+                { "activity": "RunCensusRetry", "dependencyConditions": ["Succeeded"] }
+              ],
+              "userProperties": [],
+              "typeProperties": {
+                "variableName": "rejectedTmp",
+                "value": {
+                  "value": "@string(add(int(variables('rejected')), int(coalesce(activity('RunCensusRetry').output.runStatus.metrics?.sinkRejected?.rowsWritten, 0))))",
+                  "type": "Expression"
+                }
+              }
+            },
+            {
+              "name": "AddRejectedRetry",
+              "type": "SetVariable",
+              "dependsOn": [
+                { "activity": "ComputeRejected", "dependencyConditions": ["Succeeded"] }
+              ],
+              "userProperties": [],
+              "typeProperties": {
+                "variableName": "rejected",
+                "value": {
+                  "value": "@variables('rejectedTmp')",
+                  "type": "Expression"
+                }
+              }
+            },
+            {
+              "name": "SetPendingRowsRetry",
+              "type": "SetVariable",
+              "dependsOn": [
+                { "activity": "AddRejectedRetry", "dependencyConditions": ["Succeeded"] }
+              ],
+              "userProperties": [],
+              "typeProperties": {
+                "variableName": "pendingRows",
+                "value": {
+                  "value": "@string(coalesce(activity('RunCensusRetry').output.runStatus.metrics?.sinkPending?.rowsWritten, 0))",
+                  "type": "Expression"
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "SetReturnValue",
+        "description": "Returns the retry outcome to the parent pipeline (pipelineReturnValue).",
+        "type": "SetVariable",
+        "dependsOn": [
+          { "activity": "RetryLoop", "dependencyConditions": ["Succeeded"] }
+        ],
+        "userProperties": [],
+        "typeProperties": {
+          "variableName": "pipelineReturnValue",
+          "value": [
+            {
+              "key": "rejected",
+              "value": { "type": "Expression", "content": "@variables('rejected')" }
+            },
+            {
+              "key": "attempts",
+              "value": { "type": "Expression", "content": "@variables('attemptNo')" }
+            }
+          ],
+          "setSystemVariable": true
+        }
+      }
+    ],
+    "annotations": [
+      "Onboarding Census",
+      "IdPay",
+      "BND-2482"
+    ]
+  },
+  "type": "Microsoft.DataFactory/factories/pipelines"
+}

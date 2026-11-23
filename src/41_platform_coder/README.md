@@ -1,27 +1,115 @@
 <!-- markdownlint-disable -->
+
+## Listmonk
+
+Greenfield installation on AKS, namespace `listmonk`. Terraform prepares the dedicated
+PostgreSQL database/role, core Key Vault credentials, internal DNS/TLS.
+Argo CD installs HelmForge `1.2.3` with the official Listmonk `v6.2.0` image and manual sync.
+The Application reuses `platform-project`; deploy its destination update in `src/40_platform`
+before the Listmonk stack. The workload runs in the dedicated `listmonk` namespace.
+The upstream `db-init` installs/upgrades the schema and creates the admin only on first install.
+There is no local chart, settings SQL, SSO or SMTP provisioning.
+
+`listmonk_configuration.enabled` controls all Listmonk resources in this stack.
+`listmonk_configuration.rbac_domains` selects namespace access for `idpay`, `srtp` and `mdc`.
+The current tfvars enable Listmonk and IDPAY access, with SRTP/MDC access disabled.
+The shared namespace module grants Kubernetes `edit` to each enabled domain's existing
+admin/developers/externals groups in DEV/UAT, or admin/oncall groups in PROD.
+These flags control access to one shared instance; they do not configure Listmonk users or SSO.
+Disabling an already deployed instance plans resource removal, including its database and namespace.
+Review the plan and data retention before applying that change.
+
+The Argo CD provider uses stack-wide endpoint and CICD Key Vault credentials,
+independently of the Listmonk enablement flag. KV access remains a stack prerequisite.
+
+DEV/UAT also install namespace-scoped Reloader (`2.2.20`) when Listmonk is enabled.
+It automatically watches referenced Secrets/ConfigMaps, using the annotation reload strategy.
+The Listmonk Application waits for its installation; PROD has no added Reloader release.
+Reloading does not rotate database credentials or reset the admin password stored in Listmonk.
+
+The console uses the existing private NGINX Ingress. Public API/OpenAPI and policies belong to
+`cstar-securehub-infra-api-spec/src/mcshared`; the shared gateway belongs to `cstar-infrastructure/src/core`.
+Set the public root URL once through the private admin UI after installation.
+Credentials also reside in Terraform state: restrict access to the backend and saved plans.
+
+See [deployment analysis and validation](../../docs/LISTMONK_AKS_DEPLOYMENT_ANALYSIS.md)
+for acceptance criteria, the changes across the four repositories and pending live checks.
+
+
+## Keycloak Java4Shell mitigation
+
+The shared Keycloak Helm values append `-XX:-UseBASE64Intrinsics` to
+`JAVA_OPTS_APPEND` as the interim mitigation for
+[CVE-2026-114938](https://www.keycloak.org/2026/11/java4shell-vulnerability-cve-2026-114938).
+Apply the stack separately in DEV, UAT and PROD, ensure every Keycloak pod is
+replaced, and verify that each running JVM reports `UseBASE64Intrinsics = false`
+using `jcmd io.quarkus.bootstrap.runner.QuarkusEntryPoint VM.flags -all`.
+Keep the flag until a vendor-confirmed fixed Java runtime has been deployed and
+verified; the Keycloak version alone does not establish that the runtime is fixed.
+
+
+## Listmonk
+
+Greenfield installation on AKS, namespace `listmonk`. Terraform prepares the dedicated
+PostgreSQL database/role, core Key Vault credentials, internal DNS/TLS.
+Argo CD installs HelmForge `1.2.3` with the official Listmonk `v6.2.0` image and manual sync.
+The Application reuses `platform-project`; deploy its destination update in `src/40_platform`
+before the Listmonk stack. The workload runs in the dedicated `listmonk` namespace.
+The upstream `db-init` installs/upgrades the schema and creates the admin only on first install.
+There is no local chart, settings SQL, SSO or SMTP provisioning.
+
+`listmonk_configuration.enabled` controls all Listmonk resources in this stack.
+`listmonk_configuration.rbac_domains` selects namespace access for `idpay`, `srtp` and `mdc`.
+The current tfvars enable Listmonk and IDPAY access, with SRTP/MDC access disabled.
+The shared namespace module grants Kubernetes `edit` to each enabled domain's existing
+admin/developers/externals groups in DEV/UAT, or admin/oncall groups in PROD.
+These flags control access to one shared instance; they do not configure Listmonk users or SSO.
+Disabling an already deployed instance plans resource removal, including its database and namespace.
+Review the plan and data retention before applying that change.
+
+The Argo CD provider uses stack-wide endpoint and CICD Key Vault credentials,
+independently of the Listmonk enablement flag. KV access remains a stack prerequisite.
+
+DEV/UAT also install namespace-scoped Reloader (`2.2.20`) when Listmonk is enabled.
+It automatically watches referenced Secrets/ConfigMaps, using the annotation reload strategy.
+The Listmonk Application waits for its installation; PROD has no added Reloader release.
+Reloading does not rotate database credentials or reset the admin password stored in Listmonk.
+
+The console uses the existing private NGINX Ingress. Public API/OpenAPI and policies belong to
+`cstar-securehub-infra-api-spec/src/mcshared`; the shared gateway belongs to `cstar-infrastructure/src/core`.
+Set the public root URL once through the private admin UI after installation.
+Credentials also reside in Terraform state: restrict access to the backend and saved plans.
+
+See [deployment analysis and validation](../../docs/LISTMONK_AKS_DEPLOYMENT_ANALYSIS.md)
+for acceptance criteria, the changes across the four repositories and pending live checks.
+
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >=1.10.0 |
-| <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | ~> 3 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 4.32.0 |
-| <a name="requirement_helm"></a> [helm](#requirement\_helm) | ~> 2 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >=1.11.0 |
+| <a name="requirement_argocd"></a> [argocd](#requirement\_argocd) | ~> 7.0 |
+| <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | ~> 3.0 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 4.32 |
+| <a name="requirement_helm"></a> [helm](#requirement\_helm) | ~> 2.0 |
 | <a name="requirement_keycloak"></a> [keycloak](#requirement\_keycloak) | ~> 5.0 |
 | <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | ~> 2.0 |
 | <a name="requirement_null"></a> [null](#requirement\_null) | ~> 3.0 |
+| <a name="requirement_postgresql"></a> [postgresql](#requirement\_postgresql) | ~> 1.26 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 3.4.0 |
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.32.0 |
+| <a name="provider_argocd"></a> [argocd](#provider\_argocd) | 7.18.0 |
+| <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 3.10.0 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.81.0 |
 | <a name="provider_helm"></a> [helm](#provider\_helm) | 2.17.0 |
-| <a name="provider_keycloak"></a> [keycloak](#provider\_keycloak) | 5.7.0 |
+| <a name="provider_keycloak"></a> [keycloak](#provider\_keycloak) | 5.10.0 |
 | <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | 2.38.0 |
-| <a name="provider_random"></a> [random](#provider\_random) | 3.7.2 |
+| <a name="provider_postgresql"></a> [postgresql](#provider\_postgresql) | 1.27.0 |
+| <a name="provider_random"></a> [random](#provider\_random) | 3.9.1 |
 
 ## Modules
 
@@ -33,25 +121,38 @@
 | <a name="module_cert_mounter"></a> [cert\_mounter](#module\_cert\_mounter) | ./.terraform/modules/__v4__/cert_mounter | n/a |
 | <a name="module_core_secrets"></a> [core\_secrets](#module\_core\_secrets) | ./.terraform/modules/__v4__/key_vault_secrets_query | n/a |
 | <a name="module_keycloak_pgflex"></a> [keycloak\_pgflex](#module\_keycloak\_pgflex) | ./.terraform/modules/__v4__/IDH/postgres_flexible_server | n/a |
+| <a name="module_listmonk_cert_mounter"></a> [listmonk\_cert\_mounter](#module\_listmonk\_cert\_mounter) | ./.terraform/modules/__v4__/cert_mounter | n/a |
+| <a name="module_listmonk_namespace"></a> [listmonk\_namespace](#module\_listmonk\_namespace) | ./.terraform/modules/__v4__/kubernetes_namespace_role_binding | n/a |
 | <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../tag_config | n/a |
 | <a name="module_workload_identity_configuration_platform_coder_keycloak"></a> [workload\_identity\_configuration\_platform\_coder\_keycloak](#module\_workload\_identity\_configuration\_platform\_coder\_keycloak) | ./.terraform/modules/__v4__/kubernetes_workload_identity_configuration | n/a |
+| <a name="module_workload_identity_configuration_platform_coder_listmonk"></a> [workload\_identity\_configuration\_platform\_coder\_listmonk](#module\_workload\_identity\_configuration\_platform\_coder\_listmonk) | ./.terraform/modules/__v4__/kubernetes_workload_identity_configuration | n/a |
 | <a name="module_workload_identity_platform_coder"></a> [workload\_identity\_platform\_coder](#module\_workload\_identity\_platform\_coder) | ./.terraform/modules/__v4__/kubernetes_workload_identity_init | n/a |
+| <a name="module_workload_identity_platform_coder_listmonk"></a> [workload\_identity\_platform\_coder\_listmonk](#module\_workload\_identity\_platform\_coder\_listmonk) | ./.terraform/modules/__v4__/kubernetes_workload_identity_init | n/a |
 
 ## Resources
 
 | Name | Type |
 |------|------|
+| [argocd_application.listmonk](https://registry.terraform.io/providers/argoproj-labs/argocd/latest/docs/resources/application) | resource |
 | [azurerm_key_vault_secret.keycloak_admin_password](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.keycloak_admin_username](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.keycloak_db_admin_password](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.keycloak_db_admin_user](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.keycloak_url](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.listmonk_admin_password](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.listmonk_admin_username](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.listmonk_db_password](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.listmonk_db_user](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.listmonk_url](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.terraform_client_secret_for_keycloak](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_postgresql_flexible_server_database.keycloak_db](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/postgresql_flexible_server_database) | resource |
+| [azurerm_postgresql_flexible_server_database.listmonk_db](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/postgresql_flexible_server_database) | resource |
 | [azurerm_private_dns_a_record.keycloak](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_a_record) | resource |
+| [azurerm_private_dns_a_record.listmonk](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_a_record) | resource |
 | [azurerm_subnet_nat_gateway_association.nat_gateway_association](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet_nat_gateway_association) | resource |
 | [helm_release.keycloak](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
 | [helm_release.reloader](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
+| [helm_release.reloader_listmonk](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
 | [keycloak_custom_identity_provider_mapper.azure_admin_mapper_master](https://registry.terraform.io/providers/keycloak/keycloak/latest/docs/resources/custom_identity_provider_mapper) | resource |
 | [keycloak_custom_identity_provider_mapper.azure_email](https://registry.terraform.io/providers/keycloak/keycloak/latest/docs/resources/custom_identity_provider_mapper) | resource |
 | [keycloak_custom_identity_provider_mapper.azure_first_name](https://registry.terraform.io/providers/keycloak/keycloak/latest/docs/resources/custom_identity_provider_mapper) | resource |
@@ -66,17 +167,31 @@
 | [kubernetes_namespace.keycloak](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/namespace) | resource |
 | [kubernetes_secret.keycloak_admin](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/secret) | resource |
 | [kubernetes_secret.keycloak_db](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/secret) | resource |
+| [kubernetes_secret.listmonk_bootstrap](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/secret) | resource |
+| [kubernetes_secret.listmonk_db](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/secret) | resource |
+| [postgresql_extension.listmonk_pgcrypto](https://registry.terraform.io/providers/cyrilgdn/postgresql/latest/docs/resources/extension) | resource |
+| [postgresql_grant.listmonk_database](https://registry.terraform.io/providers/cyrilgdn/postgresql/latest/docs/resources/grant) | resource |
+| [postgresql_grant.listmonk_public_database](https://registry.terraform.io/providers/cyrilgdn/postgresql/latest/docs/resources/grant) | resource |
+| [postgresql_grant.listmonk_public_schema](https://registry.terraform.io/providers/cyrilgdn/postgresql/latest/docs/resources/grant) | resource |
+| [postgresql_grant.listmonk_schema](https://registry.terraform.io/providers/cyrilgdn/postgresql/latest/docs/resources/grant) | resource |
+| [postgresql_role.listmonk](https://registry.terraform.io/providers/cyrilgdn/postgresql/latest/docs/resources/role) | resource |
 | [random_password.keycloak_admin](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password) | resource |
 | [random_password.keycloak_db_admin_password](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password) | resource |
+| [random_password.listmonk_admin](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password) | resource |
+| [random_password.listmonk_db](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password) | resource |
 | [random_password.terraform_client_secret](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password) | resource |
 | [azuread_application.keycloak](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/application) | data source |
 | [azuread_group.adgroup_admin](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_developers](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_externals](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_security](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
+| [azuread_group.listmonk](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 | [azurerm_application_insights.app_insights_core](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/application_insights) | data source |
 | [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) | data source |
+| [azurerm_key_vault.cicd_kv](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault) | data source |
 | [azurerm_key_vault.key_vault_core](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault) | data source |
+| [azurerm_key_vault_secret.argocd_admin_password](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.argocd_admin_username](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.keycloak_url](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.terraform_client_secret_for_keycloak](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_kubernetes_cluster.aks](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/kubernetes_cluster) | data source |
@@ -104,6 +219,7 @@
 | <a name="input_k8s_kube_config_path_prefix"></a> [k8s\_kube\_config\_path\_prefix](#input\_k8s\_kube\_config\_path\_prefix) | Kubernetes | `string` | `"~/.kube"` | no |
 | <a name="input_keycloak_configuration"></a> [keycloak\_configuration](#input\_keycloak\_configuration) | n/a | <pre>object({<br/>    image_repository                            = string<br/>    image_tag                                   = string<br/>    image_registry                              = string<br/>    chart_version                               = string<br/>    replica_count_min                           = number<br/>    replica_count_max                           = number<br/>    cpu_request                                 = string<br/>    cpu_limit                                   = string<br/>    memory_request                              = string<br/>    memory_limit                                = string<br/>    http_client_connection_ttl_millis           = number<br/>    http_client_connection_max_idle_time_millis = number<br/>    image_registry_config_cli                   = string<br/>    image_repository_config_cli                 = string<br/>    image_tag_config_cli                        = string<br/>    image_digest_config_cli                     = optional(string, "")<br/>  })</pre> | n/a | yes |
 | <a name="input_keycloak_pgflex_params"></a> [keycloak\_pgflex\_params](#input\_keycloak\_pgflex\_params) | Postgres Flexible | <pre>object({<br/>    enabled                                = bool<br/>    zone                                   = number<br/>    idh_resource_tier                      = string<br/>    geo_replication_enabled                = bool<br/>    pgres_flex_pgbouncer_enabled           = bool<br/>    pgres_flex_diagnostic_settings_enabled = bool<br/>    auto_grow_enabled                      = bool<br/>    storage_tier                           = optional(string, null)<br/>  })</pre> | n/a | yes |
+| <a name="input_listmonk_configuration"></a> [listmonk\_configuration](#input\_listmonk\_configuration) | n/a | <pre>object({<br/>    enabled = optional(bool, true)<br/>    rbac_domains = optional(object({<br/>      idpay = optional(bool, true)<br/>      srtp  = optional(bool, false)<br/>      mdc   = optional(bool, false)<br/>    }), {})<br/>    chart_version            = string<br/>    image_repository         = string<br/>    image_tag                = string<br/>    replica_count            = number<br/>    postgres_ssl_mode        = string<br/>    bootstrap_postgres_image = optional(string, "postgres:17-alpine")<br/>  })</pre> | n/a | yes |
 | <a name="input_location"></a> [location](#input\_location) | n/a | `string` | n/a | yes |
 | <a name="input_location_short"></a> [location\_short](#input\_location\_short) | Location short like eg: neu, weu.. | `string` | n/a | yes |
 | <a name="input_mcshared_dns_zone_prefix"></a> [mcshared\_dns\_zone\_prefix](#input\_mcshared\_dns\_zone\_prefix) | The dns subdomain for mcshared | `string` | `null` | no |

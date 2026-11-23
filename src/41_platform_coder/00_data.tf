@@ -19,6 +19,22 @@ data "azurerm_key_vault" "key_vault_core" {
   resource_group_name = local.kv_core_resource_group_name
 }
 
+# Same Argo CD credential source as src/40_platform, shared by this stack.
+data "azurerm_key_vault" "cicd_kv" {
+  name                = "${local.product_nodomain}-cicd-kv"
+  resource_group_name = "${local.product_nodomain}-core-sec-rg"
+}
+
+data "azurerm_key_vault_secret" "argocd_admin_username" {
+  name         = "argocd-admin-username"
+  key_vault_id = data.azurerm_key_vault.cicd_kv.id
+}
+
+data "azurerm_key_vault_secret" "argocd_admin_password" {
+  name         = "argocd-admin-password"
+  key_vault_id = data.azurerm_key_vault.cicd_kv.id
+}
+
 data "azurerm_key_vault_secret" "terraform_client_secret_for_keycloak" {
   name         = "terraform-client-secret-for-keycloak"
   key_vault_id = data.azurerm_key_vault.key_vault_core.id

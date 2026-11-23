@@ -245,4 +245,56 @@ module "adf_linked_service" {
     }
   } : {}
 
+  # Onboarding census storage is private: ADF managed VNet reaches it via MPE (auto-approved by the module)
+  adf_managed_private_endpoint = {
+    "IdpayOnboardingCensusBlob" = {
+      target_resource_id = module.storage_idpay_onboarding_census.id
+      fqdns              = null
+      subresource_name   = "blob"
+      type               = "storage"
+    }
+  }
+}
+
+# LS Blob onboarding census (BND-2482) via system-assigned Managed Identity (no keys)
+resource "azurerm_data_factory_linked_custom_service" "idpay_onboarding_census_blob_ls" {
+  name            = "${var.domain}-onboarding-census-blob-ls"
+  data_factory_id = data.azurerm_data_factory.data_factory.id
+  type            = "AzureBlobStorage"
+  description     = "Onboarding census Blob Storage (CSV input, report, rejected) via Managed Identity"
+
+  type_properties_json = jsonencode({
+    serviceEndpoint = module.storage_idpay_onboarding_census.primary_blob_endpoint
+    accountKind     = "StorageV2"
+  })
+
+  integration_runtime {
+    name = "AutoResolveIntegrationRuntime"
+  }
+
+  depends_on = [
+    azurerm_role_assignment.adf_can_access_onboarding_census_storage,
+    module.adf_linked_service
+  ]
+}
+
+# LS REST towards APIM idpay-itn/df, used by Mapping Data Flow "External call" (onboarding census -> PUT /tokens).
+# Subscription key is not stored here: it is read from KV by the pipeline and passed to the data flow as a secure parameter/header.
+resource "azurerm_data_factory_linked_custom_service" "idpay_df_apim_rest_ls" {
+  name            = "${var.domain}-df-apim-rest-ls"
+  data_factory_id = data.azurerm_data_factory.data_factory.id
+  type            = "RestService"
+  description     = "APIM idpay-itn/df REST endpoint for Data Flow external calls"
+
+  # Trailing slash required: the data flow "external call" appends the relative entity ('tokens') to this base URL.
+  # Without it the last path segment (/df) is dropped and the call returns 404.
+  type_properties_json = jsonencode({
+    url                               = "${trimsuffix(var.data_factory_api_base_url, "/")}/"
+    enableServerCertificateValidation = true
+    authenticationType                = "Anonymous"
+  })
+
+  integration_runtime {
+    name = "AutoResolveIntegrationRuntime"
+  }
 }
