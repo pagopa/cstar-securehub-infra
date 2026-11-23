@@ -1,0 +1,160 @@
+{
+  "name": "df_onboarding_census",
+  "properties": {
+    "description": "BND-2482 onboarding census: normalize and validate fiscal codes, tokenize via APIM PUT /tokens (external call). Retryable failures (408/429/5xx/connection) go to the pending queue while attempts remain; otherwise rejected rows (dead-letter). Valid rows go to staging JSON with Extended JSON dates ({$date}) so the Copy writes BSON Date. Rejected/pending sinks are multi-file (parallel write, reliable rowsWritten metrics).",
+    "type": "MappingDataFlow",
+    "typeProperties": {
+      "sources": [
+        {
+          "dataset": {
+            "referenceName": "blob_onboarding_census_input_csv",
+            "type": "DatasetReference"
+          },
+          "name": "sourceCsv"
+        }
+      ],
+      "sinks": [
+        {
+          "dataset": {
+            "referenceName": "blob_onboarding_census_staging_json",
+            "type": "DatasetReference"
+          },
+          "name": "sinkStaging"
+        },
+        {
+          "dataset": {
+            "referenceName": "blob_onboarding_census_rejected_csv",
+            "type": "DatasetReference"
+          },
+          "name": "sinkRejected"
+        },
+        {
+          "dataset": {
+            "referenceName": "blob_onboarding_census_pending_csv",
+            "type": "DatasetReference"
+          },
+          "name": "sinkPending"
+        }
+      ],
+      "transformations": [
+        { "name": "normalize" },
+        { "name": "validate" },
+        { "name": "invalidRows" },
+        {
+          "name": "tokenize",
+          "linkedService": {
+            "referenceName": "idpay-df-apim-rest-ls",
+            "type": "LinkedServiceReference"
+          }
+        },
+        { "name": "withStatus" },
+        { "name": "tokenized" },
+        { "name": "failedRows" },
+        { "name": "failedSplit" },
+        { "name": "pendingRows" },
+        { "name": "terminalRows" },
+        { "name": "buildDocument" },
+        { "name": "onboardingDocument" },
+        { "name": "rejectedUnion" },
+        { "name": "rejectedRows" }
+      ],
+      "scriptLines": [
+        "parameters{",
+        "     initiativeId as string,",
+        "     runDate as string,",
+        "     channel as string,",
+        "     subscriptionKey as string,",
+        "     isFinal as boolean",
+        "}",
+        "source(output(",
+        "          fiscalCode as string",
+        "     ),",
+        "     allowSchemaDrift: false,",
+        "     validateSchema: false,",
+        "     ignoreNoFilesFound: false) ~> sourceCsv",
+        "sourceCsv derive(fiscalCode = upper(trim(fiscalCode)),",
+        "     partitionBy('roundRobin', 16)) ~> normalize",
+        "normalize split(!isNull(fiscalCode) && regexMatch(fiscalCode, '^[A-Z]{6}[0-9LMNPQRSTUV]{2}[ABCDEHLMPRST][0-9LMNPQRSTUV]{2}[A-Z][0-9LMNPQRSTUV]{3}[A-Z]$'),",
+        "     disjoint: false) ~> validate@(valid, invalid)",
+        "validate@invalid derive(reason = 'INVALID_FISCAL_CODE') ~> invalidRows",
+        "validate@valid call(mapColumn(",
+        "          pii = fiscalCode",
+        "     ),",
+        "     skipDuplicateMapInputs: false,",
+        "     skipDuplicateMapOutputs: false,",
+        "     output(",
+        "          body as (token as string)",
+        "     ),",
+        "     allowSchemaDrift: true,",
+        "     store: 'restservice',",
+        "     format: 'rest',",
+        "     timeout: 30,",
+        "     requestInterval: 0,",
+        "     httpMethod: 'PUT',",
+        "     entity: 'tokens',",
+        "     headers: ['Content-Type' -> 'application/json', 'Ocp-Apim-Subscription-Key' -> ($subscriptionKey)],",
+        "     bodyColumnName: 'body',",
+        "     addResponseCode: true,",
+        "     requestFormat: ['type' -> 'json'],",
+        "     responseFormat: ['type' -> 'json', 'documentForm' -> 'singleDocument']) ~> tokenize",
+        "tokenize derive(httpStatus = toInteger(regexExtract(toString(byName('status')), 'statusCode:([0-9]+)', 1))) ~> withStatus",
+        "withStatus split(httpStatus == 200 && !isNull(body.token),",
+        "     disjoint: false) ~> tokenized@(ok, failed)",
+        "tokenized@failed derive(reason = concat('TOKENIZATION_FAILED_', toString(httpStatus)),",
+        "     retryable = isNull(httpStatus) || httpStatus == 408 || httpStatus == 429 || httpStatus >= 500) ~> failedRows",
+        "failedRows split(retryable && !$isFinal,",
+        "     disjoint: true) ~> failedSplit@(pending, terminal)",
+        "failedSplit@pending select(mapColumn(",
+        "          fiscalCode",
+        "     ),",
+        "     skipDuplicateMapInputs: true,",
+        "     skipDuplicateMapOutputs: true) ~> pendingRows",
+        "failedSplit@terminal derive(reason = iif(retryable, 'RETRY_EXHAUSTED', reason)) ~> terminalRows",
+        "tokenized@ok derive({_id} = concat(body.token, '_', $initiativeId),",
+        "          userId = body.token,",
+        "          initiativeId = $initiativeId,",
+        "          status = 'ONBOARDING_KO',",
+        "          detailKO = 'USER_BONUS_ALREADY_USED',",
+        "          channel = $channel,",
+        "          creationDate = @({$date} = toString(toTimestamp($runDate, \"yyyy-MM-dd'T'HH:mm:ss\", 'UTC'), \"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'\")),",
+        "          onboardingKODate = @({$date} = toString(toTimestamp($runDate, \"yyyy-MM-dd'T'HH:mm:ss\", 'UTC'), \"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'\")),",
+        "          updateDate = @({$date} = toString(toTimestamp($runDate, \"yyyy-MM-dd'T'HH:mm:ss\", 'UTC'), \"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'\"))) ~> buildDocument",
+        "buildDocument select(mapColumn(",
+        "          {_id},",
+        "          userId,",
+        "          initiativeId,",
+        "          status,",
+        "          detailKO,",
+        "          channel,",
+        "          creationDate,",
+        "          onboardingKODate,",
+        "          updateDate",
+        "     ),",
+        "     skipDuplicateMapInputs: true,",
+        "     skipDuplicateMapOutputs: true) ~> onboardingDocument",
+        "invalidRows, terminalRows union(byName: true) ~> rejectedUnion",
+        "rejectedUnion select(mapColumn(",
+        "          fiscalCode,",
+        "          reason",
+        "     ),",
+        "     skipDuplicateMapInputs: true,",
+        "     skipDuplicateMapOutputs: true) ~> rejectedRows",
+        "onboardingDocument sink(allowSchemaDrift: true,",
+        "     validateSchema: false,",
+        "     truncate: true,",
+        "     skipDuplicateMapInputs: true,",
+        "     skipDuplicateMapOutputs: true) ~> sinkStaging",
+        "rejectedRows sink(allowSchemaDrift: true,",
+        "     validateSchema: false,",
+        "     truncate: true,",
+        "     skipDuplicateMapInputs: true,",
+        "     skipDuplicateMapOutputs: true) ~> sinkRejected",
+        "pendingRows sink(allowSchemaDrift: true,",
+        "     validateSchema: false,",
+        "     truncate: true,",
+        "     skipDuplicateMapInputs: true,",
+        "     skipDuplicateMapOutputs: true) ~> sinkPending"
+      ]
+    }
+  }
+}

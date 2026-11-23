@@ -1,0 +1,32 @@
+{
+  "name": "blob_onboarding_census_staging_json",
+  "properties": {
+    "description": "Onboarding census staging: tokenized onboarding documents produced by the data flow and upserted into onboarding_citizen. JSON lines with MongoDB Extended JSON dates ({\"$date\": ...}) so the Copy writes real BSON Date values (BND-2482)",
+    "linkedServiceName": {
+      "referenceName": "${domain}-onboarding-census-blob-ls",
+      "type": "LinkedServiceReference"
+    },
+    "parameters": {
+      "initiativeId": { "type": "String" },
+      "runId": { "type": "String" },
+      "attempt": { "type": "String" }
+    },
+    "annotations": [
+      "Onboarding Census",
+      "IdPay"
+    ],
+    "type": "Json",
+    "typeProperties": {
+      "location": {
+        "type": "AzureBlobStorageLocation",
+        "folderPath": {
+          "value": "@concat('work/', dataset().initiativeId, '/', dataset().runId, '/', dataset().attempt)",
+          "type": "Expression"
+        },
+        "container": "onboarding-census"
+      },
+      "encodingName": "UTF-8"
+    }
+  },
+  "type": "Microsoft.DataFactory/factories/datasets"
+}

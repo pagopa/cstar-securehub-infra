@@ -25,9 +25,15 @@ locals {
     ], [])
   }
 
+  # transformations keep their (optional) linked service: needed by the "external call" transformation (baseUrl comes from the REST linked service)
   dataflow_transformations = {
     for k, v in local.dataflow_templates :
-    k => try([for t in v.properties.typeProperties.transformations : t.name], [])
+    k => try([
+      for t in v.properties.typeProperties.transformations : {
+        name           = t.name
+        linked_service = try(t.linkedService.referenceName, null)
+      }
+    ], [])
   }
 }
 
@@ -49,7 +55,14 @@ resource "azurerm_data_factory_data_flow" "dataflows" {
   dynamic "transformation" {
     for_each = try(local.dataflow_transformations[each.key], [])
     content {
-      name = transformation.value
+      name = transformation.value.name
+
+      dynamic "linked_service" {
+        for_each = transformation.value.linked_service != null ? [transformation.value.linked_service] : []
+        content {
+          name = linked_service.value
+        }
+      }
     }
   }
 
@@ -67,6 +80,8 @@ resource "azurerm_data_factory_data_flow" "dataflows" {
     azurerm_data_factory_linked_custom_service.adf_cosmosdb_linked_service,
     azurerm_data_factory_linked_custom_service.bonus_blob_storage_linked_service,
     azurerm_data_factory_linked_custom_service.idpay_exports_blobfs_ls,
-    azurerm_data_factory_linked_service_kusto.kusto
+    azurerm_data_factory_linked_service_kusto.kusto,
+    azurerm_data_factory_linked_custom_service.idpay_onboarding_census_blob_ls,
+    azurerm_data_factory_linked_custom_service.idpay_df_apim_rest_ls
   ]
 }
