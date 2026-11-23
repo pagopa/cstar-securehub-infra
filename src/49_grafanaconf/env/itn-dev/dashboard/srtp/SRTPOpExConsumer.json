@@ -1610,7 +1610,8 @@
         }
       ],
       "title": "✅ Messaggi inoltrati con successo al Sender",
-      "type": "stat"
+      "type": "stat",
+      "description": "Totale dei messaggi inoltrati con successo dal Consumer al Sender, sommando tutte le operazioni: CREATE + UPDATE + DELETE."
     },
     {
       "datasource": {
