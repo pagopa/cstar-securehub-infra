@@ -121,7 +121,7 @@
           "azureLogAnalytics": {
             "dashboardTime": true,
             "mode": "raw",
-            "query": "AppTraces\n| where $__timeFilter(TimeGenerated)\n| where tostring(Properties.LoggerName) contains \"SendRtpProcessorImpl\"\n| where Message contains \"trustAnchors parameter must be non-empty\"\n| project TimeGenerated, AppRoleName, Message\n| order by TimeGenerated desc\n| limit 500",
+            "query": "AppTraces\n| where $__timeFilter(TimeGenerated)\n| where AppRoleName startswith \"rtp-sender\"\n| where Message contains \"trustAnchors parameter must be non-empty\"\n| project TimeGenerated, AppRoleName, Message\n| order by TimeGenerated desc\n| limit 500",
             "resources": [
               "/subscriptions/$subscription/resourceGroups/$SrtpMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$SrtpLaw"
             ],
@@ -188,7 +188,7 @@
           "azureLogAnalytics": {
             "dashboardTime": true,
             "mode": "raw",
-            "query": "AppTraces\n| where $__timeFilter(TimeGenerated)\n| where tostring(Properties.LoggerName) contains \"SendRtpProcessorImpl\"\n| where Message contains \"unable to find valid certification path to requested\"\n| project TimeGenerated, AppRoleName, Message\n| order by TimeGenerated desc\n| limit 500",
+            "query": "AppTraces\n| where $__timeFilter(TimeGenerated)\n| where AppRoleName startswith \"rtp-sender\"\n| where Message contains \"unable to find valid certification path to requested\"\n| project TimeGenerated, AppRoleName, Message\n| order by TimeGenerated desc\n| limit 500",
             "resources": [
               "/subscriptions/$subscription/resourceGroups/$SrtpMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$SrtpLaw"
             ],
@@ -255,7 +255,7 @@
           "azureLogAnalytics": {
             "dashboardTime": true,
             "mode": "raw",
-            "query": "AppTraces\n| where $__timeFilter(TimeGenerated)\n| where tostring(Properties.LoggerName) contains \"SendRtpProcessorImpl\"\n| where Message contains \"JKS file not found at path: /mnt/jks/trust_store.jks\"\n| project TimeGenerated, AppRoleName, Message\n| order by TimeGenerated desc\n| limit 500",
+            "query": "AppTraces\n| where $__timeFilter(TimeGenerated)\n| where AppRoleName startswith \"rtp-sender\"\n| where Message contains \"JKS file not found at path\"\n| project TimeGenerated, AppRoleName, Message\n| order by TimeGenerated desc\n| limit 500",
             "resources": [
               "/subscriptions/$subscription/resourceGroups/$SrtpMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$SrtpLaw"
             ],
@@ -620,7 +620,7 @@
           "azureLogAnalytics": {
             "dashboardTime": true,
             "mode": "raw",
-            "query": "AppDependencies\n| where $__timeFilter(TimeGenerated)\n| where AppRoleName == 'rtp-sender'\n| where Data contains 'https://cbiglobeopenbankingapigateway.nexi.it/nexi/oauth/v2/token'\n| summarize count_ = count() by label = tostring(toint(ResultCode))\n| evaluate pivot(label, sum(count_))",
+            "query": "AppDependencies\n| where $__timeFilter(TimeGenerated)\n| where AppRoleName startswith 'rtp-sender'\n| where Data contains 'https://cbiglobeopenbankingapigateway.nexi.it/nexi/oauth/v2/token'\n| summarize count_ = count() by label = iff(isnull(toint(ResultCode)), \"n/d\", tostring(toint(ResultCode)))\n| evaluate pivot(label, sum(count_))",
             "resources": [
               "/subscriptions/$subscription/resourceGroups/$SrtpMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$SrtpLaw"
             ],
@@ -972,7 +972,7 @@
           "azureLogAnalytics": {
             "dashboardTime": true,
             "mode": "raw",
-            "query": "AppDependencies\n| where $__timeFilter(TimeGenerated)\n| where AppRoleName == 'rtp-sender'\n| where Data contains 'https://login.microsoftonline.com/761de76f-3d5c-4174-917c-5ad4d06360cb/oauth2/v2.0/token'\n| summarize count_ = count() by label = tostring(toint(ResultCode))\n| evaluate pivot(label, sum(count_))",
+            "query": "AppDependencies\n| where $__timeFilter(TimeGenerated)\n| where AppRoleName startswith 'rtp-sender'\n| where Data contains 'https://login.microsoftonline.com/761de76f-3d5c-4174-917c-5ad4d06360cb/oauth2/v2.0/token'\n| summarize count_ = count() by label = iff(isnull(toint(ResultCode)), \"n/d\", tostring(toint(ResultCode)))\n| evaluate pivot(label, sum(count_))",
             "resources": [
               "/subscriptions/$subscription/resourceGroups/$SrtpMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$SrtpLaw"
             ],
@@ -1052,7 +1052,7 @@
           "azureLogAnalytics": {
             "dashboardTime": true,
             "mode": "raw",
-            "query": "AppMetrics\n| where $__timeFilter(TimeGenerated)\n| where Name startswith \"keycloak_user\"\n| extend\n    realm     = tostring(Properties[\"realm\"]),\n    client_id = tostring(Properties[\"client_id\"]),\n    event     = tostring(Properties[\"event\"]),\n    error     = tostring(Properties[\"error\"])\n| where realm == \"srtp\"\n| summarize\n    ['Token emessi']     = sum(todouble(Sum)),\n    ['Ultima emissione'] = max(TimeGenerated),\n    ['Prima emissione']  = min(TimeGenerated)\n    by client_id, event, error\n| extend\n    ['Ultima emissione'] = format_datetime(['Ultima emissione'], \"yyyy-MM-dd HH:mm:ss\"),\n    ['Prima emissione']  = format_datetime(['Prima emissione'],  \"yyyy-MM-dd HH:mm:ss\")\n| order by ['Token emessi'] desc\n| project\n    ['Client ID']        = client_id,\n    ['Evento']           = event,\n    ['Errore']           = iff(error == \"\", \"-\", error),\n    ['Token emessi'],\n    ['Prima emissione'],\n    ['Ultima emissione']",
+            "query": "AppMetrics\n| where $__timeFilter(TimeGenerated)\n| where Name startswith \"keycloak_user\"\n| extend\n    realm     = tostring(Properties[\"realm\"]),\n    client_id = iff(isnotempty(tostring(Properties[\"client_id\"])), tostring(Properties[\"client_id\"]), tostring(Properties[\"clientId\"])),\n    event     = tostring(Properties[\"event\"]),\n    error     = tostring(Properties[\"error\"])\n| where realm == \"srtp\"\n| summarize\n    ['Token emessi']     = sum(todouble(Sum)),\n    ['Ultima emissione'] = max(TimeGenerated),\n    ['Prima emissione']  = min(TimeGenerated)\n    by client_id, event, error\n| extend\n    ['Ultima emissione'] = format_datetime(['Ultima emissione'], \"yyyy-MM-dd HH:mm:ss\"),\n    ['Prima emissione']  = format_datetime(['Prima emissione'],  \"yyyy-MM-dd HH:mm:ss\")\n| order by ['Token emessi'] desc\n| project\n    ['Client ID']        = client_id,\n    ['Evento']           = event,\n    ['Errore']           = iff(error == \"\", \"-\", error),\n    ['Token emessi'],\n    ['Prima emissione'],\n    ['Ultima emissione']",
             "resources": [
               "/subscriptions/$subscription/resourceGroups/$CoreMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$CoreLaw"
             ],
