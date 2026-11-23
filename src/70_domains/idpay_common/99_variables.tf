@@ -316,3 +316,9 @@ variable "aks_foobar_idpay_node_pool_configuration" {
     node_count_max = number,
   })
 }
+
+variable "listmonk_smtp_enabled" {
+  type        = bool
+  description = "Publish PARI SMTP settings to the platform-managed listmonk namespace."
+  default     = false
+}

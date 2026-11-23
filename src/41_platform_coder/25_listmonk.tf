@@ -33,6 +33,8 @@ locals {
     postgres_db_username      = postgresql_role.listmonk[0].name
     postgres_ssl_mode         = var.listmonk_configuration.postgres_ssl_mode
     bootstrap_postgres_image  = var.listmonk_configuration.bootstrap_postgres_image
+    smtp_enabled              = var.listmonk_configuration.smtp_enabled
+    smtp_setup_script         = trimspace(file("${path.module}/k8s/listmonk/configure-smtp.py"))
   }) : null
 }
 
