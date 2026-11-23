@@ -51,7 +51,7 @@ locals {
   argocd_dns_record_name = "argocd.${var.location_short}"
   argocd_namespace       = "argocd"
   argocd_project_namespaces = [
-    "argocd",
+    "listmonk",
   ]
 
   ### tags

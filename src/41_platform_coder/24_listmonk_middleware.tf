@@ -26,7 +26,7 @@ module "listmonk_namespace" {
 
 # Listmonk's chart has no Deployment annotations; watch its namespace automatically.
 resource "helm_release" "reloader_listmonk" {
-  count = local.listmonk_enabled && contains(["dev", "uat"], var.env) ? 1 : 0
+  count = local.listmonk_enabled ? 1 : 0
 
   name       = "reloader"
   repository = "https://stakater.github.io/stakater-charts"

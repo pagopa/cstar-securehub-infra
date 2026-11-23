@@ -1,5 +1,41 @@
 <!-- markdownlint-disable -->
 
+## Listmonk
+
+Greenfield installation on AKS, namespace `listmonk`. Terraform prepares the dedicated
+PostgreSQL database/role, core Key Vault credentials, internal DNS/TLS.
+Argo CD installs HelmForge `1.2.3` with the official Listmonk `v6.2.0` image and manual sync.
+The Application reuses `platform-project`; deploy its destination update in `src/40_platform`
+before the Listmonk stack. The workload runs in the dedicated `listmonk` namespace.
+The upstream `db-init` installs/upgrades the schema and creates the admin only on first install.
+There is no local chart, settings SQL, SSO or SMTP provisioning.
+
+`listmonk_configuration.enabled` controls all Listmonk resources in this stack.
+`listmonk_configuration.rbac_domains` selects namespace access for `idpay`, `srtp` and `mdc`.
+The current tfvars enable Listmonk and IDPAY access, with SRTP/MDC access disabled.
+The shared namespace module grants Kubernetes `edit` to each enabled domain's existing
+admin/developers/externals groups in DEV/UAT, or admin/oncall groups in PROD.
+These flags control access to one shared instance; they do not configure Listmonk users or SSO.
+Disabling an already deployed instance plans resource removal, including its database and namespace.
+Review the plan and data retention before applying that change.
+
+The Argo CD provider uses stack-wide endpoint and CICD Key Vault credentials,
+independently of the Listmonk enablement flag. KV access remains a stack prerequisite.
+
+DEV/UAT also install namespace-scoped Reloader (`2.2.20`) when Listmonk is enabled.
+It automatically watches referenced Secrets/ConfigMaps, using the annotation reload strategy.
+The Listmonk Application waits for its installation; PROD has no added Reloader release.
+Reloading does not rotate database credentials or reset the admin password stored in Listmonk.
+
+The console uses the existing private NGINX Ingress. Public API/OpenAPI and policies belong to
+`cstar-securehub-infra-api-spec/src/mcshared`; the shared gateway belongs to `cstar-infrastructure/src/core`.
+Set the public root URL once through the private admin UI after installation.
+Credentials also reside in Terraform state: restrict access to the backend and saved plans.
+
+See [deployment analysis and validation](../../docs/LISTMONK_AKS_DEPLOYMENT_ANALYSIS.md)
+for acceptance criteria, the changes across the four repositories and pending live checks.
+
+
 ## Keycloak Java4Shell mitigation
 
 The shared Keycloak Helm values append `-XX:-UseBASE64Intrinsics` to
@@ -54,26 +90,26 @@ for acceptance criteria, the changes across the four repositories and pending li
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >=1.11.0 |
 | <a name="requirement_argocd"></a> [argocd](#requirement\_argocd) | ~> 7.0 |
-| <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | ~> 3 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 4.32.0 |
-| <a name="requirement_helm"></a> [helm](#requirement\_helm) | ~> 2 |
+| <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | ~> 3.0 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 4.32 |
+| <a name="requirement_helm"></a> [helm](#requirement\_helm) | ~> 2.0 |
 | <a name="requirement_keycloak"></a> [keycloak](#requirement\_keycloak) | ~> 5.0 |
 | <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | ~> 2.0 |
 | <a name="requirement_null"></a> [null](#requirement\_null) | ~> 3.0 |
-| <a name="requirement_postgresql"></a> [postgresql](#requirement\_postgresql) | ~> 1.26.0 |
+| <a name="requirement_postgresql"></a> [postgresql](#requirement\_postgresql) | ~> 1.26 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_argocd"></a> [argocd](#provider\_argocd) | 7.17.2 |
-| <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 3.4.0 |
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.32.0 |
+| <a name="provider_argocd"></a> [argocd](#provider\_argocd) | 7.18.0 |
+| <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 3.10.0 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.81.0 |
 | <a name="provider_helm"></a> [helm](#provider\_helm) | 2.17.0 |
-| <a name="provider_keycloak"></a> [keycloak](#provider\_keycloak) | 5.7.0 |
+| <a name="provider_keycloak"></a> [keycloak](#provider\_keycloak) | 5.10.0 |
 | <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | 2.38.0 |
-| <a name="provider_postgresql"></a> [postgresql](#provider\_postgresql) | 1.26.0 |
-| <a name="provider_random"></a> [random](#provider\_random) | 3.7.2 |
+| <a name="provider_postgresql"></a> [postgresql](#provider\_postgresql) | 1.27.0 |
+| <a name="provider_random"></a> [random](#provider\_random) | 3.9.1 |
 
 ## Modules
 

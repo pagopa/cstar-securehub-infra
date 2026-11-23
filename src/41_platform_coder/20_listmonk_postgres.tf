@@ -4,6 +4,8 @@ resource "azurerm_postgresql_flexible_server_database" "listmonk_db" {
   server_id = module.keycloak_pgflex.id
   charset   = "UTF8"
   collation = "en_US.utf8"
+
+  depends_on = [postgresql_role.listmonk]
 }
 
 resource "random_password" "listmonk_db" {

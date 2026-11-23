@@ -4,11 +4,11 @@ terraform {
   required_providers {
     azuread = {
       source  = "hashicorp/azuread"
-      version = "~> 3"
+      version = "~> 3.0"
     }
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~> 4.32.0"
+      version = "~> 4.32"
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
@@ -20,7 +20,7 @@ terraform {
     }
     helm = {
       source  = "hashicorp/helm"
-      version = "~> 2"
+      version = "~> 2.0"
     }
     keycloak = {
       source  = "keycloak/keycloak"
@@ -32,7 +32,7 @@ terraform {
     }
     postgresql = {
       source  = "cyrilgdn/postgresql"
-      version = "~> 1.26.0"
+      version = "~> 1.26"
     }
   }
 
@@ -71,7 +71,7 @@ provider "keycloak" {
 provider "postgresql" {
   host      = module.keycloak_pgflex.fqdn
   port      = 5432
-  database  = local.listmonk_enabled ? azurerm_postgresql_flexible_server_database.listmonk_db[0].name : "postgres"
+  database  = "postgres"
   username  = azurerm_key_vault_secret.keycloak_db_admin_user.value
   password  = azurerm_key_vault_secret.keycloak_db_admin_password.value
   sslmode   = "require"

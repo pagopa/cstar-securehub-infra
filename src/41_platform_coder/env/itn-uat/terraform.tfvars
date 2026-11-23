@@ -47,8 +47,8 @@ listmonk_configuration = {
   enabled = true
   rbac_domains = {
     idpay = true
-    srtp  = false
-    mdc   = false
+    srtp  = true
+    mdc   = true
   }
   chart_version     = "1.2.3"
   image_repository  = "listmonk/listmonk"

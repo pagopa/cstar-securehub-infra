@@ -16,7 +16,7 @@ datatable(initiativeId:string, exportConfiguration:dynamic)
     }
   }),
   "68dd003ccce8c534d1da22bc", dynamic({
-    "fields": ["gtinCode", "model", "brand", "eprelCode", "countryOfProduction", "energyClass", "capacity", "productName", "category", "productGroup", "productCode"],
+    "fields": ["gtinCode", "model", "brand", "eprelCode", "countryOfProduction", "energyClass", "capacity", "productName", "category", "productCode"],
     "headers": {
       "gtinCode": "GTIN",
       "model": "Modello",
@@ -27,26 +27,45 @@ datatable(initiativeId:string, exportConfiguration:dynamic)
       "capacity": "Capacita",
       "productName": "Nome del prodotto",
       "category": "Categoria",
-      "productGroup": "Gruppo prodotto",
       "productCode": "Codice prodotto"
     }
   })
 ];
 
-.set-or-replace category_translation <|
-datatable(initiativeId:string, categoryCode:string, language:string, description:string)
+// Generic value-normalization table (replaces category_translation): keyed by
+// fieldName so any raw column value coming from `products` (category codes,
+// booleans like scart, placeholders like capacity's "N/A", future fields, ...)
+// can be normalized by a single schema-agnostic mechanism (see Copy_ADX_to_CSV
+// query in idpay_copy_rdb_products_to_csv.json, based on pack_all/mv-expand).
+// Adding support for a brand-new initiative/field never requires pipeline
+// changes: only new rows here (plus, if the field itself is new, a schema
+// change on `products`/`products_staging`).
+.set-or-replace attribute_translation <|
+datatable(initiativeId:string, fieldName:string, rawValue:string, language:string, translatedValue:string)
 [
-  "69e0fa95e21efa516c7b8dec", "DS", "it", "Satellitare",
-  "69e0fa95e21efa516c7b8dec", "DT", "it", "Terrestre",
-  "69e0fa95e21efa516c7b8dec", "DTS", "it", "Terrestre e Satellitare",
-  "69e0fa95e21efa516c7b8dec", "DTC", "it", "Terrestre via Cavo",
-  "69e0fa95e21efa516c7b8dec", "DTSC", "it", "Terrestre, Satellitare e via Cavo",
-  "68dd003ccce8c534d1da22bc", "WASHINGMACHINES", "it", "Lavatrice",
-  "68dd003ccce8c534d1da22bc", "WASHERDRIERS", "it", "Lavasciuga",
-  "68dd003ccce8c534d1da22bc", "OVENS", "it", "Forno",
-  "68dd003ccce8c534d1da22bc", "RANGEHOODS", "it", "Cappa da cucina",
-  "68dd003ccce8c534d1da22bc", "DISHWASHERS", "it", "Lavastoviglie",
-  "68dd003ccce8c534d1da22bc", "TUMBLEDRYERS", "it", "Asciugatrice",
-  "68dd003ccce8c534d1da22bc", "REFRIGERATINGAPPL", "it", "Apparecchio di refrigerazione",
-  "68dd003ccce8c534d1da22bc", "COOKINGHOBS", "it", "Piano cottura"
+  // Bonus Decoder - category (migrated from category_translation)
+  "69e0fa95e21efa516c7b8dec", "category", "DS", "it", "Satellitare",
+  "69e0fa95e21efa516c7b8dec", "category", "DT", "it", "Terrestre",
+  "69e0fa95e21efa516c7b8dec", "category", "DTS", "it", "Terrestre e Satellitare",
+  "69e0fa95e21efa516c7b8dec", "category", "DTC", "it", "Terrestre via Cavo",
+  "69e0fa95e21efa516c7b8dec", "category", "DTSC", "it", "Terrestre, Satellitare e via Cavo",
+  // Bonus Decoder - scart (bool -> Si/No, matches portal FE display).
+  // NOTE: "scart" is a bool column in ADX (products); tostring(bool) yields
+  // lowercase "true"/"false", so rawValue must match that exact casing.
+  "69e0fa95e21efa516c7b8dec", "scart", "true", "it", "Si",
+  "69e0fa95e21efa516c7b8dec", "scart", "false", "it", "No",
+  // Bonus Elettrodomestici - category (migrated from category_translation)
+  "68dd003ccce8c534d1da22bc", "category", "WASHINGMACHINES", "it", "Lavatrice",
+  "68dd003ccce8c534d1da22bc", "category", "WASHERDRIERS", "it", "Lavasciuga",
+  "68dd003ccce8c534d1da22bc", "category", "OVENS", "it", "Forno",
+  "68dd003ccce8c534d1da22bc", "category", "RANGEHOODS", "it", "Cappa da cucina",
+  "68dd003ccce8c534d1da22bc", "category", "DISHWASHERS", "it", "Lavastoviglie",
+  "68dd003ccce8c534d1da22bc", "category", "TUMBLEDRYERS", "it", "Asciugatrice",
+  "68dd003ccce8c534d1da22bc", "category", "REFRIGERATINGAPPL", "it", "Apparecchio di refrigerazione",
+  "68dd003ccce8c534d1da22bc", "category", "COOKINGHOBS", "it", "Piano cottura",
+  // Bonus Elettrodomestici - capacity (N/A placeholder -> "-", matches portal FE display).
+  // NOTE: raw data in ADX uses "N\A" (backslash); "N/A" kept too in case the
+  // source format changes/normalizes in the future.
+  "68dd003ccce8c534d1da22bc", "capacity", "N\\A", "it", "-",
+  "68dd003ccce8c534d1da22bc", "capacity", "N/A", "it", "-"
 ];
