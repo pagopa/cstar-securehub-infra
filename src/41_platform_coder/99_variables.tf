@@ -115,12 +115,14 @@ variable "listmonk_configuration" {
       srtp  = optional(bool, false)
       mdc   = optional(bool, false)
     }), {})
-    chart_version            = string
-    image_repository         = string
-    image_tag                = string
-    replica_count            = number
-    postgres_ssl_mode        = string
-    bootstrap_postgres_image = optional(string, "postgres:17-alpine")
+    chart_version               = string
+    image_repository            = string
+    image_tag                   = string
+    replica_count               = number
+    postgres_ssl_mode           = string
+    bootstrap_postgres_image    = optional(string, "postgres:17-alpine")
+    smtp_enabled                = optional(bool, false)
+    smtp_allow_shared_namespace = optional(bool, false)
   })
 
   validation {
@@ -135,6 +137,18 @@ variable "listmonk_configuration" {
   validation {
     condition     = var.listmonk_configuration.replica_count == 1
     error_message = "Listmonk is configured for one replica. Review rollout concurrency before enabling campaigns."
+  }
+
+  validation {
+    condition = !var.listmonk_configuration.smtp_enabled || (
+      var.listmonk_configuration.enabled &&
+      var.listmonk_configuration.rbac_domains.idpay &&
+      (
+        var.listmonk_configuration.smtp_allow_shared_namespace ||
+        (!var.listmonk_configuration.rbac_domains.srtp && !var.listmonk_configuration.rbac_domains.mdc)
+      )
+    )
+    error_message = "PARI SMTP requires Listmonk and IDPay namespace access. Set smtp_allow_shared_namespace explicitly to allow SMTP credentials in a namespace shared with other domains."
   }
 }
 

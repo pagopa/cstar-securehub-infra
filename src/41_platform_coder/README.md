@@ -8,11 +8,11 @@ Argo CD installs HelmForge `1.2.3` with the official Listmonk `v6.2.0` image and
 The Application reuses `platform-project`; deploy its destination update in `src/40_platform`
 before the Listmonk stack. The workload runs in the dedicated `listmonk` namespace.
 The upstream `db-init` installs/upgrades the schema and creates the admin only on first install.
-There is no local chart, settings SQL, SSO or SMTP provisioning.
+There is no local chart, settings SQL or SSO provisioning. PARI SMTP provisioning is opt-in.
 
 `listmonk_configuration.enabled` controls all Listmonk resources in this stack.
 `listmonk_configuration.rbac_domains` selects namespace access for `idpay`, `srtp` and `mdc`.
-The current tfvars enable Listmonk and IDPAY access, with SRTP/MDC access disabled.
+The current tfvars enable Listmonk and namespace access for IDPay, SRTP and MDC.
 The shared namespace module grants Kubernetes `edit` to each enabled domain's existing
 admin/developers/externals groups in DEV/UAT, or admin/oncall groups in PROD.
 These flags control access to one shared instance; they do not configure Listmonk users or SSO.
@@ -31,6 +31,33 @@ The console uses the existing private NGINX Ingress. Public API/OpenAPI and poli
 `cstar-securehub-infra-api-spec/src/mcshared`; the shared gateway belongs to `cstar-infrastructure/src/core`.
 Set the public root URL once through the private admin UI after installation.
 Credentials also reside in Terraform state: restrict access to the backend and saved plans.
+
+### PARI SMTP rollout
+
+The PostSync Job uses the same PARI SES relay and sender address as Keycloak
+(port 465, implicit TLS with certificate verification). Listmonk uses the sender
+display name `Comunicazioni PARI`; Keycloak keeps `Portale Punto Vendita`.
+
+DEV, UAT, and PROD explicitly enable both Secret publishing and the PostSync Job.
+These environments retain shared namespace access via
+`listmonk_configuration.smtp_allow_shared_namespace = true`. SRTP and MDC namespace
+editors can read the Secret once `idpay_common` creates it. Without this override,
+enabling the Job requires IDPay-only domain access.
+
+For each environment:
+
+1. Apply `41_platform_coder` first to create the namespace and update the
+   manually synced Argo CD Application.
+2. Apply `70_domains/idpay_common` to publish the Secret.
+   Its Terraform identity needs permission to manage `listmonk/listmonk-smtp`.
+3. Perform a full Listmonk sync in Argo CD. The Job needs DNS and trusted HTTPS access to
+   the private Listmonk ingress from AKS, and the `listmonk-bootstrap` password must still
+   match the Listmonk `admin` account. Password login without 2FA is required for this Job.
+
+Reapply `idpay_common` and run a full sync after rotating the PARI credentials. The Job
+owns the entire SMTP server list and default sender; UI edits to these are overwritten.
+If Listmonk defers reload while campaigns are running, reload after they finish.
+Disabling provisioning stops subsequent writes; it does not clear Listmonk's stored settings.
 
 See [deployment analysis and validation](../../docs/LISTMONK_AKS_DEPLOYMENT_ANALYSIS.md)
 for acceptance criteria, the changes across the four repositories and pending live checks.
@@ -219,7 +246,7 @@ for acceptance criteria, the changes across the four repositories and pending li
 | <a name="input_k8s_kube_config_path_prefix"></a> [k8s\_kube\_config\_path\_prefix](#input\_k8s\_kube\_config\_path\_prefix) | Kubernetes | `string` | `"~/.kube"` | no |
 | <a name="input_keycloak_configuration"></a> [keycloak\_configuration](#input\_keycloak\_configuration) | n/a | <pre>object({<br/>    image_repository                            = string<br/>    image_tag                                   = string<br/>    image_registry                              = string<br/>    chart_version                               = string<br/>    replica_count_min                           = number<br/>    replica_count_max                           = number<br/>    cpu_request                                 = string<br/>    cpu_limit                                   = string<br/>    memory_request                              = string<br/>    memory_limit                                = string<br/>    http_client_connection_ttl_millis           = number<br/>    http_client_connection_max_idle_time_millis = number<br/>    image_registry_config_cli                   = string<br/>    image_repository_config_cli                 = string<br/>    image_tag_config_cli                        = string<br/>    image_digest_config_cli                     = optional(string, "")<br/>  })</pre> | n/a | yes |
 | <a name="input_keycloak_pgflex_params"></a> [keycloak\_pgflex\_params](#input\_keycloak\_pgflex\_params) | Postgres Flexible | <pre>object({<br/>    enabled                                = bool<br/>    zone                                   = number<br/>    idh_resource_tier                      = string<br/>    geo_replication_enabled                = bool<br/>    pgres_flex_pgbouncer_enabled           = bool<br/>    pgres_flex_diagnostic_settings_enabled = bool<br/>    auto_grow_enabled                      = bool<br/>    storage_tier                           = optional(string, null)<br/>  })</pre> | n/a | yes |
-| <a name="input_listmonk_configuration"></a> [listmonk\_configuration](#input\_listmonk\_configuration) | n/a | <pre>object({<br/>    enabled = optional(bool, true)<br/>    rbac_domains = optional(object({<br/>      idpay = optional(bool, true)<br/>      srtp  = optional(bool, false)<br/>      mdc   = optional(bool, false)<br/>    }), {})<br/>    chart_version            = string<br/>    image_repository         = string<br/>    image_tag                = string<br/>    replica_count            = number<br/>    postgres_ssl_mode        = string<br/>    bootstrap_postgres_image = optional(string, "postgres:17-alpine")<br/>  })</pre> | n/a | yes |
+| <a name="input_listmonk_configuration"></a> [listmonk\_configuration](#input\_listmonk\_configuration) | n/a | <pre>object({<br/>    enabled = optional(bool, true)<br/>    rbac_domains = optional(object({<br/>      idpay = optional(bool, true)<br/>      srtp  = optional(bool, false)<br/>      mdc   = optional(bool, false)<br/>    }), {})<br/>    chart_version               = string<br/>    image_repository            = string<br/>    image_tag                   = string<br/>    replica_count               = number<br/>    postgres_ssl_mode           = string<br/>    bootstrap_postgres_image    = optional(string, "postgres:17-alpine")<br/>    smtp_enabled                = optional(bool, false)<br/>    smtp_allow_shared_namespace = optional(bool, false)<br/>  })</pre> | n/a | yes |
 | <a name="input_location"></a> [location](#input\_location) | n/a | `string` | n/a | yes |
 | <a name="input_location_short"></a> [location\_short](#input\_location\_short) | Location short like eg: neu, weu.. | `string` | n/a | yes |
 | <a name="input_mcshared_dns_zone_prefix"></a> [mcshared\_dns\_zone\_prefix](#input\_mcshared\_dns\_zone\_prefix) | The dns subdomain for mcshared | `string` | `null` | no |

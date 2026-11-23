@@ -7,6 +7,8 @@ location_short     = "itn"
 location_weu       = "westeurope"
 location_short_weu = "weu"
 
+listmonk_smtp_enabled = true
+
 #
 # Dns
 #
