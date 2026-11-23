@@ -123,7 +123,6 @@ variable "listmonk_configuration" {
     bootstrap_postgres_image    = optional(string, "postgres:17-alpine")
     smtp_enabled                = optional(bool, false)
     smtp_allow_shared_namespace = optional(bool, false)
-    smtp_enabled             = optional(bool, false)
   })
 
   validation {
