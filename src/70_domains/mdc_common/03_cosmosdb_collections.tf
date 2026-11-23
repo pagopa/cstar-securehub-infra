@@ -119,6 +119,10 @@ locals {
         {
           keys   = ["originId", "_id"]
           unique = false
+        },
+        {
+          keys   = ["createdAt", "_id"]
+          unique = false
         }
       ]
     }
