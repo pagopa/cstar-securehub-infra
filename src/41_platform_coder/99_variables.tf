@@ -143,16 +143,6 @@ variable "listmonk_configuration" {
     condition = !var.listmonk_configuration.smtp_enabled || (
       var.listmonk_configuration.enabled &&
       var.listmonk_configuration.rbac_domains.idpay &&
-      !var.listmonk_configuration.rbac_domains.srtp &&
-      !var.listmonk_configuration.rbac_domains.mdc
-    )
-    error_message = "PARI SMTP requires Listmonk to be enabled with IDPay-only domain access to its namespace."
-  }
-
-  validation {
-    condition = !var.listmonk_configuration.smtp_enabled || (
-      var.listmonk_configuration.enabled &&
-      var.listmonk_configuration.rbac_domains.idpay &&
       (
         var.listmonk_configuration.smtp_allow_shared_namespace ||
         (!var.listmonk_configuration.rbac_domains.srtp && !var.listmonk_configuration.rbac_domains.mdc)
