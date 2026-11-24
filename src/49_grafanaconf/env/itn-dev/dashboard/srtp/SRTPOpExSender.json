@@ -78,6 +78,307 @@
           "fieldConfig": {
             "defaults": {
               "color": {
+                "mode": "fixed",
+                "fixedColor": "blue"
+              },
+              "decimals": 0,
+              "mappings": [],
+              "noValue": "0",
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "blue",
+                    "value": 0
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 4,
+            "w": 6,
+            "x": 0,
+            "y": 149
+          },
+          "id": 2224,
+          "options": {
+            "colorMode": "background",
+            "graphMode": "none",
+            "justifyMode": "center",
+            "orientation": "auto",
+            "percentChangeColorMode": "standard",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "showPercentChange": false,
+            "textMode": "value",
+            "wideLayout": true
+          },
+          "pluginVersion": "12.4.13",
+          "targets": [
+            {
+              "azureLogAnalytics": {
+                "dashboardTime": true,
+                "mode": "raw",
+                "query": "AppTraces\n| where AppRoleName == 'rtp-sender'\n| where $__timeFilter(TimeGenerated)\n| where Message startswith \"Operation: CREATE\"\n| summarize count = count()",
+                "resources": [
+                  "/subscriptions/$subscription/resourceGroups/$SrtpMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$SrtpLaw"
+                ],
+                "resultFormat": "table",
+                "timeColumn": "TimeGenerated"
+              },
+              "datasource": {
+                "type": "grafana-azure-monitor-datasource",
+                "uid": "azure-monitor-oob"
+              },
+              "queryType": "Azure Log Analytics",
+              "refId": "A",
+              "subscription": "$subscription"
+            }
+          ],
+          "title": "📥 CREATE ricevute",
+          "type": "stat"
+        },
+        {
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "fixed",
+                "fixedColor": "blue"
+              },
+              "decimals": 0,
+              "mappings": [],
+              "noValue": "0",
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "blue",
+                    "value": 0
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 4,
+            "w": 6,
+            "x": 6,
+            "y": 149
+          },
+          "id": 2225,
+          "options": {
+            "colorMode": "background",
+            "graphMode": "none",
+            "justifyMode": "center",
+            "orientation": "auto",
+            "percentChangeColorMode": "standard",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "showPercentChange": false,
+            "textMode": "value",
+            "wideLayout": true
+          },
+          "pluginVersion": "12.4.13",
+          "targets": [
+            {
+              "azureLogAnalytics": {
+                "dashboardTime": true,
+                "mode": "raw",
+                "query": "AppTraces\n| where AppRoleName == 'rtp-sender'\n| where $__timeFilter(TimeGenerated)\n| where Message startswith \"Operation: UPDATE\"\n| summarize count = count()",
+                "resources": [
+                  "/subscriptions/$subscription/resourceGroups/$SrtpMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$SrtpLaw"
+                ],
+                "resultFormat": "table",
+                "timeColumn": "TimeGenerated"
+              },
+              "datasource": {
+                "type": "grafana-azure-monitor-datasource",
+                "uid": "azure-monitor-oob"
+              },
+              "queryType": "Azure Log Analytics",
+              "refId": "A",
+              "subscription": "$subscription"
+            }
+          ],
+          "title": "📥 UPDATE ricevute",
+          "type": "stat"
+        },
+        {
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "fixed",
+                "fixedColor": "blue"
+              },
+              "decimals": 0,
+              "mappings": [],
+              "noValue": "0",
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "blue",
+                    "value": 0
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 4,
+            "w": 6,
+            "x": 12,
+            "y": 149
+          },
+          "id": 2226,
+          "options": {
+            "colorMode": "background",
+            "graphMode": "none",
+            "justifyMode": "center",
+            "orientation": "auto",
+            "percentChangeColorMode": "standard",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "showPercentChange": false,
+            "textMode": "value",
+            "wideLayout": true
+          },
+          "pluginVersion": "12.4.13",
+          "targets": [
+            {
+              "azureLogAnalytics": {
+                "dashboardTime": true,
+                "mode": "raw",
+                "query": "AppTraces\n| where AppRoleName == 'rtp-sender'\n| where $__timeFilter(TimeGenerated)\n| where Message startswith \"Operation: DELETE\"\n| summarize count = count()",
+                "resources": [
+                  "/subscriptions/$subscription/resourceGroups/$SrtpMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$SrtpLaw"
+                ],
+                "resultFormat": "table",
+                "timeColumn": "TimeGenerated"
+              },
+              "datasource": {
+                "type": "grafana-azure-monitor-datasource",
+                "uid": "azure-monitor-oob"
+              },
+              "queryType": "Azure Log Analytics",
+              "refId": "A",
+              "subscription": "$subscription"
+            }
+          ],
+          "title": "📥 DELETE ricevute",
+          "type": "stat"
+        },
+        {
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "fixed",
+                "fixedColor": "blue"
+              },
+              "decimals": 0,
+              "mappings": [],
+              "noValue": "0",
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "blue",
+                    "value": 0
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 4,
+            "w": 6,
+            "x": 18,
+            "y": 149
+          },
+          "id": 2227,
+          "options": {
+            "colorMode": "background",
+            "graphMode": "none",
+            "justifyMode": "center",
+            "orientation": "auto",
+            "percentChangeColorMode": "standard",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "showPercentChange": false,
+            "textMode": "value",
+            "wideLayout": true
+          },
+          "pluginVersion": "12.4.13",
+          "targets": [
+            {
+              "azureLogAnalytics": {
+                "dashboardTime": true,
+                "mode": "raw",
+                "query": "AppTraces\n| where AppRoleName == 'rtp-sender'\n| where $__timeFilter(TimeGenerated)\n| where Message matches regex @\"^Operation: (CREATE|UPDATE|DELETE)\"\n| summarize count = count()",
+                "resources": [
+                  "/subscriptions/$subscription/resourceGroups/$SrtpMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$SrtpLaw"
+                ],
+                "resultFormat": "table",
+                "timeColumn": "TimeGenerated"
+              },
+              "datasource": {
+                "type": "grafana-azure-monitor-datasource",
+                "uid": "azure-monitor-oob"
+              },
+              "queryType": "Azure Log Analytics",
+              "refId": "A",
+              "subscription": "$subscription"
+            }
+          ],
+          "title": "📥 Invii ricevuti (CREATE + UPDATE + DELETE)",
+          "type": "stat",
+          "description": "Totale dei messaggi GPD ricevuti dal Sender: CREATE + UPDATE + DELETE."
+        },
+        {
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
                 "fixedColor": "green",
                 "mode": "fixed"
               },
@@ -695,116 +996,6 @@
           },
           "fieldConfig": {
             "defaults": {
-              "color": {
-                "mode": "fixed",
-                "fixedColor": "green"
-              },
-              "custom": {
-                "axisBorderShow": false,
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "barAlignment": 0,
-                "barWidthFactor": 0.6,
-                "drawStyle": "line",
-                "fillOpacity": 10,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "insertNulls": false,
-                "lineInterpolation": "linear",
-                "lineWidth": 2,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "auto",
-                "showValues": false,
-                "spanNulls": false,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "decimals": 0,
-              "displayName": "${__field.labels.Series}",
-              "mappings": [],
-              "min": 0,
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": 0
-                  }
-                ]
-              }
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 9,
-            "w": 24,
-            "x": 0,
-            "y": 174
-          },
-          "id": 2223,
-          "options": {
-            "legend": {
-              "calcs": [
-                "sum"
-              ],
-              "displayMode": "table",
-              "placement": "right",
-              "showLegend": true,
-              "sortBy": "Total",
-              "sortDesc": true
-            },
-            "tooltip": {
-              "hideZeros": false,
-              "mode": "multi",
-              "sort": "desc"
-            }
-          },
-          "pluginVersion": "12.4.13",
-          "targets": [
-            {
-              "azureLogAnalytics": {
-                "dashboardTime": true,
-                "mode": "raw",
-                "query": "let _bin = max_of(coalesce(totimespan(\"$sender_bin_size\"), 1h), bin(($__timeTo() - $__timeFrom()) / 19999, 1s) + 1s);\nlet ops = AppTraces\n| where $__timeFilter(TimeGenerated)\n| where AppRoleName == \"rtp-sender\"\n| where Message startswith \"Operation: \"\n| extend Operation = extract(@\"Operation: (\\w+)\", 1, Message)\n| summarize Operation = any(Operation) by OperationId;\nlet successes = AppTraces\n| where $__timeFilter(TimeGenerated)\n| where AppRoleName == \"rtp-sender\"\n| where Message == \"Successfully processed message.\"\n| summarize TimeGenerated = min(TimeGenerated) by OperationId;\nsuccesses\n| join kind=inner ops on OperationId\n| make-series Successi = count() default = 0 on TimeGenerated from bin($__timeFrom(), _bin) to $__timeTo() step _bin\n| mv-expand TimeGenerated to typeof(datetime), Successi to typeof(long)\n| order by TimeGenerated asc",
-                "resources": [
-                  "/subscriptions/$subscription/resourceGroups/$SrtpMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$SrtpLaw"
-                ],
-                "resultFormat": "time_series",
-                "timeColumn": "TimeGenerated"
-              },
-              "datasource": {
-                "type": "grafana-azure-monitor-datasource",
-                "uid": "azure-monitor-oob"
-              },
-              "queryType": "Azure Log Analytics",
-              "refId": "A",
-              "subscription": "$subscription"
-            }
-          ],
-          "title": "✅ Invii RTP con successo nel tempo (totale CREATE + UPDATE + DELETE)",
-          "type": "timeseries"
-        },
-        {
-          "datasource": {
-            "type": "grafana-azure-monitor-datasource",
-            "uid": "azure-monitor-oob"
-          },
-          "fieldConfig": {
-            "defaults": {
               "custom": {
                 "align": "left",
                 "cellOptions": {
@@ -833,7 +1024,7 @@
             "h": 8,
             "w": 24,
             "x": 0,
-            "y": 183
+            "y": 174
           },
           "id": 2206,
           "options": {
@@ -900,7 +1091,7 @@
             "h": 8,
             "w": 24,
             "x": 0,
-            "y": 191
+            "y": 182
           },
           "id": 2207,
           "options": {
@@ -967,7 +1158,7 @@
             "h": 8,
             "w": 24,
             "x": 0,
-            "y": 199
+            "y": 190
           },
           "id": 2208,
           "options": {
@@ -1034,7 +1225,7 @@
             "h": 8,
             "w": 24,
             "x": 0,
-            "y": 207
+            "y": 198
           },
           "id": 2209,
           "options": {
@@ -1101,7 +1292,7 @@
             "h": 8,
             "w": 24,
             "x": 0,
-            "y": 215
+            "y": 206
           },
           "id": 2210,
           "options": {
@@ -1168,7 +1359,7 @@
             "h": 8,
             "w": 24,
             "x": 0,
-            "y": 223
+            "y": 214
           },
           "id": 2211,
           "options": {
@@ -1235,7 +1426,7 @@
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 231
+            "y": 222
           },
           "id": 2212,
           "options": {
@@ -1302,7 +1493,7 @@
             "h": 8,
             "w": 12,
             "x": 12,
-            "y": 231
+            "y": 222
           },
           "id": 2213,
           "options": {
@@ -1369,7 +1560,7 @@
             "h": 8,
             "w": 24,
             "x": 0,
-            "y": 239
+            "y": 230
           },
           "id": 2214,
           "options": {
@@ -1436,7 +1627,7 @@
             "h": 8,
             "w": 24,
             "x": 0,
-            "y": 247
+            "y": 238
           },
           "id": 2215,
           "options": {
@@ -1503,7 +1694,7 @@
             "h": 7,
             "w": 24,
             "x": 0,
-            "y": 255
+            "y": 246
           },
           "id": 2216,
           "options": {
@@ -1570,7 +1761,7 @@
             "h": 4,
             "w": 24,
             "x": 0,
-            "y": 262
+            "y": 253
           },
           "id": 2217,
           "options": {
@@ -1637,7 +1828,7 @@
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 266
+            "y": 257
           },
           "id": 2218,
           "options": {
@@ -1704,7 +1895,7 @@
             "h": 8,
             "w": 12,
             "x": 12,
-            "y": 266
+            "y": 257
           },
           "id": 2219,
           "options": {
@@ -1771,7 +1962,7 @@
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 274
+            "y": 265
           },
           "id": 2220,
           "options": {
@@ -1838,7 +2029,7 @@
             "h": 8,
             "w": 12,
             "x": 12,
-            "y": 274
+            "y": 265
           },
           "id": 2221,
           "options": {
@@ -1905,7 +2096,7 @@
             "h": 8,
             "w": 24,
             "x": 0,
-            "y": 282
+            "y": 273
           },
           "id": 2222,
           "options": {
