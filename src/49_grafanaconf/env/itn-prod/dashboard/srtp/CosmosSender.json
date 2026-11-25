@@ -48,7 +48,7 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "### [Activator](/d/srtp-operational-excellence?from=${__from}&to=${__to}) &nbsp;&nbsp;|&nbsp;&nbsp; [Cosmos Activator](/d/cosmos-activator?from=${__from}&to=${__to}) &nbsp;&nbsp;|&nbsp;&nbsp; [Consumer](/d/srtp-opex-consumer?from=${__from}&to=${__to}) &nbsp;&nbsp;|&nbsp;&nbsp; [Sender](/d/srtp-opex-sender?from=${__from}&to=${__to}) &nbsp;&nbsp;|&nbsp;&nbsp; **▸ Cosmos Sender**",
+        "content": "### [Activator](/d/srtp-operational-excellence?from=${__from}&to=${__to}) &nbsp;&nbsp;|&nbsp;&nbsp; [Cosmos Activator](/d/cosmos-activator?from=${__from}&to=${__to}) &nbsp;&nbsp;|&nbsp;&nbsp; [Consumer](/d/srtp-opex-consumer?from=${__from}&to=${__to}) &nbsp;&nbsp;|&nbsp;&nbsp; [Sender](/d/srtp-opex-sender?from=${__from}&to=${__to}) &nbsp;&nbsp;|&nbsp;&nbsp; **▸ Cosmos Sender** &nbsp;&nbsp;|&nbsp;&nbsp; [Security & Authentication](/d/srtp-opex-security?from=${__from}&to=${__to})",
         "mode": "markdown"
       },
       "pluginVersion": "12.4.8",
@@ -2679,7 +2679,7 @@
     ]
   },
   "time": {
-    "from": "now-24h",
+    "from": "now-7d",
     "to": "now"
   },
   "timepicker": {},
