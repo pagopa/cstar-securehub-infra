@@ -52,7 +52,7 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "### [Activator](/d/srtp-operational-excellence?from=${__from}&to=${__to}) &nbsp;&nbsp;|&nbsp;&nbsp; [Cosmos Activator](/d/cosmos-activator?from=${__from}&to=${__to}) &nbsp;&nbsp;|&nbsp;&nbsp; **▸ Consumer** &nbsp;&nbsp;|&nbsp;&nbsp; [Sender](/d/srtp-opex-sender?from=${__from}&to=${__to}) &nbsp;&nbsp;|&nbsp;&nbsp; [Cosmos Sender](/d/cosmos-sender?from=${__from}&to=${__to})",
+        "content": "### [Activator](/d/srtp-operational-excellence?from=${__from}&to=${__to}) &nbsp;&nbsp;|&nbsp;&nbsp; [Cosmos Activator](/d/cosmos-activator?from=${__from}&to=${__to}) &nbsp;&nbsp;|&nbsp;&nbsp; **▸ Consumer** &nbsp;&nbsp;|&nbsp;&nbsp; [Sender](/d/srtp-opex-sender?from=${__from}&to=${__to}) &nbsp;&nbsp;|&nbsp;&nbsp; [Cosmos Sender](/d/cosmos-sender?from=${__from}&to=${__to}) &nbsp;&nbsp;|&nbsp;&nbsp; [Security & Authentication](/d/srtp-opex-security?from=${__from}&to=${__to})",
         "mode": "markdown"
       },
       "pluginVersion": "12.4.13",
@@ -1610,7 +1610,8 @@
         }
       ],
       "title": "✅ Messaggi inoltrati con successo al Sender",
-      "type": "stat"
+      "type": "stat",
+      "description": "Totale dei messaggi inoltrati con successo dal Consumer al Sender, sommando tutte le operazioni: CREATE + UPDATE + DELETE."
     },
     {
       "datasource": {
