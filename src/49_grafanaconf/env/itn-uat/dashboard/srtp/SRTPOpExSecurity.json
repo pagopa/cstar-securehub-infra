@@ -1052,7 +1052,7 @@
           "azureLogAnalytics": {
             "dashboardTime": true,
             "mode": "raw",
-            "query": "AppMetrics\n| where $__timeFilter(TimeGenerated)\n| where Name startswith \"keycloak_user\"\n| extend\n    realm     = tostring(Properties[\"realm\"]),\n    client_id = iff(isnotempty(tostring(Properties[\"client_id\"])), tostring(Properties[\"client_id\"]), tostring(Properties[\"clientId\"])),\n    event     = tostring(Properties[\"event\"]),\n    error     = tostring(Properties[\"error\"])\n| where realm == \"srtp\"\n| summarize\n    ['Token emessi']     = sum(todouble(Sum)),\n    ['Ultima emissione'] = max(TimeGenerated),\n    ['Prima emissione']  = min(TimeGenerated)\n    by client_id, event, error\n| extend\n    ['Ultima emissione'] = format_datetime(['Ultima emissione'], \"yyyy-MM-dd HH:mm:ss\"),\n    ['Prima emissione']  = format_datetime(['Prima emissione'],  \"yyyy-MM-dd HH:mm:ss\")\n| order by ['Token emessi'] desc\n| project\n    ['Client ID']        = client_id,\n    ['Evento']           = event,\n    ['Errore']           = iff(error == \"\", \"-\", error),\n    ['Token emessi'],\n    ['Prima emissione'],\n    ['Ultima emissione']",
+            "query": "AppMetrics\n| where $__timeFilter(TimeGenerated)\n| where Name startswith \"keycloak_user\"\n| extend\n    realm     = tostring(Properties[\"realm\"]),\n    client_id = iff(isnotempty(tostring(Properties[\"client_id\"])), tostring(Properties[\"client_id\"]), tostring(Properties[\"clientId\"])),\n    event     = tostring(Properties[\"event\"]),\n    error     = tostring(Properties[\"error\"])\n| where realm == \"srtp\"\n| summarize\n    ['Eventi']     = sum(todouble(Sum)),\n    ['Ultima osservazione'] = max(TimeGenerated),\n    ['Prima osservazione']  = min(TimeGenerated)\n    by client_id, event, error\n| extend\n    ['Ultima osservazione'] = format_datetime(['Ultima osservazione'], \"yyyy-MM-dd HH:mm:ss\"),\n    ['Prima osservazione']  = format_datetime(['Prima osservazione'],  \"yyyy-MM-dd HH:mm:ss\")\n| order by ['Eventi'] desc\n| project\n    ['Client ID']        = client_id,\n    ['Evento']           = event,\n    ['Errore']           = iff(error == \"\", \"-\", error),\n    ['Eventi'],\n    ['Prima osservazione'],\n    ['Ultima osservazione']",
             "resources": [
               "/subscriptions/$subscription/resourceGroups/$CoreMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$CoreLaw"
             ],
@@ -1068,7 +1068,7 @@
           "subscription": "$subscription"
         }
       ],
-      "title": "Panoramica stacco del token (Metriche Keycloak)",
+      "title": "Panoramica eventi di autenticazione (Metriche Keycloak)",
       "type": "table"
     }
   ],
@@ -1165,8 +1165,8 @@
       },
       {
         "current": {
-          "text": "cstar-u-monitor-rg",
-          "value": "cstar-u-monitor-rg"
+          "text": "cstar-u-itn-core-monitor-rg",
+          "value": "cstar-u-itn-core-monitor-rg"
         },
         "datasource": {
           "type": "grafana-azure-monitor-datasource",
@@ -1186,14 +1186,14 @@
           "subscription": "$subscription"
         },
         "refresh": 1,
-        "regex": "/^cstar-.-monitor-rg$/",
+        "regex": "/^cstar-.-itn-core-monitor-rg$/",
         "regexApplyTo": "value",
         "type": "query"
       },
       {
         "current": {
-          "text": "cstar-u-law",
-          "value": "cstar-u-law"
+          "text": "cstar-u-itn-core-law",
+          "value": "cstar-u-itn-core-law"
         },
         "datasource": {
           "type": "grafana-azure-monitor-datasource",
@@ -1215,7 +1215,7 @@
           "subscription": "$subscription"
         },
         "refresh": 1,
-        "regex": "/^cstar-.-law$/",
+        "regex": "/^cstar-.-itn-core-law$/",
         "regexApplyTo": "value",
         "type": "query"
       }
