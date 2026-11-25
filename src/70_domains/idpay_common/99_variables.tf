@@ -261,6 +261,17 @@ variable "data_factory_api_base_url" {
   description = "Internal API for Data Factory"
 }
 
+variable "onboarding_census_retention_days" {
+  type        = number
+  description = "Days after which onboarding census files (CSV with fiscal codes, reports, rejected rows) are deleted"
+  default     = 30
+
+  validation {
+    condition     = var.onboarding_census_retention_days >= 1
+    error_message = "onboarding_census_retention_days must be >= 1."
+  }
+}
+
 #
 # Postgres Flexible
 #
@@ -304,4 +315,10 @@ variable "aks_foobar_idpay_node_pool_configuration" {
     node_count_min = number,
     node_count_max = number,
   })
+}
+
+variable "listmonk_smtp_enabled" {
+  type        = bool
+  description = "Publish PARI SMTP settings to the platform-managed listmonk namespace."
+  default     = false
 }

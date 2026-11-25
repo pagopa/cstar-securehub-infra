@@ -55,6 +55,9 @@ module "keycloak_pgflex" {
   administrator_login    = azurerm_key_vault_secret.keycloak_db_admin_user.value
   administrator_password = azurerm_key_vault_secret.keycloak_db_admin_password.value
 
+  # Listmonk requires pgcrypto in its dedicated database.
+  additional_azure_extensions = ["pgcrypto"]
+
   # Monitoring and performance settings
   diagnostic_settings_enabled = var.keycloak_pgflex_params.pgres_flex_diagnostic_settings_enabled
   log_analytics_workspace_id  = data.azurerm_log_analytics_workspace.logs_workspace.id

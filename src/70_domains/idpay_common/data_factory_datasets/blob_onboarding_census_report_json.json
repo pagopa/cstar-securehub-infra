@@ -1,0 +1,35 @@
+{
+  "name": "blob_onboarding_census_report_json",
+  "properties": {
+    "description": "Onboarding census run report (received / written / rejected), one file per run (BND-2482)",
+    "linkedServiceName": {
+      "referenceName": "${domain}-onboarding-census-blob-ls",
+      "type": "LinkedServiceReference"
+    },
+    "parameters": {
+      "initiativeId": { "type": "String" },
+      "runId": { "type": "String" }
+    },
+    "annotations": [
+      "Onboarding Census",
+      "IdPay"
+    ],
+    "type": "Json",
+    "typeProperties": {
+      "location": {
+        "type": "AzureBlobStorageLocation",
+        "fileName": {
+          "value": "@concat('report_', dataset().runId, '.json')",
+          "type": "Expression"
+        },
+        "folderPath": {
+          "value": "@concat('report/', dataset().initiativeId)",
+          "type": "Expression"
+        },
+        "container": "onboarding-census"
+      },
+      "encodingName": "UTF-8"
+    }
+  },
+  "type": "Microsoft.DataFactory/factories/datasets"
+}

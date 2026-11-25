@@ -107,6 +107,51 @@ variable "keycloak_configuration" {
   })
 }
 
+variable "listmonk_configuration" {
+  type = object({
+    enabled = optional(bool, true)
+    rbac_domains = optional(object({
+      idpay = optional(bool, true)
+      srtp  = optional(bool, false)
+      mdc   = optional(bool, false)
+    }), {})
+    chart_version               = string
+    image_repository            = string
+    image_tag                   = string
+    replica_count               = number
+    postgres_ssl_mode           = string
+    bootstrap_postgres_image    = optional(string, "postgres:17-alpine")
+    smtp_enabled                = optional(bool, false)
+    smtp_allow_shared_namespace = optional(bool, false)
+  })
+
+  validation {
+    condition = contains([
+      "require",
+      "verify-ca",
+      "verify-full"
+    ], var.listmonk_configuration.postgres_ssl_mode)
+    error_message = "Listmonk must use TLS: postgres_ssl_mode must be require, verify-ca, or verify-full."
+  }
+
+  validation {
+    condition     = var.listmonk_configuration.replica_count == 1
+    error_message = "Listmonk is configured for one replica. Review rollout concurrency before enabling campaigns."
+  }
+
+  validation {
+    condition = !var.listmonk_configuration.smtp_enabled || (
+      var.listmonk_configuration.enabled &&
+      var.listmonk_configuration.rbac_domains.idpay &&
+      (
+        var.listmonk_configuration.smtp_allow_shared_namespace ||
+        (!var.listmonk_configuration.rbac_domains.srtp && !var.listmonk_configuration.rbac_domains.mdc)
+      )
+    )
+    error_message = "PARI SMTP requires Listmonk and IDPay namespace access. Set smtp_allow_shared_namespace explicitly to allow SMTP credentials in a namespace shared with other domains."
+  }
+}
+
 variable "aks_user_foobar_node_pool_keycloak" {
   type = object({
     enabled           = optional(bool, true)
