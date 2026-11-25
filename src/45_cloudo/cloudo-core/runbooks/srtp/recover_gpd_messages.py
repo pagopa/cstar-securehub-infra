@@ -127,11 +127,11 @@ def default_endpoints(env: str) -> dict[str, str]:
 
 # Config field -> (environment variable, Key Vault secret name)
 SECRETS: dict[str, tuple[str, str]] = {
-    "client_id": ("CLIENT_ID", "rtp-recovery-client-id"),
-    "client_secret": ("CLIENT_SECRET", "rtp-recovery-client-secret"),
+    "client_id": ("CLIENT_ID", "mil-auth-client-id-consumer"),
+    "client_secret": ("CLIENT_SECRET", "mil-auth-client-secret-consumer"),
     "payment_requests_api_key": (
         "PAYMENT_REQUESTS_API_KEY",
-        "rtp-recovery-payment-requests-api-key",
+        "ecommerce-payment-requests-subscription-key",
     ),
     "cosmos_connection_string": (
         "COSMOS_CONNECTION_STRING",
