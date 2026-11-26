@@ -33,9 +33,15 @@ locals {
   }
 
   # vnet core hub is not included in the peering map because already setup
-  all_peerings_from_computer = {
+  all_peerings_from_compute = {
     for k, v in local.secure_hub_vnets :
-    k => v if k == "security" || k == "data" || k == "tools"
+    k => v if k == "security" || k == "data"
+  }
+
+  # vnet core hub is not included in the peering map because already setup
+  all_peerings_from_tools = {
+    for k, v in local.secure_hub_vnets :
+    k => v if k == "security" || k == "data" || k == "compute"
   }
 }
 
@@ -67,12 +73,31 @@ module "vnet_secure_hub_to_spoke_peering" {
 module "vnet_spoke_compute_peerings" {
   source = "./.terraform/modules/__v4__/virtual_network_peering"
 
-  for_each = local.all_peerings_from_computer
+  for_each = local.all_peerings_from_compute
 
   # Define target virtual network peering details
   source_resource_group_name       = module.vnet_spoke_compute.resource_group_name
   source_virtual_network_name      = module.vnet_spoke_compute.name
   source_remote_virtual_network_id = module.vnet_spoke_compute.id
+
+  # Define source virtual network peering details
+  target_resource_group_name       = each.value.resource_group_name
+  target_virtual_network_name      = each.value.name
+  target_remote_virtual_network_id = each.value.id
+}
+
+#
+# Spoke TOOLS Peerings
+#
+module "vnet_spoke_tools_peerings" {
+  source = "./.terraform/modules/__v4__/virtual_network_peering"
+
+  for_each = local.all_peerings_from_tools
+
+  # Define target virtual network peering details
+  source_resource_group_name       = module.vnet_spoke_tools.resource_group_name
+  source_virtual_network_name      = module.vnet_spoke_tools.name
+  source_remote_virtual_network_id = module.vnet_spoke_tools.id
 
   # Define source virtual network peering details
   target_resource_group_name       = each.value.resource_group_name
