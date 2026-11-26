@@ -110,8 +110,12 @@ def key_vault_name(env: str) -> str:
     return f"cstar-{ENV_SHORT[env]}-itn-srtp-kv"
 
 
+# dev has no dedicated endpoints: it targets the uat ones.
+_ENDPOINT_ENV: dict[str, str] = {"dev": "uat", "uat": "uat", "prod": "prod"}
+
+
 def default_endpoints(env: str) -> dict[str, str]:
-    seg = _HOST_SEGMENT[env]
+    seg = _HOST_SEGMENT[_ENDPOINT_ENV[env]]
     return {
         "token_url": (
             f"https://api-mcshared.{seg}cstar.pagopa.it"
@@ -139,12 +143,21 @@ SECRETS: dict[str, tuple[str, str]] = {
     ),
 }
 
+# Per-environment overrides of the Key Vault secret names.
+SECRET_NAME_OVERRIDES: dict[str, dict[str, str]] = {
+    "dev": {
+        "cosmos_connection_string": "cosmosdb-account-rtp-uat-connection-string",
+    },
+}
+
 
 def load_secrets(env: str) -> dict[str, str]:
     """Read every secret from its env var, falling back to the SRTP Key Vault."""
     values: dict[str, str] = {}
     missing_from_env: dict[str, str] = {}
+    overrides = SECRET_NAME_OVERRIDES.get(env, {})
     for field, (env_var, secret_name) in SECRETS.items():
+        secret_name = overrides.get(field, secret_name)
         value = os.environ.get(env_var)
         if value:
             values[field] = value
