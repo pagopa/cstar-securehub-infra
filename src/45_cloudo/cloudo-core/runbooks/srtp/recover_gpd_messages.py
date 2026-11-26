@@ -24,8 +24,6 @@ Differences from the original:
     the same name (CLIENT_ID, ...) takes precedence, for local runs;
   - endpoints default per environment (--env), no .env needed;
   - secrets cannot be passed as CLI flags (run_args are visible in ClouDO);
-  - pymongo is not in the worker image: it is pip-installed into a temp dir at
-    start-up (needs egress to PyPI);
   - everything is printed to stdout, the only stream ClouDO keeps for a
     successful run.
 
@@ -42,56 +40,19 @@ Schema: pass the arguments through "run_args". It deletes Cosmos documents, so
 from __future__ import annotations
 
 import argparse
-import importlib
 import os
-import subprocess
 import sys
-import tempfile
 import time
 import uuid
 from dataclasses import dataclass
 from enum import Enum
 from typing import Any, Iterable, Protocol, runtime_checkable
 
+import certifi  # installed with requests
 import requests
-
-
-# ---------------------------------------------------------------------------
-# Runtime dependencies
-# ---------------------------------------------------------------------------
-
-PYMONGO_REQUIREMENT = "pymongo==4.10.1"
-
-
-def _ensure_pymongo() -> None:
-    """Install pymongo into a temp dir when the interpreter does not have it."""
-    try:
-        importlib.import_module("pymongo")
-        return
-    except ImportError:
-        pass
-
-    target = tempfile.mkdtemp(prefix="recover_gpd_deps_")
-    print(f"pymongo not available; installing {PYMONGO_REQUIREMENT} ...")
-    subprocess.run(
-        [
-            sys.executable, "-m", "pip", "install",
-            "--quiet", "--disable-pip-version-check", "--no-cache-dir",
-            "--target", target, PYMONGO_REQUIREMENT,
-        ],
-        check=True,
-        stdout=subprocess.DEVNULL,
-    )
-    sys.path.insert(0, target)
-    importlib.invalidate_caches()
-
-
-_ensure_pymongo()
-
-import certifi  # noqa: E402  (installed with requests)
-from pymongo import MongoClient  # noqa: E402
-from pymongo.collection import Collection  # noqa: E402
-from pymongo.errors import ConfigurationError  # noqa: E402
+from pymongo import MongoClient
+from pymongo.collection import Collection
+from pymongo.errors import ConfigurationError
 
 
 # ---------------------------------------------------------------------------
