@@ -37,6 +37,7 @@
 | <a name="module_vnet_spoke_data"></a> [vnet\_spoke\_data](#module\_vnet\_spoke\_data) | ./.terraform/modules/__v4__/virtual_network | n/a |
 | <a name="module_vnet_spoke_security"></a> [vnet\_spoke\_security](#module\_vnet\_spoke\_security) | ./.terraform/modules/__v4__/virtual_network | n/a |
 | <a name="module_vnet_spoke_tools"></a> [vnet\_spoke\_tools](#module\_vnet\_spoke\_tools) | ./.terraform/modules/__v4__/virtual_network | n/a |
+| <a name="module_vnet_spoke_tools_peerings"></a> [vnet\_spoke\_tools\_peerings](#module\_vnet\_spoke\_tools\_peerings) | ./.terraform/modules/__v4__/virtual_network_peering | n/a |
 | <a name="module_vpn"></a> [vpn](#module\_vpn) | ./.terraform/modules/__v4__/vpn_gateway | n/a |
 | <a name="module_vpn_snet"></a> [vpn\_snet](#module\_vpn\_snet) | ./.terraform/modules/__v4__/subnet | n/a |
 
