@@ -1,6 +1,10 @@
 [
   {
     "partition_key": "generic",
+    "entity": []
+  },
+  {
+    "partition_key": "srtp",
     "entity": [
       {
         "id": "srtp-recover-gpd-messages",
@@ -11,6 +15,7 @@
         "worker": "generic",
         "oncall": false,
         "require_approval": true,
+        "team": "srtp",
         "tags": "srtp,rtp,recovery"
       }
     ]
