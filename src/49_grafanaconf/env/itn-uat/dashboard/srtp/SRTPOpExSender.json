@@ -52,7 +52,7 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "### [Activator](/d/srtp-operational-excellence?from=${__from}&to=${__to}) &nbsp;&nbsp;|&nbsp;&nbsp; [Cosmos Activator](/d/cosmos-activator?from=${__from}&to=${__to}) &nbsp;&nbsp;|&nbsp;&nbsp; [Consumer](/d/srtp-opex-consumer?from=${__from}&to=${__to}) &nbsp;&nbsp;|&nbsp;&nbsp; **▸ Sender** &nbsp;&nbsp;|&nbsp;&nbsp; [Cosmos Sender](/d/cosmos-sender?from=${__from}&to=${__to})",
+        "content": "### [Activator](/d/srtp-operational-excellence?from=${__from}&to=${__to}) &nbsp;&nbsp;|&nbsp;&nbsp; [Cosmos Activator](/d/cosmos-activator?from=${__from}&to=${__to}) &nbsp;&nbsp;|&nbsp;&nbsp; [Consumer](/d/srtp-opex-consumer?from=${__from}&to=${__to}) &nbsp;&nbsp;|&nbsp;&nbsp; **▸ Sender** &nbsp;&nbsp;|&nbsp;&nbsp; [Cosmos Sender](/d/cosmos-sender?from=${__from}&to=${__to}) &nbsp;&nbsp;|&nbsp;&nbsp; [Security & Authentication](/d/srtp-opex-security?from=${__from}&to=${__to})",
         "mode": "markdown"
       },
       "pluginVersion": "12.4.13",
@@ -70,6 +70,307 @@
       },
       "id": 2200,
       "panels": [
+        {
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "fixed",
+                "fixedColor": "blue"
+              },
+              "decimals": 0,
+              "mappings": [],
+              "noValue": "0",
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "blue",
+                    "value": 0
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 4,
+            "w": 6,
+            "x": 0,
+            "y": 149
+          },
+          "id": 2224,
+          "options": {
+            "colorMode": "background",
+            "graphMode": "none",
+            "justifyMode": "center",
+            "orientation": "auto",
+            "percentChangeColorMode": "standard",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "showPercentChange": false,
+            "textMode": "value",
+            "wideLayout": true
+          },
+          "pluginVersion": "12.4.13",
+          "targets": [
+            {
+              "azureLogAnalytics": {
+                "dashboardTime": true,
+                "mode": "raw",
+                "query": "AppTraces\n| where AppRoleName == 'rtp-sender'\n| where $__timeFilter(TimeGenerated)\n| where Message startswith \"Operation: CREATE\"\n| summarize count = count()",
+                "resources": [
+                  "/subscriptions/$subscription/resourceGroups/$SrtpMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$SrtpLaw"
+                ],
+                "resultFormat": "table",
+                "timeColumn": "TimeGenerated"
+              },
+              "datasource": {
+                "type": "grafana-azure-monitor-datasource",
+                "uid": "azure-monitor-oob"
+              },
+              "queryType": "Azure Log Analytics",
+              "refId": "A",
+              "subscription": "$subscription"
+            }
+          ],
+          "title": "📥 CREATE ricevute",
+          "type": "stat"
+        },
+        {
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "fixed",
+                "fixedColor": "blue"
+              },
+              "decimals": 0,
+              "mappings": [],
+              "noValue": "0",
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "blue",
+                    "value": 0
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 4,
+            "w": 6,
+            "x": 6,
+            "y": 149
+          },
+          "id": 2225,
+          "options": {
+            "colorMode": "background",
+            "graphMode": "none",
+            "justifyMode": "center",
+            "orientation": "auto",
+            "percentChangeColorMode": "standard",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "showPercentChange": false,
+            "textMode": "value",
+            "wideLayout": true
+          },
+          "pluginVersion": "12.4.13",
+          "targets": [
+            {
+              "azureLogAnalytics": {
+                "dashboardTime": true,
+                "mode": "raw",
+                "query": "AppTraces\n| where AppRoleName == 'rtp-sender'\n| where $__timeFilter(TimeGenerated)\n| where Message startswith \"Operation: UPDATE\"\n| summarize count = count()",
+                "resources": [
+                  "/subscriptions/$subscription/resourceGroups/$SrtpMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$SrtpLaw"
+                ],
+                "resultFormat": "table",
+                "timeColumn": "TimeGenerated"
+              },
+              "datasource": {
+                "type": "grafana-azure-monitor-datasource",
+                "uid": "azure-monitor-oob"
+              },
+              "queryType": "Azure Log Analytics",
+              "refId": "A",
+              "subscription": "$subscription"
+            }
+          ],
+          "title": "📥 UPDATE ricevute",
+          "type": "stat"
+        },
+        {
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "fixed",
+                "fixedColor": "blue"
+              },
+              "decimals": 0,
+              "mappings": [],
+              "noValue": "0",
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "blue",
+                    "value": 0
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 4,
+            "w": 6,
+            "x": 12,
+            "y": 149
+          },
+          "id": 2226,
+          "options": {
+            "colorMode": "background",
+            "graphMode": "none",
+            "justifyMode": "center",
+            "orientation": "auto",
+            "percentChangeColorMode": "standard",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "showPercentChange": false,
+            "textMode": "value",
+            "wideLayout": true
+          },
+          "pluginVersion": "12.4.13",
+          "targets": [
+            {
+              "azureLogAnalytics": {
+                "dashboardTime": true,
+                "mode": "raw",
+                "query": "AppTraces\n| where AppRoleName == 'rtp-sender'\n| where $__timeFilter(TimeGenerated)\n| where Message startswith \"Operation: DELETE\"\n| summarize count = count()",
+                "resources": [
+                  "/subscriptions/$subscription/resourceGroups/$SrtpMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$SrtpLaw"
+                ],
+                "resultFormat": "table",
+                "timeColumn": "TimeGenerated"
+              },
+              "datasource": {
+                "type": "grafana-azure-monitor-datasource",
+                "uid": "azure-monitor-oob"
+              },
+              "queryType": "Azure Log Analytics",
+              "refId": "A",
+              "subscription": "$subscription"
+            }
+          ],
+          "title": "📥 DELETE ricevute",
+          "type": "stat"
+        },
+        {
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "fixed",
+                "fixedColor": "blue"
+              },
+              "decimals": 0,
+              "mappings": [],
+              "noValue": "0",
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "blue",
+                    "value": 0
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 4,
+            "w": 6,
+            "x": 18,
+            "y": 149
+          },
+          "id": 2227,
+          "options": {
+            "colorMode": "background",
+            "graphMode": "none",
+            "justifyMode": "center",
+            "orientation": "auto",
+            "percentChangeColorMode": "standard",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "showPercentChange": false,
+            "textMode": "value",
+            "wideLayout": true
+          },
+          "pluginVersion": "12.4.13",
+          "targets": [
+            {
+              "azureLogAnalytics": {
+                "dashboardTime": true,
+                "mode": "raw",
+                "query": "AppTraces\n| where AppRoleName == 'rtp-sender'\n| where $__timeFilter(TimeGenerated)\n| where Message matches regex @\"^Operation: (CREATE|UPDATE|DELETE)\"\n| summarize count = count()",
+                "resources": [
+                  "/subscriptions/$subscription/resourceGroups/$SrtpMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$SrtpLaw"
+                ],
+                "resultFormat": "table",
+                "timeColumn": "TimeGenerated"
+              },
+              "datasource": {
+                "type": "grafana-azure-monitor-datasource",
+                "uid": "azure-monitor-oob"
+              },
+              "queryType": "Azure Log Analytics",
+              "refId": "A",
+              "subscription": "$subscription"
+            }
+          ],
+          "title": "📥 Invii ricevuti (CREATE + UPDATE + DELETE)",
+          "type": "stat",
+          "description": "Totale dei messaggi GPD ricevuti dal Sender: CREATE + UPDATE + DELETE."
+        },
         {
           "datasource": {
             "type": "grafana-azure-monitor-datasource",
@@ -669,7 +970,7 @@
               "azureLogAnalytics": {
                 "dashboardTime": true,
                 "mode": "raw",
-                "query": "let _bin = max_of(coalesce(totimespan(\"$sender_bin_size\"), 1h), bin(($__timeTo() - $__timeFrom()) / 19999, 1s) + 1s);\nlet ops = AppTraces\n| where $__timeFilter(TimeGenerated)\n| where AppRoleName == \"rtp-sender\"\n| where Message startswith \"Operation: \"\n| extend Operation = extract(@\"Operation: (\\w+)\", 1, Message)\n| summarize Operation = any(Operation) by OperationId;\nlet successes = AppTraces\n| where $__timeFilter(TimeGenerated)\n| where AppRoleName == \"rtp-sender\"\n| where Message == \"Successfully processed message.\"\n| summarize TimeGenerated = min(TimeGenerated) by OperationId;\nlet errors = AppTraces\n| where $__timeFilter(TimeGenerated)\n| where AppRoleName == \"rtp-sender\"\n| where Message startswith \"Error processing message.\"\n| where Message !contains \"PayerNotActivatedException\"\n| where Message !contains \"InvalidTransitionException\"\n| where Message !contains \"RtpNotFoundException\"\n| summarize TimeGenerated = min(TimeGenerated) by OperationId;\nunion\n    (successes | join kind=inner ops on OperationId | extend Series = strcat(\"✅ \", Operation)),\n    (errors    | join kind=inner ops on OperationId | extend Series = strcat(\"❌ \", Operation))\n| make-series Count = count() default = 0 on TimeGenerated from bin($__timeFrom(), _bin) to $__timeTo() step _bin by Series\n| mv-expand TimeGenerated to typeof(datetime), Count to typeof(long)\n| order by TimeGenerated asc",
+                "query": "let _bin = max_of(coalesce(totimespan(\"$sender_bin_size\"), 1h), bin(($__timeTo() - $__timeFrom()) / 19999, 1s) + 1s);\nlet ops = AppTraces\n| where $__timeFilter(TimeGenerated)\n| where AppRoleName == \"rtp-sender\"\n| where Message startswith \"Operation: \"\n| extend Operation = extract(@\"Operation: (\\w+)\", 1, Message), MessageId = tostring(Properties.message_id)\n| project OperationId, Operation, MessageId, OpTime = TimeGenerated;\nlet outcomes = AppTraces\n| where $__timeFilter(TimeGenerated)\n| where AppRoleName == \"rtp-sender\"\n| where Message == \"Successfully processed message.\" or Message startswith \"Error processing message.\"\n| extend Esito = case(\n    Message == \"Successfully processed message.\", \"ok\",\n    Message contains \"PayerNotActivatedException\" or Message contains \"InvalidTransitionException\" or Message contains \"RtpNotFoundException\", \"atteso\",\n    \"ko\")\n| summarize Esito = take_any(Esito), OutTime = min(TimeGenerated) by OperationId;\nlet classified = ops\n| join kind=leftouter outcomes on OperationId\n| extend Series = case(\n    Esito == \"ok\", strcat(\"✅ \", Operation),\n    Esito == \"ko\", strcat(\"❌ \", Operation),\n    Esito == \"atteso\", strcat(\"⚠️ \", Operation, \" (payer non attivato / transizione / non trovato)\"),\n    strcat(\"❓ \", Operation, \" (senza esito)\")),\n  TimeGenerated = coalesce(OutTime, OpTime)\n| project TimeGenerated, Series;\nlet redeliveries = ops\n| where isnotempty(MessageId)\n| sort by MessageId asc, OpTime asc\n| extend rn = row_number(1, MessageId != prev(MessageId))\n| where rn > 1\n| project TimeGenerated = OpTime, Series = strcat(\"🔁 \", Operation, \" riconsegne (stesso message_id)\");\nunion classified, redeliveries\n| make-series Count = count() default = 0 on TimeGenerated from bin($__timeFrom(), _bin) to $__timeTo() step _bin by Series\n| mv-expand TimeGenerated to typeof(datetime), Count to typeof(long)\n| order by TimeGenerated asc",
                 "resources": [
                   "/subscriptions/$subscription/resourceGroups/$SrtpMonitoringRg/providers/Microsoft.OperationalInsights/workspaces/$SrtpLaw"
                 ],
@@ -686,7 +987,8 @@
             }
           ],
           "title": "Invii RTP nel tempo (Successi vs Fallimenti) nel tempo",
-          "type": "timeseries"
+          "type": "timeseries",
+          "description": "Per operazione (CREATE/UPDATE/DELETE): ✅ successo, ❌ errore, ⚠️ esito atteso (payer non attivato, transizione non valida, RTP non trovato), ❓ nessun esito loggato. 🔁 = riconsegne dello stesso message_id (già contate nelle altre serie): servono a distinguere duplicati/retry dai messaggi unici."
         },
         {
           "datasource": {

@@ -79,7 +79,7 @@
           "source": {
             "type": "AzureDataExplorerSource",
             "query": {
-              "value": "@concat('initiative_export_configuration | where initiativeId == \"', pipeline().parameters.initiativeId, '\" | mv-expand with_itemindex=idx field = exportConfiguration.fields to typeof(string) | extend headerName = iff(isnotempty(tostring(exportConfiguration.headers[field])), tostring(exportConfiguration.headers[field]), field) | extend projectItem = strcat(\"[''\", headerName, \"'']=\", field) | sort by idx asc | summarize projectExpr = strcat_array(make_list(projectItem), \",\") by initiativeId')",
+              "value": "@concat('initiative_export_configuration | where initiativeId == \"', pipeline().parameters.initiativeId, '\" | mv-expand with_itemindex=idx field = exportConfiguration.fields to typeof(string) | extend headerName = iff(isnotempty(tostring(exportConfiguration.headers[field])), tostring(exportConfiguration.headers[field]), field) | extend headerName = iff(idx == 0, strcat(\"\\uFEFF\", headerName), headerName) | extend projectItem = strcat(\"[''\", headerName, \"'']=\", field) | sort by idx asc | summarize projectExpr = strcat_array(make_list(projectItem), \",\") by initiativeId')",
               "type": "Expression"
             }
           },
@@ -195,7 +195,7 @@
         "typeProperties": {
           "method": "PUT",
           "headers": {
-            "x-ms-blob-content-type": "text/csv",
+            "x-ms-blob-content-type": "text/csv; charset=utf-8",
             "x-ms-version": "2021-12-02"
           },
           "url": {

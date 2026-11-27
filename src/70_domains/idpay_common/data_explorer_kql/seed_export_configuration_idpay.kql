@@ -49,10 +49,10 @@ datatable(initiativeId:string, fieldName:string, rawValue:string, language:strin
   "69e0fa95e21efa516c7b8dec", "category", "DTS", "it", "Terrestre e Satellitare",
   "69e0fa95e21efa516c7b8dec", "category", "DTC", "it", "Terrestre via Cavo",
   "69e0fa95e21efa516c7b8dec", "category", "DTSC", "it", "Terrestre, Satellitare e via Cavo",
-  // Bonus Decoder - scart (bool -> Si/No, matches portal FE display).
+  // Bonus Decoder - scart (bool -> Sì/No, matches portal FE display).
   // NOTE: "scart" is a bool column in ADX (products); tostring(bool) yields
   // lowercase "true"/"false", so rawValue must match that exact casing.
-  "69e0fa95e21efa516c7b8dec", "scart", "true", "it", "Si",
+  "69e0fa95e21efa516c7b8dec", "scart", "true", "it", "Sì",
   "69e0fa95e21efa516c7b8dec", "scart", "false", "it", "No",
   // Bonus Elettrodomestici - category (migrated from category_translation)
   "68dd003ccce8c534d1da22bc", "category", "WASHINGMACHINES", "it", "Lavatrice",

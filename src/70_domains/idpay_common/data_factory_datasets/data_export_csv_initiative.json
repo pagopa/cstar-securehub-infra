@@ -27,7 +27,8 @@
       "columnDelimiter": ",",
       "escapeChar": "\\",
       "firstRowAsHeader": true,
-      "quoteChar": "\""
+      "quoteChar": "\"",
+      "encodingName": "UTF-8"
     },
     "schema": []
   },
