@@ -23,6 +23,12 @@ resource "azurerm_data_factory_integration_runtime_azure" "autoresolve" {
   data_factory_id         = module.data_factory.id
   location                = "AutoResolve"
   virtual_network_enabled = true
+
+  lifecycle {
+    ignore_changes = [
+      description
+    ]
+  }
 }
 
 
