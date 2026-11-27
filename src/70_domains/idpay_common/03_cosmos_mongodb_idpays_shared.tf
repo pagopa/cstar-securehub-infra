@@ -436,7 +436,7 @@ locals {
         { keys = ["_id"], unique = true },
         { keys = ["entityId"], unique = false },
         { keys = ["initiativeId"], unique = false },
-        { keys = ["pendingTrx.id"], unique = false }
+        { keys = ["pendingTrx._id"], unique = false }
       ]
     },
     {
